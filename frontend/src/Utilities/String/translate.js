@@ -1,27 +1,22 @@
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 
 function getTranslations() {
-  return createAjaxRequest({
-    global: false,
+  let localization = null;
+  const ajaxOptions = {
+    async: false,
     dataType: 'json',
-    url: '/localization'
-  }).request;
-}
-
-let translations = {};
-
-export function fetchTranslations() {
-  return new Promise(async(resolve) => {
-    try {
-      const data = await getTranslations();
-      translations = data.Strings;
-
-      resolve(true);
-    } catch (error) {
-      resolve(false);
+    url: '/localization',
+    success: function(data) {
+      localization = data.Strings;
     }
-  });
+  };
+
+  createAjaxRequest(ajaxOptions);
+
+  return localization;
 }
+
+const translations = getTranslations();
 
 export default function translate(key, args) {
   const translation = translations[key] || key;

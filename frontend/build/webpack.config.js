@@ -83,10 +83,6 @@ module.exports = (env) => {
       hints: false
     },
 
-    experiments: {
-      topLevelAwait: true
-    },
-
     plugins: [
       new webpack.DefinePlugin({
         __DEV__: !isProduction,
