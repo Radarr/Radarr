@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -200,13 +201,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
         }
 
         [Test]
-        public void Download_should_return_unique_id()
+        public async Task Download_should_return_unique_id()
         {
             GivenSuccessfulDownload();
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = await Subject.Download(remoteMovie, CreateIndexer());
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -218,7 +219,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
 
             var remoteMovie = CreateRemoteMovie();
 
-            Assert.Throws<DownloadClientException>(() => Subject.Download(remoteMovie, CreateIndexer()));
+            Assert.ThrowsAsync<DownloadClientException>(async () => await Subject.Download(remoteMovie, CreateIndexer()));
         }
 
         [Test]

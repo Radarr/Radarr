@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -63,26 +64,26 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
         }
 
         [Test]
-        public void Download_should_return_unique_id()
+        public async Task Download_should_return_unique_id()
         {
             GivenSuccessfulDownload();
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = await Subject.Download(remoteMovie, CreateIndexer());
 
             id.Should().NotBeNullOrEmpty();
         }
 
         [Test]
-        public void Download_with_MovieDirectory_should_force_directory()
+        public async Task Download_with_MovieDirectory_should_force_directory()
         {
             GivenMovieDirectory();
             GivenSuccessfulDownload();
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = await Subject.Download(remoteMovie, CreateIndexer());
 
             id.Should().NotBeNullOrEmpty();
 
@@ -91,14 +92,14 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
         }
 
         [Test]
-        public void Download_with_category_should_force_directory()
+        public async Task Download_with_category_should_force_directory()
         {
             GivenMovieCategory();
             GivenSuccessfulDownload();
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = await Subject.Download(remoteMovie, CreateIndexer());
 
             id.Should().NotBeNullOrEmpty();
 
@@ -107,7 +108,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
         }
 
         [Test]
-        public void Download_with_category_should_not_have_double_slashes()
+        public async Task Download_with_category_should_not_have_double_slashes()
         {
             GivenMovieCategory();
             GivenSuccessfulDownload();
@@ -116,7 +117,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = await Subject.Download(remoteMovie, CreateIndexer());
 
             id.Should().NotBeNullOrEmpty();
 
@@ -125,13 +126,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
         }
 
         [Test]
-        public void Download_without_MovieDirectory_and_Category_should_use_default()
+        public async Task Download_without_MovieDirectory_and_Category_should_use_default()
         {
             GivenSuccessfulDownload();
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = await Subject.Download(remoteMovie, CreateIndexer());
 
             id.Should().NotBeNullOrEmpty();
 
@@ -140,14 +141,14 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
         }
 
         [TestCase("magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR&tr=udp", "CBC2F069FE8BB2F544EAE707D75BCD3DE9DCF951")]
-        public void Download_should_get_hash_from_magnet_url(string magnetUrl, string expectedHash)
+        public async Task Download_should_get_hash_from_magnet_url(string magnetUrl, string expectedHash)
         {
             GivenSuccessfulDownload();
 
             var remoteMovie = CreateRemoteMovie();
             remoteMovie.Release.DownloadUrl = magnetUrl;
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = await Subject.Download(remoteMovie, CreateIndexer());
 
             id.Should().Be(expectedHash);
         }

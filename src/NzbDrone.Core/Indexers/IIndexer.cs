@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
@@ -12,8 +13,8 @@ namespace NzbDrone.Core.Indexers
         bool SupportsSearch { get; }
         DownloadProtocol Protocol { get; }
 
-        IList<ReleaseInfo> FetchRecent();
-        IList<ReleaseInfo> Fetch(MovieSearchCriteria searchCriteria);
+        Task<IList<ReleaseInfo>> FetchRecent();
+        Task<IList<ReleaseInfo>> Fetch(MovieSearchCriteria searchCriteria);
         HttpRequest GetDownloadRequest(string link);
     }
 }

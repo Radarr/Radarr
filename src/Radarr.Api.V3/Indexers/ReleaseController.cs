@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
@@ -96,21 +97,21 @@ namespace Radarr.Api.V3.Indexers
         }
 
         [HttpGet]
-        public List<ReleaseResource> GetReleases(int? movieId)
+        public async Task<List<ReleaseResource>> GetReleases(int? movieId)
         {
             if (movieId.HasValue)
             {
-                return GetMovieReleases(movieId.Value);
+                return await GetMovieReleases(movieId.Value);
             }
 
-            return GetRss();
+            return await GetRss();
         }
 
-        private List<ReleaseResource> GetMovieReleases(int movieId)
+        private async Task<List<ReleaseResource>> GetMovieReleases(int movieId)
         {
             try
             {
-                var decisions = _releaseSearchService.MovieSearch(movieId, true, true);
+                var decisions = await _releaseSearchService.MovieSearch(movieId, true, true);
                 var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(decisions);
 
                 return MapDecisions(prioritizedDecisions);
@@ -126,9 +127,9 @@ namespace Radarr.Api.V3.Indexers
             }
         }
 
-        private List<ReleaseResource> GetRss()
+        private async Task<List<ReleaseResource>> GetRss()
         {
-            var reports = _rssFetcherAndParser.Fetch();
+            var reports = await _rssFetcherAndParser.Fetch();
             var decisions = _downloadDecisionMaker.GetRssDecision(reports);
             var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(decisions);
 

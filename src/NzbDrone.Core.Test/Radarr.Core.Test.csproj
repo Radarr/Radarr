@@ -20,4 +20,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IndexerTests\BroadcastheNetTests\" />
+    <Folder Include="IndexerTests\FanzubTests\" />
+    <Folder Include="IndexerTests\TorrentleechTests\" />
+  </ItemGroup>
 </Project>
