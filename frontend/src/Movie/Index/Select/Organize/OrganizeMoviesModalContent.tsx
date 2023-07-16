@@ -65,7 +65,7 @@ function OrganizeMoviesModalContent(props: OrganizeMoviesModalContentProps) {
         </Alert>
 
         <div className={styles.message}>
-          {translate('OrganizeConfirm', movieTitles.length)}
+          {translate('OrganizeConfirm', [movieTitles.length])}
         </div>
 
         <ul>
