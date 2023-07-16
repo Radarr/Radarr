@@ -133,7 +133,6 @@
     "AppDataLocationHealthCheckMessage": "Оновлення буде неможливим, щоб запобігти видаленню AppData під час оновлення",
     "Apply": "Застосувати",
     "ApplyTags": "Застосувати теги",
-    "ApplyTagsHelpTexts4": "Замінити: Змінити наявні теги на введені теги (залишіть порожнім, щоб очистити всі теги)",
     "AptUpdater": "Використовуйте apt для інсталяції оновлення",
     "AsAllDayHelpText": "Події відображатимуться у вашому календарі як події на весь день",
     "AudioInfo": "Аудіо інформація",
@@ -1150,5 +1149,15 @@
     "ResetAPIKeyMessageText": "Ви впевнені, що хочете скинути свій ключ API?",
     "ResetDefinitionTitlesHelpText": "Скинути заголовки визначень, а також значення",
     "DeleteConditionMessageText": "Ви впевнені, що хочете видалити клієнт завантаження '{0}'?",
-    "RemoveSelectedItemQueueMessageText": "Ви впевнені, що хочете видалити {0} елементів із черги?"
+    "RemoveSelectedItemQueueMessageText": "Ви впевнені, що хочете видалити {0} елементів із черги?",
+    "DownloadClientTagHelpText": "Використовуйте цей індексатор лише для фільмів із принаймні одним відповідним тегом. Залиште поле порожнім для використання з усіма фільмами.",
+    "ApplyTagsHelpTextRemove": "Видалити: видалити введені теги",
+    "ApplyTagsHelpTextReplace": "Замінити: Змінити наявні теги на введені теги (залишіть порожнім, щоб очистити всі теги)",
+    "DeleteIndexers": "Видалити індексатор",
+    "DeleteIndexersMessageText": "Ви впевнені, що хочете видалити тег {0} ?",
+    "DeleteSelectedDownloadClients": "Видалити клієнт завантаження",
+    "DeleteSelectedIndexers": "Видалити індексатор",
+    "ApplyTagsHelpTextAdd": "Додати: додати теги до наявного списку тегів",
+    "ApplyTagsHelpTextHowToApplyIndexers": "Як застосувати теги до вибраних фільмів",
+    "DeleteSelectedIndexersMessageText": "Ви впевнені, що хочете видалити тег {0} ?"
 }

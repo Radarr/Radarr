@@ -1182,5 +1182,17 @@
     "ApplyChanges": "Εφαρμογή Αλλαγών",
     "AutomaticAdd": "Αυτόματη Προσθήκη",
     "CountDownloadClientsSelected": "{0} εφαρμογή(ες) λήψης επιλέχθηκαν",
-    "CountImportListsSelected": "{0} λίστα(ες) εισαγωγής επιλέχθηκαν"
+    "CountImportListsSelected": "{0} λίστα(ες) εισαγωγής επιλέχθηκαν",
+    "ApplyTagsHelpTextReplace": "Αντικατάσταση: Αντικαταστήστε τις ετικέτες με τις εισαγόμενες ετικέτες (μην εισάγετε ετικέτες για να διαγράψετε όλες τις ετικέτες)",
+    "DownloadClientTagHelpText": "Χρησιμοποιήστε αυτό το ευρετήριο μόνο για καλλιτέχνη με τουλάχιστον μία αντίστοιχη ετικέτα. Αφήστε το κενό για χρήση με όλους τους καλλιτέχνες",
+    "ListRefreshInterval": "Διάστημα Ανανέωσης Λίστας",
+    "ListWillRefreshEveryInterp": "Η λίστα θα ανανεώνεται κάθε {0}",
+    "DeleteIndexers": "Διαγραφή ευρετηρίου",
+    "DeleteIndexersMessageText": "Είστε βέβαιοι ότι θέλετε να διαγράψετε το ευρετήριο \"{0}\";",
+    "DeleteSelectedDownloadClients": "Διαγραφή προγράμματος-πελάτη λήψης",
+    "ApplyTagsHelpTextAdd": "Προσθήκη: Προσθέστε τις ετικέτες στην υπάρχουσα λίστα ετικετών",
+    "ApplyTagsHelpTextHowToApplyIndexers": "Πώς να εφαρμόσετε ετικέτες στις επιλεγμένες ταινίες",
+    "ApplyTagsHelpTextRemove": "Αφαίρεση: Καταργήστε τις καταχωρημένες ετικέτες",
+    "DeleteSelectedImportLists": "Διαγραφή λίστας εισαγωγής",
+    "DeleteSelectedIndexers": "Διαγραφή ευρετηρίου"
 }

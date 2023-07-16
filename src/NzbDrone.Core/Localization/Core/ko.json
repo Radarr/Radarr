@@ -1048,5 +1048,22 @@
     "NoCollections": "영화를 찾을 수 없습니다. 시작하려면 새 영화를 추가하거나 기존 영화를 가져와야합니다.",
     "RssSyncHelpText": "간격 (분)입니다. 사용하지 않으려면 0으로 설정합니다 (모든 자동 릴리스 잡기가 중지됨).",
     "File": "파일",
-    "DeleteRemotePathMapping": "원격 경로 매핑 편집"
+    "DeleteRemotePathMapping": "원격 경로 매핑 편집",
+    "DeleteCustomFormatMessageText": "인덱서 '{0}'을 (를) 삭제 하시겠습니까?",
+    "DeleteDelayProfileMessageText": "이 지연 프로필을 삭제하시겠습니까?",
+    "ResetAPIKeyMessageText": "API 키를 재설정하시겠습니까?",
+    "RemoveSelectedItemBlocklistMessageText": "블랙리스트에서 선택한 항목을 제거 하시겠습니까?",
+    "DeleteConditionMessageText": "'{0}' 태그를 삭제하시겠습니까?",
+    "DeleteFormatMessageText": "형식 태그 {0}을(를) 삭제하시겠습니까?",
+    "DeleteImportListExclusionMessageText": "이 가져오기 목록 제외를 삭제하시겠습니까?",
+    "DeleteIndexers": "인덱서 삭제",
+    "DeleteIndexersMessageText": "인덱서 '{0}'을 (를) 삭제 하시겠습니까?",
+    "DeleteSelectedDownloadClients": "다운로드 클라이언트 삭제",
+    "DeleteSelectedIndexers": "인덱서 삭제",
+    "RemoveSelectedItemQueueMessageText": "대기열에서 {0} 항목 {1}을 제거하시겠습니까?",
+    "RemoveSelectedItemsQueueMessageText": "대기열에서 {0} 항목 {1}을 제거하시겠습니까?",
+    "ApplyTagsHelpTextAdd": "추가 : 기존 태그 목록에 태그를 추가합니다.",
+    "ApplyTagsHelpTextHowToApplyIndexers": "선택한 동영상에 태그를 적용하는 방법",
+    "ApplyTagsHelpTextRemove": "제거 : 입력한 태그를 제거합니다.",
+    "ApplyTagsHelpTextReplace": "바꾸기 : 태그를 입력 한 태그로 바꿉니다 (모든 태그를 지우려면 태그를 입력하지 않음)"
 }

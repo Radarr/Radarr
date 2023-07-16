@@ -1050,5 +1050,21 @@
     "File": "ไฟล์",
     "ShowCinemaReleaseHelpText": "แสดงวันที่วางจำหน่ายใต้โปสเตอร์",
     "EditMovies": "แก้ไขภาพยนตร์",
-    "DeleteRemotePathMapping": "แก้ไขการแมปเส้นทางระยะไกล"
+    "DeleteRemotePathMapping": "แก้ไขการแมปเส้นทางระยะไกล",
+    "ApplyTagsHelpTextReplace": "แทนที่: แทนที่แท็กด้วยแท็กที่ป้อน (ป้อนไม่มีแท็กเพื่อล้างแท็กทั้งหมด)",
+    "DeleteCustomFormatMessageText": "แน่ใจไหมว่าต้องการลบตัวสร้างดัชนี \"{0}\"",
+    "RemoveSelectedItemQueueMessageText": "แน่ใจไหมว่าต้องการนำ {0} ออกจากคิว",
+    "RemoveSelectedItemsQueueMessageText": "แน่ใจไหมว่าต้องการนำ {0} ออกจากคิว",
+    "ResetAPIKeyMessageText": "แน่ใจไหมว่าต้องการรีเซ็ตคีย์ API",
+    "DeleteIndexers": "ลบ Indexer",
+    "DeleteIndexersMessageText": "แน่ใจไหมว่าต้องการลบตัวสร้างดัชนี \"{0}\"",
+    "DeleteSelectedDownloadClients": "ลบไคลเอนต์ดาวน์โหลด",
+    "DeleteSelectedIndexers": "ลบ Indexer",
+    "DeleteConditionMessageText": "แน่ใจไหมว่าต้องการลบรายการ \"{0}\"",
+    "ApplyTagsHelpTextAdd": "เพิ่ม: เพิ่มแท็กในรายการแท็กที่มีอยู่",
+    "ApplyTagsHelpTextHowToApplyIndexers": "วิธีใช้แท็กกับภาพยนตร์ที่เลือก",
+    "ApplyTagsHelpTextRemove": "ลบ: ลบแท็กที่ป้อน",
+    "DeleteDelayProfileMessageText": "แน่ใจไหมว่าต้องการลบโปรไฟล์การหน่วงเวลานี้",
+    "DeleteFormatMessageText": "แน่ใจไหมว่าต้องการลบแท็กรูปแบบ {0}",
+    "DeleteImportListExclusionMessageText": "แน่ใจไหมว่าต้องการลบการยกเว้นรายการนำเข้านี้"
 }

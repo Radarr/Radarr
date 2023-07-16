@@ -881,7 +881,7 @@
     "AudioInfo": "معلومات الصوت",
     "AsAllDayHelpText": "ستظهر الأحداث كأحداث طوال اليوم في التقويم الخاص بك",
     "AptUpdater": "استخدم apt لتثبيت التحديث",
-    "ApplyTagsHelpTexts1": "كيفية تطبيق العلامات على الأفلام المختارة",
+    "ApplyTagsHelpTextHowToApplyMovies": "كيفية تطبيق العلامات على الأفلام المختارة",
     "ApplyTags": "تطبيق العلامات",
     "Apply": "تطبيق",
     "AppDataLocationHealthCheckMessage": "لن يكون التحديث ممكنًا لمنع حذف AppData عند التحديث",

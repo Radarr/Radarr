@@ -1051,5 +1051,22 @@
     "EditMovies": "Upravit film",
     "ShowCinemaReleaseHelpText": "Zobrazit datum vydání pod plakátem",
     "DeleteRemotePathMapping": "Upravit vzdálené mapování cesty",
-    "DeleteRemotePathMappingMessageText": "Opravdu chcete toto vzdálené mapování cesty odstranit?"
+    "DeleteRemotePathMappingMessageText": "Opravdu chcete toto vzdálené mapování cesty odstranit?",
+    "ApplyTagsHelpTextReplace": "Nahradit: Nahradit tagy zadanými tagy (pro vymazání všech tagů zadejte žádné tagy)",
+    "DeleteConditionMessageText": "Opravdu chcete smazat značku „{0}“?",
+    "DeleteCustomFormatMessageText": "Opravdu chcete odstranit indexer „{0}“?",
+    "DeleteDelayProfileMessageText": "Opravdu chcete smazat tento profil zpoždění?",
+    "DeleteFormatMessageText": "Opravdu chcete smazat značku formátu {0}?",
+    "RemoveSelectedItemBlocklistMessageText": "Opravdu chcete odebrat vybrané položky z černé listiny?",
+    "RemoveSelectedItemQueueMessageText": "Opravdu chcete odebrat {0} položku {1} z fronty?",
+    "RemoveSelectedItemsQueueMessageText": "Opravdu chcete odebrat {0} položku {1} z fronty?",
+    "ApplyTagsHelpTextAdd": "Přidat: Přidejte značky do existujícího seznamu značek",
+    "ApplyTagsHelpTextHowToApplyIndexers": "Jak použít značky na vybrané filmy",
+    "ApplyTagsHelpTextRemove": "Odebrat: Odebere zadané značky",
+    "DeleteImportListExclusionMessageText": "Opravdu chcete toto vyloučení importního seznamu smazat?",
+    "DeleteIndexers": "Odstranit indexer",
+    "DeleteIndexersMessageText": "Opravdu chcete odstranit indexer „{0}“?",
+    "DeleteSelectedDownloadClients": "Odstranit staženého klienta",
+    "DeleteSelectedIndexers": "Odstranit indexer",
+    "ResetAPIKeyMessageText": "Opravdu chcete resetovat klíč API?"
 }

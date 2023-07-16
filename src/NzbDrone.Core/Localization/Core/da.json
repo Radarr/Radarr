@@ -1051,5 +1051,22 @@
     "EditMovies": "Rediger film",
     "ShowCinemaReleaseHelpText": "Vis udgivelsesdato under plakat",
     "DeleteRemotePathMapping": "Rediger kortlægning af fjernsti",
-    "DeleteRemotePathMappingMessageText": "Er du sikker på, at du vil slette denne kortlægning af fjernstien?"
+    "DeleteRemotePathMappingMessageText": "Er du sikker på, at du vil slette denne kortlægning af fjernstien?",
+    "ApplyTagsHelpTextRemove": "Fjern: Fjern de indtastede tags",
+    "ApplyTagsHelpTextReplace": "Erstat: Udskift tags med de indtastede tags (indtast ingen tags for at rydde alle tags)",
+    "DeleteDelayProfileMessageText": "Er du sikker på, at du vil slette denne forsinkelsesprofil?",
+    "DeleteImportListExclusionMessageText": "Er du sikker på, at du vil slette denne undtagelse fra importlisten?",
+    "DeleteFormatMessageText": "Er du sikker på, at du vil slette formattag {0}?",
+    "DeleteIndexers": "Slet Indexer",
+    "DeleteIndexersMessageText": "Er du sikker på, at du vil slette indeksøren '{0}'?",
+    "DeleteConditionMessageText": "Er du sikker på, at du vil slette listen '{0}'?",
+    "DeleteCustomFormatMessageText": "Er du sikker på, at du vil slette indeksøren '{0}'?",
+    "RemoveSelectedItemBlocklistMessageText": "Er du sikker på, at du vil fjerne de valgte emner fra sortlisten?",
+    "RemoveSelectedItemQueueMessageText": "Er du sikker på, at du vil fjerne {0} element {1} fra køen?",
+    "RemoveSelectedItemsQueueMessageText": "Er du sikker på, at du vil fjerne {0} element {1} fra køen?",
+    "ResetAPIKeyMessageText": "Er du sikker på, at du vil nulstille din API-nøgle?",
+    "ApplyTagsHelpTextAdd": "Tilføj: Føj tags til den eksisterende liste over tags",
+    "ApplyTagsHelpTextHowToApplyIndexers": "Sådan anvendes tags på de valgte film",
+    "DeleteSelectedDownloadClients": "Slet Download Client",
+    "DeleteSelectedIndexers": "Slet Indexer"
 }

@@ -750,7 +750,7 @@
     "DownloadedAndMonitored": "Heruntergeladen (beobachtet)",
     "CouldNotFindResults": "Keine Ergebnisse für '{0}' gefunden",
     "CantFindMovie": "Warum kann der Film nicht gefunden werden?",
-    "ApplyTagsHelpTexts1": "Wie werden Tags zu ausgewählten Filmen zugeteilt",
+    "ApplyTagsHelpTextHowToApplyMovies": "Wie werden Tags zu ausgewählten Filmen zugeteilt",
     "UILanguageHelpTextWarning": "Webseite muss neu geladen werden",
     "UILanguageHelpText": "Sprache für die gesamte Oberfläche",
     "UILanguage": "Oberflächen Sprache ( UI Language )",
@@ -1199,5 +1199,11 @@
     "ManageLists": "Verwalte Listen",
     "NoDownloadClientsFound": "Keine Download Clienten gefunden",
     "NoImportListsFound": "Keine Einspiel-Listen gefunden",
-    "NoIndexersFound": "Keine Indexer gefunden"
+    "NoIndexersFound": "Keine Indexer gefunden",
+    "CountIndexersSelected": "{0} Indexer ausgewählt",
+    "DeleteIndexersMessageText": "Indexer '{0}' wirklich löschen?",
+    "ApplyTagsHelpTextAdd": "Hinzufügen: Füge neu Tags zu den existierenden Tags hinzu",
+    "ApplyTagsHelpTextRemove": "Entfernen: Eingegebene Tags entfernen",
+    "ApplyTagsHelpTextHowToApplyIndexers": "Wie werden Tags zu ausgewählten Indexern zugeteilt",
+    "ApplyTagsHelpTextReplace": "Ersetzen: Nur eingegebene Tags übernehmen und vorhandene entfernen( keine Tags eingeben um alle zu entfernen )"
 }

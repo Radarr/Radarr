@@ -35,7 +35,6 @@
     "AppDataLocationHealthCheckMessage": "Oppdatering vil ikke være mulig for å forhindre sletting av AppData på oppdateringen",
     "Apply": "Bruk",
     "ApplyTags": "Bruk Tags",
-    "ApplyTagsHelpTexts4": "Erstatt: Erstatt taggene med de angitte kodene (skriv inn ingen tagger for å slette alle taggene)",
     "AptUpdater": "Bruk apt til å installere oppdateringen",
     "AsAllDayHelpText": "Hendelser vil vises som heldagshendelser i kalenderen din",
     "AudioInfo": "Audio Info",
@@ -259,5 +258,17 @@
     "DeleteImportListExclusionMessageText": "Er du sikker på at du vil slette denne ekskluderingen av importlister?",
     "RemoveSelectedItemsQueueMessageText": "Er du sikker på at du vil fjerne {0} elementet {1} fra køen?",
     "ResetAPIKeyMessageText": "Er du sikker på at du vil tilbakestille API -nøkkelen din?",
-    "RemoveSelectedItemQueueMessageText": "Er du sikker på at du vil fjerne {0} elementet {1} fra køen?"
+    "RemoveSelectedItemQueueMessageText": "Er du sikker på at du vil fjerne {0} elementet {1} fra køen?",
+    "DeleteImportListExclusion": "Legg til importeringsliste unntak",
+    "DeleteIndexersMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
+    "Trace": "spor",
+    "MinutesHundredTwenty": "20 Minutter: {0}",
+    "MinutesNinety": "60 Minutter: {0}",
+    "MinutesSixty": "60 Minutter: {0}",
+    "ApplyTagsHelpTextAdd": "Legg til: Legg til taggene i den eksisterende listen med tagger",
+    "ApplyTagsHelpTextHowToApplyIndexers": "Slik bruker du tagger på de valgte filmene",
+    "ApplyTagsHelpTextRemove": "Fjern: Fjern de angitte kodene",
+    "ApplyTagsHelpTextReplace": "Erstatt: Erstatt taggene med de angitte kodene (skriv inn ingen tagger for å slette alle taggene)",
+    "EditCollection": "Legg til kobling",
+    "DeleteSelectedIndexersMessageText": "Er du sikker på at du vil slette formattaggen {0}?"
 }

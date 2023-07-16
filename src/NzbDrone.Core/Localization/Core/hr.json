@@ -26,7 +26,6 @@
     "AddRootFolder": "asdf",
     "ApplicationUrlHelpText": "Vanjski URL ove aplikacije uključuje http(s)://, port i URL base",
     "ApplyTags": "Primjeni Oznake",
-    "ApplyTagsHelpTexts4": "Zamijeni: Zamijeni oznake sa unešenim oznakama (ostavi prazno kako bi poništio oznake)",
     "AptUpdater": "Koristi apt kako bi instalirao ažuriranje",
     "AsAllDayHelpText": "Događaji će se pojaviti kao cjelodnevni događaji u Vašem kalendaru",
     "AudioInfo": "Informacije o Zvuku",
@@ -245,5 +244,18 @@
     "ExportCustomFormat": "Dodaj Prilagođeni Format",
     "ImportCustomFormat": "Dodaj Prilagođeni Format",
     "SomeResultsHiddenFilter": "Svi rezultati su skriveni zbog primjenjenog filtera",
-    "DeleteRemotePathMapping": "Daljinsko Mapiranje Portova"
+    "DeleteRemotePathMapping": "Daljinsko Mapiranje Portova",
+    "DeleteDelayProfileMessageText": "Jeste li sigurni da želite obrisati ovaj profil odgode?",
+    "DeleteFormatMessageText": "Jeste li sigurni da želite obrisati oznaku formata {0}?",
+    "DeleteImportListExclusionMessageText": "Jeste li sigurni da želite izbrisati ovu uvoznu listu isključenja?",
+    "DeleteIndexersMessageText": "Jeste li sigurni da želite obrisati oznaku formata {0}?",
+    "DeleteCustomFormatMessageText": "Jeste li sigurni da želite obrisati oznaku formata {0}?",
+    "DeleteConditionMessageText": "Jeste li sigurni da želite obrisati oznaku formata {0}?",
+    "RemoveSelectedItemQueueMessageText": "Jeste li sigurni da želite izbrisati stavku {0} iz reda?",
+    "RemoveSelectedItemsQueueMessageText": "Jeste li sigurni da želite izbrisati stavku {0} iz reda?",
+    "ResetAPIKeyMessageText": "Jeste li sigurni da želite resetirati vaš API Ključ?",
+    "ApplyTagsHelpTextRemove": "Ukloni: Ukloni unešene oznake",
+    "ApplyTagsHelpTextReplace": "Zamijeni: Zamijeni oznake sa unešenim oznakama (ostavi prazno kako bi poništio oznake)",
+    "ApplyTagsHelpTextAdd": "Dodaj: Dodaj oznake u postojeću listu oznaka",
+    "ApplyTagsHelpTextHowToApplyIndexers": "Kako primjeniti oznake za odabrane filmove"
 }

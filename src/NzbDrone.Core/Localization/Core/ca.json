@@ -1156,5 +1156,13 @@
     "DeleteIndexers": "Suprimeix l'indexador",
     "DeleteIndexersMessageText": "Esteu segur que voleu suprimir l'indexador '{0}'?",
     "DeleteSelectedDownloadClients": "Suprimeix el client de descàrrega",
-    "DeleteSelectedIndexers": "Suprimeix l'indexador"
+    "DeleteSelectedIndexers": "Suprimeix l'indexador",
+    "ApplyTagsHelpTextReplace": "Substituïu: substituïu les etiquetes per les etiquetes introduïdes (no introduïu cap etiqueta per esborrar totes les etiquetes)",
+    "ApplyTagsHelpTextAdd": "Afegeix: afegeix les etiquetes a la llista d'etiquetes existent",
+    "DownloadClientTagHelpText": "Utilitzeu aquest indexador només per a pel·lícules amb almenys una etiqueta coincident. Deixeu-ho en blanc per utilitzar-ho amb totes les pel·lícules.",
+    "ApplyTagsHelpTextHowToApplyIndexers": "Com aplicar etiquetes a les pel·lícules seleccionades",
+    "ApplyTagsHelpTextRemove": "Eliminar: elimina les etiquetes introduïdes",
+    "DeleteSelectedDownloadClientsMessageText": "Esteu segur que voleu suprimir l'indexador '{0}'?",
+    "DeleteSelectedImportListsMessageText": "Esteu segur que voleu suprimir l'indexador '{0}'?",
+    "DeleteSelectedIndexersMessageText": "Esteu segur que voleu suprimir l'indexador '{0}'?"
 }
