@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -71,8 +72,8 @@ namespace NzbDrone.Core.Indexers
 
         protected TSettings Settings => (TSettings)Definition.Settings;
 
-        public abstract IList<ReleaseInfo> FetchRecent();
-        public abstract IList<ReleaseInfo> Fetch(MovieSearchCriteria searchCriteria);
+        public abstract Task<IList<ReleaseInfo>> FetchRecent();
+        public abstract Task<IList<ReleaseInfo>> Fetch(MovieSearchCriteria searchCriteria);
         public abstract HttpRequest GetDownloadRequest(string link);
 
         protected virtual IList<ReleaseInfo> CleanupReleases(IEnumerable<ReleaseInfo> releases)
@@ -103,7 +104,7 @@ namespace NzbDrone.Core.Indexers
 
             try
             {
-                Test(failures);
+                Test(failures).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -114,7 +115,7 @@ namespace NzbDrone.Core.Indexers
             return new ValidationResult(failures);
         }
 
-        protected abstract void Test(List<ValidationFailure> failures);
+        protected abstract Task Test(List<ValidationFailure> failures);
 
         public override string ToString()
         {

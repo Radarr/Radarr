@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
@@ -53,13 +54,13 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
 
             _mockIndexer.Setup(v => v.Fetch(It.IsAny<MovieSearchCriteria>()))
                 .Callback<MovieSearchCriteria>(s => result.Add(s))
-                .Returns(new List<Parser.Model.ReleaseInfo>());
+                .Returns(Task.FromResult<IList<Parser.Model.ReleaseInfo>>(new List<Parser.Model.ReleaseInfo>()));
 
             return result;
         }
 
         [Test]
-        public void Tags_IndexerTags_MovieNoTags_IndexerNotIncluded()
+        public async Task Tags_IndexerTags_MovieNoTags_IndexerNotIncluded()
         {
             _mockIndexer.SetupGet(s => s.Definition).Returns(new IndexerDefinition
             {
@@ -69,7 +70,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
 
             var allCriteria = WatchForSearchCriteria();
 
-            Subject.MovieSearch(_movie, true, false);
+            await Subject.MovieSearch(_movie, true, false);
 
             var criteria = allCriteria.OfType<MovieSearchCriteria>().ToList();
 
@@ -77,7 +78,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
         }
 
         [Test]
-        public void Tags_IndexerNoTags_MovieTags_IndexerIncluded()
+        public async Task Tags_IndexerNoTags_MovieTags_IndexerIncluded()
         {
             _mockIndexer.SetupGet(s => s.Definition).Returns(new IndexerDefinition
             {
@@ -95,7 +96,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
 
             var allCriteria = WatchForSearchCriteria();
 
-            Subject.MovieSearch(_movie, true, false);
+            await Subject.MovieSearch(_movie, true, false);
 
             var criteria = allCriteria.OfType<MovieSearchCriteria>().ToList();
 
@@ -103,7 +104,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
         }
 
         [Test]
-        public void Tags_IndexerAndMovieTagsMatch_IndexerIncluded()
+        public async Task Tags_IndexerAndMovieTagsMatch_IndexerIncluded()
         {
             _mockIndexer.SetupGet(s => s.Definition).Returns(new IndexerDefinition
             {
@@ -122,7 +123,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
 
             var allCriteria = WatchForSearchCriteria();
 
-            Subject.MovieSearch(_movie, true, false);
+            await Subject.MovieSearch(_movie, true, false);
 
             var criteria = allCriteria.OfType<MovieSearchCriteria>().ToList();
 
@@ -130,7 +131,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
         }
 
         [Test]
-        public void Tags_IndexerAndMovieTagsMismatch_IndexerNotIncluded()
+        public async Task Tags_IndexerAndMovieTagsMismatch_IndexerNotIncluded()
         {
             _mockIndexer.SetupGet(s => s.Definition).Returns(new IndexerDefinition
             {
@@ -149,7 +150,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
 
             var allCriteria = WatchForSearchCriteria();
 
-            Subject.MovieSearch(_movie, true, false);
+            await Subject.MovieSearch(_movie, true, false);
 
             var criteria = allCriteria.OfType<MovieSearchCriteria>().ToList();
 

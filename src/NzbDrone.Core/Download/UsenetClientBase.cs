@@ -1,4 +1,5 @@
 using System.Net;
+using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Http;
@@ -35,7 +36,7 @@ namespace NzbDrone.Core.Download
 
         protected abstract string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents);
 
-        public override string Download(RemoteMovie remoteMovie, IIndexer indexer)
+        public override async Task<string> Download(RemoteMovie remoteMovie, IIndexer indexer)
         {
             var url = remoteMovie.Release.DownloadUrl;
             var filename = FileNameBuilder.CleanFileName(remoteMovie.Release.Title) + ".nzb";
@@ -46,7 +47,10 @@ namespace NzbDrone.Core.Download
             {
                 var request = indexer?.GetDownloadRequest(url) ?? new HttpRequest(url);
                 request.RateLimitKey = remoteMovie?.Release?.IndexerId.ToString();
-                nzbData = _httpClient.Get(request).ResponseData;
+
+                var response = await _httpClient.GetAsync(request);
+
+                nzbData = response.ResponseData;
 
                 _logger.Debug("Downloaded nzb for movie '{0}' finished ({1} bytes from {2})", remoteMovie.Release.Title, nzbData.Length, url);
             }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
@@ -70,23 +71,23 @@ namespace NzbDrone.Core.Test.Download
         }
 
         [Test]
-        public void Download_report_should_publish_on_grab_event()
+        public async Task Download_report_should_publish_on_grab_event()
         {
             var mock = WithUsenetClient();
             mock.Setup(s => s.Download(It.IsAny<RemoteMovie>(), It.IsAny<IIndexer>()));
 
-            Subject.DownloadReport(_parseResult);
+            await Subject.DownloadReport(_parseResult);
 
             VerifyEventPublished<MovieGrabbedEvent>();
         }
 
         [Test]
-        public void Download_report_should_grab_using_client()
+        public async Task Download_report_should_grab_using_client()
         {
             var mock = WithUsenetClient();
             mock.Setup(s => s.Download(It.IsAny<RemoteMovie>(), It.IsAny<IIndexer>()));
 
-            Subject.DownloadReport(_parseResult);
+            await Subject.DownloadReport(_parseResult);
 
             mock.Verify(s => s.Download(It.IsAny<RemoteMovie>(), It.IsAny<IIndexer>()), Times.Once());
         }
@@ -98,7 +99,7 @@ namespace NzbDrone.Core.Test.Download
             mock.Setup(s => s.Download(It.IsAny<RemoteMovie>(), It.IsAny<IIndexer>()))
                 .Throws(new WebException());
 
-            Assert.Throws<WebException>(() => Subject.DownloadReport(_parseResult));
+            Assert.ThrowsAsync<WebException>(async () => await Subject.DownloadReport(_parseResult));
 
             VerifyEventNotPublished<MovieGrabbedEvent>();
         }
@@ -113,7 +114,7 @@ namespace NzbDrone.Core.Test.Download
                     throw new ReleaseDownloadException(v.Release, "Error", new WebException());
                 });
 
-            Assert.Throws<ReleaseDownloadException>(() => Subject.DownloadReport(_parseResult));
+            Assert.ThrowsAsync<ReleaseDownloadException>(async () => await Subject.DownloadReport(_parseResult));
 
             Mocker.GetMock<IIndexerStatusService>()
                 .Verify(v => v.RecordFailure(It.IsAny<int>(), It.IsAny<TimeSpan>()), Times.Once());
@@ -133,7 +134,7 @@ namespace NzbDrone.Core.Test.Download
                     throw new ReleaseDownloadException(v.Release, "Error", new TooManyRequestsException(request, response));
                 });
 
-            Assert.Throws<ReleaseDownloadException>(() => Subject.DownloadReport(_parseResult));
+            Assert.ThrowsAsync<ReleaseDownloadException>(async () => await Subject.DownloadReport(_parseResult));
 
             Mocker.GetMock<IIndexerStatusService>()
                 .Verify(v => v.RecordFailure(It.IsAny<int>(), TimeSpan.FromMinutes(5.0)), Times.Once());
@@ -153,7 +154,7 @@ namespace NzbDrone.Core.Test.Download
                     throw new ReleaseDownloadException(v.Release, "Error", new TooManyRequestsException(request, response));
                 });
 
-            Assert.Throws<ReleaseDownloadException>(() => Subject.DownloadReport(_parseResult));
+            Assert.ThrowsAsync<ReleaseDownloadException>(async () => await Subject.DownloadReport(_parseResult));
 
             Mocker.GetMock<IIndexerStatusService>()
                 .Verify(v => v.RecordFailure(It.IsAny<int>(),
@@ -167,7 +168,7 @@ namespace NzbDrone.Core.Test.Download
             mock.Setup(s => s.Download(It.IsAny<RemoteMovie>(), It.IsAny<IIndexer>()))
                 .Throws(new DownloadClientException("Some Error"));
 
-            Assert.Throws<DownloadClientException>(() => Subject.DownloadReport(_parseResult));
+            Assert.ThrowsAsync<DownloadClientException>(async () => await Subject.DownloadReport(_parseResult));
 
             Mocker.GetMock<IIndexerStatusService>()
                 .Verify(v => v.RecordFailure(It.IsAny<int>(), It.IsAny<TimeSpan>()), Times.Never());
@@ -183,7 +184,7 @@ namespace NzbDrone.Core.Test.Download
                     throw new ReleaseUnavailableException(v.Release, "Error", new WebException());
                 });
 
-            Assert.Throws<ReleaseUnavailableException>(() => Subject.DownloadReport(_parseResult));
+            Assert.ThrowsAsync<ReleaseUnavailableException>(async () => await Subject.DownloadReport(_parseResult));
 
             Mocker.GetMock<IIndexerStatusService>()
                 .Verify(v => v.RecordFailure(It.IsAny<int>(), It.IsAny<TimeSpan>()), Times.Never());
@@ -192,14 +193,14 @@ namespace NzbDrone.Core.Test.Download
         [Test]
         public void should_not_attempt_download_if_client_isnt_configured()
         {
-            Assert.Throws<DownloadClientUnavailableException>(() => Subject.DownloadReport(_parseResult));
+            Assert.ThrowsAsync<DownloadClientUnavailableException>(async () => await Subject.DownloadReport(_parseResult));
 
             Mocker.GetMock<IDownloadClient>().Verify(c => c.Download(It.IsAny<RemoteMovie>(), It.IsAny<IIndexer>()), Times.Never());
             VerifyEventNotPublished<MovieGrabbedEvent>();
         }
 
         [Test]
-        public void should_attempt_download_even_if_client_is_disabled()
+        public async Task should_attempt_download_even_if_client_is_disabled()
         {
             var mockUsenet = WithUsenetClient();
 
@@ -214,7 +215,7 @@ namespace NzbDrone.Core.Test.Download
                       }
                   });
 
-            Subject.DownloadReport(_parseResult);
+            await Subject.DownloadReport(_parseResult);
 
             Mocker.GetMock<IDownloadClientStatusService>().Verify(c => c.GetBlockedProviders(), Times.Never());
             mockUsenet.Verify(c => c.Download(It.IsAny<RemoteMovie>(), It.IsAny<IIndexer>()), Times.Once());
@@ -222,26 +223,26 @@ namespace NzbDrone.Core.Test.Download
         }
 
         [Test]
-        public void should_send_download_to_correct_usenet_client()
+        public async Task should_send_download_to_correct_usenet_client()
         {
             var mockTorrent = WithTorrentClient();
             var mockUsenet = WithUsenetClient();
 
-            Subject.DownloadReport(_parseResult);
+            await Subject.DownloadReport(_parseResult);
 
             mockTorrent.Verify(c => c.Download(It.IsAny<RemoteMovie>(), It.IsAny<IIndexer>()), Times.Never());
             mockUsenet.Verify(c => c.Download(It.IsAny<RemoteMovie>(), It.IsAny<IIndexer>()), Times.Once());
         }
 
         [Test]
-        public void should_send_download_to_correct_torrent_client()
+        public async Task should_send_download_to_correct_torrent_client()
         {
             var mockTorrent = WithTorrentClient();
             var mockUsenet = WithUsenetClient();
 
             _parseResult.Release.DownloadProtocol = DownloadProtocol.Torrent;
 
-            Subject.DownloadReport(_parseResult);
+            await Subject.DownloadReport(_parseResult);
 
             mockTorrent.Verify(c => c.Download(It.IsAny<RemoteMovie>(), It.IsAny<IIndexer>()), Times.Once());
             mockUsenet.Verify(c => c.Download(It.IsAny<RemoteMovie>(), It.IsAny<IIndexer>()), Times.Never());

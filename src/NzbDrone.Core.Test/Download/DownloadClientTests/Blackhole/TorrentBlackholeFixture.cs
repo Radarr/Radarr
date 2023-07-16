@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
@@ -66,7 +67,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         protected void GivenFailedDownload()
         {
             Mocker.GetMock<IHttpClient>()
-                .Setup(s => s.Get(It.IsAny<HttpRequest>()))
+                .Setup(s => s.GetAsync(It.IsAny<HttpRequest>()))
                 .Throws(new WebException());
         }
 
@@ -144,19 +145,19 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         }
 
         [Test]
-        public void Download_should_download_file_if_it_doesnt_exist()
+        public async Task Download_should_download_file_if_it_doesnt_exist()
         {
             var remoteMovie = CreateRemoteMovie();
 
-            Subject.Download(remoteMovie, CreateIndexer());
+            await Subject.Download(remoteMovie, CreateIndexer());
 
-            Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Once());
+            Mocker.GetMock<IHttpClient>().Verify(c => c.GetAsync(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Once());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_filePath), Times.Once());
-            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
+            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
         [Test]
-        public void Download_should_save_magnet_if_enabled()
+        public async Task Download_should_save_magnet_if_enabled()
         {
             GivenMagnetFilePath();
             Subject.Definition.Settings.As<TorrentBlackholeSettings>().SaveMagnetFiles = true;
@@ -164,16 +165,16 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             var remoteMovie = CreateRemoteMovie();
             remoteMovie.Release.DownloadUrl = null;
 
-            Subject.Download(remoteMovie, CreateIndexer());
+            await Subject.Download(remoteMovie, CreateIndexer());
 
-            Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Never());
+            Mocker.GetMock<IHttpClient>().Verify(c => c.GetAsync(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Never());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_filePath), Times.Never());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_magnetFilePath), Times.Once());
-            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
+            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
         [Test]
-        public void Download_should_save_magnet_using_specified_extension()
+        public async Task Download_should_save_magnet_using_specified_extension()
         {
             var magnetFileExtension = ".url";
             GivenMagnetFilePath(magnetFileExtension);
@@ -183,12 +184,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             var remoteMovie = CreateRemoteMovie();
             remoteMovie.Release.DownloadUrl = null;
 
-            Subject.Download(remoteMovie, CreateIndexer());
+            await Subject.Download(remoteMovie, CreateIndexer());
 
-            Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Never());
+            Mocker.GetMock<IHttpClient>().Verify(c => c.GetAsync(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Never());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_filePath), Times.Never());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_magnetFilePath), Times.Once());
-            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
+            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
         [Test]
@@ -197,31 +198,31 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             var remoteMovie = CreateRemoteMovie();
             remoteMovie.Release.DownloadUrl = null;
 
-            Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteMovie, CreateIndexer()));
+            Assert.ThrowsAsync<ReleaseDownloadException>(async () => await Subject.Download(remoteMovie, CreateIndexer()));
 
-            Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Never());
+            Mocker.GetMock<IHttpClient>().Verify(c => c.GetAsync(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Never());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_filePath), Times.Never());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_magnetFilePath), Times.Never());
-            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
+            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
         [Test]
-        public void Download_should_prefer_torrent_over_magnet()
+        public async Task Download_should_prefer_torrent_over_magnet()
         {
             Subject.Definition.Settings.As<TorrentBlackholeSettings>().SaveMagnetFiles = true;
 
             var remoteMovie = CreateRemoteMovie();
 
-            Subject.Download(remoteMovie, CreateIndexer());
+            await Subject.Download(remoteMovie, CreateIndexer());
 
-            Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Once());
+            Mocker.GetMock<IHttpClient>().Verify(c => c.GetAsync(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Once());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_filePath), Times.Once());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_magnetFilePath), Times.Never());
-            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
+            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
         [Test]
-        public void Download_should_replace_illegal_characters_in_title()
+        public async Task Download_should_replace_illegal_characters_in_title()
         {
             var illegalTitle = "Saturday Night Live - S38E08 - Jeremy Renner/Maroon 5 [SDTV]";
             var expectedFilename = Path.Combine(_blackholeFolder, "Saturday Night Live - S38E08 - Jeremy Renner+Maroon 5 [SDTV]" + Path.GetExtension(_filePath));
@@ -229,11 +230,11 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             var remoteMovie = CreateRemoteMovie();
             remoteMovie.Release.Title = illegalTitle;
 
-            Subject.Download(remoteMovie, CreateIndexer());
+            await Subject.Download(remoteMovie, CreateIndexer());
 
-            Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Once());
+            Mocker.GetMock<IHttpClient>().Verify(c => c.GetAsync(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Once());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(expectedFilename), Times.Once());
-            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
+            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
         [Test]
@@ -242,7 +243,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             var remoteMovie = CreateRemoteMovie();
             remoteMovie.Release.DownloadUrl = null;
 
-            Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteMovie, CreateIndexer()));
+            Assert.ThrowsAsync<ReleaseDownloadException>(async () => await Subject.Download(remoteMovie, CreateIndexer()));
         }
 
         [Test]
@@ -312,11 +313,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         }
 
         [Test]
-        public void should_return_null_hash()
+        public async Task should_return_null_hash()
         {
             var remoteMovie = CreateRemoteMovie();
 
-            Subject.Download(remoteMovie, CreateIndexer()).Should().BeNull();
+            var result = await Subject.Download(remoteMovie, CreateIndexer());
+
+            result.Should().BeNull();
         }
     }
 }

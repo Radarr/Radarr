@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -448,26 +449,26 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         }
 
         [Test]
-        public void Download_should_return_unique_id()
+        public async Task Download_should_return_unique_id()
         {
             GivenSuccessfulDownload();
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = await Subject.Download(remoteMovie, CreateIndexer());
 
             id.Should().NotBeNullOrEmpty();
         }
 
         [TestCase("magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR&tr=udp", "CBC2F069FE8BB2F544EAE707D75BCD3DE9DCF951")]
-        public void Download_should_get_hash_from_magnet_url(string magnetUrl, string expectedHash)
+        public async Task Download_should_get_hash_from_magnet_url(string magnetUrl, string expectedHash)
         {
             GivenSuccessfulDownload();
 
             var remoteMovie = CreateRemoteMovie();
             remoteMovie.Release.DownloadUrl = magnetUrl;
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = await Subject.Download(remoteMovie, CreateIndexer());
 
             id.Should().Be(expectedHash);
         }
@@ -482,7 +483,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             var remoteMovie = CreateRemoteMovie();
             remoteMovie.Release.DownloadUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR";
 
-            Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteMovie, CreateIndexer()));
+            Assert.ThrowsAsync<ReleaseDownloadException>(async () => await Subject.Download(remoteMovie, CreateIndexer()));
         }
 
         [Test]
@@ -495,28 +496,28 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             var remoteMovie = CreateRemoteMovie();
             remoteMovie.Release.DownloadUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR&tr=udp://abc";
 
-            Assert.DoesNotThrow(() => Subject.Download(remoteMovie, CreateIndexer()));
+            Assert.DoesNotThrowAsync(async () => await Subject.Download(remoteMovie, CreateIndexer()));
 
             Mocker.GetMock<IQBittorrentProxy>()
                   .Verify(s => s.AddTorrentFromUrl(It.IsAny<string>(), It.IsAny<TorrentSeedConfiguration>(), It.IsAny<QBittorrentSettings>()), Times.Once());
         }
 
         [Test]
-        public void Download_should_set_top_priority()
+        public async Task Download_should_set_top_priority()
         {
             GivenHighPriority();
             GivenSuccessfulDownload();
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = await Subject.Download(remoteMovie, CreateIndexer());
 
             Mocker.GetMock<IQBittorrentProxy>()
                   .Verify(v => v.MoveTorrentToTopInQueue(It.IsAny<string>(), It.IsAny<QBittorrentSettings>()), Times.Once());
         }
 
         [Test]
-        public void Download_should_not_fail_if_top_priority_not_available()
+        public async Task Download_should_not_fail_if_top_priority_not_available()
         {
             GivenHighPriority();
             GivenSuccessfulDownload();
@@ -527,7 +528,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = await Subject.Download(remoteMovie, CreateIndexer());
 
             id.Should().NotBeNullOrEmpty();
 
@@ -554,27 +555,27 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         }
 
         [Test]
-        public void Download_should_handle_http_redirect_to_magnet()
+        public async Task Download_should_handle_http_redirect_to_magnet()
         {
             GivenRedirectToMagnet();
             GivenSuccessfulDownload();
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = await Subject.Download(remoteMovie, CreateIndexer());
 
             id.Should().NotBeNullOrEmpty();
         }
 
         [Test]
-        public void Download_should_handle_http_redirect_to_torrent()
+        public async Task Download_should_handle_http_redirect_to_torrent()
         {
             GivenRedirectToTorrent();
             GivenSuccessfulDownload();
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = await Subject.Download(remoteMovie, CreateIndexer());
 
             id.Should().NotBeNullOrEmpty();
         }
