@@ -98,10 +98,10 @@ function TagsModalContent(props: TagsModalContentProps) {
               value={applyTags}
               values={applyTagsOptions}
               helpTexts={[
-                translate('ApplyTagsHelpTexts1'),
-                translate('ApplyTagsHelpTexts2'),
-                translate('ApplyTagsHelpTexts3'),
-                translate('ApplyTagsHelpTexts4'),
+                translate('ApplyTagsHelpTextHowToApplyMovies'),
+                translate('ApplyTagsHelpTextAdd'),
+                translate('ApplyTagsHelpTextRemove'),
+                translate('ApplyTagsHelpTextReplace'),
               ]}
               onChange={onApplyTagsChange}
             />

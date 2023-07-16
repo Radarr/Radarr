@@ -60,6 +60,7 @@
   "ApplyTagsHelpTextHowToApplyDownloadClients": "How to apply tags to the selected download clients",
   "ApplyTagsHelpTextHowToApplyImportLists": "How to apply tags to the selected import lists",
   "ApplyTagsHelpTextHowToApplyIndexers": "How to apply tags to the selected indexers",
+  "ApplyTagsHelpTextHowToApplyMovies": "How to apply tags to the selected movies",
   "ApplyTagsHelpTextRemove": "Remove: Remove the entered tags",
   "ApplyTagsHelpTextReplace": "Replace: Replace the tags with the entered tags (enter no tags to clear all tags)",
   "AptUpdater": "Use apt to install the update",
