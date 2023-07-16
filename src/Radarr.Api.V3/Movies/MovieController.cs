@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.TPL;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine.Specifications;
@@ -108,7 +110,7 @@ namespace Radarr.Api.V3.Movies
         }
 
         [HttpGet]
-        public List<MovieResource> AllMovie(int? tmdbId)
+        public async Task<List<MovieResource>> AllMovie(int? tmdbId)
         {
             var moviesResources = new List<MovieResource>();
 
@@ -125,19 +127,49 @@ namespace Radarr.Api.V3.Movies
             }
             else
             {
+                var sw = new Stopwatch();
+
+                sw.Start();
+
+                _logger.Debug($"All Movie Endpoint Starting");
+
                 var configLanguage = (Language)_configService.MovieInfoLanguage;
                 var availDelay = _configService.AvailabilityDelay;
 
-                var movieTask = Task.Run(() => _moviesService.GetAllMovies());
+                _logger.Debug($"Fetch config options: {sw.Elapsed}");
+
+                var movieTask = Task.Run(() =>
+                {
+                    var moviesw = new Stopwatch();
+
+                    moviesw.Start();
+
+                    _logger.Debug($"Movie Thread: Get All Movies Started");
+                    var allMovies = _moviesService.GetAllMovies();
+
+                    _logger.Debug($"Movie Thread: Get All Movies took {moviesw.Elapsed}");
+
+                    return allMovies;
+                });
+
+                _logger.Debug($"Build Movie Thread Complete: {sw.Elapsed}");
 
                 var translations = _movieTranslationService
                     .GetAllTranslationsForLanguage(configLanguage);
 
+                _logger.Debug($"Get Translations: {sw.Elapsed}");
+
                 var tdict = translations.ToDictionary(x => x.MovieMetadataId);
+
+                _logger.Debug($"Map Translations: {sw.Elapsed}");
 
                 coverFileInfos = _coverMapper.GetCoverFileInfos();
 
-                var movies = movieTask.GetAwaiter().GetResult();
+                _logger.Debug($"Get CoverInfos: {sw.Elapsed}");
+
+                var movies = await movieTask.ConfigureAwait(false);
+
+                _logger.Debug($"Get Movies: {sw.Elapsed}");
 
                 moviesResources = new List<MovieResource>(movies.Count);
 
@@ -147,11 +179,19 @@ namespace Radarr.Api.V3.Movies
                     moviesResources.Add(movie.ToResource(availDelay, translation, _qualityUpgradableSpecification));
                 }
 
+                _logger.Debug($"Map Movie Resources: {sw.Elapsed}");
+
                 MapCoversToLocal(moviesResources, coverFileInfos);
+
+                _logger.Debug($"Map Covers to Resources: {sw.Elapsed}");
 
                 var rootFolders = _rootFolderService.All();
 
+                _logger.Debug($"Get Root Folders: {sw.Elapsed}");
+
                 moviesResources.ForEach(m => m.RootFolderPath = _rootFolderService.GetBestRootFolderPath(m.Path, rootFolders));
+
+                _logger.Debug($"Map Root Folders: {sw.Elapsed}");
             }
 
             return moviesResources;
