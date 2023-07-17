@@ -1208,5 +1208,11 @@
     "ManageImportLists": "Gerenciar listas de importação",
     "ManageLists": "Gerenciar listas",
     "NoDownloadClientsFound": "Nenhum cliente de download encontrado",
-    "NoImportListsFound": "Nenhuma lista de importação encontrada"
+    "NoImportListsFound": "Nenhuma lista de importação encontrada",
+    "ApplyTagsHelpTextAdd": "Adicionar: adicione as tags à lista existente de tags",
+    "ApplyTagsHelpTextHowToApplyDownloadClients": "Como aplicar tags aos clientes de download selecionados",
+    "ApplyTagsHelpTextHowToApplyImportLists": "Como aplicar tags às listas de importação selecionadas",
+    "ApplyTagsHelpTextHowToApplyIndexers": "Como aplicar tags aos indexadores selecionados",
+    "ApplyTagsHelpTextRemove": "Remover: remove as tags inseridas",
+    "ApplyTagsHelpTextReplace": "Substituir: Substitua as tags pelas tags inseridas (não digite nenhuma tag para limpar todas as tags)"
 }
