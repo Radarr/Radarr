@@ -1,4 +1,4 @@
-.restriction {
+.releaseProfile {
   composes: card from '~Components/Card.css';
 
   width: 290px;
@@ -8,6 +8,14 @@
   display: flex;
   flex-wrap: wrap;
   margin-top: 5px;
+}
+
+.name {
+  @add-mixin truncate;
+
+  margin-bottom: 20px;
+  font-weight: 300;
+  font-size: 24px;
 }
 
 .label {

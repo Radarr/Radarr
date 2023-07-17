@@ -9,7 +9,6 @@ import TagInUse from './TagInUse';
 import styles from './Tag.css';
 
 class Tag extends Component {
-
   //
   // Lifecycle
 
@@ -40,7 +39,7 @@ class Tag extends Component {
     });
   };
 
-  onDeleteTagModalClose= () => {
+  onDeleteTagModalClose = () => {
     this.setState({ isDeleteTagModalOpen: false });
   };
 
@@ -57,23 +56,20 @@ class Tag extends Component {
       delayProfileIds,
       importListIds,
       notificationIds,
-      restrictionIds,
+      releaseProfileIds,
       indexerIds,
       downloadClientIds,
       autoTagIds,
       movieIds
     } = this.props;
 
-    const {
-      isDetailsModalOpen,
-      isDeleteTagModalOpen
-    } = this.state;
+    const { isDetailsModalOpen, isDeleteTagModalOpen } = this.state;
 
     const isTagUsed = !!(
       delayProfileIds.length ||
       importListIds.length ||
       notificationIds.length ||
-      restrictionIds.length ||
+      releaseProfileIds.length ||
       indexerIds.length ||
       downloadClientIds.length ||
       autoTagIds.length ||
@@ -86,9 +82,7 @@ class Tag extends Component {
         overlayContent={true}
         onPress={this.onShowDetailsPress}
       >
-        <div className={styles.label}>
-          {label}
-        </div>
+        <div className={styles.label}>{label}</div>
 
         {
           isTagUsed ?
@@ -115,7 +109,7 @@ class Tag extends Component {
 
               <TagInUse
                 label="release profile"
-                count={restrictionIds.length}
+                count={releaseProfileIds.length}
               />
 
               <TagInUse
@@ -137,12 +131,7 @@ class Tag extends Component {
             null
         }
 
-        {
-          !isTagUsed &&
-            <div>
-              {translate('NoLinks')}
-            </div>
-        }
+        {!isTagUsed && <div>{translate('NoLinks')}</div>}
 
         <TagDetailsModal
           label={label}
@@ -151,7 +140,7 @@ class Tag extends Component {
           delayProfileIds={delayProfileIds}
           importListIds={importListIds}
           notificationIds={notificationIds}
-          restrictionIds={restrictionIds}
+          releaseProfileIds={releaseProfileIds}
           indexerIds={indexerIds}
           downloadClientIds={downloadClientIds}
           autoTagIds={autoTagIds}
@@ -180,7 +169,7 @@ Tag.propTypes = {
   delayProfileIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   importListIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   notificationIds: PropTypes.arrayOf(PropTypes.number).isRequired,
-  restrictionIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  releaseProfileIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   indexerIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   downloadClientIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   autoTagIds: PropTypes.arrayOf(PropTypes.number).isRequired,
@@ -192,7 +181,7 @@ Tag.defaultProps = {
   delayProfileIds: [],
   importListIds: [],
   notificationIds: [],
-  restrictionIds: [],
+  releaseProfileIds: [],
   indexerIds: [],
   downloadClientIds: [],
   autoTagIds: [],

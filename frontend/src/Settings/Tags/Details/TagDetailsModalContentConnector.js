@@ -53,10 +53,10 @@ function createMatchingNotificationsSelector() {
   );
 }
 
-function createMatchingRestrictionsSelector() {
+function createMatchingReleaseProfilesSelector() {
   return createSelector(
-    (state, { restrictionIds }) => restrictionIds,
-    (state) => state.settings.restrictions.items,
+    (state, { releaseProfileIds }) => releaseProfileIds,
+    (state) => state.settings.releaseProfiles.items,
     findMatchingItems
   );
 }
@@ -98,17 +98,17 @@ function createMapStateToProps() {
     createMatchingMoviesSelector(),
     createMatchingDelayProfilesSelector(),
     createMatchingNotificationsSelector(),
-    createMatchingRestrictionsSelector(),
+    createMatchingReleaseProfilesSelector(),
     createMatchingImportListsSelector(),
     createMatchingIndexersSelector(),
     createMatchingDownloadClientsSelector(),
     createMatchingAutoTagsSelector(),
-    (movies, delayProfiles, notifications, restrictions, importLists, indexers, downloadClients, autoTags) => {
+    (movies, delayProfiles, notifications, releaseProfiles, importLists, indexers, downloadClients, autoTags) => {
       return {
         movies,
         delayProfiles,
         notifications,
-        restrictions,
+        releaseProfiles,
         importLists,
         indexers,
         downloadClients,

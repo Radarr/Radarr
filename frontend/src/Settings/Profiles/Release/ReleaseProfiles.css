@@ -1,10 +1,10 @@
-.restrictions {
+.releaseProfiles {
   display: flex;
   flex-wrap: wrap;
 }
 
-.addRestriction {
-  composes: restriction from '~./Restriction.css';
+.addReleaseProfile {
+  composes: releaseProfile from '~./ReleaseProfile.css';
 
   background-color: var(--cardAlternateBackgroundColor);
   color: var(--gray);

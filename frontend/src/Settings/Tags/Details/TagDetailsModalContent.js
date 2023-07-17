@@ -8,7 +8,6 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { kinds } from 'Helpers/Props';
-import split from 'Utilities/String/split';
 import translate from 'Utilities/String/translate';
 import TagDetailsDelayProfile from './TagDetailsDelayProfile';
 import styles from './TagDetailsModalContent.css';
@@ -19,9 +18,9 @@ function TagDetailsModalContent(props) {
     isTagUsed,
     movies,
     delayProfiles,
-    notifications,
-    restrictions,
     importLists,
+    notifications,
+    releaseProfiles,
     indexers,
     downloadClients,
     autoTags,
@@ -106,10 +105,10 @@ function TagDetailsModalContent(props) {
         }
 
         {
-          restrictions.length ?
-            <FieldSet legend={translate('Restrictions')}>
+          releaseProfiles.length ?
+            <FieldSet legend={translate('ReleaseProfiles')}>
               {
-                restrictions.map((item) => {
+                releaseProfiles.map((item) => {
                   return (
                     <div
                       key={item.id}
@@ -117,7 +116,7 @@ function TagDetailsModalContent(props) {
                     >
                       <div>
                         {
-                          split(item.required).map((r) => {
+                          item.required.map((r) => {
                             return (
                               <Label
                                 key={r}
@@ -132,7 +131,7 @@ function TagDetailsModalContent(props) {
 
                       <div>
                         {
-                          split(item.ignored).map((i) => {
+                          item.ignored.map((i) => {
                             return (
                               <Label
                                 key={i}
@@ -245,9 +244,9 @@ TagDetailsModalContent.propTypes = {
   isTagUsed: PropTypes.bool.isRequired,
   movies: PropTypes.arrayOf(PropTypes.object).isRequired,
   delayProfiles: PropTypes.arrayOf(PropTypes.object).isRequired,
-  notifications: PropTypes.arrayOf(PropTypes.object).isRequired,
-  restrictions: PropTypes.arrayOf(PropTypes.object).isRequired,
   importLists: PropTypes.arrayOf(PropTypes.object).isRequired,
+  notifications: PropTypes.arrayOf(PropTypes.object).isRequired,
+  releaseProfiles: PropTypes.arrayOf(PropTypes.object).isRequired,
   indexers: PropTypes.arrayOf(PropTypes.object).isRequired,
   downloadClients: PropTypes.arrayOf(PropTypes.object).isRequired,
   autoTags: PropTypes.arrayOf(PropTypes.object).isRequired,

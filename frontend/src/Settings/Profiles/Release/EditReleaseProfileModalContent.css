@@ -1,0 +1,12 @@
+.deleteButton {
+  composes: button from '~Components/Link/Button.css';
+
+  margin-right: auto;
+}
+
+.tagInternalInput {
+  composes: internalInput from '~Components/Form/TagInput.css';
+
+  flex: 0 0 100%;
+}
+
