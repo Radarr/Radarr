@@ -12,9 +12,11 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
-import styles from './EditRestrictionModalContent.css';
+import styles from './EditReleaseProfileModalContent.css';
 
-function EditRestrictionModalContent(props) {
+const tagInputDelimiters = ['Tab', 'Enter'];
+
+function EditReleaseProfileModalContent(props) {
   const {
     isSaving,
     saveError,
@@ -22,27 +24,54 @@ function EditRestrictionModalContent(props) {
     onInputChange,
     onModalClose,
     onSavePress,
-    onDeleteRestrictionPress,
+    onDeleteReleaseProfilePress,
     ...otherProps
   } = props;
 
   const {
     id,
+    name,
+    enabled,
     required,
     ignored,
-    tags
+    tags,
+    indexerId
   } = item;
 
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {id ? translate('EditRestriction') : translate('AddRestriction')}
+        {id ? translate('Edit Release Profile') : translate('Add Release Profile')}
       </ModalHeader>
 
       <ModalBody>
-        <Form
-          {...otherProps}
-        >
+        <Form {...otherProps}>
+
+          <FormGroup>
+            <FormLabel>{translate('Name')}</FormLabel>
+
+            <FormInputGroup
+              type={inputTypes.TEXT}
+              name="name"
+              {...name}
+              placeholder="Optional name"
+              canEdit={true}
+              onChange={onInputChange}
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <FormLabel>{translate('EnableProfile')}</FormLabel>
+
+            <FormInputGroup
+              type={inputTypes.CHECK}
+              name="enabled"
+              helpText="Check to enable release profile"
+              {...enabled}
+              onChange={onInputChange}
+            />
+          </FormGroup>
+
           <FormGroup>
             <FormLabel>{translate('MustContain')}</FormLabel>
 
@@ -51,9 +80,10 @@ function EditRestrictionModalContent(props) {
               inputClassName={styles.tagInternalInput}
               type={inputTypes.TEXT_TAG}
               name="required"
-              helpText={translate('RequiredRestrictionHelpText')}
+              helpText="The release must contain at least one of these terms (case insensitive)"
               kind={kinds.SUCCESS}
               placeholder={translate('RequiredRestrictionPlaceHolder')}
+              delimiters={tagInputDelimiters}
               canEdit={true}
               onChange={onInputChange}
             />
@@ -67,10 +97,25 @@ function EditRestrictionModalContent(props) {
               inputClassName={styles.tagInternalInput}
               type={inputTypes.TEXT_TAG}
               name="ignored"
-              helpText={translate('IgnoredHelpText')}
+              helpText="The release will be rejected if it contains one or more of terms (case insensitive)"
               kind={kinds.DANGER}
               placeholder={translate('IgnoredPlaceHolder')}
+              delimiters={tagInputDelimiters}
               canEdit={true}
+              onChange={onInputChange}
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <FormLabel>{translate('Indexer')}</FormLabel>
+
+            <FormInputGroup
+              type={inputTypes.INDEXER_SELECT}
+              name="indexerId"
+              helpText="Specify what indexer the profile applies to"
+              helpTextWarning="Using a specific indexer with release profiles can lead to duplicate releases being grabbed"
+              {...indexerId}
+              includeAny={true}
               onChange={onInputChange}
             />
           </FormGroup>
@@ -81,7 +126,7 @@ function EditRestrictionModalContent(props) {
             <FormInputGroup
               type={inputTypes.TAG}
               name="tags"
-              helpText={translate('TagsHelpText')}
+              helpText="Release profiles will apply to movies with at least one matching tag. Leave blank to apply to all movies"
               {...tags}
               onChange={onInputChange}
             />
@@ -94,7 +139,7 @@ function EditRestrictionModalContent(props) {
             <Button
               className={styles.deleteButton}
               kind={kinds.DANGER}
-              onPress={onDeleteRestrictionPress}
+              onPress={onDeleteReleaseProfilePress}
             >
               {translate('Delete')}
             </Button>
@@ -118,14 +163,14 @@ function EditRestrictionModalContent(props) {
   );
 }
 
-EditRestrictionModalContent.propTypes = {
+EditReleaseProfileModalContent.propTypes = {
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   item: PropTypes.object.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
-  onDeleteRestrictionPress: PropTypes.func
+  onDeleteReleaseProfilePress: PropTypes.func
 };
 
-export default EditRestrictionModalContent;
+export default EditReleaseProfileModalContent;

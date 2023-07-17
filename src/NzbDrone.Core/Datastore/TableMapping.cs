@@ -37,9 +37,9 @@ using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Profiles.Delay;
+using NzbDrone.Core.Profiles.Releases;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.RemotePathMappings;
-using NzbDrone.Core.Restrictions;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Tags;
 using NzbDrone.Core.ThingiProvider;
@@ -154,7 +154,7 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<RemotePathMapping>("RemotePathMappings").RegisterModel();
             Mapper.Entity<Tag>("Tags").RegisterModel();
-            Mapper.Entity<Restriction>("Restrictions").RegisterModel();
+            Mapper.Entity<ReleaseProfile>("ReleaseProfiles").RegisterModel();
 
             Mapper.Entity<DelayProfile>("DelayProfiles").RegisterModel();
             Mapper.Entity<User>("Users").RegisterModel();

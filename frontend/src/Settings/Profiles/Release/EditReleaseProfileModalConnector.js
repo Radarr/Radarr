@@ -2,19 +2,19 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
-import EditRestrictionModal from './EditRestrictionModal';
+import EditReleaseProfileModal from './EditReleaseProfileModal';
 
 const mapDispatchToProps = {
   clearPendingChanges
 };
 
-class EditRestrictionModalConnector extends Component {
+class EditReleaseProfileModalConnector extends Component {
 
   //
   // Listeners
 
   onModalClose = () => {
-    this.props.clearPendingChanges({ section: 'settings.restrictions' });
+    this.props.clearPendingChanges({ section: 'settings.releaseProfiles' });
     this.props.onModalClose();
   };
 
@@ -23,7 +23,7 @@ class EditRestrictionModalConnector extends Component {
 
   render() {
     return (
-      <EditRestrictionModal
+      <EditReleaseProfileModal
         {...this.props}
         onModalClose={this.onModalClose}
       />
@@ -31,9 +31,9 @@ class EditRestrictionModalConnector extends Component {
   }
 }
 
-EditRestrictionModalConnector.propTypes = {
+EditReleaseProfileModalConnector.propTypes = {
   onModalClose: PropTypes.func.isRequired,
   clearPendingChanges: PropTypes.func.isRequired
 };
 
-export default connect(null, mapDispatchToProps)(EditRestrictionModalConnector);
+export default connect(null, mapDispatchToProps)(EditReleaseProfileModalConnector);

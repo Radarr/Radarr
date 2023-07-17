@@ -9,7 +9,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Profiles.Delay;
-using NzbDrone.Core.Restrictions;
+using NzbDrone.Core.Profiles.Releases;
 
 namespace NzbDrone.Core.Tags
 {
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Tags
         private readonly IDelayProfileService _delayProfileService;
         private readonly IImportListFactory _importListFactory;
         private readonly INotificationFactory _notificationFactory;
-        private readonly IRestrictionService _restrictionService;
+        private readonly IReleaseProfileService _releaseProfileService;
         private readonly IMovieService _movieService;
         private readonly IIndexerFactory _indexerService;
         private readonly IAutoTaggingService _autoTaggingService;
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Tags
                           IDelayProfileService delayProfileService,
                           IImportListFactory importListFactory,
                           INotificationFactory notificationFactory,
-                          IRestrictionService restrictionService,
+                          IReleaseProfileService releaseProfileService,
                           IMovieService movieService,
                           IIndexerFactory indexerService,
                           IAutoTaggingService autoTaggingService,
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Tags
             _delayProfileService = delayProfileService;
             _importListFactory = importListFactory;
             _notificationFactory = notificationFactory;
-            _restrictionService = restrictionService;
+            _releaseProfileService = releaseProfileService;
             _movieService = movieService;
             _indexerService = indexerService;
             _autoTaggingService = autoTaggingService;
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Tags
             var delayProfiles = _delayProfileService.AllForTag(tagId);
             var importLists = _importListFactory.AllForTag(tagId);
             var notifications = _notificationFactory.AllForTag(tagId);
-            var restrictions = _restrictionService.AllForTag(tagId);
+            var releaseProfiles = _releaseProfileService.AllForTag(tagId);
             var movies = _movieService.AllMovieTags().Where(x => x.Value.Contains(tagId)).Select(x => x.Key).ToList();
             var indexers = _indexerService.AllForTag(tagId);
             var autoTags = _autoTaggingService.AllForTag(tagId);
@@ -103,7 +103,7 @@ namespace NzbDrone.Core.Tags
                 DelayProfileIds = delayProfiles.Select(c => c.Id).ToList(),
                 ImportListIds = importLists.Select(c => c.Id).ToList(),
                 NotificationIds = notifications.Select(c => c.Id).ToList(),
-                RestrictionIds = restrictions.Select(c => c.Id).ToList(),
+                ReleaseProfileIds = releaseProfiles.Select(c => c.Id).ToList(),
                 MovieIds = movies,
                 IndexerIds = indexers.Select(c => c.Id).ToList(),
                 AutoTagIds = autoTags.Select(c => c.Id).ToList(),
@@ -117,7 +117,7 @@ namespace NzbDrone.Core.Tags
             var delayProfiles = _delayProfileService.All();
             var importLists = _importListFactory.All();
             var notifications = _notificationFactory.All();
-            var restrictions = _restrictionService.All();
+            var releaseProfiles = _releaseProfileService.All();
             var movies = _movieService.AllMovieTags();
             var indexers = _indexerService.All();
             var autotags = _autoTaggingService.All();
@@ -134,7 +134,7 @@ namespace NzbDrone.Core.Tags
                     DelayProfileIds = delayProfiles.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     ImportListIds = importLists.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     NotificationIds = notifications.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
-                    RestrictionIds = restrictions.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
+                    ReleaseProfileIds = releaseProfiles.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     MovieIds = movies.Where(c => c.Value.Contains(tag.Id)).Select(c => c.Key).ToList(),
                     IndexerIds = indexers.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     AutoTagIds = autotags.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),

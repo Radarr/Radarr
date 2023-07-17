@@ -6,11 +6,11 @@ import Icon from 'Components/Icon';
 import PageSectionContent from 'Components/Page/PageSectionContent';
 import { icons } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
-import EditRestrictionModalConnector from './EditRestrictionModalConnector';
-import Restriction from './Restriction';
-import styles from './Restrictions.css';
+import EditReleaseProfileModalConnector from './EditReleaseProfileModalConnector';
+import ReleaseProfile from './ReleaseProfile';
+import styles from './ReleaseProfiles.css';
 
-class Restrictions extends Component {
+class ReleaseProfiles extends Component {
 
   //
   // Lifecycle
@@ -19,19 +19,19 @@ class Restrictions extends Component {
     super(props, context);
 
     this.state = {
-      isAddRestrictionModalOpen: false
+      isAddReleaseProfileModalOpen: false
     };
   }
 
   //
   // Listeners
 
-  onAddRestrictionPress = () => {
-    this.setState({ isAddRestrictionModalOpen: true });
+  onAddReleaseProfilePress = () => {
+    this.setState({ isAddReleaseProfileModalOpen: true });
   };
 
-  onAddRestrictionModalClose = () => {
-    this.setState({ isAddRestrictionModalOpen: false });
+  onAddReleaseProfileModalClose = () => {
+    this.setState({ isAddReleaseProfileModalOpen: false });
   };
 
   //
@@ -41,20 +41,21 @@ class Restrictions extends Component {
     const {
       items,
       tagList,
-      onConfirmDeleteRestriction,
+      indexerList,
+      onConfirmDeleteReleaseProfile,
       ...otherProps
     } = this.props;
 
     return (
-      <FieldSet legend={translate('Restrictions')}>
+      <FieldSet legend={translate('Release Profiles')}>
         <PageSectionContent
-          errorMessage={translate('UnableToLoadRestrictions')}
+          errorMessage={translate('Unable to load ReleaseProfiles')}
           {...otherProps}
         >
-          <div className={styles.restrictions}>
+          <div className={styles.releaseProfiles}>
             <Card
-              className={styles.addRestriction}
-              onPress={this.onAddRestrictionPress}
+              className={styles.addReleaseProfile}
+              onPress={this.onAddReleaseProfilePress}
             >
               <div className={styles.center}>
                 <Icon
@@ -67,20 +68,21 @@ class Restrictions extends Component {
             {
               items.map((item) => {
                 return (
-                  <Restriction
+                  <ReleaseProfile
                     key={item.id}
                     tagList={tagList}
+                    indexerList={indexerList}
                     {...item}
-                    onConfirmDeleteRestriction={onConfirmDeleteRestriction}
+                    onConfirmDeleteReleaseProfile={onConfirmDeleteReleaseProfile}
                   />
                 );
               })
             }
           </div>
 
-          <EditRestrictionModalConnector
-            isOpen={this.state.isAddRestrictionModalOpen}
-            onModalClose={this.onAddRestrictionModalClose}
+          <EditReleaseProfileModalConnector
+            isOpen={this.state.isAddReleaseProfileModalOpen}
+            onModalClose={this.onAddReleaseProfileModalClose}
           />
         </PageSectionContent>
       </FieldSet>
@@ -88,12 +90,13 @@ class Restrictions extends Component {
   }
 }
 
-Restrictions.propTypes = {
+ReleaseProfiles.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   tagList: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onConfirmDeleteRestriction: PropTypes.func.isRequired
+  indexerList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onConfirmDeleteReleaseProfile: PropTypes.func.isRequired
 };
 
-export default Restrictions;
+export default ReleaseProfiles;

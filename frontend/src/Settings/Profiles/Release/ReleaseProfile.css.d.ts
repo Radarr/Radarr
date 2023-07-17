@@ -3,7 +3,8 @@
 interface CssExports {
   'enabled': string;
   'label': string;
-  'restriction': string;
+  'name': string;
+  'releaseProfile': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

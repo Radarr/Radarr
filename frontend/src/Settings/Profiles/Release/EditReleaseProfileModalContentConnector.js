@@ -1,23 +1,24 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { saveRestriction, setRestrictionValue } from 'Store/Actions/settingsActions';
+import { saveReleaseProfile, setReleaseProfileValue } from 'Store/Actions/settingsActions';
 import selectSettings from 'Store/Selectors/selectSettings';
-import EditRestrictionModalContent from './EditRestrictionModalContent';
+import EditReleaseProfileModalContent from './EditReleaseProfileModalContent';
 
-const newRestriction = {
-  required: '',
-  ignored: '',
-  tags: []
+const newReleaseProfile = {
+  enabled: true,
+  required: [],
+  ignored: [],
+  tags: [],
+  indexerId: 0
 };
 
 function createMapStateToProps() {
   return createSelector(
     (state, { id }) => id,
-    (state) => state.settings.restrictions,
-    (id, restrictions) => {
+    (state) => state.settings.releaseProfiles,
+    (id, releaseProfiles) => {
       const {
         isFetching,
         error,
@@ -25,9 +26,9 @@ function createMapStateToProps() {
         saveError,
         pendingChanges,
         items
-      } = restrictions;
+      } = releaseProfiles;
 
-      const profile = id ? _.find(items, { id }) : newRestriction;
+      const profile = id ? items.find((i) => i.id === id) : newReleaseProfile;
       const settings = selectSettings(profile, pendingChanges, saveError);
 
       return {
@@ -44,21 +45,21 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  setRestrictionValue,
-  saveRestriction
+  setReleaseProfileValue,
+  saveReleaseProfile
 };
 
-class EditRestrictionModalContentConnector extends Component {
+class EditReleaseProfileModalContentConnector extends Component {
 
   //
   // Lifecycle
 
   componentDidMount() {
     if (!this.props.id) {
-      Object.keys(newRestriction).forEach((name) => {
-        this.props.setRestrictionValue({
+      Object.keys(newReleaseProfile).forEach((name) => {
+        this.props.setReleaseProfileValue({
           name,
-          value: newRestriction[name]
+          value: newReleaseProfile[name]
         });
       });
     }
@@ -74,11 +75,11 @@ class EditRestrictionModalContentConnector extends Component {
   // Listeners
 
   onInputChange = ({ name, value }) => {
-    this.props.setRestrictionValue({ name, value });
+    this.props.setReleaseProfileValue({ name, value });
   };
 
   onSavePress = () => {
-    this.props.saveRestriction({ id: this.props.id });
+    this.props.saveReleaseProfile({ id: this.props.id });
   };
 
   //
@@ -86,7 +87,7 @@ class EditRestrictionModalContentConnector extends Component {
 
   render() {
     return (
-      <EditRestrictionModalContent
+      <EditReleaseProfileModalContent
         {...this.props}
         onSavePress={this.onSavePress}
         onTestPress={this.onTestPress}
@@ -97,15 +98,15 @@ class EditRestrictionModalContentConnector extends Component {
   }
 }
 
-EditRestrictionModalContentConnector.propTypes = {
+EditReleaseProfileModalContentConnector.propTypes = {
   id: PropTypes.number,
   isFetching: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   item: PropTypes.object.isRequired,
-  setRestrictionValue: PropTypes.func.isRequired,
-  saveRestriction: PropTypes.func.isRequired,
+  setReleaseProfileValue: PropTypes.func.isRequired,
+  saveReleaseProfile: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(EditRestrictionModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(EditReleaseProfileModalContentConnector);

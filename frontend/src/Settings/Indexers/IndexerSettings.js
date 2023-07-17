@@ -10,7 +10,6 @@ import translate from 'Utilities/String/translate';
 import IndexersConnector from './Indexers/IndexersConnector';
 import ManageIndexersModal from './Indexers/Manage/ManageIndexersModal';
 import IndexerOptionsConnector from './Options/IndexerOptionsConnector';
-import RestrictionsConnector from './Restrictions/RestrictionsConnector';
 
 class IndexerSettings extends Component {
 
@@ -102,8 +101,6 @@ class IndexerSettings extends Component {
             onChildMounted={this.onChildMounted}
             onChildStateChange={this.onChildStateChange}
           />
-
-          <RestrictionsConnector />
 
           <ManageIndexersModal
             isOpen={isManageIndexersOpen}

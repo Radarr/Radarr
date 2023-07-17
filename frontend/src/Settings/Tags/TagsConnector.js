@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchDelayProfiles, fetchDownloadClients, fetchImportLists, fetchIndexers, fetchNotifications, fetchRestrictions } from 'Store/Actions/settingsActions';
+import { fetchDelayProfiles, fetchDownloadClients, fetchImportLists, fetchIndexers, fetchNotifications, fetchReleaseProfiles } from 'Store/Actions/settingsActions';
 import { fetchTagDetails } from 'Store/Actions/tagActions';
 import Tags from './Tags';
 
@@ -28,7 +28,7 @@ const mapDispatchToProps = {
   dispatchFetchTagDetails: fetchTagDetails,
   dispatchFetchDelayProfiles: fetchDelayProfiles,
   dispatchFetchNotifications: fetchNotifications,
-  dispatchFetchRestrictions: fetchRestrictions,
+  dispatchFetchReleaseProfiles: fetchReleaseProfiles,
   dispatchFetchImportLists: fetchImportLists,
   dispatchFetchIndexers: fetchIndexers,
   dispatchFetchDownloadClients: fetchDownloadClients
@@ -44,7 +44,7 @@ class MetadatasConnector extends Component {
       dispatchFetchTagDetails,
       dispatchFetchDelayProfiles,
       dispatchFetchNotifications,
-      dispatchFetchRestrictions,
+      dispatchFetchReleaseProfiles,
       dispatchFetchImportLists,
       dispatchFetchIndexers,
       dispatchFetchDownloadClients
@@ -53,7 +53,7 @@ class MetadatasConnector extends Component {
     dispatchFetchTagDetails();
     dispatchFetchDelayProfiles();
     dispatchFetchNotifications();
-    dispatchFetchRestrictions();
+    dispatchFetchReleaseProfiles();
     dispatchFetchImportLists();
     dispatchFetchIndexers();
     dispatchFetchDownloadClients();
@@ -75,7 +75,7 @@ MetadatasConnector.propTypes = {
   dispatchFetchTagDetails: PropTypes.func.isRequired,
   dispatchFetchDelayProfiles: PropTypes.func.isRequired,
   dispatchFetchNotifications: PropTypes.func.isRequired,
-  dispatchFetchRestrictions: PropTypes.func.isRequired,
+  dispatchFetchReleaseProfiles: PropTypes.func.isRequired,
   dispatchFetchImportLists: PropTypes.func.isRequired,
   dispatchFetchIndexers: PropTypes.func.isRequired,
   dispatchFetchDownloadClients: PropTypes.func.isRequired
