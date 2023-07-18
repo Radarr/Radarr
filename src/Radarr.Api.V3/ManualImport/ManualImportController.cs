@@ -5,6 +5,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles.MovieImport.Manual;
 using NzbDrone.Core.Qualities;
+using Radarr.Api.V3.CustomFormats;
 using Radarr.Api.V3.Movies;
 using Radarr.Http;
 
@@ -35,6 +36,8 @@ namespace Radarr.Api.V3.ManualImport
 
                 item.Movie = processedItem.Movie.ToResource(0);
                 item.Rejections = processedItem.Rejections;
+                item.CustomFormats = processedItem.CustomFormats.ToResource(false);
+                item.CustomFormatScore = processedItem.CustomFormatScore;
 
                 if (item.Languages?.Count <= 1 && (item.Languages?.SingleOrDefault() ?? Language.Unknown) == Language.Unknown &&
                     processedItem.Languages.Any())

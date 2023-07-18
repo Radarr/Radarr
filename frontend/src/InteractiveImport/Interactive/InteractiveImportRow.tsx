@@ -25,6 +25,7 @@ import {
 import { SelectStateInputProps } from 'typings/props';
 import Rejection from 'typings/Rejection';
 import formatBytes from 'Utilities/Number/formatBytes';
+import formatCustomFormatScore from 'Utilities/Number/formatCustomFormatScore';
 import translate from 'Utilities/String/translate';
 import InteractiveImportRowCellPlaceholder from './InteractiveImportRowCellPlaceholder';
 import styles from './InteractiveImportRow.css';
@@ -45,6 +46,7 @@ interface InteractiveImportRowProps {
   languages?: Language[];
   size: number;
   customFormats?: object[];
+  customFormatScore?: number;
   rejections: Rejection[];
   columns: Column[];
   movieFileId?: number;
@@ -66,6 +68,7 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
     releaseGroup,
     size,
     customFormats,
+    customFormatScore,
     rejections,
     isSelected,
     modalTitle,
@@ -293,8 +296,11 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
       <TableRowCell>
         {customFormats?.length ? (
           <Popover
-            anchor={<Icon name={icons.INTERACTIVE} />}
-            title={translate('Formats')}
+            anchor={formatCustomFormatScore(
+              customFormatScore,
+              customFormats.length
+            )}
+            title={translate('CustomFormats')}
             body={
               <div className={styles.customFormatTooltip}>
                 <MovieFormats formats={customFormats} />

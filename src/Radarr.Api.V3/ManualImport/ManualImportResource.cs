@@ -25,6 +25,7 @@ namespace Radarr.Api.V3.ManualImport
         public int QualityWeight { get; set; }
         public string DownloadId { get; set; }
         public List<CustomFormatResource> CustomFormats { get; set; }
+        public int CustomFormatScore { get; set; }
         public IEnumerable<Rejection> Rejections { get; set; }
     }
 
@@ -36,6 +37,9 @@ namespace Radarr.Api.V3.ManualImport
             {
                 return null;
             }
+
+            var customFormats = model.CustomFormats;
+            var customFormatScore = model.Movie?.Profile?.CalculateCustomFormatScore(customFormats) ?? 0;
 
             return new ManualImportResource
             {
@@ -49,7 +53,8 @@ namespace Radarr.Api.V3.ManualImport
                 ReleaseGroup = model.ReleaseGroup,
                 Quality = model.Quality,
                 Languages = model.Languages,
-                CustomFormats = model.CustomFormats.ToResource(false),
+                CustomFormats = customFormats.ToResource(false),
+                CustomFormatScore = customFormatScore,
 
                 // QualityWeight
                 DownloadId = model.DownloadId,

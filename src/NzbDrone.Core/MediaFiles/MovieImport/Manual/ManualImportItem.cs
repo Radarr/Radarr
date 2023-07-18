@@ -19,6 +19,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
         public string ReleaseGroup { get; set; }
         public string DownloadId { get; set; }
         public List<CustomFormat> CustomFormats { get; set; }
+        public int CustomFormatScore { get; set; }
         public IEnumerable<Rejection> Rejections { get; set; }
         public Movie Movie { get; set; }
 

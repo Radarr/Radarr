@@ -312,6 +312,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 item.Movie = decision.LocalMovie.Movie;
 
                 item.CustomFormats = _formatCalculator.ParseCustomFormat(decision.LocalMovie);
+                item.CustomFormatScore = item.Movie.Profile?.CalculateCustomFormatScore(item.CustomFormats) ?? 0;
             }
 
             item.Quality = decision.LocalMovie.Quality;
