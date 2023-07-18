@@ -31,22 +31,26 @@ namespace NzbDrone.Core.ImportLists.Radarr
 
         public List<RadarrMovie> GetMovies(RadarrSettings settings)
         {
-            return Execute<RadarrMovie>("/api/v3/movie", settings);
+            var requestBuilder = BuildRequest("/api/v3/movie", settings);
+
+            requestBuilder.AddQueryParam("excludeLocalCovers", true);
+
+            return Execute<RadarrMovie>(requestBuilder, settings);
         }
 
         public List<RadarrProfile> GetProfiles(RadarrSettings settings)
         {
-            return Execute<RadarrProfile>("/api/v3/qualityprofile", settings);
+            return Execute<RadarrProfile>(BuildRequest("/api/v3/qualityprofile", settings), settings);
         }
 
         public List<RadarrRootFolder> GetRootFolders(RadarrSettings settings)
         {
-            return Execute<RadarrRootFolder>("api/v3/rootfolder", settings);
+            return Execute<RadarrRootFolder>(BuildRequest("api/v3/rootfolder", settings), settings);
         }
 
         public List<RadarrTag> GetTags(RadarrSettings settings)
         {
-            return Execute<RadarrTag>("/api/v3/tag", settings);
+            return Execute<RadarrTag>(BuildRequest("/api/v3/tag", settings), settings);
         }
 
         public ValidationFailure Test(RadarrSettings settings)
@@ -81,19 +85,23 @@ namespace NzbDrone.Core.ImportLists.Radarr
             return null;
         }
 
-        private List<TResource> Execute<TResource>(string resource, RadarrSettings settings)
+        private HttpRequestBuilder BuildRequest(string resource, RadarrSettings settings)
+        {
+            var baseUrl = settings.BaseUrl.TrimEnd('/');
+
+            return new HttpRequestBuilder(baseUrl).Resource(resource)
+                .Accept(HttpAccept.Json)
+                .SetHeader("X-Api-Key", settings.ApiKey);
+        }
+
+        private List<TResource> Execute<TResource>(HttpRequestBuilder requestBuilder, RadarrSettings settings)
         {
             if (settings.BaseUrl.IsNullOrWhiteSpace() || settings.ApiKey.IsNullOrWhiteSpace())
             {
                 return new List<TResource>();
             }
 
-            var baseUrl = settings.BaseUrl.TrimEnd('/');
-
-            var request = new HttpRequestBuilder(baseUrl).Resource(resource)
-                .Accept(HttpAccept.Json)
-                .SetHeader("X-Api-Key", settings.ApiKey)
-                .Build();
+            var request = requestBuilder.Build();
 
             var response = _httpClient.Get(request);
 
