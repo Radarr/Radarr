@@ -93,7 +93,6 @@ namespace NzbDrone.Core.MediaCover
                 // Movie isn't in Radarr yet, map via a proxy to circument referrer issues
                 foreach (var mediaCover in covers)
                 {
-                    mediaCover.RemoteUrl = mediaCover.Url;
                     mediaCover.Url = _mediaCoverProxy.RegisterUrl(mediaCover.RemoteUrl);
                 }
             }
@@ -108,7 +107,6 @@ namespace NzbDrone.Core.MediaCover
 
                     var filePath = GetCoverPath(movieId, mediaCover.CoverType);
 
-                    mediaCover.RemoteUrl = mediaCover.Url;
                     mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/" + movieId + "/" + mediaCover.CoverType.ToString().ToLower() + GetExtension(mediaCover.CoverType);
 
                     FileInfo file;
@@ -162,7 +160,7 @@ namespace NzbDrone.Core.MediaCover
 
                 try
                 {
-                    alreadyExists = _coverExistsSpecification.AlreadyExists(cover.Url, fileName);
+                    alreadyExists = _coverExistsSpecification.AlreadyExists(cover.RemoteUrl, fileName);
 
                     if (!alreadyExists)
                     {
@@ -207,8 +205,8 @@ namespace NzbDrone.Core.MediaCover
         {
             var fileName = GetCoverPath(movie.Id, cover.CoverType);
 
-            _logger.Info("Downloading {0} for {1} {2}", cover.CoverType, movie, cover.Url);
-            _httpClient.DownloadFile(cover.Url, fileName);
+            _logger.Info("Downloading {0} for {1} {2}", cover.CoverType, movie, cover.RemoteUrl);
+            _httpClient.DownloadFile(cover.RemoteUrl, fileName);
         }
 
         private void EnsureResizedCovers(Movie movie, MediaCover cover, bool forceResize)

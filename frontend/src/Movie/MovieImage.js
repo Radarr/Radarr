@@ -7,9 +7,11 @@ function findImage(images, coverType) {
 }
 
 function getUrl(image, coverType, size) {
-  if (image) {
+  const imageUrl = image?.url ?? image?.remoteUrl;
+
+  if (imageUrl) {
     // Remove protocol
-    let url = image.url.replace(/^https?:/, '');
+    let url = imageUrl.replace(/^https?:/, '');
     url = url.replace(`${coverType}.jpg`, `${coverType}-${size}.jpg`);
 
     return url;
