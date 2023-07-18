@@ -116,7 +116,7 @@ namespace NzbDrone.Core.Notifications.Gotify
 
             if (Settings.IncludeMoviePoster && movie != null)
             {
-                var poster = movie.MovieMetadata.Value.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Poster)?.Url;
+                var poster = movie.MovieMetadata.Value.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Poster)?.RemoteUrl;
 
                 if (poster != null)
                 {

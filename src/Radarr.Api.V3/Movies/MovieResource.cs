@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.CustomFormats;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
@@ -114,7 +115,7 @@ namespace Radarr.Api.V3.Movies
                 Status = model.MovieMetadata.Value.Status,
                 Overview = translatedOverview,
 
-                Images = model.MovieMetadata.Value.Images,
+                Images = model.MovieMetadata.Value.Images.JsonClone(),
 
                 Year = model.Year,
                 SecondaryYear = model.MovieMetadata.Value.SecondaryYear,

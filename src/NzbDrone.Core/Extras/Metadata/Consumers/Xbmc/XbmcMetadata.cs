@@ -208,14 +208,14 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                     if (thumbnail != null)
                     {
-                        details.Add(new XElement("thumb", thumbnail.Url));
+                        details.Add(new XElement("thumb", thumbnail.RemoteUrl));
                     }
 
                     foreach (var poster in posters)
                     {
-                        if (poster != null && poster.Url != null)
+                        if (poster != null && poster.RemoteUrl != null)
                         {
-                            details.Add(new XElement("thumb", new XAttribute("aspect", "poster"), new XAttribute("preview", poster.Url), poster.Url));
+                            details.Add(new XElement("thumb", new XAttribute("aspect", "poster"), new XAttribute("preview", poster.RemoteUrl), poster.RemoteUrl));
                         }
                     }
 
@@ -224,9 +224,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                         var fanartElement = new XElement("fanart");
                         foreach (var fanart in fanarts)
                         {
-                            if (fanart != null && fanart.Url != null)
+                            if (fanart != null && fanart.RemoteUrl != null)
                             {
-                                fanartElement.Add(new XElement("thumb", new XAttribute("preview", fanart.Url), fanart.Url));
+                                fanartElement.Add(new XElement("thumb", new XAttribute("preview", fanart.RemoteUrl), fanart.RemoteUrl));
                             }
                         }
 
@@ -366,9 +366,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                                 var headshot = credit.Images.FirstOrDefault(m => m.CoverType == MediaCoverTypes.Headshot);
 
-                                if (headshot != null && headshot.Url != null)
+                                if (headshot != null && headshot.RemoteUrl != null)
                                 {
-                                    actorElement.Add(new XElement("thumb", headshot.Url));
+                                    actorElement.Add(new XElement("thumb", headshot.RemoteUrl));
                                 }
 
                                 details.Add(actorElement);

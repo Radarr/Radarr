@@ -646,7 +646,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             return new MediaCover.MediaCover
             {
-                Url = arg.Url,
+                RemoteUrl = arg.Url,
                 CoverType = MapCoverType(arg.CoverType)
             };
         }

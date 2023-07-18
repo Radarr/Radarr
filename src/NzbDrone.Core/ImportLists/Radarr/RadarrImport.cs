@@ -141,16 +141,5 @@ namespace NzbDrone.Core.ImportLists.Radarr
         {
             failures.AddIfNotNull(_radarrV3Proxy.Test(Settings));
         }
-
-        private static MediaCover.MediaCover MapImage(MediaCover.MediaCover arg, string baseUrl)
-        {
-            var newImage = new MediaCover.MediaCover
-            {
-                Url = string.Format("{0}{1}", baseUrl, arg.Url),
-                CoverType = arg.CoverType
-            };
-
-            return newImage;
-        }
     }
 }

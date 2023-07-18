@@ -6,7 +6,6 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using NLog;
-using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.MediaCover;
@@ -18,15 +17,12 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
     public class RoksboxMetadata : MetadataBase<RoksboxMetadataSettings>
     {
         private readonly IMapCoversToLocal _mediaCoverService;
-        private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
         public RoksboxMetadata(IMapCoversToLocal mediaCoverService,
-                            IDiskProvider diskProvider,
                             Logger logger)
         {
             _mediaCoverService = mediaCoverService;
-            _diskProvider = diskProvider;
             _logger = logger;
         }
 

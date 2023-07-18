@@ -118,7 +118,7 @@ namespace Radarr.Api.V3.ImportLists
                 var poster = currentMovie.MovieMetadata.Value.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
                 {
-                    resource.RemotePoster = poster.Url;
+                    resource.RemotePoster = poster.RemoteUrl;
                 }
 
                 var translation = currentMovie.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == language);
@@ -146,7 +146,7 @@ namespace Radarr.Api.V3.ImportLists
                 var poster = currentMovie.MovieMetadata.Value.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
                 {
-                    resource.RemotePoster = poster.Url;
+                    resource.RemotePoster = poster.RemoteUrl;
                 }
 
                 var translation = GetTranslationFromDictionary(translations, currentMovie.MovieMetadata, language);
