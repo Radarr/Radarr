@@ -4,12 +4,8 @@
   margin-bottom: 10px;
 }
 
-.filteredMessage {
-  margin-top: 10px;
-}
+.alert {
+  composes: alert from '~Components/Alert.css';
 
-.blankpad {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 2em;
+  margin-top: 10px;
 }
