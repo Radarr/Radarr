@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createSelector } from 'reselect';
-import { saveDimensions, setIsSidebarVisible } from 'Store/Actions/appActions';
+import { fetchTranslations, saveDimensions, setIsSidebarVisible } from 'Store/Actions/appActions';
 import { fetchCustomFilters } from 'Store/Actions/customFilterActions';
 import { fetchMovies } from 'Store/Actions/movieActions';
 import { fetchMovieCollections } from 'Store/Actions/movieCollectionActions';
@@ -53,6 +53,7 @@ const selectIsPopulated = createSelector(
   (state) => state.settings.importLists.isPopulated,
   (state) => state.system.status.isPopulated,
   (state) => state.movieCollections.isPopulated,
+  (state) => state.app.translations.isPopulated,
   (
     customFiltersIsPopulated,
     tagsIsPopulated,
@@ -62,7 +63,8 @@ const selectIsPopulated = createSelector(
     indexerFlagsIsPopulated,
     importListsIsPopulated,
     systemStatusIsPopulated,
-    movieCollectionsIsPopulated
+    movieCollectionsIsPopulated,
+    translationsIsPopulated
   ) => {
     return (
       customFiltersIsPopulated &&
@@ -73,7 +75,8 @@ const selectIsPopulated = createSelector(
       indexerFlagsIsPopulated &&
       importListsIsPopulated &&
       systemStatusIsPopulated &&
-      movieCollectionsIsPopulated
+      movieCollectionsIsPopulated &&
+      translationsIsPopulated
     );
   }
 );
@@ -88,6 +91,7 @@ const selectErrors = createSelector(
   (state) => state.settings.importLists.error,
   (state) => state.system.status.error,
   (state) => state.movieCollections.error,
+  (state) => state.app.translations.error,
   (
     customFiltersError,
     tagsError,
@@ -97,7 +101,8 @@ const selectErrors = createSelector(
     indexerFlagsError,
     importListsError,
     systemStatusError,
-    movieCollectionsError
+    movieCollectionsError,
+    translationsError
   ) => {
     const hasError = !!(
       customFiltersError ||
@@ -108,7 +113,8 @@ const selectErrors = createSelector(
       indexerFlagsError ||
       importListsError ||
       systemStatusError ||
-      movieCollectionsError
+      movieCollectionsError ||
+      translationsError
     );
 
     return {
@@ -121,7 +127,8 @@ const selectErrors = createSelector(
       indexerFlagsError,
       importListsError,
       systemStatusError,
-      movieCollectionsError
+      movieCollectionsError,
+      translationsError
     };
   }
 );
@@ -183,6 +190,9 @@ function createMapDispatchToProps(dispatch, props) {
     dispatchFetchStatus() {
       dispatch(fetchStatus());
     },
+    dispatchFetchTranslations() {
+      dispatch(fetchTranslations());
+    },
     onResize(dimensions) {
       dispatch(saveDimensions(dimensions));
     },
@@ -217,6 +227,7 @@ class PageConnector extends Component {
       this.props.dispatchFetchImportLists();
       this.props.dispatchFetchUISettings();
       this.props.dispatchFetchStatus();
+      this.props.dispatchFetchTranslations();
     }
   }
 
@@ -232,7 +243,6 @@ class PageConnector extends Component {
 
   render() {
     const {
-      hasTranslationsError,
       isPopulated,
       hasError,
       dispatchFetchMovies,
@@ -244,15 +254,15 @@ class PageConnector extends Component {
       dispatchFetchImportLists,
       dispatchFetchUISettings,
       dispatchFetchStatus,
+      dispatchFetchTranslations,
       ...otherProps
     } = this.props;
 
-    if (hasTranslationsError || hasError || !this.state.isLocalStorageSupported) {
+    if (hasError || !this.state.isLocalStorageSupported) {
       return (
         <ErrorPage
           {...this.state}
           {...otherProps}
-          hasTranslationsError={hasTranslationsError}
         />
       );
     }
@@ -273,7 +283,6 @@ class PageConnector extends Component {
 }
 
 PageConnector.propTypes = {
-  hasTranslationsError: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   hasError: PropTypes.bool.isRequired,
   isSidebarVisible: PropTypes.bool.isRequired,
@@ -287,6 +296,7 @@ PageConnector.propTypes = {
   dispatchFetchImportLists: PropTypes.func.isRequired,
   dispatchFetchUISettings: PropTypes.func.isRequired,
   dispatchFetchStatus: PropTypes.func.isRequired,
+  dispatchFetchTranslations: PropTypes.func.isRequired,
   onSidebarVisibleChange: PropTypes.func.isRequired
 };
 

@@ -4,14 +4,14 @@ function getTranslations() {
   return createAjaxRequest({
     global: false,
     dataType: 'json',
-    url: '/localization'
+    url: '/localization',
   }).request;
 }
 
-let translations = {};
+let translations: Record<string, string> = {};
 
-export function fetchTranslations() {
-  return new Promise(async(resolve) => {
+export async function fetchTranslations(): Promise<boolean> {
+  return new Promise(async (resolve) => {
     try {
       const data = await getTranslations();
       translations = data.Strings;
@@ -23,12 +23,15 @@ export function fetchTranslations() {
   });
 }
 
-export default function translate(key, args) {
+export default function translate(
+  key: string,
+  args?: (string | number | boolean)[]
+) {
   const translation = translations[key] || key;
 
   if (args) {
     return translation.replace(/\{(\d+)\}/g, (match, index) => {
-      return args[index];
+      return String(args[index]) ?? match;
     });
   }
 
