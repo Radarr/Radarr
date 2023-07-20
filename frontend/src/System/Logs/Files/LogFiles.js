@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Alert from 'Components/Alert';
-import Link from 'Components/Link/Link';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import InlineMarkdown from 'Components/Markdown/InlineMarkdown';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
@@ -67,7 +67,7 @@ class LogFiles extends Component {
             />
 
             <PageToolbarButton
-              label={translate('Delete')}
+              label={translate('Clear')}
               iconName={icons.CLEAR}
               isSpinning={deleteFilesExecuting}
               onPress={onDeleteFilesPress}
@@ -77,13 +77,15 @@ class LogFiles extends Component {
         <PageContentBody>
           <Alert>
             <div>
-              Log files are located in: {location}
+              {translate('LogFilesLocation', {
+                location
+              })}
             </div>
 
             {
               currentLogView === 'Log Files' &&
                 <div>
-                  {translate('TheLogLevelDefault')} <Link to="/settings/general">{translate('GeneralSettings')}</Link>
+                  <InlineMarkdown data={translate('TheLogLevelDefault')} />
                 </div>
             }
           </Alert>

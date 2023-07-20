@@ -44,7 +44,7 @@ class Updates extends Component {
     const hasUpdateToInstall = hasUpdates && _.some(items, { installable: true, latest: true });
     const noUpdateToInstall = hasUpdates && !hasUpdateToInstall;
 
-    const externalUpdaterPrefix = translate('UnableToUpdateRadarrDirectly');
+    const externalUpdaterPrefix = translate('UpdateRadarrDirectlyLoadError');
     const externalUpdaterMessages = {
       external: translate('ExternalUpdater'),
       apt: translate('AptUpdater'),
@@ -176,7 +176,7 @@ class Updates extends Component {
                                 kind={kinds.INVERSE}
                                 title={formatDateTime(update.installedOn, longDateFormat, timeFormat)}
                               >
-                                Previously Installed
+                                {translate('PreviouslyInstalled')}
                               </Label> :
                               null
                           }
@@ -213,14 +213,14 @@ class Updates extends Component {
           {
             !!updatesError &&
               <div>
-                Failed to fetch updates
+                {translate('FailedToFetchUpdates')}
               </div>
           }
 
           {
             !!generalSettingsError &&
               <div>
-                Failed to update settings
+                {translate('FailedToUpdateSettings')}
               </div>
           }
         </PageContentBody>

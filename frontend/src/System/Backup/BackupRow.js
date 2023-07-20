@@ -116,6 +116,7 @@ class BackupRow extends Component {
 
         <TableRowCell className={styles.actions}>
           <IconButton
+            title={translate('RestoreBackup')}
             name={icons.RESTORE}
             onPress={this.onRestorePress}
           />
@@ -138,7 +139,9 @@ class BackupRow extends Component {
           isOpen={isConfirmDeleteModalOpen}
           kind={kinds.DANGER}
           title={translate('DeleteBackup')}
-          message={translate('DeleteBackupMessageText', { name })}
+          message={translate('DeleteBackupMessageText', {
+            name
+          })}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeletePress}
           onCancel={this.onConfirmDeleteModalClose}

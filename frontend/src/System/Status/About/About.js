@@ -45,7 +45,14 @@ class About extends Component {
             packageVersion &&
               <DescriptionListItem
                 title={translate('PackageVersion')}
-                data={(packageAuthor ? <span> {packageVersion} {' by '} <InlineMarkdown data={packageAuthor} /> </span> : packageVersion)}
+                data={(packageAuthor ?
+                  <InlineMarkdown data={translate('PackageVersionInfo', {
+                    packageVersion,
+                    packageAuthor
+                  })}
+                  /> :
+                  packageVersion
+                )}
               />
           }
 
