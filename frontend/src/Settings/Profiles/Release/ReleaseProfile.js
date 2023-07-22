@@ -5,6 +5,7 @@ import Label from 'Components/Label';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import TagList from 'Components/TagList';
 import { kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import EditReleaseProfileModalConnector from './EditReleaseProfileModalConnector';
 import styles from './ReleaseProfile.css';
 
@@ -137,7 +138,7 @@ class ReleaseProfile extends Component {
                 kind={kinds.DISABLED}
                 outline={true}
               >
-                Disabled
+                {translate('Disabled')}
               </Label>
           }
 
@@ -162,9 +163,9 @@ class ReleaseProfile extends Component {
         <ConfirmModal
           isOpen={isDeleteReleaseProfileModalOpen}
           kind={kinds.DANGER}
-          title="Delete ReleaseProfile"
-          message={'Are you sure you want to delete this releaseProfile?'}
-          confirmLabel="Delete"
+          title={translate('DeleteReleaseProfile')}
+          message={translate('DeleteReleaseProfileMessageText', { name })}
+          confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteReleaseProfile}
           onCancel={this.onDeleteReleaseProfileModalClose}
         />

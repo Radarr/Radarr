@@ -30,7 +30,7 @@ function DownloadClientOptions(props) {
       {
         !isFetching && error &&
           <Alert kind={kinds.DANGER}>
-            {translate('UnableToLoadDownloadClientOptions')}
+            {translate('DownloadClientOptionsLoadError')}
           </Alert>
       }
 
@@ -38,6 +38,7 @@ function DownloadClientOptions(props) {
         hasSettings && !isFetching && !error && advancedSettings &&
           <div>
             <FieldSet legend={translate('CompletedDownloadHandling')}>
+
               <Form>
                 <FormGroup
                   advancedSettings={advancedSettings}

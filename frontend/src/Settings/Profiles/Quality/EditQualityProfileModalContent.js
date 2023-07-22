@@ -158,7 +158,7 @@ class EditQualityProfileModalContent extends Component {
               {
                 !isFetching && !!error &&
                   <div>
-                    {translate('UnableToAddANewQualityProfilePleaseTryAgain')}
+                    {translate('AddQualityProfileError')}
                   </div>
               }
 
@@ -191,7 +191,7 @@ class EditQualityProfileModalContent extends Component {
                             type={inputTypes.CHECK}
                             name="upgradeAllowed"
                             {...upgradeAllowed}
-                            helpText={translate('UpgradeAllowedHelpText')}
+                            helpText={translate('UpgradesAllowedHelpText')}
                             onChange={onInputChange}
                           />
                         </FormGroup>
@@ -200,7 +200,7 @@ class EditQualityProfileModalContent extends Component {
                           upgradeAllowed.value &&
                             <FormGroup size={sizes.EXTRA_SMALL}>
                               <FormLabel size={sizes.SMALL}>
-                                {translate('UpgradeUntilQuality')}
+                                {translate('UpgradeUntil')}
                               </FormLabel>
 
                               <FormInputGroup
@@ -208,7 +208,7 @@ class EditQualityProfileModalContent extends Component {
                                 name="cutoff"
                                 {...cutoff}
                                 values={qualities}
-                                helpText={translate('CutoffHelpText')}
+                                helpText={translate('UpgradeUntilMovieHelpText')}
                                 onChange={onCutoffChange}
                               />
                             </FormGroup>
@@ -225,7 +225,7 @@ class EditQualityProfileModalContent extends Component {
                                 type={inputTypes.NUMBER}
                                 name="minFormatScore"
                                 {...minFormatScore}
-                                helpText={translate('MinFormatScoreHelpText')}
+                                helpText={translate('MinimumCustomFormatScoreHelpText')}
                                 onChange={onInputChange}
                               />
                             </FormGroup>
@@ -242,7 +242,7 @@ class EditQualityProfileModalContent extends Component {
                                 type={inputTypes.NUMBER}
                                 name="cutoffFormatScore"
                                 {...cutoffFormatScore}
-                                helpText={translate('CutoffFormatScoreHelpText')}
+                                helpText={translate('UpgradeUntilCustomFormatScoreMovieHelpText')}
                                 onChange={onInputChange}
                               />
                             </FormGroup>
@@ -301,7 +301,7 @@ class EditQualityProfileModalContent extends Component {
                   className={styles.deleteButtonContainer}
                   title={
                     isInUse ?
-                      translate('QualityProfileInUse') :
+                      translate('QualityProfileInUseMovieListCollection') :
                       undefined
                   }
                 >

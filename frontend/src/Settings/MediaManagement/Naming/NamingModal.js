@@ -5,6 +5,7 @@ import SelectInput from 'Components/Form/SelectInput';
 import TextInput from 'Components/Form/TextInput';
 import Icon from 'Components/Icon';
 import Button from 'Components/Link/Button';
+import InlineMarkdown from 'Components/Markdown/InlineMarkdown';
 import Modal from 'Components/Modal/Modal';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
@@ -16,10 +17,30 @@ import NamingOption from './NamingOption';
 import styles from './NamingModal.css';
 
 const separatorOptions = [
-  { key: ' ', value: 'Space ( )' },
-  { key: '.', value: 'Period (.)' },
-  { key: '_', value: 'Underscore (_)' },
-  { key: '-', value: 'Dash (-)' }
+  {
+    key: ' ',
+    get value() {
+      return `${translate('Space')} ( )`;
+    }
+  },
+  {
+    key: '.',
+    get value() {
+      return `${translate('Period')} (.)`;
+    }
+  },
+  {
+    key: '_',
+    get value() {
+      return `${translate('Underscore')} (_)`;
+    }
+  },
+  {
+    key: '-',
+    get value() {
+      return `${translate('Dash')} (-)`;
+    }
+  }
 ];
 
 const caseOptions = [
@@ -32,13 +53,13 @@ const caseOptions = [
   {
     key: 'lower',
     get value() {
-      return translate('LowerCase');
+      return translate('Lowercase');
     }
   },
   {
     key: 'upper',
     get value() {
-      return translate('UpperCase');
+      return translate('Uppercase');
     }
   }
 ];
@@ -336,10 +357,7 @@ class NamingModal extends Component {
 
                     <div className={styles.footNote}>
                       <Icon className={styles.icon} name={icons.FOOTNOTE} />
-                      <div>
-                        MediaInfo Full/AudioLanguages/SubtitleLanguages support a <code>:EN+DE</code> suffix allowing you to filter the languages included in the filename. Use <code>-DE</code> to exclude specific languages.
-                        Appending <code>+</code> (eg <code>:EN+</code>) will output <code>[EN]</code>/<code>[EN+--]</code>/<code>[--]</code> depending on excluded languages. For example <code>{'{'}MediaInfo Full:EN+DE{'}'}</code>.
-                      </div>
+                      <InlineMarkdown data={translate('MediaInfoFootNote')} />
                     </div>
                   </FieldSet>
 

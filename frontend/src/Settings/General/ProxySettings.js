@@ -25,9 +25,18 @@ function ProxySettings(props) {
   } = settings;
 
   const proxyTypeOptions = [
-    { key: 'http', value: translate('HttpHttps') },
-    { key: 'socks4', value: translate('Socks4') },
-    { key: 'socks5', value: translate('Socks5') }
+    {
+      key: 'http',
+      value: translate('HttpHttps')
+    },
+    {
+      key: 'socks4',
+      value: translate('Socks4')
+    },
+    {
+      key: 'socks5',
+      value: translate('Socks5')
+    }
   ];
 
   return (

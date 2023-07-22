@@ -45,14 +45,14 @@ class ImportListExclusions extends Component {
     } = this.props;
 
     return (
-      <FieldSet legend={translate('ListExclusions')}>
+      <FieldSet legend={translate('ImportListExclusions')}>
         <PageSectionContent
-          errorMessage={translate('UnableToLoadListExclusions')}
+          errorMessage={translate('ImportListExclusionsLoadError')}
           {...otherProps}
         >
           <div className={styles.importListExclusionsHeader}>
             <div className={styles.tmdbId}>
-              TMDb Id
+              {translate('TMDBId')}
             </div>
             <div className={styles.title}>
               {translate('Title')}

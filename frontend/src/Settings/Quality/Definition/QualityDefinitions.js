@@ -21,7 +21,7 @@ class QualityDefinitions extends Component {
     return (
       <FieldSet legend={translate('QualityDefinitions')}>
         <PageSectionContent
-          errorMessage={translate('UnableToLoadQualityDefinitions')}
+          errorMessage={translate('QualityDefinitionsLoadError')}
           {...otherProps}
         >
           <div className={styles.header}>

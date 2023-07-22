@@ -89,7 +89,9 @@ class ImportCustomFormatModalContentConnector extends Component {
     const selectedImplementation = _.find(this.props.specificationSchema, { implementation: spec.implementation });
 
     if (!selectedImplementation) {
-      throw new Error(translate('CustomFormatUnknownCondition', [spec.implementation]));
+      throw new Error(translate('CustomFormatUnknownCondition', {
+        implementation: spec.implementation
+      }));
     }
 
     this.props.selectCustomFormatSpecificationSchema({ implementation: spec.implementation });
@@ -109,7 +111,10 @@ class ImportCustomFormatModalContentConnector extends Component {
     for (const [key, value] of Object.entries(fields)) {
       const field = _.find(schema.fields, { name: key });
       if (!field) {
-        throw new Error(translate('CustomFormatUnknownConditionOption', [key, schema.implementationName]));
+        throw new Error(translate('CustomFormatUnknownConditionOption', {
+          key,
+          implementation: schema.implementationName
+        }));
       }
 
       this.props.setCustomFormatSpecificationFieldValue({ name: key, value });

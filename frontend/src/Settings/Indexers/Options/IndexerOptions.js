@@ -31,7 +31,7 @@ function IndexerOptions(props) {
       {
         !isFetching && error &&
           <Alert kind={kinds.DANGER}>
-            {translate('UnableToLoadIndexerOptions')}
+            {translate('IndexerOptionsLoadError')}
           </Alert>
       }
 
@@ -110,7 +110,7 @@ function IndexerOptions(props) {
               advancedSettings={advancedSettings}
               isAdvanced={true}
             >
-              <FormLabel>{translate('RSSSyncInterval')}</FormLabel>
+              <FormLabel>{translate('RssSyncInterval')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.NUMBER}
@@ -118,8 +118,8 @@ function IndexerOptions(props) {
                 min={0}
                 max={120}
                 unit="minutes"
-                helpText={translate('RssSyncHelpText')}
-                helpTextWarning={translate('RSSSyncIntervalHelpTextWarning')}
+                helpText={translate('RssSyncIntervalHelpText')}
+                helpTextWarning={translate('RssSyncIntervalHelpTextWarning')}
                 helpLink="https://wiki.servarr.com/radarr/faq#how-does-radarr-work"
                 onChange={onInputChange}
                 {...settings.rssSyncInterval}
