@@ -105,6 +105,22 @@ function TagDetailsModalContent(props) {
         }
 
         {
+          importLists.length ?
+            <FieldSet legend={translate('ImportLists')}>
+              {
+                importLists.map((item) => {
+                  return (
+                    <div key={item.id}>
+                      {item.name}
+                    </div>
+                  );
+                })
+              }
+            </FieldSet> :
+            null
+        }
+
+        {
           releaseProfiles.length ?
             <FieldSet legend={translate('ReleaseProfiles')}>
               {
@@ -156,22 +172,6 @@ function TagDetailsModalContent(props) {
             <FieldSet legend={translate('Indexers')}>
               {
                 indexers.map((item) => {
-                  return (
-                    <div key={item.id}>
-                      {item.name}
-                    </div>
-                  );
-                })
-              }
-            </FieldSet> :
-            null
-        }
-
-        {
-          importLists.length ?
-            <FieldSet legend={translate('Lists')}>
-              {
-                importLists.map((item) => {
                   return (
                     <div key={item.id}>
                       {item.name}

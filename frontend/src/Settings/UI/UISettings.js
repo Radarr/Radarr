@@ -84,7 +84,7 @@ class UISettings extends Component {
     const uiLanguages = languages.filter((item) => item.value !== 'Original');
 
     return (
-      <PageContent title={translate('UISettings')}>
+      <PageContent title={translate('UiSettings')}>
         <SettingsToolbarConnector
           {...otherProps}
           onSavePress={onSavePress}
@@ -92,26 +92,28 @@ class UISettings extends Component {
 
         <PageContentBody>
           {
-            isFetching &&
-              <LoadingIndicator />
+            isFetching ?
+              <LoadingIndicator /> :
+              null
           }
 
           {
-            !isFetching && error &&
+            !isFetching && error ?
               <Alert kind={kinds.DANGER}>
-                {translate('UnableToLoadUISettings')}
-              </Alert>
+                {translate('UiSettingsLoadError')}
+              </Alert> :
+              null
           }
 
           {
-            hasSettings && !isFetching && !error &&
+            hasSettings && !isFetching && !error ?
               <Form
                 id="uiSettings"
                 {...otherProps}
               >
                 <FieldSet legend={translate('Calendar')}>
                   <FormGroup>
-                    <FormLabel>{translate('SettingsFirstDayOfWeek')}</FormLabel>
+                    <FormLabel>{translate('FirstDayOfWeek')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
@@ -123,14 +125,14 @@ class UISettings extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <FormLabel>{translate('SettingsWeekColumnHeader')}</FormLabel>
+                    <FormLabel>{translate('WeekColumnHeader')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="calendarWeekColumnHeader"
                       values={weekColumnOptions}
                       onChange={onInputChange}
-                      helpText={translate('SettingsWeekColumnHeaderHelpText')}
+                      helpText={translate('WeekColumnHeaderHelpText')}
                       {...settings.calendarWeekColumnHeader}
                     />
                   </FormGroup>
@@ -138,7 +140,7 @@ class UISettings extends Component {
 
                 <FieldSet legend={translate('Movies')}>
                   <FormGroup>
-                    <FormLabel>{translate('SettingsRuntimeFormat')}</FormLabel>
+                    <FormLabel>{translate('RuntimeFormat')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
@@ -150,9 +152,11 @@ class UISettings extends Component {
                   </FormGroup>
                 </FieldSet>
 
-                <FieldSet legend={translate('Dates')}>
+                <FieldSet
+                  legend={translate('Dates')}
+                >
                   <FormGroup>
-                    <FormLabel>{translate('SettingsShortDateFormat')}</FormLabel>
+                    <FormLabel>{translate('ShortDateFormat')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
@@ -164,7 +168,7 @@ class UISettings extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <FormLabel>{translate('SettingsLongDateFormat')}</FormLabel>
+                    <FormLabel>{translate('LongDateFormat')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
@@ -176,7 +180,7 @@ class UISettings extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <FormLabel>{translate('SettingsTimeFormat')}</FormLabel>
+                    <FormLabel>{translate('TimeFormat')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
@@ -188,24 +192,26 @@ class UISettings extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <FormLabel>{translate('SettingsShowRelativeDates')}</FormLabel>
+                    <FormLabel>{translate('ShowRelativeDates')}</FormLabel>
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="showRelativeDates"
-                      helpText={translate('SettingsShowRelativeDatesHelpText')}
+                      helpText={translate('ShowRelativeDatesHelpText')}
                       onChange={onInputChange}
                       {...settings.showRelativeDates}
                     />
                   </FormGroup>
                 </FieldSet>
 
-                <FieldSet legend={translate('Style')}>
+                <FieldSet
+                  legend={translate('Style')}
+                >
                   <FormGroup>
-                    <FormLabel>{translate('SettingsTheme')}</FormLabel>
+                    <FormLabel>{translate('Theme')}</FormLabel>
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="theme"
-                      helpText={translate('SettingsThemeHelpText')}
+                      helpText={translate('ThemeHelpText')}
                       values={themeOptions}
                       onChange={onInputChange}
                       {...settings.theme}
@@ -213,11 +219,11 @@ class UISettings extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <FormLabel>{translate('SettingsEnableColorImpairedMode')}</FormLabel>
+                    <FormLabel>{translate('EnableColorImpairedMode')}</FormLabel>
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="enableColorImpairedMode"
-                      helpText={translate('SettingsEnableColorImpairedModeHelpText')}
+                      helpText={translate('EnableColorImpairedModeHelpText')}
                       onChange={onInputChange}
                       {...settings.enableColorImpairedMode}
                     />
@@ -239,13 +245,13 @@ class UISettings extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <FormLabel>{translate('UILanguage')}</FormLabel>
+                    <FormLabel>{translate('UiLanguage')}</FormLabel>
                     <FormInputGroup
                       type={inputTypes.LANGUAGE_SELECT}
                       name="uiLanguage"
                       values={uiLanguages}
-                      helpText={translate('UILanguageHelpText')}
-                      helpTextWarning={translate('UILanguageHelpTextWarning')}
+                      helpText={translate('UiLanguageHelpText')}
+                      helpTextWarning={translate('BrowserReloadRequired')}
                       onChange={onInputChange}
                       {...settings.uiLanguage}
                       errors={
@@ -258,7 +264,8 @@ class UISettings extends Component {
                     />
                   </FormGroup>
                 </FieldSet>
-              </Form>
+              </Form> :
+              null
           }
         </PageContentBody>
       </PageContent>

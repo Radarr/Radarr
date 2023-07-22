@@ -59,9 +59,9 @@ function EditNotificationModalContent(props) {
 
         {
           !isFetching && !!error &&
-            <div>
-              {translate('UnableToAddANewNotificationPleaseTryAgain')}
-            </div>
+            <Alert kind={kinds.DANGER}>
+              {translate('AddNotificationError')}
+            </Alert>
         }
 
         {
@@ -99,7 +99,7 @@ function EditNotificationModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.TAG}
                   name="tags"
-                  helpText={translate('TagsHelpText')}
+                  helpText={translate('NotificationsTagsMovieHelpText')}
                   {...tags}
                   onChange={onInputChange}
                 />

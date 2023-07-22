@@ -235,7 +235,7 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
             />
 
             <PageToolbarButton
-              label={translate('RSSSync')}
+              label={translate('RssSync')}
               iconName={icons.RSS}
               isSpinning={isRssSyncExecuting}
               isDisabled={hasNoMovie}

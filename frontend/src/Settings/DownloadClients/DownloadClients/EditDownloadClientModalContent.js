@@ -69,9 +69,9 @@ class EditDownloadClientModalContent extends Component {
 
           {
             !isFetching && !!error &&
-              <div>
-                {translate('UnableToAddANewDownloadClientPleaseTryAgain')}
-              </div>
+              <Alert kind={kinds.DANGER}>
+                {translate('AddDownloadClientError')}
+              </Alert>
           }
 
           {
@@ -147,7 +147,7 @@ class EditDownloadClientModalContent extends Component {
                   <FormInputGroup
                     type={inputTypes.TAG}
                     name="tags"
-                    helpText={translate('DownloadClientTagHelpText')}
+                    helpText={translate('DownloadClientMovieTagHelpText')}
                     {...tags}
                     onChange={onInputChange}
                   />
@@ -184,7 +184,6 @@ class EditDownloadClientModalContent extends Component {
                       </FormGroup>
                   }
                 </FieldSet>
-
               </Form>
           }
         </ModalBody>

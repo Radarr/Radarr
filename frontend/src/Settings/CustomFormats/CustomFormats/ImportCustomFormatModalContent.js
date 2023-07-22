@@ -97,7 +97,7 @@ class ImportCustomFormatModalContent extends Component {
             {
               !isFetching && !!error &&
                 <Alert kind={kinds.DANGER}>
-                  {translate('UnableToLoadCustomFormats')}
+                  {translate('CustomFormatsLoadError')}
                 </Alert>
             }
 

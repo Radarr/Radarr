@@ -50,7 +50,7 @@ const COLUMNS = [
   },
   {
     name: 'enableRss',
-    label: () => translate('EnableRSS'),
+    label: () => translate('EnableRss'),
     isSortable: true,
     isVisible: true,
   },

@@ -101,7 +101,7 @@ const links = [
         to: '/settings/downloadclients'
       },
       {
-        title: () => translate('Lists'),
+        title: () => translate('ImportLists'),
         to: '/settings/importlists'
       },
       {
@@ -121,7 +121,7 @@ const links = [
         to: '/settings/general'
       },
       {
-        title: () => translate('UI'),
+        title: () => translate('Ui'),
         to: '/settings/ui'
       }
     ]

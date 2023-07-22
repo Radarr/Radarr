@@ -63,7 +63,7 @@ function HostSettings(props) {
       </FormGroup>
 
       <FormGroup>
-        <FormLabel>{translate('URLBase')}</FormLabel>
+        <FormLabel>{translate('UrlBase')}</FormLabel>
 
         <FormInputGroup
           type={inputTypes.TEXT}
@@ -111,7 +111,7 @@ function HostSettings(props) {
         isAdvanced={true}
         size={sizes.MEDIUM}
       >
-        <FormLabel>{translate('EnableSSL')}</FormLabel>
+        <FormLabel>{translate('EnableSsl')}</FormLabel>
 
         <FormInputGroup
           type={inputTypes.CHECK}
@@ -128,7 +128,7 @@ function HostSettings(props) {
             advancedSettings={advancedSettings}
             isAdvanced={true}
           >
-            <FormLabel>{translate('SSLPort')}</FormLabel>
+            <FormLabel>{translate('SslPort')}</FormLabel>
 
             <FormInputGroup
               type={inputTypes.NUMBER}
@@ -149,12 +149,12 @@ function HostSettings(props) {
             advancedSettings={advancedSettings}
             isAdvanced={true}
           >
-            <FormLabel>{translate('SSLCertPath')}</FormLabel>
+            <FormLabel>{translate('SslCertPath')}</FormLabel>
 
             <FormInputGroup
               type={inputTypes.TEXT}
               name="sslCertPath"
-              helpText={translate('SSLCertPathHelpText')}
+              helpText={translate('SslCertPathHelpText')}
               helpTextWarning={translate('RestartRequiredHelpTextWarning')}
               onChange={onInputChange}
               {...sslCertPath}
@@ -169,12 +169,12 @@ function HostSettings(props) {
             advancedSettings={advancedSettings}
             isAdvanced={true}
           >
-            <FormLabel>{translate('SSLCertPassword')}</FormLabel>
+            <FormLabel>{translate('SslCertPassword')}</FormLabel>
 
             <FormInputGroup
               type={inputTypes.PASSWORD}
               name="sslCertPassword"
-              helpText={translate('SSLCertPasswordHelpText')}
+              helpText={translate('SslCertPasswordHelpText')}
               helpTextWarning={translate('RestartRequiredHelpTextWarning')}
               onChange={onInputChange}
               {...sslCertPassword}
@@ -184,18 +184,19 @@ function HostSettings(props) {
       }
 
       {
-        isWindows && mode !== 'service' &&
+        isWindows && mode !== 'service' ?
           <FormGroup size={sizes.MEDIUM}>
             <FormLabel>{translate('OpenBrowserOnStart')}</FormLabel>
 
             <FormInputGroup
               type={inputTypes.CHECK}
               name="launchBrowser"
-              helpText={translate('LaunchBrowserHelpText')}
+              helpText={translate('OpenBrowserOnStartHelpText')}
               onChange={onInputChange}
               {...launchBrowser}
             />
-          </FormGroup>
+          </FormGroup> :
+          null
       }
 
     </FieldSet>

@@ -15,13 +15,13 @@ function TagDetailsDelayProfile(props) {
   return (
     <div>
       <div>
-        Protocol: {titleCase(preferredProtocol)}
+        {titleCase(translate('DelayProfileProtocol', { preferredProtocol }))}
       </div>
 
       <div>
         {
           enableUsenet ?
-            translate('UsenetDelayTime', [usenetDelay]) :
+            translate('UsenetDelayTime', { usenetDelay }) :
             translate('UsenetDisabled')
         }
       </div>
@@ -29,7 +29,7 @@ function TagDetailsDelayProfile(props) {
       <div>
         {
           enableTorrent ?
-            translate('TorrentDelayTime', [torrentDelay]) :
+            translate('TorrentDelayTime', { torrentDelay }) :
             translate('TorrentsDisabled')
         }
       </div>

@@ -67,10 +67,11 @@ function EditImportListModalContent(props) {
         }
 
         {
-          !isFetching && (!!error || !!rootFolderError) &&
-            <div>
-              {translate('UnableToAddANewListPleaseTryAgain')}
-            </div>
+          !isFetching && (!!error || !!rootFolderError) ?
+            <Alert kind={kinds.DANGER}>
+              {translate('AddListError')}
+            </Alert> :
+            null
         }
 
         {
@@ -92,7 +93,9 @@ function EditImportListModalContent(props) {
                 kind={kinds.INFO}
                 className={styles.message}
               >
-                {translate('ListWillRefreshEveryInterp', [formatShortTimeSpan(minRefreshInterval.value)])}
+                {translate('ListWillRefreshEveryInterval', {
+                  refreshInterval: formatShortTimeSpan(minRefreshInterval.value)
+                })}
               </Alert>
 
               <FormGroup>
@@ -112,7 +115,7 @@ function EditImportListModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="enabled"
-                  helpText={translate('EnabledHelpText')}
+                  helpText={translate('ListEnabledHelpText')}
                   {...enabled}
                   onChange={onInputChange}
                 />
@@ -124,7 +127,7 @@ function EditImportListModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="enableAuto"
-                  helpText={translate('EnableAutoHelpText')}
+                  helpText={translate('EnableAutomaticAddMovieHelpText')}
                   {...enableAuto}
                   onChange={onInputChange}
                 />
@@ -136,7 +139,7 @@ function EditImportListModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.MOVIE_MONITORED_SELECT}
                   name="monitor"
-                  helpText={translate('ShouldMonitorHelpText')}
+                  helpText={translate('ListMonitorMovieHelpText')}
                   {...monitor}
                   onChange={onInputChange}
                 />
@@ -148,7 +151,7 @@ function EditImportListModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="searchOnAdd"
-                  helpText={translate('SearchOnAddHelpText')}
+                  helpText={translate('ListSearchOnAddMovieHelpText')}
                   {...searchOnAdd}
                   onChange={onInputChange}
                 />
@@ -170,6 +173,7 @@ function EditImportListModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.QUALITY_PROFILE_SELECT}
                   name="qualityProfileId"
+                  helpText={translate('ListQualityProfileHelpText')}
                   {...qualityProfileId}
                   onChange={onInputChange}
                 />
@@ -181,6 +185,7 @@ function EditImportListModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.ROOT_FOLDER_SELECT}
                   name="rootFolderPath"
+                  helpText={translate('ListRootFolderHelpText')}
                   {...rootFolderPath}
                   includeMissingValue={true}
                   onChange={onInputChange}

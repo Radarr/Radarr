@@ -150,13 +150,13 @@ class QualityDefinition extends Component {
     } = this.state;
 
     const minBytes = minSize * 1024 * 1024;
-    const minSixty = `${formatBytes(minBytes * 60)}/h`;
+    const minSixty = `${formatBytes(minBytes * 60)}/${translate('HourShorthand')}`;
 
     const preferredBytes = preferredSize * 1024 * 1024;
-    const preferredSixty = preferredBytes ? `${formatBytes(preferredBytes * 60)}/h` : translate('Unlimited');
+    const preferredSixty = preferredBytes ? `${formatBytes(preferredBytes * 60)}/${translate('HourShorthand')}` : translate('Unlimited');
 
     const maxBytes = maxSize && maxSize * 1024 * 1024;
-    const maxSixty = maxBytes ? `${formatBytes(maxBytes * 60)}/h` : translate('Unlimited');
+    const maxSixty = maxBytes ? `${formatBytes(maxBytes * 60)}/${translate('HourShorthand')}` : translate('Unlimited');
 
     return (
       <div className={styles.qualityDefinition}>

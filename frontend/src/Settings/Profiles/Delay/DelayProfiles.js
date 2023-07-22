@@ -70,7 +70,7 @@ class DelayProfiles extends Component {
       <Measure onMeasure={this.onMeasure}>
         <FieldSet legend={translate('DelayProfiles')}>
           <PageSectionContent
-            errorMessage={translate('UnableToLoadDelayProfiles')}
+            errorMessage={translate('DelayProfilesLoadError')}
             {...otherProps}
           >
             <Scroller

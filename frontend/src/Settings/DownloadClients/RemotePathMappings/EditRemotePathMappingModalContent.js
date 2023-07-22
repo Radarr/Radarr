@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Alert from 'Components/Alert';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
@@ -52,9 +53,9 @@ function EditRemotePathMappingModalContent(props) {
 
         {
           !isFetching && !!error &&
-            <div>
-              {translate('UnableToAddANewRemotePathMappingPleaseTryAgain')}
-            </div>
+            <Alert kind={kinds.DANGER}>
+              {translate('AddRemotePathMappingError')}
+            </Alert>
         }
 
         {
@@ -66,7 +67,7 @@ function EditRemotePathMappingModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.SELECT}
                   name="host"
-                  helpText={translate('SettingsRemotePathMappingHostHelpText')}
+                  helpText={translate('RemotePathMappingHostHelpText')}
                   {...host}
                   values={downloadClientHosts}
                   onChange={onInputChange}
@@ -74,24 +75,24 @@ function EditRemotePathMappingModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>{translate('SettingsRemotePathMappingRemotePath')}</FormLabel>
+                <FormLabel>{translate('RemotePath')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.TEXT}
                   name="remotePath"
-                  helpText={translate('SettingsRemotePathMappingRemotePathHelpText')}
+                  helpText={translate('RemotePathMappingRemotePathHelpText')}
                   {...remotePath}
                   onChange={onInputChange}
                 />
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>{translate('SettingsRemotePathMappingLocalPath')}</FormLabel>
+                <FormLabel>{translate('LocalPath')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.PATH}
                   name="localPath"
-                  helpText={translate('SettingsRemotePathMappingLocalPathHelpText')}
+                  helpText={translate('RemotePathMappingLocalPathHelpText')}
                   {...localPath}
                   onChange={onInputChange}
                 />

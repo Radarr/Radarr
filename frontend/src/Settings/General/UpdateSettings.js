@@ -70,7 +70,8 @@ function UpdateSettings(props) {
       </FormGroup>
 
       {
-        !isWindows &&
+        isWindows ?
+          null :
           <div>
             <FormGroup
               advancedSettings={advancedSettings}
