@@ -9,6 +9,7 @@ namespace NzbDrone.Core.Movies.Collections
         public MovieCollection()
         {
             Images = new List<MediaCover.MediaCover>();
+            Tags = new HashSet<int>();
         }
 
         public string Title { get; set; }
