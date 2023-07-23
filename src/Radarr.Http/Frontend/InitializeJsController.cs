@@ -10,6 +10,7 @@ namespace Radarr.Http.Frontend
 {
     [Authorize(Policy = "UI")]
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class InitializeJsController : Controller
     {
         private readonly IConfigFileProvider _configFileProvider;
