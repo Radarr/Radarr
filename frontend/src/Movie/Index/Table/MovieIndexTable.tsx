@@ -64,6 +64,7 @@ const Row: React.FC<ListChildComponentProps<RowItemData>> = ({
         justifyContent: 'space-between',
         ...style,
       }}
+      className={styles.row}
     >
       <MovieIndexRow
         movieId={movie.id}
