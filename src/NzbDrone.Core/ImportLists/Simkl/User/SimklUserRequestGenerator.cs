@@ -10,10 +10,6 @@ namespace NzbDrone.Core.ImportLists.Simkl.User
 
         public string ClientId { get; set; }
 
-        public SimklUserRequestGenerator()
-        {
-        }
-
         public virtual ImportListPageableRequestChain GetMovies()
         {
             var pageableRequests = new ImportListPageableRequestChain();
@@ -25,7 +21,7 @@ namespace NzbDrone.Core.ImportLists.Simkl.User
 
         private IEnumerable<ImportListRequest> GetSeriesRequest()
         {
-            var link = $"{Settings.BaseUrl.Trim()}/sync/all-items/movies/{((SimklUserListType)Settings.ListType).ToString().ToLowerInvariant()}";
+            var link = $"{Settings.BaseUrl.Trim()}/sync/all-items/{((SimklUserMovieType)Settings.MovieType).ToString().ToLowerInvariant()}/{((SimklUserListType)Settings.ListType).ToString().ToLowerInvariant()}";
 
             var request = new ImportListRequest(link, HttpAccept.Json);
 
