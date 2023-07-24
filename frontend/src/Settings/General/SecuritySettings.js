@@ -12,15 +12,45 @@ import { icons, inputTypes, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 
 const authenticationMethodOptions = [
-  { key: 'none', value: translate('None') },
-  { key: 'basic', value: translate('AuthBasic') },
-  { key: 'forms', value: translate('AuthForm') }
+  {
+    key: 'none',
+    get value() {
+      return translate('None');
+    }
+  },
+  {
+    key: 'basic',
+    get value() {
+      return translate('AuthBasic');
+    }
+  },
+  {
+    key: 'forms',
+    get value() {
+      return translate('AuthForm');
+    }
+  }
 ];
 
 const certificateValidationOptions = [
-  { key: 'enabled', value: translate('Enabled') },
-  { key: 'disabledForLocalAddresses', value: translate('CertValidationNoLocal') },
-  { key: 'disabled', value: translate('Disabled') }
+  {
+    key: 'enabled',
+    get value() {
+      return translate('Enabled');
+    }
+  },
+  {
+    key: 'disabledForLocalAddresses',
+    get value() {
+      return translate('CertValidationNoLocal');
+    }
+  },
+  {
+    key: 'disabled',
+    get value() {
+      return translate('Disabled');
+    }
+  }
 ];
 
 class SecuritySettings extends Component {

@@ -29,22 +29,30 @@ import styles from './SelectMovieModalContent.css';
 const columns = [
   {
     name: 'title',
-    label: translate('Title'),
+    get label() {
+      return translate('Title');
+    },
     isVisible: true,
   },
   {
     name: 'year',
-    label: translate('Year'),
+    get label() {
+      return translate('Year');
+    },
     isVisible: true,
   },
   {
     name: 'imdbId',
-    label: translate('ImdbId'),
+    get label() {
+      return translate('ImdbId');
+    },
     isVisible: true,
   },
   {
     name: 'tmdbId',
-    label: translate('TmdbId'),
+    get label() {
+      return translate('TmdbId');
+    },
     isVisible: true,
   },
 ];

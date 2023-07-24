@@ -18,17 +18,23 @@ import styles from './ImportMovieSelectFolder.css';
 const rootFolderColumns = [
   {
     name: 'path',
-    label: translate('Path'),
+    get label() {
+      return translate('Path');
+    },
     isVisible: true
   },
   {
     name: 'freeSpace',
-    label: translate('FreeSpace'),
+    get label() {
+      return translate('FreeSpace');
+    },
     isVisible: true
   },
   {
     name: 'unmappedFolders',
-    label: translate('UnmappedFolders'),
+    get label() {
+      return translate('UnmappedFolders');
+    },
     isVisible: true
   },
   {

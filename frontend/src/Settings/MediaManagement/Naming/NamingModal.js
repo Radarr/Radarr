@@ -23,9 +23,24 @@ const separatorOptions = [
 ];
 
 const caseOptions = [
-  { key: 'title', value: translate('DefaultCase') },
-  { key: 'lower', value: translate('LowerCase') },
-  { key: 'upper', value: translate('UpperCase') }
+  {
+    key: 'title',
+    get value() {
+      return translate('DefaultCase');
+    }
+  },
+  {
+    key: 'lower',
+    get value() {
+      return translate('LowerCase');
+    }
+  },
+  {
+    key: 'upper',
+    get value() {
+      return translate('UpperCase');
+    }
+  }
 ];
 
 const fileNameTokens = [

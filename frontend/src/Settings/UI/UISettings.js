@@ -16,8 +16,18 @@ import titleCase from 'Utilities/String/titleCase';
 import translate from 'Utilities/String/translate';
 
 export const firstDayOfWeekOptions = [
-  { key: 0, value: translate('Sunday') },
-  { key: 1, value: translate('Monday') }
+  {
+    key: 0,
+    get value() {
+      return translate('Sunday');
+    }
+  },
+  {
+    key: 1,
+    get value() {
+      return translate('Monday');
+    }
+  }
 ];
 
 export const weekColumnOptions = [

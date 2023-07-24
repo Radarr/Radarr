@@ -103,7 +103,7 @@ function MovieIndexTableHeader(props: MovieIndexTableHeaderProps) {
             isSortable={isSortable}
             onSortPress={onSortPress}
           >
-            {label}
+            {typeof label === 'function' ? label() : label}
           </VirtualTableHeaderCell>
         );
       })}

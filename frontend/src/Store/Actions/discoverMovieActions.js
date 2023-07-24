@@ -75,7 +75,7 @@ export const defaultState = {
   columns: [
     {
       name: 'status',
-      columnLabel: translate('Status'),
+      columnLabel: () => translate('Status'),
       isSortable: true,
       isVisible: true,
       isModifiable: false
@@ -89,74 +89,74 @@ export const defaultState = {
     },
     {
       name: 'sortTitle',
-      label: translate('MovieTitle'),
+      label: () => translate('MovieTitle'),
       isSortable: true,
       isVisible: true,
       isModifiable: false
     },
     {
       name: 'originalLanguage',
-      label: translate('OriginalLanguage'),
+      label: () => translate('OriginalLanguage'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'collection',
-      label: translate('Collection'),
+      label: () => translate('Collection'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'studio',
-      label: translate('Studio'),
+      label: () => translate('Studio'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'inCinemas',
-      label: translate('InCinemas'),
+      label: () => translate('InCinemas'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'physicalRelease',
-      label: translate('PhysicalRelease'),
+      label: () => translate('PhysicalRelease'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'digitalRelease',
-      label: translate('DigitalRelease'),
+      label: () => translate('DigitalRelease'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'runtime',
-      label: translate('Runtime'),
+      label: () => translate('Runtime'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'genres',
-      label: translate('Genres'),
+      label: () => translate('Genres'),
       isSortable: false,
       isVisible: false
     },
     {
       name: 'ratings',
-      label: translate('Ratings'),
+      label: () => translate('Ratings'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'popularity',
-      label: translate('Popularity'),
+      label: () => translate('Popularity'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'certification',
-      label: translate('Certification'),
+      label: () => translate('Certification'),
       isSortable: true,
       isVisible: false
     },
@@ -168,7 +168,7 @@ export const defaultState = {
     },
     {
       name: 'actions',
-      columnLabel: translate('Actions'),
+      columnLabel: () => translate('Actions'),
       isVisible: true,
       isModifiable: false
     }
@@ -227,7 +227,7 @@ export const defaultState = {
   filters: [
     {
       key: 'all',
-      label: translate('All'),
+      label: () => translate('All'),
       filters: []
     },
     {
@@ -253,7 +253,7 @@ export const defaultState = {
   filterBuilderProps: [
     {
       name: 'status',
-      label: translate('ReleaseStatus'),
+      label: () => translate('ReleaseStatus'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.RELEASE_STATUS
     },
@@ -276,7 +276,7 @@ export const defaultState = {
     },
     {
       name: 'collection',
-      label: translate('Collection'),
+      label: () => translate('Collection'),
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
         const collectionList = items.reduce((acc, movie) => {
@@ -295,7 +295,7 @@ export const defaultState = {
     },
     {
       name: 'originalLanguage',
-      label: translate('OriginalLanguage'),
+      label: () => translate('OriginalLanguage'),
       type: filterBuilderTypes.EXACT,
       optionsSelector: function(items) {
         const collectionList = items.reduce((acc, movie) => {
@@ -332,7 +332,7 @@ export const defaultState = {
     },
     {
       name: 'runtime',
-      label: translate('Runtime'),
+      label: () => translate('Runtime'),
       type: filterBuilderTypes.NUMBER
     },
     {
@@ -356,39 +356,39 @@ export const defaultState = {
     },
     {
       name: 'isAvailable',
-      label: translate('ConsideredAvailable'),
+      label: () => translate('ConsideredAvailable'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.BOOL
     },
     {
       name: 'minimumAvailability',
-      label: translate('MinimumAvailability'),
+      label: () => translate('MinimumAvailability'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.MINIMUM_AVAILABILITY
     },
     {
       name: 'tmdbRating',
-      label: translate('TmdbRating'),
+      label: () => translate('TmdbRating'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'tmdbVotes',
-      label: translate('TmdbVotes'),
+      label: () => translate('TmdbVotes'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'imdbRating',
-      label: translate('ImdbRating'),
+      label: () => translate('ImdbRating'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'imdbVotes',
-      label: translate('ImdbVotes'),
+      label: () => translate('ImdbVotes'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'popularity',
-      label: translate('Popularity'),
+      label: () => translate('Popularity'),
       type: filterBuilderTypes.NUMBER
     },
     {

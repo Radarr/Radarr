@@ -17,21 +17,66 @@ import NamingConnector from './Naming/NamingConnector';
 import AddRootFolderConnector from './RootFolder/AddRootFolderConnector';
 
 const rescanAfterRefreshOptions = [
-  { key: 'always', value: translate('Always') },
-  { key: 'afterManual', value: translate('AfterManualRefresh') },
-  { key: 'never', value: translate('Never') }
+  {
+    key: 'always',
+    get value() {
+      return translate('Always');
+    }
+  },
+  {
+    key: 'afterManual',
+    get value() {
+      return translate('AfterManualRefresh');
+    }
+  },
+  {
+    key: 'never',
+    get value() {
+      return translate('Never');
+    }
+  }
 ];
 
 const downloadPropersAndRepacksOptions = [
-  { key: 'preferAndUpgrade', value: translate('PreferAndUpgrade') },
-  { key: 'doNotUpgrade', value: translate('DoNotUpgradeAutomatically') },
-  { key: 'doNotPrefer', value: translate('DoNotPrefer') }
+  {
+    key: 'preferAndUpgrade',
+    get value() {
+      return translate('PreferAndUpgrade');
+    }
+  },
+  {
+    key: 'doNotUpgrade',
+    get value() {
+      return translate('DoNotUpgradeAutomatically');
+    }
+  },
+  {
+    key: 'doNotPrefer',
+    get value() {
+      return translate('DoNotPrefer');
+    }
+  }
 ];
 
 const fileDateOptions = [
-  { key: 'none', value: translate('None') },
-  { key: 'cinemas', value: translate('InCinemasDate') },
-  { key: 'release', value: translate('PhysicalReleaseDate') }
+  {
+    key: 'none',
+    get value() {
+      return translate('None');
+    }
+  },
+  {
+    key: 'cinemas',
+    get value() {
+      return translate('InCinemasDate');
+    }
+  },
+  {
+    key: 'release',
+    get value() {
+      return translate('PhysicalReleaseDate');
+    }
+  }
 ];
 
 class MediaManagement extends Component {

@@ -13,13 +13,17 @@ import styles from './InteractiveSearchContent.css';
 const columns = [
   {
     name: 'protocol',
-    label: translate('Source'),
+    get label() {
+      return translate('Source');
+    },
     isSortable: true,
     isVisible: true
   },
   {
     name: 'age',
-    label: translate('Age'),
+    get label() {
+      return translate('Age');
+    },
     isSortable: true,
     isVisible: true
   },
@@ -39,50 +43,66 @@ const columns = [
   },
   {
     name: 'title',
-    label: translate('Title'),
+    get label() {
+      return translate('Title');
+    },
     isSortable: true,
     isVisible: true
   },
   {
     name: 'indexer',
-    label: translate('Indexer'),
+    get label() {
+      return translate('Indexer');
+    },
     isSortable: true,
     isVisible: true
   },
   {
     name: 'history',
-    label: translate('History'),
+    get label() {
+      return translate('History');
+    },
     isSortable: true,
     fixedSortDirection: sortDirections.ASCENDING,
     isVisible: true
   },
   {
     name: 'size',
-    label: translate('Size'),
+    get label() {
+      return translate('Size');
+    },
     isSortable: true,
     isVisible: true
   },
   {
     name: 'peers',
-    label: translate('Peers'),
+    get label() {
+      return translate('Peers');
+    },
     isSortable: true,
     isVisible: true
   },
   {
     name: 'languages',
-    label: translate('Language'),
+    get label() {
+      return translate('Language');
+    },
     isSortable: true,
     isVisible: true
   },
   {
     name: 'qualityWeight',
-    label: translate('Quality'),
+    get label() {
+      return translate('Quality');
+    },
     isSortable: true,
     isVisible: true
   },
   {
     name: 'customFormat',
-    label: translate('Formats'),
+    get label() {
+      return translate('Formats');
+    },
     isSortable: true,
     isVisible: true
   },
@@ -90,7 +110,9 @@ const columns = [
     name: 'customFormatScore',
     label: React.createElement(Icon, {
       name: icons.SCORE,
-      title: translate('CustomFormatScore')
+      get title() {
+        return translate('CustomFormatScore');
+      }
     }),
     isSortable: true,
     isVisible: true

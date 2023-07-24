@@ -11,42 +11,58 @@ import styles from './MovieFileEditorTableContent.css';
 const columns = [
   {
     name: 'title',
-    label: translate('RelativePath'),
+    get label() {
+      return translate('RelativePath');
+    },
     isVisible: true
   },
   {
     name: 'videoCodec',
-    label: translate('VideoCodec'),
+    get label() {
+      return translate('VideoCodec');
+    },
     isVisible: true
   },
   {
     name: 'audioInfo',
-    label: translate('AudioInfo'),
+    get label() {
+      return translate('AudioInfo');
+    },
     isVisible: true
   },
   {
     name: 'size',
-    label: translate('Size'),
+    get label() {
+      return translate('Size');
+    },
     isVisible: true
   },
   {
     name: 'languages',
-    label: translate('Languages'),
+    get label() {
+      return translate('Languages');
+    },
     isVisible: true
   },
   {
     name: 'quality',
-    label: translate('Quality'),
+    get label() {
+      return translate('Quality');
+    },
     isVisible: true
   },
   {
     name: 'releaseGroup',
-    label: translate('ReleaseGroup'),
+    get label() {
+      return translate('ReleaseGroup');
+    },
     isVisible: true
   },
   {
     name: 'quality.customFormats',
-    label: translate('Formats'),
+    get label() {
+      return translate('Formats');
+    },
     isVisible: true
   },
   {

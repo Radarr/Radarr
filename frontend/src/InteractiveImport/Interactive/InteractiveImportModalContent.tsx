@@ -71,36 +71,48 @@ type OnSelectedChangeCallback = React.ComponentProps<
 const COLUMNS = [
   {
     name: 'relativePath',
-    label: translate('RelativePath'),
+    get label() {
+      return translate('RelativePath');
+    },
     isSortable: true,
     isVisible: true,
   },
   {
     name: 'movie',
-    label: translate('Movie'),
+    get label() {
+      return translate('Movie');
+    },
     isSortable: true,
     isVisible: true,
   },
   {
     name: 'releaseGroup',
-    label: translate('ReleaseGroup'),
+    get label() {
+      return translate('ReleaseGroup');
+    },
     isVisible: true,
   },
   {
     name: 'quality',
-    label: translate('Quality'),
+    get label() {
+      return translate('Quality');
+    },
     isSortable: true,
     isVisible: true,
   },
   {
     name: 'languages',
-    label: translate('Languages'),
+    get label() {
+      return translate('Languages');
+    },
     isSortable: true,
     isVisible: true,
   },
   {
     name: 'size',
-    label: translate('Size'),
+    get label() {
+      return translate('Size');
+    },
     isSortable: true,
     isVisible: true,
   },
@@ -108,7 +120,9 @@ const COLUMNS = [
     name: 'customFormats',
     label: React.createElement(Icon, {
       name: icons.INTERACTIVE,
-      title: translate('CustomFormat'),
+      get title() {
+        return translate('CustomFormat');
+      },
     }),
     isSortable: true,
     isVisible: true,
@@ -127,11 +141,23 @@ const COLUMNS = [
 const importModeOptions = [
   {
     key: 'chooseImportMode',
-    value: translate('ChooseImportMode'),
+    get value() {
+      return translate('ChooseImportMode');
+    },
     disabled: true,
   },
-  { key: 'move', value: translate('MoveFiles') },
-  { key: 'copy', value: translate('HardlinkCopyFiles') },
+  {
+    key: 'move',
+    get value() {
+      return translate('MoveFiles');
+    },
+  },
+  {
+    key: 'copy',
+    get value() {
+      return translate('HardlinkCopyFiles');
+    },
+  },
 ];
 
 function isSameMovieFile(

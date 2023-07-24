@@ -32,63 +32,63 @@ export const defaultState = {
   columns: [
     {
       name: 'eventType',
-      columnLabel: translate('EventType'),
+      columnLabel: () => translate('EventType'),
       isVisible: true,
       isModifiable: false
     },
     {
       name: 'movies.sortTitle',
-      label: translate('Movie'),
+      label: () => translate('Movie'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'languages',
-      label: translate('Languages'),
+      label: () => translate('Languages'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'quality',
-      label: translate('Quality'),
+      label: () => translate('Quality'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'customFormats',
-      label: translate('Formats'),
+      label: () => translate('Formats'),
       isSortable: false,
       isVisible: true
     },
     {
       name: 'date',
-      label: translate('Date'),
+      label: () => translate('Date'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'downloadClient',
-      label: translate('DownloadClient'),
+      label: () => translate('DownloadClient'),
       isVisible: false
     },
     {
       name: 'indexer',
-      label: translate('Indexer'),
+      label: () => translate('Indexer'),
       isVisible: false
     },
     {
       name: 'releaseGroup',
-      label: translate('ReleaseGroup'),
+      label: () => translate('ReleaseGroup'),
       isVisible: false
     },
     {
       name: 'sourceTitle',
-      label: translate('SourceTitle'),
+      label: () => translate('SourceTitle'),
       isVisible: false
     },
     {
       name: 'customFormatScore',
-      columnLabel: translate('CustomFormatScore'),
+      columnLabel: () => translate('CustomFormatScore'),
       label: React.createElement(Icon, {
         name: icons.SCORE,
         title: 'Custom format score'
@@ -97,7 +97,7 @@ export const defaultState = {
     },
     {
       name: 'details',
-      columnLabel: translate('Details'),
+      columnLabel: () => translate('Details'),
       isVisible: true,
       isModifiable: false
     }
@@ -108,12 +108,12 @@ export const defaultState = {
   filters: [
     {
       key: 'all',
-      label: translate('All'),
+      label: () => translate('All'),
       filters: []
     },
     {
       key: 'grabbed',
-      label: translate('Grabbed'),
+      label: () => translate('Grabbed'),
       filters: [
         {
           key: 'eventType',
@@ -124,7 +124,7 @@ export const defaultState = {
     },
     {
       key: 'imported',
-      label: translate('Imported'),
+      label: () => translate('Imported'),
       filters: [
         {
           key: 'eventType',
@@ -135,7 +135,7 @@ export const defaultState = {
     },
     {
       key: 'failed',
-      label: translate('Failed'),
+      label: () => translate('Failed'),
       filters: [
         {
           key: 'eventType',
@@ -146,7 +146,7 @@ export const defaultState = {
     },
     {
       key: 'deleted',
-      label: translate('Deleted'),
+      label: () => translate('Deleted'),
       filters: [
         {
           key: 'eventType',
@@ -157,7 +157,7 @@ export const defaultState = {
     },
     {
       key: 'renamed',
-      label: translate('Renamed'),
+      label: () => translate('Renamed'),
       filters: [
         {
           key: 'eventType',
@@ -168,7 +168,7 @@ export const defaultState = {
     },
     {
       key: 'ignored',
-      label: translate('Ignored'),
+      label: () => translate('Ignored'),
       filters: [
         {
           key: 'eventType',

@@ -18,10 +18,30 @@ import translate from 'Utilities/String/translate';
 import styles from './EditDelayProfileModalContent.css';
 
 const protocolOptions = [
-  { key: 'preferUsenet', value: translate('PreferUsenet') },
-  { key: 'preferTorrent', value: translate('PreferTorrent') },
-  { key: 'onlyUsenet', value: translate('OnlyUsenet') },
-  { key: 'onlyTorrent', value: translate('OnlyTorrent') }
+  {
+    key: 'preferUsenet',
+    get value() {
+      return translate('PreferUsenet');
+    }
+  },
+  {
+    key: 'preferTorrent',
+    get value() {
+      return translate('PreferTorrent');
+    }
+  },
+  {
+    key: 'onlyUsenet',
+    get value() {
+      return translate('OnlyUsenet');
+    }
+  },
+  {
+    key: 'onlyTorrent',
+    get value() {
+      return translate('OnlyTorrent');
+    }
+  }
 ];
 
 function EditDelayProfileModalContent(props) {
