@@ -3,9 +3,24 @@ import translate from 'Utilities/String/translate';
 import FilterBuilderRowValue from './FilterBuilderRowValue';
 
 const protocols = [
-  { id: 'announced', name: translate('Announced') },
-  { id: 'inCinemas', name: translate('InCinemas') },
-  { id: 'released', name: translate('Released') }
+  {
+    id: 'announced',
+    get name() {
+      return translate('Announced');
+    }
+  },
+  {
+    id: 'inCinemas',
+    get name() {
+      return translate('InCinemas');
+    }
+  },
+  {
+    id: 'released',
+    get name() {
+      return translate('Released');
+    }
+  }
 ];
 
 function MinimumAvailabilityFilterBuilderRowValue(props) {

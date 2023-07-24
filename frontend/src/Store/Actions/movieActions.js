@@ -23,12 +23,12 @@ export const section = 'movies';
 export const filters = [
   {
     key: 'all',
-    label: translate('All'),
+    label: () => translate('All'),
     filters: []
   },
   {
     key: 'monitored',
-    label: translate('MonitoredOnly'),
+    label: () => translate('MonitoredOnly'),
     filters: [
       {
         key: 'monitored',
@@ -39,7 +39,7 @@ export const filters = [
   },
   {
     key: 'unmonitored',
-    label: translate('Unmonitored'),
+    label: () => translate('Unmonitored'),
     filters: [
       {
         key: 'monitored',
@@ -50,7 +50,7 @@ export const filters = [
   },
   {
     key: 'missing',
-    label: translate('Missing'),
+    label: () => translate('Missing'),
     filters: [
       {
         key: 'monitored',
@@ -66,7 +66,7 @@ export const filters = [
   },
   {
     key: 'wanted',
-    label: translate('Wanted'),
+    label: () => translate('Wanted'),
     filters: [
       {
         key: 'monitored',
@@ -87,7 +87,7 @@ export const filters = [
   },
   {
     key: 'cutoffunmet',
-    label: translate('CutoffUnmet'),
+    label: () => translate('CutoffUnmet'),
     filters: [
       {
         key: 'monitored',

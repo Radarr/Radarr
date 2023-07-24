@@ -72,7 +72,7 @@ export const defaultState = {
   filters: [
     {
       key: 'all',
-      label: translate('All'),
+      label: () => translate('All'),
       filters: []
     }
   ],
@@ -140,51 +140,51 @@ export const defaultState = {
   filterBuilderProps: [
     {
       name: 'title',
-      label: translate('Title'),
+      label: () => translate('Title'),
       type: filterBuilderTypes.STRING
     },
     {
       name: 'age',
-      label: translate('Age'),
+      label: () => translate('Age'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'protocol',
-      label: translate('Protocol'),
+      label: () => translate('Protocol'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.PROTOCOL
     },
     {
       name: 'indexerId',
-      label: translate('Indexer'),
+      label: () => translate('Indexer'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.INDEXER
     },
     {
       name: 'size',
-      label: translate('Size'),
+      label: () => translate('Size'),
       type: filterBuilderTypes.NUMBER,
       valueType: filterBuilderValueTypes.BYTES
     },
     {
       name: 'seeders',
-      label: translate('Seeders'),
+      label: () => translate('Seeders'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'peers',
-      label: translate('Peers'),
+      label: () => translate('Peers'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'quality',
-      label: translate('Quality'),
+      label: () => translate('Quality'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.QUALITY
     },
     {
       name: 'languages',
-      label: translate('Languages'),
+      label: () => translate('Languages'),
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
         const genreList = items.reduce((acc, release) => {
@@ -203,12 +203,12 @@ export const defaultState = {
     },
     {
       name: 'customFormatScore',
-      label: translate('CustomFormatScore'),
+      label: () => translate('CustomFormatScore'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'rejectionCount',
-      label: translate('RejectionCount'),
+      label: () => translate('RejectionCount'),
       type: filterBuilderTypes.NUMBER
     }
   ],

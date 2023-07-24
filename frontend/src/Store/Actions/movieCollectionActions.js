@@ -60,12 +60,12 @@ export const defaultState = {
   filters: [
     {
       key: 'all',
-      label: translate('All'),
+      label: () => translate('All'),
       filters: []
     },
     {
       key: 'missing',
-      label: translate('Missing'),
+      label: () => translate('Missing'),
       filters: [
         {
           key: 'missingMovies',
@@ -76,7 +76,7 @@ export const defaultState = {
     },
     {
       key: 'complete',
-      label: translate('Complete'),
+      label: () => translate('Complete'),
       filters: [
         {
           key: 'missingMovies',
@@ -112,29 +112,29 @@ export const defaultState = {
   filterBuilderProps: [
     {
       name: 'title',
-      label: translate('Title'),
+      label: () => translate('Title'),
       type: filterBuilderTypes.STRING
     },
     {
       name: 'monitored',
-      label: translate('Monitored'),
+      label: () => translate('Monitored'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.BOOL
     },
     {
       name: 'qualityProfileId',
-      label: translate('QualityProfile'),
+      label: () => translate('QualityProfile'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.QUALITY_PROFILE
     },
     {
       name: 'rootFolderPath',
-      label: translate('RootFolder'),
+      label: () => translate('RootFolder'),
       type: filterBuilderTypes.STRING
     },
     {
       name: 'genres',
-      label: translate('Genres'),
+      label: () => translate('Genres'),
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
         const genreList = items.reduce((acc, collection) => {
@@ -160,7 +160,7 @@ export const defaultState = {
     },
     {
       name: 'totalMovies',
-      label: translate('TotalMovies'),
+      label: () => translate('TotalMovies'),
       type: filterBuilderTypes.NUMBER
     }
   ]

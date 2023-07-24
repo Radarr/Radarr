@@ -15,9 +15,24 @@ import translate from 'Utilities/String/translate';
 import selectOverviewOptions from '../selectOverviewOptions';
 
 const posterSizeOptions = [
-  { key: 'small', value: translate('Small') },
-  { key: 'medium', value: translate('Medium') },
-  { key: 'large', value: translate('Large') },
+  {
+    key: 'small',
+    get value() {
+      return translate('Small');
+    },
+  },
+  {
+    key: 'medium',
+    get value() {
+      return translate('Medium');
+    },
+  },
+  {
+    key: 'large',
+    get value() {
+      return translate('Large');
+    },
+  },
 ];
 
 interface MovieIndexOverviewOptionsModalContentProps {

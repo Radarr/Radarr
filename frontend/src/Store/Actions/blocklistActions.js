@@ -33,49 +33,49 @@ export const defaultState = {
   columns: [
     {
       name: 'movies.sortTitle',
-      label: translate('MovieTitle'),
+      label: () => translate('MovieTitle'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'sourceTitle',
-      label: translate('SourceTitle'),
+      label: () => translate('SourceTitle'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'languages',
-      label: translate('Languages'),
+      label: () => translate('Languages'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'quality',
-      label: translate('Quality'),
+      label: () => translate('Quality'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'customFormats',
-      label: translate('Formats'),
+      label: () => translate('Formats'),
       isSortable: false,
       isVisible: true
     },
     {
       name: 'date',
-      label: translate('Date'),
+      label: () => translate('Date'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'indexer',
-      label: translate('Indexer'),
+      label: () => translate('Indexer'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'actions',
-      columnLabel: translate('Actions'),
+      columnLabel: () => translate('Actions'),
       isVisible: true,
       isModifiable: false
     }

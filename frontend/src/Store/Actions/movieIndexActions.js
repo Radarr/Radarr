@@ -65,153 +65,153 @@ export const defaultState = {
     },
     {
       name: 'status',
-      columnLabel: translate('ReleaseStatus'),
+      columnLabel: () => translate('ReleaseStatus'),
       isSortable: true,
       isVisible: true,
       isModifiable: false
     },
     {
       name: 'sortTitle',
-      label: translate('MovieTitle'),
+      label: () => translate('MovieTitle'),
       isSortable: true,
       isVisible: true,
       isModifiable: false
     },
     {
       name: 'originalTitle',
-      label: translate('OriginalTitle'),
+      label: () => translate('OriginalTitle'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'collection',
-      label: translate('Collection'),
+      label: () => translate('Collection'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'studio',
-      label: translate('Studio'),
+      label: () => translate('Studio'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'qualityProfileId',
-      label: translate('QualityProfile'),
+      label: () => translate('QualityProfile'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'originalLanguage',
-      label: translate('OriginalLanguage'),
+      label: () => translate('OriginalLanguage'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'added',
-      label: translate('Added'),
+      label: () => translate('Added'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'year',
-      label: translate('Year'),
+      label: () => translate('Year'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'inCinemas',
-      label: translate('InCinemas'),
+      label: () => translate('InCinemas'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'digitalRelease',
-      label: translate('DigitalRelease'),
+      label: () => translate('DigitalRelease'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'physicalRelease',
-      label: translate('PhysicalRelease'),
+      label: () => translate('PhysicalRelease'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'runtime',
-      label: translate('Runtime'),
+      label: () => translate('Runtime'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'minimumAvailability',
-      label: translate('MinAvailability'),
+      label: () => translate('MinAvailability'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'path',
-      label: translate('Path'),
+      label: () => translate('Path'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'sizeOnDisk',
-      label: translate('SizeOnDisk'),
+      label: () => translate('SizeOnDisk'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'genres',
-      label: translate('Genres'),
+      label: () => translate('Genres'),
       isSortable: false,
       isVisible: false
     },
     {
       name: 'movieStatus',
-      label: translate('Status'),
+      label: () => translate('Status'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'tmdbRating',
-      label: translate('TmdbRating'),
+      label: () => translate('TmdbRating'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'rottenTomatoesRating',
-      label: translate('RottenTomatoesRating'),
+      label: () => translate('RottenTomatoesRating'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'imdbRating',
-      label: translate('ImdbRating'),
+      label: () => translate('ImdbRating'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'popularity',
-      label: translate('Popularity'),
+      label: () => translate('Popularity'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'certification',
-      label: translate('Certification'),
+      label: () => translate('Certification'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'tags',
-      label: translate('Tags'),
+      label: () => translate('Tags'),
       isSortable: false,
       isVisible: false
     },
     {
       name: 'actions',
-      columnLabel: translate('Actions'),
+      columnLabel: () => translate('Actions'),
       isVisible: true,
       isModifiable: false
     }
@@ -265,35 +265,35 @@ export const defaultState = {
   filterBuilderProps: [
     {
       name: 'monitored',
-      label: translate('Monitored'),
+      label: () => translate('Monitored'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.BOOL
     },
     {
       name: 'isAvailable',
-      label: translate('ConsideredAvailable'),
+      label: () => translate('ConsideredAvailable'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.BOOL
     },
     {
       name: 'minimumAvailability',
-      label: translate('MinimumAvailability'),
+      label: () => translate('MinimumAvailability'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.MINIMUM_AVAILABILITY
     },
     {
       name: 'title',
-      label: translate('Title'),
+      label: () => translate('Title'),
       type: filterBuilderTypes.STRING
     },
     {
       name: 'originalTitle',
-      label: translate('OriginalTitle'),
+      label: () => translate('OriginalTitle'),
       type: filterBuilderTypes.STRING
     },
     {
       name: 'originalLanguage',
-      label: translate('OriginalLanguage'),
+      label: () => translate('OriginalLanguage'),
       type: filterBuilderTypes.EXACT,
       optionsSelector: function(items) {
         const collectionList = items.reduce((acc, movie) => {
@@ -312,13 +312,13 @@ export const defaultState = {
     },
     {
       name: 'status',
-      label: translate('ReleaseStatus'),
+      label: () => translate('ReleaseStatus'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.RELEASE_STATUS
     },
     {
       name: 'studio',
-      label: translate('Studio'),
+      label: () => translate('Studio'),
       type: filterBuilderTypes.EXACT,
       optionsSelector: function(items) {
         const tagList = items.reduce((acc, movie) => {
@@ -337,7 +337,7 @@ export const defaultState = {
     },
     {
       name: 'collection',
-      label: translate('Collection'),
+      label: () => translate('Collection'),
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
         const collectionList = items.reduce((acc, movie) => {
@@ -356,58 +356,58 @@ export const defaultState = {
     },
     {
       name: 'qualityProfileId',
-      label: translate('QualityProfile'),
+      label: () => translate('QualityProfile'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.QUALITY_PROFILE
     },
     {
       name: 'added',
-      label: translate('Added'),
+      label: () => translate('Added'),
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
     },
     {
       name: 'year',
-      label: translate('Year'),
+      label: () => translate('Year'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'inCinemas',
-      label: translate('InCinemas'),
+      label: () => translate('InCinemas'),
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
     },
     {
       name: 'physicalRelease',
-      label: translate('PhysicalRelease'),
+      label: () => translate('PhysicalRelease'),
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
     },
     {
       name: 'digitalRelease',
-      label: translate('DigitalRelease'),
+      label: () => translate('DigitalRelease'),
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
     },
     {
       name: 'runtime',
-      label: translate('Runtime'),
+      label: () => translate('Runtime'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'path',
-      label: translate('Path'),
+      label: () => translate('Path'),
       type: filterBuilderTypes.STRING
     },
     {
       name: 'sizeOnDisk',
-      label: translate('SizeOnDisk'),
+      label: () => translate('SizeOnDisk'),
       type: filterBuilderTypes.NUMBER,
       valueType: filterBuilderValueTypes.BYTES
     },
     {
       name: 'genres',
-      label: translate('Genres'),
+      label: () => translate('Genres'),
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
         const genreList = items.reduce((acc, movie) => {
@@ -426,37 +426,37 @@ export const defaultState = {
     },
     {
       name: 'tmdbRating',
-      label: translate('TmdbRating'),
+      label: () => translate('TmdbRating'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'tmdbVotes',
-      label: translate('TmdbVotes'),
+      label: () => translate('TmdbVotes'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'imdbRating',
-      label: translate('ImdbRating'),
+      label: () => translate('ImdbRating'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'rottenTomatoesRating',
-      label: translate('RottenTomatoesRating'),
+      label: () => translate('RottenTomatoesRating'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'imdbVotes',
-      label: translate('ImdbVotes'),
+      label: () => translate('ImdbVotes'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'popularity',
-      label: translate('Popularity'),
+      label: () => translate('Popularity'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'certification',
-      label: translate('Certification'),
+      label: () => translate('Certification'),
       type: filterBuilderTypes.EXACT,
       optionsSelector: function(items) {
         const certificationList = items.reduce((acc, movie) => {
@@ -475,7 +475,7 @@ export const defaultState = {
     },
     {
       name: 'tags',
-      label: translate('Tags'),
+      label: () => translate('Tags'),
       type: filterBuilderTypes.ARRAY,
       valueType: filterBuilderValueTypes.TAG
     }

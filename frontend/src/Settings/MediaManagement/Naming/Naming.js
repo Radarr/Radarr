@@ -14,10 +14,30 @@ import NamingModal from './NamingModal';
 import styles from './Naming.css';
 
 const colonReplacementOptions = [
-  { key: 'delete', value: translate('Delete') },
-  { key: 'dash', value: translate('ReplaceWithDash') },
-  { key: 'spaceDash', value: translate('ReplaceWithSpaceDash') },
-  { key: 'spaceDashSpace', value: translate('ReplaceWithSpaceDashSpace') }
+  {
+    key: 'delete',
+    get value() {
+      return translate('Delete');
+    }
+  },
+  {
+    key: 'dash',
+    get value() {
+      return translate('ReplaceWithDash');
+    }
+  },
+  {
+    key: 'spaceDash',
+    get value() {
+      return translate('ReplaceWithSpaceDash');
+    }
+  },
+  {
+    key: 'spaceDashSpace',
+    get value() {
+      return translate('ReplaceWithSpaceDashSpace');
+    }
+  }
 ];
 
 class Naming extends Component {
@@ -92,13 +112,17 @@ class Naming extends Component {
       if (examples.movieExample) {
         standardMovieFormatHelpTexts.push(`Movie: ${examples.movieExample}`);
       } else {
-        standardMovieFormatErrors.push({ message: translate('MovieInvalidFormat') });
+        standardMovieFormatErrors.push({ get message() {
+          return translate('MovieInvalidFormat');
+        } });
       }
 
       if (examples.movieFolderExample) {
         movieFolderFormatHelpTexts.push(`Example: ${examples.movieFolderExample}`);
       } else {
-        movieFolderFormatErrors.push({ message: translate('InvalidFormat') });
+        movieFolderFormatErrors.push({ get message() {
+          return translate('InvalidFormat');
+        } });
       }
     }
 
