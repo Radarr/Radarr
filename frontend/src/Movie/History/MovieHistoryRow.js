@@ -100,13 +100,13 @@ class MovieHistoryRow extends Component {
           />
         </TableRowCell>
 
-        <TableRowCell key={name}>
+        <TableRowCell>
           <MovieFormats
             formats={customFormats}
           />
         </TableRowCell>
 
-        <TableRowCell key={name}>
+        <TableRowCell>
           {formatCustomFormatScore(customFormatScore)}
         </TableRowCell>
 

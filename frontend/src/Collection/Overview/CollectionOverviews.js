@@ -258,7 +258,7 @@ CollectionOverviews.propTypes = {
   sortKey: PropTypes.string,
   overviewOptions: PropTypes.object.isRequired,
   jumpToCharacter: PropTypes.string,
-  scrollTop: PropTypes.number.isRequired,
+  scrollTop: PropTypes.number,
   scroller: PropTypes.instanceOf(Element).isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
