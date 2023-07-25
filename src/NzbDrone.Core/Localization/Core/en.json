@@ -598,6 +598,7 @@
   "MoreDetails": "More details",
   "MoreInfo": "More Info",
   "MountCheckMessage": "Mount containing a movie path is mounted read-only: ",
+  "MoveAutomatically": "Move Automatically",
   "MoveFiles": "Move Files",
   "MoveFolders1": "Would you like to move the movie folders to '{0}' ?",
   "MoveFolders2": "Would you like to move the movie files from '{0}' to '{1}' ?",

@@ -120,9 +120,7 @@ const COLUMNS = [
     name: 'customFormats',
     label: React.createElement(Icon, {
       name: icons.INTERACTIVE,
-      get title() {
-        return translate('CustomFormat');
-      },
+      title: () => translate('CustomFormat'),
     }),
     isSortable: true,
     isVisible: true,
