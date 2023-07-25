@@ -946,7 +946,7 @@
     "UsenetDelayHelpText": "Tempo, em minutos, para aguardar antes de capturar uma versão de Usenet",
     "UsenetDelay": "Atraso da Usenet",
     "Uptime": "Tempo de atividade",
-    "UpdateSelected": "Atualizar selecionado(s)",
+    "UpdateSelected": "Atualizar Selecionada",
     "UpdateScriptPathHelpText": "Caminho para um script personalizado que usa um pacote de atualização extraído e lida com o restante do processo de atualização",
     "Updates": "Atualizações",
     "UpdateMechanismHelpText": "Usar o atualizador integrado do Radarr ou um script",
@@ -1218,5 +1218,7 @@
     "AllTitles": "Todos os Títulos",
     "MatchedToMovie": "Correspondente ao Filme",
     "ReleaseHash": "Hash do Lançamento",
-    "TestParsing": "Análise de Teste"
+    "TestParsing": "Análise de Teste",
+    "SkipRedownload": "Ignorar o Redownload",
+    "SkipRedownloadHelpText": "Evita que o Radarr tente baixar uma versão alternativa para este item"
 }

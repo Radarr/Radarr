@@ -549,7 +549,7 @@
     "AutoRedownloadFailedHelpText": "自动搜索并尝试下载不同的版本",
     "AutomaticSearch": "自动搜索",
     "AsAllDayHelpText": "事件将以全天事件的形式显示在日历中",
-    "AppDataLocationHealthCheckMessage": "更新将无法阻止在更新时删除 AppData",
+    "AppDataLocationHealthCheckMessage": "正在更新期间的 AppData 不会被更新删除",
     "Announced": "已公布",
     "Analytics": "分析",
     "AllMoviesInPathHaveBeenImported": "在 {0} 中的所有电影已被导入",
@@ -1207,5 +1207,18 @@
     "ResetAPIKeyMessageText": "您确定要重置您的 API 密钥吗？",
     "RemoveSelectedItemBlocklistMessageText": "您确定要从阻止列表中删除所选项目吗？",
     "OnHealthRestoredHelpText": "健康度恢复",
-    "OnHealthRestored": "健康度恢复"
+    "OnHealthRestored": "健康度恢复",
+    "ApplyTagsHelpTextHowToApplyMovies": "如何将标签应用到已选择的电影",
+    "SkipRedownload": "跳过重新下载",
+    "SkipRedownloadHelpText": "阻止 Radarr 尝试下载此项目的替代版本",
+    "ApplyTagsHelpTextReplace": "替换: 用输入的标签替换当前标签 (不输入将会清除所有标签)",
+    "ApplyTagsHelpTextHowToApplyImportLists": "如何将标签应用到已选择的导入列表",
+    "ApplyTagsHelpTextAdd": "添加: 添加标签至已有的标签列表中",
+    "ApplyTagsHelpTextHowToApplyDownloadClients": "如何将标签应用到已选择的下载客户端",
+    "ApplyTagsHelpTextHowToApplyIndexers": "如何将标签应用到已选择的索引器",
+    "ApplyTagsHelpTextRemove": "移除: 移除已输入的标签",
+    "AllTitles": "全部标题",
+    "MatchedToMovie": "匹配影片",
+    "ReleaseHash": "发布哈希值",
+    "TestParsing": "测试解析"
 }
