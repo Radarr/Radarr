@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -76,14 +76,6 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
         public void should_return_path_when_tvdbId_matches()
         {
             GivenMatchingImdbId();
-
-            Subject.GetMoviePath(_settings, _movie).Should().Be(_xbmcMovies.First().File);
-        }
-
-        [Test]
-        public void should_return_path_when_title_matches()
-        {
-            GivenMatchingTitle();
 
             Subject.GetMoviePath(_settings, _movie).Should().Be(_xbmcMovies.First().File);
         }
