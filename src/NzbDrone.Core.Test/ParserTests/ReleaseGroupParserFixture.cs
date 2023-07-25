@@ -111,7 +111,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.2022.1080p.BluRay.x264-VARYG (Blue Lock, Multi-Subs)", "VARYG")]
         [TestCase("Movie Title (2023) (1080p BluRay x265 SDR AAC 2.0 English Vyndros)", "Vyndros")]
         [TestCase("Movie Title (2010) 1080p BrRip x264 - YIFY", "YIFY")]
-        [TestCase("Movie Title (2018) [BluRay] [1080p] [YTS] [YIFY]", "YIFY")]
+        [TestCase("Movie Title (2011) [BluRay] [1080p] [YTS.MX] [YIFY]", "YIFY")]
+        [TestCase("Movie Title (2014) [BluRay] [1080p] [YIFY] [YTS]", "YTS")]
+        [TestCase("Movie Title (2018) [BluRay] [1080p] [YIFY] [YTS.LT]", "YTS.LT")]
         public void should_parse_exception_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
