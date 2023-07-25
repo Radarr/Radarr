@@ -10270,6 +10270,17 @@
             "type": "string",
             "nullable": true
           },
+          "customFormats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomFormatResource"
+            },
+            "nullable": true
+          },
+          "customFormatScore": {
+            "type": "integer",
+            "format": "int32"
+          },
           "rejections": {
             "type": "array",
             "items": {
@@ -10338,6 +10349,10 @@
               "$ref": "#/components/schemas/CustomFormatResource"
             },
             "nullable": true
+          },
+          "customFormatScore": {
+            "type": "integer",
+            "format": "int32"
           },
           "rejections": {
             "type": "array",
