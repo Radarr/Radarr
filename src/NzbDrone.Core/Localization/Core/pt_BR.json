@@ -1220,5 +1220,6 @@
     "ReleaseHash": "Hash do Lançamento",
     "TestParsing": "Análise de Teste",
     "SkipRedownload": "Ignorar o Redownload",
-    "SkipRedownloadHelpText": "Evita que o Radarr tente baixar uma versão alternativa para este item"
+    "SkipRedownloadHelpText": "Evita que o Radarr tente baixar uma versão alternativa para este item",
+    "MoveAutomatically": "Mover Automaticamente"
 }
