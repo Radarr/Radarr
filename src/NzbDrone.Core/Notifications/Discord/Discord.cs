@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
@@ -230,16 +229,38 @@ namespace NzbDrone.Core.Notifications.Discord
 
         public override void OnMovieAdded(Movie movie)
         {
-            var attachments = new List<Embed>
-                              {
-                                  new Embed
-                                  {
-                                      Title = movie.MovieMetadata.Value.Title,
-                                      Description = $"{movie.Title} added to library",
-                                  }
-                              };
+            var embed = new Embed
+            {
+                Author = new DiscordAuthor
+                {
+                    Name = Settings.Author.IsNullOrWhiteSpace() ? Environment.MachineName : Settings.Author,
+                    IconUrl = "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/256.png"
+                },
+                Url = $"https://www.themoviedb.org/movie/{movie.MovieMetadata.Value.TmdbId}",
+                Title = movie.Title,
+                Description = "Movie Added",
+                Color = (int)DiscordColors.Success,
+                Fields = new List<DiscordField> { new () { Name = "Links", Value = GetLinksString(movie) } }
+            };
 
-            var payload = CreatePayload("Added", attachments);
+            if (Settings.ImportFields.Contains((int)DiscordImportFieldType.Poster))
+            {
+                embed.Thumbnail = new DiscordImage
+                {
+                    Url = movie.MovieMetadata.Value.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Poster)?.Url
+                };
+            }
+
+            if (Settings.ImportFields.Contains((int)DiscordImportFieldType.Fanart))
+            {
+                embed.Image = new DiscordImage
+                {
+                    Url = movie.MovieMetadata.Value.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Fanart)?.Url
+                };
+            }
+
+            var payload = CreatePayload(null, new List<Embed> { embed });
+
             _proxy.SendPayload(payload, Settings);
         }
 
@@ -265,16 +286,37 @@ namespace NzbDrone.Core.Notifications.Discord
         {
             var movie = deleteMessage.Movie;
 
-            var attachments = new List<Embed>
-                              {
-                                  new Embed
-                                  {
-                                      Title = movie.MovieMetadata.Value.Title,
-                                      Description = deleteMessage.DeletedFilesMessage
-                                  }
-                              };
+            var embed = new Embed
+            {
+                Author = new DiscordAuthor
+                {
+                    Name = Settings.Author.IsNullOrWhiteSpace() ? Environment.MachineName : Settings.Author,
+                    IconUrl = "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/256.png"
+                },
+                Url = $"https://www.themoviedb.org/movie/{movie.MovieMetadata.Value.TmdbId}",
+                Title = movie.Title,
+                Description = deleteMessage.DeletedFilesMessage,
+                Color = (int)DiscordColors.Danger,
+                Fields = new List<DiscordField> { new () { Name = "Links", Value = GetLinksString(movie) } }
+            };
 
-            var payload = CreatePayload("Movie Deleted", attachments);
+            if (Settings.ImportFields.Contains((int)DiscordImportFieldType.Poster))
+            {
+                embed.Thumbnail = new DiscordImage
+                {
+                    Url = movie.MovieMetadata.Value.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Poster)?.Url
+                };
+            }
+
+            if (Settings.ImportFields.Contains((int)DiscordImportFieldType.Fanart))
+            {
+                embed.Image = new DiscordImage
+                {
+                    Url = movie.MovieMetadata.Value.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Fanart)?.Url
+                };
+            }
+
+            var payload = CreatePayload(null, new List<Embed> { embed });
 
             _proxy.SendPayload(payload, Settings);
         }
@@ -282,99 +324,101 @@ namespace NzbDrone.Core.Notifications.Discord
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
         {
             var movie = deleteMessage.Movie;
+            var deletedFile = deleteMessage.MovieFile.Path;
+            var reason = deleteMessage.Reason;
 
-            var fullPath = Path.Combine(deleteMessage.Movie.Path, deleteMessage.MovieFile.RelativePath);
-            var attachments = new List<Embed>
-                              {
-                                  new Embed
-                                  {
-                                      Title = GetTitle(movie),
-                                      Description = deleteMessage.MovieFile.Path
-                                  }
-                              };
+            var embed = new Embed
+            {
+                Author = new DiscordAuthor
+                {
+                    Name = Settings.Author.IsNullOrWhiteSpace() ? Environment.MachineName : Settings.Author,
+                    IconUrl = "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/256.png"
+                },
+                Url = $"https://www.themoviedb.org/movie/{movie.MovieMetadata.Value.TmdbId}",
+                Title = GetTitle(movie),
+                Description = "Movie File Deleted",
+                Color = (int)DiscordColors.Danger,
+                Fields = new List<DiscordField>
+                {
+                    new () { Name = "Reason", Value = reason.ToString() },
+                    new () { Name = "File name", Value = string.Format("```{0}```", deletedFile) }
+                },
+                Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+            };
 
-            var payload = CreatePayload("Movie File Deleted", attachments);
+            var payload = CreatePayload(null, new List<Embed> { embed });
 
             _proxy.SendPayload(payload, Settings);
         }
 
         public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
         {
-            var attachments = new List<Embed>
-                              {
-                                  new Embed
-                                  {
-                                      Author = new DiscordAuthor
-                                      {
-                                          Name = Settings.Author.IsNullOrWhiteSpace() ? Environment.MachineName : Settings.Author,
-                                          IconUrl = "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/256.png"
-                                      },
-                                      Title = healthCheck.Source.Name,
-                                      Description = healthCheck.Message,
-                                      Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
-                                      Color = healthCheck.Type == HealthCheck.HealthCheckResult.Warning ? (int)DiscordColors.Warning : (int)DiscordColors.Danger
-                                  }
-                              };
+            var embed = new Embed
+            {
+                Author = new DiscordAuthor
+                {
+                    Name = Settings.Author.IsNullOrWhiteSpace() ? Environment.MachineName : Settings.Author,
+                    IconUrl = "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/256.png"
+                },
+                Title = healthCheck.Source.Name,
+                Description = healthCheck.Message,
+                Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+                Color = healthCheck.Type == HealthCheck.HealthCheckResult.Warning ? (int)DiscordColors.Warning : (int)DiscordColors.Danger
+            };
 
-            var payload = CreatePayload(null, attachments);
+            var payload = CreatePayload(null, new List<Embed> { embed });
 
             _proxy.SendPayload(payload, Settings);
         }
 
         public override void OnHealthRestored(HealthCheck.HealthCheck previousCheck)
         {
-            var attachments = new List<Embed>
-                              {
-                                  new Embed
-                                  {
-                                      Author = new DiscordAuthor
-                                      {
-                                          Name = Settings.Author.IsNullOrWhiteSpace() ? Environment.MachineName : Settings.Author,
-                                          IconUrl = "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/256.png"
-                                      },
-                                      Title = "Health Issue Resolved: " + previousCheck.Source.Name,
-                                      Description = $"The following issue is now resolved: {previousCheck.Message}",
-                                      Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
-                                      Color = (int)DiscordColors.Success
-                                  }
-                              };
+            var embed = new Embed
+            {
+                Author = new DiscordAuthor
+                {
+                    Name = Settings.Author.IsNullOrWhiteSpace() ? Environment.MachineName : Settings.Author,
+                    IconUrl = "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/256.png"
+                },
+                Title = "Health Issue Resolved: " + previousCheck.Source.Name,
+                Description = $"The following issue is now resolved: {previousCheck.Message}",
+                Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+                Color = (int)DiscordColors.Success
+            };
 
-            var payload = CreatePayload(null, attachments);
+            var payload = CreatePayload(null, new List<Embed> { embed });
 
             _proxy.SendPayload(payload, Settings);
         }
 
         public override void OnApplicationUpdate(ApplicationUpdateMessage updateMessage)
         {
-            var attachments = new List<Embed>
-                              {
-                                  new Embed
-                                  {
-                                      Author = new DiscordAuthor
-                                      {
-                                          Name = Settings.Author.IsNullOrWhiteSpace() ? Environment.MachineName : Settings.Author,
-                                          IconUrl = "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/256.png"
-                                      },
-                                      Title = APPLICATION_UPDATE_TITLE,
-                                      Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
-                                      Color = (int)DiscordColors.Standard,
-                                      Fields = new List<DiscordField>()
-                                      {
-                                          new DiscordField()
-                                          {
-                                              Name = "Previous Version",
-                                              Value = updateMessage.PreviousVersion.ToString()
-                                          },
-                                          new DiscordField()
-                                          {
-                                              Name = "New Version",
-                                              Value = updateMessage.NewVersion.ToString()
-                                          }
-                                      },
-                                  }
-                              };
+            var embed = new Embed
+            {
+                Author = new DiscordAuthor
+                {
+                    Name = Settings.Author.IsNullOrWhiteSpace() ? Environment.MachineName : Settings.Author,
+                    IconUrl = "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/256.png"
+                },
+                Title = APPLICATION_UPDATE_TITLE,
+                Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+                Color = (int)DiscordColors.Standard,
+                Fields = new List<DiscordField>
+                {
+                    new ()
+                    {
+                        Name = "Previous Version",
+                        Value = updateMessage.PreviousVersion.ToString()
+                    },
+                    new ()
+                    {
+                        Name = "New Version",
+                        Value = updateMessage.NewVersion.ToString()
+                    }
+                },
+            };
 
-            var payload = CreatePayload(null, attachments);
+            var payload = CreatePayload(null, new List<Embed> { embed });
 
             _proxy.SendPayload(payload, Settings);
         }
