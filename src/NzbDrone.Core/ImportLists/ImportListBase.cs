@@ -58,7 +58,6 @@ namespace NzbDrone.Core.ImportLists
 
                 yield return new ImportListDefinition
                 {
-                    Name = GetType().Name,
                     Enabled = config.Validate().IsValid && Enabled,
                     EnableAuto = true,
                     Implementation = GetType().Name,
