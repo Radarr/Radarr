@@ -1221,5 +1221,18 @@
     "TestParsing": "Análise de Teste",
     "SkipRedownload": "Ignorar o Redownload",
     "SkipRedownloadHelpText": "Evita que o Radarr tente baixar uma versão alternativa para este item",
-    "MoveAutomatically": "Mover Automaticamente"
+    "MoveAutomatically": "Mover Automaticamente",
+    "AddAutoTag": "Adicionar Tag Automática",
+    "AddCondition": "Adicionar Condição",
+    "AutoTaggingNegateHelpText": "se marcado, a regra de marcação automática não será aplicada se esta condição {0} corresponder.",
+    "RemoveTagsAutomatically": "Remover Tags Automaticamente",
+    "AutoTagging": "Marcação Automática",
+    "AutoTaggingRequiredHelpText": "Esta condição {0} deve corresponder para que a regra de marcação automática seja aplicada. Caso contrário, uma única correspondência {0} é suficiente.",
+    "CloneAutoTag": "Clonar Tag Automática",
+    "DeleteAutoTag": "Excluir Tag Automática",
+    "DeleteAutoTagHelpText": "Tem certeza de que deseja excluir a tag automática '{0}'?",
+    "EditAutoTag": "Editar Tag Automática",
+    "EditCondition": "Editar Condição",
+    "RemoveTagsAutomaticallyHelpText": "Remover tags automaticamente se as condições não forem cumpridas",
+    "UnableToLoadAutoTagging": "Não foi possível carregar a marcação automática"
 }
