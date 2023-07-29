@@ -20,7 +20,13 @@ namespace NzbDrone.Core.Indexers.Torznab
         public override string Name => "Torznab";
 
         public override DownloadProtocol Protocol => DownloadProtocol.Torrent;
-        public override int PageSize => Math.Min(100, Math.Max(_capabilitiesProvider.GetCapabilities(Settings).DefaultPageSize, _capabilitiesProvider.GetCapabilities(Settings).MaxPageSize));
+        public override int PageSize => GetProviderPageSize();
+
+        public Torznab(INewznabCapabilitiesProvider capabilitiesProvider, IHttpClient httpClient, IIndexerStatusService indexerStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
+            : base(httpClient, indexerStatusService, configService, parsingService, logger)
+        {
+            _capabilitiesProvider = capabilitiesProvider;
+        }
 
         public override IIndexerRequestGenerator GetRequestGenerator()
         {
@@ -42,12 +48,6 @@ namespace NzbDrone.Core.Indexers.Torznab
             {
                 yield return GetDefinition("Jackett", GetSettings("http://localhost:9117/api/v2.0/indexers/YOURINDEXER/results/torznab/"));
             }
-        }
-
-        public Torznab(INewznabCapabilitiesProvider capabilitiesProvider, IHttpClient httpClient, IIndexerStatusService indexerStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
-            : base(httpClient, indexerStatusService, configService, parsingService, logger)
-        {
-            _capabilitiesProvider = capabilitiesProvider;
         }
 
         private IndexerDefinition GetDefinition(string name, TorznabSettings settings)
@@ -186,6 +186,18 @@ namespace NzbDrone.Core.Indexers.Torznab
             }
 
             return base.RequestAction(action, query);
+        }
+
+        private int GetProviderPageSize()
+        {
+            try
+            {
+                return Math.Min(100, Math.Max(_capabilitiesProvider.GetCapabilities(Settings).DefaultPageSize, _capabilitiesProvider.GetCapabilities(Settings).MaxPageSize));
+            }
+            catch
+            {
+                return 100;
+            }
         }
     }
 }
