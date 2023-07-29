@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Notifications.Emby
 
             if (Settings.UpdateLibrary)
             {
-                _mediaBrowserService.UpdateMovies(Settings, message.Movie, "Created");
+                _mediaBrowserService.Update(Settings, message.Movie, "Created");
             }
         }
 
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Notifications.Emby
         {
             if (Settings.UpdateLibrary)
             {
-                _mediaBrowserService.UpdateMovies(Settings, movie, "Modified");
+                _mediaBrowserService.Update(Settings, movie, "Modified");
             }
         }
 
@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Notifications.Emby
 
                 if (Settings.UpdateLibrary)
                 {
-                    _mediaBrowserService.UpdateMovies(Settings, deleteMessage.Movie, "Deleted");
+                    _mediaBrowserService.Update(Settings, deleteMessage.Movie, "Deleted");
                 }
             }
         }
@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Notifications.Emby
 
             if (Settings.UpdateLibrary)
             {
-                _mediaBrowserService.UpdateMovies(Settings, deleteMessage.Movie, "Deleted");
+                _mediaBrowserService.Update(Settings, deleteMessage.Movie, "Deleted");
             }
         }
 

@@ -13,6 +13,8 @@ namespace NzbDrone.Core.Notifications.Emby
             RuleFor(c => c.Host).ValidHost();
             RuleFor(c => c.ApiKey).NotEmpty();
             RuleFor(c => c.UrlBase).ValidUrlBase();
+            RuleFor(c => c.MapFrom).NotEmpty().Unless(c => c.MapTo.IsNullOrWhiteSpace());
+            RuleFor(c => c.MapTo).NotEmpty().Unless(c => c.MapFrom.IsNullOrWhiteSpace());
         }
     }
 
@@ -48,6 +50,14 @@ namespace NzbDrone.Core.Notifications.Emby
 
         [FieldDefinition(6, Label = "NotificationsSettingsUpdateLibrary", HelpText = "NotificationsEmbySettingsUpdateLibraryHelpText", Type = FieldType.Checkbox)]
         public bool UpdateLibrary { get; set; }
+
+        [FieldDefinition(7, Label = "NotificationsSettingsUpdateMapPathsFrom", HelpText = "NotificationsSettingsUpdateMapPathsFromHelpText", Type = FieldType.Textbox, Advanced = true)]
+        [FieldToken(TokenField.HelpText, "NotificationsSettingsUpdateMapPathsFrom", "serviceName", "Emby/Jellyfin")]
+        public string MapFrom { get; set; }
+
+        [FieldDefinition(8, Label = "NotificationsSettingsUpdateMapPathsTo", HelpText = "NotificationsSettingsUpdateMapPathsToHelpText", Type = FieldType.Textbox, Advanced = true)]
+        [FieldToken(TokenField.HelpText, "NotificationsSettingsUpdateMapPathsTo", "serviceName", "Emby/Jellyfin")]
+        public string MapTo { get; set; }
 
         [JsonIgnore]
         public string Address => $"{Host.ToUrlHost()}:{Port}{UrlBase}";

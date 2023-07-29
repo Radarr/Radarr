@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
+using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Localization;
 using NzbDrone.Core.Movies;
@@ -12,7 +14,7 @@ namespace NzbDrone.Core.Notifications.Emby
     public interface IMediaBrowserService
     {
         void Notify(MediaBrowserSettings settings, string title, string message);
-        void UpdateMovies(MediaBrowserSettings settings, Movie movie, string updateType);
+        void Update(MediaBrowserSettings settings, Movie movie, string updateType);
         ValidationFailure Test(MediaBrowserSettings settings);
     }
 
@@ -34,9 +36,23 @@ namespace NzbDrone.Core.Notifications.Emby
             _proxy.Notify(settings, title, message);
         }
 
-        public void UpdateMovies(MediaBrowserSettings settings, Movie movie, string updateType)
+        public void Update(MediaBrowserSettings settings, Movie movie, string updateType)
         {
-            _proxy.UpdateMovies(settings, movie.Path, updateType);
+            var paths = _proxy.GetPaths(settings, movie);
+
+            var mappedPath = new OsPath(movie.Path);
+
+            if (settings.MapTo.IsNotNullOrWhiteSpace())
+            {
+                mappedPath = new OsPath(settings.MapTo) + (mappedPath - new OsPath(settings.MapFrom));
+            }
+
+            paths.Add(mappedPath.ToString());
+
+            foreach (var path in paths)
+            {
+                _proxy.Update(settings, path, updateType);
+            }
         }
 
         public ValidationFailure Test(MediaBrowserSettings settings)
