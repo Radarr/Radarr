@@ -10,11 +10,11 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import { inputTypes, kinds, sizes } from 'Helpers/Props';
-import RootFoldersConnector from 'RootFolder/RootFoldersConnector';
+import RootFolders from 'RootFolder/RootFolders';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import translate from 'Utilities/String/translate';
 import NamingConnector from './Naming/NamingConnector';
-import AddRootFolderConnector from './RootFolder/AddRootFolderConnector';
+import AddRootFolder from './RootFolder/AddRootFolder';
 
 const rescanAfterRefreshOptions = [
   {
@@ -479,8 +479,8 @@ class MediaManagement extends Component {
           }
 
           <FieldSet legend={translate('RootFolders')}>
-            <RootFoldersConnector />
-            <AddRootFolderConnector />
+            <RootFolders />
+            <AddRootFolder />
           </FieldSet>
         </PageContentBody>
       </PageContent>
