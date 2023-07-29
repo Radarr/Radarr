@@ -236,6 +236,10 @@ export const sortPredicates = {
     return padNumber(result.toString(), 2) + qualityName;
   },
 
+  year: function(item) {
+    return item.year || undefined;
+  },
+
   inCinemas: function(item) {
     return item.inCinemas || '';
   },
