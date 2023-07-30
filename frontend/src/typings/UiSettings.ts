@@ -3,4 +3,5 @@ export interface UiSettings {
   shortDateFormat: string;
   longDateFormat: string;
   timeFormat: string;
+  movieRuntimeFormat: string;
 }

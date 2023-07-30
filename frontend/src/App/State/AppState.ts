@@ -1,9 +1,12 @@
 import InteractiveImportAppState from 'App/State/InteractiveImportAppState';
+import CommandAppState from './CommandAppState';
+import MovieCollectionAppState from './MovieCollectionAppState';
 import MovieFilesAppState from './MovieFilesAppState';
 import MoviesAppState, { MovieIndexAppState } from './MoviesAppState';
 import ParseAppState from './ParseAppState';
 import QueueAppState from './QueueAppState';
 import SettingsAppState from './SettingsAppState';
+import SystemAppState from './SystemAppState';
 import TagsAppState from './TagsAppState';
 
 interface FilterBuilderPropOption {
@@ -39,14 +42,17 @@ export interface CustomFilter {
 }
 
 interface AppState {
-  movieFiles: MovieFilesAppState;
+  commands: CommandAppState;
   interactiveImport: InteractiveImportAppState;
+  movieCollections: MovieCollectionAppState;
+  movieFiles: MovieFilesAppState;
   movieIndex: MovieIndexAppState;
-  parse: ParseAppState;
-  settings: SettingsAppState;
   movies: MoviesAppState;
-  tags: TagsAppState;
+  parse: ParseAppState;
   queue: QueueAppState;
+  settings: SettingsAppState;
+  system: SystemAppState;
+  tags: TagsAppState;
 }
 
 export default AppState;

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { icons } from 'Helpers/Props';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import dimensions from 'Styles/Variables/dimensions';
+import QualityProfile from 'typings/QualityProfile';
 import { UiSettings } from 'typings/UiSettings';
 import formatDateTime from 'Utilities/Date/formatDateTime';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
@@ -33,7 +34,7 @@ interface MovieIndexOverviewInfoProps {
   showSizeOnDisk: boolean;
   monitored: boolean;
   studio?: string;
-  qualityProfile: object;
+  qualityProfile?: QualityProfile;
   added?: string;
   path: string;
   sizeOnDisk?: number;
@@ -100,13 +101,10 @@ function getInfoRowProps(
     };
   }
 
-  if (name === 'qualityProfileId') {
+  if (name === 'qualityProfileId' && !!props.qualityProfile?.name) {
     return {
       title: 'Quality Profile',
       iconName: icons.PROFILE,
-      // TODO: Type QualityProfile
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore ts(2339)
       label: props.qualityProfile.name,
     };
   }

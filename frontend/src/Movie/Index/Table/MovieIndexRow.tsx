@@ -210,7 +210,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
         if (name === 'qualityProfileId') {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
-              {qualityProfile.name}
+              {qualityProfile?.name ?? ''}
             </VirtualTableRowCell>
           );
         }
