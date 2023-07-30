@@ -1,8 +1,9 @@
 import { createSelector } from 'reselect';
+import AppState from 'App/State/AppState';
 
 function createAllMoviesSelector() {
   return createSelector(
-    (state) => state.movies,
+    (state: AppState) => state.movies,
     (movies) => {
       return movies.items;
     }

@@ -1,9 +1,10 @@
 import { createSelector } from 'reselect';
+import AppState from 'App/State/AppState';
 
 function createMovieFileSelector() {
   return createSelector(
-    (state, { movieFileId }) => movieFileId,
-    (state) => state.movieFiles,
+    (_: AppState, { movieFileId }: { movieFileId: number }) => movieFileId,
+    (state: AppState) => state.movieFiles,
     (movieFileId, movieFiles) => {
       if (!movieFileId) {
         return;

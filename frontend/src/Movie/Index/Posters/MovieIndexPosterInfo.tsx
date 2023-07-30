@@ -14,7 +14,7 @@ import styles from './MovieIndexPosterInfo.css';
 interface MovieIndexPosterInfoProps {
   studio?: string;
   showQualityProfile: boolean;
-  qualityProfile: QualityProfile;
+  qualityProfile?: QualityProfile;
   added?: string;
   year: number;
   inCinemas?: string;
@@ -68,7 +68,11 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     );
   }
 
-  if (sortKey === 'qualityProfileId' && !showQualityProfile) {
+  if (
+    sortKey === 'qualityProfileId' &&
+    !showQualityProfile &&
+    !!qualityProfile?.name
+  ) {
     return (
       <div className={styles.info} title={translate('QualityProfile')}>
         {qualityProfile.name}
