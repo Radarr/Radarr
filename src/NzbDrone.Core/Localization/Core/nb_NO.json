@@ -270,5 +270,8 @@
     "ApplyTagsHelpTextRemove": "Fjern: Fjern de angitte kodene",
     "ApplyTagsHelpTextReplace": "Erstatt: Erstatt taggene med de angitte kodene (skriv inn ingen tagger for å slette alle taggene)",
     "EditCollection": "Legg til kobling",
-    "DeleteSelectedIndexersMessageText": "Er du sikker på at du vil slette formattaggen {0}?"
+    "DeleteSelectedIndexersMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
+    "AllTitles": "Alle titler",
+    "ApplyChanges": "Bekreft endringer",
+    "ApiKeyValidationHealthCheckMessage": "Vennligst oppdater din API-nøkkel til å være minst {0} tegn lang. Du kan gjøre dette via innstillinger eller konfigurasjonsfilen"
 }
