@@ -65,18 +65,18 @@ body:
     required: true
 - type: textarea
   attributes:
-    label: Trace Logs?
+    label: Trace Logs? **Not Optional**
     description: |
       Trace Logs (https://wiki.servarr.com/radarr/troubleshooting#logging-and-log-files) 
-      ***Generally speaking, all bug reports must have trace logs provided.***
+      ***Generally speaking, all bug reports MUST have trace logs provided.***
       Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
       Additionally, any additional info? Screenshots? References? Anything that will give us more context about the issue you are encountering!
   validations:
     required: true
 - type: checkboxes
   attributes:
-    label: Trace Logs have been provided as applicable. Reports may be closed if the required logs are not provided.
-    description: Trace logs are generally required for all bug reports and contain `trace`. Info logs are invalid for bug reports and do not contain `debug` nor `trace`
+    label: Trace Logs have been provided as applicable. Reports will be closed if the required logs are not provided.
+    description: Trace logs are **generally required** and are not optional for all bug reports and contain `trace`. Info logs are invalid for bug reports and do not contain `debug` nor `trace`
     options:
     - label: I have read and followed the steps in the wiki link above and provided the required trace logs - the logs contain `trace` - that are relevant and show this issue.
       required: true
