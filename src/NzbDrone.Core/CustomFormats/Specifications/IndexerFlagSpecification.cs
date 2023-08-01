@@ -15,7 +15,7 @@ namespace NzbDrone.Core.CustomFormats
             {
                 if (!Enum.IsDefined(typeof(IndexerFlags), qualityValue))
                 {
-                    context.AddFailure(string.Format("Invalid indexer flag condition value: {0}", qualityValue));
+                    context.AddFailure($"Invalid indexer flag condition value: {qualityValue}");
                 }
             });
         }
@@ -23,17 +23,17 @@ namespace NzbDrone.Core.CustomFormats
 
     public class IndexerFlagSpecification : CustomFormatSpecificationBase
     {
-        private static readonly IndexerFlagSpecificationValidator Validator = new IndexerFlagSpecificationValidator();
+        private static readonly IndexerFlagSpecificationValidator Validator = new ();
 
         public override int Order => 4;
         public override string ImplementationName => "Indexer Flag";
 
-        [FieldDefinition(1, Label = "Flag", Type = FieldType.Select, SelectOptions = typeof(IndexerFlags))]
+        [FieldDefinition(1, Label = "CustomFormatsSpecificationFlag", Type = FieldType.Select, SelectOptions = typeof(IndexerFlags))]
         public int Value { get; set; }
 
         protected override bool IsSatisfiedByWithoutNegate(CustomFormatInput input)
         {
-            return input.IndexerFlags.HasFlag((IndexerFlags)Value) == true;
+            return input.IndexerFlags.HasFlag((IndexerFlags)Value);
         }
 
         public override NzbDroneValidationResult Validate()

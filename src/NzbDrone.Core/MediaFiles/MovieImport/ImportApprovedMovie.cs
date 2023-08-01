@@ -108,6 +108,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                             movieFile.IndexerFlags = flags;
                         }
                     }
+                    else
+                    {
+                        movieFile.IndexerFlags = localMovie.IndexerFlags;
+                    }
 
                     bool copyOnly;
                     switch (importMode)

@@ -57,3 +57,9 @@
 
   width: 55px;
 }
+
+.indexerFlags {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  width: 50px;
+}

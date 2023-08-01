@@ -20,12 +20,12 @@ namespace NzbDrone.Core.MediaFiles
         public string OriginalFilePath { get; set; }
         public string SceneName { get; set; }
         public string ReleaseGroup { get; set; }
-        public IndexerFlags IndexerFlags { get; set; }
         public QualityModel Quality { get; set; }
-        public List<Language> Languages { get; set; }
+        public IndexerFlags IndexerFlags { get; set; }
         public MediaInfoModel MediaInfo { get; set; }
         public string Edition { get; set; }
         public Movie Movie { get; set; }
+        public List<Language> Languages { get; set; }
 
         public override string ToString()
         {

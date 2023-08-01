@@ -78,8 +78,8 @@ namespace NzbDrone.Core.CustomFormats
                 MovieInfo = movieInfo,
                 Movie = movie,
                 Size = blocklist.Size ?? 0,
-                IndexerFlags = blocklist.IndexerFlags,
-                Languages = blocklist.Languages
+                Languages = blocklist.Languages,
+                IndexerFlags = blocklist.IndexerFlags
             };
 
             return ParseCustomFormat(input);
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.CustomFormats
             var parsed = Parser.Parser.ParseMovieTitle(history.SourceTitle);
 
             long.TryParse(history.Data.GetValueOrDefault("size"), out var size);
-            Enum.TryParse(history.Data.GetValueOrDefault("indexerFlags"), true, out IndexerFlags flags);
+            Enum.TryParse(history.Data.GetValueOrDefault("indexerFlags"), true, out IndexerFlags indexerFlags);
 
             var movieInfo = new ParsedMovieInfo
             {
@@ -108,8 +108,8 @@ namespace NzbDrone.Core.CustomFormats
                 MovieInfo = movieInfo,
                 Movie = movie,
                 Size = size,
-                IndexerFlags = flags,
-                Languages = history.Languages
+                Languages = history.Languages,
+                IndexerFlags = indexerFlags
             };
 
             return ParseCustomFormat(input);
@@ -117,7 +117,7 @@ namespace NzbDrone.Core.CustomFormats
 
         public List<CustomFormat> ParseCustomFormat(LocalMovie localMovie)
         {
-            var episodeInfo = new ParsedMovieInfo
+            var movieInfo = new ParsedMovieInfo
             {
                 MovieTitles = new List<string>() { localMovie.Movie.Title },
                 SimpleReleaseTitle = localMovie.SceneName.IsNotNullOrWhiteSpace() ? localMovie.SceneName.SimplifyReleaseTitle() : Path.GetFileName(localMovie.Path).SimplifyReleaseTitle(),
@@ -130,10 +130,11 @@ namespace NzbDrone.Core.CustomFormats
 
             var input = new CustomFormatInput
             {
-                MovieInfo = episodeInfo,
+                MovieInfo = movieInfo,
                 Movie = localMovie.Movie,
                 Size = localMovie.Size,
                 Languages = localMovie.Languages,
+                IndexerFlags = localMovie.IndexerFlags,
                 Filename = Path.GetFileName(localMovie.Path)
             };
 
@@ -203,8 +204,8 @@ namespace NzbDrone.Core.CustomFormats
                 MovieInfo = movieInfo,
                 Movie = movie,
                 Size = movieFile.Size,
-                IndexerFlags = movieFile.IndexerFlags,
                 Languages = movieFile.Languages,
+                IndexerFlags = movieFile.IndexerFlags,
                 Filename = Path.GetFileName(movieFile.RelativePath)
             };
 

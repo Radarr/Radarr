@@ -39,18 +39,6 @@ namespace NzbDrone.Core.Indexers.FileList
             {
                 var id = result.Id;
 
-                IndexerFlags flags = 0;
-
-                if (result.FreeLeech)
-                {
-                    flags |= IndexerFlags.G_Freeleech;
-                }
-
-                if (result.Internal)
-                {
-                    flags |= IndexerFlags.G_Internal;
-                }
-
                 var imdbId = 0;
                 if (result.ImdbId != null && result.ImdbId.Length > 2)
                 {
@@ -68,14 +56,29 @@ namespace NzbDrone.Core.Indexers.FileList
                     Peers = result.Leechers + result.Seeders,
                     PublishDate = result.UploadDate,
                     ImdbId = imdbId,
-                    IndexerFlags = flags
+                    IndexerFlags = GetIndexerFlags(result)
                 });
             }
 
             return torrentInfos.ToArray();
         }
 
-        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
+        private static IndexerFlags GetIndexerFlags(FileListTorrent item)
+        {
+            IndexerFlags flags = 0;
+
+            if (item.FreeLeech)
+            {
+                flags |= IndexerFlags.G_Freeleech;
+            }
+
+            if (item.Internal)
+            {
+                flags |= IndexerFlags.G_Internal;
+            }
+
+            return flags;
+        }
 
         private string GetDownloadUrl(string torrentId)
         {
@@ -95,5 +98,7 @@ namespace NzbDrone.Core.Indexers.FileList
 
             return url.FullUri;
         }
+
+        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }
 }

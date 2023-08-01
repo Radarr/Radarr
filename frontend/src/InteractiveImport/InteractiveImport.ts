@@ -11,6 +11,7 @@ export interface InteractiveImportCommandOptions {
   releaseGroup?: string;
   quality: QualityModel;
   languages: Language[];
+  indexerFlags: number;
   downloadId?: string;
   movieFileId?: number;
 }
@@ -27,6 +28,7 @@ interface InteractiveImport extends ModelBase {
   movie?: Movie;
   qualityWeight: number;
   customFormats: object[];
+  indexerFlags: number;
   rejections: Rejection[];
   movieFileId?: number;
 }
