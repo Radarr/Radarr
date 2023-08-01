@@ -9,6 +9,7 @@ interface CssExports {
   'dateAdded': string;
   'download': string;
   'formats': string;
+  'indexerFlags': string;
   'language': string;
   'languages': string;
   'quality': string;

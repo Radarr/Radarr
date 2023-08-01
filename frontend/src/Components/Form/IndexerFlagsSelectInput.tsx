@@ -4,22 +4,18 @@ import { createSelector } from 'reselect';
 import AppState from 'App/State/AppState';
 import EnhancedSelectInput from './EnhancedSelectInput';
 
-interface IndexerFlagsSelectInputProps {
-  name: string;
-  indexerFlags: number;
-  onChange(payload: object): void;
-}
-
 const selectIndexerFlagsValues = (selectedFlags: number) =>
   createSelector(
     (state: AppState) => state.settings.indexerFlags,
     (indexerFlags) => {
-      const value = indexerFlags.items
-        .filter(
-          // eslint-disable-next-line no-bitwise
-          (item) => (selectedFlags & item.id) === item.id
-        )
-        .map(({ id }) => id);
+      const value = indexerFlags.items.reduce((acc: number[], { id }) => {
+        // eslint-disable-next-line no-bitwise
+        if ((selectedFlags & id) === id) {
+          acc.push(id);
+        }
+
+        return acc;
+      }, []);
 
       const values = indexerFlags.items.map(({ id, name }) => ({
         key: id,
@@ -32,6 +28,12 @@ const selectIndexerFlagsValues = (selectedFlags: number) =>
       };
     }
   );
+
+interface IndexerFlagsSelectInputProps {
+  name: string;
+  indexerFlags: number;
+  onChange(payload: object): void;
+}
 
 function IndexerFlagsSelectInput(props: IndexerFlagsSelectInputProps) {
   const { indexerFlags, onChange } = props;

@@ -50,19 +50,6 @@ namespace NzbDrone.Core.Indexers.HDBits
             foreach (var result in queryResults)
             {
                 var id = result.Id;
-                var internalRelease = result.TypeOrigin == 1;
-
-                IndexerFlags flags = 0;
-
-                if (result.FreeLeech == "yes")
-                {
-                    flags |= IndexerFlags.G_Freeleech;
-                }
-
-                if (internalRelease)
-                {
-                    flags |= IndexerFlags.G_Internal;
-                }
 
                 torrentInfos.Add(new HDBitsInfo
                 {
@@ -75,16 +62,30 @@ namespace NzbDrone.Core.Indexers.HDBits
                     Seeders = result.Seeders,
                     Peers = result.Leechers + result.Seeders,
                     PublishDate = result.Added.ToUniversalTime(),
-                    Internal = internalRelease,
                     ImdbId = result.ImdbInfo?.Id ?? 0,
-                    IndexerFlags = flags
+                    IndexerFlags = GetIndexerFlags(result)
                 });
             }
 
             return torrentInfos.ToArray();
         }
 
-        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
+        private static IndexerFlags GetIndexerFlags(TorrentQueryResponse item)
+        {
+            IndexerFlags flags = 0;
+
+            if (item.FreeLeech == "yes")
+            {
+                flags |= IndexerFlags.G_Freeleech;
+            }
+
+            if (item.TypeOrigin == 1)
+            {
+                flags |= IndexerFlags.G_Internal;
+            }
+
+            return flags;
+        }
 
         private string GetDownloadUrl(string torrentId)
         {
@@ -104,5 +105,7 @@ namespace NzbDrone.Core.Indexers.HDBits
 
             return url.FullUri;
         }
+
+        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }
 }

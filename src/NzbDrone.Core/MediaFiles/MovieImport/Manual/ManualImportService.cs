@@ -24,7 +24,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
     public interface IManualImportService
     {
         List<ManualImportItem> GetMediaFiles(string path, string downloadId, int? movieId, bool filterExistingFiles);
-        ManualImportItem ReprocessItem(string path, string downloadId, int movieId, string releaseGroup, QualityModel quality, List<Language> languages);
+        ManualImportItem ReprocessItem(string path, string downloadId, int movieId, string releaseGroup, QualityModel quality, List<Language> languages, int indexerFlags);
     }
 
     public class ManualImportService : IExecute<ManualImportCommand>, IManualImportService
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             return ProcessFolder(path, path, downloadId, movieId, filterExistingFiles);
         }
 
-        public ManualImportItem ReprocessItem(string path, string downloadId, int movieId, string releaseGroup, QualityModel quality, List<Language> languages)
+        public ManualImportItem ReprocessItem(string path, string downloadId, int movieId, string releaseGroup, QualityModel quality, List<Language> languages, int indexerFlags)
         {
             var rootFolder = Path.GetDirectoryName(path);
             var movie = _movieService.GetMovie(movieId);
@@ -122,9 +122,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 SceneSource = SceneSource(movie, rootFolder),
                 ExistingFile = movie.Path.IsParentPath(path),
                 Size = _diskProvider.GetFileSize(path),
+                ReleaseGroup = releaseGroup.IsNullOrWhiteSpace() ? Parser.Parser.ParseReleaseGroup(path) : releaseGroup,
                 Languages = languages?.Count <= 1 && (languages?.SingleOrDefault() ?? Language.Unknown) == Language.Unknown ? languageParse : languages,
                 Quality = (quality?.Quality ?? Quality.Unknown) == Quality.Unknown ? QualityParser.ParseQuality(path) : quality,
-                ReleaseGroup = releaseGroup.IsNullOrWhiteSpace() ? Parser.Parser.ParseReleaseGroup(path) : releaseGroup,
+                IndexerFlags = (IndexerFlags)indexerFlags
             };
 
             return MapItem(_importDecisionMaker.GetDecision(localMovie, downloadClientItem), rootFolder, downloadId, null);
@@ -320,6 +321,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             item.Languages = decision.LocalMovie.Languages;
             item.ReleaseGroup = decision.LocalMovie.ReleaseGroup;
             item.Rejections = decision.Rejections;
+            item.IndexerFlags = (int)decision.LocalMovie.IndexerFlags;
 
             return item;
         }
@@ -346,9 +348,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                     ExistingFile = existingFile,
                     FileMovieInfo = fileMovieInfo,
                     Path = file.Path,
+                    ReleaseGroup = file.ReleaseGroup,
                     Quality = file.Quality,
                     Languages = file.Languages,
-                    ReleaseGroup = file.ReleaseGroup,
+                    IndexerFlags = (IndexerFlags)file.IndexerFlags,
                     Movie = movie,
                     Size = 0
                 };
@@ -373,9 +376,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
                 // Apply the user-chosen values.
                 localMovie.Movie = movie;
+                localMovie.ReleaseGroup = file.ReleaseGroup;
                 localMovie.Quality = file.Quality;
                 localMovie.Languages = file.Languages;
-                localMovie.ReleaseGroup = file.ReleaseGroup;
+                localMovie.IndexerFlags = (IndexerFlags)file.IndexerFlags;
 
                 // TODO: Cleanup non-tracked downloads
                 var importDecision = new ImportDecision(localMovie);

@@ -105,6 +105,15 @@ export const defaultState = {
       isSortable: true
     },
     {
+      name: 'indexerFlags',
+      columnLabel: () => translate('IndexerFlags'),
+      label: React.createElement(Icon, {
+        name: icons.FLAG,
+        title: () => translate('IndexerFlags')
+      }),
+      isVisible: false
+    },
+    {
       name: 'dateAdded',
       label: () => translate('Added'),
       isVisible: false,
