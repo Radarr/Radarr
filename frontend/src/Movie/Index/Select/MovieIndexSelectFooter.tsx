@@ -166,7 +166,7 @@ function MovieIndexSelectFooter() {
             isDisabled={!anySelected || isOrganizingMovies}
             onPress={onOrganizePress}
           >
-            {translate('Rename Files')}
+            {translate('RenameFiles')}
           </SpinnerButton>
 
           <SpinnerButton

@@ -13,17 +13,13 @@ import styles from './InteractiveSearchContent.css';
 const columns = [
   {
     name: 'protocol',
-    get label() {
-      return translate('Source');
-    },
+    label: () => translate('Source'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'age',
-    get label() {
-      return translate('Age');
-    },
+    label: () => translate('Age'),
     isSortable: true,
     isVisible: true
   },
@@ -43,66 +39,50 @@ const columns = [
   },
   {
     name: 'title',
-    get label() {
-      return translate('Title');
-    },
+    label: () => translate('Title'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'indexer',
-    get label() {
-      return translate('Indexer');
-    },
+    label: () => translate('Indexer'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'history',
-    get label() {
-      return translate('History');
-    },
+    label: () => translate('History'),
     isSortable: true,
     fixedSortDirection: sortDirections.ASCENDING,
     isVisible: true
   },
   {
     name: 'size',
-    get label() {
-      return translate('Size');
-    },
+    label: () => translate('Size'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'peers',
-    get label() {
-      return translate('Peers');
-    },
+    label: () => translate('Peers'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'languages',
-    get label() {
-      return translate('Language');
-    },
+    label: () => translate('Language'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'qualityWeight',
-    get label() {
-      return translate('Quality');
-    },
+    label: () => translate('Quality'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'customFormat',
-    get label() {
-      return translate('Formats');
-    },
+    label: () => translate('Formats'),
     isSortable: true,
     isVisible: true
   },

@@ -20,16 +20,12 @@ import styles from './FileBrowserModalContent.css';
 const columns = [
   {
     name: 'type',
-    get label() {
-      return translate('Type');
-    },
+    label: () => translate('Type'),
     isVisible: true
   },
   {
     name: 'name',
-    get label() {
-      return translate('Name');
-    },
+    label: () => translate('Name'),
     isVisible: true
   }
 ];

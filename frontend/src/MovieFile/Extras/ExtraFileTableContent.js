@@ -11,23 +11,17 @@ import styles from './ExtraFileTableContent.css';
 const columns = [
   {
     name: 'relativePath',
-    get label() {
-      return translate('RelativePath');
-    },
+    label: () => translate('RelativePath'),
     isVisible: true
   },
   {
     name: 'extension',
-    get label() {
-      return translate('Extension');
-    },
+    label: () => translate('Extension'),
     isVisible: true
   },
   {
     name: 'type',
-    get label() {
-      return translate('Type');
-    },
+    label: () => translate('Type'),
     isVisible: true
   },
   {

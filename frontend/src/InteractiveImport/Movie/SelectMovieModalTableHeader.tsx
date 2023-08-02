@@ -30,7 +30,7 @@ function SelectMovieModalTableHeader(props: SelectMovieModalTableHeaderProps) {
             }
             name={name}
           >
-            {label}
+            {typeof label === 'function' ? label() : label}
           </VirtualTableHeaderCell>
         );
       })}

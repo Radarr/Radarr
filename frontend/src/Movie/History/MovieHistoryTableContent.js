@@ -17,30 +17,22 @@ const columns = [
   },
   {
     name: 'sourceTitle',
-    get label() {
-      return translate('SourceTitle');
-    },
+    label: () => translate('SourceTitle'),
     isVisible: true
   },
   {
     name: 'languages',
-    get label() {
-      return translate('Languages');
-    },
+    label: () => translate('Languages'),
     isVisible: true
   },
   {
     name: 'quality',
-    get label() {
-      return translate('Quality');
-    },
+    label: () => translate('Quality'),
     isVisible: true
   },
   {
     name: 'customFormats',
-    get label() {
-      return translate('CustomFormats');
-    },
+    label: () => translate('CustomFormats'),
     isSortable: false,
     isVisible: true
   },
@@ -55,9 +47,7 @@ const columns = [
   },
   {
     name: 'date',
-    get label() {
-      return translate('Date');
-    },
+    label: () => translate('Date'),
     isVisible: true
   },
   {

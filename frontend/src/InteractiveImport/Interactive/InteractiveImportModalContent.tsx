@@ -71,48 +71,36 @@ type OnSelectedChangeCallback = React.ComponentProps<
 const COLUMNS = [
   {
     name: 'relativePath',
-    get label() {
-      return translate('RelativePath');
-    },
+    label: () => translate('RelativePath'),
     isSortable: true,
     isVisible: true,
   },
   {
     name: 'movie',
-    get label() {
-      return translate('Movie');
-    },
+    label: () => translate('Movie'),
     isSortable: true,
     isVisible: true,
   },
   {
     name: 'releaseGroup',
-    get label() {
-      return translate('ReleaseGroup');
-    },
+    label: () => translate('ReleaseGroup'),
     isVisible: true,
   },
   {
     name: 'quality',
-    get label() {
-      return translate('Quality');
-    },
+    label: () => translate('Quality'),
     isSortable: true,
     isVisible: true,
   },
   {
     name: 'languages',
-    get label() {
-      return translate('Languages');
-    },
+    label: () => translate('Languages'),
     isSortable: true,
     isVisible: true,
   },
   {
     name: 'size',
-    get label() {
-      return translate('Size');
-    },
+    label: () => translate('Size'),
     isSortable: true,
     isVisible: true,
   },
@@ -139,22 +127,16 @@ const COLUMNS = [
 const importModeOptions = [
   {
     key: 'chooseImportMode',
-    get value() {
-      return translate('ChooseImportMode');
-    },
+    value: () => translate('ChooseImportMode'),
     disabled: true,
   },
   {
     key: 'move',
-    get value() {
-      return translate('MoveFiles');
-    },
+    value: () => translate('MoveFiles'),
   },
   {
     key: 'copy',
-    get value() {
-      return translate('HardlinkCopyFiles');
-    },
+    value: () => translate('HardlinkCopyFiles'),
   },
 ];
 

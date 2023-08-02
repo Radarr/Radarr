@@ -111,7 +111,7 @@ class DiscoverMovieHeader extends Component {
                 isSortable={isSortable}
                 {...otherProps}
               >
-                {label}
+                {typeof label === 'function' ? label() : label}
               </VirtualTableHeaderCell>
             );
           })

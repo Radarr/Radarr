@@ -10,23 +10,17 @@ import styles from './MovieTitlesTableContent.css';
 const columns = [
   {
     name: 'altTitle',
-    get label() {
-      return translate('AlternativeTitle');
-    },
+    label: () => translate('AlternativeTitle'),
     isVisible: true
   },
   {
     name: 'language',
-    get label() {
-      return translate('Language');
-    },
+    label: () => translate('Language'),
     isVisible: true
   },
   {
     name: 'sourceType',
-    get label() {
-      return translate('Type');
-    },
+    label: () => translate('Type'),
     isVisible: true
   }
 ];
