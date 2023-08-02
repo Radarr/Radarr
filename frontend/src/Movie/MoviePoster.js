@@ -23,6 +23,7 @@ MoviePoster.propTypes = {
 };
 
 MoviePoster.defaultProps = {
+  ...MovieImage.defaultProps,
   size: 250
 };
 
