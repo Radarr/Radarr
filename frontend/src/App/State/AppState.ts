@@ -5,6 +5,7 @@ import MovieFilesAppState from './MovieFilesAppState';
 import MoviesAppState, { MovieIndexAppState } from './MoviesAppState';
 import ParseAppState from './ParseAppState';
 import QueueAppState from './QueueAppState';
+import RootFolderAppState from './RootFolderAppState';
 import SettingsAppState from './SettingsAppState';
 import SystemAppState from './SystemAppState';
 import TagsAppState from './TagsAppState';
@@ -50,6 +51,7 @@ interface AppState {
   movies: MoviesAppState;
   parse: ParseAppState;
   queue: QueueAppState;
+  rootFolders: RootFolderAppState;
   settings: SettingsAppState;
   system: SystemAppState;
   tags: TagsAppState;
