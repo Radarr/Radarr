@@ -21,34 +21,24 @@ const SIDEBAR_WIDTH = parseInt(dimensions.sidebarWidth);
 const links = [
   {
     iconName: icons.MOVIE_CONTINUING,
-    get title() {
-      return translate('Movies');
-    },
+    title: () => translate('Movies'),
     to: '/',
     alias: '/movies',
     children: [
       {
-        get title() {
-          return translate('AddNew');
-        },
+        title: () => translate('AddNew'),
         to: '/add/new'
       },
       {
-        get title() {
-          return translate('ImportLibrary');
-        },
+        title: () => translate('ImportLibrary'),
         to: '/add/import'
       },
       {
-        get title() {
-          return translate('Collections');
-        },
+        title: () => translate('Collections'),
         to: '/collections'
       },
       {
-        get title() {
-          return translate('Discover');
-        },
+        title: () => translate('Discover'),
         to: '/add/discover'
       }
     ]
@@ -56,36 +46,26 @@ const links = [
 
   {
     iconName: icons.CALENDAR,
-    get title() {
-      return translate('Calendar');
-    },
+    title: () => translate('Calendar'),
     to: '/calendar'
   },
 
   {
     iconName: icons.ACTIVITY,
-    get title() {
-      return translate('Activity');
-    },
+    title: () => translate('Activity'),
     to: '/activity/queue',
     children: [
       {
-        get title() {
-          return translate('Queue');
-        },
+        title: () => translate('Queue'),
         to: '/activity/queue',
         statusComponent: QueueStatusConnector
       },
       {
-        get title() {
-          return translate('History');
-        },
+        title: () => translate('History'),
         to: '/activity/history'
       },
       {
-        get title() {
-          return translate('Blocklist');
-        },
+        title: () => translate('Blocklist'),
         to: '/activity/blocklist'
       }
     ]
@@ -93,81 +73,55 @@ const links = [
 
   {
     iconName: icons.SETTINGS,
-    get title() {
-      return translate('Settings');
-    },
+    title: () => translate('Settings'),
     to: '/settings',
     children: [
       {
-        get title() {
-          return translate('MediaManagement');
-        },
+        title: () => translate('MediaManagement'),
         to: '/settings/mediamanagement'
       },
       {
-        get title() {
-          return translate('Profiles');
-        },
+        title: () => translate('Profiles'),
         to: '/settings/profiles'
       },
       {
-        get title() {
-          return translate('Quality');
-        },
+        title: () => translate('Quality'),
         to: '/settings/quality'
       },
       {
-        get title() {
-          return translate('CustomFormats');
-        },
+        title: () => translate('CustomFormats'),
         to: '/settings/customformats'
       },
       {
-        get title() {
-          return translate('Indexers');
-        },
+        title: () => translate('Indexers'),
         to: '/settings/indexers'
       },
       {
-        get title() {
-          return translate('DownloadClients');
-        },
+        title: () => translate('DownloadClients'),
         to: '/settings/downloadclients'
       },
       {
-        get title() {
-          return translate('Lists');
-        },
+        title: () => translate('Lists'),
         to: '/settings/importlists'
       },
       {
-        get title() {
-          return translate('Connect');
-        },
+        title: () => translate('Connect'),
         to: '/settings/connect'
       },
       {
-        get title() {
-          return translate('Metadata');
-        },
+        title: () => translate('Metadata'),
         to: '/settings/metadata'
       },
       {
-        get title() {
-          return translate('Tags');
-        },
+        title: () => translate('Tags'),
         to: '/settings/tags'
       },
       {
-        get title() {
-          return translate('General');
-        },
+        title: () => translate('General'),
         to: '/settings/general'
       },
       {
-        get title() {
-          return translate('UI');
-        },
+        title: () => translate('UI'),
         to: '/settings/ui'
       }
     ]
@@ -175,46 +129,32 @@ const links = [
 
   {
     iconName: icons.SYSTEM,
-    get title() {
-      return translate('System');
-    },
+    title: () => translate('System'),
     to: '/system/status',
     children: [
       {
-        get title() {
-          return translate('Status');
-        },
+        title: () => translate('Status'),
         to: '/system/status',
         statusComponent: HealthStatusConnector
       },
       {
-        get title() {
-          return translate('Tasks');
-        },
+        title: () => translate('Tasks'),
         to: '/system/tasks'
       },
       {
-        get title() {
-          return translate('Backup');
-        },
+        title: () => translate('Backup'),
         to: '/system/backup'
       },
       {
-        get title() {
-          return translate('Updates');
-        },
+        title: () => translate('Updates'),
         to: '/system/updates'
       },
       {
-        get title() {
-          return translate('Events');
-        },
+        title: () => translate('Events'),
         to: '/system/events'
       },
       {
-        get title() {
-          return translate('LogFiles');
-        },
+        title: () => translate('LogFiles'),
         to: '/system/logs/files'
       }
     ]
