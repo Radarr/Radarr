@@ -780,7 +780,7 @@
     "LaunchBrowserHelpText": " Ouvrer un navigateur et accéder à la page d'accueil de Radarr au démarrage de l'application.",
     "CustomFormatJSON": "Format personnalisé JSON",
     "CloseCurrentModal": "Fermer le modal actuel",
-    "AddingTag": "Ajout d'un tag",
+    "AddingTag": "Ajouter un tag",
     "OnHealthIssueHelpText": "Lors d'un problème de santé",
     "AcceptConfirmationModal": "Accepter la fenêtre de confirmation",
     "StartSearchForMissingMovie": "Lancer la recherche de film manquant",
@@ -1180,5 +1180,8 @@
     "ApplyTagsHelpTextReplace": "Remplacer : Remplace les tags par les tags renseignés (ne pas renseigner de tags pour effacer tous les tags)",
     "DeleteSelectedIndexers": "Supprimer l'indexeur",
     "RemoveSelectedItemsQueueMessageText": "Êtes-vous sûr de vouloir supprimer {0} objet(s) de la file d'attente ?",
-    "DeleteSelectedIndexersMessageText": "Voulez-vous vraiment supprimer l'indexeur '{0}' ?"
+    "DeleteSelectedIndexersMessageText": "Voulez-vous vraiment supprimer l'indexeur '{0}' ?",
+    "EditSelectedIndexers": "Modifier les indexeurs sélectionnés",
+    "CountDownloadClientsSelected": "{0} client(s) de téléchargement sélectionné(s)",
+    "EditSelectedDownloadClients": "Modifier les clients de téléchargement sélectionnés"
 }
