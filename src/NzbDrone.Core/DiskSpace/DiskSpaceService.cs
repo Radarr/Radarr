@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.DiskSpace
@@ -43,7 +44,7 @@ namespace NzbDrone.Core.DiskSpace
         private IEnumerable<string> GetMoviesRootPaths()
         {
             return _movieService.AllMoviePaths()
-                .Where(s => _diskProvider.FolderExists(s.Value))
+                .Where(s => s.Value.IsPathValid(PathValidationType.CurrentOs) && _diskProvider.FolderExists(s.Value))
                 .Select(s => _diskProvider.GetPathRoot(s.Value))
                 .Distinct();
         }

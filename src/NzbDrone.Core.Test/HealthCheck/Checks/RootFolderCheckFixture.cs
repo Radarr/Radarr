@@ -7,7 +7,9 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Core.HealthCheck.Checks;
 using NzbDrone.Core.Localization;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.HealthCheck.Checks
 {
@@ -22,7 +24,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                   .Returns("Some Warning Message");
         }
 
-        private void GivenMissingRootFolder()
+        private void GivenMissingRootFolder(string rootFolderPath)
         {
             var movies = Builder<Movie>.CreateListOfSize(1)
                                         .Build()
@@ -32,9 +34,9 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                   .Setup(s => s.AllMoviePaths())
                   .Returns(movies.ToDictionary(x => x.Id, x => x.Path));
 
-            Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.GetParentFolder(movies.First().Path))
-                  .Returns(@"C:\Movies");
+            Mocker.GetMock<IRootFolderService>()
+                .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>(), null))
+                .Returns(rootFolderPath);
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.FolderExists(It.IsAny<string>()))
@@ -54,7 +56,25 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         [Test]
         public void should_return_error_if_movie_parent_is_missing()
         {
-            GivenMissingRootFolder();
+            GivenMissingRootFolder(@"C:\Movies".AsOsAgnostic());
+
+            Subject.Check().ShouldBeError();
+        }
+
+        [Test]
+        public void should_return_error_if_series_path_is_for_posix_os()
+        {
+            WindowsOnly();
+            GivenMissingRootFolder("/mnt/movies");
+
+            Subject.Check().ShouldBeError();
+        }
+
+        [Test]
+        public void should_return_error_if_series_path_is_for_windows()
+        {
+            PosixOnly();
+            GivenMissingRootFolder(@"C:\Movies");
 
             Subject.Check().ShouldBeError();
         }
