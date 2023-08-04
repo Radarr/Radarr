@@ -170,6 +170,11 @@ namespace NzbDrone.Common.Extensions
 
         public static bool ContainsInvalidPathChars(this string text)
         {
+            if (text.IsNullOrWhiteSpace())
+            {
+                throw new ArgumentNullException("text");
+            }
+
             return text.IndexOfAny(Path.GetInvalidPathChars()) >= 0;
         }
 
