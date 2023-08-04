@@ -161,7 +161,7 @@ namespace NzbDrone.Core.Test.Extras.Subtitles
                 sampleFile
             };
 
-            Mocker.GetMock<IDiskProvider>().Setup(s => s.GetFiles(It.IsAny<string>(), SearchOption.AllDirectories))
+            Mocker.GetMock<IDiskProvider>().Setup(s => s.GetFiles(It.IsAny<string>(), true))
                   .Returns(videoFiles);
 
             Mocker.GetMock<IDetectSample>().Setup(s => s.IsSample(It.IsAny<MovieMetadata>(), sampleFile))

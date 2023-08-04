@@ -82,7 +82,7 @@ namespace NzbDrone.Core.MediaCover
             }
 
             return  _diskProvider
-                    .GetFileInfos(_coverRootFolder, SearchOption.AllDirectories)
+                    .GetFileInfos(_coverRootFolder, true)
                     .ToDictionary(x => x.FullName, PathEqualityComparer.Instance);
         }
 

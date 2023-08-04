@@ -1,4 +1,3 @@
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
@@ -34,7 +33,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             if (MovieMultiPartRegex.Any(v => v.IsMatch(localMovie.Path)))
             {
                 var parentPath = localMovie.Path.GetParentPath();
-                var filesInDirectory = _diskProvider.GetFiles(localMovie.Path.GetParentPath(), SearchOption.TopDirectoryOnly);
+                var filesInDirectory = _diskProvider.GetFiles(localMovie.Path.GetParentPath(), false);
 
                 foreach (var regex in MovieMultiPartRegex)
                 {

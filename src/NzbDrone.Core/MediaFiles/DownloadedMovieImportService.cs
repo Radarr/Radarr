@@ -117,11 +117,11 @@ namespace NzbDrone.Core.MediaFiles
         public bool ShouldDeleteFolder(DirectoryInfo directoryInfo, Movie movie)
         {
             try
-                {
+            {
                 var videoFiles = _diskScanService.GetVideoFiles(directoryInfo.FullName);
-                var rarFiles = _diskProvider.GetFiles(directoryInfo.FullName, SearchOption.AllDirectories)
-                                            .Where(f => Path.GetExtension(f)
-                                            .Equals(".rar", StringComparison.OrdinalIgnoreCase));
+                var rarFiles = _diskProvider.GetFiles(directoryInfo.FullName, true).Where(f =>
+                    Path.GetExtension(f).Equals(".rar",
+                        StringComparison.OrdinalIgnoreCase));
 
                 foreach (var videoFile in videoFiles)
                 {
@@ -326,7 +326,7 @@ namespace NzbDrone.Core.MediaFiles
 
         private ImportResult CheckEmptyResultForIssue(string folder)
         {
-            var files = _diskProvider.GetFiles(folder, SearchOption.AllDirectories);
+            var files = _diskProvider.GetFiles(folder, true);
 
             if (files.Any(file => FileExtensions.ExecutableExtensions.Contains(Path.GetExtension(file))))
             {

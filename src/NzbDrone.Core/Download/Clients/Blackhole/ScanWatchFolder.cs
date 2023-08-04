@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
                 if (PreCheckWatchItemExpiry(newWatchItem, oldWatchItem))
                 {
-                    var files = _diskProvider.GetFiles(folder, SearchOption.AllDirectories);
+                    var files = _diskProvider.GetFiles(folder, true);
 
                     newWatchItem.TotalSize = files.Select(_diskProvider.GetFileSize).Sum();
                     newWatchItem.Hash = GetHash(folder, files);
@@ -155,7 +155,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
             }
         }
 
-        private string GetHash(string folder, string[] files)
+        private string GetHash(string folder, IEnumerable<string> files)
         {
             var data = new StringBuilder();
 

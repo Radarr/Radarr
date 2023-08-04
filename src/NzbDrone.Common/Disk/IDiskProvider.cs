@@ -22,8 +22,8 @@ namespace NzbDrone.Common.Disk
         bool FileExists(string path, StringComparison stringComparison);
         bool FolderWritable(string path);
         bool FolderEmpty(string path);
-        string[] GetDirectories(string path);
-        string[] GetFiles(string path, SearchOption searchOption);
+        IEnumerable<string> GetDirectories(string path);
+        IEnumerable<string> GetFiles(string path, bool recursive);
         long GetFolderSize(string path);
         long GetFileSize(string path);
         void CreateFolder(string path);
@@ -52,7 +52,7 @@ namespace NzbDrone.Common.Disk
         IMount GetMount(string path);
         List<DirectoryInfo> GetDirectoryInfos(string path);
         FileInfo GetFileInfo(string path);
-        List<FileInfo> GetFileInfos(string path, SearchOption searchOption = SearchOption.TopDirectoryOnly);
+        List<FileInfo> GetFileInfos(string path, bool recursive = false);
         void RemoveEmptySubfolders(string path);
         void SaveStream(Stream stream, string path);
         bool IsValidFolderPermissionMask(string mask);
