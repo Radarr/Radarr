@@ -46,7 +46,7 @@ namespace NzbDrone.Common.Disk
         {
             CheckFolderExists(path);
 
-            var dirFiles = GetFiles(path, SearchOption.AllDirectories).ToList();
+            var dirFiles = GetFiles(path, true).ToList();
 
             if (!dirFiles.Any())
             {
@@ -149,25 +149,29 @@ namespace NzbDrone.Common.Disk
             return Directory.EnumerateFileSystemEntries(path).Empty();
         }
 
-        public string[] GetDirectories(string path)
+        public IEnumerable<string> GetDirectories(string path)
         {
             Ensure.That(path, () => path).IsValidPath(PathValidationType.CurrentOs);
 
-            return Directory.GetDirectories(path);
+            return Directory.EnumerateDirectories(path);
         }
 
-        public string[] GetFiles(string path, SearchOption searchOption)
+        public IEnumerable<string> GetFiles(string path, bool recursive)
         {
             Ensure.That(path, () => path).IsValidPath(PathValidationType.CurrentOs);
 
-            return Directory.GetFiles(path, "*.*", searchOption);
+            return Directory.EnumerateFiles(path, "*", new EnumerationOptions
+            {
+                RecurseSubdirectories = recursive,
+                IgnoreInaccessible = true
+            });
         }
 
         public long GetFolderSize(string path)
         {
             Ensure.That(path, () => path).IsValidPath(PathValidationType.CurrentOs);
 
-            return GetFiles(path, SearchOption.AllDirectories).Sum(e => new FileInfo(e).Length);
+            return GetFiles(path, true).Sum(e => new FileInfo(e).Length);
         }
 
         public long GetFileSize(string path)
@@ -288,8 +292,9 @@ namespace NzbDrone.Common.Disk
         {
             Ensure.That(path, () => path).IsValidPath(PathValidationType.CurrentOs);
 
-            var files = Directory.GetFiles(path, "*.*", recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
-            Array.ForEach(files, RemoveReadOnly);
+            var files = GetFiles(path, recursive);
+
+            files.ToList().ForEach(RemoveReadOnly);
 
             Directory.Delete(path, recursive);
         }
@@ -414,7 +419,7 @@ namespace NzbDrone.Common.Disk
         {
             Ensure.That(path, () => path).IsValidPath(PathValidationType.CurrentOs);
 
-            foreach (var file in GetFiles(path, SearchOption.TopDirectoryOnly))
+            foreach (var file in GetFiles(path, false))
             {
                 DeleteFile(file);
             }
@@ -515,13 +520,17 @@ namespace NzbDrone.Common.Disk
             return new FileInfo(path);
         }
 
-        public List<FileInfo> GetFileInfos(string path, SearchOption searchOption = SearchOption.TopDirectoryOnly)
+        public List<FileInfo> GetFileInfos(string path, bool recursive = false)
         {
             Ensure.That(path, () => path).IsValidPath(PathValidationType.CurrentOs);
 
             var di = new DirectoryInfo(path);
 
-            return di.GetFiles("*", searchOption).ToList();
+            return di.EnumerateFiles("*", new EnumerationOptions
+            {
+                RecurseSubdirectories = recursive,
+                IgnoreInaccessible = true
+            }).ToList();
         }
 
         public void RemoveEmptySubfolders(string path)

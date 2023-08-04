@@ -326,7 +326,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Returns(DetectSampleResult.Sample);
 
             Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.GetFiles(It.IsAny<string>(), SearchOption.AllDirectories))
+                  .Setup(s => s.GetFiles(It.IsAny<string>(), true))
                   .Returns(new[] { _videoFiles.First().Replace(".ext", ".rar") });
 
             Mocker.GetMock<IDiskProvider>()
@@ -352,7 +352,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IDiskProvider>().Setup(c => c.FolderExists(folderName))
                   .Returns(true);
 
-            Mocker.GetMock<IDiskProvider>().Setup(c => c.GetFiles(folderName, SearchOption.TopDirectoryOnly))
+            Mocker.GetMock<IDiskProvider>().Setup(c => c.GetFiles(folderName, false))
                   .Returns(new[] { fileName });
 
             var localMovie = new LocalMovie();
@@ -459,7 +459,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Returns(imported.Select(i => new ImportResult(i)).ToList());
 
             Mocker.GetMock<IDiskProvider>()
-                .Setup(s => s.GetFiles(It.IsAny<string>(), SearchOption.AllDirectories))
+                .Setup(s => s.GetFiles(It.IsAny<string>(), true))
                 .Returns(new[] { _videoFiles.First().Replace(".ext", ".rar") });
 
             var result = Subject.ProcessPath(path);
@@ -485,7 +485,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Returns(imported.Select(i => new ImportResult(i)).ToList());
 
             Mocker.GetMock<IDiskProvider>()
-                .Setup(s => s.GetFiles(It.IsAny<string>(), SearchOption.AllDirectories))
+                .Setup(s => s.GetFiles(It.IsAny<string>(), true))
                 .Returns(new[] { _videoFiles.First().Replace(".ext", ".exe") });
 
             var result = Subject.ProcessPath(path);

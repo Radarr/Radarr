@@ -1,4 +1,3 @@
-using System.IO;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
@@ -44,7 +43,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             var filePaths = paths.Cast<string>().Select(x => x.AsOsAgnostic()).ToArray();
 
             Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), SearchOption.TopDirectoryOnly))
+                  .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), false))
                   .Returns(filePaths);
 
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
@@ -72,7 +71,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             var filePaths = paths.Cast<string>().Select(x => x.AsOsAgnostic()).ToArray();
 
             Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), SearchOption.TopDirectoryOnly))
+                  .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), false))
                   .Returns(filePaths);
 
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();
@@ -90,7 +89,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             var filePaths = paths.Cast<string>().Select(x => x.AsOsAgnostic()).ToArray();
 
             Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), SearchOption.TopDirectoryOnly))
+                  .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), false))
                   .Returns(filePaths);
 
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
@@ -108,7 +107,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             var filePaths = paths.Cast<string>().Select(x => x.AsOsAgnostic()).ToArray();
 
             Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), SearchOption.TopDirectoryOnly))
+                  .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), false))
                   .Returns(filePaths);
 
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
