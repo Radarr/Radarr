@@ -471,6 +471,7 @@
   "IncludeUnknownMovieItemsHelpText": "Show items without a movie in the queue. This could include removed movies or anything else in Radarr's category",
   "IncludeUnmonitored": "Include Unmonitored",
   "Indexer": "Indexer",
+  "IndexerDownloadClientHealthCheckMessage": "Indexers with invalid download clients: {0}.",
   "IndexerDownloadClientHelpText": "Specify which download client is used for grabs from this indexer",
   "IndexerFlags": "Indexer Flags",
   "IndexerJackettAll": "Indexers using the unsupported Jackett 'all' endpoint: {0}",
