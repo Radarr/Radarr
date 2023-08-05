@@ -61,7 +61,7 @@ class QueueOptions extends Component {
             type={inputTypes.CHECK}
             name="includeUnknownMovieItems"
             value={includeUnknownMovieItems}
-            helpText={translate('IncludeUnknownMovieItemsHelpText')}
+            helpText={translate('ShownUnknownMovieItemsHelpText')}
             onChange={this.onOptionChange}
           />
         </FormGroup>

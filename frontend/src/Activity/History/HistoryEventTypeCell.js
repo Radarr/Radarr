@@ -3,6 +3,7 @@ import React from 'react';
 import Icon from 'Components/Icon';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import { icons, kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './HistoryEventTypeCell.css';
 
 function getIconName(eventType) {
@@ -38,21 +39,21 @@ function getIconKind(eventType) {
 function getTooltip(eventType, data) {
   switch (eventType) {
     case 'grabbed':
-      return `Movie grabbed from ${data.indexer} and sent to ${data.downloadClient}`;
+      return translate('MovieGrabbedHistoryTooltip', { indexer: data.indexer, downloadClient: data.downloadClient });
     case 'movieFolderImported':
-      return 'Movie imported from movie folder';
+      return translate('MovieFolderImportedTooltip');
     case 'downloadFolderImported':
-      return 'Movie downloaded successfully and picked up from download client';
+      return translate('MovieImportedTooltip');
     case 'downloadFailed':
-      return 'Movie download failed';
+      return translate('MovieDownloadFailedTooltip');
     case 'movieFileDeleted':
-      return 'Movie file deleted';
+      return translate('MovieFileDeletedTooltip');
     case 'movieFileRenamed':
-      return 'Movie file renamed';
+      return translate('MovieFileRenamedTooltip');
     case 'downloadIgnored':
-      return 'Movie Download Ignored';
+      return translate('MovieDownloadIgnoredTooltip');
     default:
-      return 'Unknown event';
+      return translate('UnknownEventTooltip');
   }
 }
 

@@ -88,7 +88,7 @@ function HistoryDetails(props) {
           nzbInfoUrl ?
             <span>
               <DescriptionListItemTitle>
-                Info URL
+                {translate('InfoUrl')}
               </DescriptionListItemTitle>
 
               <DescriptionListItemDescription>
@@ -110,7 +110,7 @@ function HistoryDetails(props) {
         {
           downloadId ?
             <DescriptionListItem
-              title={translate('GrabID')}
+              title={translate('GrabId')}
               data={downloadId}
             /> :
             null
@@ -153,7 +153,7 @@ function HistoryDetails(props) {
         {
           downloadId ?
             <DescriptionListItem
-              title={translate('GrabID')}
+              title={translate('GrabId')}
               data={downloadId}
             /> :
             null
@@ -228,13 +228,13 @@ function HistoryDetails(props) {
 
     switch (reason) {
       case 'Manual':
-        reasonMessage = translate('FileWasDeletedByViaUI');
+        reasonMessage = translate('DeletedReasonManual');
         break;
       case 'MissingFromDisk':
-        reasonMessage = translate('MissingFromDisk');
+        reasonMessage = translate('DeletedReasonMissingFromDisk');
         break;
       case 'Upgrade':
-        reasonMessage = translate('FileWasDeletedByUpgrade');
+        reasonMessage = translate('DeletedReasonUpgrade');
         break;
       default:
         reasonMessage = '';
@@ -313,7 +313,7 @@ function HistoryDetails(props) {
         {
           downloadId ?
             <DescriptionListItem
-              title={translate('GrabID')}
+              title={translate('GrabId')}
               data={downloadId}
             /> :
             null

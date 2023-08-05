@@ -27,7 +27,7 @@ function TimeleftCell(props) {
     return (
       <TableRowCell
         className={styles.timeleft}
-        title={translate('DelayingDownloadUntilInterp', [date, time])}
+        title={translate('DelayingDownloadUntil', { date, time })}
       >
         -
       </TableRowCell>
@@ -41,7 +41,7 @@ function TimeleftCell(props) {
     return (
       <TableRowCell
         className={styles.timeleft}
-        title={translate('RetryingDownloadInterp', [date, time])}
+        title={translate('RetryingDownload', { date, time })}
       >
         -
       </TableRowCell>

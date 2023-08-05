@@ -233,7 +233,7 @@ class Queue extends Component {
           {
             !isRefreshing && hasError ?
               <Alert kind={kinds.DANGER}>
-                {translate('FailedToLoadQueue')}
+                {translate('QueueLoadError')}
               </Alert> :
               null
           }

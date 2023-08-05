@@ -115,11 +115,12 @@ class RemoveQueueItemModal extends Component {
 
             <FormGroup>
               <FormLabel>{translate('BlocklistRelease')}</FormLabel>
+
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="blocklist"
                 value={blocklist}
-                helpText={translate('BlocklistHelpText')}
+                helpText={translate('BlocklistReleaseHelpText')}
                 onChange={this.onBlocklistChange}
               />
             </FormGroup>
@@ -149,7 +150,7 @@ class RemoveQueueItemModal extends Component {
               kind={kinds.DANGER}
               onPress={this.onRemoveConfirmed}
             >
-              Remove
+              {translate('Remove')}
             </Button>
           </ModalFooter>
         </ModalContent>
