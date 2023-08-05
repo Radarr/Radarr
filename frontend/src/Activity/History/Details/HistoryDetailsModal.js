@@ -15,19 +15,19 @@ import styles from './HistoryDetailsModal.css';
 function getHeaderTitle(eventType) {
   switch (eventType) {
     case 'grabbed':
-      return 'Grabbed';
+      return translate('Grabbed');
     case 'downloadFailed':
-      return 'Download Failed';
+      return translate('DownloadFailed');
     case 'downloadFolderImported':
-      return 'Movie Imported';
+      return translate('MovieImported');
     case 'movieFileDeleted':
-      return 'Movie File Deleted';
+      return translate('MovieFileDeleted');
     case 'movieFileRenamed':
-      return 'Movie File Renamed';
+      return translate('MovieFileRenamed');
     case 'downloadIgnored':
-      return 'Download Ignored';
+      return translate('DownloadIgnored');
     default:
-      return 'Unknown';
+      return translate('Unknown');
   }
 }
 

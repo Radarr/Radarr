@@ -158,7 +158,7 @@ class Blocklist extends Component {
           {
             !isFetching && !!error &&
               <Alert kind={kinds.DANGER}>
-                {translate('UnableToLoadBlocklist')}
+                {translate('BlocklistLoadError')}
               </Alert>
           }
 
@@ -210,7 +210,7 @@ class Blocklist extends Component {
           isOpen={isConfirmRemoveModalOpen}
           kind={kinds.DANGER}
           title={translate('RemoveSelected')}
-          message={translate('RemoveSelectedItemBlocklistMessageText')}
+          message={translate('RemoveSelectedBlocklistMessageText')}
           confirmLabel={translate('RemoveSelected')}
           onConfirm={this.onRemoveSelectedConfirmed}
           onCancel={this.onConfirmRemoveModalClose}

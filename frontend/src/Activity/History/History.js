@@ -85,7 +85,7 @@ class History extends Component {
           {
             !isFetchingAny && hasError &&
               <Alert kind={kinds.DANGER}>
-                {translate('UnableToLoadHistory')}
+                {translate('HistoryLoadError')}
               </Alert>
           }
 
@@ -95,7 +95,7 @@ class History extends Component {
 
             isPopulated && !hasError && !items.length &&
               <Alert kind={kinds.INFO}>
-                {translate('NoHistory')}
+                {translate('NoHistoryFound')}
               </Alert>
           }
 
