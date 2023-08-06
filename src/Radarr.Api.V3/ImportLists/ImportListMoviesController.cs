@@ -9,6 +9,7 @@ using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Organizer;
 using Radarr.Api.V3.Movies;
 using Radarr.Http;
@@ -26,6 +27,7 @@ namespace Radarr.Api.V3.ImportLists
         private readonly IImportListFactory _importListFactory;
         private readonly IImportExclusionsService _importExclusionService;
         private readonly INamingConfigService _namingService;
+        private readonly IMovieTranslationService _movieTranslationService;
         private readonly IConfigService _configService;
 
         public ImportListMoviesController(IMovieService movieService,
@@ -36,6 +38,7 @@ namespace Radarr.Api.V3.ImportLists
                                     IImportListFactory importListFactory,
                                     IImportExclusionsService importExclusionsService,
                                     INamingConfigService namingService,
+                                    IMovieTranslationService movieTranslationService,
                                     IConfigService configService)
         {
             _movieService = movieService;
@@ -46,6 +49,7 @@ namespace Radarr.Api.V3.ImportLists
             _importListFactory = importListFactory;
             _importExclusionService = importExclusionsService;
             _namingService = namingService;
+            _movieTranslationService = movieTranslationService;
             _configService = configService;
         }
 
@@ -132,6 +136,10 @@ namespace Radarr.Api.V3.ImportLists
             // Avoid calling for naming spec on every movie in filenamebuilder
             var namingConfig = _namingService.GetConfig();
 
+            var translations = _movieTranslationService
+                .GetAllTranslationsForLanguage(language)
+                .ToDictionary(x => x.MovieMetadataId);
+
             foreach (var currentMovie in movies)
             {
                 var resource = DiscoverMoviesResourceMapper.ToResource(currentMovie);
@@ -141,7 +149,7 @@ namespace Radarr.Api.V3.ImportLists
                     resource.RemotePoster = poster.Url;
                 }
 
-                var translation = currentMovie.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == language);
+                var translation = GetTranslationFromDictionary(translations, currentMovie.MovieMetadata, language);
 
                 resource.Title = translation?.Title ?? resource.Title;
                 resource.Overview = translation?.Overview ?? resource.Overview;
@@ -152,6 +160,22 @@ namespace Radarr.Api.V3.ImportLists
 
                 yield return resource;
             }
+        }
+
+        private MovieTranslation GetTranslationFromDictionary(Dictionary<int, MovieTranslation> translations, MovieMetadata movie, Language configLanguage)
+        {
+            if (configLanguage == Language.Original)
+            {
+                return new MovieTranslation
+                {
+                    Title = movie.OriginalTitle,
+                    Overview = movie.Overview
+                };
+            }
+
+            translations.TryGetValue(movie.Id, out var translation);
+
+            return translation;
         }
     }
 }
