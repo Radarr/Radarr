@@ -19,18 +19,21 @@ namespace Radarr.Api.V3.Movies
         private readonly ISearchForNewMovie _searchProxy;
         private readonly IProvideMovieInfo _movieInfo;
         private readonly IBuildFileNames _fileNameBuilder;
+        private readonly INamingConfigService _namingService;
         private readonly IMapCoversToLocal _coverMapper;
         private readonly IConfigService _configService;
 
         public MovieLookupController(ISearchForNewMovie searchProxy,
                                  IProvideMovieInfo movieInfo,
                                  IBuildFileNames fileNameBuilder,
+                                 INamingConfigService namingService,
                                  IMapCoversToLocal coverMapper,
                                  IConfigService configService)
         {
             _movieInfo = movieInfo;
             _searchProxy = searchProxy;
             _fileNameBuilder = fileNameBuilder;
+            _namingService = namingService;
             _coverMapper = coverMapper;
             _configService = configService;
         }
@@ -70,10 +73,13 @@ namespace Radarr.Api.V3.Movies
 
         private IEnumerable<MovieResource> MapToResource(IEnumerable<Movie> movies)
         {
+            var movieInfoLanguage = (Language)_configService.MovieInfoLanguage;
+            var availDelay = _configService.AvailabilityDelay;
+            var namingConfig = _namingService.GetConfig();
+
             foreach (var currentMovie in movies)
             {
-                var availDelay = _configService.AvailabilityDelay;
-                var translation = currentMovie.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
+                var translation = currentMovie.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == movieInfoLanguage);
                 var resource = currentMovie.ToResource(availDelay, translation);
 
                 _coverMapper.ConvertToLocalUrls(resource.Id, resource.Images);
@@ -84,7 +90,7 @@ namespace Radarr.Api.V3.Movies
                     resource.RemotePoster = poster.RemoteUrl;
                 }
 
-                resource.Folder = _fileNameBuilder.GetMovieFolder(currentMovie);
+                resource.Folder = _fileNameBuilder.GetMovieFolder(currentMovie, namingConfig);
 
                 yield return resource;
             }
