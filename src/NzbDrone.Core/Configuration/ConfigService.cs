@@ -105,7 +105,7 @@ namespace NzbDrone.Core.Configuration
 
         public int RssSyncInterval
         {
-            get { return GetValueInt("RssSyncInterval", 60); }
+            get { return GetValueInt("RssSyncInterval", 30); }
 
             set { SetValue("RssSyncInterval", value); }
         }
