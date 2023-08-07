@@ -23,7 +23,6 @@ namespace NzbDrone.Core.Movies
         List<Movie> AddMovies(List<Movie> newMovies);
         Movie FindByImdbId(string imdbid);
         Movie FindByTmdbId(int tmdbid);
-        List<Movie> FindByTmdbId(List<int> tmdbids);
         Movie FindByTitle(string title);
         Movie FindByTitle(string title, int year);
         Movie FindByTitle(List<string> titles, int? year, List<string> otherTitles, List<Movie> candidates);
@@ -36,14 +35,12 @@ namespace NzbDrone.Core.Movies
         List<Movie> GetMoviesByCollectionTmdbId(int collectionId);
         List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
-        void SetFileId(Movie movie, MovieFile movieFile);
         void DeleteMovie(int movieId, bool deleteFiles, bool addExclusion = false);
         void DeleteMovies(List<int> movieIds, bool deleteFiles, bool addExclusion = false);
         List<Movie> GetAllMovies();
         Dictionary<int, List<int>> AllMovieTags();
         Movie UpdateMovie(Movie movie);
         List<Movie> UpdateMovie(List<Movie> movie, bool useExistingRelativeFolder);
-        List<Movie> FilterExistingMovies(List<Movie> movies);
         List<int> GetRecommendedTmdbIds();
         bool MoviePathExists(string folder);
         void RemoveAddOptions(Movie movie);
@@ -192,11 +189,6 @@ namespace NzbDrone.Core.Movies
             return _movieRepository.FindByTmdbId(tmdbid);
         }
 
-        public List<Movie> FindByTmdbId(List<int> tmdbids)
-        {
-            return _movieRepository.FindByTmdbId(tmdbids);
-        }
-
         public Movie FindByPath(string path)
         {
             return _movieRepository.FindByPath(path);
@@ -290,12 +282,6 @@ namespace NzbDrone.Core.Movies
             _movieRepository.SetFields(movie, s => s.AddOptions);
         }
 
-        public void SetFileId(Movie movie, MovieFile movieFile)
-        {
-            _movieRepository.SetFileId(movieFile.Id, movie.Id);
-            _logger.Info("Assigning file [{0}] to movie [{1}]", movieFile.RelativePath, movie);
-        }
-
         public List<Movie> GetMoviesByFileId(int fileId)
         {
             return _movieRepository.GetMoviesByFileId(fileId);
@@ -363,22 +349,6 @@ namespace NzbDrone.Core.Movies
             }
 
             return false;
-        }
-
-        public List<Movie> FilterExistingMovies(List<Movie> movies)
-        {
-            var allMovies = GetAllMovies();
-
-            var withTmdbid = movies.Where(m => m.TmdbId != 0).ToList();
-            var withoutTmdbid = movies.Where(m => m.TmdbId == 0).ToList();
-            var withImdbid = withoutTmdbid.Where(m => m.ImdbId.IsNotNullOrWhiteSpace());
-            var rest = withoutTmdbid.Where(m => m.ImdbId.IsNullOrWhiteSpace());
-
-            var ret = withTmdbid.ExceptBy(m => m.TmdbId, allMovies, m => m.TmdbId, EqualityComparer<int>.Default)
-                .Union(withImdbid.ExceptBy(m => m.ImdbId, allMovies, m => m.ImdbId, EqualityComparer<string>.Default))
-                .Union(rest.ExceptBy(m => m.Title.CleanMovieTitle(), allMovies, m => m.MovieMetadata.Value.CleanTitle, EqualityComparer<string>.Default)).ToList();
-
-            return ret;
         }
 
         public List<int> GetRecommendedTmdbIds()
