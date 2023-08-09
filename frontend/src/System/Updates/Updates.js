@@ -31,7 +31,6 @@ class Updates extends Component {
       items,
       isInstallingUpdate,
       updateMechanism,
-      isDocker,
       updateMechanismMessage,
       shortDateFormat,
       longDateFormat,
@@ -71,7 +70,7 @@ class Updates extends Component {
             hasUpdateToInstall &&
               <div className={styles.messageContainer}>
                 {
-                  (updateMechanism === 'builtIn' || updateMechanism === 'script') && !isDocker ?
+                  updateMechanism === 'builtIn' || updateMechanism === 'script' ?
                     <SpinnerButton
                       className={styles.updateAvailable}
                       kind={kinds.PRIMARY}
@@ -239,7 +238,6 @@ Updates.propTypes = {
   generalSettingsError: PropTypes.object,
   items: PropTypes.array.isRequired,
   isInstallingUpdate: PropTypes.bool.isRequired,
-  isDocker: PropTypes.bool.isRequired,
   updateMechanism: PropTypes.string,
   updateMechanismMessage: PropTypes.string,
   shortDateFormat: PropTypes.string.isRequired,
