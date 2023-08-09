@@ -51,12 +51,20 @@ namespace NzbDrone.Core.Download
 
         public void DownloadReport(RemoteMovie remoteMovie)
         {
+            var filterBlockedClients = remoteMovie.Release.PendingReleaseReason == PendingReleaseReason.DownloadClientUnavailable;
+
+            var tags = remoteMovie.Movie?.Tags;
+
+            var downloadClient = _downloadClientProvider.GetDownloadClient(remoteMovie.Release.DownloadProtocol, remoteMovie.Release.IndexerId, filterBlockedClients, tags);
+
+            DownloadReport(remoteMovie, downloadClient);
+        }
+
+        public void DownloadReport(RemoteMovie remoteMovie, IDownloadClient downloadClient)
+        {
             Ensure.That(remoteMovie.Movie, () => remoteMovie.Movie).IsNotNull();
 
             var downloadTitle = remoteMovie.Release.Title;
-            var filterBlockedClients = remoteMovie.Release.PendingReleaseReason == PendingReleaseReason.DownloadClientUnavailable;
-            var tags = remoteMovie.Movie?.Tags;
-            var downloadClient = _downloadClientProvider.GetDownloadClient(remoteMovie.Release.DownloadProtocol, remoteMovie.Release.IndexerId, filterBlockedClients, tags);
 
             if (downloadClient == null)
             {
@@ -99,8 +107,7 @@ namespace NzbDrone.Core.Download
             }
             catch (ReleaseDownloadException ex)
             {
-                var http429 = ex.InnerException as TooManyRequestsException;
-                if (http429 != null)
+                if (ex.InnerException is TooManyRequestsException http429)
                 {
                     _indexerStatusService.RecordFailure(remoteMovie.Release.IndexerId, http429.RetryAfter);
                 }
