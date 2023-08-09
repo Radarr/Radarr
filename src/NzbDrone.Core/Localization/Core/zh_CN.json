@@ -1220,5 +1220,9 @@
     "AllTitles": "全部标题",
     "MatchedToMovie": "匹配影片",
     "ReleaseHash": "发布哈希值",
-    "TestParsing": "测试解析"
+    "TestParsing": "测试解析",
+    "AddAutoTag": "添加自动标签",
+    "AddCondition": "添加条件",
+    "AutoTagging": "自动标记",
+    "DeleteRootFolder": "删除根目录"
 }
