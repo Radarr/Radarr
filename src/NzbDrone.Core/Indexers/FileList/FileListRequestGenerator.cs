@@ -44,9 +44,12 @@ namespace NzbDrone.Core.Indexers.FileList
         {
             var categoriesQuery = string.Join(",", Settings.Categories.Distinct());
 
-            var baseUrl = string.Format("{0}/api.php?action={1}&category={2}&username={3}&passkey={4}{5}", Settings.BaseUrl.TrimEnd('/'), searchType, categoriesQuery, Settings.Username.Trim(), Settings.Passkey.Trim(), parameters);
+            var baseUrl = string.Format("{0}/api.php?action={1}&category={2}{3}", Settings.BaseUrl.TrimEnd('/'), searchType, categoriesQuery, parameters);
 
-            yield return new IndexerRequest(baseUrl, HttpAccept.Json);
+            var request = new IndexerRequest(baseUrl, HttpAccept.Json);
+            request.HttpRequest.Credentials = new BasicNetworkCredential(Settings.Username.Trim(), Settings.Passkey.Trim());
+
+            yield return request;
         }
     }
 }
