@@ -1172,5 +1172,9 @@
     "ApplyTagsHelpTextHowToApplyDownloadClients": "Hoe tags toepassen op de geselecteerde download clients",
     "ApplyChanges": "Pas Wijzigingen Toe",
     "CloneCondition": "Kloon Conditie",
-    "AutomaticAdd": "Automatisch Toevoegen"
+    "AutomaticAdd": "Automatisch Toevoegen",
+    "AddAutoTag": "Voeg Automatische Tag toe",
+    "AddCondition": "Voeg Conditie toe",
+    "AutoTagging": "Automatisch Taggen",
+    "CloneAutoTag": "Kopieer Automatische Tag"
 }
