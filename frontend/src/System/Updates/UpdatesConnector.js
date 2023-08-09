@@ -18,7 +18,6 @@ function createMapStateToProps() {
     (state) => state.system.updates,
     (state) => state.settings.general,
     createUISettingsSelector(),
-    createSystemStatusSelector(),
     createCommandExecutingSelector(commandNames.APPLICATION_UPDATE),
     (
       currentVersion,
@@ -26,7 +25,6 @@ function createMapStateToProps() {
       updates,
       generalSettings,
       uiSettings,
-      systemStatus,
       isInstallingUpdate
     ) => {
       const {
@@ -45,7 +43,6 @@ function createMapStateToProps() {
         generalSettingsError: generalSettings.error,
         items,
         isInstallingUpdate,
-        isDocker: systemStatus.isDocker,
         updateMechanism: generalSettings.item.updateMechanism,
         updateMechanismMessage: status.packageUpdateMechanismMessage,
         shortDateFormat: uiSettings.shortDateFormat,

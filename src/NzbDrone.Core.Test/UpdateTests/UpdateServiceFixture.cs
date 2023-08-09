@@ -91,17 +91,6 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
-        public void should_not_update_if_inside_docker()
-        {
-            Mocker.GetMock<IOsInfo>().Setup(x => x.IsDocker).Returns(true);
-
-            Subject.Execute(new ApplicationUpdateCommand());
-
-            Mocker.GetMock<IProcessProvider>()
-                .Verify(c => c.Start(It.IsAny<string>(), It.Is<string>(s => s.StartsWith("12")), null, null, null), Times.Never());
-        }
-
-        [Test]
         public void should_delete_sandbox_before_update_if_folder_exists()
         {
             Mocker.GetMock<IDiskProvider>().Setup(c => c.FolderExists(_sandboxFolder)).Returns(true);
@@ -336,6 +325,28 @@ namespace NzbDrone.Core.Test.UpdateTests
 
             Mocker.GetMock<IConfigFileProvider>()
                   .Verify(v => v.SaveConfigDictionary(It.Is<Dictionary<string, object>>(d => d.ContainsKey("Branch") && (string)d["Branch"] == "fake")), Times.Once());
+        }
+
+        [Test]
+        public void should_not_update_with_built_in_updater_inside_docker_container()
+        {
+            Mocker.GetMock<IDeploymentInfoProvider>().Setup(x => x.PackageUpdateMechanism).Returns(UpdateMechanism.Docker);
+
+            Subject.Execute(new ApplicationUpdateCommand());
+
+            Mocker.GetMock<IProcessProvider>()
+                .Verify(c => c.Start(It.IsAny<string>(), It.Is<string>(s => s.StartsWith("12")), null, null, null), Times.Never());
+        }
+
+        [Test]
+        public void should_not_update_with_built_in_updater_when_external_updater_is_configured()
+        {
+            Mocker.GetMock<IDeploymentInfoProvider>().Setup(x => x.IsExternalUpdateMechanism).Returns(true);
+
+            Subject.Execute(new ApplicationUpdateCommand());
+
+            Mocker.GetMock<IProcessProvider>()
+                .Verify(c => c.Start(It.IsAny<string>(), It.Is<string>(s => s.StartsWith("12")), null, null, null), Times.Never());
         }
 
         [TearDown]
