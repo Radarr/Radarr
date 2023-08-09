@@ -536,8 +536,8 @@ stages:
           testRunTitle: '$(testName) Unit Tests'
           failTaskOnFailedTests: true
           
-    - job: Unit_LinuxCore_Postgres
-      displayName: Unit Native LinuxCore with Postgres Database
+    - job: Unit_LinuxCore_Postgres14
+      displayName: Unit Native LinuxCore with Postgres14 Database
       dependsOn: Prepare
       condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       variables:
@@ -589,7 +589,63 @@ stages:
         inputs:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
-          testRunTitle: 'LinuxCore Postgres Unit Tests'
+          testRunTitle: 'LinuxCore Postgres14 Unit Tests'
+          failTaskOnFailedTests: true
+
+    - job: Unit_LinuxCore_Postgres15
+      displayName: Unit Native LinuxCore with Postgres15 Database
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
+      variables:
+        pattern: 'Radarr.*.linux-core-x64.tar.gz'
+        artifactName: linux-x64-tests
+        Radarr__Postgres__Host: 'localhost'
+        Radarr__Postgres__Port: '5432'
+        Radarr__Postgres__User: 'radarr'
+        Radarr__Postgres__Password: 'radarr'
+  
+      pool:
+        vmImage: ${{ variables.linuxImage }}
+
+      timeoutInMinutes: 10
+        
+      steps:
+      - task: UseDotNet@2
+        displayName: 'Install .net core'
+        inputs:
+          version: $(dotnetVersion)
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        displayName: Download Test Artifact
+        inputs:
+          buildType: 'current'
+          artifactName: $(artifactName)
+          targetPath: $(testsFolder)
+      - bash: |
+          chmod a+x _tests/ffprobe
+        displayName: Make ffprobe Executable
+      - bash: find ${TESTSFOLDER} -name "Radarr.Test.Dummy" -exec chmod a+x {} \;
+        displayName: Make Test Dummy Executable
+        condition: and(succeeded(), ne(variables['osName'], 'Windows'))
+      - bash: |
+          docker run -d --name=postgres15 \
+          -e POSTGRES_PASSWORD=radarr \
+          -e POSTGRES_USER=radarr \
+          -p 5432:5432/tcp \
+          -v /usr/share/zoneinfo/America/Chicago:/etc/localtime:ro \
+          postgres:15
+        displayName: Start postgres
+      - bash: |
+          chmod a+x ${TESTSFOLDER}/test.sh
+          ls -lR ${TESTSFOLDER}
+          ${TESTSFOLDER}/test.sh Linux Unit Test
+        displayName: Run Tests
+      - task: PublishTestResults@2
+        displayName: Publish Test Results
+        inputs:
+          testResultsFormat: 'NUnit'
+          testResultsFiles: '**/TestResult.xml'
+          testRunTitle: 'LinuxCore Postgres15 Unit Tests'
           failTaskOnFailedTests: true
 
   - stage: Integration
@@ -675,8 +731,8 @@ stages:
           failTaskOnFailedTests: true
         displayName: Publish Test Results
 
-    - job: Integration_LinuxCore_Postgres
-      displayName: Integration Native LinuxCore with Postgres Database
+    - job: Integration_LinuxCore_Postgres14
+      displayName: Integration Native LinuxCore with Postgres14 Database
       dependsOn: Prepare
       condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       variables:
@@ -733,7 +789,70 @@ stages:
           inputs:
             testResultsFormat: 'NUnit'
             testResultsFiles: '**/TestResult.xml'
-            testRunTitle: 'Integration LinuxCore Postgres Database Integration Tests'
+            testRunTitle: 'Integration LinuxCore Postgres14 Database Integration Tests'
+            failTaskOnFailedTests: true
+          displayName: Publish Test Results
+
+
+    - job: Integration_LinuxCore_Postgres15
+      displayName: Integration Native LinuxCore with Postgres Database
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
+      variables:
+        pattern: 'Radarr.*.linux-core-x64.tar.gz'
+        Radarr__Postgres__Host: 'localhost'
+        Radarr__Postgres__Port: '5432'
+        Radarr__Postgres__User: 'radarr'
+        Radarr__Postgres__Password: 'radarr'
+
+      pool:
+        vmImage: ${{ variables.linuxImage }}
+
+      steps:
+        - task: UseDotNet@2
+          displayName: 'Install .net core'
+          inputs:
+            version: $(dotnetVersion)
+        - checkout: none
+        - task: DownloadPipelineArtifact@2
+          displayName: Download Test Artifact
+          inputs:
+            buildType: 'current'
+            artifactName: 'linux-x64-tests'
+            targetPath: $(testsFolder)
+        - task: DownloadPipelineArtifact@2
+          displayName: Download Build Artifact
+          inputs:
+            buildType: 'current'
+            artifactName: Packages
+            itemPattern: '**/$(pattern)'
+            targetPath: $(Build.ArtifactStagingDirectory)
+        - task: ExtractFiles@1
+          inputs:
+            archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/**/$(pattern)' 
+            destinationFolder: '$(Build.ArtifactStagingDirectory)/bin'
+          displayName: Extract Package
+        - bash: |
+            mkdir -p ./bin/
+            cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Radarr/. ./bin/
+          displayName: Move Package Contents
+        - bash: |
+            docker run -d --name=postgres15 \
+            -e POSTGRES_PASSWORD=radarr \
+            -e POSTGRES_USER=radarr \
+            -p 5432:5432/tcp \
+            -v /usr/share/zoneinfo/America/Chicago:/etc/localtime:ro \
+            postgres:15
+          displayName: Start postgres
+        - bash: |
+            chmod a+x ${TESTSFOLDER}/test.sh
+            ${TESTSFOLDER}/test.sh Linux Integration Test
+          displayName: Run Integration Tests
+        - task: PublishTestResults@2
+          inputs:
+            testResultsFormat: 'NUnit'
+            testResultsFiles: '**/TestResult.xml'
+            testRunTitle: 'Integration LinuxCore Postgres15 Database Integration Tests'
             failTaskOnFailedTests: true
           displayName: Publish Test Results
 
