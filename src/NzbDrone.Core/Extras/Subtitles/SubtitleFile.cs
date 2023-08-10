@@ -18,5 +18,10 @@ namespace NzbDrone.Core.Extras.Subtitles
         public List<string> LanguageTags { get; set; }
 
         private string LanguageTagsAsString => string.Join(".", LanguageTags);
+
+        public override string ToString()
+        {
+            return $"[{Id}] {RelativePath} ({Language}{(LanguageTags.Count > 0 ? "." : "")}{LanguageTagsAsString}{Extension})";
+        }
     }
 }
