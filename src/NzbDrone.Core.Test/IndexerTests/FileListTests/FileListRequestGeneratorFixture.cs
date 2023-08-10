@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Test.IndexerTests.FileListTests
 
             var page = results.GetAllTiers().First().First();
 
-            page.Url.Query.Should().Contain("&category=1,2&");
+            page.Url.Query.Should().Contain("&category=1,2");
         }
 
         [Test]
