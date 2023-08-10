@@ -42,7 +42,7 @@
     "AuthenticationMethodHelpText": "需要使用者名稱和密碼來存取{appName}",
     "Automatic": "自動",
     "AutomaticSearch": "自動搜尋",
-    "AsAllDayHelpText": "在行事曆中，事件將以全天事件的形式顯示",
+    "ICalShowAsAllDayEventsHelpText": "在行事曆中，事件將以全天事件的形式顯示",
     "AvailabilityDelayHelpText": "在可用日期之前或之後搜索電影的次數",
     "BlocklistReleases": "封鎖清單版本",
     "ApplicationURL": "應用程式 URL",
