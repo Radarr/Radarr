@@ -900,6 +900,7 @@
   "RemoveFilter": "Remove filter",
   "RemoveFromBlocklist": "Remove from blocklist",
   "RemoveFromDownloadClient": "Remove From Download Client",
+  "RemoveFromDownloadClientHelpTextWarning": "Removing will remove the download and the file(s) from the download client.",
   "RemoveFromQueue": "Remove from queue",
   "RemoveHelpTextWarning": "Removing will remove the download and the file(s) from the download client.",
   "RemoveMovieAndDeleteFiles": "Remove Movie and Delete Files",
