@@ -274,7 +274,7 @@
     "Failed": "נִכשָׁל",
     "InCinemas": "בבתי הקולנוע",
     "IncludeCustomFormatWhenRenaming": "כלול פורמט מותאם אישית בעת שינוי שם",
-    "Indexer": "מַפתְחָן",
+    "Indexer": "אינדקסר",
     "IndexerFlags": "אינדקס דגלים",
     "IndexerLongTermStatusCheckAllClientMessage": "כל האינדקסים אינם זמינים עקב כשלים במשך יותר מ -6 שעות",
     "IndexerLongTermStatusCheckSingleClientMessage": "אינדקסים לא זמינים עקב כשלים במשך יותר משש שעות: {0}",
