@@ -1183,5 +1183,7 @@
     "DeleteSelectedIndexersMessageText": "Voulez-vous vraiment supprimer l'indexeur '{0}' ?",
     "EditSelectedIndexers": "Modifier les indexeurs sélectionnés",
     "CountDownloadClientsSelected": "{0} client(s) de téléchargement sélectionné(s)",
-    "EditSelectedDownloadClients": "Modifier les clients de téléchargement sélectionnés"
+    "EditSelectedDownloadClients": "Modifier les clients de téléchargement sélectionnés",
+    "AddAutoTag": "Ajouter un tag automatique",
+    "AddCondition": "Ajouter une condition"
 }
