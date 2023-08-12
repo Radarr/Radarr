@@ -704,6 +704,8 @@
   "None": "None",
   "NotAvailable": "Not Available",
   "NotMonitored": "Not Monitored",
+  "NotificationStatusAllClientHealthCheckMessage": "All notifications are unavailable due to failures",
+  "NotificationStatusSingleClientHealthCheckMessage": "Notifications unavailable due to failures: {0}",
   "NotificationTriggers": "Notification Triggers",
   "NotificationTriggersHelpText": "Select which events should trigger this notification",
   "OAuthPopupMessage": "Pop-ups are being blocked by your browser",

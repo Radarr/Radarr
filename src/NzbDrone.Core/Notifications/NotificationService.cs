@@ -32,11 +32,13 @@ namespace NzbDrone.Core.Notifications
           IHandleAsync<HealthCheckCompleteEvent>
     {
         private readonly INotificationFactory _notificationFactory;
+        private readonly INotificationStatusService _notificationStatusService;
         private readonly Logger _logger;
 
-        public NotificationService(INotificationFactory notificationFactory, Logger logger)
+        public NotificationService(INotificationFactory notificationFactory, INotificationStatusService notificationStatusService, Logger logger)
         {
             _notificationFactory = notificationFactory;
+            _notificationStatusService = notificationStatusService;
             _logger = logger;
         }
 
@@ -114,9 +116,11 @@ namespace NzbDrone.Core.Notifications
                     }
 
                     notification.OnGrab(grabMessage);
+                    _notificationStatusService.RecordSuccess(notification.Definition.Id);
                 }
                 catch (Exception ex)
                 {
+                    _notificationStatusService.RecordFailure(notification.Definition.Id);
                     _logger.Error(ex, "Unable to send OnGrab notification to {0}", notification.Definition.Name);
                 }
             }
@@ -151,11 +155,13 @@ namespace NzbDrone.Core.Notifications
                         if (downloadMessage.OldMovieFiles.Empty() || ((NotificationDefinition)notification.Definition).OnUpgrade)
                         {
                             notification.OnDownload(downloadMessage);
+                            _notificationStatusService.RecordSuccess(notification.Definition.Id);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
+                    _notificationStatusService.RecordFailure(notification.Definition.Id);
                     _logger.Warn(ex, "Unable to send OnDownload notification to: " + notification.Definition.Name);
                 }
             }
@@ -170,10 +176,12 @@ namespace NzbDrone.Core.Notifications
                     if (ShouldHandleMovie(notification.Definition, message.Movie))
                     {
                         notification.OnMovieAdded(message.Movie);
+                        _notificationStatusService.RecordSuccess(notification.Definition.Id);
                     }
                 }
                 catch (Exception ex)
                 {
+                    _notificationStatusService.RecordFailure(notification.Definition.Id);
                     _logger.Warn(ex, "Unable to send OnMovieAdded notification to: " + notification.Definition.Name);
                 }
             }
@@ -190,11 +198,13 @@ namespace NzbDrone.Core.Notifications
                         if (ShouldHandleMovie(notification.Definition, movie))
                         {
                             notification.OnMovieAdded(movie);
+                            _notificationStatusService.RecordSuccess(notification.Definition.Id);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
+                    _notificationStatusService.RecordFailure(notification.Definition.Id);
                     _logger.Warn(ex, "Unable to send OnMovieAdded notification to: " + notification.Definition.Name);
                 }
             }
@@ -209,10 +219,12 @@ namespace NzbDrone.Core.Notifications
                     if (ShouldHandleMovie(notification.Definition, message.Movie))
                     {
                         notification.OnMovieRename(message.Movie, message.RenamedFiles);
+                        _notificationStatusService.RecordSuccess(notification.Definition.Id);
                     }
                 }
                 catch (Exception ex)
                 {
+                    _notificationStatusService.RecordFailure(notification.Definition.Id);
                     _logger.Warn(ex, "Unable to send OnRename notification to: " + notification.Definition.Name);
                 }
             }
@@ -230,9 +242,11 @@ namespace NzbDrone.Core.Notifications
                 try
                 {
                     notification.OnApplicationUpdate(updateMessage);
+                    _notificationStatusService.RecordSuccess(notification.Definition.Id);
                 }
                 catch (Exception ex)
                 {
+                    _notificationStatusService.RecordFailure(notification.Definition.Id);
                     _logger.Warn(ex, "Unable to send OnApplicationUpdate notification to: " + notification.Definition.Name);
                 }
             }
@@ -263,9 +277,11 @@ namespace NzbDrone.Core.Notifications
                     }
 
                     notification.OnManualInteractionRequired(manualInteractionMessage);
+                    _notificationStatusService.RecordSuccess(notification.Definition.Id);
                 }
                 catch (Exception ex)
                 {
+                    _notificationStatusService.RecordFailure(notification.Definition.Id);
                     _logger.Error(ex, "Unable to send OnManualInteractionRequired notification to {0}", notification.Definition.Name);
                 }
             }
@@ -288,11 +304,13 @@ namespace NzbDrone.Core.Notifications
                         if (ShouldHandleMovie(notification.Definition, message.MovieFile.Movie))
                         {
                             notification.OnMovieFileDelete(deleteMessage);
+                            _notificationStatusService.RecordSuccess(notification.Definition.Id);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
+                    _notificationStatusService.RecordFailure(notification.Definition.Id);
                     _logger.Warn(ex, "Unable to send OnMovieFileDelete notification to: " + notification.Definition.Name);
                 }
             }
@@ -311,10 +329,12 @@ namespace NzbDrone.Core.Notifications
                         if (ShouldHandleMovie(notification.Definition, deleteMessage.Movie))
                         {
                             notification.OnMovieDelete(deleteMessage);
+                            _notificationStatusService.RecordSuccess(notification.Definition.Id);
                         }
                     }
                     catch (Exception ex)
                     {
+                        _notificationStatusService.RecordFailure(notification.Definition.Id);
                         _logger.Warn(ex, "Unable to send OnMovieDelete notification to: " + notification.Definition.Name);
                     }
                 }
@@ -337,10 +357,12 @@ namespace NzbDrone.Core.Notifications
                     if (ShouldHandleHealthFailure(message.HealthCheck, ((NotificationDefinition)notification.Definition).IncludeHealthWarnings))
                     {
                         notification.OnHealthIssue(message.HealthCheck);
+                        _notificationStatusService.RecordSuccess(notification.Definition.Id);
                     }
                 }
                 catch (Exception ex)
                 {
+                    _notificationStatusService.RecordFailure(notification.Definition.Id);
                     _logger.Warn(ex, "Unable to send OnHealthIssue notification to: " + notification.Definition.Name);
                 }
             }
@@ -360,10 +382,12 @@ namespace NzbDrone.Core.Notifications
                     if (ShouldHandleHealthFailure(message.PreviousCheck, ((NotificationDefinition)notification.Definition).IncludeHealthWarnings))
                     {
                         notification.OnHealthRestored(message.PreviousCheck);
+                        _notificationStatusService.RecordSuccess(notification.Definition.Id);
                     }
                 }
                 catch (Exception ex)
                 {
+                    _notificationStatusService.RecordFailure(notification.Definition.Id);
                     _logger.Warn(ex, "Unable to send OnHealthRestored notification to: " + notification.Definition.Name);
                 }
             }
