@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from 'Components/Icon';
 import ImdbRating from 'Components/ImdbRating';
+import RottenTomatoRating from 'Components/RottenTomatoRating';
 import TmdbRating from 'Components/TmdbRating';
 import { icons } from 'Helpers/Props';
 import { Language, Ratings } from 'Movie/Movie';
@@ -33,6 +34,9 @@ interface MovieIndexPosterInfoProps {
   shortDateFormat: string;
   longDateFormat: string;
   timeFormat: string;
+  showTmdbRating: boolean;
+  showImdbRating: boolean;
+  showRottenTomatoesRating: boolean;
 }
 
 function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
@@ -58,6 +62,9 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     shortDateFormat,
     longDateFormat,
     timeFormat,
+    showTmdbRating,
+    showImdbRating,
+    showRottenTomatoesRating,
   } = props;
 
   if (sortKey === 'studio' && studio) {
@@ -163,7 +170,15 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     );
   }
 
-  if (sortKey === 'imdbRating' && !!ratings.imdb) {
+  if (!showTmdbRating && sortKey === 'tmdbRating' && !!ratings.tmdb) {
+    return (
+      <div className={styles.info}>
+        <TmdbRating ratings={ratings} iconSize={12} />
+      </div>
+    );
+  }
+
+  if (!showImdbRating && sortKey === 'imdbRating' && !!ratings.imdb) {
     return (
       <div className={styles.info}>
         <ImdbRating ratings={ratings} iconSize={12} />
@@ -171,10 +186,14 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     );
   }
 
-  if (sortKey === 'tmdbRating' && !!ratings.tmdb) {
+  if (
+    !showRottenTomatoesRating &&
+    sortKey === 'rottenTomatoesRating' &&
+    !!ratings.rottenTomatoes
+  ) {
     return (
       <div className={styles.info}>
-        <TmdbRating ratings={ratings} iconSize={12} />
+        <RottenTomatoRating ratings={ratings} iconSize={12} />
       </div>
     );
   }
