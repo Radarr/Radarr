@@ -21,6 +21,7 @@ namespace Radarr.Api.V3.MovieFiles
         public int IndexerFlags { get; set; }
         public QualityModel Quality { get; set; }
         public List<CustomFormatResource> CustomFormats { get; set; }
+        public int CustomFormatScore { get; set; }
         public MediaInfoResource MediaInfo { get; set; }
         public string OriginalFilePath { get; set; }
         public bool QualityCutoffNotMet { get; set; }

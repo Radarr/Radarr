@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'actions': string;
+  'customFormatScore': string;
   'sourceTitle': string;
 }
 export const cssExports: CssExports;

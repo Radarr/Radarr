@@ -54,7 +54,12 @@ namespace Radarr.Api.V3.MovieFiles
             movieFile.Movie = movie;
 
             var resource = movieFile.ToResource(movie, _qualityUpgradableSpecification);
-            resource.CustomFormats = _formatCalculator.ParseCustomFormat(movieFile).ToResource(false);
+
+            var customFormats = _formatCalculator.ParseCustomFormat(movieFile);
+            var customFormatScore = movie?.Profile?.CalculateCustomFormatScore(customFormats) ?? 0;
+            resource.CustomFormats = customFormats.ToResource(false);
+            resource.CustomFormatScore = customFormatScore;
+
             return resource;
         }
 
@@ -78,7 +83,11 @@ namespace Radarr.Api.V3.MovieFiles
 
                 var resource = file.ToResource(movie, _qualityUpgradableSpecification);
                 file.Movie = movie;
-                resource.CustomFormats = _formatCalculator.ParseCustomFormat(file).ToResource(false);
+
+                var customFormats = _formatCalculator.ParseCustomFormat(file);
+                var customFormatScore = movie?.Profile?.CalculateCustomFormatScore(customFormats) ?? 0;
+                resource.CustomFormats = customFormats.ToResource(false);
+                resource.CustomFormatScore = customFormatScore;
 
                 return new List<MovieFileResource> { resource };
             }

@@ -4,7 +4,8 @@ import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRow from 'Components/Table/TableRow';
-import { icons, kinds } from 'Helpers/Props';
+import Tooltip from 'Components/Tooltip/Tooltip';
+import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import MovieQuality from 'Movie/MovieQuality';
@@ -12,6 +13,7 @@ import FileEditModal from 'MovieFile/Edit/FileEditModal';
 import MediaInfoConnector from 'MovieFile/MediaInfoConnector';
 import * as mediaInfoTypes from 'MovieFile/mediaInfoTypes';
 import formatBytes from 'Utilities/Number/formatBytes';
+import formatCustomFormatScore from 'Utilities/Number/formatCustomFormatScore';
 import translate from 'Utilities/String/translate';
 import FileDetailsModal from '../FileDetailsModal';
 import MovieFileRowCellPlaceholder from './MovieFileRowCellPlaceholder';
@@ -78,6 +80,7 @@ class MovieFileEditorRow extends Component {
       quality,
       qualityCutoffNotMet,
       customFormats,
+      customFormatScore,
       languages
     } = this.props;
 
@@ -170,6 +173,19 @@ class MovieFileEditorRow extends Component {
           />
         </TableRowCell>
 
+        <TableRowCell
+          className={styles.customFormatScore}
+        >
+          <Tooltip
+            anchor={formatCustomFormatScore(
+              customFormatScore,
+              customFormats.length
+            )}
+            tooltip={<MovieFormats formats={customFormats} />}
+            position={tooltipPositions.TOP}
+          />
+        </TableRowCell>
+
         <TableRowCell className={styles.actions}>
           <IconButton
             title={translate('EditMovieFile')}
@@ -225,6 +241,7 @@ MovieFileEditorRow.propTypes = {
   quality: PropTypes.object.isRequired,
   releaseGroup: PropTypes.string,
   customFormats: PropTypes.arrayOf(PropTypes.object).isRequired,
+  customFormatScore: PropTypes.number.isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   mediaInfo: PropTypes.object,

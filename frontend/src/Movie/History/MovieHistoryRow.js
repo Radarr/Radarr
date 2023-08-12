@@ -7,7 +7,8 @@ import ConfirmModal from 'Components/Modal/ConfirmModal';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRow from 'Components/Table/TableRow';
-import { icons, kinds } from 'Helpers/Props';
+import Tooltip from 'Components/Tooltip/Tooltip';
+import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import MovieQuality from 'Movie/MovieQuality';
@@ -106,8 +107,15 @@ class MovieHistoryRow extends Component {
           />
         </TableRowCell>
 
-        <TableRowCell>
-          {formatCustomFormatScore(customFormatScore)}
+        <TableRowCell className={styles.customFormatScore}>
+          <Tooltip
+            anchor={formatCustomFormatScore(
+              customFormatScore,
+              customFormats.length
+            )}
+            tooltip={<MovieFormats formats={customFormats} />}
+            position={tooltipPositions.TOP}
+          />
         </TableRowCell>
 
         <RelativeDateCellConnector
