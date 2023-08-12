@@ -6725,16 +6725,6 @@
               "schema": {
                 "$ref": "#/components/schemas/QueueBulkResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/QueueBulkResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/QueueBulkResource"
-              }
             }
           }
         },
@@ -11089,6 +11079,10 @@
               "$ref": "#/components/schemas/CustomFormatResource"
             },
             "nullable": true
+          },
+          "customFormatScore": {
+            "type": "integer",
+            "format": "int32"
           },
           "mediaInfo": {
             "$ref": "#/components/schemas/MediaInfoResource"
