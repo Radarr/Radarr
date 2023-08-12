@@ -2,10 +2,13 @@ import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MOVIE_SEARCH, REFRESH_MOVIE } from 'Commands/commandNames';
 import Icon from 'Components/Icon';
+import ImdbRating from 'Components/ImdbRating';
 import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import RottenTomatoRating from 'Components/RottenTomatoRating';
+import TmdbRating from 'Components/TmdbRating';
 import Popover from 'Components/Tooltip/Popover';
 import { icons } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
@@ -44,6 +47,9 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     showQualityProfile,
     showCinemaRelease,
     showReleaseDate,
+    showTmdbRating,
+    showImdbRating,
+    showRottenTomatoesRating,
     showSearchAction,
   } = useSelector(selectPosterOptions);
 
@@ -257,6 +263,24 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         </div>
       ) : null}
 
+      {showTmdbRating && !!ratings.tmdb ? (
+        <div className={styles.title}>
+          <TmdbRating ratings={ratings} iconSize={12} />
+        </div>
+      ) : null}
+
+      {showImdbRating && !!ratings.imdb ? (
+        <div className={styles.title}>
+          <ImdbRating ratings={ratings} iconSize={12} />
+        </div>
+      ) : null}
+
+      {showRottenTomatoesRating && !!ratings.rottenTomatoes ? (
+        <div className={styles.title}>
+          <RottenTomatoRating ratings={ratings} iconSize={12} />
+        </div>
+      ) : null}
+
       <MovieIndexPosterInfo
         studio={studio}
         qualityProfile={qualityProfile}
@@ -279,6 +303,9 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         certification={certification}
         originalTitle={originalTitle}
         originalLanguage={originalLanguage}
+        showTmdbRating={showTmdbRating}
+        showImdbRating={showImdbRating}
+        showRottenTomatoesRating={showRottenTomatoesRating}
       />
 
       <EditMovieModalConnector

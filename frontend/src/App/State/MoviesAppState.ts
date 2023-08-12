@@ -22,6 +22,9 @@ export interface MovieIndexAppState {
     showQualityProfile: boolean;
     showReleaseDate: boolean;
     showCinemaRelease: boolean;
+    showTmdbRating: boolean;
+    showImdbRating: boolean;
+    showRottenTomatoesRating: boolean;
     showSearchAction: boolean;
   };
 

@@ -35,6 +35,9 @@ export const defaultState = {
     showQualityProfile: true,
     showCinemaRelease: false,
     showReleaseDate: false,
+    showTmdbRating: false,
+    showImdbRating: false,
+    showRottenTomatoesRating: false,
     showSearchAction: false
   },
 
@@ -253,7 +256,7 @@ export const defaultState = {
     rottenTomatoesRating: function(item) {
       const { ratings = {} } = item;
 
-      return ratings.rottenTomatoes ? ratings.rottenTomatoes.value : 0;
+      return ratings.rottenTomatoes ? ratings.rottenTomatoes.value : -1;
     }
   },
 

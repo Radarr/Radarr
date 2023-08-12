@@ -145,6 +145,9 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
       showQualityProfile,
       showCinemaRelease,
       showReleaseDate,
+      showTmdbRating,
+      showImdbRating,
+      showRottenTomatoesRating,
     } = posterOptions;
 
     const nextAiringHeight = 19;
@@ -176,12 +179,22 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
       heights.push(19);
     }
 
+    if (showTmdbRating) {
+      heights.push(19);
+    }
+
+    if (showImdbRating) {
+      heights.push(19);
+    }
+
+    if (showRottenTomatoesRating) {
+      heights.push(19);
+    }
+
     switch (sortKey) {
       case 'studio':
       case 'added':
       case 'year':
-      case 'imdbRating':
-      case 'tmdbRating':
       case 'path':
       case 'sizeOnDisk':
       case 'originalTitle':
@@ -201,6 +214,21 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
       case 'digitalRelease':
       case 'physicalRelease':
         if (!showReleaseDate) {
+          heights.push(19);
+        }
+        break;
+      case 'imdbRating':
+        if (!showImdbRating) {
+          heights.push(19);
+        }
+        break;
+      case 'tmdbRating':
+        if (!showTmdbRating) {
+          heights.push(19);
+        }
+        break;
+      case 'rottenTomatoesRating':
+        if (!showRottenTomatoesRating) {
           heights.push(19);
         }
         break;
