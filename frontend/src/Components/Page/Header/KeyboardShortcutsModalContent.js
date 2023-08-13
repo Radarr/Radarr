@@ -56,7 +56,7 @@ function KeyboardShortcutsModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        Keyboard Shortcuts
+        {translate('KeyboardShortcuts')}
       </ModalHeader>
 
       <ModalBody>

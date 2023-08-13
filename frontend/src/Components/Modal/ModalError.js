@@ -18,7 +18,7 @@ function ModalError(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        Error
+        {translate('Error')}
       </ModalHeader>
 
       <ModalBody>
@@ -26,7 +26,7 @@ function ModalError(props) {
           messageClassName={styles.message}
           detailsClassName={styles.details}
           {...otherProps}
-          message={translate('ThereWasAnErrorLoadingThisItem')}
+          message={translate('ErrorLoadingItem')}
         />
       </ModalBody>
 

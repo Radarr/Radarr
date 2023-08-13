@@ -58,9 +58,9 @@ class FilterMenu extends Component {
         >
           <ButtonComponent
             iconName={icons.FILTER}
+            showIndicator={selectedFilterKey !== 'all'}
             text={translate('Filter')}
             isDisabled={isDisabled}
-            showIndicator={selectedFilterKey !== 'all'}
           />
 
           <FilterMenuContent

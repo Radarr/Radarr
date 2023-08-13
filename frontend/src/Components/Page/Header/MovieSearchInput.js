@@ -92,7 +92,7 @@ class MovieSearchInput extends Component {
     if (item.type === ADD_NEW_TYPE) {
       return (
         <div className={styles.addNewMovieSuggestion}>
-          Search for {query}
+          {translate('SearchForQuery', { query })}
         </div>
       );
     }

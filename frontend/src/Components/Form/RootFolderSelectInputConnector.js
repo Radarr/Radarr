@@ -55,7 +55,7 @@ function createMapStateToProps() {
 
       values.push({
         key: ADD_NEW_KEY,
-        value: 'Add a new path'
+        value: translate('AddANewPath')
       });
 
       return {

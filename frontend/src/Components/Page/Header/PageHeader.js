@@ -79,7 +79,7 @@ class PageHeader extends Component {
           <IconButton
             className={styles.donate}
             name={icons.HEART}
-            aria-label="Donate"
+            aria-label={translate('Donate')}
             to="https://radarr.video/donate"
             size={14}
             title={translate('Donate')}

@@ -10,7 +10,7 @@ function PageContentError(props) {
       <PageContentBody>
         <ErrorBoundaryError
           {...props}
-          message={translate('ThereWasAnErrorLoadingThisPage')}
+          message={translate('ErrorLoadingPage')}
         />
       </PageContentBody>
     </div>

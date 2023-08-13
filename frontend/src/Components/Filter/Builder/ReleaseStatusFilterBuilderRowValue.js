@@ -3,7 +3,10 @@ import translate from 'Utilities/String/translate';
 import FilterBuilderRowValue from './FilterBuilderRowValue';
 
 const statusTagList = [
-  { id: 'tba', name: 'TBA' },
+  { id: 'tba',
+    get name() {
+      return translate('Tba');
+    } },
   {
     id: 'announced',
     get name() {

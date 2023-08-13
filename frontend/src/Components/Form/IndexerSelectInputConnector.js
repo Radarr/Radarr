@@ -1,9 +1,11 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { fetchIndexers } from 'Store/Actions/settingsActions';
 import sortByProp from 'Utilities/Array/sortByProp';
+import translate from 'Utilities/String/translate';
 import EnhancedSelectInput from './EnhancedSelectInput';
 
 function createMapStateToProps() {
@@ -18,15 +20,17 @@ function createMapStateToProps() {
         items
       } = indexers;
 
-      const values = items.sort(sortByProp('name')).map((indexer) => ({
-        key: indexer.id,
-        value: indexer.name
-      }));
+      const values = _.map(items.sort(sortByProp('name')), (indexer) => {
+        return {
+          key: indexer.id,
+          value: indexer.name
+        };
+      });
 
       if (includeAny) {
         values.unshift({
           key: 0,
-          value: '(Any)'
+          value: `(${translate('Any')})`
         });
       }
 

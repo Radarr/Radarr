@@ -7,63 +7,63 @@ export const shortcuts = {
   OPEN_KEYBOARD_SHORTCUTS_MODAL: {
     key: '?',
     get name() {
-      return translate('OpenThisModal');
+      return translate('KeyboardShortcutsOpenModal');
     }
   },
 
   CLOSE_MODAL: {
     key: 'Esc',
     get name() {
-      return translate('CloseCurrentModal');
+      return translate('KeyboardShortcutsCloseModal');
     }
   },
 
   ACCEPT_CONFIRM_MODAL: {
     key: 'Enter',
     get name() {
-      return translate('AcceptConfirmationModal');
+      return translate('KeyboardShortcutsConfirmModal');
     }
   },
 
   MOVIE_SEARCH_INPUT: {
     key: 's',
     get name() {
-      return translate('FocusSearchBox');
+      return translate('KeyboardShortcutsFocusSearchBox');
     }
   },
 
   SAVE_SETTINGS: {
     key: 'mod+s',
     get name() {
-      return translate('SaveSettings');
+      return translate('KeyboardShortcutsSaveSettings');
     }
   },
 
   SCROLL_TOP: {
     key: 'mod+home',
     get name() {
-      return translate('MovieIndexScrollTop');
+      return translate('KeyboardShortcutsMovieIndexScrollTop');
     }
   },
 
   SCROLL_BOTTOM: {
     key: 'mod+end',
     get name() {
-      return translate('MovieIndexScrollBottom');
+      return translate('KeyboardShortcutsMovieIndexScrollBottom');
     }
   },
 
   DETAILS_NEXT: {
     key: '→',
     get name() {
-      return translate('MovieDetailsNextMovie');
+      return translate('KeyboardShortcutsMovieDetailsNextMovie');
     }
   },
 
   DETAILS_PREVIOUS: {
     key: '←',
     get name() {
-      return translate('MovieDetailsPreviousMovie');
+      return translate('KeyboardShortcutsMovieDetailsPreviousMovie');
     }
   }
 };
