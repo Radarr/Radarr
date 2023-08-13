@@ -90,6 +90,7 @@
   "Automatic": "Automatic",
   "AutomaticAdd": "Automatic Add",
   "AutomaticSearch": "Automatic Search",
+  "AutomaticUpdatesDisabledDocker": "Automatic updates are not directly supported when using the Docker update mechanism. You will need to update the container image outside of {appName} or use a script",
   "AvailabilityDelay": "Availability Delay",
   "AvailabilityDelayHelpText": "Amount of time before or after available date to search for Movie",
   "Backup": "Backup",
