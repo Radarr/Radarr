@@ -39,7 +39,7 @@ function SelectReleaseGroupModalContent(
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {modalTitle} - {translate('SetReleaseGroup')}
+        {translate('SetReleaseGroupModalTitle', { modalTitle })}
       </ModalHeader>
 
       <ModalBody
@@ -62,7 +62,7 @@ function SelectReleaseGroupModalContent(
       </ModalBody>
 
       <ModalFooter>
-        <Button onPress={onModalClose}>Cancel</Button>
+        <Button onPress={onModalClose}>{translate('Cancel')}</Button>
 
         <Button kind={kinds.SUCCESS} onPress={onReleaseGroupSelectWrapper}>
           {translate('SetReleaseGroup')}

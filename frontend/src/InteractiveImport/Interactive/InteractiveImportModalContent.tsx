@@ -118,6 +118,7 @@ const COLUMNS = [
     label: React.createElement(Icon, {
       name: icons.DANGER,
       kind: kinds.DANGER,
+      title: () => translate('Rejections'),
     }),
     isSortable: true,
     isVisible: true,
@@ -242,10 +243,23 @@ function InteractiveImportModalContent(
     useState<string | null>(null);
   const [selectState, setSelectState] = useSelectState();
   const [bulkSelectOptions, setBulkSelectOptions] = useState([
-    { key: 'select', value: translate('SelectDotDot'), disabled: true },
-    { key: 'quality', value: translate('SelectQuality') },
-    { key: 'releaseGroup', value: translate('SelectReleaseGroup') },
-    { key: 'language', value: translate('SelectLanguage') },
+    {
+      key: 'select',
+      value: translate('SelectDropdown'),
+      disabled: true,
+    },
+    {
+      key: 'quality',
+      value: translate('SelectQuality'),
+    },
+    {
+      key: 'releaseGroup',
+      value: translate('SelectReleaseGroup'),
+    },
+    {
+      key: 'language',
+      value: translate('SelectLanguage'),
+    },
   ]);
   const { allSelected, allUnselected, selectedState } = selectState;
   const previousIsDeleting = usePrevious(isDeleting);
@@ -390,7 +404,9 @@ function InteractiveImportModalContent(
     const files: InteractiveImportCommandOptions[] = [];
 
     if (finalImportMode === 'chooseImportMode') {
-      setInteractiveImportErrorMessage('An import mode must be selected');
+      setInteractiveImportErrorMessage(
+        translate('InteractiveImportNoImportMode')
+      );
 
       return;
     }
@@ -403,21 +419,21 @@ function InteractiveImportModalContent(
 
         if (!movie) {
           setInteractiveImportErrorMessage(
-            translate('InteractiveImportErrMovie')
+            translate('InteractiveImportNoMovie')
           );
           return;
         }
 
         if (!quality) {
           setInteractiveImportErrorMessage(
-            translate('InteractiveImportErrQuality')
+            translate('InteractiveImportNoQuality')
           );
           return;
         }
 
         if (!languages) {
           setInteractiveImportErrorMessage(
-            translate('InteractiveImportErrLanguage')
+            translate('InteractiveImportNoLanguage')
           );
           return;
         }
@@ -605,7 +621,7 @@ function InteractiveImportModalContent(
 
   const errorMessage = getErrorMessage(
     error,
-    translate('UnableToLoadManualImportItems')
+    translate('InteractiveImportLoadError')
   );
 
   return (
@@ -685,7 +701,7 @@ function InteractiveImportModalContent(
         ) : null}
 
         {isPopulated && !items.length && !isFetching
-          ? translate('NoVideoFilesFoundSelectedFolder')
+          ? translate('InteractiveImportNoFilesFound')
           : null}
       </ModalBody>
 
@@ -781,8 +797,8 @@ function InteractiveImportModalContent(
         isOpen={isConfirmDeleteModalOpen}
         kind={kinds.DANGER}
         title={translate('DeleteSelectedMovieFiles')}
-        message={translate('DeleteSelectedMovieFilesMessage')}
-        confirmLabel="Delete"
+        message={translate('DeleteSelectedMovieFilesHelpText')}
+        confirmLabel={translate('Delete')}
         onConfirm={onConfirmDelete}
         onCancel={onConfirmDeleteModalClose}
       />

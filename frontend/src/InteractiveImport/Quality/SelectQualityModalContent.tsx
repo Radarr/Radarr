@@ -131,9 +131,7 @@ function SelectQualityModalContent(props: SelectQualityModalContentProps) {
         {isFetching && <LoadingIndicator />}
 
         {!isFetching && error ? (
-          <Alert kind={kinds.DANGER}>
-            {translate('UnableToLoadQualities')}
-          </Alert>
+          <Alert kind={kinds.DANGER}>{translate('QualitiesLoadError')}</Alert>
         ) : null}
 
         {isPopulated && !error ? (

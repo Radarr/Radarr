@@ -332,7 +332,7 @@ class MovieFileEditorRow extends Component {
           ids={[id]}
           kind={kinds.DANGER}
           title={translate('DeleteSelectedMovieFiles')}
-          message={translate('DeleteSelectedMovieFilesMessage')}
+          message={translate('DeleteSelectedMovieFilesHelpText')}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDelete}
           onCancel={this.onConfirmDeleteModalClose}

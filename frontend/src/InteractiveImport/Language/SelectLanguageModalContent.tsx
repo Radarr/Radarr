@@ -80,16 +80,14 @@ function SelectLanguageModalContent(props: SelectLanguageModalContentProps) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {modalTitle} - {translate('SelectLanguage')}
+        {translate('SelectLanguageModalTitle', { modalTitle })}
       </ModalHeader>
 
       <ModalBody>
         {isFetching ? <LoadingIndicator /> : null}
 
         {!isFetching && error ? (
-          <Alert kind={kinds.DANGER}>
-            {translate('UnableToLoadLanguages')}
-          </Alert>
+          <Alert kind={kinds.DANGER}>{translate('LanguagesLoadError')}</Alert>
         ) : null}
 
         {isPopulated && !error ? (
