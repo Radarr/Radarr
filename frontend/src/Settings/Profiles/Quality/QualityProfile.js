@@ -162,7 +162,7 @@ class QualityProfile extends Component {
           isOpen={this.state.isDeleteQualityProfileModalOpen}
           kind={kinds.DANGER}
           title={translate('DeleteQualityProfile')}
-          message={translate('QualityProfileDeleteConfirm', [name])}
+          message={translate('DeleteQualityProfileMessageText', { name })}
           confirmLabel={translate('Delete')}
           isSpinning={isDeleting}
           onConfirm={this.onConfirmDeleteQualityProfile}

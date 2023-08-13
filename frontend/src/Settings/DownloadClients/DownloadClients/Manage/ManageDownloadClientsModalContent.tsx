@@ -286,9 +286,9 @@ function ManageDownloadClientsModalContent(
         isOpen={isDeleteModalOpen}
         kind={kinds.DANGER}
         title={translate('DeleteSelectedDownloadClients')}
-        message={translate('DeleteSelectedDownloadClientsMessageText', [
-          selectedIds.length,
-        ])}
+        message={translate('DeleteSelectedDownloadClientsMessageText', {
+          count: selectedIds.length,
+        })}
         confirmLabel={translate('Delete')}
         onConfirm={onConfirmDelete}
         onCancel={onDeleteModalClose}

@@ -119,7 +119,7 @@ class ImportMovie extends Component {
             rootFoldersPopulated &&
             !unmappedFolders.length ?
               <Alert kind={kinds.INFO}>
-                {translate('AllMoviesInPathHaveBeenImported', [path])}
+                {translate('AllMoviesInPathHaveBeenImported', { path })}
               </Alert> :
               null
           }

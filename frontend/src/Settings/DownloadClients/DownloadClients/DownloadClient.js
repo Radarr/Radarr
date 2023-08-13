@@ -92,7 +92,7 @@ class DownloadClient extends Component {
                 kind={kinds.DISABLED}
                 outline={true}
               >
-                {translate('PrioritySettings', [priority])}
+                {translate('PrioritySettings', { priority })}
               </Label>
           }
         </div>
@@ -113,7 +113,7 @@ class DownloadClient extends Component {
           isOpen={this.state.isDeleteDownloadClientModalOpen}
           kind={kinds.DANGER}
           title={translate('DeleteDownloadClient')}
-          message={translate('DeleteDownloadClientMessageText', [name])}
+          message={translate('DeleteDownloadClientMessageText', { name })}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteDownloadClient}
           onCancel={this.onDeleteDownloadClientModalClose}

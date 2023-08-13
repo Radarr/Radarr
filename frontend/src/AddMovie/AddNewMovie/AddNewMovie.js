@@ -155,7 +155,7 @@ class AddNewMovie extends Component {
             !isFetching && !error && !items.length && !!term &&
               <div className={styles.message}>
                 <div className={styles.noResults}>
-                  {translate('CouldNotFindResults', [term])}
+                  {translate('CouldNotFindResults', { term })}
                 </div>
                 <div>
                   {translate('YouCanAlsoSearch')}

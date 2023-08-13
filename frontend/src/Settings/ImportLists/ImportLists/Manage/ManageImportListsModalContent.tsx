@@ -277,9 +277,9 @@ function ManageImportListsModalContent(
         isOpen={isDeleteModalOpen}
         kind={kinds.DANGER}
         title={translate('DeleteSelectedImportLists')}
-        message={translate('DeleteSelectedImportListsMessageText', [
-          selectedIds.length,
-        ])}
+        message={translate('DeleteSelectedImportListsMessageText', {
+          count: selectedIds.length,
+        })}
         confirmLabel={translate('Delete')}
         onConfirm={onConfirmDelete}
         onCancel={onDeleteModalClose}
