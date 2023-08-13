@@ -212,7 +212,7 @@ function EditMoviesModalContent(props: EditMoviesModalContentProps) {
 
       <ModalFooter className={styles.modalFooter}>
         <div className={styles.selected}>
-          {translate('MoviesSelectedInterp', [selectedCount])}
+          {translate('MoviesSelectedInterp', { count: selectedCount })}
         </div>
 
         <div>

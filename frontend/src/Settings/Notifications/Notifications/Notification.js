@@ -217,7 +217,7 @@ class Notification extends Component {
           isOpen={this.state.isDeleteNotificationModalOpen}
           kind={kinds.DANGER}
           title={translate('DeleteNotification')}
-          message={translate('DeleteNotificationMessageText', [name])}
+          message={translate('DeleteNotificationMessageText', { name })}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteNotification}
           onCancel={this.onDeleteNotificationModalClose}

@@ -107,14 +107,14 @@ function QueueStatusCell(props) {
     iconName = icons.DOWNLOADING;
     iconKind = kinds.WARNING;
     const warningMessage = errorMessage || translate('CheckDownloadClientForDetails');
-    title = translate('DownloadWarning', [warningMessage]);
+    title = translate('DownloadWarning', { warningMessage });
   }
 
   if (hasError) {
     if (status === 'completed') {
       iconName = icons.DOWNLOAD;
       iconKind = kinds.DANGER;
-      title = translate('ImportFailed', [sourceTitle]);
+      title = translate('ImportFailed', { sourceTitle });
     } else {
       iconName = icons.DOWNLOADING;
       iconKind = kinds.DANGER;

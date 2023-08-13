@@ -152,7 +152,7 @@ class Indexer extends Component {
           isOpen={this.state.isDeleteIndexerModalOpen}
           kind={kinds.DANGER}
           title={translate('DeleteIndexer')}
-          message={translate('DeleteIndexerMessageText', [name])}
+          message={translate('DeleteIndexerMessageText', { name })}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteIndexer}
           onCancel={this.onDeleteIndexerModalClose}

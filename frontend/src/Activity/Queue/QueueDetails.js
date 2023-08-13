@@ -35,7 +35,7 @@ function QueueDetails(props) {
         <Icon
           name={icons.DOWNLOAD}
           kind={kinds.DANGER}
-          title={translate('ImportFailedInterp', [errorMessage])}
+          title={translate('ImportFailedInterp', { errorMessage })}
         />
       );
     }
@@ -76,7 +76,7 @@ function QueueDetails(props) {
       <Icon
         name={icons.DOWNLOADING}
         kind={kinds.DANGER}
-        title={translate('DownloadFailedInterp', [errorMessage])}
+        title={translate('DownloadFailedInterp', { errorMessage })}
       />
     );
   }

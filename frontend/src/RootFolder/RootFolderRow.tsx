@@ -83,7 +83,7 @@ function RootFolderRow(props: RootFolderRowProps) {
         isOpen={isDeleteModalOpen}
         kind={kinds.DANGER}
         title={translate('DeleteRootFolder')}
-        message={translate('DeleteRootFolderMessageText', [path])}
+        message={translate('DeleteRootFolderMessageText', { path })}
         confirmLabel={translate('Delete')}
         onConfirm={onConfirmDelete}
         onCancel={onDeleteModalClose}

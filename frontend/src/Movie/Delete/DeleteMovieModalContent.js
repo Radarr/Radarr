@@ -117,7 +117,7 @@ class DeleteMovieModalContent extends Component {
             deleteFiles &&
               <div className={styles.deleteFilesMessage}>
                 <div>
-                  {translate('DeleteTheMovieFolder', [path])}
+                  {translate('DeleteTheMovieFolder', { path })}
                 </div>
 
                 {

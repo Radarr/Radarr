@@ -281,9 +281,9 @@ function ManageIndexersModalContent(props: ManageIndexersModalContentProps) {
         isOpen={isDeleteModalOpen}
         kind={kinds.DANGER}
         title={translate('DeleteSelectedIndexers')}
-        message={translate('DeleteSelectedIndexersMessageText', [
-          selectedIds.length,
-        ])}
+        message={translate('DeleteSelectedIndexersMessageText', {
+          count: selectedIds.length,
+        })}
         confirmLabel={translate('Delete')}
         onConfirm={onConfirmDelete}
         onCancel={onDeleteModalClose}

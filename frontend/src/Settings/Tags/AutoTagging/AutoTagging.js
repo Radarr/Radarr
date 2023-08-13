@@ -114,7 +114,7 @@ export default function AutoTagging(props) {
         isOpen={isDeleteModalOpen}
         kind={kinds.DANGER}
         title={translate('DeleteAutoTag')}
-        message={translate('DeleteAutoTagHelpText', [name])}
+        message={translate('DeleteAutoTagHelpText', { name })}
         confirmLabel={translate('Delete')}
         isSpinning={isDeleting}
         onConfirm={onConfirmDelete}
