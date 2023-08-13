@@ -9,6 +9,7 @@ import ModalHeader from 'Components/Modal/ModalHeader';
 import { kinds } from 'Helpers/Props';
 import UpdateChanges from 'System/Updates/UpdateChanges';
 import translate from 'Utilities/String/translate';
+import InlineMarkdown from 'Components/Markdown/InlineMarkdown';
 import styles from './AppUpdatedModalContent.css';
 
 function mergeUpdates(items, version, prevVersion) {
@@ -64,20 +65,20 @@ function AppUpdatedModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {translate('RadarrUpdated')}
+        {translate('AppUpdated', { appName: 'Radarr' })}
       </ModalHeader>
 
       <ModalBody>
-        <div dangerouslySetInnerHTML={{ __html: translate('VersionUpdateText', [`<span className=${styles.version}>${version}</span>`]) }} />
+        <div>
+          <InlineMarkdown data={translate('AppUpdatedVersion', { appName: 'Radarr', version })} blockClassName={styles.version} />
+        </div>
 
         {
           isPopulated && !error && !!update &&
             <div>
               {
                 !update.changes &&
-                  <div className={styles.maintenance}>
-                    {translate('MaintenanceRelease')}
-                  </div>
+                  <div className={styles.maintenance}>{translate('MaintenanceRelease')}</div>
               }
 
               {
