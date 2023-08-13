@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
@@ -15,6 +15,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         public void Clean()
         {
             using var mapper = _database.OpenConnection();
+
             mapper.Execute(@"DELETE FROM ""DownloadClientStatus""
                              WHERE ""Id"" IN (
                              SELECT ""DownloadClientStatus"".""Id"" FROM ""DownloadClientStatus""
