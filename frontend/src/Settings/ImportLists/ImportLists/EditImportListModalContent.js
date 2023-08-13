@@ -57,7 +57,7 @@ function EditImportListModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {`${id ? translate('Edit') : translate('Add')} ${translate('List')} - ${implementationName}`}
+        {id ? translate('EditImportListImplementation', { implementationName }) : translate('AddImportListImplementation', { implementationName })}
       </ModalHeader>
 
       <ModalBody>

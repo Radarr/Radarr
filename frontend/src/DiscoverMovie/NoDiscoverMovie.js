@@ -47,7 +47,7 @@ function NoDiscoverMovie(props) {
           to="/settings/importlists"
           kind={kinds.PRIMARY}
         >
-          {translate('AddList')}
+          {translate('AddImportList')}
         </Button>
       </div>
     </div>
