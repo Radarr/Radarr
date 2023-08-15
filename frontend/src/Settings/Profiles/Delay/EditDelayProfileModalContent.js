@@ -242,6 +242,8 @@ const delayProfileShape = {
   usenetDelay: PropTypes.shape(numberSettingShape).isRequired,
   torrentDelay: PropTypes.shape(numberSettingShape).isRequired,
   bypassIfHighestQuality: PropTypes.shape(boolSettingShape).isRequired,
+  bypassIfAboveCustomFormatScore: PropTypes.shape(boolSettingShape).isRequired,
+  minimumCustomFormatScore: PropTypes.shape(numberSettingShape).isRequired,
   order: PropTypes.shape(numberSettingShape),
   tags: PropTypes.shape(tagSettingShape).isRequired
 };
