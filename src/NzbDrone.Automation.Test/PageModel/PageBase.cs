@@ -40,6 +40,10 @@ namespace NzbDrone.Automation.Test.PageModel
                     var element = d.FindElement(By.ClassName("followingBalls"));
                     return !element.Displayed;
                 }
+                catch (StaleElementReferenceException)
+                {
+                    return true;
+                }
                 catch (NoSuchElementException)
                 {
                     return true;
