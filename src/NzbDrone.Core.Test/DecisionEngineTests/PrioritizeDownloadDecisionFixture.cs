@@ -13,8 +13,8 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Profiles.Delay;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie.ParsedMovieInfo.Year = 1998;
             remoteMovie.ParsedMovieInfo.Quality = quality;
 
-            remoteMovie.Movie = Builder<Movie>.CreateNew().With(m => m.Profile = new Profile
+            remoteMovie.Movie = Builder<Movie>.CreateNew().With(m => m.QualityProfile = new QualityProfile
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
                 FormatItems = CustomFormatsTestHelpers.GetSampleFormatItems(_customFormat1.Name, _customFormat2.Name),
@@ -416,7 +416,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var quality2 = new QualityModel(Quality.Bluray720p);
             var remoteMovie2 = GivenRemoteMovie(quality2);
             remoteMovie2.CustomFormats.Add(_customFormat1);
-            remoteMovie2.CustomFormatScore = remoteMovie2.Movie.Profile.CalculateCustomFormatScore(remoteMovie2.CustomFormats);
+            remoteMovie2.CustomFormatScore = remoteMovie2.Movie.QualityProfile.CalculateCustomFormatScore(remoteMovie2.CustomFormats);
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteMovie1));
@@ -432,12 +432,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var quality1 = new QualityModel(Quality.Bluray720p);
             var remoteMovie1 = GivenRemoteMovie(quality1);
             remoteMovie1.CustomFormats.Add(_customFormat1);
-            remoteMovie1.CustomFormatScore = remoteMovie1.Movie.Profile.CalculateCustomFormatScore(remoteMovie1.CustomFormats);
+            remoteMovie1.CustomFormatScore = remoteMovie1.Movie.QualityProfile.CalculateCustomFormatScore(remoteMovie1.CustomFormats);
 
             var quality2 = new QualityModel(Quality.Bluray720p);
             var remoteMovie2 = GivenRemoteMovie(quality2);
             remoteMovie2.CustomFormats.Add(_customFormat2);
-            remoteMovie2.CustomFormatScore = remoteMovie2.Movie.Profile.CalculateCustomFormatScore(remoteMovie2.CustomFormats);
+            remoteMovie2.CustomFormatScore = remoteMovie2.Movie.QualityProfile.CalculateCustomFormatScore(remoteMovie2.CustomFormats);
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteMovie1));
@@ -452,11 +452,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             var remoteMovie1 = GivenRemoteMovie(new QualityModel(Quality.Bluray720p));
             remoteMovie1.CustomFormats.Add(_customFormat1);
-            remoteMovie1.CustomFormatScore = remoteMovie1.Movie.Profile.CalculateCustomFormatScore(remoteMovie1.CustomFormats);
+            remoteMovie1.CustomFormatScore = remoteMovie1.Movie.QualityProfile.CalculateCustomFormatScore(remoteMovie1.CustomFormats);
 
             var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.Bluray720p));
             remoteMovie2.CustomFormats.AddRange(new List<CustomFormat> { _customFormat1, _customFormat2 });
-            remoteMovie2.CustomFormatScore = remoteMovie2.Movie.Profile.CalculateCustomFormatScore(remoteMovie2.CustomFormats);
+            remoteMovie2.CustomFormatScore = remoteMovie2.Movie.QualityProfile.CalculateCustomFormatScore(remoteMovie2.CustomFormats);
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteMovie1));

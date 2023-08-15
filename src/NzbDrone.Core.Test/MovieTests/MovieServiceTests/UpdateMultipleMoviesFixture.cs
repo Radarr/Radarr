@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Test.MovieTests.MovieServiceTests
         {
             _movies = Builder<Movie>.CreateListOfSize(5)
                 .All()
-                .With(s => s.ProfileId = 1)
+                .With(s => s.QualityProfileId = 1)
                 .With(s => s.Monitored)
                 .With(s => s.Path = @"C:\Test\name".AsOsAgnostic())
                 .With(s => s.RootFolderPath = "")

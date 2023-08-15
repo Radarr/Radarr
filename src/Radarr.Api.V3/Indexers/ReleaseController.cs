@@ -12,7 +12,7 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Validation;
 using Radarr.Http;
 using HttpStatusCode = System.Net.HttpStatusCode;
@@ -39,7 +39,7 @@ namespace Radarr.Api.V3.Indexers
                              IDownloadService downloadService,
                              IMovieService movieService,
                              ICacheManager cacheManager,
-                             IProfileService qualityProfileService,
+                             IQualityProfileService qualityProfileService,
                              Logger logger)
             : base(qualityProfileService)
         {

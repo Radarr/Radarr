@@ -11,33 +11,33 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Qualities;
 
-namespace NzbDrone.Core.Profiles
+namespace NzbDrone.Core.Profiles.Qualities
 {
-    public interface IProfileService
+    public interface IQualityProfileService
     {
-        Profile Add(Profile profile);
-        void Update(Profile profile);
+        QualityProfile Add(QualityProfile profile);
+        void Update(QualityProfile profile);
         void Delete(int id);
-        List<Profile> All();
-        Profile Get(int id);
+        List<QualityProfile> All();
+        QualityProfile Get(int id);
         bool Exists(int id);
-        Profile GetDefaultProfile(string name, Quality cutoff = null, params Quality[] allowed);
+        QualityProfile GetDefaultProfile(string name, Quality cutoff = null, params Quality[] allowed);
         List<Language> GetAcceptableLanguages(int profileId);
     }
 
-    public class ProfileService : IProfileService,
+    public class QualityProfileService : IQualityProfileService,
         IHandle<ApplicationStartedEvent>,
         IHandle<CustomFormatAddedEvent>,
         IHandle<CustomFormatDeletedEvent>
     {
-        private readonly IProfileRepository _profileRepository;
+        private readonly IQualityProfileRepository _profileRepository;
         private readonly ICustomFormatService _formatService;
         private readonly IMovieService _movieService;
         private readonly IImportListFactory _importListFactory;
         private readonly IMovieCollectionService _collectionService;
         private readonly Logger _logger;
 
-        public ProfileService(IProfileRepository profileRepository,
+        public QualityProfileService(IQualityProfileRepository profileRepository,
                               ICustomFormatService formatService,
                               IMovieService movieService,
                               IImportListFactory importListFactory,
@@ -52,32 +52,32 @@ namespace NzbDrone.Core.Profiles
             _logger = logger;
         }
 
-        public Profile Add(Profile profile)
+        public QualityProfile Add(QualityProfile profile)
         {
             return _profileRepository.Insert(profile);
         }
 
-        public void Update(Profile profile)
+        public void Update(QualityProfile profile)
         {
             _profileRepository.Update(profile);
         }
 
         public void Delete(int id)
         {
-            if (_movieService.GetAllMovies().Any(c => c.ProfileId == id) || _importListFactory.All().Any(c => c.ProfileId == id) || _collectionService.GetAllCollections().Any(c => c.QualityProfileId == id))
+            if (_movieService.GetAllMovies().Any(c => c.QualityProfileId == id) || _importListFactory.All().Any(c => c.QualityProfileId == id) || _collectionService.GetAllCollections().Any(c => c.QualityProfileId == id))
             {
-                throw new ProfileInUseException(id);
+                throw new QualityProfileInUseException(id);
             }
 
             _profileRepository.Delete(id);
         }
 
-        public List<Profile> All()
+        public List<QualityProfile> All()
         {
             return _profileRepository.All().ToList();
         }
 
-        public Profile Get(int id)
+        public QualityProfile Get(int id)
         {
             return _profileRepository.Get(id);
         }
@@ -209,10 +209,10 @@ namespace NzbDrone.Core.Profiles
                 Quality.Remux1080p);
         }
 
-        public Profile GetDefaultProfile(string name, Quality cutoff = null, params Quality[] allowed)
+        public QualityProfile GetDefaultProfile(string name, Quality cutoff = null, params Quality[] allowed)
         {
             var groupedQualites = Quality.DefaultQualityDefinitions.GroupBy(q => q.Weight);
-            var items = new List<ProfileQualityItem>();
+            var items = new List<QualityProfileQualityItem>();
             var groupId = 1000;
             var profileCutoff = cutoff == null ? Quality.Unknown.Id : cutoff.Id;
 
@@ -222,17 +222,17 @@ namespace NzbDrone.Core.Profiles
                 {
                     var quality = group.First().Quality;
 
-                    items.Add(new ProfileQualityItem { Quality = group.First().Quality, Allowed = allowed.Contains(quality) });
+                    items.Add(new QualityProfileQualityItem { Quality = group.First().Quality, Allowed = allowed.Contains(quality) });
                     continue;
                 }
 
                 var groupAllowed = group.Any(g => allowed.Contains(g.Quality));
 
-                items.Add(new ProfileQualityItem
+                items.Add(new QualityProfileQualityItem
                 {
                     Id = groupId,
                     Name = group.First().GroupName,
-                    Items = group.Select(g => new ProfileQualityItem
+                    Items = group.Select(g => new QualityProfileQualityItem
                     {
                         Quality = g.Quality,
                         Allowed = groupAllowed
@@ -254,7 +254,7 @@ namespace NzbDrone.Core.Profiles
                 Format = format
             }).ToList();
 
-            var qualityProfile = new Profile
+            var qualityProfile = new QualityProfile
             {
                 Name = name,
                 Cutoff = profileCutoff,
@@ -286,7 +286,7 @@ namespace NzbDrone.Core.Profiles
             return wantedTitleLanguages;
         }
 
-        private Profile AddDefaultProfile(string name, Quality cutoff, params Quality[] allowed)
+        private QualityProfile AddDefaultProfile(string name, Quality cutoff, params Quality[] allowed)
         {
             var profile = GetDefaultProfile(name, cutoff, allowed);
 

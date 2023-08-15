@@ -5,18 +5,18 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
 
-namespace NzbDrone.Core.Profiles
+namespace NzbDrone.Core.Profiles.Qualities
 {
-    public class Profile : ModelBase
+    public class QualityProfile : ModelBase
     {
-        public Profile()
+        public QualityProfile()
         {
             FormatItems = new List<ProfileFormatItem>();
         }
 
         public string Name { get; set; }
         public int Cutoff { get; set; }
-        public List<ProfileQualityItem> Items { get; set; }
+        public List<QualityProfileQualityItem> Items { get; set; }
         public int MinFormatScore { get; set; }
         public int CutoffFormatScore { get; set; }
         public List<ProfileFormatItem> FormatItems { get; set; }

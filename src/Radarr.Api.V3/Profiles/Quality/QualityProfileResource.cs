@@ -3,6 +3,7 @@ using System.Linq;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Profiles.Quality
@@ -41,7 +42,7 @@ namespace Radarr.Api.V3.Profiles.Quality
 
     public static class ProfileResourceMapper
     {
-        public static QualityProfileResource ToResource(this Profile model)
+        public static QualityProfileResource ToResource(this QualityProfile model)
         {
             if (model == null)
             {
@@ -62,7 +63,7 @@ namespace Radarr.Api.V3.Profiles.Quality
             };
         }
 
-        public static QualityProfileQualityItemResource ToResource(this ProfileQualityItem model)
+        public static QualityProfileQualityItemResource ToResource(this QualityProfileQualityItem model)
         {
             if (model == null)
             {
@@ -89,14 +90,14 @@ namespace Radarr.Api.V3.Profiles.Quality
             };
         }
 
-        public static Profile ToModel(this QualityProfileResource resource)
+        public static QualityProfile ToModel(this QualityProfileResource resource)
         {
             if (resource == null)
             {
                 return null;
             }
 
-            return new Profile
+            return new QualityProfile
             {
                 Id = resource.Id,
                 Name = resource.Name,
@@ -110,14 +111,14 @@ namespace Radarr.Api.V3.Profiles.Quality
             };
         }
 
-        public static ProfileQualityItem ToModel(this QualityProfileQualityItemResource resource)
+        public static QualityProfileQualityItem ToModel(this QualityProfileQualityItemResource resource)
         {
             if (resource == null)
             {
                 return null;
             }
 
-            return new ProfileQualityItem
+            return new QualityProfileQualityItem
             {
                 Id = resource.Id,
                 Name = resource.Name,
@@ -136,7 +137,7 @@ namespace Radarr.Api.V3.Profiles.Quality
             };
         }
 
-        public static List<QualityProfileResource> ToResource(this IEnumerable<Profile> models)
+        public static List<QualityProfileResource> ToResource(this IEnumerable<QualityProfile> models)
         {
             return models.Select(ToResource).ToList();
         }

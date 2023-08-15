@@ -217,7 +217,7 @@ namespace NzbDrone.Core.Download.Pending
             {
                 var movies = g.First().Movie;
 
-                return g.OrderByDescending(e => e.Quality, new QualityModelComparer(movies.Profile))
+                return g.OrderByDescending(e => e.Quality, new QualityModelComparer(movies.QualityProfile))
                         .ThenBy(q => PrioritizeDownloadProtocol(q.Movie, q.Protocol))
                         .First();
             });
@@ -374,7 +374,7 @@ namespace NzbDrone.Core.Download.Pending
                 return;
             }
 
-            var profile = remoteMovie.Movie.Profile;
+            var profile = remoteMovie.Movie.QualityProfile;
 
             foreach (var existingReport in existingReports)
             {

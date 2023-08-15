@@ -11,7 +11,7 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 
 namespace NzbDrone.Core.IndexerSearch
 {
@@ -27,14 +27,14 @@ namespace NzbDrone.Core.IndexerSearch
         private readonly IMakeDownloadDecision _makeDownloadDecision;
         private readonly IMovieService _movieService;
         private readonly IMovieTranslationService _movieTranslationService;
-        private readonly IProfileService _profileService;
+        private readonly IQualityProfileService _profileService;
         private readonly Logger _logger;
 
         public ReleaseSearchService(IIndexerFactory indexerFactory,
                                 IMakeDownloadDecision makeDownloadDecision,
                                 IMovieService movieService,
                                 IMovieTranslationService movieTranslationService,
-                                IProfileService profileService,
+                                IQualityProfileService profileService,
                                 Logger logger)
         {
             _indexerFactory = indexerFactory;
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.IndexerSearch
                 InteractiveSearch = interactiveSearch
             };
 
-            var wantedLanguages = _profileService.GetAcceptableLanguages(movie.ProfileId);
+            var wantedLanguages = _profileService.GetAcceptableLanguages(movie.QualityProfileId);
             var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
 
             var queryTranlations = new List<string>

@@ -10,7 +10,7 @@ using NzbDrone.Core.Languages;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Collections;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
 
@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Test.Profiles
 {
     [TestFixture]
 
-    public class ProfileServiceFixture : CoreTest<ProfileService>
+    public class ProfileServiceFixture : CoreTest<QualityProfileService>
     {
         [Test]
         public void init_should_add_default_profiles()
@@ -29,8 +29,8 @@ namespace NzbDrone.Core.Test.Profiles
 
             Subject.Handle(new ApplicationStartedEvent());
 
-            Mocker.GetMock<IProfileRepository>()
-                .Verify(v => v.Insert(It.IsAny<Profile>()), Times.Exactly(6));
+            Mocker.GetMock<IQualityProfileRepository>()
+                .Verify(v => v.Insert(It.IsAny<QualityProfile>()), Times.Exactly(6));
         }
 
         [Test]
@@ -39,14 +39,14 @@ namespace NzbDrone.Core.Test.Profiles
         // We don't want to keep adding them back if a user deleted them on purpose.
         public void Init_should_skip_if_any_profiles_already_exist()
         {
-            Mocker.GetMock<IProfileRepository>()
+            Mocker.GetMock<IQualityProfileRepository>()
                   .Setup(s => s.All())
-                  .Returns(Builder<Profile>.CreateListOfSize(2).Build().ToList());
+                  .Returns(Builder<QualityProfile>.CreateListOfSize(2).Build().ToList());
 
             Subject.Handle(new ApplicationStartedEvent());
 
-            Mocker.GetMock<IProfileRepository>()
-                .Verify(v => v.Insert(It.IsAny<Profile>()), Times.Never());
+            Mocker.GetMock<IQualityProfileRepository>()
+                .Verify(v => v.Insert(It.IsAny<QualityProfile>()), Times.Never());
         }
 
         [Test]
@@ -54,20 +54,20 @@ namespace NzbDrone.Core.Test.Profiles
         {
             var movieList = Builder<Movie>.CreateListOfSize(3)
                                             .Random(1)
-                                            .With(c => c.ProfileId = 2)
+                                            .With(c => c.QualityProfileId = 2)
                                             .Build().ToList();
 
             var importList = Builder<ImportListDefinition>.CreateListOfSize(3)
                                                             .All()
-                                                            .With(c => c.ProfileId = 1)
+                                                            .With(c => c.QualityProfileId = 1)
                                                             .Build().ToList();
 
             Mocker.GetMock<IMovieService>().Setup(c => c.GetAllMovies()).Returns(movieList);
             Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importList);
 
-            Assert.Throws<ProfileInUseException>(() => Subject.Delete(2));
+            Assert.Throws<QualityProfileInUseException>(() => Subject.Delete(2));
 
-            Mocker.GetMock<IProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
+            Mocker.GetMock<IQualityProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
         }
 
         [Test]
@@ -75,20 +75,20 @@ namespace NzbDrone.Core.Test.Profiles
         {
             var movieList = Builder<Movie>.CreateListOfSize(3)
                 .All()
-                .With(c => c.ProfileId = 1)
+                .With(c => c.QualityProfileId = 1)
                 .Build().ToList();
 
             var importList = Builder<ImportListDefinition>.CreateListOfSize(3)
                 .Random(1)
-                .With(c => c.ProfileId = 2)
+                .With(c => c.QualityProfileId = 2)
                 .Build().ToList();
 
             Mocker.GetMock<IMovieService>().Setup(c => c.GetAllMovies()).Returns(movieList);
             Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importList);
 
-            Assert.Throws<ProfileInUseException>(() => Subject.Delete(2));
+            Assert.Throws<QualityProfileInUseException>(() => Subject.Delete(2));
 
-            Mocker.GetMock<IProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
+            Mocker.GetMock<IQualityProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
         }
 
         [Test]
@@ -96,12 +96,12 @@ namespace NzbDrone.Core.Test.Profiles
         {
             var movieList = Builder<Movie>.CreateListOfSize(3)
                 .All()
-                .With(c => c.ProfileId = 1)
+                .With(c => c.QualityProfileId = 1)
                 .Build().ToList();
 
             var importList = Builder<ImportListDefinition>.CreateListOfSize(3)
                 .Random(1)
-                .With(c => c.ProfileId = 1)
+                .With(c => c.QualityProfileId = 1)
                 .Build().ToList();
 
             var collectionList = Builder<MovieCollection>.CreateListOfSize(3)
@@ -113,9 +113,9 @@ namespace NzbDrone.Core.Test.Profiles
             Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importList);
             Mocker.GetMock<IMovieCollectionService>().Setup(c => c.GetAllCollections()).Returns(collectionList);
 
-            Assert.Throws<ProfileInUseException>(() => Subject.Delete(2));
+            Assert.Throws<QualityProfileInUseException>(() => Subject.Delete(2));
 
-            Mocker.GetMock<IProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
+            Mocker.GetMock<IQualityProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
         }
 
         [Test]
@@ -123,12 +123,12 @@ namespace NzbDrone.Core.Test.Profiles
         {
             var movieList = Builder<Movie>.CreateListOfSize(3)
                                             .All()
-                                            .With(c => c.ProfileId = 2)
+                                            .With(c => c.QualityProfileId = 2)
                                             .Build().ToList();
 
             var importList = Builder<ImportListDefinition>.CreateListOfSize(3)
                                                             .All()
-                                                            .With(c => c.ProfileId = 2)
+                                                            .With(c => c.QualityProfileId = 2)
                                                             .Build().ToList();
 
             var collectionList = Builder<MovieCollection>.CreateListOfSize(3)
@@ -142,15 +142,15 @@ namespace NzbDrone.Core.Test.Profiles
 
             Subject.Delete(1);
 
-            Mocker.GetMock<IProfileRepository>().Verify(c => c.Delete(1), Times.Once());
+            Mocker.GetMock<IQualityProfileRepository>().Verify(c => c.Delete(1), Times.Once());
         }
 
         [Test]
         public void get_acceptable_languages_should_return_profile_language()
         {
-            var profile = Builder<Profile>.CreateNew().With(c => c.Language = Language.German).Build();
+            var profile = Builder<QualityProfile>.CreateNew().With(c => c.Language = Language.German).Build();
 
-            Mocker.GetMock<IProfileRepository>()
+            Mocker.GetMock<IQualityProfileRepository>()
                   .Setup(s => s.Get(It.IsAny<int>()))
                   .Returns(profile);
 
@@ -163,7 +163,7 @@ namespace NzbDrone.Core.Test.Profiles
         [Test]
         public void get_acceptable_languages_should_return_custom_format_positive_languages()
         {
-            var profile = Builder<Profile>.CreateNew()
+            var profile = Builder<QualityProfile>.CreateNew()
                 .With(c => c.Language = Language.German)
                 .Build();
 
@@ -174,7 +174,7 @@ namespace NzbDrone.Core.Test.Profiles
 
             profile.FormatItems = CustomFormatsTestHelpers.GetSampleFormatItems(customFormat2.Name);
 
-            Mocker.GetMock<IProfileRepository>()
+            Mocker.GetMock<IQualityProfileRepository>()
                   .Setup(s => s.Get(It.IsAny<int>()))
                   .Returns(profile);
 

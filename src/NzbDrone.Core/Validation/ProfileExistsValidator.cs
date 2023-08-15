@@ -1,13 +1,13 @@
 ﻿using FluentValidation.Validators;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 
 namespace NzbDrone.Core.Validation
 {
     public class ProfileExistsValidator : PropertyValidator
     {
-        private readonly IProfileService _profileService;
+        private readonly IQualityProfileService _profileService;
 
-        public ProfileExistsValidator(IProfileService profileService)
+        public ProfileExistsValidator(IQualityProfileService profileService)
         {
             _profileService = profileService;
         }

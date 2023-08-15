@@ -11,7 +11,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
-            var minScore = subject.Movie.Profile.MinFormatScore;
+            var minScore = subject.Movie.QualityProfile.MinFormatScore;
             var score = subject.CustomFormatScore;
 
             if (score < minScore)

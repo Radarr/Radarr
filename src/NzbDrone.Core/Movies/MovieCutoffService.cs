@@ -3,7 +3,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Movies
@@ -16,9 +16,9 @@ namespace NzbDrone.Core.Movies
     public class MovieCutoffService : IMovieCutoffService
     {
         private readonly IMovieRepository _movieRepository;
-        private readonly IProfileService _profileService;
+        private readonly IQualityProfileService _profileService;
 
-        public MovieCutoffService(IMovieRepository movieRepository, IProfileService profileService, Logger logger)
+        public MovieCutoffService(IMovieRepository movieRepository, IQualityProfileService profileService, Logger logger)
         {
             _movieRepository = movieRepository;
             _profileService = profileService;

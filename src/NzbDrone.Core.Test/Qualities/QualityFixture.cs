@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Test.Qualities
             i.Should().Be(expected);
         }
 
-        public static List<ProfileQualityItem> GetDefaultQualities(params Quality[] allowed)
+        public static List<QualityProfileQualityItem> GetDefaultQualities(params Quality[] allowed)
         {
             var qualities = new List<Quality>
             {
@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Test.Qualities
             var items = qualities
                 .Except(allowed)
                 .Concat(allowed)
-                .Select(v => new ProfileQualityItem
+                .Select(v => new QualityProfileQualityItem
                 {
                     Quality = v,
                     Allowed = allowed.Contains(v)

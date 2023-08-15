@@ -94,7 +94,7 @@ namespace NzbDrone.Core.DecisionEngine
                             _aggregationService.Augment(remoteMovie);
 
                             remoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(remoteMovie, remoteMovie.Release.Size);
-                            remoteMovie.CustomFormatScore = remoteMovie?.Movie?.Profile?.CalculateCustomFormatScore(remoteMovie.CustomFormats) ?? 0;
+                            remoteMovie.CustomFormatScore = remoteMovie?.Movie?.QualityProfile?.CalculateCustomFormatScore(remoteMovie.CustomFormats) ?? 0;
 
                             remoteMovie.DownloadAllowed = remoteMovie.Movie != null;
                             decision = GetDecisionForReport(remoteMovie, searchCriteria);

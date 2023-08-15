@@ -47,7 +47,7 @@ namespace Radarr.Api.V3.Queue
             }
 
             var customFormats = model.RemoteMovie?.CustomFormats;
-            var customFormatScore = model.Movie?.Profile?.CalculateCustomFormatScore(customFormats) ?? 0;
+            var customFormatScore = model.Movie?.QualityProfile?.CalculateCustomFormatScore(customFormats) ?? 0;
 
             return new QueueResource
             {

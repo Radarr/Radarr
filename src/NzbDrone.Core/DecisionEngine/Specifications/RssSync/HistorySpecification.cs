@@ -51,12 +51,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             {
                 var customFormats = _formatService.ParseCustomFormat(mostRecent, subject.Movie);
 
-                var cutoffUnmet = _upgradableSpecification.CutoffNotMet(subject.Movie.Profile,
+                var cutoffUnmet = _upgradableSpecification.CutoffNotMet(subject.Movie.QualityProfile,
                                                                         mostRecent.Quality,
                                                                         customFormats,
                                                                         subject.ParsedMovieInfo.Quality);
 
-                var upgradeable = _upgradableSpecification.IsUpgradable(subject.Movie.Profile,
+                var upgradeable = _upgradableSpecification.IsUpgradable(subject.Movie.QualityProfile,
                                                                         mostRecent.Quality,
                                                                         customFormats,
                                                                         subject.ParsedMovieInfo.Quality,

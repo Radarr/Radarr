@@ -9,7 +9,7 @@ using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _firstFile = new MovieFile { Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 2)), DateAdded = DateTime.Now };
 
             var fakeSeries = Builder<Movie>.CreateNew()
-                .With(c => c.Profile = new Profile
+                .With(c => c.QualityProfile = new QualityProfile
                 {
                     Cutoff = Quality.Bluray1080p.Id, Items = Qualities.QualityFixture.GetDefaultQualities(),
                     FormatItems = CustomFormatsTestHelpers.GetSampleFormatItems(),

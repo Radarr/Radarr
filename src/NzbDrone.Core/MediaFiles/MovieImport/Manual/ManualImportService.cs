@@ -312,7 +312,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 item.Movie = decision.LocalMovie.Movie;
 
                 item.CustomFormats = _formatCalculator.ParseCustomFormat(decision.LocalMovie);
-                item.CustomFormatScore = item.Movie.Profile?.CalculateCustomFormatScore(item.CustomFormats) ?? 0;
+                item.CustomFormatScore = item.Movie.QualityProfile?.CalculateCustomFormatScore(item.CustomFormats) ?? 0;
             }
 
             item.Quality = decision.LocalMovie.Quality;
@@ -369,7 +369,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 // Augment movie file so imported files have all additional information an automatic import would
                 localMovie = _aggregationService.Augment(localMovie, trackedDownload?.DownloadItem);
                 localMovie.CustomFormats = _formatCalculator.ParseCustomFormat(localMovie);
-                localMovie.CustomFormatScore = localMovie.Movie.Profile?.CalculateCustomFormatScore(localMovie.CustomFormats) ?? 0;
+                localMovie.CustomFormatScore = localMovie.Movie.QualityProfile?.CalculateCustomFormatScore(localMovie.CustomFormats) ?? 0;
 
                 // Apply the user-chosen values.
                 localMovie.Movie = movie;

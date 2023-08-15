@@ -119,7 +119,7 @@ namespace Radarr.Api.V3.Movies
                 SecondaryYear = model.MovieMetadata.Value.SecondaryYear,
 
                 Path = model.Path,
-                QualityProfileId = model.ProfileId,
+                QualityProfileId = model.QualityProfileId,
 
                 Monitored = model.Monitored,
                 MinimumAvailability = model.MinimumAvailability,
@@ -183,7 +183,7 @@ namespace Radarr.Api.V3.Movies
                 },
 
                 Path = resource.Path,
-                ProfileId = resource.QualityProfileId,
+                QualityProfileId = resource.QualityProfileId,
 
                 Monitored = resource.Monitored,
                 MinimumAvailability = resource.MinimumAvailability,

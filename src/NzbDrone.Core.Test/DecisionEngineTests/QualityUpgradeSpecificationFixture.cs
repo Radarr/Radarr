@@ -5,7 +5,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenAutoDownloadPropers(ProperDownloadTypes.PreferAndUpgrade);
 
-            var profile = new Profile
+            var profile = new QualityProfile
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
                 FormatItems = CustomFormatsTestHelpers.GetSampleFormatItems(_customFormat1.Name, _customFormat2.Name),
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenAutoDownloadPropers(ProperDownloadTypes.DoNotUpgrade);
 
-            var profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() };
+            var profile = new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() };
 
             Subject.IsUpgradable(profile,
                                  new QualityModel(Quality.DVD, new Revision(version: 2)),
@@ -103,7 +103,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_release_and_existing_file_are_the_same()
         {
-            var profile = new Profile
+            var profile = new QualityProfile
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
             };

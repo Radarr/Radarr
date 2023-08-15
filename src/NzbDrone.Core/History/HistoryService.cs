@@ -11,14 +11,14 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.History
 {
     public interface IHistoryService
     {
-        QualityModel GetBestQualityInHistory(Profile profile, int movieId);
+        QualityModel GetBestQualityInHistory(QualityProfile profile, int movieId);
         PagingSpec<MovieHistory> Paged(PagingSpec<MovieHistory> pagingSpec);
         MovieHistory MostRecentForMovie(int movieId);
         MovieHistory MostRecentForDownloadId(string downloadId);
@@ -84,7 +84,7 @@ namespace NzbDrone.Core.History
             return _historyRepository.GetByMovieId(movieId, eventType);
         }
 
-        public QualityModel GetBestQualityInHistory(Profile profile, int movieId)
+        public QualityModel GetBestQualityInHistory(QualityProfile profile, int movieId)
         {
             var comparer = new QualityModelComparer(profile);
             return _historyRepository.GetBestQualityInHistory(movieId)

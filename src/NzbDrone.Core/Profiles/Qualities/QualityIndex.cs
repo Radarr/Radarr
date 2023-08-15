@@ -1,6 +1,6 @@
 using System;
 
-namespace NzbDrone.Core.Profiles
+namespace NzbDrone.Core.Profiles.Qualities
 {
     public class QualityIndex : IComparable, IComparable<QualityIndex>
     {
