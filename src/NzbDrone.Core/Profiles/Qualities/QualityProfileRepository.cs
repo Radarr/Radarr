@@ -4,18 +4,18 @@ using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 
-namespace NzbDrone.Core.Profiles
+namespace NzbDrone.Core.Profiles.Qualities
 {
-    public interface IProfileRepository : IBasicRepository<Profile>
+    public interface IQualityProfileRepository : IBasicRepository<QualityProfile>
     {
         bool Exists(int id);
     }
 
-    public class ProfileRepository : BasicRepository<Profile>, IProfileRepository
+    public class QualityProfileRepository : BasicRepository<QualityProfile>, IQualityProfileRepository
     {
         private readonly ICustomFormatService _customFormatService;
 
-        public ProfileRepository(IMainDatabase database,
+        public QualityProfileRepository(IMainDatabase database,
                                  IEventAggregator eventAggregator,
                                  ICustomFormatService customFormatService)
             : base(database, eventAggregator)
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Profiles
             _customFormatService = customFormatService;
         }
 
-        protected override List<Profile> Query(SqlBuilder builder)
+        protected override List<QualityProfile> Query(SqlBuilder builder)
         {
             var cfs = _customFormatService.All().ToDictionary(c => c.Id);
 
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Profiles
 
         public bool Exists(int id)
         {
-            return Query(x => x.Id == id).Count == 1;
+            return Query(p => p.Id == id).Count == 1;
         }
     }
 }

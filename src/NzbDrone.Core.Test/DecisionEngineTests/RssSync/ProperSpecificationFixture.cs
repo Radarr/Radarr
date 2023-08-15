@@ -9,7 +9,7 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _secondFile = new MovieFile { Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 1)), DateAdded = DateTime.Now };
 
             var fakeSeries = Builder<Movie>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p.Id })
+                         .With(c => c.QualityProfile = new QualityProfile { Cutoff = Quality.Bluray1080p.Id })
                          .With(c => c.MovieFile = _firstFile)
                          .Build();
 

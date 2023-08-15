@@ -9,6 +9,7 @@ using NzbDrone.Core.MediaFiles.MovieImport.Specifications;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
@@ -24,7 +25,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         public void Setup()
         {
             _movie = Builder<Movie>.CreateNew()
-                                     .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
+                                     .With(e => e.QualityProfile = new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                                      .Build();
 
             _localMovie = new LocalMovie()
@@ -142,7 +143,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
                 Quality = new QualityModel(Quality.Bluray1080p)
             };
 
-            _movie.Profile.FormatItems = movieFileCustomFormats.Select(c => new ProfileFormatItem
+            _movie.QualityProfile.FormatItems = movieFileCustomFormats.Select(c => new ProfileFormatItem
             {
                 Format = c,
                 Score = 10
@@ -177,7 +178,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
                 Quality = new QualityModel(Quality.Bluray720p)
             };
 
-            _movie.Profile.FormatItems = movieFileCustomFormats.Select(c => new ProfileFormatItem
+            _movie.QualityProfile.FormatItems = movieFileCustomFormats.Select(c => new ProfileFormatItem
             {
                 Format = c,
                 Score = 50
@@ -212,7 +213,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
                 Quality = new QualityModel(Quality.Bluray1080p)
             };
 
-            _movie.Profile.FormatItems = movieFileCustomFormats.Select(c => new ProfileFormatItem
+            _movie.QualityProfile.FormatItems = movieFileCustomFormats.Select(c => new ProfileFormatItem
             {
                 Format = c,
                 Score = 50

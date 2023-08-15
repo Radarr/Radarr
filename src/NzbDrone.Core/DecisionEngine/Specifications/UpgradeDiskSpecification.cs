@@ -31,7 +31,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 return Decision.Accept();
             }
 
-            var profile = subject.Movie.Profile;
+            var profile = subject.Movie.QualityProfile;
             var file = subject.Movie.MovieFile;
             file.Movie = subject.Movie;
             var customFormats = _formatService.ParseCustomFormat(file);

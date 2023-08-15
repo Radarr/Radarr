@@ -27,7 +27,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
         public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             var downloadPropersAndRepacks = _configService.DownloadPropersAndRepacks;
-            var qualityProfile = localMovie.Movie.Profile;
+            var qualityProfile = localMovie.Movie.QualityProfile;
             var qualityComparer = new QualityModelComparer(qualityProfile);
 
             if (localMovie.Movie.MovieFileId > 0)

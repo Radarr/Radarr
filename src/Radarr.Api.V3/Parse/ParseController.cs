@@ -54,7 +54,7 @@ namespace Radarr.Api.V3.Parse
                 _aggregationService.Augment(remoteMovie);
 
                 remoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(remoteMovie, 0);
-                remoteMovie.CustomFormatScore = remoteMovie.Movie?.Profile?.CalculateCustomFormatScore(remoteMovie.CustomFormats) ?? 0;
+                remoteMovie.CustomFormatScore = remoteMovie.Movie?.QualityProfile?.CalculateCustomFormatScore(remoteMovie.CustomFormats) ?? 0;
 
                 return new ParseResource
                 {

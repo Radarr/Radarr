@@ -11,7 +11,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
@@ -38,12 +38,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenOldCustomFormats(new List<CustomFormat>());
         }
 
-        private void GivenProfile(Profile profile)
+        private void GivenProfile(QualityProfile profile)
         {
             CustomFormatsTestHelpers.GivenCustomFormats();
             profile.FormatItems = CustomFormatsTestHelpers.GetSampleFormatItems();
             profile.MinFormatScore = 0;
-            _remoteMovie.Movie.Profile = profile;
+            _remoteMovie.Movie.QualityProfile = profile;
 
             Console.WriteLine(profile.ToJson());
         }
@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_current_episode_is_less_than_cutoff()
         {
-            GivenProfile(new Profile
+            GivenProfile(new QualityProfile
             {
                 Cutoff = Quality.Bluray1080p.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_current_episode_is_equal_to_cutoff()
         {
-            GivenProfile(new Profile
+            GivenProfile(new QualityProfile
             {
                 Cutoff = Quality.HDTV720p.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
@@ -108,7 +108,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_current_episode_is_greater_than_cutoff()
         {
-            GivenProfile(new Profile
+            GivenProfile(new QualityProfile
             {
                 Cutoff = Quality.HDTV720p.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
@@ -122,7 +122,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_when_new_episode_is_proper_but_existing_is_not()
         {
-            GivenProfile(new Profile
+            GivenProfile(new QualityProfile
             {
                 Cutoff = Quality.HDTV720p.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
@@ -137,7 +137,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_cutoff_is_met_and_quality_is_higher()
         {
-            GivenProfile(new Profile
+            GivenProfile(new QualityProfile
             {
                 Cutoff = Quality.HDTV720p.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
@@ -152,7 +152,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_custom_formats_is_met_and_quality_and_format_higher()
         {
-            GivenProfile(new Profile
+            GivenProfile(new QualityProfile
             {
                 Cutoff = Quality.HDTV720p.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
@@ -175,7 +175,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_cutoffs_are_met_but_is_a_revision_upgrade()
         {
-            GivenProfile(new Profile
+            GivenProfile(new QualityProfile
             {
                 Cutoff = Quality.HDTV1080p.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
@@ -191,7 +191,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_quality_profile_does_not_allow_upgrades_but_cutoff_is_set_to_highest_quality()
         {
-            GivenProfile(new Profile
+            GivenProfile(new QualityProfile
             {
                 Cutoff = Quality.RAWHD.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),

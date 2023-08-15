@@ -39,7 +39,7 @@ namespace Radarr.Api.V3.History
             }
 
             var customFormats = formatCalculator.ParseCustomFormat(model, model.Movie);
-            var customFormatScore = model.Movie.Profile.CalculateCustomFormatScore(customFormats);
+            var customFormatScore = model.Movie.QualityProfile.CalculateCustomFormatScore(customFormats);
 
             return new HistoryResource
             {

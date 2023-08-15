@@ -5,6 +5,7 @@ using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
 {
@@ -24,7 +25,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         {
             var customFormats = _customFormatRepository.All().ToDictionary(c => c.Id);
             var profiles = _repository.All();
-            var updatedProfiles = new List<Profile>();
+            var updatedProfiles = new List<QualityProfile>();
 
             foreach (var profile in profiles)
             {
@@ -77,11 +78,11 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         }
     }
 
-    public interface IQualityProfileFormatItemsCleanupRepository : IBasicRepository<Profile>
+    public interface IQualityProfileFormatItemsCleanupRepository : IBasicRepository<QualityProfile>
     {
     }
 
-    public class QualityProfileFormatItemsCleanupRepository : BasicRepository<Profile>, IQualityProfileFormatItemsCleanupRepository
+    public class QualityProfileFormatItemsCleanupRepository : BasicRepository<QualityProfile>, IQualityProfileFormatItemsCleanupRepository
     {
         public QualityProfileFormatItemsCleanupRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)

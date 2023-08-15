@@ -7,7 +7,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Translations;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Movies
@@ -35,11 +35,11 @@ namespace NzbDrone.Core.Movies
 
     public class MovieRepository : BasicRepository<Movie>, IMovieRepository
     {
-        private readonly IProfileRepository _profileRepository;
+        private readonly IQualityProfileRepository _profileRepository;
         private readonly IAlternativeTitleRepository _alternativeTitleRepository;
 
         public MovieRepository(IMainDatabase database,
-                               IProfileRepository profileRepository,
+                               IQualityProfileRepository profileRepository,
                                IAlternativeTitleRepository alternativeTitleRepository,
                                IEventAggregator eventAggregator)
             : base(database, eventAggregator)
@@ -49,17 +49,17 @@ namespace NzbDrone.Core.Movies
         }
 
         protected override SqlBuilder Builder() => new SqlBuilder(_database.DatabaseType)
-            .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
+            .Join<Movie, QualityProfile>((m, p) => m.QualityProfileId == p.Id)
             .Join<Movie, MovieMetadata>((m, p) => m.MovieMetadataId == p.Id)
             .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId)
             .LeftJoin<MovieMetadata, AlternativeTitle>((mm, t) => mm.Id == t.MovieMetadataId);
 
-        private Movie Map(Dictionary<int, Movie> dict, Movie movie, Profile profile, MovieFile movieFile, AlternativeTitle altTitle = null, MovieTranslation translation = null)
+        private Movie Map(Dictionary<int, Movie> dict, Movie movie, QualityProfile profile, MovieFile movieFile, AlternativeTitle altTitle = null, MovieTranslation translation = null)
         {
             if (!dict.TryGetValue(movie.Id, out var movieEntry))
             {
                 movieEntry = movie;
-                movieEntry.Profile = profile;
+                movieEntry.QualityProfile = profile;
                 movieEntry.MovieFile = movieFile;
                 dict.Add(movieEntry.Id, movieEntry);
             }
@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Movies
         {
             var movieDictionary = new Dictionary<int, Movie>();
 
-            _ = _database.QueryJoined<Movie, Profile, MovieFile, AlternativeTitle>(
+            _ = _database.QueryJoined<Movie, QualityProfile, MovieFile, AlternativeTitle>(
                 builder,
                 (movie, profile, file, altTitle) => Map(movieDictionary, movie, profile, file, altTitle));
 
@@ -107,7 +107,7 @@ namespace NzbDrone.Core.Movies
                 {
                     movie.MovieFile = file;
                     movie.MovieMetadata = metadata;
-                    movie.Profile = profiles[movie.ProfileId];
+                    movie.QualityProfile = profiles[movie.QualityProfileId];
 
                     if (titles.TryGetValue(movie.MovieMetadataId, out var altTitles))
                     {
@@ -143,12 +143,12 @@ namespace NzbDrone.Core.Movies
             var movieDictionary = new Dictionary<int, Movie>();
 
             var builder = new SqlBuilder(_database.DatabaseType)
-                .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
+                .Join<Movie, QualityProfile>((m, p) => m.QualityProfileId == p.Id)
                 .Join<Movie, MovieMetadata>((m, p) => m.MovieMetadataId == p.Id)
                 .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId)
                 .Where<MovieMetadata>(x => titles.Contains(x.CleanTitle) || titles.Contains(x.CleanOriginalTitle));
 
-            _ = _database.QueryJoined<Movie, Profile, MovieFile>(
+            _ = _database.QueryJoined<Movie, QualityProfile, MovieFile>(
                 builder,
                 (movie, profile, file) => Map(movieDictionary, movie, profile, file));
 
@@ -162,11 +162,11 @@ namespace NzbDrone.Core.Movies
             var builder = new SqlBuilder(_database.DatabaseType)
             .Join<AlternativeTitle, MovieMetadata>((t, mm) => t.MovieMetadataId == mm.Id)
             .Join<MovieMetadata, Movie>((mm, m) => mm.Id == m.MovieMetadataId)
-            .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
+            .Join<Movie, QualityProfile>((m, p) => m.QualityProfileId == p.Id)
             .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId)
             .Where<AlternativeTitle>(x => titles.Contains(x.CleanTitle));
 
-            _ = _database.QueryJoined<AlternativeTitle, Profile, Movie, MovieFile>(
+            _ = _database.QueryJoined<AlternativeTitle, QualityProfile, Movie, MovieFile>(
                 builder,
                 (altTitle, profile, movie, file) =>
                 {
@@ -184,11 +184,11 @@ namespace NzbDrone.Core.Movies
             var builder = new SqlBuilder(_database.DatabaseType)
                 .Join<MovieTranslation, MovieMetadata>((t, mm) => t.MovieMetadataId == mm.Id)
                 .Join<MovieMetadata, Movie>((mm, m) => mm.Id == m.MovieMetadataId)
-                .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
+                .Join<Movie, QualityProfile>((m, p) => m.QualityProfileId == p.Id)
                 .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId)
                 .Where<MovieTranslation>(x => titles.Contains(x.CleanTitle));
 
-            _ = _database.QueryJoined<MovieTranslation, Profile, Movie, MovieFile>(
+            _ = _database.QueryJoined<MovieTranslation, QualityProfile, Movie, MovieFile>(
                 builder,
                 (trans, profile, movie, file) =>
                 {
@@ -272,7 +272,7 @@ namespace NzbDrone.Core.Movies
             {
                 foreach (var belowCutoff in profile.QualityIds)
                 {
-                    clauses.Add(string.Format($"(\"{_table}\".\"ProfileId\" = {profile.ProfileId} AND \"MovieFiles\".\"Quality\" LIKE '%_quality_: {belowCutoff},%')"));
+                    clauses.Add(string.Format($"(\"{_table}\".\"QualityProfileId\" = {profile.ProfileId} AND \"MovieFiles\".\"Quality\" LIKE '%_quality_: {belowCutoff},%')"));
                 }
             }
 

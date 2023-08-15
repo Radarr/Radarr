@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
@@ -14,7 +15,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     {
         private CustomFormat _customFormatOne;
         private CustomFormat _customFormatTwo;
-        private Profile _qualityProfile;
+        private QualityProfile _qualityProfile;
 
         [SetUp]
         public void Setup()
@@ -30,7 +31,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 Name = "Two"
             };
 
-            _qualityProfile = new Profile
+            _qualityProfile = new QualityProfile
             {
                 Cutoff = Quality.Bluray1080p.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),

@@ -40,7 +40,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            var profile = subject.Movie.Profile;
+            var profile = subject.Movie.QualityProfile;
             var delayProfile = _delayProfileService.BestForTags(subject.Movie.Tags);
             var delay = delayProfile.GetProtocolDelay(subject.Release.DownloadProtocol);
             var isPreferredProtocol = subject.Release.DownloadProtocol == delayProfile.PreferredProtocol;

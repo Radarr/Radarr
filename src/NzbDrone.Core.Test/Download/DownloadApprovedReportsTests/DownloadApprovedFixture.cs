@@ -13,7 +13,7 @@ using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
                 movie = GetMovie(1);
             }
 
-            movie.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() };
+            movie.QualityProfile = new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() };
 
             var remoteMovie = new RemoteMovie()
             {

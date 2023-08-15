@@ -8,7 +8,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         public void Setup()
         {
             var movie = Builder<Movie>.CreateNew()
-                                        .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
+                                        .With(e => e.QualityProfile = new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                                         .With(s => s.Path = @"C:\Test\Movies\Movie Title".AsOsAgnostic())
                                         .Build();
 

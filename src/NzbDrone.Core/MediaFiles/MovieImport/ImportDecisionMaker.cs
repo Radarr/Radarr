@@ -133,7 +133,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                 else
                 {
                     localMovie.CustomFormats = _formatCalculator.ParseCustomFormat(localMovie);
-                    localMovie.CustomFormatScore = localMovie.Movie.Profile?.CalculateCustomFormatScore(localMovie.CustomFormats) ?? 0;
+                    localMovie.CustomFormatScore = localMovie.Movie.QualityProfile?.CalculateCustomFormatScore(localMovie.CustomFormats) ?? 0;
 
                     decision = GetDecision(localMovie, downloadClientItem);
                 }

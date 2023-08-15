@@ -5,21 +5,21 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Qualities;
 
-namespace NzbDrone.Core.Profiles
+namespace NzbDrone.Core.Profiles.Qualities
 {
-    public class ProfileQualityItem : IEmbeddedDocument
+    public class QualityProfileQualityItem : IEmbeddedDocument
     {
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public int Id { get; set; }
 
         public string Name { get; set; }
         public Quality Quality { get; set; }
-        public List<ProfileQualityItem> Items { get; set; }
+        public List<QualityProfileQualityItem> Items { get; set; }
         public bool Allowed { get; set; }
 
-        public ProfileQualityItem()
+        public QualityProfileQualityItem()
         {
-            Items = new List<ProfileQualityItem>();
+            Items = new List<QualityProfileQualityItem>();
         }
 
         public List<Quality> GetQualities()

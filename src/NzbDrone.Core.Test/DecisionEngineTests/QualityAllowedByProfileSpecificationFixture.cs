@@ -4,7 +4,7 @@ using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void Setup()
         {
             var fakeSeries = Builder<Movie>.CreateNew()
-                .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p.Id })
+                .With(c => c.QualityProfile = new QualityProfile { Cutoff = Quality.Bluray1080p.Id })
                          .Build();
 
             _remoteMovie = new RemoteMovie
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_allow_if_quality_is_defined_in_profile(Quality qualityType)
         {
             _remoteMovie.ParsedMovieInfo.Quality.Quality = qualityType;
-            _remoteMovie.Movie.Profile.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.DVD, Quality.HDTV720p, Quality.Bluray1080p);
+            _remoteMovie.Movie.QualityProfile.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.DVD, Quality.HDTV720p, Quality.Bluray1080p);
 
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_not_allow_if_quality_is_not_defined_in_profile(Quality qualityType)
         {
             _remoteMovie.ParsedMovieInfo.Quality.Quality = qualityType;
-            _remoteMovie.Movie.Profile.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.DVD, Quality.HDTV720p, Quality.Bluray1080p);
+            _remoteMovie.Movie.QualityProfile.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.DVD, Quality.HDTV720p, Quality.Bluray1080p);
 
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
         }

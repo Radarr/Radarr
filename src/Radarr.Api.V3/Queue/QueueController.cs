@@ -11,7 +11,7 @@ using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Queue;
 using NzbDrone.SignalR;
@@ -39,7 +39,7 @@ namespace Radarr.Api.V3.Queue
         public QueueController(IBroadcastSignalRMessage broadcastSignalRMessage,
                            IQueueService queueService,
                            IPendingReleaseService pendingReleaseService,
-                           ProfileService qualityProfileService,
+                           QualityProfileService qualityProfileService,
                            ITrackedDownloadService trackedDownloadService,
                            IFailedDownloadService failedDownloadService,
                            IIgnoredDownloadService ignoredDownloadService,

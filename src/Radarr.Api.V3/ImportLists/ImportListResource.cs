@@ -34,7 +34,7 @@ namespace Radarr.Api.V3.ImportLists
             resource.Monitor = definition.Monitor;
             resource.SearchOnAdd = definition.SearchOnAdd;
             resource.RootFolderPath = definition.RootFolderPath;
-            resource.QualityProfileId = definition.ProfileId;
+            resource.QualityProfileId = definition.QualityProfileId;
             resource.MinimumAvailability = definition.MinimumAvailability;
             resource.ListType = definition.ListType;
             resource.ListOrder = (int)definition.ListType;
@@ -57,7 +57,7 @@ namespace Radarr.Api.V3.ImportLists
             definition.Monitor = resource.Monitor;
             definition.SearchOnAdd = resource.SearchOnAdd;
             definition.RootFolderPath = resource.RootFolderPath;
-            definition.ProfileId = resource.QualityProfileId;
+            definition.QualityProfileId = resource.QualityProfileId;
             definition.MinimumAvailability = resource.MinimumAvailability;
             definition.ListType = resource.ListType;
             definition.MinRefreshInterval = resource.MinRefreshInterval;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 
 namespace NzbDrone.Core.Movies
 {
@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Movies
 
         public bool Monitored { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
-        public int ProfileId { get; set; }
+        public int QualityProfileId { get; set; }
 
         public string Path { get; set; }
 
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Movies
 
         public string RootFolderPath { get; set; }
         public DateTime Added { get; set; }
-        public Profile Profile { get; set; }
+        public QualityProfile QualityProfile { get; set; }
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
         public MovieFile MovieFile { get; set; }
@@ -124,7 +124,7 @@ namespace NzbDrone.Core.Movies
         public void ApplyChanges(Movie otherMovie)
         {
             Path = otherMovie.Path;
-            ProfileId = otherMovie.ProfileId;
+            QualityProfileId = otherMovie.QualityProfileId;
 
             Monitored = otherMovie.Monitored;
             MinimumAvailability = otherMovie.MinimumAvailability;

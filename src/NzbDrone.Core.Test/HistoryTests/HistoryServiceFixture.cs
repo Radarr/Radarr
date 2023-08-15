@@ -11,7 +11,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Test.Qualities;
@@ -20,14 +20,14 @@ namespace NzbDrone.Core.Test.HistoryTests
 {
     public class HistoryServiceFixture : CoreTest<HistoryService>
     {
-        private Profile _profile;
-        private Profile _profileCustom;
+        private QualityProfile _profile;
+        private QualityProfile _profileCustom;
 
         [SetUp]
         public void Setup()
         {
-            _profile = new Profile { Cutoff = Quality.WEBDL720p.Id, Items = QualityFixture.GetDefaultQualities() };
-            _profileCustom = new Profile { Cutoff = Quality.WEBDL720p.Id, Items = QualityFixture.GetDefaultQualities(Quality.DVD) };
+            _profile = new QualityProfile { Cutoff = Quality.WEBDL720p.Id, Items = QualityFixture.GetDefaultQualities() };
+            _profileCustom = new QualityProfile { Cutoff = Quality.WEBDL720p.Id, Items = QualityFixture.GetDefaultQualities(Quality.DVD) };
         }
 
         [Test]

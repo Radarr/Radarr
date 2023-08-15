@@ -26,7 +26,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
-            var qualityProfile = subject.Movie.Profile;
+            var qualityProfile = subject.Movie.QualityProfile;
 
             if (subject.Movie.MovieFileId != 0)
             {

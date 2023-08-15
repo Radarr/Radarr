@@ -11,7 +11,7 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
     {
         private DownloadDecision _temporarilyRejected;
         private Movie _movie;
-        private Profile _profile;
+        private QualityProfile _profile;
         private ReleaseInfo _release;
         private ParsedMovieInfo _parsedMovieInfo;
         private RemoteMovie _remoteMovie;
@@ -33,19 +33,19 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _movie = Builder<Movie>.CreateNew()
                                      .Build();
 
-            _profile = new Profile
+            _profile = new QualityProfile
             {
                 Name = "Test",
                 Cutoff = Quality.HDTV720p.Id,
-                Items = new List<ProfileQualityItem>
+                Items = new List<QualityProfileQualityItem>
                                    {
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.HDTV720p },
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.WEBDL720p },
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.Bluray720p }
+                                       new QualityProfileQualityItem { Allowed = true, Quality = Quality.HDTV720p },
+                                       new QualityProfileQualityItem { Allowed = true, Quality = Quality.WEBDL720p },
+                                       new QualityProfileQualityItem { Allowed = true, Quality = Quality.Bluray720p }
                                    },
             };
 
-            _movie.Profile = _profile;
+            _movie.QualityProfile = _profile;
 
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 

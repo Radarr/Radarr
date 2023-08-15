@@ -45,7 +45,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             foreach (var queueItem in matchingMovies)
             {
                 var remoteMovie = queueItem.RemoteMovie;
-                var qualityProfile = subject.Movie.Profile;
+                var qualityProfile = subject.Movie.QualityProfile;
 
                 // To avoid a race make sure it's not FailedPending (failed awaiting removal/search).
                 // Failed items (already searching for a replacement) won't be part of the queue since
@@ -82,7 +82,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
                 _logger.Debug("Checking if profiles allow upgrading. Queued: {0}", remoteMovie.ParsedMovieInfo.Quality);
 
-                if (!_upgradableSpecification.IsUpgradeAllowed(subject.Movie.Profile,
+                if (!_upgradableSpecification.IsUpgradeAllowed(subject.Movie.QualityProfile,
                                                                remoteMovie.ParsedMovieInfo.Quality,
                                                                remoteMovie.CustomFormats,
                                                                subject.ParsedMovieInfo.Quality,

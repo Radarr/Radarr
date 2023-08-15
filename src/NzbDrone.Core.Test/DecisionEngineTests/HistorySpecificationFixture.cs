@@ -12,7 +12,7 @@ using NzbDrone.Core.History;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             CustomFormatsTestHelpers.GivenCustomFormats();
 
             _fakeMovie = Builder<Movie>.CreateNew()
-                .With(c => c.Profile = new Profile
+                .With(c => c.QualityProfile = new QualityProfile
                 {
                     Items = Qualities.QualityFixture.GetDefaultQualities(),
                     Cutoff = Quality.Bluray1080p.Id,
@@ -159,7 +159,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_episode_is_of_same_quality_as_existing()
         {
-            _fakeMovie.Profile = new Profile
+            _fakeMovie.QualityProfile = new QualityProfile
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
                 Cutoff = Quality.Bluray1080p.Id,
@@ -182,7 +182,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_cutoff_already_met()
         {
-            _fakeMovie.Profile = new Profile
+            _fakeMovie.QualityProfile = new QualityProfile
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
                 Cutoff = Quality.WEBDL1080p.Id,
@@ -217,7 +217,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_false_if_cutoff_already_met_and_cdh_is_disabled()
         {
             GivenCdhDisabled();
-            _fakeMovie.Profile = new Profile
+            _fakeMovie.QualityProfile = new QualityProfile
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
                 Cutoff = Quality.WEBDL1080p.Id,

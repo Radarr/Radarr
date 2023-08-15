@@ -8,12 +8,13 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Housekeeping.Housekeepers;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 {
     [TestFixture]
-    public class CleanupQualityProfileFormatItemsFixture : DbTest<CleanupQualityProfileFormatItems, Profile>
+    public class CleanupQualityProfileFormatItemsFixture : DbTest<CleanupQualityProfileFormatItems, QualityProfile>
     {
         [SetUp]
         public void Setup()
@@ -28,7 +29,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         [Test]
         public void should_remove_orphaned_custom_formats()
         {
-            var qualityProfile = Builder<Profile>.CreateNew()
+            var qualityProfile = Builder<QualityProfile>.CreateNew()
                 .With(h => h.Items = Qualities.QualityFixture.GetDefaultQualities())
                 .With(h => h.MinFormatScore = 50)
                 .With(h => h.CutoffFormatScore = 100)
@@ -63,7 +64,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             Db.Insert(customFormat);
 
-            var qualityProfile = Builder<Profile>.CreateNew()
+            var qualityProfile = Builder<QualityProfile>.CreateNew()
                 .With(h => h.Items = Qualities.QualityFixture.GetDefaultQualities())
                 .With(h => h.MinFormatScore = minFormatScore)
                 .With(h => h.CutoffFormatScore = cutoffFormatScore)
@@ -107,7 +108,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             Db.Insert(customFormat1);
             Db.Insert(customFormat2);
 
-            var qualityProfile = Builder<Profile>.CreateNew()
+            var qualityProfile = Builder<QualityProfile>.CreateNew()
                 .With(h => h.Items = Qualities.QualityFixture.GetDefaultQualities())
                 .With(h => h.MinFormatScore = minFormatScore)
                 .With(h => h.CutoffFormatScore = cutoffFormatScore)

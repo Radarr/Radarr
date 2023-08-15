@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using Radarr.Http;
 
 namespace Radarr.Api.V3.Profiles.Quality
@@ -7,9 +7,9 @@ namespace Radarr.Api.V3.Profiles.Quality
     [V3ApiController("qualityprofile/schema")]
     public class QualityProfileSchemaController : Controller
     {
-        private readonly IProfileService _profileService;
+        private readonly IQualityProfileService _profileService;
 
-        public QualityProfileSchemaController(IProfileService profileService)
+        public QualityProfileSchemaController(IQualityProfileService profileService)
         {
             _profileService = profileService;
         }

@@ -65,10 +65,10 @@ namespace NzbDrone.Core.Test.Datastore
         [Test]
         public void postgres_where_equal_joined_property()
         {
-            _subject = Where(x => x.Profile.Id == 1);
+            _subject = Where(x => x.QualityProfile.Id == 1);
 
             _subject.Parameters.ParameterNames.Should().HaveCount(1);
-            _subject.ToString().Should().Be($"(\"Profiles\".\"Id\" = @Clause1_P1)");
+            _subject.ToString().Should().Be($"(\"QualityProfiles\".\"Id\" = @Clause1_P1)");
             _subject.Parameters.Get<int>("Clause1_P1").Should().Be(1);
         }
 
