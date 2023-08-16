@@ -117,29 +117,23 @@ namespace NzbDrone.Core.MediaFiles
                 throw new SameFilenameException("File not moved, source and destination are the same", movieFilePath);
             }
 
-            var transfer = true;
-
             movieFile.RelativePath = movie.Path.GetRelativePath(destinationFilePath);
 
-            if (localMovie is not null)
+            if (localMovie is not null && _scriptImportDecider.TryImport(movieFilePath, destinationFilePath, localMovie, movieFile, mode) is var scriptImportDecision && scriptImportDecision != ScriptImportDecision.DeferMove)
             {
-                var scriptImportDecision = _scriptImportDecider.TryImport(movieFilePath, destinationFilePath, localMovie, movieFile, mode);
-
-                switch (scriptImportDecision)
+                if (scriptImportDecision == ScriptImportDecision.RenameRequested)
                 {
-                    case ScriptImportDecision.DeferMove:
-                        break;
-                    case ScriptImportDecision.RenameRequested:
+                    try
+                    {
                         MoveMovieFile(movieFile, movie);
-                        transfer = false;
-                        break;
-                    case ScriptImportDecision.MoveComplete:
-                        transfer = false;
-                        break;
+                    }
+                    catch (SameFilenameException)
+                    {
+                        _logger.Debug("No rename was required. File already exists at destination.");
+                    }
                 }
             }
-
-            if (transfer)
+            else
             {
                 _diskTransferService.TransferFile(movieFilePath, destinationFilePath, mode);
             }
