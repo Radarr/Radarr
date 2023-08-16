@@ -35,7 +35,6 @@ Note that only one type of a given movie is supported. If you want both an 4k ve
 
 [![Wiki](https://img.shields.io/badge/servarr-wiki-181717.svg?maxAge=60)](https://wiki.servarr.com/radarr)
 [![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60)](https://radarr.video/discord)
-[![Reddit](https://img.shields.io/badge/reddit-discussion-FF4500.svg?maxAge=60)](https://www.reddit.com/r/Radarr)
 
 Note: GitHub Issues are for Bugs and Feature Requests Only
 
