@@ -10044,7 +10044,7 @@
             "type": "string",
             "nullable": true
           },
-          "profileId": {
+          "qualityProfileId": {
             "type": "integer",
             "format": "int32",
             "nullable": true
