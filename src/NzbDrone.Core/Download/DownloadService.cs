@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Download
             await DownloadReport(remoteMovie, downloadClient);
         }
 
-        public async Task DownloadReport(RemoteMovie remoteMovie, IDownloadClient downloadClient)
+        private async Task DownloadReport(RemoteMovie remoteMovie, IDownloadClient downloadClient)
         {
             Ensure.That(remoteMovie.Movie, () => remoteMovie.Movie).IsNotNull();
 
