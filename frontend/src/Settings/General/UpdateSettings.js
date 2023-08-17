@@ -8,6 +8,12 @@ import { inputTypes, sizes } from 'Helpers/Props';
 import titleCase from 'Utilities/String/titleCase';
 import translate from 'Utilities/String/translate';
 
+const branchValues = [
+  'master',
+  'develop',
+  'nightly'
+];
+
 function UpdateSettings(props) {
   const {
     advancedSettings,
@@ -52,11 +58,12 @@ function UpdateSettings(props) {
         <FormLabel>{translate('Branch')}</FormLabel>
 
         <FormInputGroup
-          type={inputTypes.TEXT}
+          type={inputTypes.AUTO_COMPLETE}
           name="branch"
           helpText={usingExternalUpdateMechanism ? translate('BranchUpdateMechanism') : translate('BranchUpdate')}
           helpLink="https://wiki.servarr.com/radarr/settings#updates"
           {...branch}
+          values={branchValues}
           onChange={onInputChange}
           readOnly={usingExternalUpdateMechanism}
         />
