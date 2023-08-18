@@ -279,5 +279,6 @@
     "DeleteSelectedImportListsMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
     "DeleteAutoTagHelpText": "Er du sikker på at du vil slette formattaggen {0}?",
     "DeleteSelectedDownloadClientsMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
-    "DeleteRootFolderMessageText": "Er du sikker på at du vil slette formattaggen {0}?"
+    "DeleteRootFolderMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
+    "AddConnection": "Legg til kobling"
 }

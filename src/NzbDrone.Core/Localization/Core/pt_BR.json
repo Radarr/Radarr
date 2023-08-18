@@ -793,7 +793,7 @@
     "RecycleBinCleanupDaysHelpTextWarning": "Os arquivos na lixeira mais antigos do que o número de dias selecionado serão limpos automaticamente",
     "UnableToLoadBackups": "Não é possível carregar backups",
     "UnableToLoadAltTitle": "Não foi possível carregar títulos alternativos.",
-    "UI": "Interface",
+    "UI": "IU",
     "Type": "Tipo",
     "Torrents": "Torrents",
     "TmdbIdHelpText": "A ID do TMDb do filme a excluir",
@@ -1258,5 +1258,9 @@
     "BypassDelayIfAboveCustomFormatScore": "Ignorar se estiver Acima da Pontuação do Formato Personalizado",
     "BypassDelayIfAboveCustomFormatScoreHelpText": "Ativar ignorar quando a versão tiver uma pontuação maior que a pontuação mínima configurada do formato personalizado",
     "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Pontuação Mínima de Formato Personalizado",
-    "BypassDelayIfAboveCustomFormatScoreMinimumScoreHelpText": "Pontuação Mínima de Formato Personalizado necessária para ignorar o atraso do protocolo preferido"
+    "BypassDelayIfAboveCustomFormatScoreMinimumScoreHelpText": "Pontuação Mínima de Formato Personalizado necessária para ignorar o atraso do protocolo preferido",
+    "RemoveFromDownloadClientHelpTextWarning": "A remoção removerá o download e o(s) arquivo(s) do cliente de download.",
+    "NotificationStatusAllClientHealthCheckMessage": "Todas as notificações estão indisponíveis devido a falhas",
+    "NotificationStatusSingleClientHealthCheckMessage": "Notificações indisponíveis devido a falhas: {0}",
+    "AutomaticUpdatesDisabledDocker": "As atualizações automáticas não têm suporte direto ao usar o mecanismo de atualização do Docker. Você precisará atualizar a imagem do contêiner fora de {appName} ou usar um script"
 }
