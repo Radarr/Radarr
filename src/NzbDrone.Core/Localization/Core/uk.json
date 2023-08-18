@@ -1163,5 +1163,8 @@
     "ApplyTagsHelpTextHowToApplyDownloadClients": "Як застосувати теги до вибраних фільмів",
     "ApplyTagsHelpTextHowToApplyImportLists": "Як застосувати теги до вибраних фільмів",
     "RemoveQueueItemConfirmation": "Ви впевнені, що хочете видалити {0} елементів із черги?",
-    "DeleteRootFolderMessageText": "Ви впевнені, що хочете видалити тег {0} ?"
+    "DeleteRootFolderMessageText": "Ви впевнені, що хочете видалити тег {0} ?",
+    "NotificationStatusAllClientHealthCheckMessage": "Усі списки недоступні через помилки",
+    "NotificationStatusSingleClientHealthCheckMessage": "Списки недоступні через помилки: {0}",
+    "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Мінімальна оцінка спеціального формату"
 }

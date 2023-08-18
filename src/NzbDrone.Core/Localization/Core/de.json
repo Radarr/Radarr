@@ -1212,5 +1212,9 @@
     "ApplyTagsHelpTextHowToApplyDownloadClients": "Wie werden Tags zu ausgewählten Filmen zugeteilt",
     "ApplyTagsHelpTextHowToApplyImportLists": "Wie werden Tags zu ausgewählten Filmen zugeteilt",
     "DeleteRootFolderMessageText": "Indexer '{0}' wirklich löschen?",
-    "DeleteRootFolder": "Stammordner löschen"
+    "DeleteRootFolder": "Stammordner löschen",
+    "AddConnection": "Sammlung bearbeiten",
+    "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Minimum der eigenen Formate Bewertungspunkte",
+    "NotificationStatusAllClientHealthCheckMessage": "Wegen Fehlern sind keine Applikationen verfügbar",
+    "NotificationStatusSingleClientHealthCheckMessage": "Applikationen wegen folgender Fehler nicht verfügbar: {0}"
 }

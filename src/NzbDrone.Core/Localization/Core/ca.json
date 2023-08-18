@@ -1166,5 +1166,9 @@
     "AutoTaggingNegateHelpText": "Si està marcat, el format personalitzat no s'aplicarà si la condició {0} coincideix.",
     "AutoTaggingRequiredHelpText": "La condició {0} ha de coincidir perquè s'apliqui el format personalitzat. En cas contrari, n'hi ha prou amb una única coincidència de {1}.",
     "DeleteAutoTagHelpText": "Esteu segur que voleu suprimir l'etiqueta '{0}'?",
-    "DeleteRootFolderMessageText": "Esteu segur que voleu suprimir l'indexador '{0}'?"
+    "DeleteRootFolderMessageText": "Esteu segur que voleu suprimir l'indexador '{0}'?",
+    "AddConnection": "Edita la col·lecció",
+    "NotificationStatusAllClientHealthCheckMessage": "Totes les llistes no estan disponibles a causa d'errors",
+    "NotificationStatusSingleClientHealthCheckMessage": "Llistes no disponibles a causa d'errors: {0}",
+    "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Puntuació mínima de format personalitzat"
 }

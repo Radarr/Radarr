@@ -1215,5 +1215,9 @@
     "AddAutoTag": "添加自动标签",
     "AddCondition": "添加条件",
     "AutoTagging": "自动标记",
-    "DeleteRootFolder": "删除根目录"
+    "DeleteRootFolder": "删除根目录",
+    "AddDownloadClientImplementation": "添加下载客户端-{实体名称}",
+    "AddIndexerImplementation": "添加索引器-{实体名称}",
+    "AddConnection": "添加连接",
+    "AddConnectionImplementation": "添加连接-{实体名称}"
 }
