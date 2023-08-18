@@ -19,6 +19,7 @@ namespace NzbDrone.Core.ImportLists
 
         public List<ImportListMovie> Movies { get; set; }
         public bool AnyFailure { get; set; }
+        public int SyncedLists { get; set; }
     }
 
     public abstract class ImportListBase<TSettings> : IImportList

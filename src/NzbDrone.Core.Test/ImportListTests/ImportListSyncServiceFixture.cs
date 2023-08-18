@@ -59,7 +59,8 @@ namespace NzbDrone.Core.Test.ImportList
             _importListFetch = new ImportListFetchResult
             {
                 Movies = _list1Movies,
-                AnyFailure = false
+                AnyFailure = false,
+                SyncedLists = 1
             };
 
             _commandAll = new ImportListSyncCommand
@@ -95,6 +96,11 @@ namespace NzbDrone.Core.Test.ImportList
         private void GivenListFailure()
         {
             _importListFetch.AnyFailure = true;
+        }
+
+        private void GivenNoListSync()
+        {
+            _importListFetch.SyncedLists = 0;
         }
 
         private void GivenCleanLevel(string cleanLevel)
@@ -143,6 +149,26 @@ namespace NzbDrone.Core.Test.ImportList
 
             Mocker.GetMock<IMovieService>()
                   .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Never());
+        }
+
+        [Test]
+        public void should_not_clean_library_or_process_movies_if_no_synced_lists()
+        {
+            _importListFetch.Movies.ForEach(m => m.ListId = 1);
+            GivenList(1, true);
+            GivenCleanLevel("logOnly");
+            GivenNoListSync();
+
+            Subject.Execute(_commandAll);
+
+            Mocker.GetMock<IMovieService>()
+                  .Verify(v => v.GetAllMovies(), Times.Never());
+
+            Mocker.GetMock<IMovieService>()
+                  .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Never());
+
+            Mocker.GetMock<IImportExclusionsService>()
+                  .Verify(v => v.GetAllExclusions(), Times.Never);
         }
 
         [Test]

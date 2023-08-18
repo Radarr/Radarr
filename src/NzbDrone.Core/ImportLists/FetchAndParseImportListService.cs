@@ -113,6 +113,7 @@ namespace NzbDrone.Core.ImportLists
                             }
 
                             result.AnyFailure |= importListReports.AnyFailure;
+                            result.SyncedLists++;
 
                             _importListStatusService.UpdateListSyncStatus(importList.Definition.Id);
                         }
@@ -130,7 +131,7 @@ namespace NzbDrone.Core.ImportLists
 
             result.Movies = result.Movies.DistinctBy(r => new { r.TmdbId, r.ImdbId, r.Title }).ToList();
 
-            _logger.Debug("Found {0} total reports from {1} lists", result.Movies.Count, importLists.Count);
+            _logger.Debug("Found {0} total reports from {1} lists", result.Movies.Count, result.SyncedLists);
 
             return result;
         }
