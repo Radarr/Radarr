@@ -4,6 +4,7 @@ import Alert from 'Components/Alert';
 import CheckInput from 'Components/Form/CheckInput';
 import Button from 'Components/Link/Button';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import InlineMarkdown from 'Components/Markdown/InlineMarkdown';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
@@ -92,7 +93,7 @@ class OrganizePreviewModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          {translate('OrganizeAndRename')}
+          {translate('OrganizeModalHeader')}
         </ModalHeader>
 
         <ModalBody>
@@ -103,9 +104,7 @@ class OrganizePreviewModalContent extends Component {
 
           {
             !isFetching && error &&
-              <div>
-                {translate('ErrorLoadingPreviews')}
-              </div>
+              <div>{translate('OrganizeLoadError')}</div>
           }
 
           {
@@ -113,8 +112,8 @@ class OrganizePreviewModalContent extends Component {
               <div>
                 {
                   renameMovies ?
-                    <div>{translate('OrganizeModalSuccess')}</div> :
-                    <div>{translate('OrganizeModalDisabled')}</div>
+                    <div>{translate('OrganizeNothingToRename')}</div> :
+                    <div>{translate('OrganizeRenamingDisabled')}</div>
                 }
               </div>
           }
@@ -124,17 +123,11 @@ class OrganizePreviewModalContent extends Component {
               <div>
                 <Alert>
                   <div>
-                    {translate('OrganizeModalAllPathsRelative')}
-                    <span className={styles.path}>
-                      {path}
-                    </span>
+                    <InlineMarkdown data={translate('OrganizeRelativePaths', { path })} blockClassName={styles.path} />
                   </div>
 
                   <div>
-                    {translate('OrganizeModalNamingPattern')}
-                    <span className={styles.standardMovieFormat}>
-                      {standardMovieFormat}
-                    </span>
+                    <InlineMarkdown data={translate('OrganizeNamingPattern', { standardMovieFormat })} blockClassName={styles.standardMovieFormat} />
                   </div>
                 </Alert>
 
