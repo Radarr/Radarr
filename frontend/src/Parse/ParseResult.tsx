@@ -98,7 +98,7 @@ function ParseResult(props: ParseResultProps) {
 
             <ParseResultItem
               title={translate('Repack')}
-              data={quality.revision.isRepack ? 'True' : '-'}
+              data={quality.revision.isRepack ? translate('True') : '-'}
             />
           </div>
 
@@ -112,7 +112,7 @@ function ParseResult(props: ParseResultProps) {
 
             <ParseResultItem
               title={translate('Real')}
-              data={quality.revision.real ? 'True' : '-'}
+              data={quality.revision.real ? translate('True') : '-'}
             />
           </div>
         </div>
@@ -150,7 +150,13 @@ function ParseResult(props: ParseResultProps) {
 
         <ParseResultItem
           title={translate('CustomFormats')}
-          data={<MovieFormats formats={customFormats} />}
+          data={
+            customFormats?.length ? (
+              <MovieFormats formats={customFormats} />
+            ) : (
+              '-'
+            )
+          }
         />
 
         <ParseResultItem
