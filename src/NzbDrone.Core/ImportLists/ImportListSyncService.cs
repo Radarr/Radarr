@@ -60,6 +60,11 @@ namespace NzbDrone.Core.ImportLists
                 return;
             }
 
+            if (result.SyncedLists == 0)
+            {
+                return;
+            }
+
             if (!result.AnyFailure)
             {
                 CleanLibrary();
