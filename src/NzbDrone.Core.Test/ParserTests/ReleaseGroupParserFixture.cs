@@ -53,6 +53,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.2022.1080p.BluRay.x264-[YTS.AG]", "YTS.AG")]
         [TestCase("Movie.Name.2022.1080p.BluRay.x264-VARYG", "VARYG")]
         [TestCase("Movie.Title.2019.1080p.AMZN.WEB-Rip.DDP.5.1.HEVC", null)]
+        [TestCase("Movie Name (2017) [2160p REMUX] [HEVC DV HYBRID HDR10+ Dolby TrueHD Atmos 7 1 24-bit Audio English] [Data Lass]", null)]
+        [TestCase("Movie Name (2017) [2160p REMUX] [HEVC DV HYBRID HDR10+ Dolby TrueHD Atmos 7 1 24-bit Audio English]-DataLass", "DataLass")]
         public void should_parse_expected_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
