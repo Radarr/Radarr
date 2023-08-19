@@ -163,7 +163,7 @@
   "CollectionShowOverviewsHelpText": "Show collection overviews",
   "CollectionShowPostersHelpText": "Show Collection item posters",
   "Collections": "Collections",
-  "CollectionsSelectedInterp": "{0} Collections(s) Selected",
+  "CollectionsSelectedInterp": "{0} Collection(s) Selected",
   "ColonReplacement": "Colon Replacement",
   "ColonReplacementFormatHelpText": "Change how Radarr handles colon replacement",
   "Columns": "Columns",
