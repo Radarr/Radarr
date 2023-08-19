@@ -41,36 +41,37 @@ namespace NzbDrone.Core.ImportLists
             _configService = configService;
         }
 
-        private void SyncList(ImportListDefinition definition)
-        {
-            _logger.ProgressInfo(string.Format("Starting Import List Refresh for List {0}", definition.Name));
-
-            var result = _listFetcherAndParser.FetchSingleList(definition);
-
-            ProcessReports(result);
-        }
-
         private void SyncAll()
         {
-            var result = _listFetcherAndParser.Fetch();
-
             if (_importListFactory.Enabled().Where(a => ((ImportListDefinition)a.Definition).EnableAuto).Empty())
             {
-                _logger.Info("No auto enabled lists, skipping sync and cleaning");
+                _logger.Debug("No import lists with automatic add enabled, skipping sync and cleaning");
+
                 return;
             }
 
-            if (result.SyncedLists == 0)
+            var listItemsResult = _listFetcherAndParser.Fetch();
+
+            if (listItemsResult.SyncedLists == 0)
             {
                 return;
             }
 
-            if (!result.AnyFailure)
+            if (!listItemsResult.AnyFailure)
             {
                 CleanLibrary();
             }
 
-            ProcessReports(result);
+            ProcessListItems(listItemsResult);
+        }
+
+        private void SyncList(ImportListDefinition definition)
+        {
+            _logger.ProgressInfo("Starting Import List Refresh for List {0}", definition.Name);
+
+            var listItemsResult = _listFetcherAndParser.FetchSingleList(definition);
+
+            ProcessListItems(listItemsResult);
         }
 
         private void ProcessMovieReport(ImportListDefinition importList, ImportListMovie report, List<ImportExclusion> listExclusions, List<int> dbMovies, List<Movie> moviesToAdd)
@@ -122,7 +123,7 @@ namespace NzbDrone.Core.ImportLists
             }
         }
 
-        private void ProcessReports(ImportListFetchResult listFetchResult)
+        private void ProcessListItems(ImportListFetchResult listFetchResult)
         {
             listFetchResult.Movies = listFetchResult.Movies.DistinctBy(x =>
             {
@@ -162,10 +163,9 @@ namespace NzbDrone.Core.ImportLists
 
             if (moviesToAdd.Any())
             {
-                _logger.Info($"Adding {moviesToAdd.Count} movies from your auto enabled lists to library");
+                _logger.ProgressInfo("Adding {0} movies from your auto enabled lists to library", moviesToAdd.Count);
+                _addMovieService.AddMovies(moviesToAdd, true);
             }
-
-            _addMovieService.AddMovies(moviesToAdd, true);
         }
 
         public void Execute(ImportListSyncCommand message)
