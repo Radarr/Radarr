@@ -92,10 +92,10 @@ export const defaultState = {
       },
       {
         name: 'customFormatScore',
-        columnLabel: translate( 'CustomFormatScore'),
+        columnLabel: () => translate( 'CustomFormatScore'),
         label: React.createElement(Icon, {
           name: icons.SCORE,
-          title: translate( 'CustomFormatScore')
+          title: () => translate( 'CustomFormatScore')
         }),
         isVisible: false
       },
