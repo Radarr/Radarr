@@ -21,6 +21,7 @@ namespace Radarr.Http.ClientSchema
         public string Hidden { get; set; }
         public PrivacyLevel Privacy { get; set; }
         public string Placeholder { get; set; }
+        public bool IsFloat { get; set; }
 
         public Field Clone()
         {

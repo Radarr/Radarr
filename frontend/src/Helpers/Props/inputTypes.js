@@ -5,6 +5,7 @@ export const CHECK = 'check';
 export const DEVICE = 'device';
 export const KEY_VALUE_LIST = 'keyValueList';
 export const MOVIE_MONITORED_SELECT = 'movieMonitoredSelect';
+export const FLOAT = 'float';
 export const NUMBER = 'number';
 export const OAUTH = 'oauth';
 export const PASSWORD = 'password';
@@ -32,6 +33,7 @@ export const all = [
   DEVICE,
   KEY_VALUE_LIST,
   MOVIE_MONITORED_SELECT,
+  FLOAT,
   NUMBER,
   OAUTH,
   PASSWORD,
