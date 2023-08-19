@@ -28,12 +28,14 @@ namespace NzbDrone.Core.Indexers.FileList
             BaseUrl = "https://filelist.io";
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
 
-            Categories = new int[]
+            var categories = new int[]
             {
                 (int)FileListCategories.Movie_HD,
                 (int)FileListCategories.Movie_SD,
                 (int)FileListCategories.Movie_4K
             };
+
+            Categories = SortArray(categories, 0, 2);
 
             MultiLanguages = new List<int>();
             RequiredFlags = new List<int>();
@@ -66,6 +68,40 @@ namespace NzbDrone.Core.Indexers.FileList
         public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
+        }
+
+
+        private int[] SortArray(int[] array, int leftIndex, int rightIndex)
+        {
+            var i = leftIndex;
+            var j = rightIndex;
+            var pivot = array[leftIndex];
+            while (i <= j)
+            {
+                while (array[i] < pivot)
+                {
+                    i++;
+                }
+
+                while (array[j] > pivot)
+                {
+                    j--;
+                }
+                if (i <= j)
+                {
+                    int temp = array[i];
+                    array[i] = array[j];
+                    array[j] = temp;
+                    i++;
+                    j--;
+                }
+            }
+
+            if (leftIndex < j)
+                SortArray(array, leftIndex, j);
+            if (i < rightIndex)
+                SortArray(array, i, rightIndex);
+            return array;
         }
     }
 
