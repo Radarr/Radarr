@@ -27,6 +27,10 @@ trigger:
     include:
     - develop
     - master
+  paths:
+    exclude:
+      - .github
+      - src/Radarr.Api.*/openapi.json
 
 pr:
   branches:
@@ -34,6 +38,7 @@ pr:
     - develop
   paths:
     exclude:
+    - .github
     - src/NzbDrone.Core/Localization/Core
     - src/Radarr.Api.*/openapi.json
 
