@@ -5,6 +5,7 @@ using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Quality;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Quality
@@ -68,6 +69,47 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
 
             result.Should().NotBe(null);
             result.Resolution.Should().Be((int)expectedResolution);
+            result.Source.Should().Be(Source.UNKNOWN);
+        }
+
+        [Test]
+        public void should_include_source_if_extracted_from_title()
+        {
+            var mediaInfo = Builder<MediaInfoModel>.CreateNew()
+                .With(m => m.Width = 1920)
+                .With(m => m.Height = 1080)
+                .With(m => m.Title = "Movie.Title.2008.WEB.x264-Radarr")
+                .Build();
+
+            var localMovie = Builder<LocalMovie>.CreateNew()
+                .With(l => l.MediaInfo = mediaInfo)
+                .Build();
+
+            var result = Subject.AugmentQuality(localMovie, null);
+
+            result.Should().NotBe(null);
+            result.Resolution.Should().Be(1080);
+            result.Source.Should().Be(Source.WEBDL);
+        }
+
+        [Test]
+        public void should_have_unknown_source_if_no_source_extracted_from_title()
+        {
+            var mediaInfo = Builder<MediaInfoModel>.CreateNew()
+                .With(m => m.Width = 1920)
+                .With(m => m.Height = 1080)
+                .With(m => m.Title = "Movie.Title.2008.x264-Radarr")
+                .Build();
+
+            var localMovie = Builder<LocalMovie>.CreateNew()
+                .With(l => l.MediaInfo = mediaInfo)
+                .Build();
+
+            var result = Subject.AugmentQuality(localMovie, null);
+
+            result.Should().NotBe(null);
+            result.Resolution.Should().Be(1080);
+            result.Source.Should().Be(Source.UNKNOWN);
         }
     }
 }
