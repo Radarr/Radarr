@@ -223,7 +223,7 @@
     "DeleteRestrictionHelpText": "Tem certeza de que deseja excluir esta restrição?",
     "DeleteRestriction": "Excluir restrição",
     "DeleteQualityProfile": "Excluir Perfil de Qualidade",
-    "DeleteNotificationMessageText": "Tem certeza de que deseja excluir a notificação '{name}'?",
+    "DeleteNotificationMessageText": "Tem certeza de que deseja excluir o perfil de metadados '{name}'?",
     "DeleteNotification": "Excluir Notificação",
     "DeleteMovieFolderLabel": "Excluir pasta do filme",
     "DeleteMovieFolderHelpText": "Excluir a pasta do filme e seu conteúdo",
@@ -1101,7 +1101,7 @@
     "MovieOnly": "Somente Filme",
     "UnableToLoadCollections": "Não foi possível carregar as coleções",
     "ChooseImportMode": "Escolher o Modo de Importação",
-    "CollectionsSelectedInterp": "{0} Coleção(ões) Selecionada(s)",
+    "CollectionsSelectedInterp": "{0} Coleção(ões) Selecionadas",
     "EditCollection": "Editar Coleção",
     "MonitorCollection": "Monitorar Coleção",
     "MovieAndCollection": "Filme e Coleção",
@@ -1262,5 +1262,7 @@
     "RemoveFromDownloadClientHelpTextWarning": "A remoção removerá o download e o(s) arquivo(s) do cliente de download.",
     "NotificationStatusAllClientHealthCheckMessage": "Todas as notificações estão indisponíveis devido a falhas",
     "NotificationStatusSingleClientHealthCheckMessage": "Notificações indisponíveis devido a falhas: {0}",
-    "AutomaticUpdatesDisabledDocker": "As atualizações automáticas não têm suporte direto ao usar o mecanismo de atualização do Docker. Você precisará atualizar a imagem do contêiner fora de {appName} ou usar um script"
+    "AutomaticUpdatesDisabledDocker": "As atualizações automáticas não têm suporte direto ao usar o mecanismo de atualização do Docker. Você precisará atualizar a imagem do contêiner fora de {appName} ou usar um script",
+    "RemotePathMappingsInfo": "Raramente são necessários mapeamentos de caminho remoto, se {app} e seu cliente de download estiverem no mesmo sistema, é melhor combinar seus caminhos. Para obter mais informações, consulte o [wiki]({wikiLink}).",
+    "DisabledForLocalAddresses": "Desativado para Endereços Locais"
 }
