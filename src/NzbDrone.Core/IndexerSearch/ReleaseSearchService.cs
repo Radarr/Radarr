@@ -68,7 +68,7 @@ namespace NzbDrone.Core.IndexerSearch
         private TSpec Get<TSpec>(Movie movie, bool userInvokedSearch, bool interactiveSearch)
             where TSpec : SearchCriteriaBase, new()
         {
-            var spec = new TSpec()
+            var spec = new TSpec
             {
                 Movie = movie,
                 UserInvokedSearch = userInvokedSearch,
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.IndexerSearch
             var wantedLanguages = _profileService.GetAcceptableLanguages(movie.QualityProfileId);
             var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
 
-            var queryTranlations = new List<string>
+            var queryTranslations = new List<string>
             {
                 movie.MovieMetadata.Value.Title,
                 movie.MovieMetadata.Value.OriginalTitle
@@ -87,10 +87,10 @@ namespace NzbDrone.Core.IndexerSearch
             // Add Translation of wanted languages to search query
             foreach (var translation in translations.Where(a => wantedLanguages.Contains(a.Language)))
             {
-                queryTranlations.Add(translation.Title);
+                queryTranslations.Add(translation.Title);
             }
 
-            spec.SceneTitles = queryTranlations.Distinct().Where(t => t.IsNotNullOrWhiteSpace()).ToList();
+            spec.SceneTitles = queryTranslations.Distinct().Where(t => t.IsNotNullOrWhiteSpace()).ToList();
 
             return spec;
         }
