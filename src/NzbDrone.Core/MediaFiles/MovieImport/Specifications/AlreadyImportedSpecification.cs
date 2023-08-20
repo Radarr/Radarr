@@ -39,8 +39,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             }
 
             var movieImportedHistory = _historyService.GetByMovieId(movie.Id, null);
-            var lastImported = movieImportedHistory.FirstOrDefault(h => h.EventType == MovieHistoryEventType.DownloadFolderImported);
-            var lastGrabbed = movieImportedHistory.FirstOrDefault(h => h.EventType == MovieHistoryEventType.Grabbed);
+            var lastImported = movieImportedHistory.FirstOrDefault(h =>
+                h.DownloadId == downloadClientItem.DownloadId &&
+                h.EventType == MovieHistoryEventType.DownloadFolderImported);
+            var lastGrabbed = movieImportedHistory.FirstOrDefault(h =>
+                h.DownloadId == downloadClientItem.DownloadId && h.EventType == MovieHistoryEventType.Grabbed);
 
             if (lastImported == null)
             {
@@ -48,17 +51,21 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                 return Decision.Accept();
             }
 
-            // If the release was grabbed again after importing don't reject it
-            if (lastGrabbed != null && lastGrabbed.Date.After(lastImported.Date))
+            if (lastGrabbed != null)
             {
-                _logger.Trace("Movie file was grabbed again after importing");
-                return Decision.Accept();
-            }
+                // If the release was grabbed again after importing don't reject it
+                if (lastGrabbed.Date.After(lastImported.Date))
+                {
+                    _logger.Trace("Movie file was grabbed again after importing");
+                    return Decision.Accept();
+                }
 
-            if (lastImported.DownloadId == downloadClientItem.DownloadId)
-            {
-                _logger.Debug("Movie file previously imported at {0}", lastImported.Date);
-                return Decision.Reject("Movie file already imported at {0}", lastImported.Date.ToLocalTime());
+                // If the release was imported after the last grab reject it
+                if (lastImported.Date.After(lastGrabbed.Date))
+                {
+                    _logger.Debug("Movie file previously imported at {0}", lastImported.Date);
+                    return Decision.Reject("Movie file already imported at {0}", lastImported.Date.ToLocalTime());
+                }
             }
 
             return Decision.Accept();
