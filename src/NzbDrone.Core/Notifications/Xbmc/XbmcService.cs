@@ -1,9 +1,10 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Core.Movies;
-
 namespace NzbDrone.Core.Notifications.Xbmc
 {
     public interface IXbmcService
@@ -65,14 +66,27 @@ namespace NzbDrone.Core.Notifications.Xbmc
                 return null;
             }
 
+            // Kodi sometimes returns tmdbid as imdbnumber value...let's check both
             var matchingMovies = allMovies.FirstOrDefault(s =>
             {
-                return s.ImdbNumber == movie.ImdbId;
+                var imdbRegex = new Regex(@"^(tt\d{1,10})$");
+                var kodiId = s.ImdbNumber;
+
+                if (!imdbRegex.IsMatch(kodiId))
+                {
+                    return kodiId == movie.TmdbId.ToString();
+                }
+                else
+                {
+                    return kodiId == movie.ImdbId;
+                }
             });
+
+            _logger.Debug("Attempting to find movie {0} with TmdbId: {1} or ImdbId: {2}", movie, movie.TmdbId, movie.ImdbId);
 
             if (matchingMovies != null)
             {
-                return matchingMovies.File;
+                return Path.GetDirectoryName(matchingMovies.File);
             }
 
             return null;
@@ -97,7 +111,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
                 if (!response.Equals("OK", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    _logger.Debug("Failed to update library for: {0}", settings.Address);
+                    _logger.Debug("Failed to update library for: {0}. Kodi Response: {1}", settings.Address, response);
                 }
             }
             catch (Exception ex)
@@ -127,8 +141,8 @@ namespace NzbDrone.Core.Notifications.Xbmc
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to send test message");
-                return new ValidationFailure("Host", "Unable to send test message");
+                _logger.Error(ex, $"Unable to send test notification to Kodi host: {settings.Address}");
+                return new ValidationFailure("Host", $"Unable to send test notification to Kodi host: {settings.Address}. {ex.Message}");
             }
 
             return null;
