@@ -1109,6 +1109,7 @@
   "TMDb": "TMDb",
   "Table": "Table",
   "TableOptions": "Table Options",
+  "TableOptionsButton": "Table Options Button",
   "TableOptionsColumnsMessage": "Choose which columns are visible and which order they appear in",
   "TagCannotBeDeletedWhileInUse": "Cannot be deleted while in use",
   "TagDetails": "Tag Details - {label}",

@@ -1,9 +1,8 @@
-/* eslint max-params: 0 */
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { deleteMovieFile, updateMovieFiles } from 'Store/Actions/movieFileActions';
+import { deleteMovieFile, setMovieFilesTableOption, updateMovieFiles } from 'Store/Actions/movieFileActions';
 import { fetchLanguages, fetchQualityProfileSchema } from 'Store/Actions/settingsActions';
 import createMovieSelector from 'Store/Selectors/createMovieSelector';
 import getQualities from 'Utilities/Quality/getQualities';
@@ -30,6 +29,7 @@ function createMapStateToProps() {
 
       return {
         items: filesForMovie,
+        columns: movieFiles.columns,
         isDeleting: movieFiles.isDeleting,
         isSaving: movieFiles.isSaving,
         error: null,
@@ -52,6 +52,10 @@ function createMapDispatchToProps(dispatch, props) {
 
     dispatchUpdateMovieFiles(updateProps) {
       dispatch(updateMovieFiles(updateProps));
+    },
+
+    onTableOptionChange(payload) {
+      dispatch(setMovieFilesTableOption(payload));
     },
 
     onDeletePress(movieFileId) {

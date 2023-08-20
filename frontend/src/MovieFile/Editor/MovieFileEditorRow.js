@@ -81,7 +81,8 @@ class MovieFileEditorRow extends Component {
       qualityCutoffNotMet,
       customFormats,
       customFormatScore,
-      languages
+      languages,
+      columns
     } = this.props;
 
     const {
@@ -91,138 +92,214 @@ class MovieFileEditorRow extends Component {
     } = this.state;
 
     const showQualityPlaceholder = !quality;
-
     const showLanguagePlaceholder = !languages;
 
     return (
       <TableRow>
-        <TableRowCell
-          className={styles.relativePath}
-          title={relativePath}
-        >
-          {relativePath}
-        </TableRowCell>
+        {
+          columns.map((column) => {
+            const {
+              name,
+              isVisible
+            } = column;
 
-        <TableRowCell>
-          <MediaInfoConnector
-            movieFileId={id}
-            type={mediaInfoTypes.VIDEO}
-          />
-        </TableRowCell>
+            if (!isVisible) {
+              return null;
+            }
 
-        <TableRowCell>
-          <MediaInfoConnector
-            movieFileId={id}
-            type={mediaInfoTypes.AUDIO}
-          />
-        </TableRowCell>
+            if (name === 'relativePath') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.relativePath}
+                  title={relativePath}
+                >
+                  {relativePath}
+                </TableRowCell>
+              );
+            }
 
-        <TableRowCell
-          className={styles.audioLanguages}
-        >
-          <MediaInfoConnector
-            type={mediaInfoTypes.AUDIO_LANGUAGES}
-            movieFileId={id}
-          />
-        </TableRowCell>
+            if (name === 'customFormats') {
+              return (
+                <TableRowCell key={name}>
+                  <MovieFormats
+                    formats={customFormats}
+                  />
+                </TableRowCell>
+              );
+            }
 
-        <TableRowCell
-          className={styles.subtitles}
-        >
-          <MediaInfoConnector
-            type={mediaInfoTypes.SUBTITLES}
-            movieFileId={id}
-          />
-        </TableRowCell>
+            if (name === 'customFormatScore') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.customFormatScore}
+                >
+                  <Tooltip
+                    anchor={formatCustomFormatScore(
+                      customFormatScore,
+                      customFormats.length
+                    )}
+                    tooltip={<MovieFormats formats={customFormats} />}
+                    position={tooltipPositions.TOP}
+                  />
+                </TableRowCell>
+              );
+            }
 
-        <TableRowCell
-          className={styles.size}
-          title={size}
-        >
-          {formatBytes(size)}
-        </TableRowCell>
+            if (name === 'languages') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.languages}
+                >
+                  {
+                    showLanguagePlaceholder ?
+                      <MovieFileRowCellPlaceholder /> :
+                      null
+                  }
 
-        <TableRowCell
-          className={styles.language}
-        >
-          {
-            showLanguagePlaceholder &&
-              <MovieFileRowCellPlaceholder />
-          }
+                  {
+                    !showLanguagePlaceholder && !!languages &&
+                      <MovieLanguage
+                        className={styles.label}
+                        languages={languages}
+                      />
+                  }
+                </TableRowCell>
+              );
+            }
 
-          {
-            !showLanguagePlaceholder && !!languages &&
-              <MovieLanguage
-                className={styles.label}
-                languages={languages}
-              />
-          }
-        </TableRowCell>
+            if (name === 'quality') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.quality}
+                >
+                  {
+                    showQualityPlaceholder ?
+                      <MovieFileRowCellPlaceholder /> :
+                      null
+                  }
 
-        <TableRowCell
-          className={styles.quality}
-        >
-          {
-            showQualityPlaceholder &&
-              <MovieFileRowCellPlaceholder />
-          }
+                  {
+                    !showQualityPlaceholder && !!quality &&
+                      <MovieQuality
+                        className={styles.label}
+                        quality={quality}
+                        isCutoffNotMet={qualityCutoffNotMet}
+                      />
+                  }
+                </TableRowCell>
+              );
+            }
 
-          {
-            !showQualityPlaceholder && !!quality &&
-              <MovieQuality
-                className={styles.label}
-                quality={quality}
-                isCutoffNotMet={qualityCutoffNotMet}
-              />
-          }
-        </TableRowCell>
+            if (name === 'audioInfo') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.audio}
+                >
+                  <MediaInfoConnector
+                    movieFileId={id}
+                    type={mediaInfoTypes.AUDIO}
+                  />
+                </TableRowCell>
+              );
+            }
 
-        <TableRowCell
-          className={styles.releaseGroup}
-        >
-          {releaseGroup}
-        </TableRowCell>
+            if (name === 'audioLanguages') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.audioLanguages}
+                >
+                  <MediaInfoConnector
+                    type={mediaInfoTypes.AUDIO_LANGUAGES}
+                    movieFileId={id}
+                  />
+                </TableRowCell>
+              );
+            }
 
-        <TableRowCell
-          className={styles.formats}
-        >
-          <MovieFormats
-            formats={customFormats}
-          />
-        </TableRowCell>
+            if (name === 'subtitleLanguages') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.subtitles}
+                >
+                  <MediaInfoConnector
+                    type={mediaInfoTypes.SUBTITLES}
+                    movieFileId={id}
+                  />
+                </TableRowCell>
+              );
+            }
 
-        <TableRowCell
-          className={styles.customFormatScore}
-        >
-          <Tooltip
-            anchor={formatCustomFormatScore(
-              customFormatScore,
-              customFormats.length
-            )}
-            tooltip={<MovieFormats formats={customFormats} />}
-            position={tooltipPositions.TOP}
-          />
-        </TableRowCell>
+            if (name === 'videoCodec') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.video}
+                >
+                  <MediaInfoConnector
+                    movieFileId={id}
+                    type={mediaInfoTypes.VIDEO}
+                  />
+                </TableRowCell>
+              );
+            }
 
-        <TableRowCell className={styles.actions}>
-          <IconButton
-            title={translate('EditMovieFile')}
-            name={icons.EDIT}
-            onPress={this.onFileEditPress}
-          />
+            if (name === 'size') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.size}
+                  title={size}
+                >
+                  {formatBytes(size)}
+                </TableRowCell>
+              );
+            }
 
-          <IconButton
-            title={translate('Details')}
-            name={icons.MEDIA_INFO}
-            onPress={this.onFileDetailsPress}
-          />
+            if (name === 'releaseGroup') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.releaseGroup}
+                >
+                  {releaseGroup}
+                </TableRowCell>
+              );
+            }
 
-          <IconButton
-            title={translate('DeleteFile')}
-            name={icons.REMOVE}
-            onPress={this.onDeletePress}
-          />
-        </TableRowCell>
+            if (name === 'actions') {
+              return (
+                <TableRowCell key={name} className={styles.actions}>
+                  <IconButton
+                    title={translate('EditMovieFile')}
+                    name={icons.EDIT}
+                    onPress={this.onFileEditPress}
+                  />
+
+                  <IconButton
+                    title={translate('Details')}
+                    name={icons.MEDIA_INFO}
+                    onPress={this.onFileDetailsPress}
+                  />
+
+                  <IconButton
+                    title={translate('DeleteFile')}
+                    name={icons.REMOVE}
+                    onPress={this.onDeletePress}
+                  />
+                </TableRowCell>
+              );
+            }
+
+            return null;
+          })
+        }
 
         <FileDetailsModal
           isOpen={isFileDetailsModalOpen}
@@ -263,7 +340,12 @@ MovieFileEditorRow.propTypes = {
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   mediaInfo: PropTypes.object,
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   onDeletePress: PropTypes.func.isRequired
+};
+
+MovieFileEditorRow.defaultProps = {
+  customFormats: []
 };
 
 export default MovieFileEditorRow;
