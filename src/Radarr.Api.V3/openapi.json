@@ -4085,6 +4085,25 @@
         }
       }
     },
+    "/api/v3/localization/language": {
+      "get": {
+        "tags": [
+          "Localization"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocalizationLanguageResource"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v3/log": {
       "get": {
         "tags": [
@@ -10386,6 +10405,16 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LocalizationLanguageResource": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
