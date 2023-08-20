@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -54,7 +55,7 @@ namespace Radarr.Api.V3.Calendar
             var endUse = end ?? DateTime.Today.AddDays(2);
             var movies = _moviesService.GetMoviesBetweenDates(startUse, endUse, unmonitored);
             var parsedTags = new List<int>();
-            var result = new List<Movie>();
+            var results = new List<Movie>();
 
             if (tags.IsNotNullOrWhiteSpace())
             {
@@ -73,32 +74,39 @@ namespace Radarr.Api.V3.Calendar
                     continue;
                 }
 
-                result.Add(movie);
+                results.Add(movie);
             }
 
-            var resources = result.Select(MapToResource);
+            var resources = MapToResource(results);
 
             return resources.OrderBy(e => e.InCinemas).ToList();
         }
 
-        protected MovieResource MapToResource(Movie movie)
+        protected List<MovieResource> MapToResource(List<Movie> movies)
         {
-            if (movie == null)
+            var resources = new List<MovieResource>();
+            var availDelay = _configService.AvailabilityDelay;
+            var language = (Language)_configService.MovieInfoLanguage;
+
+            foreach (var movie in movies)
             {
-                return null;
+                if (movie == null)
+                {
+                    continue;
+                }
+
+                var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
+                var translation = GetMovieTranslation(translations, movie.MovieMetadata, language);
+
+                resources.Add(movie.ToResource(availDelay, translation, _qualityUpgradableSpecification));
             }
 
-            var availDelay = _configService.AvailabilityDelay;
-            var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.Id);
-            var translation = GetMovieTranslation(translations, movie.MovieMetadata);
-            var resource = movie.ToResource(availDelay, translation, _qualityUpgradableSpecification);
-
-            return resource;
+            return resources;
         }
 
-        private MovieTranslation GetMovieTranslation(List<MovieTranslation> translations, MovieMetadata movie)
+        private MovieTranslation GetMovieTranslation(List<MovieTranslation> translations, MovieMetadata movie, Language language)
         {
-            if ((Language)_configService.MovieInfoLanguage == Language.Original)
+            if (language == Language.Original)
             {
                 return new MovieTranslation
                 {
@@ -107,7 +115,7 @@ namespace Radarr.Api.V3.Calendar
                 };
             }
 
-            return translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage && t.MovieMetadataId == movie.Id);
+            return translations.FirstOrDefault(t => t.Language == language && t.MovieMetadataId == movie.Id);
         }
     }
 }
