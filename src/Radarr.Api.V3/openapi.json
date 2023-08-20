@@ -10720,13 +10720,17 @@
             "type": "string",
             "nullable": true
           },
-          "videoDynamicRangeType": {
-            "type": "string",
-            "nullable": true
-          },
           "videoFps": {
             "type": "number",
             "format": "double"
+          },
+          "videoDynamicRange": {
+            "type": "string",
+            "nullable": true
+          },
+          "videoDynamicRangeType": {
+            "type": "string",
+            "nullable": true
           },
           "resolution": {
             "type": "string",
