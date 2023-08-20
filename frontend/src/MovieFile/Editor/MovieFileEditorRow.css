@@ -28,6 +28,9 @@
   white-space: nowrap;
 }
 
+.languages,
+.audio,
+.video,
 .actions {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 
