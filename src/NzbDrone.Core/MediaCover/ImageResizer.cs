@@ -2,7 +2,6 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
-using SixLabors.ImageSharp.Memory;
 using SixLabors.ImageSharp.Processing;
 
 namespace NzbDrone.Core.MediaCover
@@ -22,9 +21,6 @@ namespace NzbDrone.Core.MediaCover
             _diskProvider = diskProvider;
 
             _enabled = true;
-
-            // More conservative memory allocation
-            SixLabors.ImageSharp.Configuration.Default.MemoryAllocator = new SimpleGcMemoryAllocator();
 
             // Thumbnails don't need super high quality
             SixLabors.ImageSharp.Configuration.Default.ImageFormatsManager.SetEncoder(JpegFormat.Instance, new JpegEncoder
