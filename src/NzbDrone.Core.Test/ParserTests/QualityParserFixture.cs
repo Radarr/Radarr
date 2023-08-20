@@ -77,6 +77,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("the_movie.9x18.sunshine_days.ac3.ws_dvdrip_xvid-fov.avi", false)]
         [TestCase("The.Third.Movie Name.2008.DVDRip.360p.H264 iPod -20-40", false)]
         [TestCase("SomeMovie.2018.DVDRip.ts", false)]
+        [TestCase("Some Movie 2005 1080p HDDVD Remux VC-1 TrueHD 5.1-Mooi1990", false)]
         public void should_parse_dvd_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.DVD, proper, Resolution.Unknown);

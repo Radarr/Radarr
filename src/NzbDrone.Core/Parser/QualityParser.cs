@@ -133,7 +133,7 @@ namespace NzbDrone.Core.Parser
             {
                 result.SourceDetectionSource = QualityDetectionSource.Name;
 
-                if (sourceMatch.Groups["bluray"].Success)
+                if (sourceMatch.Groups["bluray"].Success && !sourceMatch.Groups["dvd"].Success)
                 {
                     if (brDiskMatch)
                     {
