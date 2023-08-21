@@ -571,8 +571,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 Title = arg.Title,
                 SourceType = SourceType.TMDB,
-                CleanTitle = arg.Title.CleanMovieTitle(),
-                Language = IsoLanguages.Find(arg.Language.ToLower())?.Language ?? Language.English
+                CleanTitle = arg.Title.CleanMovieTitle()
             };
 
             return newAlternativeTitle;

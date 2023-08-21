@@ -14,11 +14,6 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'language',
-    label: () => translate('Language'),
-    isVisible: true
-  },
-  {
     name: 'sourceType',
     label: () => translate('Type'),
     isVisible: true
