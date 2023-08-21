@@ -55,10 +55,10 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
             Subject.AugmentQuality(_localMovie, _downloadClientItem).Should().BeNull();
         }
 
-        [TestCase("Series.Title.S01E01.1080p.WEB.x264", Source.WEBDL, Confidence.Tag, 1080, Confidence.Tag)]
-        [TestCase("Series.Title.S01E01.WEB.x264", Source.WEBDL, Confidence.Tag, 480, Confidence.Fallback)]
-        [TestCase("Series.Title.S01E01.720p.x264", Source.TV, Confidence.Fallback, 720, Confidence.Tag)]
-        public void should_return_augmented_quality(string title, Source source, Confidence sourceConfidence, int resolution, Confidence resolutionConfidence)
+        [TestCase("Series.Title.S01E01.1080p.WEB.x264", QualitySource.WEBDL, Confidence.Tag, 1080, Confidence.Tag)]
+        [TestCase("Series.Title.S01E01.WEB.x264", QualitySource.WEBDL, Confidence.Tag, 480, Confidence.Fallback)]
+        [TestCase("Series.Title.S01E01.720p.x264", QualitySource.TV, Confidence.Fallback, 720, Confidence.Tag)]
+        public void should_return_augmented_quality(string title, QualitySource source, Confidence sourceConfidence, int resolution, Confidence resolutionConfidence)
         {
             Mocker.GetMock<IDownloadHistoryService>()
                   .Setup(s => s.GetLatestGrab(It.IsAny<string>()))

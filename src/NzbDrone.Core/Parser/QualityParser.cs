@@ -459,13 +459,13 @@ namespace NzbDrone.Core.Parser
 
             if (resolution != Resolution.Unknown)
             {
-                var source = Source.UNKNOWN;
+                var source = QualitySource.UNKNOWN;
                 var modifier = Modifier.NONE;
 
                 if (remuxMatch)
                 {
                     result.SourceDetectionSource = QualityDetectionSource.Name;
-                    source = Source.BLURAY;
+                    source = QualitySource.BLURAY;
                     modifier = Modifier.REMUX;
                 }
                 else
@@ -490,7 +490,7 @@ namespace NzbDrone.Core.Parser
                 {
                     result.ResolutionDetectionSource = QualityDetectionSource.Name;
 
-                    result.Quality = source == Source.UNKNOWN
+                    result.Quality = source == QualitySource.UNKNOWN
                         ? Quality.HDTV2160p
                         : QualityFinder.FindBySourceAndResolution(source, 2160, modifier);
 
@@ -501,7 +501,7 @@ namespace NzbDrone.Core.Parser
                 {
                     result.ResolutionDetectionSource = QualityDetectionSource.Name;
 
-                    result.Quality = source == Source.UNKNOWN
+                    result.Quality = source == QualitySource.UNKNOWN
                         ? Quality.HDTV1080p
                         : QualityFinder.FindBySourceAndResolution(source, 1080, modifier);
 
@@ -512,7 +512,7 @@ namespace NzbDrone.Core.Parser
                 {
                     result.ResolutionDetectionSource = QualityDetectionSource.Name;
 
-                    result.Quality = source == Source.UNKNOWN
+                    result.Quality = source == QualitySource.UNKNOWN
                         ? Quality.HDTV720p
                         : QualityFinder.FindBySourceAndResolution(source, 720, modifier);
 
@@ -524,7 +524,7 @@ namespace NzbDrone.Core.Parser
                 {
                     result.ResolutionDetectionSource = QualityDetectionSource.Name;
 
-                    result.Quality = source == Source.UNKNOWN
+                    result.Quality = source == QualitySource.UNKNOWN
                         ? Quality.SDTV
                         : QualityFinder.FindBySourceAndResolution(source, 480, modifier);
 

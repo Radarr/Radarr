@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
 
             result.Should().NotBe(null);
             result.Resolution.Should().Be((int)expectedResolution);
-            result.Source.Should().Be(Source.UNKNOWN);
+            result.Source.Should().Be(QualitySource.UNKNOWN);
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
 
             result.Should().NotBe(null);
             result.Resolution.Should().Be(1080);
-            result.Source.Should().Be(Source.WEBDL);
+            result.Source.Should().Be(QualitySource.WEBDL);
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
 
             result.Should().NotBe(null);
             result.Resolution.Should().Be(1080);
-            result.Source.Should().Be(Source.UNKNOWN);
+            result.Source.Should().Be(QualitySource.UNKNOWN);
         }
     }
 }

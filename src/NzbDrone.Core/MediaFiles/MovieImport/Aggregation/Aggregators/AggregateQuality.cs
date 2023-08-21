@@ -22,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
 
         public LocalMovie Aggregate(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
-            var source = Source.UNKNOWN;
+            var source = QualitySource.UNKNOWN;
             var sourceConfidence = Confidence.Default;
             var resolution = 0;
             var resolutionConfidence = Confidence.Default;
@@ -41,8 +41,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
 
                 _logger.Trace("Considering Source {0} ({1}) Resolution {2} ({3}) Revision {4} from {5}", augmentedQuality.Source, augmentedQuality.SourceConfidence, augmentedQuality.Resolution, augmentedQuality.ResolutionConfidence, augmentedQuality.Revision, augmentQuality.Name);
 
-                if (source == Source.UNKNOWN ||
-                    (augmentedQuality.SourceConfidence > sourceConfidence && augmentedQuality.Source != Source.UNKNOWN))
+                if (source == QualitySource.UNKNOWN ||
+                    (augmentedQuality.SourceConfidence > sourceConfidence && augmentedQuality.Source != QualitySource.UNKNOWN))
                 {
                     source = augmentedQuality.Source;
                     sourceConfidence = augmentedQuality.SourceConfidence;

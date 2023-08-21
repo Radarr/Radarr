@@ -198,25 +198,25 @@ namespace NzbDrone.Core.Notifications.Trakt
             _proxy.RemoveFromCollection(payload, settings.AccessToken);
         }
 
-        private string MapMediaType(Source source)
+        private string MapMediaType(QualitySource source)
         {
             var traktSource = string.Empty;
 
             switch (source)
             {
-                case Source.BLURAY:
+                case QualitySource.BLURAY:
                     traktSource = "bluray";
                     break;
-                case Source.WEBDL:
+                case QualitySource.WEBDL:
                     traktSource = "digital";
                     break;
-                case Source.WEBRIP:
+                case QualitySource.WEBRIP:
                     traktSource = "digital";
                     break;
-                case Source.DVD:
+                case QualitySource.DVD:
                     traktSource = "dvd";
                     break;
-                case Source.TV:
+                case QualitySource.TV:
                     traktSource = "dvd";
                     break;
             }

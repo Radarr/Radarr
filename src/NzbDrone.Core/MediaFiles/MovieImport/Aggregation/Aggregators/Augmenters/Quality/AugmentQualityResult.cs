@@ -5,7 +5,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
     public class AugmentQualityResult
     {
         public string Name { get; set; }
-        public Source Source { get; set; }
+        public QualitySource Source { get; set; }
         public Confidence SourceConfidence { get; set; }
         public int Resolution { get; set; }
         public Confidence ResolutionConfidence { get; set; }
@@ -14,7 +14,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
         public Revision Revision { get; set; }
         public Confidence RevisionConfidence { get; set; }
 
-        public AugmentQualityResult(Source source,
+        public AugmentQualityResult(QualitySource source,
                                     Confidence sourceConfidence,
                                     int resolution,
                                     Confidence resolutionConfidence,
@@ -33,22 +33,22 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
             RevisionConfidence = revisionConfidence;
         }
 
-        public static AugmentQualityResult SourceOnly(Source source, Confidence sourceConfidence)
+        public static AugmentQualityResult SourceOnly(QualitySource source, Confidence sourceConfidence)
         {
             return new AugmentQualityResult(source, sourceConfidence, 0, Confidence.Default, Modifier.NONE, Confidence.Default, null, Confidence.Default);
         }
 
         public static AugmentQualityResult ResolutionOnly(int resolution, Confidence resolutionConfidence)
         {
-            return new AugmentQualityResult(Source.UNKNOWN, Confidence.Default, resolution, resolutionConfidence, Modifier.NONE, Confidence.Default, null, Confidence.Default);
+            return new AugmentQualityResult(QualitySource.UNKNOWN, Confidence.Default, resolution, resolutionConfidence, Modifier.NONE, Confidence.Default, null, Confidence.Default);
         }
 
         public static AugmentQualityResult ModifierOnly(Modifier modifier, Confidence modifierConfidence)
         {
-            return new AugmentQualityResult(Source.UNKNOWN, Confidence.Default, 0, Confidence.Default, modifier, modifierConfidence, null, Confidence.Default);
+            return new AugmentQualityResult(QualitySource.UNKNOWN, Confidence.Default, 0, Confidence.Default, modifier, modifierConfidence, null, Confidence.Default);
         }
 
-        public static AugmentQualityResult SourceAndResolutionOnly(Source source, Confidence sourceConfidence, int resolution, Confidence resolutionConfidence)
+        public static AugmentQualityResult SourceAndResolutionOnly(QualitySource source, Confidence sourceConfidence, int resolution, Confidence resolutionConfidence)
         {
             return new AugmentQualityResult(source, sourceConfidence, resolution, resolutionConfidence, Modifier.NONE, Confidence.Default, null, Confidence.Default);
         }

@@ -1,6 +1,6 @@
 namespace NzbDrone.Core.Qualities
 {
-    public enum Source
+    public enum QualitySource
     {
         UNKNOWN = 0,
         CAM,
