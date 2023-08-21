@@ -11928,7 +11928,7 @@
             "nullable": true
           },
           "source": {
-            "$ref": "#/components/schemas/Source"
+            "$ref": "#/components/schemas/QualitySource"
           },
           "resolution": {
             "type": "integer",
@@ -12060,6 +12060,21 @@
           }
         },
         "additionalProperties": false
+      },
+      "QualitySource": {
+        "enum": [
+          "unknown",
+          "cam",
+          "telesync",
+          "telecine",
+          "workprint",
+          "dvd",
+          "tv",
+          "webdl",
+          "webrip",
+          "bluray"
+        ],
+        "type": "string"
       },
       "QueueBulkResource": {
         "type": "object",
@@ -12658,21 +12673,6 @@
           "default",
           "ascending",
           "descending"
-        ],
-        "type": "string"
-      },
-      "Source": {
-        "enum": [
-          "unknown",
-          "cam",
-          "telesync",
-          "telecine",
-          "workprint",
-          "dvd",
-          "tv",
-          "webdl",
-          "webrip",
-          "bluray"
         ],
         "type": "string"
       },
