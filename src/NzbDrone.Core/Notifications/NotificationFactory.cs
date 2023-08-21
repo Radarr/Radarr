@@ -34,6 +34,11 @@ namespace NzbDrone.Core.Notifications
             _logger = logger;
         }
 
+        protected override List<NotificationDefinition> Active()
+        {
+            return base.Active().Where(c => c.Enable).ToList();
+        }
+
         public List<INotification> OnGrabEnabled(bool filterBlockedNotifications = true)
         {
             if (filterBlockedNotifications)
