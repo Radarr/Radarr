@@ -28,7 +28,11 @@ class SelectMovieRow extends Component {
         </VirtualTableRowCell>
 
         <VirtualTableRowCell className={styles.imdbId}>
-          <Label>{this.props.imdbId}</Label>
+          {
+            this.props.imdbId ?
+              <Label>{this.props.imdbId}</Label> :
+              null
+          }
         </VirtualTableRowCell>
 
         <VirtualTableRowCell className={styles.tmdbId}>
@@ -43,7 +47,7 @@ SelectMovieRow.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   tmdbId: PropTypes.number.isRequired,
-  imdbId: PropTypes.string.isRequired,
+  imdbId: PropTypes.string,
   year: PropTypes.number.isRequired,
   onMovieSelect: PropTypes.func.isRequired
 };

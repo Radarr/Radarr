@@ -39,12 +39,12 @@ const columns = [
   },
   {
     name: 'imdbId',
-    label: () => translate('ImdbId'),
+    label: () => translate('IMDbId'),
     isVisible: true,
   },
   {
     name: 'tmdbId',
-    label: () => translate('TmdbId'),
+    label: () => translate('TMDBId'),
     isVisible: true,
   },
 ];
