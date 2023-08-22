@@ -947,7 +947,6 @@
     "UnableToAddANewRemotePathMappingPleaseTryAgain": "ไม่สามารถเพิ่มการแมปเส้นทางระยะไกลใหม่โปรดลองอีกครั้ง",
     "UnableToImportCheckLogs": "ดาวน์โหลดแล้ว - ไม่สามารถนำเข้า: ตรวจสอบบันทึกเพื่อดูรายละเอียด",
     "UnableToLoadCustomFormats": "ไม่สามารถโหลดรูปแบบที่กำหนดเอง",
-    "UnableToLoadDownloadClients": "ไม่สามารถโหลดไคลเอนต์ดาวน์โหลด",
     "UnableToLoadGeneralSettings": "ไม่สามารถโหลดการตั้งค่าทั่วไป",
     "UnableToLoadHistory": "ไม่สามารถโหลดประวัติ",
     "UnableToLoadIndexerOptions": "ไม่สามารถโหลดตัวเลือกดัชนี",

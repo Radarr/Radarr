@@ -255,7 +255,6 @@
     "UnableToAddANewRemotePathMappingPleaseTryAgain": "नया दूरस्थ पथ मैपिंग जोड़ने में असमर्थ, कृपया पुनः प्रयास करें।",
     "UnableToImportCheckLogs": "डाउनलोड किया गया - आयात करने में असमर्थ: विवरण के लिए लॉग की जाँच करें",
     "UnableToLoadCustomFormats": "कस्टम प्रारूप लोड करने में असमर्थ",
-    "UnableToLoadDownloadClients": "डाउनलोड क्लाइंट लोड करने में असमर्थ",
     "UnableToLoadHistory": "इतिहास लोड करने में असमर्थ",
     "UnableToLoadIndexerOptions": "अनुक्रमणिका विकल्पों को लोड करने में असमर्थ",
     "UnableToLoadLanguages": "भाषाओं को लोड करने में असमर्थ",
