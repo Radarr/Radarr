@@ -1215,5 +1215,9 @@
     "AddConnection": "Sammlung bearbeiten",
     "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Minimum der eigenen Formate Bewertungspunkte",
     "NotificationStatusAllClientHealthCheckMessage": "Wegen Fehlern sind keine Applikationen verfügbar",
-    "NotificationStatusSingleClientHealthCheckMessage": "Applikationen wegen folgender Fehler nicht verfügbar: {0}"
+    "NotificationStatusSingleClientHealthCheckMessage": "Applikationen wegen folgender Fehler nicht verfügbar: {0}",
+    "RemoveFromDownloadClientHelpTextWarning": "Dies wird den Download und alle bereits heruntergeladenen Dateien aus dem Downloader entfernen.",
+    "DownloadClientsLoadError": "Downloader konnten nicht geladen werden",
+    "IMDbId": "TMDb ID",
+    "DisabledForLocalAddresses": "Für Lokale Adressen deaktivieren"
 }

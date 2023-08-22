@@ -1187,5 +1187,17 @@
     "ApplyTagsHelpTextHowToApplyDownloadClients": "Comment appliquer des tags au film sélectionné",
     "ApplyTagsHelpTextHowToApplyImportLists": "Comment appliquer des tags au film sélectionné",
     "DeleteSelectedDownloadClientsMessageText": "Voulez-vous vraiment supprimer l'indexeur '{0}' ?",
-    "DeleteRootFolderMessageText": "Voulez-vous vraiment supprimer l'indexeur '{0}' ?"
+    "DeleteRootFolderMessageText": "Voulez-vous vraiment supprimer l'indexeur '{0}' ?",
+    "AddConnection": "Modifier la collection",
+    "DownloadClientsLoadError": "Impossible de charger les clients de téléchargement",
+    "IMDbId": "Identifiant TMDb",
+    "DisabledForLocalAddresses": "Désactivé pour les adresses IP locales",
+    "BypassDelayIfAboveCustomFormatScore": "Contourner si au-dessus du score du format personnalisé",
+    "BypassDelayIfAboveCustomFormatScoreHelpText": "Activez le contournement lorsque la version a un score supérieur au score minimum configuré pour le format personnalisé",
+    "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Score de format personnalisé minimum",
+    "AuthenticationRequired": "Authentification requise",
+    "AuthenticationRequiredHelpText": "Modifier les demandes pour lesquelles l'authentification est requise. Ne changez rien si vous ne comprenez pas les risques.",
+    "NotificationStatusAllClientHealthCheckMessage": "Toutes les applications sont indisponibles en raison de dysfonctionnements",
+    "NotificationStatusSingleClientHealthCheckMessage": "Applications indisponibles en raison de dysfonctionnements : {0}",
+    "RemoveFromDownloadClientHelpTextWarning": "La suppression supprimera le téléchargement et le(s) fichier(s) du client de téléchargement."
 }

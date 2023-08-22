@@ -1169,5 +1169,9 @@
     "AddConnection": "Edita la col·lecció",
     "NotificationStatusAllClientHealthCheckMessage": "Totes les llistes no estan disponibles a causa d'errors",
     "NotificationStatusSingleClientHealthCheckMessage": "Llistes no disponibles a causa d'errors: {0}",
-    "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Puntuació mínima de format personalitzat"
+    "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Puntuació mínima de format personalitzat",
+    "DownloadClientsLoadError": "No es poden carregar els clients de baixada",
+    "IMDbId": "Identificador de TMDb",
+    "DisabledForLocalAddresses": "Desactivat per a adreces locals",
+    "RemoveFromDownloadClientHelpTextWarning": "L'eliminació esborrarà la baixada i els fitxers del client de baixada."
 }
