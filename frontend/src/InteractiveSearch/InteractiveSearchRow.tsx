@@ -92,9 +92,7 @@ interface InteractiveSearchRowProps {
   mappedMovieId?: number;
   rejections: string[];
   indexerFlags: string[];
-  episodeRequested: boolean;
   downloadAllowed: boolean;
-  isDaily: boolean;
   isGrabbing: boolean;
   isGrabbed: boolean;
   grabError?: string;
