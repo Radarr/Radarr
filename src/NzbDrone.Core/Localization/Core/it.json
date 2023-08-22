@@ -671,7 +671,6 @@
     "UnableToLoadIndexerOptions": "Non riesco a caricare le opzioni dell'indexer",
     "UnableToLoadHistory": "Impossibile caricare la storia",
     "UnableToLoadGeneralSettings": "Impossibile caricare le impostazioni Generali",
-    "UnableToLoadDownloadClients": "Impossibile caricare i client di download",
     "UnableToLoadDownloadClientOptions": "Non riesco a caricare le opzioni del client di download",
     "UnableToLoadDelayProfiles": "Non riesco a caricare i profili di ritardo",
     "UnableToLoadCustomFormats": "Non riesco a caricare i formati personalizzati",

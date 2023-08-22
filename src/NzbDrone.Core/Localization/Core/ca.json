@@ -950,7 +950,6 @@
     "UnableToAddANewQualityProfilePleaseTryAgain": "No es pot afegir un perfil de qualitat nou, torneu-ho a provar.",
     "UnableToAddANewRemotePathMappingPleaseTryAgain": "No es pot afegir una nova assignació de camins remots, torneu-ho a provar.",
     "UnableToLoadDelayProfiles": "No es poden carregar els perfils de retard",
-    "UnableToLoadDownloadClients": "No es poden carregar els clients de baixada",
     "UnableToLoadGeneralSettings": "No es pot carregar la configuració general",
     "UnableToLoadHistory": "No es pot carregar l'historial",
     "UnableToLoadIndexerOptions": "No es poden carregar les opcions de l'indexador",

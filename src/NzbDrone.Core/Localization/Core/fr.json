@@ -584,7 +584,6 @@
     "UnableToLoadIndexerOptions": "Impossible de charger les options de l'indexeur",
     "UnableToLoadHistory": "Impossible de charger l'historique",
     "UnableToLoadGeneralSettings": "Impossible de charger les paramètres généraux",
-    "UnableToLoadDownloadClients": "Impossible de charger les clients de téléchargement",
     "UnableToLoadDownloadClientOptions": "Impossible de charger les options du client de téléchargement",
     "UnableToLoadDelayProfiles": "Impossible de charger les profils de délai",
     "UnableToLoadCustomFormats": "Impossible de charger les formats personnalisés",

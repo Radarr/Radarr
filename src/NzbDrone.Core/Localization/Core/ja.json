@@ -84,7 +84,6 @@
     "SettingsRemotePathMappingRemotePathHelpText": "ダウンロードクライアントがアクセスするディレクトリへのルートパス",
     "SettingsShowRelativeDatesHelpText": "相対（今日/昨日など）または絶対日付を表示する",
     "UnableToAddANewIndexerPleaseTryAgain": "新しいインデクサーを追加できません。もう一度やり直してください。",
-    "UnableToLoadDownloadClients": "ダウンロードクライアントを読み込めません",
     "UseHardlinksInsteadOfCopy": "コピーの代わりにハードリンクを使用する",
     "Wiki": "ウィキ",
     "MaintenanceRelease": "メンテナンスリリース：バグ修正およびその他の改善。詳細については、Githubのコミット履歴を参照してください",
