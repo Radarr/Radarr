@@ -1165,5 +1165,9 @@
     "DeleteRootFolderMessageText": "Ви впевнені, що хочете видалити тег {0} ?",
     "NotificationStatusAllClientHealthCheckMessage": "Усі списки недоступні через помилки",
     "NotificationStatusSingleClientHealthCheckMessage": "Списки недоступні через помилки: {0}",
-    "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Мінімальна оцінка спеціального формату"
+    "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Мінімальна оцінка спеціального формату",
+    "RemoveFromDownloadClientHelpTextWarning": "Видалення видалить завантаження та файл(и) із клієнта завантаження.",
+    "DownloadClientsLoadError": "Не вдалося завантажити клієнти для завантаження",
+    "IMDbId": "Ідентифікатор TMDb",
+    "DisabledForLocalAddresses": "Відключено для локальних адрес"
 }

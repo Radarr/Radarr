@@ -1076,5 +1076,7 @@
     "ApplyTagsHelpTextHowToApplyDownloadClients": "Cum se aplică etichete clienților de descărcare selectați",
     "DeleteSelectedDownloadClientsMessageText": "Sigur doriți să ștergeți {count} clienți de descărcare selectați?",
     "DeleteSelectedIndexersMessageText": "Sigur doriți să ștergeți {count} indexatori selectați?",
-    "Authentication": "Autentificare"
+    "Authentication": "Autentificare",
+    "DownloadClientsLoadError": "Nu se pot încărca clienții de descărcare",
+    "SelectDownloadClientModalTitle": "{modalTitle} - Selectați clientul de descărcare"
 }
