@@ -6922,16 +6922,6 @@
               "schema": {
                 "$ref": "#/components/schemas/ReleaseResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReleaseResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReleaseResource"
-              }
             }
           }
         },
@@ -6959,23 +6949,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ReleaseResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ReleaseResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -12446,6 +12420,11 @@
             },
             "nullable": true
           },
+          "mappedMovieId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "approved": {
             "type": "boolean"
           },
@@ -12528,6 +12507,15 @@
           "movieId": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "downloadClientId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "shouldOverride": {
+            "type": "boolean",
             "nullable": true
           }
         },
