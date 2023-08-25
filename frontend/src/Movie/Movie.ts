@@ -1,15 +1,11 @@
 import ModelBase from 'App/ModelBase';
+import Language from 'Language/Language';
 import { MovieFile } from 'MovieFile/MovieFile';
 
 export interface Image {
   coverType: string;
   url: string;
   remoteUrl: string;
-}
-
-export interface Language {
-  id: number;
-  name: string;
 }
 
 export interface Collection {
