@@ -166,8 +166,11 @@ function SelectMovieModalContent(props: SelectMovieModalContentProps) {
       a.sortTitle.localeCompare(b.sortTitle)
     );
 
-    return sorted.filter((item) =>
-      item.title.toLowerCase().includes(filter.toLowerCase())
+    return sorted.filter(
+      (item) =>
+        item.title.toLowerCase().includes(filter.toLowerCase()) ||
+        item.tmdbId.toString().includes(filter) ||
+        item.imdbId?.includes(filter)
     );
   }, [allMovies, filter]);
 
