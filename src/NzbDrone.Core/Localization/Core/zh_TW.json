@@ -69,7 +69,6 @@
     "BindAddress": "綁定地址（Bind Address）",
     "BindAddressHelpText": "有效的IP地址，本地主機（localhost）或者「*」以表示所有介面。",
     "ClickToChangeQuality": "點擊以更改品質",
-    "InteractiveImportErrQuality": "必須為每個選定的文件選擇品質",
     "ManualImportSelectQuality": " 手動導入-選擇品質",
     "AllResultsHiddenFilter": "根據所使用的篩選器已將所有結果隱藏",
     "AllowHardcodedSubs": "允許燒錄的字幕",
