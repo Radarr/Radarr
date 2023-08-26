@@ -366,6 +366,7 @@ stages:
         artifact: 'Packages'
         displayName: Publish Packages
       - bash: |
+          echo $(SENTRY_AUTH_TOKEN)
           echo "Uploading source maps to sentry"
           curl -sL https://sentry.io/get-cli/ | bash
           RELEASENAME="Radarr@${RADARRVERSION}-${BUILD_SOURCEBRANCHNAME}"
