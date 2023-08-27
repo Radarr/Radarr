@@ -92,7 +92,6 @@
     "IncludeUnmonitored": "Inclou no monitorat",
     "IndexerFlags": "Indicadors de l'indexador",
     "InteractiveImport": "Importació interactiva",
-    "InteractiveImportErrMovie": "La pel·lícula s'ha de triar per a cada fitxer seleccionat",
     "MaximumSize": "Mida màxima",
     "MaximumSizeHelpText": "Mida màxima per a una versió que es pot capturar en MB. Establiu a zero per establir-lo en il·limitat",
     "MoveFolders1": "Voleu moure les carpetes de pel·lícules a '{0}'?",

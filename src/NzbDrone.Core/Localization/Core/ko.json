@@ -635,7 +635,6 @@
     "IndexerSettings": "인덱서 설정",
     "IndexerStatusCheckSingleClientMessage": "오류로 인해 인덱서를 사용할 수 없음 : {0}",
     "InstallLatest": "최신 설치",
-    "InteractiveImportErrMovie": "선택한 각 파일에 대해 영화를 선택해야합니다.",
     "KeepAndUnmonitorMovie": "영화 유지 및 모니터링 해제",
     "KeyboardShortcuts": "키보드 단축키",
     "Language": "언어",

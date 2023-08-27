@@ -822,7 +822,6 @@
     "IndexerSettings": "Dizin Oluşturucu Ayarları",
     "IndexerStatusCheckSingleClientMessage": "Hatalar nedeniyle dizinleyiciler kullanılamıyor: {0}",
     "InteractiveImport": "Etkileşimli İçe Aktarma",
-    "InteractiveImportErrQuality": "Seçilen her dosya için kalite seçilmelidir",
     "Interval": "Aralık",
     "KeepAndUnmonitorMovie": "Filmi Sakla ve İzlemeyi Kaldır",
     "KeyboardShortcuts": "Klavye kısayolları",

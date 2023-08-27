@@ -318,7 +318,6 @@
     "IndexerStatusCheckSingleClientMessage": "Индексатори не са налични поради грешки: {0}",
     "InstallLatest": "Инсталирайте най-новите",
     "InteractiveImport": "Интерактивен импорт",
-    "InteractiveImportErrMovie": "Филмът трябва да бъде избран за всеки избран файл",
     "InteractiveSearch": "Интерактивно търсене",
     "Interval": "Интервал",
     "KeepAndUnmonitorMovie": "Съхраняване и Unmonitor филм",

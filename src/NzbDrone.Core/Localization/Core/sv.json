@@ -475,7 +475,6 @@
     "None": "Ingen",
     "OnImport": "Vid import",
     "MoviesSelectedInterp": "{0} Film(er) markerade",
-    "InteractiveImportErrLanguage": "Språk måste väljas för varje markerad fil",
     "DeleteSelectedMovieFiles": "Radera markerade filmfiler",
     "DeleteSelectedMovie": "Radera markerad(e) film(er)",
     "DetailedProgressBarHelpText": "Visa text i förloppsindikatorn",

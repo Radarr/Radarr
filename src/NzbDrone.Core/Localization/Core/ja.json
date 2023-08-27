@@ -66,7 +66,6 @@
     "IndexerRssHealthCheckNoIndexers": "RSS同期が有効になっているインデクサーは利用できません。Radarrは新しいリリースを自動的に取得しません",
     "IndexerSettings": "インデクサ設定",
     "IndexerStatusCheckSingleClientMessage": "失敗のためインデクサーを利用できません：{0}",
-    "InteractiveImportErrQuality": "選択したファイルごとに品質を選択する必要があります",
     "KeepAndUnmonitorMovie": "ムービーの保持と監視解除",
     "LanguageHelpText": "リリースの言語",
     "ListSettings": "リスト設定",

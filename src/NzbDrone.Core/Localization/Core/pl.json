@@ -653,7 +653,6 @@
     "IndexerSearchCheckNoAvailableIndexersMessage": "Wszystkie indeksatory z możliwością wyszukiwania są tymczasowo niedostępne z powodu ostatnich błędów indeksatora",
     "IndexerSearchCheckNoInteractiveMessage": "Brak dostępnych indeksatorów z włączoną funkcją wyszukiwania interaktywnego, Radarr nie zapewni żadnych interaktywnych wyników wyszukiwania",
     "IndexerStatusCheckSingleClientMessage": "Indeksatory niedostępne z powodu błędów: {0}",
-    "InteractiveImportErrMovie": "Dla każdego wybranego pliku należy wybrać film",
     "InteractiveSearch": "Wyszukiwanie interaktywne",
     "Interval": "Interwał",
     "KeepAndUnmonitorMovie": "Zachowaj i nie monitoruj filmu",

@@ -713,7 +713,6 @@
     "IndexerSearchCheckNoInteractiveMessage": "ไม่มีตัวจัดทำดัชนีที่เปิดใช้งานการค้นหาแบบโต้ตอบ Radarr จะไม่ให้ผลการค้นหาแบบโต้ตอบใด ๆ",
     "InstallLatest": "ติดตั้งล่าสุด",
     "InteractiveImport": "การนำเข้าแบบโต้ตอบ",
-    "InteractiveImportErrMovie": "ต้องเลือกภาพยนตร์สำหรับแต่ละไฟล์ที่เลือก",
     "InteractiveSearch": "การค้นหาแบบโต้ตอบ",
     "Interval": "ช่วงเวลา",
     "KeepAndUnmonitorMovie": "Keep และ Unmonitor Movie",

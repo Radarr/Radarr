@@ -641,7 +641,6 @@
     "IndexerStatusCheckSingleClientMessage": "Tietolähteet eivät ole käytettävissä virheiden vuoksi: {0}",
     "InstallLatest": "Asenna uusin",
     "InteractiveImport": "Vuorovaikutteinen tuonti",
-    "InteractiveImportErrQuality": "Laatu on valittava jokaiselle valitulle tiedostolle",
     "InteractiveSearch": "Vuorovaikutteinen haku",
     "KeepAndUnmonitorMovie": "Säilytä elokuva ja lopeta sen valvonta",
     "KeyboardShortcuts": "Pikanäppäimet",

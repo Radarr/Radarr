@@ -628,7 +628,6 @@
     "IndexerSearchCheckNoInteractiveMessage": "Δεν υπάρχουν διαθέσιμα ευρετήρια με ενεργοποιημένη την διαδραστική αναζήτηση, το Radarr δεν θα παρέχει αποτελέσματα διαδραστικής αναζήτησης",
     "InstallLatest": "Εγκατάσταση πιο πρόσφατου",
     "InteractiveImport": "Διαδραστική εισαγωγή",
-    "InteractiveImportErrMovie": "Η ταινία πρέπει να επιλεγεί για κάθε επιλεγμένο αρχείο",
     "InteractiveSearch": "Διαδραστική αναζήτηση",
     "Interval": "Διάστημα",
     "KeepAndUnmonitorMovie": "Keep και Unmonitor Movie",

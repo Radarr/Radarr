@@ -822,7 +822,6 @@
     "Large": "Groot",
     "KeepAndUnmonitorMovie": "Houd en Onbewaak Film",
     "InvalidFormat": "Ongeldig Formaat",
-    "InteractiveImportErrMovie": "Film moet worden gekozen voor elk geselecteerd bestand",
     "InstallLatest": "Installeer Nieuwste Versie",
     "IndexerLongTermStatusCheckSingleClientMessage": "Indexeerders zijn niet beschikbaar vanwege storingen gedurende meer dan 6 uur: {0}",
     "IndexerLongTermStatusCheckAllClientMessage": "Alle indexeerders zijn niet beschikbaar vanwege storingen gedurende meer dan 6 uur",

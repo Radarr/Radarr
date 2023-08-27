@@ -837,7 +837,6 @@
     "IndexerStatusCheckSingleClientMessage": "Trình lập chỉ mục không khả dụng do lỗi: {0}",
     "InstallLatest": "Cài đặt mới nhất",
     "InteractiveImport": "Nhập tương tác",
-    "InteractiveImportErrMovie": "Phim phải được chọn cho từng tệp đã chọn",
     "InteractiveSearch": "Tìm kiếm tương tác",
     "KeepAndUnmonitorMovie": "Giữ và Bỏ theo dõi Phim",
     "Large": "Lớn",

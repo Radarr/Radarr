@@ -1191,6 +1191,6 @@
     "NotificationStatusAllClientHealthCheckMessage": "Toutes les applications sont indisponibles en raison de dysfonctionnements",
     "NotificationStatusSingleClientHealthCheckMessage": "Applications indisponibles en raison de dysfonctionnements : {0}",
     "RemoveFromDownloadClientHelpTextWarning": "La suppression supprimera le téléchargement et le(s) fichier(s) du client de téléchargement.",
-    "AddConditionImplementation": "Ajouter une condition - {NomDeL'implémentation}",
-    "AddConnectionImplementation": "Ajouter une connexion - {NomDeL'implémentation}"
+    "AddConditionImplementation": "Ajouter une condition - {implementationName}",
+    "AddConnectionImplementation": "Ajouter une connexion - {implementationName}"
 }

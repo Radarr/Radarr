@@ -684,7 +684,6 @@
     "IndexerSearchCheckNoInteractiveMessage": "Немає доступних індексаторів, коли ввімкнено інтерактивний пошук, Radarr не надаватиме жодних інтерактивних результатів пошуку",
     "IndexerStatusCheckAllClientMessage": "Усі індексатори недоступні через збої",
     "IndexerStatusCheckSingleClientMessage": "Індексатори недоступні через помилки: {0}",
-    "InteractiveImportErrMovie": "Фільм потрібно вибрати для кожного вибраного файлу",
     "InteractiveSearch": "Інтерактивний пошук",
     "Interval": "Інтервал",
     "InvalidFormat": "Недійсний формат",
