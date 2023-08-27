@@ -23,19 +23,19 @@ const EVENT_TYPE_OPTIONS = [
     },
   },
   {
-    id: 5,
+    id: 6,
     get name() {
       return translate('Deleted');
     },
   },
   {
-    id: 6,
+    id: 8,
     get name() {
       return translate('Renamed');
     },
   },
   {
-    id: 7,
+    id: 9,
     get name() {
       return translate('Ignored');
     },
