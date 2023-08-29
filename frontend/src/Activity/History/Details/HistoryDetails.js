@@ -15,6 +15,7 @@ function HistoryDetails(props) {
     eventType,
     sourceTitle,
     data,
+    downloadId,
     shortDateFormat,
     timeFormat
   } = props;
@@ -26,7 +27,6 @@ function HistoryDetails(props) {
       nzbInfoUrl,
       downloadClient,
       downloadClientName,
-      downloadId,
       movieMatchType,
       age,
       ageHours,
@@ -45,24 +45,26 @@ function HistoryDetails(props) {
         />
 
         {
-          !!indexer &&
+          indexer ?
             <DescriptionListItem
               title={translate('Indexer')}
               data={indexer}
-            />
+            /> :
+            null
         }
 
         {
-          !!releaseGroup &&
+          releaseGroup ?
             <DescriptionListItem
               descriptionClassName={styles.description}
               title={translate('ReleaseGroup')}
               data={releaseGroup}
-            />
+            /> :
+            null
         }
 
         {
-          !!nzbInfoUrl &&
+          nzbInfoUrl ?
             <span>
               <DescriptionListItemTitle>
                 Info URL
@@ -71,7 +73,8 @@ function HistoryDetails(props) {
               <DescriptionListItemDescription>
                 <Link to={nzbInfoUrl}>{nzbInfoUrl}</Link>
               </DescriptionListItemDescription>
-            </span>
+            </span> :
+            null
         }
 
         {
@@ -94,27 +97,30 @@ function HistoryDetails(props) {
         }
 
         {
-          !!downloadId &&
+          downloadId ?
             <DescriptionListItem
               title={translate('GrabID')}
               data={downloadId}
-            />
+            /> :
+            null
         }
 
         {
-          !!indexer &&
+          indexer ?
             <DescriptionListItem
               title={translate('AgeWhenGrabbed')}
               data={formatAge(age, ageHours, ageMinutes)}
-            />
+            /> :
+            null
         }
 
         {
-          !!publishedDate &&
+          publishedDate ?
             <DescriptionListItem
               title={translate('PublishedDate')}
               data={formatDateTime(publishedDate, shortDateFormat, timeFormat, { includeSeconds: true })}
-            />
+            /> :
+            null
         }
       </DescriptionList>
     );
@@ -134,11 +140,21 @@ function HistoryDetails(props) {
         />
 
         {
-          !!message &&
+          downloadId ?
+            <DescriptionListItem
+              title={translate('GrabID')}
+              data={downloadId}
+            /> :
+            null
+        }
+
+        {
+          message ?
             <DescriptionListItem
               title={translate('Message')}
               data={message}
-            />
+            /> :
+            null
         }
       </DescriptionList>
     );
@@ -159,21 +175,23 @@ function HistoryDetails(props) {
         />
 
         {
-          !!droppedPath &&
+          droppedPath ?
             <DescriptionListItem
               descriptionClassName={styles.description}
               title={translate('Source')}
               data={droppedPath}
-            />
+            /> :
+            null
         }
 
         {
-          !!importedPath &&
+          importedPath ?
             <DescriptionListItem
               descriptionClassName={styles.description}
               title={translate('ImportedTo')}
               data={importedPath}
-            />
+            /> :
+            null
         }
       </DescriptionList>
     );
@@ -262,11 +280,21 @@ function HistoryDetails(props) {
         />
 
         {
-          !!message &&
+          downloadId ?
+            <DescriptionListItem
+              title={translate('GrabID')}
+              data={downloadId}
+            /> :
+            null
+        }
+
+        {
+          message ?
             <DescriptionListItem
               title={translate('Message')}
               data={message}
-            />
+            /> :
+            null
         }
       </DescriptionList>
     );
@@ -287,6 +315,7 @@ HistoryDetails.propTypes = {
   eventType: PropTypes.string.isRequired,
   sourceTitle: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
+  downloadId: PropTypes.string,
   shortDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired
 };

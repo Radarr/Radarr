@@ -68,6 +68,7 @@ class MovieHistoryRow extends Component {
       qualityCutoffNotMet,
       date,
       data,
+      downloadId,
       isMarkingAsFailed,
       shortDateFormat,
       timeFormat
@@ -153,6 +154,7 @@ class MovieHistoryRow extends Component {
           eventType={eventType}
           sourceTitle={sourceTitle}
           data={data}
+          downloadId={downloadId}
           isMarkingAsFailed={isMarkingAsFailed}
           shortDateFormat={shortDateFormat}
           timeFormat={timeFormat}
@@ -175,6 +177,7 @@ MovieHistoryRow.propTypes = {
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   date: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
+  downloadId: PropTypes.string,
   isMarkingAsFailed: PropTypes.bool,
   movie: PropTypes.object.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
