@@ -51,9 +51,9 @@ class TableOptionsModal extends Component {
     let pageSizeError = null;
 
     if (value < 5) {
-      pageSizeError = 'Page size must be at least 5';
+      pageSizeError = translate('TablePageSizeMinimum', { minimumValue: '5' });
     } else if (value > 250) {
-      pageSizeError = 'Page size must not exceed 250';
+      pageSizeError = translate('TablePageSizeMaximum', { maximumValue: '250' });
     } else {
       this.props.onTableOptionChange({ pageSize: value });
     }
@@ -145,13 +145,13 @@ class TableOptionsModal extends Component {
                     {
                       hasPageSize ?
                         <FormGroup>
-                          <FormLabel>{translate('PageSize')}</FormLabel>
+                          <FormLabel>{translate('TablePageSize')}</FormLabel>
 
                           <FormInputGroup
                             type={inputTypes.NUMBER}
                             name="pageSize"
                             value={pageSize || 0}
-                            helpText={translate('PageSizeHelpText')}
+                            helpText={translate('TablePageSizeHelpText')}
                             errors={pageSizeError ? [{ message: pageSizeError }] : undefined}
                             onChange={this.onPageSizeChange}
                           />
