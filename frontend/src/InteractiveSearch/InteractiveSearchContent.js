@@ -33,7 +33,6 @@ const columns = [
   },
   {
     name: 'rejections',
-    columnLabel: () => translate('Rejections'),
     label: React.createElement(Icon, {
       name: icons.DANGER,
       title: () => translate('Rejections')
@@ -93,7 +92,6 @@ const columns = [
   },
   {
     name: 'customFormatScore',
-    columnLabel: () => translate('CustomFormatScore'),
     label: React.createElement(Icon, {
       name: icons.SCORE,
       title: () => translate('CustomFormatScore')
@@ -103,7 +101,6 @@ const columns = [
   },
   {
     name: 'indexerFlags',
-    columnLabel: () => translate('IndexerFlags'),
     label: React.createElement(Icon, {
       name: icons.FLAG,
       title: () => translate('IndexerFlags')
