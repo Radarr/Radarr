@@ -273,12 +273,17 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                         details.Add(setElement);
                     }
 
-                    var tags = _tagRepository.Get(movie.Tags);
-
-                    foreach (var tag in tags)
+                    if (movie.Tags.Any())
                     {
-                        details.Add(new XElement("tag", tag.Label));
+                        var tags = _tagRepository.Get(movie.Tags);
+
+                        foreach (var tag in tags)
+                        {
+                            details.Add(new XElement("tag", tag.Label));
+                        }
                     }
+
+                    details.Add(new XElement("status", movie.MovieMetadata.Value.Status));
 
                     foreach (var credit in credits)
                     {
