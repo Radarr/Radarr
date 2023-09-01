@@ -1,7 +1,9 @@
 using System.Linq;
 using System.Reflection;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Languages;
 using Radarr.Http;
 using Radarr.Http.REST.Attributes;
 
@@ -16,6 +18,18 @@ namespace Radarr.Api.V3.Config
             : base(configService)
         {
             _configFileProvider = configFileProvider;
+
+            SharedValidator.RuleFor(c => c.UILanguage).Custom((value, context) =>
+            {
+                if (!Language.All.Any(o => o.Id == value))
+                {
+                    context.AddFailure("Invalid UI Language ID");
+                }
+            });
+
+            SharedValidator.RuleFor(c => c.UILanguage)
+                           .GreaterThanOrEqualTo(1)
+                           .WithMessage("The UI Language value cannot be less than 1");
         }
 
         [RestPutById]
