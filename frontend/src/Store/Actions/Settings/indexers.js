@@ -11,6 +11,7 @@ import { createThunk } from 'Store/thunks';
 import getSectionState from 'Utilities/State/getSectionState';
 import selectProviderSchema from 'Utilities/State/selectProviderSchema';
 import updateSectionState from 'Utilities/State/updateSectionState';
+import translate from 'Utilities/String/translate';
 import createBulkEditItemHandler from '../Creators/createBulkEditItemHandler';
 import createBulkRemoveItemHandler from '../Creators/createBulkRemoveItemHandler';
 
@@ -152,7 +153,7 @@ export default {
 
       // Set the name in pendingChanges
       newState.pendingChanges = {
-        name: `${item.name} - Copy`
+        name: translate('DefaultNameCopiedProfile', { name: item.name })
       };
 
       return updateSectionState(state, section, newState);
