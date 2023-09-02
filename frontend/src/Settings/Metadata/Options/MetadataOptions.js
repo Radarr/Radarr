@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Alert from 'Components/Alert';
 import FieldSet from 'Components/FieldSet';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
@@ -8,7 +9,6 @@ import FormLabel from 'Components/Form/FormLabel';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import { inputTypes, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
-import Alert from '../../../Components/Alert';
 
 // Note: Do Not Translate Certification Countries
 

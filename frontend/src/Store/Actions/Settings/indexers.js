@@ -1,4 +1,6 @@
 import { createAction } from 'redux-actions';
+import createBulkEditItemHandler from 'Store/Actions/Creators/createBulkEditItemHandler';
+import createBulkRemoveItemHandler from 'Store/Actions/Creators/createBulkRemoveItemHandler';
 import createFetchHandler from 'Store/Actions/Creators/createFetchHandler';
 import createFetchSchemaHandler from 'Store/Actions/Creators/createFetchSchemaHandler';
 import createRemoveItemHandler from 'Store/Actions/Creators/createRemoveItemHandler';
@@ -12,8 +14,6 @@ import getSectionState from 'Utilities/State/getSectionState';
 import selectProviderSchema from 'Utilities/State/selectProviderSchema';
 import updateSectionState from 'Utilities/State/updateSectionState';
 import translate from 'Utilities/String/translate';
-import createBulkEditItemHandler from '../Creators/createBulkEditItemHandler';
-import createBulkRemoveItemHandler from '../Creators/createBulkRemoveItemHandler';
 
 //
 // Variables
