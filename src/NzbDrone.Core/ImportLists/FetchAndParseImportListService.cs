@@ -102,7 +102,7 @@ namespace NzbDrone.Core.ImportLists
                             if (!importListReports.AnyFailure)
                             {
                                 var alreadyMapped = result.Movies.Where(x => importListReports.Movies.Any(r => r.TmdbId == x.TmdbId));
-                                var listMovies = MapMovieReports(importListReports.Movies.Where(x => result.Movies.All(r => r.TmdbId != x.TmdbId)).ToList()).Where(x => x.TmdbId > 0).ToList();
+                                var listMovies = MapMovieReports(importListReports.Movies.Where(x => result.Movies.All(r => r.TmdbId != x.TmdbId))).Where(x => x.TmdbId > 0).ToList();
 
                                 listMovies.AddRange(alreadyMapped);
                                 listMovies = listMovies.DistinctBy(x => x.TmdbId).ToList();
@@ -160,9 +160,11 @@ namespace NzbDrone.Core.ImportLists
 
                     if (!importListReports.AnyFailure)
                     {
-                        var listMovies = MapMovieReports(importListReports.Movies).Where(x => x.TmdbId > 0).ToList();
+                        var listMovies = MapMovieReports(importListReports.Movies)
+                            .Where(x => x.TmdbId > 0)
+                            .DistinctBy(x => x.TmdbId)
+                            .ToList();
 
-                        listMovies = listMovies.DistinctBy(x => x.TmdbId).ToList();
                         listMovies.ForEach(m => m.ListId = importList.Definition.Id);
 
                         result.Movies.AddRange(listMovies);
@@ -186,7 +188,7 @@ namespace NzbDrone.Core.ImportLists
             return result;
         }
 
-        private List<ImportListMovie> MapMovieReports(List<ImportListMovie> reports)
+        private List<ImportListMovie> MapMovieReports(IEnumerable<ImportListMovie> reports)
         {
             var mappedMovies = reports.Select(m => _movieSearch.MapMovieToTmdbMovie(new MovieMetadata { Title = m.Title, TmdbId = m.TmdbId, ImdbId = m.ImdbId, Year = m.Year }))
                 .Where(x => x != null)
