@@ -53,9 +53,7 @@ namespace NzbDrone.Core.ImportLists.Simkl
                 return new ImportListFetchResult();
             }
 
-            var generator = GetRequestGenerator();
-
-            return FetchMovies(generator.GetMovies());
+            return FetchMovies(g => g.GetMovies());
         }
 
         public override IParseImportListResponse GetParser()
