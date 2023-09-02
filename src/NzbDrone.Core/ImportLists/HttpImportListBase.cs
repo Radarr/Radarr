@@ -39,35 +39,41 @@ namespace NzbDrone.Core.ImportLists
 
         public override ImportListFetchResult Fetch()
         {
-            var generator = GetRequestGenerator();
-            return FetchMovies(generator.GetMovies());
+            return FetchMovies(g => g.GetMovies());
         }
 
-        protected virtual ImportListFetchResult FetchMovies(ImportListPageableRequestChain pageableRequestChain, bool isRecent = false)
+        protected virtual ImportListFetchResult FetchMovies(Func<IImportListRequestGenerator, ImportListPageableRequestChain> pageableRequestChainSelector, bool isRecent = false)
         {
             var movies = new List<ImportListMovie>();
             var url = string.Empty;
-
-            var parser = GetParser();
 
             var anyFailure = true;
 
             try
             {
+                var generator = GetRequestGenerator();
+                var parser = GetParser();
+
+                var pageableRequestChain = pageableRequestChainSelector(generator);
+
                 for (var i = 0; i < pageableRequestChain.Tiers; i++)
                 {
                     var pageableRequests = pageableRequestChain.GetTier(i);
+
                     foreach (var pageableRequest in pageableRequests)
                     {
-                        var pagedReleases = new List<ImportListMovie>();
+                        var pagedMovies = new List<ImportListMovie>();
+
                         foreach (var request in pageableRequest)
                         {
                             url = request.Url.FullUri;
+
                             var page = FetchPage(request, parser);
-                            pagedReleases.AddRange(page);
+
+                            pagedMovies.AddRange(page);
                         }
 
-                        movies.AddRange(pagedReleases);
+                        movies.AddRange(pagedMovies.Where(IsValidItem));
                     }
 
                     if (movies.Any())
@@ -81,8 +87,7 @@ namespace NzbDrone.Core.ImportLists
             }
             catch (WebException webException)
             {
-                if (webException.Status == WebExceptionStatus.NameResolutionFailure ||
-                    webException.Status == WebExceptionStatus.ConnectFailure)
+                if (webException.Status is WebExceptionStatus.NameResolutionFailure or WebExceptionStatus.ConnectFailure)
                 {
                     _importListStatusService.RecordConnectionFailure(Definition.Id);
                 }
@@ -103,14 +108,8 @@ namespace NzbDrone.Core.ImportLists
             }
             catch (TooManyRequestsException ex)
             {
-                if (ex.RetryAfter != TimeSpan.Zero)
-                {
-                    _importListStatusService.RecordFailure(Definition.Id, ex.RetryAfter);
-                }
-                else
-                {
-                    _importListStatusService.RecordFailure(Definition.Id, TimeSpan.FromHours(1));
-                }
+                var retryTime = ex.RetryAfter != TimeSpan.Zero ? ex.RetryAfter : TimeSpan.FromHours(1);
+                _importListStatusService.RecordFailure(Definition.Id, retryTime);
 
                 _logger.Warn("API Request Limit reached for {0}", this);
             }
@@ -150,6 +149,16 @@ namespace NzbDrone.Core.ImportLists
             }
 
             return new ImportListFetchResult { Movies = CleanupListItems(movies), AnyFailure = anyFailure };
+        }
+
+        protected virtual bool IsValidItem(ImportListMovie listItem)
+        {
+            if (listItem.Title.IsNullOrWhiteSpace() && listItem.ImdbId.IsNullOrWhiteSpace() && listItem.TmdbId == 0)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         protected virtual IList<ImportListMovie> FetchPage(ImportListRequest request, IParseImportListResponse parser)

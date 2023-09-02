@@ -37,8 +37,7 @@ namespace NzbDrone.Core.ImportLists.Plex
         {
             Settings.Validate().Filter("AccessToken").ThrowOnError();
 
-            var generator = GetRequestGenerator();
-            return FetchMovies(generator.GetMovies());
+            return FetchMovies(g => g.GetMovies());
         }
 
         public override IParseImportListResponse GetParser()

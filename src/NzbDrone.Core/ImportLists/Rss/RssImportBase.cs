@@ -22,9 +22,7 @@ namespace NzbDrone.Core.ImportLists.Rss
 
         public override ImportListFetchResult Fetch()
         {
-            var generator = GetRequestGenerator();
-
-            return FetchMovies(generator.GetMovies());
+            return FetchMovies(g => g.GetMovies());
         }
 
         public override IParseImportListResponse GetParser()
