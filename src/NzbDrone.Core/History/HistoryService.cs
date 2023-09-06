@@ -87,9 +87,8 @@ namespace NzbDrone.Core.History
         public QualityModel GetBestQualityInHistory(QualityProfile profile, int movieId)
         {
             var comparer = new QualityModelComparer(profile);
-            return _historyRepository.GetBestQualityInHistory(movieId)
-                .OrderByDescending(q => q, comparer)
-                .FirstOrDefault();
+
+            return _historyRepository.GetBestQualityInHistory(movieId).MaxBy(q => q, comparer);
         }
 
         public void UpdateMany(List<MovieHistory> toUpdate)
@@ -163,9 +162,7 @@ namespace NzbDrone.Core.History
                 history.Data.Add("ReleaseHash", message.Movie.ParsedMovieInfo.ReleaseHash);
             }
 
-            var torrentRelease = message.Movie.Release as TorrentInfo;
-
-            if (torrentRelease != null)
+            if (message.Movie.Release is TorrentInfo torrentRelease)
             {
                 history.Data.Add("TorrentInfoHash", torrentRelease.InfoHash);
             }
@@ -206,6 +203,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("DownloadClientName", message.DownloadClientInfo?.Name);
             history.Data.Add("ReleaseGroup", message.MovieInfo.ReleaseGroup);
             history.Data.Add("CustomFormatScore", message.MovieInfo.CustomFormatScore.ToString());
+            history.Data.Add("IndexerFlags", message.ImportedMovie.IndexerFlags.ToString());
 
             _historyRepository.Insert(history);
         }
