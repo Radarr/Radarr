@@ -269,17 +269,19 @@ export const actionHandlers = handleThunks({
     promise.done((data) => {
       dispatch(batchActions([
         ...movieFileIds.map((id) => {
-          const props = {};
-
           const movieFile = data.find((file) => file.id === id);
 
-          props.qualityCutoffNotMet = movieFile.qualityCutoffNotMet;
+          const props = {
+            customFormats: movieFile.customFormats,
+            customFormatScore: movieFile.customFormatScore,
+            qualityCutoffNotMet: movieFile.qualityCutoffNotMet
+          };
 
           if (languages) {
             props.languages = languages;
           }
 
-          if (indexerFlags) {
+          if (indexerFlags !== undefined) {
             props.indexerFlags = indexerFlags;
           }
 

@@ -228,6 +228,7 @@ namespace NzbDrone.Core.History
 
             history.Data.Add("Reason", message.Reason.ToString());
             history.Data.Add("ReleaseGroup", message.MovieFile.ReleaseGroup);
+            history.Data.Add("IndexerFlags", message.MovieFile.IndexerFlags.ToString());
 
             _historyRepository.Insert(history);
         }
@@ -254,6 +255,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("Path", path);
             history.Data.Add("RelativePath", relativePath);
             history.Data.Add("ReleaseGroup", message.MovieFile.ReleaseGroup);
+            history.Data.Add("IndexerFlags", message.MovieFile.IndexerFlags.ToString());
 
             _historyRepository.Insert(history);
         }
