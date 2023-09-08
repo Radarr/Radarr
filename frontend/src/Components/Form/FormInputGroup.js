@@ -12,7 +12,7 @@ import DownloadClientSelectInputConnector from './DownloadClientSelectInputConne
 import EnhancedSelectInput from './EnhancedSelectInput';
 import EnhancedSelectInputConnector from './EnhancedSelectInputConnector';
 import FormInputHelpText from './FormInputHelpText';
-import IndexerFlagsSelectInputConnector from './IndexerFlagsSelectInputConnector';
+import IndexerFlagsSelectInput from './IndexerFlagsSelectInput';
 import IndexerSelectInputConnector from './IndexerSelectInputConnector';
 import KeyValueListInput from './KeyValueListInput';
 import LanguageSelectInputConnector from './LanguageSelectInputConnector';
@@ -76,7 +76,7 @@ function getComponent(type) {
       return RootFolderSelectInputConnector;
 
     case inputTypes.INDEXER_FLAGS_SELECT:
-      return IndexerFlagsSelectInputConnector;
+      return IndexerFlagsSelectInput;
 
     case inputTypes.DOWNLOAD_CLIENT_SELECT:
       return DownloadClientSelectInputConnector;

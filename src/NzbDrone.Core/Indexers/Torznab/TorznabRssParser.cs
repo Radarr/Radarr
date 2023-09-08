@@ -208,22 +208,43 @@ namespace NzbDrone.Core.Indexers.Torznab
             IndexerFlags flags = 0;
 
             var downloadFactor = TryGetFloatTorznabAttribute(item, "downloadvolumefactor", 1);
-
             var uploadFactor = TryGetFloatTorznabAttribute(item, "uploadvolumefactor", 1);
-
-            if (uploadFactor == 2)
-            {
-                flags |= IndexerFlags.G_DoubleUpload;
-            }
 
             if (downloadFactor == 0.5)
             {
                 flags |= IndexerFlags.G_Halfleech;
             }
 
+            if (downloadFactor == 0.75)
+            {
+                flags |= IndexerFlags.G_Freeleech25;
+            }
+
+            if (downloadFactor == 0.25)
+            {
+                flags |= IndexerFlags.G_Freeleech75;
+            }
+
             if (downloadFactor == 0.0)
             {
                 flags |= IndexerFlags.G_Freeleech;
+            }
+
+            if (uploadFactor == 2.0)
+            {
+                flags |= IndexerFlags.G_DoubleUpload;
+            }
+
+            var tags = TryGetMultipleTorznabAttributes(item, "tag");
+
+            if (tags.Any(t => t.EqualsIgnoreCase("internal")))
+            {
+                flags |= IndexerFlags.G_Internal;
+            }
+
+            if (tags.Any(t => t.EqualsIgnoreCase("scene")))
+            {
+                flags |= IndexerFlags.G_Scene;
             }
 
             return flags;

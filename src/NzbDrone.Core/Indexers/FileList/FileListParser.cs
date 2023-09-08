@@ -41,15 +41,20 @@ namespace NzbDrone.Core.Indexers.FileList
                     flags |= IndexerFlags.G_Freeleech;
                 }
 
+                if (result.Internal)
+                {
+                    flags |= IndexerFlags.G_Internal;
+                }
+
                 var imdbId = 0;
                 if (result.ImdbId != null && result.ImdbId.Length > 2)
                 {
                     imdbId = int.Parse(result.ImdbId.Substring(2));
                 }
 
-                torrentInfos.Add(new TorrentInfo()
+                torrentInfos.Add(new TorrentInfo
                 {
-                    Guid = string.Format("FileList-{0}", id),
+                    Guid = $"FileList-{id}",
                     Title = result.Name,
                     Size = result.Size,
                     DownloadUrl = GetDownloadUrl(id),
