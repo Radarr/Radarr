@@ -633,7 +633,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
                 .Returns(new QBittorrentTorrentProperties
                 {
                     Hash = "HASH",
-                    SeedingTime = seedingTime
+                    SeedingTime = seedingTime * 60
                 });
 
             return torrent;
