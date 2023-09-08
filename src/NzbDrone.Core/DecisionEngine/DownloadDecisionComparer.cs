@@ -85,17 +85,12 @@ namespace NzbDrone.Core.DecisionEngine
 
         private int CompareIndexerFlags(DownloadDecision x, DownloadDecision y)
         {
-            var releaseX = x.RemoteMovie.Release;
-            var releaseY = y.RemoteMovie.Release;
-
-            if (_configService.PreferIndexerFlags)
-            {
-                return CompareBy(x.RemoteMovie.Release, y.RemoteMovie.Release, release => ScoreFlags(release.IndexerFlags));
-            }
-            else
+            if (!_configService.PreferIndexerFlags)
             {
                 return 0;
             }
+
+            return CompareBy(x.RemoteMovie.Release, y.RemoteMovie.Release, release => ScoreFlags(release.IndexerFlags));
         }
 
         private int CompareProtocol(DownloadDecision x, DownloadDecision y)
@@ -206,12 +201,10 @@ namespace NzbDrone.Core.DecisionEngine
                         case IndexerFlags.G_Freeleech:
                         case IndexerFlags.PTP_Approved:
                         case IndexerFlags.PTP_Golden:
-                        case IndexerFlags.HDB_Internal:
-                        case IndexerFlags.AHD_Internal:
+                        case IndexerFlags.G_Internal:
                             score += 2;
                             break;
                         case IndexerFlags.G_Halfleech:
-                        case IndexerFlags.AHD_UserRelease:
                             score += 1;
                             break;
                     }

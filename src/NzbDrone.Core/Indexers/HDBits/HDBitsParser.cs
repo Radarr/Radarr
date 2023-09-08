@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Indexers.HDBits
 
                 if (internalRelease)
                 {
-                    flags |= IndexerFlags.HDB_Internal;
+                    flags |= IndexerFlags.G_Internal;
                 }
 
                 torrentInfos.Add(new HDBitsInfo()
