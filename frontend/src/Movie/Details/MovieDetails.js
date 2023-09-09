@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import TextTruncate from 'react-text-truncate';
+import Alert from 'Components/Alert';
 import Icon from 'Components/Icon';
 import ImdbRating from 'Components/ImdbRating';
 import InfoLabel from 'Components/InfoLabel';
@@ -634,24 +635,27 @@ class MovieDetails extends Component {
 
           <div className={styles.contentContainer}>
             {
-              !isFetching && movieFilesError &&
-                <div>
+              !isFetching && movieFilesError ?
+                <Alert kind={kinds.DANGER}>
                   {translate('LoadingMovieFilesFailed')}
-                </div>
+                </Alert> :
+                null
             }
 
             {
-              !isFetching && movieCreditsError &&
-                <div>
+              !isFetching && movieCreditsError ?
+                <Alert kind={kinds.DANGER}>
                   {translate('LoadingMovieCreditsFailed')}
-                </div>
+                </Alert> :
+                null
             }
 
             {
-              !isFetching && extraFilesError &&
-                <div>
+              !isFetching && extraFilesError ?
+                <Alert kind={kinds.DANGER}>
                   {translate('LoadingMovieExtraFilesFailed')}
-                </div>
+                </Alert> :
+                null
             }
 
             <Tabs selectedIndex={selectedTabIndex} onSelect={this.onTabSelect}>
