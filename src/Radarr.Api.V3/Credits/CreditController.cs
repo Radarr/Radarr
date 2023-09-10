@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Credits;
 using Radarr.Http;
@@ -12,11 +13,13 @@ namespace Radarr.Api.V3.Credits
     {
         private readonly ICreditService _creditService;
         private readonly IMovieService _movieService;
+        private readonly IMapCoversToLocal _coverMapper;
 
-        public CreditController(ICreditService creditService, IMovieService movieService)
+        public CreditController(ICreditService creditService, IMovieService movieService, IMapCoversToLocal coverMapper)
         {
             _creditService = creditService;
             _movieService = movieService;
+            _coverMapper = coverMapper;
         }
 
         protected override CreditResource GetResourceById(int id)
@@ -25,20 +28,32 @@ namespace Radarr.Api.V3.Credits
         }
 
         [HttpGet]
-        public List<CreditResource> GetCredits(int? movieId, int? movieMetadataId)
+        public object GetCredits(int? movieId, int? movieMetadataId)
         {
             if (movieMetadataId.HasValue)
             {
-                return _creditService.GetAllCreditsForMovieMetadata(movieMetadataId.Value).ToResource();
+                return MapToResource(_creditService.GetAllCreditsForMovieMetadata(movieMetadataId.Value));
             }
 
             if (movieId.HasValue)
             {
                 var movie = _movieService.GetMovie(movieId.Value);
-                return _creditService.GetAllCreditsForMovieMetadata(movie.MovieMetadataId).ToResource();
+
+                return MapToResource(_creditService.GetAllCreditsForMovieMetadata(movie.MovieMetadataId));
             }
 
-            return _creditService.GetAllCredits().ToResource();
+            return MapToResource(_creditService.GetAllCredits());
+        }
+
+        private IEnumerable<CreditResource> MapToResource(IEnumerable<Credit> credits)
+        {
+            foreach (var currentCredits in credits)
+            {
+                var resource = currentCredits.ToResource();
+                _coverMapper.ConvertToLocalUrls(0, resource.Images);
+
+                yield return resource;
+            }
         }
     }
 }

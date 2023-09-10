@@ -28,6 +28,7 @@ namespace Radarr.Api.V3.ImportLists
         private readonly IImportExclusionsService _importExclusionService;
         private readonly INamingConfigService _namingService;
         private readonly IMovieTranslationService _movieTranslationService;
+        private readonly IMapCoversToLocal _coverMapper;
         private readonly IConfigService _configService;
 
         public ImportListMoviesController(IMovieService movieService,
@@ -39,6 +40,7 @@ namespace Radarr.Api.V3.ImportLists
                                     IImportExclusionsService importExclusionsService,
                                     INamingConfigService namingService,
                                     IMovieTranslationService movieTranslationService,
+                                    IMapCoversToLocal coverMapper,
                                     IConfigService configService)
         {
             _movieService = movieService;
@@ -50,13 +52,14 @@ namespace Radarr.Api.V3.ImportLists
             _importExclusionService = importExclusionsService;
             _namingService = namingService;
             _movieTranslationService = movieTranslationService;
+            _coverMapper = coverMapper;
             _configService = configService;
         }
 
         [HttpGet]
         public object GetDiscoverMovies(bool includeRecommendations = false)
         {
-            var movieLanguge = (Language)_configService.MovieInfoLanguage;
+            var movieLanguage = (Language)_configService.MovieInfoLanguage;
 
             var realResults = new List<ImportListMoviesResource>();
             var listExclusions = _importExclusionService.GetAllExclusions();
@@ -73,11 +76,11 @@ namespace Radarr.Api.V3.ImportLists
                     mapped = _movieInfo.GetBulkMovieInfo(results).Select(m => new Movie { MovieMetadata = m }).ToList();
                 }
 
-                realResults.AddRange(MapToResource(mapped.Where(x => x != null), movieLanguge));
+                realResults.AddRange(MapToResource(mapped.Where(x => x != null), movieLanguage));
                 realResults.ForEach(x => x.IsRecommendation = true);
             }
 
-            var listMovies = MapToResource(_listMovieService.GetAllForLists(_importListFactory.Enabled().Select(x => x.Definition.Id).ToList()), movieLanguge).ToList();
+            var listMovies = MapToResource(_listMovieService.GetAllForLists(_importListFactory.Enabled().Select(x => x.Definition.Id).ToList()), movieLanguage).ToList();
 
             realResults.AddRange(listMovies);
 
@@ -114,7 +117,9 @@ namespace Radarr.Api.V3.ImportLists
 
             foreach (var currentMovie in movies)
             {
-                var resource = DiscoverMoviesResourceMapper.ToResource(currentMovie);
+                var resource = currentMovie.ToResource();
+                _coverMapper.ConvertToLocalUrls(0, resource.Images);
+
                 var poster = currentMovie.MovieMetadata.Value.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
                 {
@@ -142,7 +147,9 @@ namespace Radarr.Api.V3.ImportLists
 
             foreach (var currentMovie in movies)
             {
-                var resource = DiscoverMoviesResourceMapper.ToResource(currentMovie);
+                var resource = currentMovie.ToResource();
+                _coverMapper.ConvertToLocalUrls(0, resource.Images);
+
                 var poster = currentMovie.MovieMetadata.Value.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
                 {
