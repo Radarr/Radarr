@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
+using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
@@ -28,6 +29,7 @@ namespace Radarr.Api.V3.Collections
         private readonly IMovieMetadataService _movieMetadataService;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly INamingConfigService _namingService;
+        private readonly IMapCoversToLocal _coverMapper;
         private readonly IManageCommandQueue _commandQueueManager;
 
         public CollectionController(IBroadcastSignalRMessage signalRBroadcaster,
@@ -36,6 +38,7 @@ namespace Radarr.Api.V3.Collections
                                     IMovieMetadataService movieMetadataService,
                                     IBuildFileNames fileNameBuilder,
                                     INamingConfigService namingService,
+                                    IMapCoversToLocal coverMapper,
                                     IManageCommandQueue commandQueueManager)
             : base(signalRBroadcaster)
         {
@@ -44,6 +47,7 @@ namespace Radarr.Api.V3.Collections
             _movieMetadataService = movieMetadataService;
             _fileNameBuilder = fileNameBuilder;
             _namingService = namingService;
+            _coverMapper = coverMapper;
             _commandQueueManager = commandQueueManager;
         }
 
@@ -146,6 +150,8 @@ namespace Radarr.Api.V3.Collections
                     var movieResource = movie.ToResource();
                     movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
+                    _coverMapper.ConvertToLocalUrls(0, movieResource.Images);
+
                     if (!existingMoviesTmdbIds.Contains(movie.TmdbId))
                     {
                         resource.MissingMovies++;
@@ -168,6 +174,8 @@ namespace Radarr.Api.V3.Collections
             {
                 var movieResource = movie.ToResource();
                 movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
+
+                _coverMapper.ConvertToLocalUrls(0, movieResource.Images);
 
                 if (!existingMoviesTmdbIds.Contains(movie.TmdbId))
                 {
