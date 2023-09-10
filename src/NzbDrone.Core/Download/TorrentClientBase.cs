@@ -223,9 +223,7 @@ namespace NzbDrone.Core.Download
             }
             catch (FormatException ex)
             {
-                _logger.Error(ex, "Failed to parse magnetlink for movie '{0}': '{1}'", remoteMovie.Release.Title, magnetUrl);
-
-                return null;
+                throw new ReleaseDownloadException(remoteMovie.Release, "Failed to parse magnetlink for episode '{0}': '{1}'", ex, remoteMovie.Release.Title, magnetUrl);
             }
 
             if (hash != null)
