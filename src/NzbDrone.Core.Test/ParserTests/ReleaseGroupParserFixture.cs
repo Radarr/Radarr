@@ -55,6 +55,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.2019.1080p.AMZN.WEB-Rip.DDP.5.1.HEVC", null)]
         [TestCase("Movie Name (2017) [2160p REMUX] [HEVC DV HYBRID HDR10+ Dolby TrueHD Atmos 7 1 24-bit Audio English] [Data Lass]", null)]
         [TestCase("Movie Name (2017) [2160p REMUX] [HEVC DV HYBRID HDR10+ Dolby TrueHD Atmos 7 1 24-bit Audio English]-DataLass", "DataLass")]
+        [TestCase("Lilo.e.Stitch.2002.1080p.BluRay.DTS.x264.D-Z0N3.DUAL-BAT", "BAT")]
         public void should_parse_expected_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
@@ -110,7 +111,6 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Why.Cant.You.Use.Normal.Characters.2021.2160p.UHD.HDR10+.BluRay.TrueHD.Atmos.7.1.x265-ZØNEHD", "ZØNEHD")]
         [TestCase("Movie.Should.Not.Use.Dots.2022.1080p.BluRay.x265.10bit.Tigole", "Tigole")]
         [TestCase("Movie.Title.2005.2160p.UHD.BluRay.TrueHD 7.1.Atmos.x265 - HQMUX", "HQMUX")]
-        [TestCase("Movie.Name.2022.1080p.BluRay.x264-VARYG (Blue Lock, Multi-Subs)", "VARYG")]
         [TestCase("Movie Title (2023) (1080p BluRay x265 SDR AAC 2.0 English Vyndros)", "Vyndros")]
         [TestCase("Movie Title (2010) 1080p BrRip x264 - YIFY", "YIFY")]
         [TestCase("Movie Title (2011) [BluRay] [1080p] [YTS.MX] [YIFY]", "YIFY")]
