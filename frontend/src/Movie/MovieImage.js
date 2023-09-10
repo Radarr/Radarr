@@ -10,11 +10,7 @@ function getUrl(image, coverType, size) {
   const imageUrl = image?.url ?? image?.remoteUrl;
 
   if (imageUrl) {
-    // Remove protocol
-    let url = imageUrl.replace(/^https?:/, '');
-    url = url.replace(`${coverType}.jpg`, `${coverType}-${size}.jpg`);
-
-    return url;
+    return imageUrl.replace(`${coverType}.jpg`, `${coverType}-${size}.jpg`);
   }
 }
 
