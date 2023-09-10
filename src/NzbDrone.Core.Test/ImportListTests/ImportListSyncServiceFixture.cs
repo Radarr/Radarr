@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Test.ImportList
                   .Returns(new List<int>());
 
             Mocker.GetMock<IFetchAndParseImportList>()
-                  .Setup(v => v.Fetch())
+                  .Setup(v => v.Fetch(false))
                   .Returns(_importListFetch);
 
             Mocker.GetMock<IConfigService>()
