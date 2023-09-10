@@ -41,7 +41,7 @@ namespace NzbDrone.Core.ImportLists
             _configService = configService;
         }
 
-        private void SyncAll()
+        private void SyncAll(bool forceSync = false)
         {
             if (_importListFactory.Enabled().Empty())
             {
@@ -50,7 +50,7 @@ namespace NzbDrone.Core.ImportLists
                 return;
             }
 
-            var listItemsResult = _listFetcherAndParser.Fetch();
+            var listItemsResult = _listFetcherAndParser.Fetch(forceSync);
 
             if (listItemsResult.SyncedLists == 0)
             {
@@ -176,7 +176,7 @@ namespace NzbDrone.Core.ImportLists
             }
             else
             {
-                SyncAll();
+                SyncAll(message.Trigger.ToString() == "Manual");
             }
         }
 
