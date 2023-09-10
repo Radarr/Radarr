@@ -13,6 +13,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Download.TrackedDownloads
 {
@@ -114,11 +115,9 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             try
             {
                 var historyItems = _historyService.FindByDownloadId(downloadItem.DownloadId)
-                                  .OrderByDescending(h => h.Date)
-                                  .ToList();
-                var grabbedHistoryItem = historyItems.FirstOrDefault(h => h.EventType == MovieHistoryEventType.Grabbed);
+                    .OrderByDescending(h => h.Date)
+                    .ToList();
 
-                // TODO: Create release info from history and use that here, so we don't loose indexer flags!
                 var parsedMovieInfo = Parser.Parser.ParseMovieTitle(trackedDownload.DownloadItem.Title);
 
                 if (parsedMovieInfo != null)
@@ -154,6 +153,13 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                             trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo,
                                 firstHistoryItem.MovieId);
                         }
+                    }
+
+                    if (trackedDownload.RemoteMovie != null &&
+                        Enum.TryParse(grabbedEvent?.Data?.GetValueOrDefault("indexerFlags"), true, out IndexerFlags flags))
+                    {
+                        trackedDownload.RemoteMovie.Release ??= new ReleaseInfo();
+                        trackedDownload.RemoteMovie.Release.IndexerFlags = flags;
                     }
                 }
 
