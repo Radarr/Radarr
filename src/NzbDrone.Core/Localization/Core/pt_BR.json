@@ -347,7 +347,7 @@
     "AutomaticSearch": "Pesquisa Automática",
     "Automatic": "Automático",
     "AuthForm": "Formulário (Página de login)",
-    "AuthenticationMethodHelpText": "Requer nome de usuário e senha para acessar o Radarr",
+    "AuthenticationMethodHelpText": "Exigir nome de usuário e senha para acessar {appName}",
     "Authentication": "Autenticação",
     "AuthBasic": "Básico (Balão do Navegador)",
     "AudioInfo": "Info do Áudio",
@@ -1244,7 +1244,7 @@
     "EditIndexerImplementation": "Editar Indexador - {implementationName}",
     "AuthenticationRequired": "Autentificação Requerida",
     "AuthenticationRequiredHelpText": "Altere para quais solicitações a autenticação é necessária. Não mude a menos que você entenda os riscos.",
-    "AuthenticationRequiredWarning": "Para impedir o acesso remoto sem autenticação, o Radarr agora exige que a autenticação esteja habilitada. Você pode, opcionalmente, desabilitar a autenticação de endereços locais.",
+    "AuthenticationRequiredWarning": "Para evitar o acesso remoto sem autenticação, {appName} agora exige que a autenticação esteja habilitada. Opcionalmente, você pode desabilitar a autenticação de endereços locais.",
     "BypassDelayIfAboveCustomFormatScore": "Ignorar se estiver Acima da Pontuação do Formato Personalizado",
     "BypassDelayIfAboveCustomFormatScoreHelpText": "Ativar ignorar quando a versão tiver uma pontuação maior que a pontuação mínima configurada do formato personalizado",
     "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Pontuação Mínima de Formato Personalizado",
@@ -1291,5 +1291,13 @@
     "SelectFolderModalTitle": "{modalTitle} - Selecione a Pasta",
     "SelectLanguageModalTitle": "{modalTitle} - Selecione o Idioma",
     "SetReleaseGroupModalTitle": "{modalTitle} - Definir Grupo de Lançamento",
-    "True": "Verdadeiro"
+    "True": "Verdadeiro",
+    "HealthMessagesInfoBox": "Você pode encontrar mais informações sobre a causa dessas mensagens de verificação de integridade clicando no link da wiki (ícone do livro) no final da linha ou verificando seus [logs]({link}). Se tiver dificuldade em interpretar essas mensagens, você pode entrar em contato com nosso suporte, nos links abaixo.",
+    "DefaultNameCopiedProfile": "{name} - Cópia",
+    "InvalidUILanguage": "Sua IU está definida com um idioma inválido, corrija-a e salve suas configurações",
+    "AuthenticationMethod": "Método de Autenticação",
+    "AuthenticationMethodHelpTextWarning": "Selecione um método de autenticação válido",
+    "AuthenticationRequiredPasswordHelpTextWarning": "Insira uma nova senha",
+    "AuthenticationRequiredUsernameHelpTextWarning": "Digite um novo nome de usuário",
+    "DefaultNameCopiedSpecification": "{name} - Cópia"
 }

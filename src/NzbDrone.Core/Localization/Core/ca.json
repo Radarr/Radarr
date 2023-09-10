@@ -1164,5 +1164,10 @@
     "DownloadClientsLoadError": "No es poden carregar els clients de baixada",
     "IMDbId": "Identificador de TMDb",
     "DisabledForLocalAddresses": "Desactivat per a adreces locals",
-    "RemoveFromDownloadClientHelpTextWarning": "L'eliminació esborrarà la baixada i els fitxers del client de baixada."
+    "RemoveFromDownloadClientHelpTextWarning": "L'eliminació esborrarà la baixada i els fitxers del client de baixada.",
+    "InteractiveImportLoadError": "No es poden carregar els elements d'importació manual",
+    "MovieSearchResultsLoadError": "No es poden carregar els resultats d'aquesta cerca de pel·lícules. Torna-ho a provar més tard",
+    "QualitiesLoadError": "No es poden carregar qualitats",
+    "DeleteSelectedMovieFilesHelpText": "Esteu segur que voleu suprimir els fitxers de pel·lícules seleccionats?",
+    "SelectDropdown": "Seleccioneu..."
 }
