@@ -5,6 +5,7 @@ using NzbDrone.Common.Cache;
 using NzbDrone.Common.Messaging;
 using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.HealthCheck
 {
