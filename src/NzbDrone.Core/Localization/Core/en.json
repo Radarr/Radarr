@@ -310,6 +310,7 @@
   "DownloadClientCheckDownloadingToRoot": "Download client {0} places downloads in the root folder {1}. You should not download to a root folder.",
   "DownloadClientCheckNoneAvailableMessage": "No download client is available",
   "DownloadClientCheckUnableToCommunicateMessage": "Unable to communicate with {0}.",
+  "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "Download client {0} is set to remove completed downloads. This can result in downloads being removed from your client before {1} can import them.",
   "DownloadClientSettings": "Download Client Settings",
   "DownloadClientSortingCheckMessage": "Download client {0} has {1} sorting enabled for Radarr's category. You should disable sorting in your download client to avoid import issues.",
   "DownloadClientStatusCheckAllClientMessage": "All download clients are unavailable due to failures",

@@ -278,6 +278,8 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 status.OutputRootFolders = new List<OsPath> { _remotePathMappingService.RemapRemoteToLocal(Settings.Host, category.FullPath) };
             }
 
+            status.RemovesCompletedDownloads = config.Misc.history_retention != "0";
+
             return status;
         }
 
