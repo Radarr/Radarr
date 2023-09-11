@@ -248,12 +248,8 @@ namespace Radarr.Api.V3.Movies
             var model = moviesResource.ToModel(movie);
 
             var updatedMovie = _moviesService.UpdateMovie(model);
-            var availDelay = _configService.AvailabilityDelay;
 
-            var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
-            var translation = GetMovieTranslation(translations, movie.MovieMetadata, (Language)_configService.MovieInfoLanguage);
-
-            BroadcastResourceChange(ModelAction.Updated, updatedMovie.ToResource(availDelay, translation, _qualityUpgradableSpecification));
+            BroadcastResourceChange(ModelAction.Updated, MapToResource(updatedMovie));
 
             return Accepted(moviesResource.Id);
         }
