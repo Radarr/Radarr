@@ -19,7 +19,7 @@ namespace NzbDrone.Core.ImportLists.StevenLu
 
         public StevenLuSettings()
         {
-            Link = "https://s3.amazonaws.com/popular-movies/movies.json";
+            Link = "https://popular-movies-data.stevenlu.com/movies.json";
         }
 
         [FieldDefinition(0, Label = "URL", HelpText = "Don't change this unless you know what you are doing.")]
