@@ -10,7 +10,7 @@ function getStatusStyle(status, monitored, hasFile, isAvailable, returnType, que
   }
 
   if (hasFile && !monitored) {
-    return returnType === 'kinds' ? kinds.DEFAULT : 'unreleased';
+    return returnType === 'kinds' ? kinds.DEFAULT : 'unmonitored';
   }
 
   if (isAvailable && monitored) {
