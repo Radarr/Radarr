@@ -895,6 +895,8 @@
   "ReleaseDates": "Release Dates",
   "ReleaseGroup": "Release Group",
   "ReleaseHash": "Release Hash",
+  "ReleaseProfiles": "Release Profiles",
+  "ReleaseProfilesLoadError": "Unable to load Release Profiles",
   "ReleaseRejected": "Release Rejected",
   "ReleaseStatus": "Release Status",
   "ReleaseTitle": "Release Title",
