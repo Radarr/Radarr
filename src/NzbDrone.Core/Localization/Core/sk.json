@@ -133,7 +133,6 @@
     "BindAddress": "Viazať adresu",
     "Blocklist": "Blocklist",
     "Blocklisted": "V blockliste",
-    "BlocklistHelpText": "Zabráni Radarru, aby znova automaticky grabol toto vydanie",
     "BlocklistRelease": "Blocklistnúť vydanie",
     "CancelPendingTask": "Naozaj chcete zrušiť túto prebiehajúcu úlohu?",
     "CancelProcessing": "Zrušiť spracovanie",

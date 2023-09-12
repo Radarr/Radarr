@@ -107,7 +107,6 @@
     "EditListExclusion": "Legg til listeekskludering",
     "EditQualityProfile": "Legg til kvalitetsprofil",
     "Blocklist": "Svarteliste",
-    "BlocklistHelpText": "Hindrer Radarr i å automatisk gripe denne utgivelsen igjen",
     "BlocklistRelease": "Blacklist -utgivelse",
     "ClickToChangeMovie": "Klikk for å endre film",
     "DeleteBackupMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
