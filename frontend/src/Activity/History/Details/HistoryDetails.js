@@ -7,6 +7,7 @@ import DescriptionListItemTitle from 'Components/DescriptionList/DescriptionList
 import Link from 'Components/Link/Link';
 import formatDateTime from 'Utilities/Date/formatDateTime';
 import formatAge from 'Utilities/Number/formatAge';
+import formatCustomFormatScore from 'Utilities/Number/formatCustomFormatScore';
 import translate from 'Utilities/String/translate';
 import styles from './HistoryDetails.css';
 
@@ -24,10 +25,11 @@ function HistoryDetails(props) {
     const {
       indexer,
       releaseGroup,
+      movieMatchType,
+      customFormatScore,
       nzbInfoUrl,
       downloadClient,
       downloadClientName,
-      movieMatchType,
       age,
       ageHours,
       ageMinutes,
@@ -64,16 +66,11 @@ function HistoryDetails(props) {
         }
 
         {
-          nzbInfoUrl ?
-            <span>
-              <DescriptionListItemTitle>
-                Info URL
-              </DescriptionListItemTitle>
-
-              <DescriptionListItemDescription>
-                <Link to={nzbInfoUrl}>{nzbInfoUrl}</Link>
-              </DescriptionListItemDescription>
-            </span> :
+          customFormatScore && customFormatScore !== '0' ?
+            <DescriptionListItem
+              title={translate('CustomFormatScore')}
+              data={formatCustomFormatScore(customFormatScore)}
+            /> :
             null
         }
 
@@ -84,6 +81,20 @@ function HistoryDetails(props) {
               title={translate('MovieMatchType')}
               data={movieMatchType}
             /> :
+            null
+        }
+
+        {
+          nzbInfoUrl ?
+            <span>
+              <DescriptionListItemTitle>
+                Info URL
+              </DescriptionListItemTitle>
+
+              <DescriptionListItemDescription>
+                <Link to={nzbInfoUrl}>{nzbInfoUrl}</Link>
+              </DescriptionListItemDescription>
+            </span> :
             null
         }
 
@@ -162,6 +173,7 @@ function HistoryDetails(props) {
 
   if (eventType === 'downloadFolderImported') {
     const {
+      customFormatScore,
       droppedPath,
       importedPath
     } = data;
@@ -193,13 +205,23 @@ function HistoryDetails(props) {
             /> :
             null
         }
+
+        {
+          customFormatScore && customFormatScore !== '0' ?
+            <DescriptionListItem
+              title={translate('CustomFormatScore')}
+              data={formatCustomFormatScore(customFormatScore)}
+            /> :
+            null
+        }
       </DescriptionList>
     );
   }
 
   if (eventType === 'movieFileDeleted') {
     const {
-      reason
+      reason,
+      customFormatScore
     } = data;
 
     let reasonMessage = '';
@@ -229,6 +251,15 @@ function HistoryDetails(props) {
           title={translate('Reason')}
           data={reasonMessage}
         />
+
+        {
+          customFormatScore && customFormatScore !== '0' ?
+            <DescriptionListItem
+              title={translate('CustomFormatScore')}
+              data={formatCustomFormatScore(customFormatScore)}
+            /> :
+            null
+        }
       </DescriptionList>
     );
   }
