@@ -62,7 +62,7 @@ class DownloadClients extends Component {
     return (
       <FieldSet legend={translate('DownloadClients')}>
         <PageSectionContent
-          errorMessage={translate('UnableToLoadDownloadClients')}
+          errorMessage={translate('DownloadClientsLoadError')}
           {...otherProps}
         >
           <div className={styles.downloadClients}>

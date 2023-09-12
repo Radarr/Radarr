@@ -42,21 +42,22 @@ function MovieIndexProgressBar(props: MovieIndexProgressBarProps) {
   );
 
   const progress = 100;
-  const queueStatusText = queueDetails.count > 0 ? 'Downloading' : null;
+  const queueStatusText =
+    queueDetails.count > 0 ? translate('Downloading') : null;
   let movieStatus = status === 'released' && hasFile ? 'downloaded' : status;
 
   if (movieStatus === 'deleted') {
-    movieStatus = 'Missing';
+    movieStatus = translate('Missing');
 
     if (hasFile) {
-      movieStatus = movieFile?.quality?.quality.name ?? 'Downloaded';
+      movieStatus = movieFile?.quality?.quality.name ?? translate('Downloaded');
     }
   } else if (hasFile) {
-    movieStatus = movieFile?.quality?.quality.name ?? 'Downloaded';
+    movieStatus = movieFile?.quality?.quality.name ?? translate('Downloaded');
   } else if (isAvailable && !hasFile) {
-    movieStatus = 'Missing';
+    movieStatus = translate('Missing');
   } else {
-    movieStatus = 'NotAvailable';
+    movieStatus = translate('NotAvailable');
   }
 
   const attachedClassName = bottomRadius
@@ -80,7 +81,7 @@ function MovieIndexProgressBar(props: MovieIndexProgressBarProps) {
       size={detailedProgressBar ? sizes.MEDIUM : sizes.SMALL}
       showText={detailedProgressBar}
       width={width}
-      text={queueStatusText ? queueStatusText : translate(movieStatus)}
+      text={queueStatusText ? queueStatusText : movieStatus}
     />
   );
 }
