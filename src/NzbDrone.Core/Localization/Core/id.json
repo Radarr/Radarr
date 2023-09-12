@@ -100,7 +100,6 @@
     "ProxyCheckBadRequestMessage": "Gagal menguji proxy. Kode Status: {0}",
     "ProxyCheckFailedToTestMessage": "Gagal menguji proxy: {0}",
     "Queue": "Antrean",
-    "BlocklistHelpText": "Mencegah Sonarr memperoleh rilis ini secara otomatis",
     "LogFiles": "Berkas Log",
     "Metadata": "Metadata",
     "Monitored": "Dimonitor",

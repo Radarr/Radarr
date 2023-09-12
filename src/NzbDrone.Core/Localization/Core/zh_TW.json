@@ -55,7 +55,6 @@
     "AutoUnmonitorPreviouslyDownloadedMoviesHelpText": "從磁碟中刪除的電影將自動在Radarr中取消監控",
     "BackupFolderHelpText": "相對路徑將位於Radarr的AppData目錄下",
     "Blocklist": "封鎖清單",
-    "BlocklistHelpText": "防止Radarr自動再次抓取此版本",
     "BlocklistRelease": "封鎖清單版本",
     "Blocklisted": "已封鎖",
     "Branch": "分支",

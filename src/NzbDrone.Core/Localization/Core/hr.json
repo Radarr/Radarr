@@ -152,7 +152,6 @@
     "BeforeUpdate": "Prije ažuriranja",
     "BindAddress": "Poveži Adrese",
     "BindAddressHelpText": "Ispravna IP adresa, localhost ili '*' za sva sučelja",
-    "BlocklistHelpText": "Spriječi Radarr da automatski dohvaća ovu verziju ponovno",
     "BlocklistRelease": "Verzija Blok Liste",
     "BlocklistReleases": "Verzije Blok Liste",
     "BranchUpdate": "Grana korištena za ažuriranje Radarra",
