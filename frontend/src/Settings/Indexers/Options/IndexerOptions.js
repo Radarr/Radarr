@@ -17,7 +17,8 @@ function IndexerOptions(props) {
     error,
     settings,
     hasSettings,
-    onInputChange
+    onInputChange,
+    onWhitelistedSubtitleChange
   } = props;
 
   return (
@@ -135,7 +136,7 @@ function IndexerOptions(props) {
                 type={inputTypes.TEXT_TAG}
                 name="whitelistedHardcodedSubs"
                 helpText={translate('WhitelistedHardcodedSubsHelpText')}
-                onChange={onInputChange}
+                onChange={onWhitelistedSubtitleChange}
                 {...settings.whitelistedHardcodedSubs}
               />
             </FormGroup>
@@ -166,7 +167,8 @@ IndexerOptions.propTypes = {
   error: PropTypes.object,
   settings: PropTypes.object.isRequired,
   hasSettings: PropTypes.bool.isRequired,
-  onInputChange: PropTypes.func.isRequired
+  onInputChange: PropTypes.func.isRequired,
+  onWhitelistedSubtitleChange: PropTypes.func.isRequired
 };
 
 export default IndexerOptions;

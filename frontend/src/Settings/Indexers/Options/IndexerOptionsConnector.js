@@ -74,6 +74,10 @@ class IndexerOptionsConnector extends Component {
     this.props.dispatchSetIndexerOptionsValue({ name, value });
   };
 
+  onWhitelistedSubtitleChange = ({ name, value }) => {
+    this.props.dispatchSetIndexerOptionsValue({ name, value: value.join(',') });
+  };
+
   //
   // Render
 
@@ -81,6 +85,7 @@ class IndexerOptionsConnector extends Component {
     return (
       <IndexerOptions
         onInputChange={this.onInputChange}
+        onWhitelistedSubtitleChange={this.onWhitelistedSubtitleChange}
         {...this.props}
       />
     );
