@@ -69,6 +69,8 @@ namespace NzbDrone.Core.ImportLists.Radarr
             }
             catch (Exception ex)
             {
+                _logger.Trace(ex, "Failed to fetch data.");
+
                 anyFailure = true;
 
                 _logger.Debug(ex, "Failed to fetch data for list {0} ({1})", Definition.Name, Name);
