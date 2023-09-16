@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
@@ -39,7 +40,7 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             Mocker.GetMock<ISearchForNewMovie>()
                 .Setup(v => v.MapMovieToTmdbMovie(It.IsAny<MovieMetadata>()))
-                .Returns<MovieMetadata>(m => new MovieMetadata { TmdbId = m.TmdbId });
+                .Returns<MovieMetadata>(m => Task.FromResult(new MovieMetadata { TmdbId = m.TmdbId }));
         }
 
         private void GivenList(int id, bool enabled, bool enabledAuto, ImportListFetchResult fetchResult)

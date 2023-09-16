@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NLog;
 using NzbDrone.Common.Cloud;
@@ -70,7 +71,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return new HashSet<int>(response.Resource);
         }
 
-        public Tuple<MovieMetadata, List<Credit>> GetMovieInfo(int tmdbId)
+        public async Task<Tuple<MovieMetadata, List<Credit>>> GetMovieInfo(int tmdbId)
         {
             var httpRequest = _radarrMetadata.Create()
                                              .SetSegment("route", "movie")
@@ -80,7 +81,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
-            var httpResponse = _httpClient.Get<MovieResource>(httpRequest);
+            var httpResponse = await _httpClient.GetAsync<MovieResource>(httpRequest);
 
             if (httpResponse.HasHttpError)
             {
@@ -158,7 +159,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return movies;
         }
 
-        public MovieMetadata GetMovieByImdbId(string imdbId)
+        public async Task<MovieMetadata> GetMovieByImdbId(string imdbId)
         {
             imdbId = Parser.Parser.NormalizeImdbId(imdbId);
 
@@ -175,7 +176,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
-            var httpResponse = _httpClient.Get<List<MovieResource>>(httpRequest);
+            var httpResponse = await _httpClient.GetAsync<List<MovieResource>>(httpRequest);
 
             if (httpResponse.HasHttpError)
             {
@@ -310,7 +311,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return title;
         }
 
-        public MovieMetadata MapMovieToTmdbMovie(MovieMetadata movie)
+        public async Task<MovieMetadata> MapMovieToTmdbMovie(MovieMetadata movie)
         {
             try
             {
@@ -325,7 +326,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                         return newMovie;
                     }
 
-                    newMovie = GetMovieInfo(movie.TmdbId).Item1;
+                    var movieInfo = await GetMovieInfo(movie.TmdbId);
+                    newMovie = movieInfo.Item1;
                 }
                 else if (movie.ImdbId.IsNotNullOrWhiteSpace())
                 {
@@ -336,7 +338,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                         return newMovie;
                     }
 
-                    newMovie = GetMovieByImdbId(movie.ImdbId);
+                    newMovie = await GetMovieByImdbId(movie.ImdbId);
                 }
                 else
                 {
@@ -346,7 +348,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                         yearStr = $" {movie.Year}";
                     }
 
-                    var newMovieObject = SearchForNewMovie(movie.Title + yearStr).FirstOrDefault();
+                    var searchedNewMovies = await SearchForNewMovie(movie.Title + yearStr);
+                    var newMovieObject = searchedNewMovies.FirstOrDefault();
 
                     if (newMovieObject == null)
                     {
@@ -373,7 +376,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
-        public List<Movie> SearchForNewMovie(string title)
+        public async Task<List<Movie>> SearchForNewMovie(string title)
         {
             try
             {
@@ -400,7 +403,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     {
                         try
                         {
-                            var movieLookup = GetMovieByImdbId(parserResult.ImdbId);
+                            var movieLookup = await GetMovieByImdbId(parserResult.ImdbId);
                             return movieLookup == null ? new List<Movie>() : new List<Movie> { _movieService.FindByTmdbId(movieLookup.TmdbId) ?? new Movie { MovieMetadata = movieLookup } };
                         }
                         catch (Exception)
@@ -413,7 +416,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     {
                         try
                         {
-                            var movieLookup = GetMovieInfo(parserResult.TmdbId).Item1;
+                            var movieInfo = await GetMovieInfo(parserResult.TmdbId);
+                            var movieLookup = movieInfo.Item1;
                             return movieLookup == null ? new List<Movie>() : new List<Movie> { _movieService.FindByTmdbId(movieLookup.TmdbId) ?? new Movie { MovieMetadata = movieLookup } };
                         }
                         catch (Exception)
@@ -438,7 +442,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                     try
                     {
-                        var movieLookup = GetMovieByImdbId(imdbid);
+                        var movieLookup = await GetMovieByImdbId(imdbid);
                         return movieLookup == null ? new List<Movie>() : new List<Movie> { _movieService.FindByTmdbId(movieLookup.TmdbId) ?? new Movie { MovieMetadata = movieLookup } };
                     }
                     catch (MovieNotFoundException)
@@ -460,7 +464,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                     try
                     {
-                        var movieLookup = GetMovieInfo(tmdbid).Item1;
+                        var movieInfo = await GetMovieInfo(tmdbid);
+                        var movieLookup = movieInfo.Item1;
                         return movieLookup == null ? new List<Movie>() : new List<Movie> { _movieService.FindByTmdbId(movieLookup.TmdbId) ?? new Movie { MovieMetadata = movieLookup } };
                     }
                     catch (MovieNotFoundException)
@@ -482,7 +487,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 request.AllowAutoRedirect = true;
                 request.SuppressHttpError = true;
 
-                var httpResponse = _httpClient.Get<List<MovieResource>>(request);
+                var httpResponse = await _httpClient.GetAsync<List<MovieResource>>(request);
 
                 return httpResponse.Resource.SelectList(MapSearchResult);
             }

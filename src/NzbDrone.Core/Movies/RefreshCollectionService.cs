@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Exceptions;
@@ -116,7 +117,7 @@ namespace NzbDrone.Core.Movies
             return false;
         }
 
-        private void SyncCollectionMovies(MovieCollection collection)
+        private async Task SyncCollectionMovies(MovieCollection collection)
         {
             if (collection.Monitored)
             {
@@ -127,7 +128,7 @@ namespace NzbDrone.Core.Movies
 
                 if (moviesToAdd.Any())
                 {
-                    _addMovieService.AddMovies(moviesToAdd.Select(m => new Movie
+                    await _addMovieService.AddMovies(moviesToAdd.Select(m => new Movie
                     {
                         TmdbId = m.TmdbId,
                         Title = m.Title,
@@ -153,7 +154,7 @@ namespace NzbDrone.Core.Movies
                 foreach (var collectionId in message.CollectionIds)
                 {
                     var newCollection = RefreshCollectionInfo(collectionId);
-                    SyncCollectionMovies(newCollection);
+                    SyncCollectionMovies(newCollection).GetAwaiter().GetResult();
                 }
             }
             else
@@ -171,7 +172,7 @@ namespace NzbDrone.Core.Movies
                             newCollection = RefreshCollectionInfo(collection.Id);
                         }
 
-                        SyncCollectionMovies(newCollection);
+                        SyncCollectionMovies(newCollection).GetAwaiter().GetResult();
                     }
                     catch (MovieNotFoundException)
                     {

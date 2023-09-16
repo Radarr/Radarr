@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.MetadataSource.SkyHook;
@@ -23,9 +24,9 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         // [TestCase("The Man from U.N.C.L.E.", "The Man from U.N.C.L.E.")]
         [TestCase("imdb:tt2527336", "Star Wars: The Last Jedi")]
         [TestCase("imdb:tt2798920", "Annihilation")]
-        public void successful_search(string title, string expected)
+        public async Task successful_search(string title, string expected)
         {
-            var result = Subject.SearchForNewMovie(title);
+            var result = await Subject.SearchForNewMovie(title);
 
             result.Should().NotBeEmpty();
 
@@ -41,9 +42,9 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [TestCase("tmdbid:1")]
         [TestCase("adjalkwdjkalwdjklawjdlKAJD;EF")]
         [TestCase("imdb: tt9805708")]
-        public void no_search_result(string term)
+        public async Task no_search_result(string term)
         {
-            var result = Subject.SearchForNewMovie(term);
+            var result = await Subject.SearchForNewMovie(term);
             result.Should().BeEmpty();
 
             ExceptionVerification.IgnoreWarns();

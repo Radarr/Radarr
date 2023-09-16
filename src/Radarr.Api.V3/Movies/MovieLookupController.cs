@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Languages;
@@ -45,28 +46,34 @@ namespace Radarr.Api.V3.Movies
         }
 
         [HttpGet("tmdb")]
-        public object SearchByTmdbId(int tmdbId)
+        [Produces("application/json")]
+        public async Task<MovieResource> SearchByTmdbId(int tmdbId)
         {
             var availDelay = _configService.AvailabilityDelay;
-            var result = new Movie { MovieMetadata = _movieInfo.GetMovieInfo(tmdbId).Item1 };
+            var movieInfo = await _movieInfo.GetMovieInfo(tmdbId);
+            var result = new Movie { MovieMetadata = movieInfo.Item1 };
             var translation = result.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
+
             return result.ToResource(availDelay, translation);
         }
 
         [HttpGet("imdb")]
-        public object SearchByImdbId(string imdbId)
+        [Produces("application/json")]
+        public async Task<MovieResource> SearchByImdbId(string imdbId)
         {
-            var result = new Movie { MovieMetadata = _movieInfo.GetMovieByImdbId(imdbId) };
+            var result = new Movie { MovieMetadata = await _movieInfo.GetMovieByImdbId(imdbId) };
 
             var availDelay = _configService.AvailabilityDelay;
             var translation = result.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
+
             return result.ToResource(availDelay, translation);
         }
 
         [HttpGet]
-        public object Search([FromQuery] string term)
+        [Produces("application/json")]
+        public async Task<IEnumerable<MovieResource>> Search([FromQuery] string term)
         {
-            var searchResults = _searchProxy.SearchForNewMovie(term);
+            var searchResults = await _searchProxy.SearchForNewMovie(term);
 
             return MapToResource(searchResults);
         }

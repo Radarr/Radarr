@@ -1,12 +1,13 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.MetadataSource
 {
     public interface ISearchForNewMovie
     {
-        List<Movie> SearchForNewMovie(string title);
+        Task<List<Movie>> SearchForNewMovie(string title);
 
-        MovieMetadata MapMovieToTmdbMovie(MovieMetadata movie);
+        Task<MovieMetadata> MapMovieToTmdbMovie(MovieMetadata movie);
     }
 }

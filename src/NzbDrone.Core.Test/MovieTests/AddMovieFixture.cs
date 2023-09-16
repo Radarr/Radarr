@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using FluentValidation;
@@ -36,7 +37,7 @@ namespace NzbDrone.Core.Test.MovieTests
         {
             Mocker.GetMock<IProvideMovieInfo>()
                   .Setup(s => s.GetMovieInfo(tmdbId))
-                  .Returns(new Tuple<MovieMetadata, List<Credit>>(_fakeMovie, new List<Credit>()));
+                  .Returns(Task.FromResult(new Tuple<MovieMetadata, List<Credit>>(_fakeMovie, new List<Credit>())));
         }
 
         private void GivenValidPath()
@@ -51,7 +52,7 @@ namespace NzbDrone.Core.Test.MovieTests
         }
 
         [Test]
-        public void should_be_able_to_add_a_movie_without_passing_in_title()
+        public async Task should_be_able_to_add_a_movie_without_passing_in_title()
         {
             var newMovie = new Movie
             {
@@ -62,13 +63,13 @@ namespace NzbDrone.Core.Test.MovieTests
             GivenValidMovie(newMovie.TmdbId);
             GivenValidPath();
 
-            var series = Subject.AddMovie(newMovie);
+            var series = await Subject.AddMovie(newMovie);
 
             series.Title.Should().Be(_fakeMovie.Title);
         }
 
         [Test]
-        public void should_have_proper_path()
+        public async Task should_have_proper_path()
         {
             var newMovie = new Movie
             {
@@ -79,7 +80,7 @@ namespace NzbDrone.Core.Test.MovieTests
             GivenValidMovie(newMovie.TmdbId);
             GivenValidPath();
 
-            var series = Subject.AddMovie(newMovie);
+            var series = await Subject.AddMovie(newMovie);
 
             series.Path.Should().Be(Path.Combine(newMovie.RootFolderPath, _fakeMovie.Title));
         }
@@ -102,7 +103,7 @@ namespace NzbDrone.Core.Test.MovieTests
                                                     new ValidationFailure("Path", "Test validation failure")
                                                 }));
 
-            Assert.Throws<ValidationException>(() => Subject.AddMovie(newMovie));
+            Assert.ThrowsAsync<ValidationException>(async () => await Subject.AddMovie(newMovie));
         }
 
         [Test]
@@ -125,7 +126,7 @@ namespace NzbDrone.Core.Test.MovieTests
                                                     new ValidationFailure("Path", "Test validation failure")
                                                 }));
 
-            Assert.Throws<ValidationException>(() => Subject.AddMovie(newMovie));
+            Assert.ThrowsAsync<ValidationException>(async () => await Subject.AddMovie(newMovie));
 
             ExceptionVerification.ExpectedErrors(1);
         }

@@ -219,9 +219,9 @@ namespace Radarr.Api.V3.Movies
         }
 
         [RestPostById]
-        public ActionResult<MovieResource> AddMovie(MovieResource moviesResource)
+        public async Task<ActionResult<MovieResource>> AddMovie(MovieResource moviesResource)
         {
-            var movie = _addMovieService.AddMovie(moviesResource.ToModel());
+            var movie = await _addMovieService.AddMovie(moviesResource.ToModel());
 
             return Created(movie.Id);
         }

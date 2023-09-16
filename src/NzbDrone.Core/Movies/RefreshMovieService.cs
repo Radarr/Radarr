@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.AutoTagging;
@@ -69,7 +70,7 @@ namespace NzbDrone.Core.Movies
             _logger = logger;
         }
 
-        private Movie RefreshMovieInfo(int movieId)
+        private async Task<Movie> RefreshMovieInfo(int movieId)
         {
             // Get the movie before updating, that way any changes made to the movie after the refresh started,
             // but before this movie was refreshed won't be lost.
@@ -83,7 +84,7 @@ namespace NzbDrone.Core.Movies
 
             try
             {
-                var tuple = _movieInfo.GetMovieInfo(movie.TmdbId);
+                var tuple = await _movieInfo.GetMovieInfo(movie.TmdbId);
                 movieInfo = tuple.Item1;
                 credits = tuple.Item2;
             }
@@ -250,7 +251,7 @@ namespace NzbDrone.Core.Movies
 
                     try
                     {
-                        movie = RefreshMovieInfo(movieId);
+                        movie = RefreshMovieInfo(movieId).GetAwaiter().GetResult();
                         UpdateTags(movie);
                         RescanMovie(movie, isNew, trigger);
                     }
@@ -286,7 +287,7 @@ namespace NzbDrone.Core.Movies
                     {
                         try
                         {
-                            movieLocal = RefreshMovieInfo(movieLocal.Id);
+                            movieLocal = RefreshMovieInfo(movieLocal.Id).GetAwaiter().GetResult();
                         }
                         catch (MovieNotFoundException)
                         {

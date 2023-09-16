@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -19,7 +20,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         {
             _httpResponse = new HttpResponse(null, new HttpHeader(), "", HttpStatusCode.OK);
             Mocker.GetMock<IDiskProvider>().Setup(c => c.GetFileSize(It.IsAny<string>())).Returns(100);
-            Mocker.GetMock<IHttpClient>().Setup(c => c.Head(It.IsAny<HttpRequest>())).Returns(_httpResponse);
+            Mocker.GetMock<IHttpClient>().Setup(c => c.HeadAsync(It.IsAny<HttpRequest>())).Returns(Task.FromResult(_httpResponse));
         }
 
         private void GivenFileExistsOnDisk()
@@ -34,33 +35,37 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         }
 
         [Test]
-        public void should_return_false_if_file_not_exists()
+        public async Task should_return_false_if_file_not_exists()
         {
-            Subject.AlreadyExists("http://url", "c:\\file.exe").Should().BeFalse();
+            var result = await Subject.AlreadyExists("http://url", "c:\\file.exe");
+            result.Should().BeFalse();
         }
 
         [Test]
-        public void should_return_false_if_file_exists_but_diffrent_size()
+        public async Task should_return_false_if_file_exists_but_diffrent_size()
         {
             GivenExistingFileSize(100);
             _httpResponse.Headers.ContentLength = 200;
 
-            Subject.AlreadyExists("http://url", "c:\\file.exe").Should().BeFalse();
+            var result = await Subject.AlreadyExists("http://url", "c:\\file.exe");
+            result.Should().BeFalse();
         }
 
         [Test]
-        public void should_return_true_if_file_exists_and_same_size_and_not_corrupt()
+        public async Task should_return_true_if_file_exists_and_same_size_and_not_corrupt()
         {
             GivenExistingFileSize(100);
             _httpResponse.Headers.ContentLength = 100;
-            Subject.AlreadyExists("http://url", "c:\\file.exe").Should().BeTrue();
+            var result = await Subject.AlreadyExists("http://url", "c:\\file.exe");
+            result.Should().BeTrue();
         }
 
         [Test]
-        public void should_return_true_if_there_is_no_size_header_and_file_exist()
+        public async Task should_return_true_if_there_is_no_size_header_and_file_exist()
         {
             GivenExistingFileSize(100);
-            Subject.AlreadyExists("http://url", "c:\\file.exe").Should().BeFalse();
+            var result = await Subject.AlreadyExists("http://url", "c:\\file.exe");
+            result.Should().BeFalse();
         }
     }
 }

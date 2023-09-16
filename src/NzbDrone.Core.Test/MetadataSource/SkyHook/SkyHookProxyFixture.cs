@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.MetadataSource.SkyHook;
@@ -20,9 +21,10 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [TestCase(11, "Star Wars")]
         [TestCase(2, "Ariel")]
         [TestCase(70981, "Prometheus")]
-        public void should_be_able_to_get_movie_detail(int tmdbId, string title)
+        public async Task should_be_able_to_get_movie_detail(int tmdbId, string title)
         {
-            var details = Subject.GetMovieInfo(tmdbId).Item1;
+            var movieInfo = await Subject.GetMovieInfo(tmdbId);
+            var details = movieInfo.Item1;
 
             ValidateMovie(details);
 

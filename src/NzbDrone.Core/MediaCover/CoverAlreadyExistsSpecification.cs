@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using System.Threading.Tasks;
+using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Http;
 
@@ -6,7 +7,7 @@ namespace NzbDrone.Core.MediaCover
 {
     public interface ICoverExistsSpecification
     {
-        bool AlreadyExists(string url, string path);
+        Task<bool> AlreadyExists(string url, string path);
     }
 
     public class CoverAlreadyExistsSpecification : ICoverExistsSpecification
@@ -22,16 +23,17 @@ namespace NzbDrone.Core.MediaCover
             _logger = logger;
         }
 
-        public bool AlreadyExists(string url, string path)
+        public async Task<bool> AlreadyExists(string url, string path)
         {
             if (!_diskProvider.FileExists(path))
             {
                 return false;
             }
 
-            var headers = _httpClient.Head(new HttpRequest(url)).Headers;
+            var response = await _httpClient.HeadAsync(new HttpRequest(url));
             var fileSize = _diskProvider.GetFileSize(path);
-            return fileSize == headers.ContentLength;
+
+            return fileSize == response.Headers.ContentLength;
         }
     }
 }

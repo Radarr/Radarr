@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Movies;
 using Radarr.Http;
@@ -24,11 +25,14 @@ namespace Radarr.Api.V3.Movies
         }
 
         [HttpPost]
-        public object Import([FromBody] List<MovieResource> resource)
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        public async Task<List<MovieResource>> Import([FromBody] List<MovieResource> resource)
         {
             var newMovies = resource.ToModel();
+            var addedMovies = await _addMovieService.AddMovies(newMovies);
 
-            return _addMovieService.AddMovies(newMovies).ToResource(0);
+            return addedMovies.ToResource(0);
         }
     }
 }
