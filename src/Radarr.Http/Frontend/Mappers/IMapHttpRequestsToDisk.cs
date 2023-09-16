@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Radarr.Http.Frontend.Mappers
@@ -6,6 +7,6 @@ namespace Radarr.Http.Frontend.Mappers
     {
         string Map(string resourceUrl);
         bool CanHandle(string resourceUrl);
-        IActionResult GetResponse(string resourceUrl);
+        Task<IActionResult> GetResponse(string resourceUrl);
     }
 }
