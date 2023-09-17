@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaCover;
@@ -33,6 +34,7 @@ namespace Radarr.Api.V3.Collections
         private readonly INamingConfigService _namingService;
         private readonly IMapCoversToLocal _coverMapper;
         private readonly IManageCommandQueue _commandQueueManager;
+        private readonly Logger _logger;
 
         public CollectionController(IBroadcastSignalRMessage signalRBroadcaster,
                                     IMovieCollectionService collectionService,
@@ -41,7 +43,8 @@ namespace Radarr.Api.V3.Collections
                                     IBuildFileNames fileNameBuilder,
                                     INamingConfigService namingService,
                                     IMapCoversToLocal coverMapper,
-                                    IManageCommandQueue commandQueueManager)
+                                    IManageCommandQueue commandQueueManager,
+                                    Logger logger)
             : base(signalRBroadcaster)
         {
             _collectionService = collectionService;
@@ -51,6 +54,7 @@ namespace Radarr.Api.V3.Collections
             _namingService = namingService;
             _coverMapper = coverMapper;
             _commandQueueManager = commandQueueManager;
+            _logger = logger;
         }
 
         protected override CollectionResource GetResourceById(int id)
@@ -62,7 +66,10 @@ namespace Radarr.Api.V3.Collections
         public List<CollectionResource> GetCollections(int? tmdbId)
         {
             var collectionResources = new List<CollectionResource>();
+
+            _logger.Trace("Fetch Cover File Infos");
             var coverFileInfos = _coverMapper.GetCoverFileInfos();
+            _logger.Trace("Finished fetching Cover File Infos");
 
             if (tmdbId.HasValue)
             {
@@ -77,6 +84,8 @@ namespace Radarr.Api.V3.Collections
             {
                 collectionResources = MapToResource(_collectionService.GetAllCollections(), coverFileInfos).ToList();
             }
+
+            _logger.Trace("Returning Collections");
 
             return collectionResources;
         }
@@ -141,13 +150,18 @@ namespace Radarr.Api.V3.Collections
         {
             // Avoid calling for naming spec on every movie in filenamebuilder
             var namingConfig = _namingService.GetConfig();
+
+            _logger.Trace("Fetching Movies with Collections");
             var collectionMovies = _movieMetadataService.GetMoviesWithCollections();
             var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
 
+            _logger.Trace("Mapping Collections");
             foreach (var collection in collections)
             {
+                _logger.Trace("Mapping Collection {0}", collection.Title);
                 var resource = collection.ToResource();
 
+                _logger.Trace("Mapping Collection Movies for {0}", collection.Title);
                 foreach (var movie in collectionMovies.Where(m => m.CollectionTmdbId == collection.TmdbId))
                 {
                     var movieResource = movie.ToResource();
@@ -161,6 +175,7 @@ namespace Radarr.Api.V3.Collections
                     resource.Movies.Add(movieResource);
                 }
 
+                _logger.Trace("Mapping Collection Covers for {0}", collection.Title);
                 MapCoversToLocal(resource.Movies, coverFileInfos);
 
                 yield return resource;
