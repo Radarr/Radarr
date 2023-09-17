@@ -1,17 +1,17 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore.Events;
-using NzbDrone.Core.MediaCover;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Movies.Events;
+using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Organizer;
 using NzbDrone.SignalR;
 using Radarr.Http;
@@ -29,27 +29,30 @@ namespace Radarr.Api.V3.Collections
         private readonly IMovieCollectionService _collectionService;
         private readonly IMovieService _movieService;
         private readonly IMovieMetadataService _movieMetadataService;
+        private readonly IMovieTranslationService _movieTranslationService;
+        private readonly IConfigService _configService;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly INamingConfigService _namingService;
-        private readonly IMapCoversToLocal _coverMapper;
         private readonly IManageCommandQueue _commandQueueManager;
 
         public CollectionController(IBroadcastSignalRMessage signalRBroadcaster,
                                     IMovieCollectionService collectionService,
                                     IMovieService movieService,
                                     IMovieMetadataService movieMetadataService,
+                                    IMovieTranslationService movieTranslationService,
+                                    IConfigService configService,
                                     IBuildFileNames fileNameBuilder,
                                     INamingConfigService namingService,
-                                    IMapCoversToLocal coverMapper,
                                     IManageCommandQueue commandQueueManager)
             : base(signalRBroadcaster)
         {
             _collectionService = collectionService;
             _movieService = movieService;
             _movieMetadataService = movieMetadataService;
+            _movieTranslationService = movieTranslationService;
+            _configService = configService;
             _fileNameBuilder = fileNameBuilder;
             _namingService = namingService;
-            _coverMapper = coverMapper;
             _commandQueueManager = commandQueueManager;
         }
 
@@ -62,7 +65,6 @@ namespace Radarr.Api.V3.Collections
         public List<CollectionResource> GetCollections(int? tmdbId)
         {
             var collectionResources = new List<CollectionResource>();
-            var coverFileInfos = _coverMapper.GetCoverFileInfos();
 
             if (tmdbId.HasValue)
             {
@@ -75,7 +77,7 @@ namespace Radarr.Api.V3.Collections
             }
             else
             {
-                collectionResources = MapToResource(_collectionService.GetAllCollections(), coverFileInfos).ToList();
+                collectionResources = MapToResource(_collectionService.GetAllCollections()).ToList();
             }
 
             return collectionResources;
@@ -137,20 +139,31 @@ namespace Radarr.Api.V3.Collections
             return Accepted(updated);
         }
 
-        private IEnumerable<CollectionResource> MapToResource(List<MovieCollection> collections, Dictionary<string, FileInfo> coverFileInfos)
+        private IEnumerable<CollectionResource> MapToResource(List<MovieCollection> collections)
         {
             // Avoid calling for naming spec on every movie in filenamebuilder
             var namingConfig = _namingService.GetConfig();
-            var collectionMovies = _movieMetadataService.GetMoviesWithCollections();
             var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
+            var configLanguage = (Language)_configService.MovieInfoLanguage;
+
+            var allCollectionMovies = _movieMetadataService.GetMoviesWithCollections()
+                .GroupBy(x => x.CollectionTmdbId)
+                .ToDictionary(x => x.Key, x => (IEnumerable<MovieMetadata>)x);
+
+            var translations = _movieTranslationService.GetAllTranslationsForLanguage(configLanguage);
+            var tdict = translations.ToDictionary(x => x.MovieMetadataId);
 
             foreach (var collection in collections)
             {
                 var resource = collection.ToResource();
 
-                foreach (var movie in collectionMovies.Where(m => m.CollectionTmdbId == collection.TmdbId))
+                allCollectionMovies.TryGetValue(collection.TmdbId, out var collectionMovies);
+
+                foreach (var movie in collectionMovies)
                 {
-                    var movieResource = movie.ToResource();
+                    var translation = GetTranslationFromDict(tdict, movie, configLanguage);
+
+                    var movieResource = movie.ToResource(translation);
                     movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
                     if (!existingMoviesTmdbIds.Contains(movie.TmdbId))
@@ -161,8 +174,6 @@ namespace Radarr.Api.V3.Collections
                     resource.Movies.Add(movieResource);
                 }
 
-                MapCoversToLocal(resource.Movies, coverFileInfos);
-
                 yield return resource;
             }
         }
@@ -172,13 +183,15 @@ namespace Radarr.Api.V3.Collections
             var resource = collection.ToResource();
             var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
             var namingConfig = _namingService.GetConfig();
+            var configLanguage = (Language)_configService.MovieInfoLanguage;
 
             foreach (var movie in _movieMetadataService.GetMoviesByCollectionTmdbId(collection.TmdbId))
             {
-                var movieResource = movie.ToResource();
-                movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
+                var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.Id);
+                var translation = GetMovieTranslation(translations, movie, configLanguage);
 
-                _coverMapper.ConvertToLocalUrls(0, movieResource.Images);
+                var movieResource = movie.ToResource(translation);
+                movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
                 if (!existingMoviesTmdbIds.Contains(movie.TmdbId))
                 {
@@ -191,9 +204,52 @@ namespace Radarr.Api.V3.Collections
             return resource;
         }
 
-        private void MapCoversToLocal(IEnumerable<CollectionMovieResource> movies, Dictionary<string, FileInfo> coverFileInfos)
+        private MovieTranslation GetMovieTranslation(List<MovieTranslation> translations, MovieMetadata movieMetadata, Language configLanguage)
         {
-            _coverMapper.ConvertToLocalUrls(movies.Select(x => Tuple.Create(0, x.Images.AsEnumerable())), coverFileInfos);
+            if (configLanguage == Language.Original)
+            {
+                return new MovieTranslation
+                {
+                    Title = movieMetadata.OriginalTitle,
+                    Overview = movieMetadata.Overview
+                };
+            }
+
+            var translation = translations.FirstOrDefault(t => t.Language == configLanguage && t.MovieMetadataId == movieMetadata.Id);
+
+            if (translation == null)
+            {
+                translation = new MovieTranslation
+                {
+                    Title = movieMetadata.Title,
+                    Language = Language.English
+                };
+            }
+
+            return translation;
+        }
+
+        private MovieTranslation GetTranslationFromDict(Dictionary<int, MovieTranslation> translations, MovieMetadata movieMetadata, Language configLanguage)
+        {
+            if (configLanguage == Language.Original)
+            {
+                return new MovieTranslation
+                {
+                    Title = movieMetadata.OriginalTitle,
+                    Overview = movieMetadata.Overview
+                };
+            }
+
+            if (!translations.TryGetValue(movieMetadata.Id, out var translation))
+            {
+                translation = new MovieTranslation
+                {
+                    Title = movieMetadata.Title,
+                    Language = Language.English
+                };
+            }
+
+            return translation;
         }
 
         [NonAction]

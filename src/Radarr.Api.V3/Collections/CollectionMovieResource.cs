@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Translations;
 
 namespace Radarr.Api.V3.Collections
 {
@@ -22,18 +23,21 @@ namespace Radarr.Api.V3.Collections
 
     public static class CollectionMovieResourceMapper
     {
-        public static CollectionMovieResource ToResource(this MovieMetadata model)
+        public static CollectionMovieResource ToResource(this MovieMetadata model, MovieTranslation movieTranslation = null)
         {
             if (model == null)
             {
                 return null;
             }
 
+            var translatedTitle = movieTranslation?.Title ?? model.Title;
+            var translatedOverview = movieTranslation?.Overview ?? model.Overview;
+
             return new CollectionMovieResource
             {
                 TmdbId = model.TmdbId,
-                Title = model.Title,
-                Overview = model.Overview,
+                Title = translatedTitle,
+                Overview = translatedOverview,
                 SortTitle = model.SortTitle,
                 Images = model.Images,
                 ImdbId = model.ImdbId,

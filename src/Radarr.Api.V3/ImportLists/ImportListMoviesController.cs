@@ -28,7 +28,6 @@ namespace Radarr.Api.V3.ImportLists
         private readonly IImportExclusionsService _importExclusionService;
         private readonly INamingConfigService _namingService;
         private readonly IMovieTranslationService _movieTranslationService;
-        private readonly IMapCoversToLocal _coverMapper;
         private readonly IConfigService _configService;
 
         public ImportListMoviesController(IMovieService movieService,
@@ -40,7 +39,6 @@ namespace Radarr.Api.V3.ImportLists
                                     IImportExclusionsService importExclusionsService,
                                     INamingConfigService namingService,
                                     IMovieTranslationService movieTranslationService,
-                                    IMapCoversToLocal coverMapper,
                                     IConfigService configService)
         {
             _movieService = movieService;
@@ -52,7 +50,6 @@ namespace Radarr.Api.V3.ImportLists
             _importExclusionService = importExclusionsService;
             _namingService = namingService;
             _movieTranslationService = movieTranslationService;
-            _coverMapper = coverMapper;
             _configService = configService;
         }
 
@@ -118,7 +115,6 @@ namespace Radarr.Api.V3.ImportLists
             foreach (var currentMovie in movies)
             {
                 var resource = currentMovie.ToResource();
-                _coverMapper.ConvertToLocalUrls(0, resource.Images);
 
                 var poster = currentMovie.MovieMetadata.Value.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
@@ -148,7 +144,6 @@ namespace Radarr.Api.V3.ImportLists
             foreach (var currentMovie in movies)
             {
                 var resource = currentMovie.ToResource();
-                _coverMapper.ConvertToLocalUrls(0, resource.Images);
 
                 var poster = currentMovie.MovieMetadata.Value.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
