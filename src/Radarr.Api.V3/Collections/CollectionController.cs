@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
@@ -60,6 +62,7 @@ namespace Radarr.Api.V3.Collections
         public List<CollectionResource> GetCollections(int? tmdbId)
         {
             var collectionResources = new List<CollectionResource>();
+            var coverFileInfos = _coverMapper.GetCoverFileInfos();
 
             if (tmdbId.HasValue)
             {
@@ -72,7 +75,7 @@ namespace Radarr.Api.V3.Collections
             }
             else
             {
-                collectionResources = MapToResource(_collectionService.GetAllCollections()).ToList();
+                collectionResources = MapToResource(_collectionService.GetAllCollections(), coverFileInfos).ToList();
             }
 
             return collectionResources;
@@ -134,7 +137,7 @@ namespace Radarr.Api.V3.Collections
             return Accepted(updated);
         }
 
-        private IEnumerable<CollectionResource> MapToResource(List<MovieCollection> collections)
+        private IEnumerable<CollectionResource> MapToResource(List<MovieCollection> collections, Dictionary<string, FileInfo> coverFileInfos)
         {
             // Avoid calling for naming spec on every movie in filenamebuilder
             var namingConfig = _namingService.GetConfig();
@@ -150,8 +153,6 @@ namespace Radarr.Api.V3.Collections
                     var movieResource = movie.ToResource();
                     movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
-                    _coverMapper.ConvertToLocalUrls(0, movieResource.Images);
-
                     if (!existingMoviesTmdbIds.Contains(movie.TmdbId))
                     {
                         resource.MissingMovies++;
@@ -159,6 +160,8 @@ namespace Radarr.Api.V3.Collections
 
                     resource.Movies.Add(movieResource);
                 }
+
+                MapCoversToLocal(resource.Movies, coverFileInfos);
 
                 yield return resource;
             }
@@ -186,6 +189,11 @@ namespace Radarr.Api.V3.Collections
             }
 
             return resource;
+        }
+
+        private void MapCoversToLocal(IEnumerable<CollectionMovieResource> movies, Dictionary<string, FileInfo> coverFileInfos)
+        {
+            _coverMapper.ConvertToLocalUrls(movies.Select(x => Tuple.Create(0, x.Images.AsEnumerable())), coverFileInfos);
         }
 
         [NonAction]
