@@ -1318,5 +1318,15 @@
     "FormatDateTimeRelative": "{relativeDay}, {formattedDate} {formattedTime}",
     "RemoveSelectedBlocklistMessageText": "Tem certeza de que deseja remover os itens selecionados da lista de bloqueio?",
     "ShowUnknownMovieItemsHelpText": "Mostrar itens sem filme na fila. Isso pode incluir filmes removidos ou qualquer outra coisa na categoria do Radarr",
-    "TablePageSizeMaximum": "O tamanho da página não pode exceder {maximumValue}"
+    "TablePageSizeMaximum": "O tamanho da página não pode exceder {maximumValue}",
+    "AppUpdated": "{appName} Atualizado",
+    "AppUpdatedVersion": "{appName} foi atualizado para a versão `{version}`. Para obter as alterações mais recentes, você precisará recarregar {appName}",
+    "ConnectionLostReconnect": "{appName} tentará se conectar automaticamente ou você pode clicar em recarregar abaixo.",
+    "ConnectionLostToBackend": "{appName} perdeu a conexão com o backend e precisará ser recarregado para restaurar a funcionalidade.",
+    "OrganizeLoadError": "Erro ao carregar visualizações",
+    "OrganizeModalHeader": "Organizar & Renomear",
+    "OrganizeNamingPattern": "Padrão de nomenclatura: `{standardMovieFormat}`",
+    "OrganizeNothingToRename": "Sucesso! Meu trabalho está concluído, não há arquivos para renomear.",
+    "OrganizeRelativePaths": "Todos os caminhos são relativos a: `{path}`",
+    "OrganizeRenamingDisabled": "A renomeação está desativada, nada para renomear"
 }

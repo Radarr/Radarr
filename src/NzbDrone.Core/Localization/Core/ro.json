@@ -95,7 +95,6 @@
     "Peers": "Parteneri",
     "Path": "Cale",
     "OutputPath": "Calea pentru Output",
-    "OrganizeModalAllPathsRelative": "Toate căile sunt relative față de:",
     "Organize": "Organizează",
     "Options": "Opțiuni",
     "Ok": "Ok",
@@ -1101,5 +1100,10 @@
     "ReleaseProfilesLoadError": "Nu se pot încărca profilurile",
     "PendingDownloadClientUnavailable": "În așteptare - Clientul de descărcare nu este disponibil",
     "MovieImportedTooltip": "Filmul a fost descărcat cu succes și preluat de la clientul de descărcare",
-    "DeletedReasonMissingFromDisk": "Radarr nu a putut găsi fișierul de pe disc, așa că a fost eliminat"
+    "DeletedReasonMissingFromDisk": "Radarr nu a putut găsi fișierul de pe disc, așa că a fost eliminat",
+    "AddConnection": "Adăugați conexiune",
+    "AddConnectionImplementation": "Adăugați conexiune - {implementationName}",
+    "AddDownloadClientImplementation": "Adăugați client de descărcare - {implementationName}",
+    "AddIndexerImplementation": "Adăugați Indexator - {implementationName}",
+    "Umask": "Umask"
 }

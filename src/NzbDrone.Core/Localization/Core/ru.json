@@ -451,7 +451,6 @@
     "OutputPath": "Выходной путь",
     "Original": "Оригинал",
     "OrganizeSelectedMovies": "Упорядочить выбранные фильмы",
-    "OrganizeModalAllPathsRelative": "Все пути указаны относительно:",
     "OrganizeConfirm": "Вы действительно хотите организовать все файлы в {count} выбранных фильм(ах)?",
     "Organize": "Организовать",
     "Options": "Опции",

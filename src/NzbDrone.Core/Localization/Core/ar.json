@@ -233,7 +233,6 @@
     "OutputPath": "مسار الاخراج",
     "Original": "أصلي",
     "OrganizeSelectedMovies": "تنظيم أفلام مختارة",
-    "OrganizeModalAllPathsRelative": "جميع المسارات مرتبطة بـ:",
     "OrganizeConfirm": "هل تريد بالتأكيد تنظيم جميع الملفات في {0} فيلم (أفلام) محدد؟",
     "Organize": "تنظم",
     "Options": "خيارات",
@@ -1007,5 +1006,7 @@
     "ShowCinemaReleaseHelpText": "عرض تاريخ الإصدار تحت الملصق",
     "EditMovies": "تحرير الفيلم",
     "DeleteRemotePathMapping": "تحرير تعيين المسار البعيد",
-    "DeleteRemotePathMappingMessageText": "هل أنت متأكد أنك تريد حذف تعيين المسار البعيد هذا؟"
+    "DeleteRemotePathMappingMessageText": "هل أنت متأكد أنك تريد حذف تعيين المسار البعيد هذا؟",
+    "AddAutoTag": "أضف كلمات دلالية تلقائيا",
+    "AddCondition": "إضافة شرط"
 }

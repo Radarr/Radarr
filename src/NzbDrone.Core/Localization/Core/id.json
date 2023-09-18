@@ -114,5 +114,7 @@
     "Ended": "Berakhir",
     "EnableAutomaticSearch": "Aktifkan Penelusuran Otomatis",
     "Profiles": "Profil",
-    "Disabled": "Nonaktif"
+    "Disabled": "Nonaktif",
+    "BlocklistReleaseHelpText": "Mencegah Sonarr memperoleh rilis ini secara otomatis",
+    "ConnectionLostReconnect": "Radarr akan mencoba untuk menghubungi secara otomatis, atau klik muat ulang di bawah."
 }

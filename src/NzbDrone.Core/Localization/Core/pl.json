@@ -1111,5 +1111,6 @@
     "ApplyTagsHelpTextHowToApplyDownloadClients": "Jak",
     "ApiKeyValidationHealthCheckMessage": "Zaktualizuj swój klucz API aby był długi na co najmniej {0} znaków. Możesz to zrobić poprzez ustawienia lub plik konfiguracyjny",
     "AddAutoTag": "Dodaj automatyczne tagi",
-    "AutoTaggingNegateHelpText": "Jeśli zaznaczone, zasada automatycznego tagowania nie będzie zastosowana, jeśli ten {0} warunek będzie spełniony"
+    "AutoTaggingNegateHelpText": "Jeśli zaznaczone, zasada automatycznego tagowania nie będzie zastosowana, jeśli ten {0} warunek będzie spełniony",
+    "AddConnection": "Dodaj połączenie"
 }
