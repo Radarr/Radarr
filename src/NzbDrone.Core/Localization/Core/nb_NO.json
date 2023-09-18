@@ -279,5 +279,9 @@
     "DeleteRootFolderMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
     "AddConnection": "Legg til kobling",
     "DisabledForLocalAddresses": "Deaktivert for lokale adresser",
-    "Released": "utgivelse"
+    "Released": "utgivelse",
+    "ConnectionLostReconnect": "Radarr vil forsøke å koble til automatisk, eller du kan klikke oppdater nedenfor.",
+    "ConnectionLostToBackend": "Radarr har mistet tilkoblingen til baksystemet og må lastes inn på nytt for å gjenopprette funksjonalitet.",
+    "BlocklistReleaseHelpText": "Hindrer Radarr i å automatisk gripe denne utgivelsen igjen",
+    "ReleaseProfiles": "utgivelseprofil"
 }
