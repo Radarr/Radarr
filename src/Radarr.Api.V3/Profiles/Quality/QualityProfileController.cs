@@ -27,6 +27,7 @@ namespace Radarr.Api.V3.Profiles.Quality
             // TODO: Need to validate the Items to ensure groups have names and at no item has no name, no items and no quality
             SharedValidator.RuleFor(c => c.Cutoff).ValidCutoff();
             SharedValidator.RuleFor(c => c.Items).ValidItems();
+
             SharedValidator.RuleFor(c => c.FormatItems).Must(items =>
             {
                 var all = _formatService.All().Select(f => f.Id).ToList();
@@ -34,6 +35,7 @@ namespace Radarr.Api.V3.Profiles.Quality
 
                 return all.Except(ids).Empty();
             }).WithMessage("All Custom Formats and no extra ones need to be present inside your Profile! Try refreshing your browser.");
+
             SharedValidator.RuleFor(c => c).Custom((profile, context) =>
             {
                 if (profile.FormatItems.Where(x => x.Score > 0).Sum(x => x.Score) < profile.MinFormatScore &&
