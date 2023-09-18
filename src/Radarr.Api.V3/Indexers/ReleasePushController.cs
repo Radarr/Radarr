@@ -44,6 +44,7 @@ namespace Radarr.Api.V3.Indexers
         }
 
         [HttpPost]
+        [Consumes("application/json")]
         public ActionResult<List<ReleaseResource>> Create(ReleaseResource release)
         {
             _logger.Info("Release pushed: {0} - {1}", release.Title, release.DownloadUrl);
@@ -56,22 +57,23 @@ namespace Radarr.Api.V3.Indexers
 
             ResolveIndexer(info);
 
-            List<DownloadDecision> decisions;
+            DownloadDecision decision;
 
             lock (PushLock)
             {
-                decisions = _downloadDecisionMaker.GetRssDecision(new List<ReleaseInfo> { info });
-                _downloadDecisionProcessor.ProcessDecisions(decisions).GetAwaiter().GetResult();
+                var decisions = _downloadDecisionMaker.GetRssDecision(new List<ReleaseInfo> { info });
+
+                decision = decisions.FirstOrDefault();
+
+                _downloadDecisionProcessor.ProcessDecision(decision, release.DownloadClientId).GetAwaiter().GetResult();
             }
 
-            var firstDecision = decisions.FirstOrDefault();
-
-            if (firstDecision?.RemoteMovie.ParsedMovieInfo == null)
+            if (decision?.RemoteMovie.ParsedMovieInfo == null)
             {
                 throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("Title", "Unable to parse", release.Title) });
             }
 
-            return MapDecisions(new[] { firstDecision });
+            return MapDecisions(new[] { decision });
         }
 
         private void ResolveIndexer(ReleaseInfo release)
