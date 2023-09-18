@@ -1,4 +1,5 @@
 using System.Net.Http;
+using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Notifications.Webhook;
@@ -14,10 +15,12 @@ namespace NzbDrone.Core.Notifications.Notifiarr
     {
         private const string URL = "https://notifiarr.com";
         private readonly IHttpClient _httpClient;
+        private readonly Logger _logger;
 
-        public NotifiarrProxy(IHttpClient httpClient)
+        public NotifiarrProxy(IHttpClient httpClient, Logger logger)
         {
             _httpClient = httpClient;
+            _logger = logger;
         }
 
         public void SendNotification(WebhookPayload payload, NotifiarrSettings settings)
@@ -49,7 +52,10 @@ namespace NzbDrone.Core.Notifications.Notifiarr
                     case 401:
                         throw new NotifiarrException("API key is invalid");
                     case 400:
-                        throw new NotifiarrException("Unable to send notification. Ensure Radarr Integration is enabled & assigned a channel on Notifiarr");
+                        // 400 responses shouldn't be treated as an actual error because it's a misconfiguration
+                        // between Radarr and Notifiarr for a specific event, but shouldn't stop all events.
+                        _logger.Error("HTTP 400 - Unable to send notification. Ensure Radarr Integration is enabled & assigned a channel on Notifiarr");
+                        break;
                     case 502:
                     case 503:
                     case 504:
