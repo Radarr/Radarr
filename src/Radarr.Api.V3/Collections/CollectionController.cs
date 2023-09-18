@@ -150,18 +150,15 @@ namespace Radarr.Api.V3.Collections
         {
             // Avoid calling for naming spec on every movie in filenamebuilder
             var namingConfig = _namingService.GetConfig();
-
-            _logger.Trace("Fetching Movies with Collections");
             var collectionMovies = _movieMetadataService.GetMoviesWithCollections();
             var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
 
-            _logger.Trace("Mapping Collections");
+            MapCoversToLocal(collectionMovies, coverFileInfos);
+
             foreach (var collection in collections)
             {
-                _logger.Trace("Mapping Collection {0}", collection.Title);
                 var resource = collection.ToResource();
 
-                _logger.Trace("Mapping Collection Movies for {0}", collection.Title);
                 foreach (var movie in collectionMovies.Where(m => m.CollectionTmdbId == collection.TmdbId))
                 {
                     var movieResource = movie.ToResource();
@@ -174,9 +171,6 @@ namespace Radarr.Api.V3.Collections
 
                     resource.Movies.Add(movieResource);
                 }
-
-                _logger.Trace("Mapping Collection Covers for {0}", collection.Title);
-                MapCoversToLocal(resource.Movies, coverFileInfos);
 
                 yield return resource;
             }
@@ -206,7 +200,7 @@ namespace Radarr.Api.V3.Collections
             return resource;
         }
 
-        private void MapCoversToLocal(IEnumerable<CollectionMovieResource> movies, Dictionary<string, FileInfo> coverFileInfos)
+        private void MapCoversToLocal(IEnumerable<MovieMetadata> movies, Dictionary<string, FileInfo> coverFileInfos)
         {
             _coverMapper.ConvertToLocalUrls(movies.Select(x => Tuple.Create(0, x.Images.AsEnumerable())), coverFileInfos);
         }
