@@ -1,0 +1,16 @@
+# Configuration for Label Actions - https://github.com/dessant/label-actions
+
+'Type: Support':
+  comment: >
+    :wave: @{issue-author}, we use the issue tracker exclusively
+    for bug reports and feature requests. However, this issue appears
+    to be a support request. Please hop over onto our [Discord](https://radarr.video/discord).
+  close: true
+  close-reason: 'not planned'
+
+'Status: Logs Needed':
+  comment: >
+    :wave: @{issue-author}, In order to help you further we'll need to see logs. 
+    You'll need to enable trace logging and replicate the problem that you encountered. 
+    Guidance on how to enable trace logging can be found in 
+    our [troubleshooting guide](https://wiki.servarr.com/radarr/troubleshooting#logging-and-log-files).
