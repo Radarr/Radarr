@@ -50,6 +50,7 @@ namespace NzbDrone.Core.Notifications.Notifiarr
                 switch ((int)responseCode)
                 {
                     case 401:
+                        _logger.Error("HTTP 401 - API key is invalid");
                         throw new NotifiarrException("API key is invalid");
                     case 400:
                         // 400 responses shouldn't be treated as an actual error because it's a misconfiguration
@@ -59,6 +60,7 @@ namespace NzbDrone.Core.Notifications.Notifiarr
                     case 502:
                     case 503:
                     case 504:
+                        _logger.Error("Unable to send notification. Service Unavailable");
                         throw new NotifiarrException("Unable to send notification. Service Unavailable", ex);
                     case 520:
                     case 521:
@@ -67,6 +69,7 @@ namespace NzbDrone.Core.Notifications.Notifiarr
                     case 524:
                         throw new NotifiarrException("Cloudflare Related HTTP Error - Unable to send notification", ex);
                     default:
+                        _logger.Error(ex, "Unknown HTTP Error - Unable to send notification");
                         throw new NotifiarrException("Unknown HTTP Error - Unable to send notification", ex);
                 }
             }
