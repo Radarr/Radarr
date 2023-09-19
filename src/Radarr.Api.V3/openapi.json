@@ -7150,6 +7150,16 @@
               "schema": {
                 "$ref": "#/components/schemas/ReleaseResource"
               }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReleaseResource"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReleaseResource"
+              }
             }
           }
         },
