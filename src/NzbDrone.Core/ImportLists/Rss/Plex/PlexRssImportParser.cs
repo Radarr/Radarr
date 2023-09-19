@@ -30,14 +30,22 @@ namespace NzbDrone.Core.ImportLists.Rss.Plex
 
             var guid = item.TryGetValue("guid", string.Empty);
 
-            if (guid.IsNotNullOrWhiteSpace() && guid.StartsWith("imdb://"))
+            if (guid.IsNotNullOrWhiteSpace())
             {
-                info.ImdbId = Parser.Parser.ParseImdbId(guid.Replace("imdb://", ""));
+                if (guid.StartsWith("imdb://"))
+                {
+                    info.ImdbId = Parser.Parser.ParseImdbId(guid.Replace("imdb://", ""));
+                }
+
+                if (int.TryParse(guid.Replace("tmdb://", ""), out var tmdbId))
+                {
+                    info.TmdbId = tmdbId;
+                }
             }
 
-            if (info.ImdbId.IsNullOrWhiteSpace())
+            if (info.ImdbId.IsNullOrWhiteSpace() && info.TmdbId == 0)
             {
-                throw new UnsupportedFeedException("Each item in the RSS feed must have a guid element with a IMDB ID");
+                throw new UnsupportedFeedException("Each item in the RSS feed must have a guid element with a IMDB ID or TMDB ID");
             }
 
             return info;
