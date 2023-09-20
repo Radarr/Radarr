@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Newtonsoft.Json;
 using NLog;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Extensions;
@@ -140,6 +141,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             httpRequest.Headers.ContentType = "application/json";
 
             httpRequest.SetContent(tmdbIds.ToJson());
+            httpRequest.ContentSummary = tmdbIds.ToJson(Formatting.None);
 
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
