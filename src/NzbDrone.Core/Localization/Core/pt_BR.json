@@ -629,7 +629,7 @@
     "SomeResultsHiddenFilter": "Alguns resultados estão ocultos pelo filtro aplicado",
     "Socks5": "Socks5 (Suporte à TOR)",
     "Small": "Pequeno",
-    "SkipFreeSpaceCheckWhenImportingHelpText": "Use quando o Radarr não conseguir detectar espaço livre na pasta raiz do filme",
+    "SkipFreeSpaceCheckWhenImportingHelpText": "Use quando o Radarr não conseguir detectar espaço livre em sua pasta raiz durante a importação do arquivo",
     "SkipFreeSpaceCheck": "Ignorar verificação de espaço livre",
     "SizeOnDisk": "Tamanho em disco",
     "Size": "Tamanho",
@@ -1328,5 +1328,6 @@
     "OrganizeNamingPattern": "Padrão de nomenclatura: `{standardMovieFormat}`",
     "OrganizeNothingToRename": "Sucesso! Meu trabalho está concluído, não há arquivos para renomear.",
     "OrganizeRelativePaths": "Todos os caminhos são relativos a: `{path}`",
-    "OrganizeRenamingDisabled": "A renomeação está desativada, nada para renomear"
+    "OrganizeRenamingDisabled": "A renomeação está desativada, nada para renomear",
+    "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "O cliente de download {0} está configurado para remover downloads concluídos. Isso pode resultar na remoção dos downloads do seu cliente antes que {1} possa importá-los."
 }

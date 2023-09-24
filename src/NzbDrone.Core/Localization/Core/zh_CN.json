@@ -690,7 +690,7 @@
     "UnableToAddANewNotificationPleaseTryAgain": "无法添加新通知，请稍后重试。",
     "URLBase": "基本URL",
     "RemovedMovieCheckMultipleMessage": "电影“{0}”已从TMDb移除",
-    "SkipFreeSpaceCheckWhenImportingHelpText": "当 Radarr 无法从movie根目录检测到空间时使用",
+    "SkipFreeSpaceCheckWhenImportingHelpText": "当Radarr无法在文件导入期间检测到根文件夹的空闲空间时使用",
     "UnableToAddANewQualityProfilePleaseTryAgain": "无法添加新的质量配置，请稍后重试。",
     "ThisCannotBeCancelled": "在不禁用所有索引器的情况下，一旦启动就无法取消。",
     "SearchCutoffUnmet": "搜索未满足终止条件的",
@@ -1329,5 +1329,6 @@
     "UnableToLoadAutoTagging": "无法加载自动标记",
     "OverrideGrabNoMovie": "必须选择电影",
     "RetryingDownloadOn": "于 {date} {time} 重试下载",
-    "Or": "或"
+    "Or": "或",
+    "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "下载客户端{0}设置为删除已完成的下载。这可能导致在{1}可以导入下载之前从您的客户端删除下载。"
 }

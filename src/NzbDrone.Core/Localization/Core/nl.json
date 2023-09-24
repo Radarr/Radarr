@@ -1125,5 +1125,8 @@
     "AddAutoTag": "Voeg Automatische Tag toe",
     "AddCondition": "Voeg Conditie toe",
     "AutoTagging": "Automatisch Taggen",
-    "CloneAutoTag": "Kopieer Automatische Tag"
+    "CloneAutoTag": "Kopieer Automatische Tag",
+    "AddConditionImplementation": "Voeg voorwaarde toe - {implementationName}",
+    "AddConnection": "Voeg connectie toe",
+    "AddConnectionImplementation": "Voeg connectie toe - {implementationName}"
 }
