@@ -1079,5 +1079,6 @@
     "ApplyChanges": "Applica Cambiamenti",
     "AutomaticAdd": "Aggiungi Automaticamente",
     "AllTitles": "Tutti i Titoli",
-    "ApiKeyValidationHealthCheckMessage": "Aggiorna la tua chiave API in modo che abbia una lunghezza di almeno {0} caratteri. Puoi farlo dalle impostazioni o dal file di configurazione"
+    "ApiKeyValidationHealthCheckMessage": "Aggiorna la tua chiave API in modo che abbia una lunghezza di almeno {0} caratteri. Puoi farlo dalle impostazioni o dal file di configurazione",
+    "AddImportList": "Aggiungi lista da importare"
 }
