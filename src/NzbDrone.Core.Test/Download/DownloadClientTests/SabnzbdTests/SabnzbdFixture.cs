@@ -452,6 +452,30 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
             result.OutputRootFolders.First().Should().Be(fullCategoryDir);
         }
 
+        [TestCase("0")]
+        [TestCase("15d")]
+        public void should_set_history_removes_completed_downloads_false(string historyRetention)
+        {
+            _config.Misc.history_retention = historyRetention;
+
+            var downloadClientInfo = Subject.GetStatus();
+
+            downloadClientInfo.RemovesCompletedDownloads.Should().BeFalse();
+        }
+
+        [TestCase("-1")]
+        [TestCase("15")]
+        [TestCase("3")]
+        [TestCase("3d")]
+        public void should_set_history_removes_completed_downloads_true(string historyRetention)
+        {
+            _config.Misc.history_retention = historyRetention;
+
+            var downloadClientInfo = Subject.GetStatus();
+
+            downloadClientInfo.RemovesCompletedDownloads.Should().BeTrue();
+        }
+
         [TestCase(@"Y:\sabnzbd\root", @"completed\downloads", @"vv", @"Y:\sabnzbd\root\completed\downloads", @"Y:\sabnzbd\root\completed\downloads\vv")]
         [TestCase(@"Y:\sabnzbd\root", @"completed", @"vv", @"Y:\sabnzbd\root\completed", @"Y:\sabnzbd\root\completed\vv")]
         [TestCase(@"/sabnzbd/root", @"completed/downloads", @"vv", @"/sabnzbd/root/completed/downloads", @"/sabnzbd/root/completed/downloads/vv")]
