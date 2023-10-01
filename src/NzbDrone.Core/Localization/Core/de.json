@@ -498,7 +498,7 @@
     "ShowMovieInformation": "Filminformationen anzeigen",
     "ShowTitleHelpText": "Filmtitel unter dem Plakat anzeigen",
     "ShowUnknownMovieItems": "Unzugeordente Filmeinträge anzeigen",
-    "SkipFreeSpaceCheck": "Pürfung des freien Speichers überspringen",
+    "SkipFreeSpaceCheck": "Prüfung des freien Speichers überspringen",
     "SkipFreeSpaceCheckWhenImportingHelpText": "Aktiviere diese Option, wenn es Radarr nicht möglich ist, den freien Speicherplatz des Stammverzeichnisses für Filme zu erkennen",
     "SorryThatMovieCannotBeFound": "Schade, dieser Film kann nicht gefunden werden.",
     "SourcePath": "Quellpfad",
