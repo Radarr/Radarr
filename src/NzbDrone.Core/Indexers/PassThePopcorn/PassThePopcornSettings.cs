@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
     public class PassThePopcornSettings : ITorrentIndexerSettings
     {
-        private static readonly PassThePopcornSettingsValidator Validator = new PassThePopcornSettingsValidator();
+        private static readonly PassThePopcornSettingsValidator Validator = new ();
 
         public PassThePopcornSettings()
         {

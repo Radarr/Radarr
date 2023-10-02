@@ -26,26 +26,11 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
             if (indexerResponse.HttpResponse.StatusCode != HttpStatusCode.OK)
             {
-                // Remove cookie cache
-                if (indexerResponse.HttpResponse.HasHttpRedirect && indexerResponse.HttpResponse.Headers["Location"]
-                        .ContainsIgnoreCase("login.php"))
-                {
-                    CookiesUpdater(null, null);
-                    throw new IndexerException(indexerResponse, "We are being redirected to the PTP login page. Most likely your session expired or was killed. Try testing the indexer in the settings.");
-                }
-
                 throw new IndexerException(indexerResponse, $"Unexpected response status {indexerResponse.HttpResponse.StatusCode} code from API request");
             }
 
             if (indexerResponse.HttpResponse.Headers.ContentType != HttpAccept.Json.Value)
             {
-                if (indexerResponse.HttpResponse.Request.Url.Path.ContainsIgnoreCase("login.php"))
-                {
-                    CookiesUpdater(null, null);
-                    throw new IndexerException(indexerResponse, "We are currently on the login page. Most likely your session expired or was killed. Try testing the indexer in the settings.");
-                }
-
-                // Remove cookie cache
                 throw new IndexerException(indexerResponse, $"Unexpected response header {indexerResponse.HttpResponse.Headers.ContentType} from API request, expected {HttpAccept.Json.Value}");
             }
 
@@ -62,17 +47,16 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 foreach (var torrent in result.Torrents)
                 {
                     var id = torrent.Id;
-                    var title = torrent.ReleaseName;
                     IndexerFlags flags = 0;
 
                     if (torrent.GoldenPopcorn)
                     {
-                        flags |= IndexerFlags.PTP_Golden; // title = $"{title} 🍿";
+                        flags |= IndexerFlags.PTP_Golden;
                     }
 
                     if (torrent.Checked)
                     {
-                        flags |= IndexerFlags.PTP_Approved; // title = $"{title} ✔";
+                        flags |= IndexerFlags.PTP_Approved;
                     }
 
                     if (torrent.FreeleechType == "Freeleech")
@@ -88,10 +72,10 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                     // Only add approved torrents
                     try
                     {
-                        torrentInfos.Add(new PassThePopcornInfo()
+                        torrentInfos.Add(new PassThePopcornInfo
                         {
-                            Guid = string.Format("PassThePopcorn-{0}", id),
-                            Title = title,
+                            Guid = $"PassThePopcorn-{id}",
+                            Title = torrent.ReleaseName,
                             Size = long.Parse(torrent.Size),
                             DownloadUrl = GetDownloadUrl(id, jsonResponse.AuthKey, jsonResponse.PassKey),
                             InfoUrl = GetInfoUrl(result.GroupId, id),

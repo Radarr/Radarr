@@ -1,5 +1,4 @@
 ﻿using NLog;
-using NzbDrone.Common.Cache;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser;
@@ -15,7 +14,6 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public override int PageSize => 50;
 
         public PassThePopcorn(IHttpClient httpClient,
-            ICacheManager cacheManager,
             IIndexerStatusService indexerStatusService,
             IConfigService configService,
             IParsingService parsingService,
@@ -26,12 +24,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
         public override IIndexerRequestGenerator GetRequestGenerator()
         {
-            return new PassThePopcornRequestGenerator()
-            {
-                Settings = Settings,
-                HttpClient = _httpClient,
-                Logger = _logger,
-            };
+            return new PassThePopcornRequestGenerator(Settings);
         }
 
         public override IParseIndexerResponse GetParser()
