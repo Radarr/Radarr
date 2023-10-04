@@ -70,7 +70,7 @@
     "AuthForm": "表单（登陆页面）",
     "AuthBasic": "基础（浏览器弹出对话框）",
     "AppDataDirectory": "AppData目录",
-    "ApiKey": "API 密钥",
+    "ApiKey": "API Key",
     "Backups": "历史备份",
     "BindAddress": "绑定地址",
     "BranchUpdate": "更新Radarr的分支",
