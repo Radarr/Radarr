@@ -82,7 +82,7 @@ class BlocklistRow extends Component {
               return null;
             }
 
-            if (name === 'movies.sortTitle') {
+            if (name === 'movieMetadata.sortTitle') {
               return (
                 <TableRowCell key={name}>
                   <MovieTitleLink

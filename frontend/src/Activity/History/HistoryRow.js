@@ -99,7 +99,7 @@ class HistoryRow extends Component {
               );
             }
 
-            if (name === 'movies.sortTitle') {
+            if (name === 'movieMetadata.sortTitle') {
               return (
                 <TableRowCell key={name}>
                   <MovieTitleLink

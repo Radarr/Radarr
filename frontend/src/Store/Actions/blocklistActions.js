@@ -32,7 +32,7 @@ export const defaultState = {
 
   columns: [
     {
-      name: 'movies.sortTitle',
+      name: 'movieMetadata.sortTitle',
       label: () => translate('MovieTitle'),
       isSortable: true,
       isVisible: true

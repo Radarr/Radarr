@@ -37,7 +37,7 @@ export const defaultState = {
       isModifiable: false
     },
     {
-      name: 'movies.sortTitle',
+      name: 'movieMetadata.sortTitle',
       label: () => translate('Movie'),
       isSortable: true,
       isVisible: true

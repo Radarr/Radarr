@@ -48,7 +48,10 @@ namespace NzbDrone.Core.Blocklisting
             Delete(x => movieIds.Contains(x.MovieId));
         }
 
-        protected override SqlBuilder PagedBuilder() => new SqlBuilder(_database.DatabaseType).Join<Blocklist, Movie>((b, m) => b.MovieId == m.Id);
+        protected override SqlBuilder PagedBuilder() => new SqlBuilder(_database.DatabaseType)
+            .Join<Blocklist, Movie>((b, m) => b.MovieId == m.Id)
+            .LeftJoin<Movie, MovieMetadata>((m, mm) => m.MovieMetadataId == mm.Id);
+
         protected override IEnumerable<Blocklist> PagedQuery(SqlBuilder sql) => _database.QueryJoined<Blocklist, Movie>(sql, (bl, movie) =>
                     {
                         bl.Movie = movie;
