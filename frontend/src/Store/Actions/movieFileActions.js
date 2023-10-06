@@ -4,8 +4,9 @@ import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
-import { icons } from 'Helpers/Props';
+import { icons, sortDirections } from 'Helpers/Props';
 import movieEntities from 'Movie/movieEntities';
+import createSetClientSideCollectionSortReducer from 'Store/Actions/Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createSetTableOptionReducer from 'Store/Actions/Creators/Reducers/createSetTableOptionReducer';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
@@ -31,13 +32,16 @@ export const defaultState = {
   deleteError: null,
   isSaving: false,
   saveError: null,
+  sortKey: 'relativePath',
+  sortDirection: sortDirections.ASCENDING,
   items: [],
 
   columns: [
     {
       name: 'relativePath',
       label: () => translate('RelativePath'),
-      isVisible: true
+      isVisible: true,
+      isSortable: true
     },
     {
       name: 'videoCodec',
@@ -67,7 +71,8 @@ export const defaultState = {
     {
       name: 'size',
       label: () => translate('Size'),
-      isVisible: true
+      isVisible: true,
+      isSortable: true
     },
     {
       name: 'languages',
@@ -96,12 +101,14 @@ export const defaultState = {
         name: icons.SCORE,
         title: () => translate('CustomFormatScore')
       }),
-      isVisible: true
+      isVisible: true,
+      isSortable: true
     },
     {
       name: 'dateAdded',
       label: () => translate('Added'),
-      isVisible: false
+      isVisible: false,
+      isSortable: true
     },
     {
       name: 'actions',
@@ -114,7 +121,9 @@ export const defaultState = {
 };
 
 export const persistState = [
-  'movieFiles.columns'
+  'movieFiles.columns',
+  'movieFiles.sortDirection',
+  'movieFiles.sortKey'
 ];
 
 //
@@ -125,6 +134,7 @@ export const DELETE_MOVIE_FILE = 'movieFiles/deleteMovieFile';
 export const DELETE_MOVIE_FILES = 'movieFiles/deleteMovieFiles';
 export const UPDATE_MOVIE_FILES = 'movieFiles/updateMovieFiles';
 export const CLEAR_MOVIE_FILES = 'movieFiles/clearMovieFiles';
+export const SET_MOVIE_FILES_SORT = 'movieFiles/setMovieFilesSort';
 export const SET_MOVIE_FILES_TABLE_OPTION = 'movieFiles/setMovieFilesTableOption';
 
 //
@@ -135,6 +145,7 @@ export const deleteMovieFile = createThunk(DELETE_MOVIE_FILE);
 export const deleteMovieFiles = createThunk(DELETE_MOVIE_FILES);
 export const updateMovieFiles = createThunk(UPDATE_MOVIE_FILES);
 export const clearMovieFiles = createAction(CLEAR_MOVIE_FILES);
+export const setMovieFilesSort = createAction(SET_MOVIE_FILES_SORT);
 export const setMovieFilesTableOption = createAction(SET_MOVIE_FILES_TABLE_OPTION);
 
 //
@@ -327,6 +338,7 @@ export const actionHandlers = handleThunks({
 // Reducers
 
 export const reducers = createHandleActions({
+
   [SET_MOVIE_FILES_TABLE_OPTION]: createSetTableOptionReducer(section),
 
   [CLEAR_MOVIE_FILES]: (state) => {
@@ -340,6 +352,8 @@ export const reducers = createHandleActions({
       saveError: null,
       items: []
     });
-  }
+  },
+
+  [SET_MOVIE_FILES_SORT]: createSetClientSideCollectionSortReducer(section)
 
 }, defaultState, section);
