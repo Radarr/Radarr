@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
@@ -27,9 +28,9 @@ namespace Radarr.Api.V3.ExtraFiles
         {
             var extraFiles = new List<ExtraFileResource>();
 
-            var subtitleFiles = _subtitleFileService.GetFilesByMovie(movieId);
-            var metadataFiles = _metadataFileService.GetFilesByMovie(movieId);
-            var otherExtraFiles = _otherFileService.GetFilesByMovie(movieId);
+            var subtitleFiles = _subtitleFileService.GetFilesByMovie(movieId).OrderBy(f => f.RelativePath).ToList();
+            var metadataFiles = _metadataFileService.GetFilesByMovie(movieId).OrderBy(f => f.RelativePath).ToList();
+            var otherExtraFiles = _otherFileService.GetFilesByMovie(movieId).OrderBy(f => f.RelativePath).ToList();
 
             extraFiles.AddRange(subtitleFiles.ToResource());
             extraFiles.AddRange(metadataFiles.ToResource());

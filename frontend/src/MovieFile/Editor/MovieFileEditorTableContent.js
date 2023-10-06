@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
+import { sortDirections } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import MovieFileEditorRow from './MovieFileEditorRow';
 import styles from './MovieFileEditorTableContent.css';
@@ -15,6 +16,9 @@ class MovieFileEditorTableContent extends Component {
     const {
       items,
       columns,
+      sortKey,
+      sortDirection,
+      onSortPress,
       onTableOptionChange
     } = this.props;
 
@@ -31,6 +35,9 @@ class MovieFileEditorTableContent extends Component {
           !!items.length &&
             <Table
               columns={columns}
+              sortKey={sortKey}
+              sortDirection={sortDirection}
+              onSortPress={onSortPress}
               onTableOptionChange={onTableOptionChange}
             >
               <TableBody>
@@ -60,7 +67,10 @@ MovieFileEditorTableContent.propTypes = {
   isDeleting: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
+  sortKey: PropTypes.string.isRequired,
+  sortDirection: PropTypes.oneOf(sortDirections.all),
   onTableOptionChange: PropTypes.func.isRequired,
+  onSortPress: PropTypes.func.isRequired,
   onDeletePress: PropTypes.func.isRequired
 };
 
