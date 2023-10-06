@@ -80,8 +80,12 @@ function DownloadClientOptions(props) {
               legend={translate('FailedDownloadHandling')}
             >
               <Form>
-                <FormGroup size={sizes.MEDIUM}>
-                  <FormLabel>{translate('Redownload')}</FormLabel>
+                <FormGroup
+                  advancedSettings={advancedSettings}
+                  isAdvanced={true}
+                  size={sizes.MEDIUM}
+                >
+                  <FormLabel>{translate('AutoRedownloadFailed')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.CHECK}
@@ -91,7 +95,28 @@ function DownloadClientOptions(props) {
                     {...settings.autoRedownloadFailed}
                   />
                 </FormGroup>
+
+                {
+                  settings.autoRedownloadFailed.value ?
+                    <FormGroup
+                      advancedSettings={advancedSettings}
+                      isAdvanced={true}
+                      size={sizes.MEDIUM}
+                    >
+                      <FormLabel>{translate('AutoRedownloadFailedFromInteractiveSearch')}</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.CHECK}
+                        name="autoRedownloadFailedFromInteractiveSearch"
+                        helpText={translate('AutoRedownloadFailedFromInteractiveSearchHelpText')}
+                        onChange={onInputChange}
+                        {...settings.autoRedownloadFailedFromInteractiveSearch}
+                      />
+                    </FormGroup> :
+                    null
+                }
               </Form>
+
               <Alert kind={kinds.INFO}>
                 {translate('RemoveDownloadsAlert')}
               </Alert>

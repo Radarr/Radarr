@@ -11,6 +11,7 @@ namespace Radarr.Api.V3.Config
         public int CheckForFinishedDownloadInterval { get; set; }
 
         public bool AutoRedownloadFailed { get; set; }
+        public bool AutoRedownloadFailedFromInteractiveSearch { get; set; }
     }
 
     public static class DownloadClientConfigResourceMapper
@@ -24,7 +25,8 @@ namespace Radarr.Api.V3.Config
                 EnableCompletedDownloadHandling = model.EnableCompletedDownloadHandling,
                 CheckForFinishedDownloadInterval = model.CheckForFinishedDownloadInterval,
 
-                AutoRedownloadFailed = model.AutoRedownloadFailed
+                AutoRedownloadFailed = model.AutoRedownloadFailed,
+                AutoRedownloadFailedFromInteractiveSearch = model.AutoRedownloadFailedFromInteractiveSearch
             };
         }
     }
