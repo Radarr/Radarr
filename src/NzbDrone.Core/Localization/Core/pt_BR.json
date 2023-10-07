@@ -1261,7 +1261,7 @@
     "True": "Verdadeiro",
     "HealthMessagesInfoBox": "Você pode encontrar mais informações sobre a causa dessas mensagens de verificação de integridade clicando no link da wiki (ícone do livro) no final da linha ou verificando seus [logs]({link}). Se tiver dificuldade em interpretar essas mensagens, você pode entrar em contato com nosso suporte, nos links abaixo.",
     "DefaultNameCopiedProfile": "{name} - Cópia",
-    "InvalidUILanguage": "Sua IU está definida com um idioma inválido, corrija-a e salve suas configurações",
+    "InvalidUILanguage": "Sua IU está configurada com um idioma inválido, corrija-a e salve suas configurações",
     "AuthenticationMethod": "Método de Autenticação",
     "AuthenticationMethodHelpTextWarning": "Selecione um método de autenticação válido",
     "AuthenticationRequiredPasswordHelpTextWarning": "Insira uma nova senha",
