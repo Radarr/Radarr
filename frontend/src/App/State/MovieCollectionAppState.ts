@@ -1,6 +1,8 @@
 import AppSectionState from 'App/State/AppSectionState';
 import MovieCollection from 'typings/MovieCollection';
 
-type MovieCollectionAppState = AppSectionState<MovieCollection>;
+interface MovieCollectionAppState extends AppSectionState<MovieCollection> {
+  itemMap: Record<number, number>;
+}
 
 export default MovieCollectionAppState;

@@ -61,6 +61,7 @@ class CollectionMovie extends Component {
     const {
       id,
       title,
+      status,
       overview,
       year,
       tmdbId,
@@ -123,11 +124,11 @@ class CollectionMovie extends Component {
 
             <div className={styles.overlay}>
               <div className={styles.overlayTitle}>
-                {title}
+                {title} { year > 0 ? `(${year})` : ''}
               </div>
 
               {
-                id &&
+                id ?
                   <div className={styles.overlayStatus}>
                     <MovieIndexProgressBar
                       monitored={monitored}
@@ -138,7 +139,8 @@ class CollectionMovie extends Component {
                       detailedProgressBar={detailedProgressBar}
                       isAvailable={isAvailable}
                     />
-                  </div>
+                  </div> :
+                  null
               }
             </div>
           </Link>
@@ -171,6 +173,7 @@ CollectionMovie.propTypes = {
   id: PropTypes.number,
   title: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
+  status: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
   monitored: PropTypes.bool,
   collectionId: PropTypes.number.isRequired,

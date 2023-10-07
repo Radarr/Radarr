@@ -12,6 +12,7 @@ namespace Radarr.Api.V3.Collections
         public string Title { get; set; }
         public string CleanTitle { get; set; }
         public string SortTitle { get; set; }
+        public MovieStatusType Status { get; set; }
         public string Overview { get; set; }
         public int Runtime { get; set; }
         public List<MediaCover> Images { get; set; }
@@ -37,6 +38,7 @@ namespace Radarr.Api.V3.Collections
             {
                 TmdbId = model.TmdbId,
                 Title = translatedTitle,
+                Status = model.Status,
                 Overview = translatedOverview,
                 SortTitle = model.SortTitle,
                 Images = model.Images,
