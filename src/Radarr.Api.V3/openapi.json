@@ -8691,6 +8691,9 @@
             "type": "string",
             "nullable": true
           },
+          "status": {
+            "$ref": "#/components/schemas/MovieStatusType"
+          },
           "overview": {
             "type": "string",
             "nullable": true
