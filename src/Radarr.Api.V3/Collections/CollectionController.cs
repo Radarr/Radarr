@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
-using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
@@ -32,7 +29,6 @@ namespace Radarr.Api.V3.Collections
         private readonly IMovieMetadataService _movieMetadataService;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly INamingConfigService _namingService;
-        private readonly IMapCoversToLocal _coverMapper;
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly Logger _logger;
 
@@ -42,7 +38,6 @@ namespace Radarr.Api.V3.Collections
                                     IMovieMetadataService movieMetadataService,
                                     IBuildFileNames fileNameBuilder,
                                     INamingConfigService namingService,
-                                    IMapCoversToLocal coverMapper,
                                     IManageCommandQueue commandQueueManager,
                                     Logger logger)
             : base(signalRBroadcaster)
@@ -52,7 +47,6 @@ namespace Radarr.Api.V3.Collections
             _movieMetadataService = movieMetadataService;
             _fileNameBuilder = fileNameBuilder;
             _namingService = namingService;
-            _coverMapper = coverMapper;
             _commandQueueManager = commandQueueManager;
             _logger = logger;
         }
@@ -67,10 +61,6 @@ namespace Radarr.Api.V3.Collections
         {
             var collectionResources = new List<CollectionResource>();
 
-            _logger.Trace("Fetch Cover File Infos");
-            var coverFileInfos = _coverMapper.GetCoverFileInfos();
-            _logger.Trace("Finished fetching Cover File Infos");
-
             if (tmdbId.HasValue)
             {
                 var collection = _collectionService.FindByTmdbId(tmdbId.Value);
@@ -82,7 +72,7 @@ namespace Radarr.Api.V3.Collections
             }
             else
             {
-                collectionResources = MapToResource(_collectionService.GetAllCollections(), coverFileInfos).ToList();
+                collectionResources = MapToResource(_collectionService.GetAllCollections()).ToList();
             }
 
             _logger.Trace("Returning Collections");
@@ -146,14 +136,12 @@ namespace Radarr.Api.V3.Collections
             return Accepted(updated);
         }
 
-        private IEnumerable<CollectionResource> MapToResource(List<MovieCollection> collections, Dictionary<string, FileInfo> coverFileInfos)
+        private IEnumerable<CollectionResource> MapToResource(List<MovieCollection> collections)
         {
             // Avoid calling for naming spec on every movie in filenamebuilder
             var namingConfig = _namingService.GetConfig();
             var collectionMovies = _movieMetadataService.GetMoviesWithCollections();
             var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
-
-            MapCoversToLocal(collectionMovies, coverFileInfos);
 
             foreach (var collection in collections)
             {
@@ -187,8 +175,6 @@ namespace Radarr.Api.V3.Collections
                 var movieResource = movie.ToResource();
                 movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
-                _coverMapper.ConvertToLocalUrls(0, movieResource.Images);
-
                 if (!existingMoviesTmdbIds.Contains(movie.TmdbId))
                 {
                     resource.MissingMovies++;
@@ -198,11 +184,6 @@ namespace Radarr.Api.V3.Collections
             }
 
             return resource;
-        }
-
-        private void MapCoversToLocal(IEnumerable<MovieMetadata> movies, Dictionary<string, FileInfo> coverFileInfos)
-        {
-            _coverMapper.ConvertToLocalUrls(movies.Select(x => Tuple.Create(0, x.Images.AsEnumerable())), coverFileInfos);
         }
 
         [NonAction]
