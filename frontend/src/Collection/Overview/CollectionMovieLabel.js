@@ -14,6 +14,7 @@ class CollectionMovieLabel extends Component {
     const {
       id,
       title,
+      year,
       status,
       monitored,
       isAvailable,
@@ -35,9 +36,7 @@ class CollectionMovieLabel extends Component {
           }
 
           <span>
-            {
-              title
-            }
+            {title} {year > 0 ? `(${year})` : ''}
           </span>
         </div>
 
@@ -62,6 +61,7 @@ class CollectionMovieLabel extends Component {
 CollectionMovieLabel.propTypes = {
   id: PropTypes.number,
   title: PropTypes.string.isRequired,
+  year: PropTypes.number.isRequired,
   status: PropTypes.string,
   isAvailable: PropTypes.bool,
   monitored: PropTypes.bool,

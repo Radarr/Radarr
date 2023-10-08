@@ -5,7 +5,7 @@
   margin: 2px 4px;
   border: 1px solid var(--borderColor);
   border-radius: 4px;
-  background-color: #eee;
+  background-color: var(--inputBackgroundColor);
   cursor: default;
 }
 
@@ -17,7 +17,7 @@
   padding: 0 4px;
   border-left: 4px;
   border-left-style: solid;
-  background-color: var(--white);
+  background-color: var(--themeLightColor);
   color: var(--defaultColor);
 }
 

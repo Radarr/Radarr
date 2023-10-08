@@ -124,7 +124,7 @@ class CollectionMovie extends Component {
 
             <div className={styles.overlay}>
               <div className={styles.overlayTitle}>
-                {title} { year > 0 ? `(${year})` : ''}
+                {title} {year > 0 ? `(${year})` : ''}
               </div>
 
               {

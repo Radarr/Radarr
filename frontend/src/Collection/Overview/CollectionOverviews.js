@@ -28,7 +28,6 @@ function calculatePosterWidth(posterSize, isSmallScreen) {
 }
 
 function calculateRowHeight(posterHeight, sortKey, isSmallScreen, overviewOptions) {
-
   const heights = [
     overviewOptions.showPosters ? posterHeight : 75,
     isSmallScreen ? columnPaddingSmallScreen : columnPadding
@@ -122,8 +121,8 @@ class CollectionOverviews extends Component {
       overviewOptions
     } = this.props;
 
-    const posterWidth = calculatePosterWidth(overviewOptions.size, isSmallScreen);
-    const posterHeight = calculatePosterHeight(posterWidth);
+    const posterWidth = overviewOptions.showPosters ? calculatePosterWidth(overviewOptions.size, isSmallScreen) : 0;
+    const posterHeight = overviewOptions.showPosters ? calculatePosterHeight(posterWidth) : 0;
     const rowHeight = calculateRowHeight(posterHeight, sortKey, isSmallScreen, overviewOptions);
 
     this.setState({
