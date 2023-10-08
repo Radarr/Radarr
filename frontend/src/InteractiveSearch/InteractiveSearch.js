@@ -3,13 +3,16 @@ import React, { Fragment } from 'react';
 import Alert from 'Components/Alert';
 import Icon from 'Components/Icon';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import FilterMenu from 'Components/Menu/FilterMenu';
+import PageMenuButton from 'Components/Menu/PageMenuButton';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import { icons, kinds, sortDirections } from 'Helpers/Props';
+import { align, icons, kinds, sortDirections } from 'Helpers/Props';
 import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import translate from 'Utilities/String/translate';
+import InteractiveSearchFilterModalConnector from './InteractiveSearchFilterModalConnector';
 import InteractiveSearchRowConnector from './InteractiveSearchRowConnector';
-import styles from './InteractiveSearchContent.css';
+import styles from './InteractiveSearch.css';
 
 const columns = [
   {
@@ -22,23 +25,6 @@ const columns = [
     name: 'age',
     label: () => translate('Age'),
     isSortable: true,
-    isVisible: true
-  },
-  {
-    name: 'releaseWeight',
-    label: React.createElement(Icon, { name: icons.DOWNLOAD }),
-    isSortable: true,
-    fixedSortDirection: sortDirections.ASCENDING,
-    isVisible: true
-  },
-  {
-    name: 'rejections',
-    label: React.createElement(Icon, {
-      name: icons.DANGER,
-      title: () => translate('Rejections')
-    }),
-    isSortable: true,
-    fixedSortDirection: sortDirections.ASCENDING,
     isVisible: true
   },
   {
@@ -85,12 +71,6 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'customFormat',
-    label: () => translate('Formats'),
-    isSortable: true,
-    isVisible: true
-  },
-  {
     name: 'customFormatScore',
     label: React.createElement(Icon, {
       name: icons.SCORE,
@@ -107,10 +87,27 @@ const columns = [
     }),
     isSortable: true,
     isVisible: true
+  },
+  {
+    name: 'releaseWeight',
+    label: React.createElement(Icon, { name: icons.DOWNLOAD }),
+    isSortable: true,
+    fixedSortDirection: sortDirections.ASCENDING,
+    isVisible: true
+  },
+  {
+    name: 'rejections',
+    label: React.createElement(Icon, {
+      name: icons.DANGER,
+      title: () => translate('Rejections')
+    }),
+    isSortable: true,
+    fixedSortDirection: sortDirections.ASCENDING,
+    isVisible: true
   }
 ];
 
-function InteractiveSearchContent(props) {
+function InteractiveSearch(props) {
   const {
     searchPayload,
     isFetching,
@@ -118,18 +115,36 @@ function InteractiveSearchContent(props) {
     error,
     totalReleasesCount,
     items,
+    selectedFilterKey,
+    filters,
+    customFilters,
     sortKey,
     sortDirection,
     longDateFormat,
     timeFormat,
     onSortPress,
+    onFilterSelect,
     onGrabPress
   } = props;
 
   const errorMessage = getErrorMessage(error);
+  const type = 'movies';
 
   return (
     <div>
+      <div className={styles.filterMenuContainer}>
+        <FilterMenu
+          alignMenu={align.RIGHT}
+          selectedFilterKey={selectedFilterKey}
+          filters={filters}
+          customFilters={customFilters}
+          buttonComponent={PageMenuButton}
+          filterModalConnectorComponent={InteractiveSearchFilterModalConnector}
+          filterModalConnectorComponentProps={{ type }}
+          onFilterSelect={onFilterSelect}
+        />
+      </div>
+
       {
         isFetching ? <LoadingIndicator /> : null
       }
@@ -203,19 +218,23 @@ function InteractiveSearchContent(props) {
   );
 }
 
-InteractiveSearchContent.propTypes = {
+InteractiveSearch.propTypes = {
   searchPayload: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   totalReleasesCount: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
+  customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.string,
   longDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
   onSortPress: PropTypes.func.isRequired,
+  onFilterSelect: PropTypes.func.isRequired,
   onGrabPress: PropTypes.func.isRequired
 };
 
-export default InteractiveSearchContent;
+export default InteractiveSearch;

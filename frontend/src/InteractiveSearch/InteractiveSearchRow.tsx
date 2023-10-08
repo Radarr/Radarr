@@ -199,53 +199,6 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
         {formatAge(age, ageHours, ageMinutes)}
       </TableRowCell>
 
-      <TableRowCell className={styles.download}>
-        <SpinnerIconButton
-          name={getDownloadIcon(isGrabbing, isGrabbed, grabError)}
-          kind={getDownloadKind(isGrabbed, grabError)}
-          title={getDownloadTooltip(isGrabbing, isGrabbed, grabError)}
-          isSpinning={isGrabbing}
-          onPress={onGrabPressWrapper}
-        />
-
-        <Link
-          className={styles.manualDownloadContent}
-          title={translate('OverrideAndAddToDownloadQueue')}
-          onPress={onOverridePress}
-        >
-          <div className={styles.manualDownloadContent}>
-            <Icon
-              className={styles.interactiveIcon}
-              name={icons.INTERACTIVE}
-              size={12}
-            />
-
-            <Icon
-              className={styles.downloadIcon}
-              name={icons.CIRCLE_DOWN}
-              size={10}
-            />
-          </div>
-        </Link>
-      </TableRowCell>
-
-      <TableRowCell className={styles.rejected}>
-        {rejections.length ? (
-          <Popover
-            anchor={<Icon name={icons.DANGER} kind={kinds.DANGER} />}
-            title={translate('ReleaseRejected')}
-            body={
-              <ul>
-                {rejections.map((rejection, index) => {
-                  return <li key={index}>{rejection}</li>;
-                })}
-              </ul>
-            }
-            position={tooltipPositions.RIGHT}
-          />
-        ) : null}
-      </TableRowCell>
-
       <TableRowCell>
         <div className={styles.titleContent}>
           <Link to={infoUrl} title={title}>
@@ -316,10 +269,6 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
         <MovieQuality quality={quality} />
       </TableRowCell>
 
-      <TableRowCell className={styles.customFormat}>
-        <MovieFormats formats={customFormats} />
-      </TableRowCell>
-
       <TableRowCell className={styles.customFormatScore}>
         <Tooltip
           anchor={formatCustomFormatScore(
@@ -346,6 +295,53 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
             position={tooltipPositions.LEFT}
           />
         ) : null}
+      </TableRowCell>
+
+      <TableRowCell className={styles.rejected}>
+        {rejections.length ? (
+          <Popover
+            anchor={<Icon name={icons.DANGER} kind={kinds.DANGER} />}
+            title={translate('ReleaseRejected')}
+            body={
+              <ul>
+                {rejections.map((rejection, index) => {
+                  return <li key={index}>{rejection}</li>;
+                })}
+              </ul>
+            }
+            position={tooltipPositions.LEFT}
+          />
+        ) : null}
+      </TableRowCell>
+
+      <TableRowCell className={styles.download}>
+        <SpinnerIconButton
+          name={getDownloadIcon(isGrabbing, isGrabbed, grabError)}
+          kind={getDownloadKind(isGrabbed, grabError)}
+          title={getDownloadTooltip(isGrabbing, isGrabbed, grabError)}
+          isSpinning={isGrabbing}
+          onPress={onGrabPressWrapper}
+        />
+
+        <Link
+          className={styles.manualDownloadContent}
+          title={translate('OverrideAndAddToDownloadQueue')}
+          onPress={onOverridePress}
+        >
+          <div className={styles.manualDownloadContent}>
+            <Icon
+              className={styles.interactiveIcon}
+              name={icons.INTERACTIVE}
+              size={12}
+            />
+
+            <Icon
+              className={styles.downloadIcon}
+              name={icons.CIRCLE_DOWN}
+              size={10}
+            />
+          </div>
+        </Link>
       </TableRowCell>
 
       <ConfirmModal

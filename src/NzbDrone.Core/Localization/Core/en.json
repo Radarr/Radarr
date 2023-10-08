@@ -551,6 +551,7 @@
   "InteractiveImportNoMovie": "Movie must be chosen for each selected file",
   "InteractiveImportNoQuality": "Quality must be chosen for each selected file",
   "InteractiveSearch": "Interactive Search",
+  "InteractiveSearchModalHeader": "Interactive Search",
   "InteractiveSearchResultsFailedErrorMessage": "Search failed because its {message}. Try refreshing the movie info and verify the necessary information is present before searching again.",
   "Interval": "Interval",
   "InvalidFormat": "Invalid Format",
