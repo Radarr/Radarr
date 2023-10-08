@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { movieHistoryMarkAsFailed } from 'Store/Actions/movieHistoryActions';
-import MovieHistoryTableContent from './MovieHistoryTableContent';
+import { clearMovieHistory, fetchMovieHistory, movieHistoryMarkAsFailed } from 'Store/Actions/movieHistoryActions';
+import MovieHistoryModalContent from './MovieHistoryModalContent';
 
 function createMapStateToProps() {
   return createSelector(
@@ -15,10 +15,29 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
+  fetchMovieHistory,
+  clearMovieHistory,
   movieHistoryMarkAsFailed
 };
 
-class MovieHistoryTableContentConnector extends Component {
+class MovieHistoryModalContentConnector extends Component {
+
+  //
+  // Lifecycle
+
+  componentDidMount() {
+    const {
+      movieId
+    } = this.props;
+
+    this.props.fetchMovieHistory({
+      movieId
+    });
+  }
+
+  componentWillUnmount() {
+    this.props.clearMovieHistory();
+  }
 
   //
   // Listeners
@@ -39,7 +58,7 @@ class MovieHistoryTableContentConnector extends Component {
 
   render() {
     return (
-      <MovieHistoryTableContent
+      <MovieHistoryModalContent
         {...this.props}
         onMarkAsFailedPress={this.onMarkAsFailedPress}
       />
@@ -47,9 +66,11 @@ class MovieHistoryTableContentConnector extends Component {
   }
 }
 
-MovieHistoryTableContentConnector.propTypes = {
+MovieHistoryModalContentConnector.propTypes = {
   movieId: PropTypes.number.isRequired,
+  fetchMovieHistory: PropTypes.func.isRequired,
+  clearMovieHistory: PropTypes.func.isRequired,
   movieHistoryMarkAsFailed: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(MovieHistoryTableContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(MovieHistoryModalContentConnector);

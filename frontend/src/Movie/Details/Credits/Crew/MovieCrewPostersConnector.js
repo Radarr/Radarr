@@ -18,7 +18,7 @@ function createMapStateToProps() {
       }, []);
 
       return {
-        items: crew
+        items: _.uniqBy(crew, 'personName')
       };
     }
   );

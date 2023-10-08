@@ -16,7 +16,7 @@ function MovieInteractiveSearchModal(props) {
       isOpen={isOpen}
       closeOnBackgroundClick={false}
       onModalClose={onModalClose}
-      size={sizes.EXTRA_LARGE}
+      size={sizes.EXTRA_EXTRA_LARGE}
     >
       <MovieInteractiveSearchModalContent
         movieId={movieId}
