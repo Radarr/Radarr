@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 import * as releaseActions from 'Store/Actions/releaseActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
-import InteractiveSearchContent from './InteractiveSearchContent';
+import InteractiveSearch from './InteractiveSearch';
 
 function createMapStateToProps(appState) {
   return createSelector(
@@ -29,17 +29,12 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(releaseActions.fetchReleases(payload));
     },
 
-    dispatchClearReleases(payload) {
-      dispatch(releaseActions.clearReleases(payload));
-    },
-
     onSortPress(sortKey, sortDirection) {
       dispatch(releaseActions.setReleasesSort({ sortKey, sortDirection }));
     },
 
     onFilterSelect(selectedFilterKey) {
-      const action = releaseActions.setReleasesFilter;
-      dispatch(action({ selectedFilterKey }));
+      dispatch(releaseActions.setReleasesFilter({ selectedFilterKey }));
     },
 
     onGrabPress(payload) {
@@ -48,7 +43,7 @@ function createMapDispatchToProps(dispatch, props) {
   };
 }
 
-class InteractiveSearchContentConnector extends Component {
+class InteractiveSearchConnector extends Component {
 
   //
   // Lifecycle
@@ -73,24 +68,22 @@ class InteractiveSearchContentConnector extends Component {
   render() {
     const {
       dispatchFetchReleases,
-      dispatchClearReleases,
       ...otherProps
     } = this.props;
 
     return (
 
-      <InteractiveSearchContent
+      <InteractiveSearch
         {...otherProps}
       />
     );
   }
 }
 
-InteractiveSearchContentConnector.propTypes = {
+InteractiveSearchConnector.propTypes = {
   searchPayload: PropTypes.object.isRequired,
   isPopulated: PropTypes.bool.isRequired,
-  dispatchFetchReleases: PropTypes.func.isRequired,
-  dispatchClearReleases: PropTypes.func.isRequired
+  dispatchFetchReleases: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, createMapDispatchToProps)(InteractiveSearchContentConnector);
+export default connect(createMapStateToProps, createMapDispatchToProps)(InteractiveSearchConnector);

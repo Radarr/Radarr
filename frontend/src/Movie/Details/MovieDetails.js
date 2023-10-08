@@ -23,12 +23,11 @@ import Popover from 'Components/Tooltip/Popover';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
-import InteractiveSearchFilterMenuConnector from 'InteractiveSearch/InteractiveSearchFilterMenuConnector';
-import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieHistoryTable from 'Movie/History/MovieHistoryTable';
 import MoviePoster from 'Movie/MoviePoster';
+import MovieInteractiveSearchModalConnector from 'Movie/Search/MovieInteractiveSearchModalConnector';
 import MovieFileEditorTable from 'MovieFile/Editor/MovieFileEditorTable';
 import ExtraFileTable from 'MovieFile/Extras/ExtraFileTable';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
@@ -78,6 +77,7 @@ class MovieDetails extends Component {
       isEditMovieModalOpen: false,
       isDeleteMovieModalOpen: false,
       isInteractiveImportModalOpen: false,
+      isInteractiveSearchModalOpen: false,
       allExpanded: false,
       allCollapsed: false,
       expandedState: {},
@@ -132,6 +132,14 @@ class MovieDetails extends Component {
 
   onEditMovieModalClose = () => {
     this.setState({ isEditMovieModalOpen: false });
+  };
+
+  onInteractiveSearchPress = () => {
+    this.setState({ isInteractiveSearchModalOpen: true });
+  };
+
+  onInteractiveSearchModalClose = () => {
+    this.setState({ isInteractiveSearchModalOpen: false });
   };
 
   onDeleteMoviePress = () => {
@@ -295,6 +303,7 @@ class MovieDetails extends Component {
       isEditMovieModalOpen,
       isDeleteMovieModalOpen,
       isInteractiveImportModalOpen,
+      isInteractiveSearchModalOpen,
       overviewHeight,
       titleWidth,
       selectedTabIndex
@@ -322,6 +331,14 @@ class MovieDetails extends Component {
               isSpinning={isSearching}
               title={undefined}
               onPress={onSearchPress}
+            />
+
+            <PageToolbarButton
+              label={translate('InteractiveSearch')}
+              iconName={icons.INTERACTIVE}
+              isSpinning={isSearching}
+              title={undefined}
+              onPress={this.onInteractiveSearchPress}
             />
 
             <PageToolbarSeparator />
@@ -669,13 +686,6 @@ class MovieDetails extends Component {
                   className={styles.tab}
                   selectedClassName={styles.selectedTab}
                 >
-                  {translate('Search')}
-                </Tab>
-
-                <Tab
-                  className={styles.tab}
-                  selectedClassName={styles.selectedTab}
-                >
                   {translate('Files')}
                 </Tab>
 
@@ -700,23 +710,10 @@ class MovieDetails extends Component {
                   {translate('Crew')}
                 </Tab>
 
-                {
-                  selectedTabIndex === 1 &&
-                    <div className={styles.filterIcon}>
-                      <InteractiveSearchFilterMenuConnector />
-                    </div>
-                }
-
               </TabList>
 
               <TabPanel>
                 <MovieHistoryTable
-                  movieId={id}
-                />
-              </TabPanel>
-
-              <TabPanel>
-                <InteractiveSearchTable
                   movieId={id}
                 />
               </TabPanel>
@@ -779,6 +776,12 @@ class MovieDetails extends Component {
             showFilterExistingFiles={true}
             showImportMode={false}
             onModalClose={this.onInteractiveImportModalClose}
+          />
+
+          <MovieInteractiveSearchModalConnector
+            isOpen={isInteractiveSearchModalOpen}
+            movieId={id}
+            onModalClose={this.onInteractiveSearchModalClose}
           />
         </PageContentBody>
       </PageContent>
