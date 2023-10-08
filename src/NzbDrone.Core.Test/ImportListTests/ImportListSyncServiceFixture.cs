@@ -7,6 +7,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.ImportLists.ImportExclusions;
 using NzbDrone.Core.ImportLists.ImportListMovies;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Test.Framework;
 
@@ -59,8 +60,7 @@ namespace NzbDrone.Core.Test.ImportList
             _importListFetch = new ImportListFetchResult
             {
                 Movies = _list1Movies,
-                AnyFailure = false,
-                SyncedLists = new List<int> { 1 }
+                AnyFailure = false
             };
 
             _commandAll = new ImportListSyncCommand
@@ -85,12 +85,20 @@ namespace NzbDrone.Core.Test.ImportList
                   .Returns(false);
 
             Mocker.GetMock<IMovieService>()
+                  .Setup(v => v.MovieExists(It.IsAny<Movie>()))
+                  .Returns(false);
+
+            Mocker.GetMock<IMovieService>()
                   .Setup(v => v.AllMovieTmdbIds())
                   .Returns(new List<int>());
 
             Mocker.GetMock<IFetchAndParseImportList>()
                   .Setup(v => v.Fetch())
                   .Returns(_importListFetch);
+
+            Mocker.GetMock<ISearchForNewMovie>()
+                .Setup(v => v.MapMovieToTmdbMovie(It.IsAny<MovieMetadata>()))
+                .Returns<MovieMetadata>(m => new MovieMetadata { TmdbId = m.TmdbId });
         }
 
         private void GivenListFailure()
@@ -101,6 +109,7 @@ namespace NzbDrone.Core.Test.ImportList
         private void GivenNoListSync()
         {
             _importListFetch.SyncedLists = new List<int>();
+            _importListFetch.SyncedWithoutFailure = new List<int>();
         }
 
         private void GivenCleanLevel(string cleanLevel)
@@ -113,6 +122,9 @@ namespace NzbDrone.Core.Test.ImportList
         private void GivenList(int id, bool enabledAuto)
         {
             var importListDefinition = new ImportListDefinition { Id = id, EnableAuto = enabledAuto };
+
+            _importListFetch.SyncedLists.Add(id);
+            _importListFetch.SyncedWithoutFailure.Add(id);
 
             Mocker.GetMock<IImportListFactory>()
                   .Setup(v => v.Get(id))
