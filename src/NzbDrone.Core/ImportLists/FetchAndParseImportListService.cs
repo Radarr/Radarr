@@ -5,9 +5,6 @@ using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.TPL;
-using NzbDrone.Core.ImportLists.ImportListMovies;
-using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.ImportLists
 {
@@ -21,26 +18,14 @@ namespace NzbDrone.Core.ImportLists
     {
         private readonly IImportListFactory _importListFactory;
         private readonly IImportListStatusService _importListStatusService;
-        private readonly IImportListMovieService _listMovieService;
-        private readonly ISearchForNewMovie _movieSearch;
-        private readonly IProvideMovieInfo _movieInfoService;
-        private readonly IMovieMetadataService _movieMetadataService;
         private readonly Logger _logger;
 
         public FetchAndParseImportListService(IImportListFactory importListFactory,
                                               IImportListStatusService importListStatusService,
-                                              IImportListMovieService listMovieService,
-                                              ISearchForNewMovie movieSearch,
-                                              IProvideMovieInfo movieInfoService,
-                                              IMovieMetadataService movieMetadataService,
                                               Logger logger)
         {
             _importListFactory = importListFactory;
             _importListStatusService = importListStatusService;
-            _listMovieService = listMovieService;
-            _movieSearch = movieSearch;
-            _movieInfoService = movieInfoService;
-            _movieMetadataService = movieMetadataService;
             _logger = logger;
         }
 
@@ -101,21 +86,17 @@ namespace NzbDrone.Core.ImportLists
 
                             if (!importListReports.AnyFailure)
                             {
-                                var alreadyMapped = result.Movies.Where(x => importListReports.Movies.Any(r => r.TmdbId == x.TmdbId));
-                                var listMovies = MapMovieReports(importListReports.Movies.Where(x => result.Movies.All(r => r.TmdbId != x.TmdbId))).Where(x => x.TmdbId > 0).ToList();
+                                var listMovies = importListReports.Movies;
 
-                                listMovies.AddRange(alreadyMapped);
-                                listMovies = listMovies.DistinctBy(x => x.TmdbId).ToList();
                                 listMovies.ForEach(m => m.ListId = importList.Definition.Id);
 
                                 result.Movies.AddRange(listMovies);
-                                _listMovieService.SyncMoviesForList(listMovies, importList.Definition.Id);
+
+                                result.SyncedWithoutFailure.Add(importList.Definition.Id);
                             }
 
                             result.AnyFailure |= importListReports.AnyFailure;
-                            result.SyncedLists++;
-
-                            _importListStatusService.UpdateListSyncStatus(importList.Definition.Id);
+                            result.SyncedLists.Add(importList.Definition.Id);
                         }
                     }
                     catch (Exception e)
@@ -129,9 +110,17 @@ namespace NzbDrone.Core.ImportLists
 
             Task.WaitAll(taskList.ToArray());
 
+            foreach (var list in importLists)
+            {
+                if (result.SyncedLists.Contains(list.Definition.Id))
+                {
+                    _importListStatusService.UpdateListSyncStatus(list.Definition.Id);
+                }
+            }
+
             result.Movies = result.Movies.DistinctBy(r => new { r.TmdbId, r.ImdbId, r.Title }).ToList();
 
-            _logger.Debug("Found {0} total reports from {1} lists", result.Movies.Count, result.SyncedLists);
+            _logger.Debug("Found {0} total reports from {1} lists", result.Movies.Count, result.SyncedLists.Count);
 
             return result;
         }
@@ -160,18 +149,18 @@ namespace NzbDrone.Core.ImportLists
 
                     if (!importListReports.AnyFailure)
                     {
-                        var listMovies = MapMovieReports(importListReports.Movies)
-                            .Where(x => x.TmdbId > 0)
-                            .DistinctBy(x => x.TmdbId)
-                            .ToList();
+                        var listMovies = importListReports.Movies;
 
                         listMovies.ForEach(m => m.ListId = importList.Definition.Id);
 
                         result.Movies.AddRange(listMovies);
-                        _listMovieService.SyncMoviesForList(listMovies, importList.Definition.Id);
+
+                        result.SyncedWithoutFailure.Add(importList.Definition.Id);
                     }
 
                     result.AnyFailure |= importListReports.AnyFailure;
+
+                    result.SyncedLists.Add(importList.Definition.Id);
 
                     _importListStatusService.UpdateListSyncStatus(importList.Definition.Id);
                 }
@@ -186,33 +175,6 @@ namespace NzbDrone.Core.ImportLists
             _logger.Debug("Found {0} movies from {1} ({2})", result.Movies.Count, importList.Name, importListLocal.Definition.Name);
 
             return result;
-        }
-
-        private List<ImportListMovie> MapMovieReports(IEnumerable<ImportListMovie> reports)
-        {
-            var mappedMovies = reports.Select(m => _movieSearch.MapMovieToTmdbMovie(new MovieMetadata { Title = m.Title, TmdbId = m.TmdbId, ImdbId = m.ImdbId, Year = m.Year }))
-                .Where(x => x != null)
-                .DistinctBy(x => x.TmdbId)
-                .ToList();
-
-            _movieMetadataService.UpsertMany(mappedMovies);
-
-            var mappedListMovies = new List<ImportListMovie>();
-
-            foreach (var movieMeta in mappedMovies)
-            {
-                var mappedListMovie = new ImportListMovie();
-
-                if (movieMeta != null)
-                {
-                    mappedListMovie.MovieMetadata = movieMeta;
-                    mappedListMovie.MovieMetadataId = movieMeta.Id;
-                }
-
-                mappedListMovies.Add(mappedListMovie);
-            }
-
-            return mappedListMovies;
         }
     }
 }

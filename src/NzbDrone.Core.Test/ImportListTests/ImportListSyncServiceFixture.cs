@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Test.ImportList
             {
                 Movies = _list1Movies,
                 AnyFailure = false,
-                SyncedLists = 1
+                SyncedLists = new List<int> { 1 }
             };
 
             _commandAll = new ImportListSyncCommand
@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Test.ImportList
 
         private void GivenNoListSync()
         {
-            _importListFetch.SyncedLists = 0;
+            _importListFetch.SyncedLists = new List<int>();
         }
 
         private void GivenCleanLevel(string cleanLevel)

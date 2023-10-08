@@ -7,6 +7,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.ImportLists.ImportExclusions;
 using NzbDrone.Core.ImportLists.ImportListMovies;
 using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.ImportLists
@@ -17,6 +18,8 @@ namespace NzbDrone.Core.ImportLists
         private readonly IImportListFactory _importListFactory;
         private readonly IFetchAndParseImportList _listFetcherAndParser;
         private readonly IMovieService _movieService;
+        private readonly IMovieMetadataService _movieMetadataService;
+        private readonly ISearchForNewMovie _movieSearch;
         private readonly IAddMovieService _addMovieService;
         private readonly IConfigService _configService;
         private readonly IImportExclusionsService _exclusionService;
@@ -25,6 +28,8 @@ namespace NzbDrone.Core.ImportLists
         public ImportListSyncService(IImportListFactory importListFactory,
                                       IFetchAndParseImportList listFetcherAndParser,
                                       IMovieService movieService,
+                                      IMovieMetadataService movieMetadataService,
+                                      ISearchForNewMovie movieSearch,
                                       IAddMovieService addMovieService,
                                       IConfigService configService,
                                       IImportExclusionsService exclusionService,
@@ -34,6 +39,8 @@ namespace NzbDrone.Core.ImportLists
             _importListFactory = importListFactory;
             _listFetcherAndParser = listFetcherAndParser;
             _movieService = movieService;
+            _movieMetadataService = movieMetadataService;
+            _movieSearch = movieSearch;
             _addMovieService = addMovieService;
             _exclusionService = exclusionService;
             _listMovieService = listMovieService;
@@ -52,17 +59,17 @@ namespace NzbDrone.Core.ImportLists
 
             var listItemsResult = _listFetcherAndParser.Fetch();
 
-            if (listItemsResult.SyncedLists == 0)
+            if (listItemsResult.SyncedLists.Count == 0)
             {
                 return;
             }
+
+            ProcessListItems(listItemsResult);
 
             if (!listItemsResult.AnyFailure)
             {
                 CleanLibrary();
             }
-
-            ProcessListItems(listItemsResult);
         }
 
         private void SyncList(ImportListDefinition definition)
@@ -125,7 +132,25 @@ namespace NzbDrone.Core.ImportLists
 
         private void ProcessListItems(ImportListFetchResult listFetchResult)
         {
-            listFetchResult.Movies = listFetchResult.Movies.DistinctBy(x =>
+            var allMappedMovies = new List<ImportListMovie>();
+
+            // Sync ListMovies table for Discovery view and Cleaning task
+            foreach (var listId in listFetchResult.SyncedWithoutFailure)
+            {
+                var listMovies = listFetchResult.Movies.Where(x => x.ListId == listId);
+                var alreadyMapped = allMappedMovies.Where(x => listMovies.Any(r => r.TmdbId == x.TmdbId));
+                var mappedListMovies = MapMovieReports(listMovies.Where(x => allMappedMovies.All(r => r.TmdbId != x.TmdbId)).ToList()).Where(x => x.TmdbId > 0).ToList();
+
+                mappedListMovies.AddRange(alreadyMapped);
+                mappedListMovies = mappedListMovies.DistinctBy(x => x.TmdbId).ToList();
+                mappedListMovies.ForEach(m => m.ListId = listId);
+
+                allMappedMovies.AddRange(mappedListMovies);
+
+                _listMovieService.SyncMoviesForList(mappedListMovies, listId);
+            }
+
+            allMappedMovies = allMappedMovies.DistinctBy(x =>
             {
                 if (x.TmdbId != 0)
                 {
@@ -140,7 +165,7 @@ namespace NzbDrone.Core.ImportLists
                 return x.Title;
             }).ToList();
 
-            var listedMovies = listFetchResult.Movies.ToList();
+            var listedMovies = allMappedMovies;
 
             var importExclusions = _exclusionService.GetAllExclusions();
             var dbMovies = _movieService.AllMovieTmdbIds();
@@ -166,6 +191,33 @@ namespace NzbDrone.Core.ImportLists
                 _logger.ProgressInfo("Adding {0} movies from your auto enabled lists to library", moviesToAdd.Count);
                 _addMovieService.AddMovies(moviesToAdd, true);
             }
+        }
+
+        private List<ImportListMovie> MapMovieReports(IEnumerable<ImportListMovie> reports)
+        {
+            var mappedMovies = reports.Select(m => _movieSearch.MapMovieToTmdbMovie(new MovieMetadata { Title = m.Title, TmdbId = m.TmdbId, ImdbId = m.ImdbId, Year = m.Year }))
+                .Where(x => x != null)
+                .DistinctBy(x => x.TmdbId)
+                .ToList();
+
+            _movieMetadataService.UpsertMany(mappedMovies);
+
+            var mappedListMovies = new List<ImportListMovie>();
+
+            foreach (var movieMeta in mappedMovies)
+            {
+                var mappedListMovie = new ImportListMovie();
+
+                if (movieMeta != null)
+                {
+                    mappedListMovie.MovieMetadata = movieMeta;
+                    mappedListMovie.MovieMetadataId = movieMeta.Id;
+                }
+
+                mappedListMovies.Add(mappedListMovie);
+            }
+
+            return mappedListMovies;
         }
 
         public void Execute(ImportListSyncCommand message)
