@@ -1,17 +1,13 @@
 $hoverScale: 1.05;
 
 .content {
+  border-radius: '5px';
   transition: all 200ms ease-in;
 
   &:hover {
     z-index: 2;
     box-shadow: 0 0 12px var(--black);
     transition: all 200ms ease-in;
-
-    .controls {
-      opacity: 0.9;
-      transition: opacity 200ms linear 150ms;
-    }
   }
 }
 
@@ -50,22 +46,18 @@ $hoverScale: 1.05;
 
 .controls {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
+  top: 10px;
   z-index: 3;
-  border-radius: 4px;
-  background-color: #707070;
-  color: var(--white);
-  font-size: $smallFontSize;
-  opacity: 0;
-  transition: opacity 0;
 }
 
 .action {
-  composes: button from '~Components/Link/IconButton.css';
+  composes: toggleButton from '~Components/MonitorToggleButton.css';
+
+  width: 25px;
+  color: var(--white);
 
   &:hover {
-    color: var(--radarrYellow);
+    color: var(--iconButtonHoverLightColor);
   }
 }
 

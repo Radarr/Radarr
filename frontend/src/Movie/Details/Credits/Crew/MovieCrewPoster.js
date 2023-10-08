@@ -1,11 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Label from 'Components/Label';
-import IconButton from 'Components/Link/IconButton';
-import { icons } from 'Helpers/Props';
+import MonitorToggleButton from 'Components/MonitorToggleButton';
 import MovieHeadshot from 'Movie/MovieHeadshot';
 import EditImportListModalConnector from 'Settings/ImportLists/ImportLists/EditImportListModalConnector';
-import translate from 'Utilities/String/translate';
 import styles from '../MovieCreditPoster.css';
 
 class MovieCrewPoster extends Component {
@@ -60,7 +57,7 @@ class MovieCrewPoster extends Component {
       images,
       posterWidth,
       posterHeight,
-      importListId
+      importList
     } = this.props;
 
     const {
@@ -69,12 +66,16 @@ class MovieCrewPoster extends Component {
 
     const elementStyle = {
       width: `${posterWidth}px`,
-      height: `${posterHeight}px`
+      height: `${posterHeight}px`,
+      borderRadius: '5px'
     };
 
     const contentStyle = {
       width: `${posterWidth}px`
     };
+
+    const monitored = importList !== undefined && importList.enabled && importList.enableAuto;
+    const importListId = importList ? importList.id : 0;
 
     return (
       <div
@@ -82,23 +83,14 @@ class MovieCrewPoster extends Component {
         style={contentStyle}
       >
         <div className={styles.posterContainer}>
-          <Label className={styles.controls}>
-            {
-              importListId > 0 ?
-                <IconButton
-                  className={styles.action}
-                  name={icons.EDIT}
-                  title={translate('EditPerson')}
-                  onPress={this.onEditImportListPress}
-                /> :
-                <IconButton
-                  className={styles.action}
-                  name={icons.ADD}
-                  title={translate('FollowPerson')}
-                  onPress={this.onAddImportListPress}
-                />
-            }
-          </Label>
+          <div className={styles.controls}>
+            <MonitorToggleButton
+              className={styles.action}
+              monitored={monitored}
+              size={20}
+              onPress={importListId > 0 ? this.onEditImportListPress : this.onAddImportListPress}
+            />
+          </div>
 
           <div
             style={elementStyle}
@@ -148,12 +140,8 @@ MovieCrewPoster.propTypes = {
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   posterWidth: PropTypes.number.isRequired,
   posterHeight: PropTypes.number.isRequired,
-  importListId: PropTypes.number.isRequired,
+  importList: PropTypes.object,
   onImportListSelect: PropTypes.func.isRequired
-};
-
-MovieCrewPoster.defaultProps = {
-  importListId: 0
 };
 
 export default MovieCrewPoster;

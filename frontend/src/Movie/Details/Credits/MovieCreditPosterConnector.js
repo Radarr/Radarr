@@ -1,11 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import { selectImportListSchema, setImportListFieldValue, setImportListValue } from 'Store/Actions/settingsActions';
 import createMovieCreditListSelector from 'Store/Selectors/createMovieCreditListSelector';
 
 function createMapStateToProps() {
-  return createMovieCreditListSelector();
+  return createSelector(
+    createMovieCreditListSelector(),
+    (importList) => {
+      return {
+        importList
+      };
+    }
+  );
 }
 
 const mapDispatchToProps = {
@@ -20,7 +28,7 @@ class MovieCreditPosterConnector extends Component {
   // Listeners
 
   onImportListSelect = () => {
-    this.props.selectImportListSchema({ implementation: 'TMDbPersonImport', presetName: undefined });
+    this.props.selectImportListSchema({ implementation: 'TMDbPersonImport', implementationName: 'TMDb Person', presetName: undefined });
     this.props.setImportListFieldValue({ name: 'personId', value: this.props.tmdbId.toString() });
     this.props.setImportListValue({ name: 'name', value: `${this.props.personName} - ${this.props.tmdbId}` });
   };

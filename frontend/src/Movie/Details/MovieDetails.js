@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import TextTruncate from 'react-text-truncate';
 import Alert from 'Components/Alert';
+import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import ImdbRating from 'Components/ImdbRating';
 import InfoLabel from 'Components/InfoLabel';
@@ -25,7 +25,7 @@ import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
-import MovieHistoryTable from 'Movie/History/MovieHistoryTable';
+import MovieHistoryModal from 'Movie/History/MovieHistoryModal';
 import MoviePoster from 'Movie/MoviePoster';
 import MovieInteractiveSearchModalConnector from 'Movie/Search/MovieInteractiveSearchModalConnector';
 import MovieFileEditorTable from 'MovieFile/Editor/MovieFileEditorTable';
@@ -78,10 +78,10 @@ class MovieDetails extends Component {
       isDeleteMovieModalOpen: false,
       isInteractiveImportModalOpen: false,
       isInteractiveSearchModalOpen: false,
+      isMovieHistoryModalOpen: false,
       allExpanded: false,
       allCollapsed: false,
       expandedState: {},
-      selectedTabIndex: 0,
       overviewHeight: 0,
       titleWidth: 0
     };
@@ -151,6 +151,14 @@ class MovieDetails extends Component {
 
   onDeleteMovieModalClose = () => {
     this.setState({ isDeleteMovieModalOpen: false });
+  };
+
+  onMovieHistoryPress = () => {
+    this.setState({ isMovieHistoryModalOpen: true });
+  };
+
+  onMovieHistoryModalClose = () => {
+    this.setState({ isMovieHistoryModalOpen: false });
   };
 
   onExpandAllPress = () => {
@@ -304,9 +312,9 @@ class MovieDetails extends Component {
       isDeleteMovieModalOpen,
       isInteractiveImportModalOpen,
       isInteractiveSearchModalOpen,
+      isMovieHistoryModalOpen,
       overviewHeight,
-      titleWidth,
-      selectedTabIndex
+      titleWidth
     } = this.state;
 
     const fanartUrl = getFanartUrl(images);
@@ -354,6 +362,13 @@ class MovieDetails extends Component {
               label={translate('ManualImport')}
               iconName={icons.INTERACTIVE}
               onPress={this.onInteractiveImportPress}
+            />
+
+            <PageToolbarButton
+              label={translate('History')}
+              iconName={icons.HISTORY}
+              isDisabled={!hasMovieFiles}
+              onPress={this.onMovieHistoryPress}
             />
 
             <PageToolbarSeparator />
@@ -671,81 +686,33 @@ class MovieDetails extends Component {
                 null
             }
 
-            <Tabs selectedIndex={selectedTabIndex} onSelect={this.onTabSelect}>
-              <TabList
-                className={styles.tabList}
-              >
-                <Tab
-                  className={styles.tab}
-                  selectedClassName={styles.selectedTab}
-                >
-                  {translate('History')}
-                </Tab>
+            <FieldSet legend={translate('Files')}>
+              <MovieFileEditorTable
+                movieId={id}
+              />
 
-                <Tab
-                  className={styles.tab}
-                  selectedClassName={styles.selectedTab}
-                >
-                  {translate('Files')}
-                </Tab>
+              <ExtraFileTable
+                movieId={id}
+              />
+            </FieldSet>
 
-                <Tab
-                  className={styles.tab}
-                  selectedClassName={styles.selectedTab}
-                >
-                  {translate('Titles')}
-                </Tab>
+            <FieldSet legend={translate('Cast')}>
+              <MovieCastPostersConnector
+                isSmallScreen={isSmallScreen}
+              />
+            </FieldSet>
 
-                <Tab
-                  className={styles.tab}
-                  selectedClassName={styles.selectedTab}
-                >
-                  {translate('Cast')}
-                </Tab>
+            <FieldSet legend={translate('Crew')}>
+              <MovieCrewPostersConnector
+                isSmallScreen={isSmallScreen}
+              />
+            </FieldSet>
 
-                <Tab
-                  className={styles.tab}
-                  selectedClassName={styles.selectedTab}
-                >
-                  {translate('Crew')}
-                </Tab>
-
-              </TabList>
-
-              <TabPanel>
-                <MovieHistoryTable
-                  movieId={id}
-                />
-              </TabPanel>
-
-              <TabPanel>
-                <MovieFileEditorTable
-                  movieId={id}
-                />
-                <ExtraFileTable
-                  movieId={id}
-                />
-              </TabPanel>
-
-              <TabPanel>
-                <MovieTitlesTable
-                  movieId={id}
-                />
-              </TabPanel>
-
-              <TabPanel>
-                <MovieCastPostersConnector
-                  isSmallScreen={isSmallScreen}
-                />
-              </TabPanel>
-
-              <TabPanel>
-                <MovieCrewPostersConnector
-                  isSmallScreen={isSmallScreen}
-                />
-              </TabPanel>
-            </Tabs>
-
+            <FieldSet legend={translate('Titles')}>
+              <MovieTitlesTable
+                movieId={id}
+              />
+            </FieldSet>
           </div>
 
           <OrganizePreviewModalConnector
@@ -759,6 +726,12 @@ class MovieDetails extends Component {
             movieId={id}
             onModalClose={this.onEditMovieModalClose}
             onDeleteMoviePress={this.onDeleteMoviePress}
+          />
+
+          <MovieHistoryModal
+            isOpen={isMovieHistoryModalOpen}
+            movieId={id}
+            onModalClose={this.onMovieHistoryModalClose}
           />
 
           <DeleteMovieModal

@@ -1,11 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Grid, WindowScroller } from 'react-virtualized';
-import Measure from 'Components/Measure';
+import { Navigation } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import dimensions from 'Styles/Variables/dimensions';
-import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
 import MovieCreditPosterConnector from './MovieCreditPosterConnector';
 import styles from './MovieCreditPosters.css';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 // Poster container dimensions
 const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
@@ -65,38 +68,10 @@ class MovieCreditPosters extends Component {
     };
 
     this._isInitialized = false;
-    this._grid = null;
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const {
-      items
-    } = this.props;
-
-    const {
-      width,
-      columnWidth,
-      columnCount,
-      rowHeight
-    } = this.state;
-
-    if (this._grid &&
-        (prevState.width !== width ||
-            prevState.columnWidth !== columnWidth ||
-            prevState.columnCount !== columnCount ||
-            prevState.rowHeight !== rowHeight ||
-            hasDifferentItemsOrOrder(prevProps.items, items))) {
-      // recomputeGridSize also forces Grid to discard its cache of rendered cells
-      this._grid.recomputeGridSize();
-    }
   }
 
   //
   // Control
-
-  setGridRef = (ref) => {
-    this._grid = ref;
-  };
 
   calculateGrid = (width = this.state.width, isSmallScreen) => {
 
@@ -117,7 +92,10 @@ class MovieCreditPosters extends Component {
     });
   };
 
-  cellRenderer = ({ key, rowIndex, columnIndex, style }) => {
+  //
+  // Render
+
+  render() {
     const {
       items,
       itemComponent
@@ -126,99 +104,44 @@ class MovieCreditPosters extends Component {
     const {
       posterWidth,
       posterHeight,
-      columnCount
-    } = this.state;
-
-    const movieIdx = rowIndex * columnCount + columnIndex;
-    const movie = items[movieIdx];
-
-    if (!movie) {
-      return null;
-    }
-
-    return (
-      <div
-        className={styles.container}
-        key={key}
-        style={style}
-      >
-        <MovieCreditPosterConnector
-          key={movie.order}
-          component={itemComponent}
-          posterWidth={posterWidth}
-          posterHeight={posterHeight}
-          tmdbId={movie.personTmdbId}
-          personName={movie.personName}
-          job={movie.job}
-          character={movie.character}
-          images={movie.images}
-        />
-      </div>
-    );
-  };
-
-  //
-  // Listeners
-
-  onMeasure = ({ width }) => {
-    this.calculateGrid(width, this.props.isSmallScreen);
-  };
-
-  //
-  // Render
-
-  render() {
-    const {
-      items
-    } = this.props;
-
-    const {
-      width,
-      columnWidth,
-      columnCount,
       rowHeight
     } = this.state;
 
-    const rowCount = Math.ceil(items.length / columnCount);
-
     return (
-      <Measure
-        whitelist={['width']}
-        onMeasure={this.onMeasure}
-      >
-        <WindowScroller
-          scrollElement={undefined}
-        >
-          {({ height, registerChild, onChildScroll, scrollTop }) => {
-            if (!height) {
-              return <div />;
-            }
 
-            return (
-              <div ref={registerChild}>
-                <Grid
-                  ref={this.setGridRef}
-                  className={styles.grid}
-                  autoHeight={true}
-                  height={height}
-                  columnCount={columnCount}
-                  columnWidth={columnWidth}
-                  rowCount={rowCount}
-                  rowHeight={rowHeight}
-                  width={width}
-                  onScroll={onChildScroll}
-                  scrollTop={scrollTop}
-                  overscanRowCount={2}
-                  cellRenderer={this.cellRenderer}
-                  scrollToAlignment={'start'}
-                  isScrollingOptOut={true}
-                />
-              </div>
-            );
-          }
-          }
-        </WindowScroller>
-      </Measure>
+      <div className={styles.sliderContainer}>
+        <Swiper
+          slidesPerView='auto'
+          spaceBetween={10}
+          slidesPerGroup={3}
+          loop={false}
+          loopFillGroupWithBlank={true}
+          className="mySwiper"
+          modules={[Navigation]}
+          onInit={(swiper) => {
+            swiper.params.navigation.prevEl = this._swiperPrevRef;
+            swiper.params.navigation.nextEl = this._swiperNextRef;
+            swiper.navigation.init();
+            swiper.navigation.update();
+          }}
+        >
+          {items.map((credit) => (
+            <SwiperSlide key={credit.id} style={{ width: posterWidth, height: rowHeight }}>
+              <MovieCreditPosterConnector
+                key={credit.id}
+                component={itemComponent}
+                posterWidth={posterWidth}
+                posterHeight={posterHeight}
+                tmdbId={credit.personTmdbId}
+                personName={credit.personName}
+                job={credit.job}
+                character={credit.character}
+                images={credit.images}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     );
   }
 }
