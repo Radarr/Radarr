@@ -88,7 +88,7 @@
 }
 
 @media only screen and (max-width: $breakpointSmall) {
-  .event {
+  .overlay {
     flex-direction: column;
   }
 
@@ -111,5 +111,4 @@
 .releaseIcon {
   margin-right: 20px;
   width: 25px;
-  text-align: right;
 }

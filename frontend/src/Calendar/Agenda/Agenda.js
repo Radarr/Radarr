@@ -42,9 +42,9 @@ function Agenda(props) {
     <div className={styles.agenda}>
       {
         items.map((item, index) => {
-          const momentDate = moment(item.inCinemas);
+          const momentDate = moment(item.sortDate);
           const showDate = index === 0 ||
-            !moment(items[index - 1].inCinemas).isSame(momentDate, 'day');
+            !moment(items[index - 1].sortDate).isSame(momentDate, 'day');
 
           return (
             <AgendaEventConnector

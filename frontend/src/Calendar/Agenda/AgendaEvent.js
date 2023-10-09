@@ -95,7 +95,7 @@ class AgendaEvent extends Component {
 
         <div className={styles.overlay}>
           <div className={styles.date}>
-            {(showDate) ? startTime.format(longDateFormat) : null}
+            {showDate ? startTime.format(longDateFormat) : null}
           </div>
 
           <div className={styles.releaseIcon}>
