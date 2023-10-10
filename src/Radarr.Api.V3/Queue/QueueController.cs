@@ -129,9 +129,10 @@ namespace Radarr.Api.V3.Queue
         }
 
         [HttpGet]
-        public PagingResource<QueueResource> GetQueue(bool includeUnknownMovieItems = false, bool includeMovie = false)
+        [Produces("application/json")]
+        public PagingResource<QueueResource> GetQueue([FromQuery] PagingRequestResource paging, bool includeUnknownMovieItems = false, bool includeMovie = false)
         {
-            var pagingResource = Request.ReadPagingResourceFromRequest<QueueResource>();
+            var pagingResource = new PagingResource<QueueResource>(paging);
             var pagingSpec = pagingResource.MapToPagingSpec<QueueResource, NzbDrone.Core.Queue.Queue>("timeleft", SortDirection.Ascending);
 
             return pagingSpec.ApplyToPage((spec) => GetQueue(spec, includeUnknownMovieItems), (q) => MapToResource(q, includeMovie));

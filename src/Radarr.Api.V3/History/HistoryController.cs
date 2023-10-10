@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine.Specifications;
@@ -59,23 +60,20 @@ namespace Radarr.Api.V3.History
         }
 
         [HttpGet]
-        public PagingResource<HistoryResource> GetHistory(bool includeMovie)
+        [Produces("application/json")]
+        public PagingResource<HistoryResource> GetHistory([FromQuery] PagingRequestResource paging, bool includeMovie, int? eventType, string downloadId)
         {
-            var pagingResource = Request.ReadPagingResourceFromRequest<HistoryResource>();
+            var pagingResource = new PagingResource<HistoryResource>(paging);
             var pagingSpec = pagingResource.MapToPagingSpec<HistoryResource, MovieHistory>("date", SortDirection.Descending);
 
-            var eventTypeFilter = pagingResource.Filters.FirstOrDefault(f => f.Key == "eventType");
-            var downloadIdFilter = pagingResource.Filters.FirstOrDefault(f => f.Key == "downloadId");
-
-            if (eventTypeFilter != null)
+            if (eventType.HasValue)
             {
-                var filterValue = (MovieHistoryEventType)Convert.ToInt32(eventTypeFilter.Value);
+                var filterValue = (MovieHistoryEventType)eventType.Value;
                 pagingSpec.FilterExpressions.Add(v => v.EventType == filterValue);
             }
 
-            if (downloadIdFilter != null)
+            if (downloadId.IsNotNullOrWhiteSpace())
             {
-                var downloadId = downloadIdFilter.Value;
                 pagingSpec.FilterExpressions.Add(h => h.DownloadId == downloadId);
             }
 
