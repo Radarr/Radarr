@@ -43,9 +43,9 @@ namespace NzbDrone.Core.ImportLists
 
         private void SyncAll()
         {
-            if (_importListFactory.Enabled().Where(a => ((ImportListDefinition)a.Definition).EnableAuto).Empty())
+            if (_importListFactory.Enabled().Empty())
             {
-                _logger.Debug("No import lists with automatic add enabled, skipping sync and cleaning");
+                _logger.Debug("No enabled import lists, skipping sync and cleaning");
 
                 return;
             }
