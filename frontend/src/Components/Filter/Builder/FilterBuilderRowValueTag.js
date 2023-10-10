@@ -7,7 +7,7 @@ import styles from './FilterBuilderRowValueTag.css';
 
 function FilterBuilderRowValueTag(props) {
   return (
-    <span
+    <div
       className={styles.tag}
     >
       <TagInputTag
@@ -22,7 +22,7 @@ function FilterBuilderRowValueTag(props) {
             {translate('Or')}
           </div>
       }
-    </span>
+    </div>
   );
 }
 
