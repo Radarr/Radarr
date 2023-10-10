@@ -101,6 +101,15 @@ function MovieIndexSortMenu(props: MovieIndexSortMenuProps) {
         </SortMenuItem>
 
         <SortMenuItem
+          name="releaseDate"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          {translate('ReleaseDates')}
+        </SortMenuItem>
+
+        <SortMenuItem
           name="tmdbRating"
           sortKey={sortKey}
           sortDirection={sortDirection}
