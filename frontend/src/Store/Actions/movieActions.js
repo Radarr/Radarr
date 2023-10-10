@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import { filterTypePredicates, filterTypes, sortDirections } from 'Helpers/Props';
@@ -240,16 +241,55 @@ export const sortPredicates = {
     return item.year || undefined;
   },
 
-  inCinemas: function(item) {
-    return item.inCinemas || '';
+  inCinemas: function(item, direction) {
+    if (item.inCinemas) {
+      return moment(item.inCinemas).unix();
+    }
+
+    if (direction === sortDirections.DESCENDING) {
+      return -1 * Number.MAX_VALUE;
+    }
+
+    return Number.MAX_VALUE;
   },
 
-  physicalRelease: function(item) {
-    return item.physicalRelease || '';
+  physicalRelease: function(item, direction) {
+    if (item.physicalRelease) {
+      return moment(item.physicalRelease).unix();
+    }
+
+    if (direction === sortDirections.DESCENDING) {
+      return -1 * Number.MAX_VALUE;
+    }
+
+    return Number.MAX_VALUE;
   },
 
-  digitalRelease: function(item) {
-    return item.digitalRelease || '';
+  digitalRelease: function(item, direction) {
+    if (item.digitalRelease) {
+      return moment(item.digitalRelease).unix();
+    }
+
+    if (direction === sortDirections.DESCENDING) {
+      return -1 * Number.MAX_VALUE;
+    }
+
+    return Number.MAX_VALUE;
+  },
+
+  releaseDate: function(item, direction) {
+    const { inCinemas, digitalRelease, physicalRelease } = item;
+    const releaseDate = digitalRelease || physicalRelease || inCinemas;
+
+    if (releaseDate) {
+      return moment(releaseDate).unix();
+    }
+
+    if (direction === sortDirections.DESCENDING) {
+      return -1 * Number.MAX_VALUE;
+    }
+
+    return Number.MAX_VALUE;
   }
 };
 
