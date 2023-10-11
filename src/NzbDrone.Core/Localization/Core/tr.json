@@ -591,7 +591,6 @@
     "PtpOldSettingsCheckMessage": "Aşağıdaki PassThePopcorn dizinleyicilerinin ayarları kullanımdan kaldırıldı ve güncellenmeleri gerekiyor: {0}",
     "Queued": "Sıraya alındı",
     "RecyclingBinCleanup": "Geri Dönüşüm Kutusu Temizleme",
-    "Redownload": "Yeniden indir",
     "RefreshMovie": "Filmi yenile",
     "RejectionCount": "Reddetme Sayısı",
     "RelativePath": "Göreceli yol",

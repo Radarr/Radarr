@@ -546,7 +546,6 @@
     "RetentionHelpText": "Somente Usenet: defina como zero para definir a retenção ilimitada",
     "RestartReloadNote": "Observação: o Radarr reiniciará automaticamente e recarregará a interface durante o processo de restauração.",
     "RejectionCount": "Número de rejeição",
-    "Redownload": "Baixar novamente",
     "UpgradeAllowedHelpText": "Se desabilitada, as qualidades não serão atualizadas",
     "UpgradesAllowed": "Atualizações Permitidas",
     "UpgradeUntilCustomFormatScore": "Atualizar até pontuação de formato personalizado",
