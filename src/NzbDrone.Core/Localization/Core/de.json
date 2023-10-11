@@ -461,7 +461,6 @@
     "RecycleBinHelpText": "Gelöschte Filmdateien werden hierher verschoben anstatt sie direkt endgültig zu löschen",
     "RecyclingBin": "Papierkorb",
     "RecyclingBinCleanup": "Papierkorb aufräumen",
-    "Redownload": "Nochmal herunterladen",
     "RefreshInformationAndScanDisk": "Metadaten aktualisieren und Festplatte scannen",
     "RefreshMovie": "Film aktualisieren",
     "ReleaseRejected": "Release abgelehnt",
@@ -960,7 +959,7 @@
     "AddRootFolder": "Stammordner hinzufügen",
     "AddQualityProfile": "Qualitätsprofil hinzufügen",
     "AddedToDownloadQueue": "Zur Downloadwarteschlange hinzugefügt",
-    "AddDownloadClient": "Zum Downloader hinzufügen",
+    "AddDownloadClient": "Downloadmanager hinzufügen",
     "AddCustomFormat": "Eigenes Format hinzufügen",
     "AddDelayProfile": "Verzögerungsprofil hinzufügen",
     "Add": "Hinzufügen",
@@ -1170,12 +1169,14 @@
     "ApplyTagsHelpTextHowToApplyImportLists": "Wie werden Tags zu ausgewählten Filmen zugeteilt",
     "DeleteRootFolderMessageText": "Indexer '{0}' wirklich löschen?",
     "DeleteRootFolder": "Stammordner löschen",
-    "AddConnection": "Sammlung bearbeiten",
+    "AddConnection": "Verbindung hinzufügen",
     "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Minimum der eigenen Formate Bewertungspunkte",
     "NotificationStatusAllClientHealthCheckMessage": "Wegen Fehlern sind keine Applikationen verfügbar",
     "NotificationStatusSingleClientHealthCheckMessage": "Applikationen wegen folgender Fehler nicht verfügbar: {0}",
     "RemoveFromDownloadClientHelpTextWarning": "Dies wird den Download und alle bereits heruntergeladenen Dateien aus dem Downloader entfernen.",
     "DownloadClientsLoadError": "Downloader konnten nicht geladen werden",
     "IMDbId": "TMDb ID",
-    "DisabledForLocalAddresses": "Für Lokale Adressen deaktivieren"
+    "DisabledForLocalAddresses": "Für Lokale Adressen deaktivieren",
+    "AddCondition": "Bedingung hinzufügen",
+    "AddAutoTag": "Automatisches Tag hinzufügen"
 }

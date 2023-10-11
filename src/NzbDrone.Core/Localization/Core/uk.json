@@ -777,7 +777,6 @@
     "ReadTheWikiForMoreInformation": "Читайте Wiki для отримання додаткової інформації",
     "RecycleBinCleanupDaysHelpTextWarning": "Файли в кошику, старші за вибрану кількість днів, будуть очищені автоматично",
     "RecycleBinHelpText": "Файли фільмів потраплять сюди після видалення, а не назавжди",
-    "Redownload": "Повторне завантаження",
     "RejectionCount": "Кількість відмов",
     "ReleaseBranchCheckOfficialBranchMessage": "Гілка {0} не є дійсною гілкою випуску Radarr, ви не отримуватимете оновлення",
     "ReleaseStatus": "Статус випуску",
