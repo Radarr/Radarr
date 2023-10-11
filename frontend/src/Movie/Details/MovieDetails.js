@@ -44,7 +44,7 @@ import MovieCollectionLabelConnector from './../MovieCollectionLabelConnector';
 import MovieCastPostersConnector from './Credits/Cast/MovieCastPostersConnector';
 import MovieCrewPostersConnector from './Credits/Crew/MovieCrewPostersConnector';
 import MovieDetailsLinks from './MovieDetailsLinks';
-import MovieReleaseDatesConnector from './MovieReleaseDatesConnector';
+import MovieReleaseDates from './MovieReleaseDates';
 import MovieStatusLabel from './MovieStatusLabel';
 import MovieTagsConnector from './MovieTagsConnector';
 import MovieTitlesTable from './Titles/MovieTitlesTable';
@@ -433,7 +433,7 @@ class MovieDetails extends Component {
                             }
                             title={translate('ReleaseDates')}
                             body={
-                              <MovieReleaseDatesConnector
+                              <MovieReleaseDates
                                 inCinemas={inCinemas}
                                 physicalRelease={physicalRelease}
                                 digitalRelease={digitalRelease}
