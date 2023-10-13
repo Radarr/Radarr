@@ -250,7 +250,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Movie TitleThe}"] = m => TitleThe(movie.Title);
             tokenHandlers["{Movie TitleFirstCharacter}"] = m => TitleThe(GetLanguageTitle(movie, m.CustomFormat)).Substring(0, 1).FirstCharToUpper();
             tokenHandlers["{Movie OriginalTitle}"] = m => movie.MovieMetadata.Value.OriginalTitle ?? string.Empty;
-            tokenHandlers["{Movie CleanOriginalTitle}"] = m => CleanTitle(movie.MovieMetadata.Value.OriginalTitle) ?? string.Empty;
+            tokenHandlers["{Movie CleanOriginalTitle}"] = m => CleanTitle(movie.MovieMetadata.Value.OriginalTitle ?? string.Empty);
 
             tokenHandlers["{Movie Certification}"] = m => movie.MovieMetadata.Value.Certification ?? string.Empty;
             tokenHandlers["{Movie Collection}"] = m => movie.MovieMetadata.Value.CollectionTitle ?? string.Empty;
