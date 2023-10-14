@@ -1329,5 +1329,8 @@
     "OrganizeRelativePaths": "Todos os caminhos são relativos a: `{path}`",
     "OrganizeRenamingDisabled": "A renomeação está desativada, nada para renomear",
     "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "O cliente de download {0} está configurado para remover downloads concluídos. Isso pode resultar na remoção dos downloads do seu cliente antes que {1} possa importá-los.",
-    "Umask": "Desmascarar"
+    "Umask": "Desmascarar",
+    "AutoRedownloadFailedFromInteractiveSearch": "Falha no Novo Download pela Pesquisa Interativa",
+    "AutoRedownloadFailedFromInteractiveSearchHelpText": "Procure e tente baixar automaticamente uma versão diferente quando a versão com falha for obtida pela pesquisa interativa",
+    "AutoRedownloadFailed": "Falha no Novo Download"
 }

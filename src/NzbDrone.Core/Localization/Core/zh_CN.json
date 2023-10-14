@@ -1329,5 +1329,8 @@
     "OverrideGrabNoMovie": "必须选择电影",
     "RetryingDownloadOn": "于 {date} {time} 重试下载",
     "Or": "或",
-    "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "下载客户端{0}设置为删除已完成的下载。这可能导致在{1}可以导入下载之前从您的客户端删除下载。"
+    "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "下载客户端{0}设置为删除已完成的下载。这可能导致在{1}可以导入下载之前从您的客户端删除下载。",
+    "AutoRedownloadFailed": "重新下载失败",
+    "AutoRedownloadFailedFromInteractiveSearchHelpText": "当从交互式搜索中获取失败的版本时，自动搜索并尝试下载其他版本",
+    "AutoRedownloadFailedFromInteractiveSearch": "从交互式搜索中重新下载失败"
 }
