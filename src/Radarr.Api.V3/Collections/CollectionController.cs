@@ -159,19 +159,22 @@ namespace Radarr.Api.V3.Collections
 
                 allCollectionMovies.TryGetValue(collection.TmdbId, out var collectionMovies);
 
-                foreach (var movie in collectionMovies)
+                if (collectionMovies != null)
                 {
-                    var translation = GetTranslationFromDict(tdict, movie, configLanguage);
-
-                    var movieResource = movie.ToResource(translation);
-                    movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
-
-                    if (!existingMoviesTmdbIds.Contains(movie.TmdbId))
+                    foreach (var movie in collectionMovies)
                     {
-                        resource.MissingMovies++;
-                    }
+                        var translation = GetTranslationFromDict(tdict, movie, configLanguage);
 
-                    resource.Movies.Add(movieResource);
+                        var movieResource = movie.ToResource(translation);
+                        movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
+
+                        if (!existingMoviesTmdbIds.Contains(movie.TmdbId))
+                        {
+                            resource.MissingMovies++;
+                        }
+
+                        resource.Movies.Add(movieResource);
+                    }
                 }
 
                 yield return resource;
