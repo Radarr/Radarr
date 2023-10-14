@@ -41,14 +41,16 @@ namespace NzbDrone.Core.Datastore
 
         private static string GetConnectionString(string dbPath)
         {
-            var connectionBuilder = new SQLiteConnectionStringBuilder();
-
-            connectionBuilder.DataSource = dbPath;
-            connectionBuilder.CacheSize = (int)-20000;
-            connectionBuilder.DateTimeKind = DateTimeKind.Utc;
-            connectionBuilder.JournalMode = OsInfo.IsOsx ? SQLiteJournalModeEnum.Truncate : SQLiteJournalModeEnum.Wal;
-            connectionBuilder.Pooling = true;
-            connectionBuilder.Version = 3;
+            var connectionBuilder = new SQLiteConnectionStringBuilder
+            {
+                DataSource = dbPath,
+                CacheSize = (int)-20000,
+                DateTimeKind = DateTimeKind.Utc,
+                JournalMode = OsInfo.IsOsx ? SQLiteJournalModeEnum.Truncate : SQLiteJournalModeEnum.Wal,
+                Pooling = true,
+                Version = 3,
+                BusyTimeout = 100
+            };
 
             if (OsInfo.IsOsx)
             {
