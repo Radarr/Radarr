@@ -9,8 +9,16 @@ namespace NzbDrone.Core.Datastore.Migration
         protected override void MainDbUpgrade()
         {
             Rename.Table("Profiles").To("QualityProfiles");
-            Rename.Column("ProfileId").OnTable("Movies").To("QualityProfileId");
-            Rename.Column("ProfileId").OnTable("ImportLists").To("QualityProfileId");
+
+            if (Schema.Table("Movies").Column("ProfileId").Exists())
+            {
+                Rename.Column("ProfileId").OnTable("Movies").To("QualityProfileId");
+            }
+
+            if (Schema.Table("ImportLists").Column("ProfileId").Exists())
+            {
+                Rename.Column("ProfileId").OnTable("ImportLists").To("QualityProfileId");
+            }
         }
     }
 }
