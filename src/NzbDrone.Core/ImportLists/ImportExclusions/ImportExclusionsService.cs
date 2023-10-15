@@ -41,7 +41,7 @@ namespace NzbDrone.Core.ImportLists.ImportExclusions
 
         public List<ImportExclusion> AddExclusions(List<ImportExclusion> exclusions)
         {
-            _exclusionRepository.InsertMany(exclusions);
+            _exclusionRepository.InsertMany(DeDupeExclusions(exclusions));
 
             return exclusions;
         }
@@ -76,8 +76,20 @@ namespace NzbDrone.Core.ImportLists.ImportExclusions
             if (message.AddExclusion)
             {
                 _logger.Debug("Adding {0} Deleted Movies to Import Exclusions", message.Movies.Count);
-                _exclusionRepository.InsertMany(message.Movies.Select(m => new ImportExclusion { TmdbId = m.TmdbId, MovieTitle = m.Title, MovieYear = m.Year }).ToList());
+
+                var exclusions = message.Movies.Select(m => new ImportExclusion { TmdbId = m.TmdbId, MovieTitle = m.Title, MovieYear = m.Year }).ToList();
+                _exclusionRepository.InsertMany(DeDupeExclusions(exclusions));
             }
+        }
+
+        private List<ImportExclusion> DeDupeExclusions(List<ImportExclusion> exclusions)
+        {
+            var existingExclusions = _exclusionRepository.AllExcludedTmdbIds();
+
+            return exclusions
+                .DistinctBy(x => x.TmdbId)
+                .Where(x => !existingExclusions.Contains(x.TmdbId))
+                .ToList();
         }
     }
 }
