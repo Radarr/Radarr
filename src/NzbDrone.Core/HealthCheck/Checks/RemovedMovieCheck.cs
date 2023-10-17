@@ -7,7 +7,7 @@ using NzbDrone.Core.Movies.Events;
 namespace NzbDrone.Core.HealthCheck.Checks
 {
     [CheckOn(typeof(MovieUpdatedEvent))]
-    [CheckOn(typeof(MoviesDeletedEvent), CheckOnCondition.FailedOnly)]
+    [CheckOn(typeof(MoviesDeletedEvent))]
     [CheckOn(typeof(MovieRefreshCompleteEvent))]
     public class RemovedMovieCheck : HealthCheckBase, ICheckOnCondition<MovieUpdatedEvent>, ICheckOnCondition<MoviesDeletedEvent>
     {
