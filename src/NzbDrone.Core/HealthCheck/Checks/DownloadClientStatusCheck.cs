@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download;
@@ -40,7 +41,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 return new HealthCheck(GetType(), HealthCheckResult.Error, _localizationService.GetLocalizedString("DownloadClientStatusCheckAllClientMessage"), "#download-clients-are-unavailable-due-to-failures");
             }
 
-            return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("DownloadClientStatusCheckSingleClientMessage"), string.Join(", ", backOffProviders.Select(v => v.Provider.Definition.Name))), "#download-clients-are-unavailable-due-to-failures");
+            return new HealthCheck(GetType(),
+                HealthCheckResult.Warning,
+                _localizationService.GetLocalizedString("DownloadClientStatusCheckSingleClientMessage", new Dictionary<string, object>
+                {
+                    { "downloadClientNames", string.Join(", ", backOffProviders.Select(v => v.Provider.Definition.Name)) }
+                }),
+                "#download-clients-are-unavailable-due-to-failures");
         }
     }
 }

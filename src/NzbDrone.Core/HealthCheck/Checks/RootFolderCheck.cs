@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
@@ -40,11 +41,26 @@ namespace NzbDrone.Core.HealthCheck.Checks
             {
                 if (missingRootFolders.Count == 1)
                 {
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RootFolderCheckSingleMessage"), missingRootFolders.First()), "#missing-root-folder");
+                    return new HealthCheck(GetType(),
+                        HealthCheckResult.Error,
+                        _localizationService.GetLocalizedString(
+                            "RootFolderCheckSingleMessage",
+                            new Dictionary<string, object>
+                            {
+                                { "rootFolderPath", missingRootFolders.First() }
+                            }),
+                        "#missing-root-folder");
                 }
 
-                var message = string.Format(_localizationService.GetLocalizedString("RootFolderCheckMultipleMessage"), string.Join(" | ", missingRootFolders));
-                return new HealthCheck(GetType(), HealthCheckResult.Error, message, "#missing-root-folder");
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Error,
+                    _localizationService.GetLocalizedString(
+                        "RootFolderCheckMultipleMessage",
+                        new Dictionary<string, object>
+                        {
+                            { "rootFolderPaths", string.Join(" | ", missingRootFolders) }
+                        }),
+                    "#missing-root-folder");
             }
 
             return new HealthCheck(GetType());
