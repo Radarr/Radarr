@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Localization;
@@ -32,10 +33,22 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (deletedMovie.Count == 1)
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemovedMovieCheckSingleMessage"), movieText), "#movie-was-removed-from-tmdb");
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Error,
+                    _localizationService.GetLocalizedString("RemovedMovieCheckSingleMessage", new Dictionary<string, object>
+                    {
+                        { "movie", movieText }
+                    }),
+                    "#movie-was-removed-from-tmdb");
             }
 
-            return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemovedMovieCheckMultipleMessage"), movieText), "#movie-was-removed-from-tmdb");
+            return new HealthCheck(GetType(),
+                HealthCheckResult.Error,
+                _localizationService.GetLocalizedString("RemovedMovieCheckMultipleMessage", new Dictionary<string, object>
+                {
+                    { "movies", movieText }
+                }),
+                "#movie-was-removed-from-tmdb");
         }
 
         public bool ShouldCheckOnEvent(MoviesDeletedEvent message)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using NLog;
@@ -40,7 +41,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (!addresses.Any())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ProxyCheckResolveIpMessage"), _configService.ProxyHostname), "#proxy-failed-resolve-ip");
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Error,
+                    _localizationService.GetLocalizedString("ProxyCheckResolveIpMessage", new Dictionary<string, object>
+                    {
+                        { "proxyHostName", _configService.ProxyHostname }
+                    }),
+                    "#proxy-failed-resolve-ip");
             }
 
             var request = _cloudRequestBuilder.Create()
@@ -55,13 +62,27 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 if (response.StatusCode == HttpStatusCode.BadRequest)
                 {
                     _logger.Error("Proxy Health Check failed: {0}", response.StatusCode);
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ProxyCheckBadRequestMessage"), response.StatusCode), "#proxy-failed-test");
+
+                    return new HealthCheck(GetType(),
+                        HealthCheckResult.Error,
+                        _localizationService.GetLocalizedString("ProxyCheckBadRequestMessage", new Dictionary<string, object>
+                        {
+                            { "statusCode", response.StatusCode }
+                        }),
+                        "#proxy-failed-test");
                 }
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, "Proxy Health Check failed");
-                return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ProxyCheckFailedToTestMessage"), request.Url), "#proxy-failed-test");
+
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Error,
+                    _localizationService.GetLocalizedString("ProxyCheckFailedToTestMessage", new Dictionary<string, object>
+                    {
+                        { "url", request.Url }
+                    }),
+                    "#proxy-failed-test");
             }
 
             return new HealthCheck(GetType());
