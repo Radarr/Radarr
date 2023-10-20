@@ -42,6 +42,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [TestCase("¡Mucha Lucha!", "M", "¡Mucha Lucha!")]
         [TestCase(".hack", "H", "hack")]
         [TestCase("Ütopya", "U", "Ütopya")]
+        [TestCase("Æon Flux", "A", "Æon Flux")]
         public void should_get_expected_folder_name_back(string title, string parent, string child)
         {
             _movie.Title = title;
