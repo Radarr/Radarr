@@ -801,7 +801,7 @@
     "AddCustomFormat": "Adicionar formato personalizado",
     "AddDelayProfile": "Adicionar perfil de atraso",
     "AddDownloadClient": "Adicionar cliente de transferências",
-    "AllMoviesInPathHaveBeenImported": "Todos os filmes em {0} foram importados",
+    "AllMoviesInPathHaveBeenImported": "Todos os filmes no {caminho} foram importados",
     "AllResultsHiddenFilter": "Todos os resultados estão ocultos pelo filtro aplicado",
     "Always": "Sempre",
     "AptUpdater": "Utilize o apt para instalar a atualização",
