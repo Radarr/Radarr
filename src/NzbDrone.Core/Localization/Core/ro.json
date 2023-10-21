@@ -575,7 +575,7 @@
     "Posters": "Afise",
     "PosterSize": "Dimensiunea posterului",
     "AutoUnmonitorPreviouslyDownloadedMoviesHelpText": "Filmele șterse de pe disc sunt automat monitorizate în Radarr",
-    "TimeFormat": "Format de timp",
+    "TimeFormat": "Format ora",
     "AddListExclusion": "Adăugați excluderea listei",
     "AnalyseVideoFiles": "Analizați fișierele video",
     "AnalyticsEnabledHelpText": "Trimiteți informații anonime privind utilizarea și erorile către serverele Radarr. Aceasta include informații despre browserul dvs., ce pagini WebUI Radarr utilizați, raportarea erorilor, precum și sistemul de operare și versiunea de execuție. Vom folosi aceste informații pentru a acorda prioritate caracteristicilor și remedierilor de erori.",
@@ -851,7 +851,7 @@
     "SettingsShortDateFormat": "Format scurt de dată",
     "SettingsShowRelativeDates": "Afișați datele relative",
     "SettingsShowRelativeDatesHelpText": "Afișați datele relative (Azi / Ieri / etc) sau absolute",
-    "SettingsTimeFormat": "Format de timp",
+    "SettingsTimeFormat": "Format ora",
     "SettingsWeekColumnHeader": "Antetul coloanei săptămânii",
     "SettingsWeekColumnHeaderHelpText": "Afișat deasupra fiecărei coloane când săptămâna este vizualizarea activă",
     "ShouldMonitorHelpText": "Dacă este activată, filmele adăugate de această listă sunt adăugate și monitorizate",
@@ -1104,5 +1104,6 @@
     "AddConnectionImplementation": "Adăugați conexiune - {implementationName}",
     "AddDownloadClientImplementation": "Adăugați client de descărcare - {implementationName}",
     "AddIndexerImplementation": "Adăugați Indexator - {implementationName}",
-    "Umask": "Umask"
+    "Umask": "Umask",
+    "AppUpdated": "{appName} actualizat"
 }
