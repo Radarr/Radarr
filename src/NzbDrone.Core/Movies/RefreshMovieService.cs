@@ -155,6 +155,11 @@ namespace NzbDrone.Core.Movies
                     movieMetadata.CollectionTitle = newCollection.Title;
                 }
             }
+            else
+            {
+                movieMetadata.CollectionTmdbId = 0;
+                movieMetadata.CollectionTitle = null;
+            }
 
             movieMetadata.AlternativeTitles = _titleService.UpdateTitles(movieInfo.AlternativeTitles, movieMetadata);
             _movieTranslationService.UpdateTranslations(movieInfo.Translations, movieMetadata);
