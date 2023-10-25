@@ -373,6 +373,7 @@
   "EnableInteractiveSearchHelpText": "Will be used when interactive search is used",
   "EnableInteractiveSearchHelpTextWarning": "Search is not supported with this indexer",
   "EnableMediaInfoHelpText": "Extract video information such as resolution, runtime and codec information from files. This requires Radarr to read parts of the file which may cause high disk or network activity during scans.",
+  "EnableProfile": "Enable Profile",
   "EnableRSS": "Enable RSS",
   "EnableSSL": "Enable SSL",
   "EnableSslHelpText": " Requires restart running as administrator to take effect",
