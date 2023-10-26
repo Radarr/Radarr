@@ -1332,5 +1332,6 @@
     "InteractiveSearchResultsFailedErrorMessage": "La recherche a échoué car il s'agit d'un {message}. Essayez d'actualiser les informations sur le film et vérifiez que les informations nécessaires sont présentes avant de lancer une nouvelle recherche.",
     "MovieDownloadFailedTooltip": "Le téléchargement du film a échoué",
     "MovieDownloadIgnoredTooltip": "Téléchargement de film ignoré",
-    "SkipRedownloadHelpText": "Empêche Radarr d'essayer de télécharger une version alternative pour cet élément"
+    "SkipRedownloadHelpText": "Empêche Radarr d'essayer de télécharger une version alternative pour cet élément",
+    "QueueFilterHasNoItems": "Le filtre de file d'attente sélectionné ne contient aucun élément"
 }
