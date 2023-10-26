@@ -1049,5 +1049,11 @@
     "ClickToChangeReleaseGroup": "Kliknutím změníte skupinu vydání",
     "ChooseImportMode": "Vyberte mód importu",
     "CloneAutoTag": "Klonovat automatické značky",
-    "CloneCondition": "Klonovat podmínku"
+    "CloneCondition": "Klonovat podmínku",
+    "From": "Od",
+    "ImportListMultipleMissingRoots": "Několik kořenových adresářů chybí pro seznamy importu: {0}",
+    "DiscordUrlInSlackNotification": "Máte nastaveny Discord notifikace v režimu Slack. Nastavte je do režimu Discord pro lepší funkcionalitu. Postižené notifikace: {0}",
+    "AnnouncedMsg": "Film je oznámen",
+    "IndexerDownloadClientHelpText": "Zvolte, který klient pro stahování bude použit pro zachytávání z toho indexeru",
+    "ImportListMissingRoot": "Chybí kořenový adresář pro import seznamu: {0}"
 }
