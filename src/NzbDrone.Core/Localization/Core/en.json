@@ -1288,7 +1288,7 @@
   "UpdateAvailable": "New update is available",
   "UpdateCheckStartupNotWritableMessage": "Cannot install update because startup folder '{startupFolder}' is not writable by the user '{userName}'.",
   "UpdateCheckStartupTranslocationMessage": "Cannot install update because startup folder '{startupFolder}' is in an App Translocation folder.",
-  "UpdateCheckUINotWritableMessage": "Cannot install update because UI folder '{startupFolder}' is not writable by the user '{userName}'.",
+  "UpdateCheckUINotWritableMessage": "Cannot install update because UI folder '{uiFolder}' is not writable by the user '{userName}'.",
   "UpdateFiltered": "Update Filtered",
   "UpdateMechanismHelpText": "Use {appName}'s built-in updater or a script",
   "UpdateScriptPathHelpText": "Path to a custom script that takes an extracted update package and handle the remainder of the update process",
