@@ -86,5 +86,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteMovie.Release.Title = title;
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
         }
+
+        [TestCase("Series Title EP50 USLT NTSC DVDRemux DD2.0")]
+        [TestCase("Series.Title.S01.NTSC.DVDRip.DD2.0.x264-PLAiD")]
+        public void should_return_true_if_dvdrip(string title)
+        {
+            _remoteMovie.Release.Title = title;
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+        }
     }
 }
