@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
             GivenHistory(history);
 
-            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeFalse();
         }
     }
 }
