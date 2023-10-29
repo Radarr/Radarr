@@ -8,7 +8,6 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.ThingiProvider;
@@ -22,7 +21,6 @@ namespace NzbDrone.Core.Download
         where TSettings : IProviderConfig, new()
     {
         protected readonly IConfigService _configService;
-        protected readonly INamingConfigService _namingConfigService;
         protected readonly IDiskProvider _diskProvider;
         protected readonly IRemotePathMappingService _remotePathMappingService;
         protected readonly Logger _logger;
@@ -76,13 +74,11 @@ namespace NzbDrone.Core.Download
         protected TSettings Settings => (TSettings)Definition.Settings;
 
         protected DownloadClientBase(IConfigService configService,
-            INamingConfigService namingConfigService,
             IDiskProvider diskProvider,
             IRemotePathMappingService remotePathMappingService,
             Logger logger)
         {
             _configService = configService;
-            _namingConfigService = namingConfigService;
             _diskProvider = diskProvider;
             _remotePathMappingService = remotePathMappingService;
             _logger = logger;

@@ -22,12 +22,11 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
         public UsenetBlackhole(IScanWatchFolder scanWatchFolder,
                                IHttpClient httpClient,
                                IConfigService configService,
-                               INamingConfigService namingConfigService,
                                IDiskProvider diskProvider,
                                IRemotePathMappingService remotePathMappingService,
                                IValidateNzbs nzbValidationService,
                                Logger logger)
-            : base(httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, nzbValidationService, logger)
+            : base(httpClient, configService, diskProvider, remotePathMappingService, nzbValidationService, logger)
         {
             _scanWatchFolder = scanWatchFolder;
 

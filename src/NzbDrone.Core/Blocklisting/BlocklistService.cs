@@ -15,6 +15,7 @@ namespace NzbDrone.Core.Blocklisting
     public interface IBlocklistService
     {
         bool Blocklisted(int movieId, ReleaseInfo release);
+        bool BlocklistedTorrentHash(int movieId, string hash);
         PagingSpec<Blocklist> Paged(PagingSpec<Blocklist> pagingSpec);
         List<Blocklist> GetByMovieId(int movieId);
         void Block(RemoteMovie remoteMovie, string message);
@@ -61,6 +62,12 @@ namespace NzbDrone.Core.Blocklisting
 
             return blocklistedByTitle.Where(b => b.Protocol == DownloadProtocol.Usenet)
                                      .Any(b => SameNzb(b, release));
+        }
+
+        public bool BlocklistedTorrentHash(int movieId, string hash)
+        {
+            return _blocklistRepository.BlocklistedByTorrentInfoHash(movieId, hash).Any(b =>
+                b.TorrentInfoHash.Equals(hash, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public PagingSpec<Blocklist> Paged(PagingSpec<Blocklist> pagingSpec)

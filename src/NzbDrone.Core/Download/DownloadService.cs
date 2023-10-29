@@ -103,6 +103,11 @@ namespace NzbDrone.Core.Download
                 _logger.Trace("Release {0} no longer available on indexer.", remoteMovie);
                 throw;
             }
+            catch (ReleaseBlockedException)
+            {
+                _logger.Trace("Release {0} previously added to blocklist, not sending to download client again.", remoteMovie);
+                throw;
+            }
             catch (DownloadClientRejectedReleaseException)
             {
                 _logger.Trace("Release {0} rejected by download client, possible duplicate.", remoteMovie);
@@ -127,7 +132,7 @@ namespace NzbDrone.Core.Download
             movieGrabbedEvent.DownloadClientId = downloadClient.Definition.Id;
             movieGrabbedEvent.DownloadClientName = downloadClient.Definition.Name;
 
-            if (!string.IsNullOrWhiteSpace(downloadClientId))
+            if (downloadClientId.IsNotNullOrWhiteSpace())
             {
                 movieGrabbedEvent.DownloadId = downloadClientId;
             }
