@@ -21,12 +21,11 @@ namespace NzbDrone.Core.Download
 
         protected UsenetClientBase(IHttpClient httpClient,
                                    IConfigService configService,
-                                   INamingConfigService namingConfigService,
                                    IDiskProvider diskProvider,
                                    IRemotePathMappingService remotePathMappingService,
                                    IValidateNzbs nzbValidationService,
                                    Logger logger)
-            : base(configService, namingConfigService, diskProvider, remotePathMappingService, logger)
+            : base(configService, diskProvider, remotePathMappingService, logger)
         {
             _httpClient = httpClient;
             _nzbValidationService = nzbValidationService;

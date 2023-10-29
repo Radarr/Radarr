@@ -8,10 +8,10 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.Clients.DownloadStation.Proxies;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
-using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.ThingiProvider;
@@ -35,11 +35,11 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                                       ITorrentFileInfoReader torrentFileInfoReader,
                                       IHttpClient httpClient,
                                       IConfigService configService,
-                                      INamingConfigService namingConfigService,
                                       IDiskProvider diskProvider,
                                       IRemotePathMappingService remotePathMappingService,
+                                      IBlocklistService blocklistService,
                                       Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
+            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, blocklistService, logger)
         {
             _dsInfoProxy = dsInfoProxy;
             _dsTaskProxySelector = dsTaskProxySelector;

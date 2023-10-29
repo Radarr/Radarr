@@ -46,11 +46,14 @@ namespace NzbDrone.Core.Indexers.TorrentRss
         [FieldDefinition(4, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
-        [FieldDefinition(5)]
+        [FieldDefinition(5, Type = FieldType.Select, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
+        public IEnumerable<int> RequiredFlags { get; set; }
+
+        [FieldDefinition(6)]
         public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
 
-        [FieldDefinition(6, Type = FieldType.Select, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
-        public IEnumerable<int> RequiredFlags { get; set; }
+        [FieldDefinition(7, Type = FieldType.Checkbox, Label = "Reject Blocklisted Torrent Hashes While Grabbing", HelpText = "If a torrent is blocked by hash it may not properly be rejected during RSS/Search for some indexers, enabling this will allow it to be rejected after the torrent is grabbed, but before it is sent to the client.", Advanced = true)]
+        public bool RejectBlocklistedTorrentHashesWhileGrabbing { get; set; }
 
         public NzbDroneValidationResult Validate()
         {

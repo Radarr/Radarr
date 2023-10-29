@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
@@ -21,18 +22,20 @@ namespace NzbDrone.Core.Download
         where TSettings : IProviderConfig, new()
     {
         protected readonly IHttpClient _httpClient;
+        private readonly IBlocklistService _blocklistService;
         protected readonly ITorrentFileInfoReader _torrentFileInfoReader;
 
         protected TorrentClientBase(ITorrentFileInfoReader torrentFileInfoReader,
                                     IHttpClient httpClient,
                                     IConfigService configService,
-                                    INamingConfigService namingConfigService,
                                     IDiskProvider diskProvider,
                                     IRemotePathMappingService remotePathMappingService,
+                                    IBlocklistService blocklistService,
                                     Logger logger)
-            : base(configService, namingConfigService, diskProvider, remotePathMappingService, logger)
+            : base(configService, diskProvider, remotePathMappingService, logger)
         {
             _httpClient = httpClient;
+            _blocklistService = blocklistService;
             _torrentFileInfoReader = torrentFileInfoReader;
         }
 
@@ -87,7 +90,7 @@ namespace NzbDrone.Core.Download
                 {
                     try
                     {
-                        return DownloadFromMagnetUrl(remoteMovie, magnetUrl);
+                        return DownloadFromMagnetUrl(remoteMovie, indexer, magnetUrl);
                     }
                     catch (NotSupportedException ex)
                     {
@@ -101,7 +104,7 @@ namespace NzbDrone.Core.Download
                 {
                     try
                     {
-                        return DownloadFromMagnetUrl(remoteMovie, magnetUrl);
+                        return DownloadFromMagnetUrl(remoteMovie, indexer, magnetUrl);
                     }
                     catch (NotSupportedException ex)
                     {
@@ -150,7 +153,7 @@ namespace NzbDrone.Core.Download
                     {
                         if (locationHeader.StartsWith("magnet:"))
                         {
-                            return DownloadFromMagnetUrl(remoteMovie, locationHeader);
+                            return DownloadFromMagnetUrl(remoteMovie, indexer, locationHeader);
                         }
 
                         request.Url += new HttpUri(locationHeader);
@@ -193,6 +196,9 @@ namespace NzbDrone.Core.Download
 
             var filename = string.Format("{0}.torrent", FileNameBuilder.CleanFileName(remoteMovie.Release.Title));
             var hash = _torrentFileInfoReader.GetHashFromTorrentFile(torrentFile);
+
+            EnsureReleaseIsNotBlocklisted(remoteMovie, indexer, hash);
+
             var actualHash = AddFromTorrentFile(remoteMovie, hash, filename, torrentFile);
 
             if (actualHash.IsNotNullOrWhiteSpace() && hash != actualHash)
@@ -206,7 +212,7 @@ namespace NzbDrone.Core.Download
             return actualHash;
         }
 
-        private string DownloadFromMagnetUrl(RemoteMovie remoteMovie, string magnetUrl)
+        private string DownloadFromMagnetUrl(RemoteMovie remoteMovie, IIndexer indexer, string magnetUrl)
         {
             string hash = null;
             string actualHash = null;
@@ -224,6 +230,8 @@ namespace NzbDrone.Core.Download
 
             if (hash != null)
             {
+                EnsureReleaseIsNotBlocklisted(remoteMovie, indexer, hash);
+
                 actualHash = AddFromMagnetLink(remoteMovie, hash, magnetUrl);
             }
 
@@ -236,6 +244,31 @@ namespace NzbDrone.Core.Download
             }
 
             return actualHash;
+        }
+
+        private void EnsureReleaseIsNotBlocklisted(RemoteMovie remoteMovie, IIndexer indexer, string hash)
+        {
+            var indexerSettings = indexer?.Definition?.Settings as ITorrentIndexerSettings;
+            var torrentInfo = remoteMovie.Release as TorrentInfo;
+            var torrentInfoHash = torrentInfo?.InfoHash;
+
+            // If the release didn't come from an interactive search,
+            // the hash wasn't known during processing and the
+            // indexer is configured to reject blocklisted releases
+            // during grab check if it's already been blocklisted.
+
+            if (torrentInfo != null && torrentInfoHash.IsNullOrWhiteSpace())
+            {
+                // If the hash isn't known from parsing we set it here so it can be used for blocklisting.
+                torrentInfo.InfoHash = hash;
+
+                if (remoteMovie.ReleaseSource != ReleaseSourceType.InteractiveSearch &&
+                    indexerSettings?.RejectBlocklistedTorrentHashesWhileGrabbing == true &&
+                    _blocklistService.BlocklistedTorrentHash(remoteMovie.Movie.Id, hash))
+                {
+                    throw new ReleaseBlockedException(remoteMovie.Release, "Release previously added to blocklist");
+                }
+            }
         }
     }
 }

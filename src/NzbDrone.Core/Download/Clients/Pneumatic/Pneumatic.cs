@@ -21,11 +21,10 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
 
         public Pneumatic(IHttpClient httpClient,
                          IConfigService configService,
-                         INamingConfigService namingConfigService,
                          IDiskProvider diskProvider,
                          IRemotePathMappingService remotePathMappingService,
                          Logger logger)
-            : base(configService, namingConfigService, diskProvider, remotePathMappingService, logger)
+            : base(configService, diskProvider, remotePathMappingService, logger)
         {
             _httpClient = httpClient;
         }

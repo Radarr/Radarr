@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
 using NLog;
-using NzbDrone.Common.Cache;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.Clients.FreeboxDownload.Responses;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
-using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 
@@ -21,15 +20,14 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
         private readonly IFreeboxDownloadProxy _proxy;
 
         public TorrentFreeboxDownload(IFreeboxDownloadProxy proxy,
-                           ITorrentFileInfoReader torrentFileInfoReader,
-                           IHttpClient httpClient,
-                           IConfigService configService,
-                           INamingConfigService namingConfigService,
-                           IDiskProvider diskProvider,
-                           IRemotePathMappingService remotePathMappingService,
-                           ICacheManager cacheManager,
-                           Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
+            ITorrentFileInfoReader torrentFileInfoReader,
+            IHttpClient httpClient,
+            IConfigService configService,
+            IDiskProvider diskProvider,
+            IRemotePathMappingService remotePathMappingService,
+            IBlocklistService blocklistService,
+            Logger logger)
+            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, blocklistService, logger)
         {
             _proxy = proxy;
         }
