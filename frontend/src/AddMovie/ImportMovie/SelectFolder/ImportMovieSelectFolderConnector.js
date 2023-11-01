@@ -5,12 +5,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { addRootFolder, deleteRootFolder, fetchRootFolders } from 'Store/Actions/rootFolderActions';
+import createRootFoldersSelector from 'Store/Selectors/createRootFoldersSelector';
 import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import ImportMovieSelectFolder from './ImportMovieSelectFolder';
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.rootFolders,
+    createRootFoldersSelector(),
     createSystemStatusSelector(),
     (rootFolders, systemStatus) => {
       return {
