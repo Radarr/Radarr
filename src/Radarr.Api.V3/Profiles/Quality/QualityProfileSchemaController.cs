@@ -7,17 +7,17 @@ namespace Radarr.Api.V3.Profiles.Quality
     [V3ApiController("qualityprofile/schema")]
     public class QualityProfileSchemaController : Controller
     {
-        private readonly IQualityProfileService _profileService;
+        private readonly IQualityProfileService _qualityProfileService;
 
-        public QualityProfileSchemaController(IQualityProfileService profileService)
+        public QualityProfileSchemaController(IQualityProfileService qualityProfileService)
         {
-            _profileService = profileService;
+            _qualityProfileService = qualityProfileService;
         }
 
         [HttpGet]
         public QualityProfileResource GetSchema()
         {
-            var qualityProfile = _profileService.GetDefaultProfile(string.Empty);
+            var qualityProfile = _qualityProfileService.GetDefaultProfile(string.Empty);
 
             return qualityProfile.ToResource();
         }

@@ -14,12 +14,12 @@ namespace Radarr.Api.V3.Profiles.Quality
     [V3ApiController]
     public class QualityProfileController : RestController<QualityProfileResource>
     {
-        private readonly IQualityProfileService _profileService;
+        private readonly IQualityProfileService _qualityProfileService;
         private readonly ICustomFormatService _formatService;
 
-        public QualityProfileController(IQualityProfileService profileService, ICustomFormatService formatService)
+        public QualityProfileController(IQualityProfileService qualityProfileService, ICustomFormatService formatService)
         {
-            _profileService = profileService;
+            _qualityProfileService = qualityProfileService;
             _formatService = formatService;
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
 
@@ -50,14 +50,14 @@ namespace Radarr.Api.V3.Profiles.Quality
         public ActionResult<QualityProfileResource> Create(QualityProfileResource resource)
         {
             var model = resource.ToModel();
-            model = _profileService.Add(model);
+            model = _qualityProfileService.Add(model);
             return Created(model.Id);
         }
 
         [RestDeleteById]
         public void DeleteProfile(int id)
         {
-            _profileService.Delete(id);
+            _qualityProfileService.Delete(id);
         }
 
         [RestPutById]
@@ -65,20 +65,20 @@ namespace Radarr.Api.V3.Profiles.Quality
         {
             var model = resource.ToModel();
 
-            _profileService.Update(model);
+            _qualityProfileService.Update(model);
 
             return Accepted(model.Id);
         }
 
         protected override QualityProfileResource GetResourceById(int id)
         {
-            return _profileService.Get(id).ToResource();
+            return _qualityProfileService.Get(id).ToResource();
         }
 
         [HttpGet]
         public List<QualityProfileResource> GetAll()
         {
-            return _profileService.All().ToResource();
+            return _qualityProfileService.All().ToResource();
         }
     }
 }

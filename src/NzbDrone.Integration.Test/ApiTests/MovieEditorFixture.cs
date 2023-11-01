@@ -11,7 +11,7 @@ namespace NzbDrone.Integration.Test.ApiTests
     {
         private void GivenExistingMovie()
         {
-            WaitForCompletion(() => Profiles.All().Count > 0);
+            WaitForCompletion(() => QualityProfiles.All().Count > 0);
 
             foreach (var title in new[] { "The Dark Knight", "Pulp Fiction" })
             {

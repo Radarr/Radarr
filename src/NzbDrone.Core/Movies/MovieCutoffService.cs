@@ -16,18 +16,18 @@ namespace NzbDrone.Core.Movies
     public class MovieCutoffService : IMovieCutoffService
     {
         private readonly IMovieRepository _movieRepository;
-        private readonly IQualityProfileService _profileService;
+        private readonly IQualityProfileService _qualityProfileService;
 
-        public MovieCutoffService(IMovieRepository movieRepository, IQualityProfileService profileService, Logger logger)
+        public MovieCutoffService(IMovieRepository movieRepository, IQualityProfileService qualityProfileService, Logger logger)
         {
             _movieRepository = movieRepository;
-            _profileService = profileService;
+            _qualityProfileService = qualityProfileService;
         }
 
         public PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec)
         {
             var qualitiesBelowCutoff = new List<QualitiesBelowCutoff>();
-            var profiles = _profileService.All();
+            var profiles = _qualityProfileService.All();
 
             // Get all items less than the cutoff
             foreach (var profile in profiles)
