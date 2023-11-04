@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.Localization
 
             localizedString.Should().Be("Langue de l'IU");
 
-            ExceptionVerification.ExpectedErrors(1);
+            ExceptionVerification.ExpectedErrors(0);
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.Localization
 
             localizedString.Should().Be("UI Language");
 
-            ExceptionVerification.ExpectedErrors(1);
+            ExceptionVerification.ExpectedErrors(0);
         }
 
         [Test]
