@@ -1196,7 +1196,7 @@
     "DeleteSelectedIndexersMessageText": "Seguro que quieres eliminar {count} indexer seleccionado(s)?",
     "DisabledForLocalAddresses": "Desactivado para direcciones locales",
     "DeletedReasonManual": "El archivo fue borrado por vía UI",
-    "DeletedReasonMissingFromDisk": "Radarr no ha podido encontrar el archivo en el disco, por lo que se ha desvinculado de la película en la base de datos",
+    "DeletedReasonMissingFromDisk": "{appName} no ha podido encontrar el archivo en el disco, por lo que se ha desvinculado de la película en la base de datos",
     "DeletedReasonUpgrade": "Se ha borrado el archivo para importar una versión mejorada",
     "DeleteSelectedMovieFilesHelpText": "¿Está seguro de que desea eliminar los archivos de película seleccionados?"
 }
