@@ -642,7 +642,7 @@
     "Downloading": "Descargando",
     "DownloadFailed": "La descarga ha fallado",
     "DownloadClientUnavailable": "El gestor de descargas no está disponible",
-    "DeleteTagMessageText": "Seguro que quieres eliminar la etiqueta '{0}'?",
+    "DeleteTagMessageText": "¿Seguro que quieres eliminar la etiqueta '{label}'?",
     "DeleteRestrictionHelpText": "Seguro que quieres eliminar esta restricción?",
     "DeleteNotificationMessageText": "¿Seguro que quieres eliminiar la notificación '{name}'?",
     "DeleteBackupMessageText": "Seguro que quieres eliminar la copia de seguridad '{name}'?",
@@ -871,7 +871,7 @@
     "DeleteHeader": "Eliminar: {0}",
     "DeleteMovieFolderHelpText": "Eliminar la carpeta de películas y su contenido",
     "DeleteSelectedMovie": "Eliminar película (s) seleccionada (s)",
-    "DeleteTheMovieFolder": "Se eliminará la carpeta de películas '{0}' y todo su contenido.",
+    "DeleteTheMovieFolder": "Se eliminará la carpeta de películas '{path}' y todo su contenido.",
     "Discord": "Discord",
     "Donations": "Donaciones",
     "DoneEditingGroups": "Terminado de editar grupos",
@@ -1193,5 +1193,10 @@
     "DeleteImportListMessageText": "Seguro que quieres eliminar la lista '{name}'?",
     "DeleteSelectedImportListsMessageText": "Seguro que quieres eliminar {count} lista(s) de importación seleccionada(s)?",
     "AppUpdatedVersion": "{appName} ha sido actualizado a la versión `{version}`, para obtener los cambios más recientes necesitará recargar {appName}",
-    "DeleteSelectedIndexersMessageText": "Seguro que quieres eliminar {count} indexer seleccionado(s)?"
+    "DeleteSelectedIndexersMessageText": "Seguro que quieres eliminar {count} indexer seleccionado(s)?",
+    "DisabledForLocalAddresses": "Desactivado para direcciones locales",
+    "DeletedReasonManual": "El archivo fue borrado por vía UI",
+    "DeletedReasonMissingFromDisk": "Radarr no ha podido encontrar el archivo en el disco, por lo que se ha desvinculado de la película en la base de datos",
+    "DeletedReasonUpgrade": "Se ha borrado el archivo para importar una versión mejorada",
+    "DeleteSelectedMovieFilesHelpText": "¿Está seguro de que desea eliminar los archivos de película seleccionados?"
 }

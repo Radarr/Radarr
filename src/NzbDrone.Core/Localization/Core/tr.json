@@ -1003,5 +1003,9 @@
     "ShowCinemaReleaseHelpText": "Posterin altında çıkış tarihini göster",
     "EditMovies": "Filmi Düzenle",
     "DeleteRemotePathMapping": "Uzak Yol Eşlemeyi Düzenle",
-    "DeleteRemotePathMappingMessageText": "Bu uzak yol eşlemesini silmek istediğinizden emin misiniz?"
+    "DeleteRemotePathMappingMessageText": "Bu uzak yol eşlemesini silmek istediğinizden emin misiniz?",
+    "AddAutoTag": "Otomatik Etiket Ekle",
+    "AddCondition": "Koşul Ekle",
+    "AddConditionImplementation": "Koşul Ekle - {uygulama Adı}",
+    "AddConnection": "Bağlantı Ekle"
 }
