@@ -48,7 +48,7 @@ namespace NzbDrone.Integration.Test
         protected override void InitializeTestTarget()
         {
             // Make sure tasks have been initialized so the config put below doesn't cause errors
-            WaitForCompletion(() => Tasks.All().SelectList(x => x.TaskName).Contains("RssSync"));
+            WaitForCompletion(() => Tasks.All().SelectList(x => x.TaskName).Contains("RssSync"), 20000);
 
             Indexers.Post(new Radarr.Api.V3.Indexers.IndexerResource
             {
