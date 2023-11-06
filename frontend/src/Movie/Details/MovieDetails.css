@@ -152,9 +152,15 @@
 .statusName,
 .studio,
 .collection,
+.deletedLabel,
 .genres {
   font-weight: 300;
   font-size: 17px;
+}
+
+.deletedIcon {
+  margin-right: 2px;
+  vertical-align: baseline;
 }
 
 .overview {
