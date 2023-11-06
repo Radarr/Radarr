@@ -1333,5 +1333,6 @@
     "MovieDownloadFailedTooltip": "Le téléchargement du film a échoué",
     "MovieDownloadIgnoredTooltip": "Téléchargement de film ignoré",
     "SkipRedownloadHelpText": "Empêche {appName} d'essayer de télécharger une version alternative pour cet élément",
-    "QueueFilterHasNoItems": "Le filtre de file d'attente sélectionné ne contient aucun élément"
+    "QueueFilterHasNoItems": "Le filtre de file d'attente sélectionné ne contient aucun élément",
+    "EnableProfile": "Activer profil"
 }
