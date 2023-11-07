@@ -11,7 +11,10 @@ function createMovieQueueDetailsSelector(movieId: number) {
     (queueItems) => {
       return queueItems.reduce(
         (acc: MovieQueueDetails, item) => {
-          if (item.movieId !== movieId) {
+          if (
+            item.trackedDownloadState === 'imported' ||
+            item.movieId !== movieId
+          ) {
             return acc;
           }
 
