@@ -219,6 +219,7 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Vietnamese.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.1994.VIE.1080p.XviD-LOL")]
         public void should_parse_language_vietnamese(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
