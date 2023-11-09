@@ -12,6 +12,7 @@ import translate from 'Utilities/String/translate';
 import styles from './ManageImportListsEditModalContent.css';
 
 interface SavePayload {
+  enabled?: boolean;
   enableAuto?: boolean;
   qualityProfileId?: number;
   rootFolderPath?: string;
@@ -25,7 +26,7 @@ interface ManageImportListsEditModalContentProps {
 
 const NO_CHANGE = 'noChange';
 
-const autoAddOptions = [
+const enableOptions = [
   {
     key: NO_CHANGE,
     get value() {
@@ -52,6 +53,7 @@ function ManageImportListsEditModalContent(
 ) {
   const { importListIds, onSavePress, onModalClose } = props;
 
+  const [enabled, setEnabled] = useState(NO_CHANGE);
   const [enableAuto, setEnableAuto] = useState(NO_CHANGE);
   const [qualityProfileId, setQualityProfileId] = useState<string | number>(
     NO_CHANGE
@@ -61,6 +63,11 @@ function ManageImportListsEditModalContent(
   const save = useCallback(() => {
     let hasChanges = false;
     const payload: SavePayload = {};
+
+    if (enabled !== NO_CHANGE) {
+      hasChanges = true;
+      payload.enabled = enabled === 'enabled';
+    }
 
     if (enableAuto !== NO_CHANGE) {
       hasChanges = true;
@@ -82,11 +89,21 @@ function ManageImportListsEditModalContent(
     }
 
     onModalClose();
-  }, [enableAuto, qualityProfileId, rootFolderPath, onSavePress, onModalClose]);
+  }, [
+    enabled,
+    enableAuto,
+    qualityProfileId,
+    rootFolderPath,
+    onSavePress,
+    onModalClose,
+  ]);
 
   const onInputChange = useCallback(
     ({ name, value }: { name: string; value: string }) => {
       switch (name) {
+        case 'enabled':
+          setEnabled(value);
+          break;
         case 'enableAuto':
           setEnableAuto(value);
           break;
@@ -111,13 +128,25 @@ function ManageImportListsEditModalContent(
 
       <ModalBody>
         <FormGroup>
+          <FormLabel>{translate('Enabled')}</FormLabel>
+
+          <FormInputGroup
+            type={inputTypes.SELECT}
+            name="enabled"
+            value={enabled}
+            values={enableOptions}
+            onChange={onInputChange}
+          />
+        </FormGroup>
+
+        <FormGroup>
           <FormLabel>{translate('AutomaticAdd')}</FormLabel>
 
           <FormInputGroup
             type={inputTypes.SELECT}
             name="enableAuto"
             value={enableAuto}
-            values={autoAddOptions}
+            values={enableOptions}
             onChange={onInputChange}
           />
         </FormGroup>

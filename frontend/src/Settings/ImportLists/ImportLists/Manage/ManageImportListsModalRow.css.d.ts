@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'enableAuto': string;
+  'enabled': string;
   'implementation': string;
   'name': string;
   'qualityProfileId': string;

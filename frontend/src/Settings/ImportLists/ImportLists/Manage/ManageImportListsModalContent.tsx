@@ -59,6 +59,12 @@ const COLUMNS = [
     isVisible: true,
   },
   {
+    name: 'enabled',
+    label: () => translate('Enabled'),
+    isSortable: true,
+    isVisible: true,
+  },
+  {
     name: 'enableAuto',
     label: () => translate('AutomaticAdd'),
     isSortable: true,

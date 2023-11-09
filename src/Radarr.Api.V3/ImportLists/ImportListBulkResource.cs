@@ -5,6 +5,7 @@ namespace Radarr.Api.V3.ImportLists
 {
     public class ImportListBulkResource : ProviderBulkResource<ImportListBulkResource>
     {
+        public bool? Enabled { get; set; }
         public bool? EnableAuto { get; set; }
         public string RootFolderPath { get; set; }
         public int? QualityProfileId { get; set; }
@@ -21,6 +22,7 @@ namespace Radarr.Api.V3.ImportLists
 
             existingDefinitions.ForEach(existing =>
             {
+                existing.Enabled = resource.Enabled ?? existing.Enabled;
                 existing.EnableAuto = resource.EnableAuto ?? existing.EnableAuto;
                 existing.RootFolderPath = resource.RootFolderPath ?? existing.RootFolderPath;
                 existing.QualityProfileId = resource.QualityProfileId ?? existing.QualityProfileId;

@@ -12,6 +12,7 @@ export interface Field {
 
 interface ImportList extends ModelBase {
   enable: boolean;
+  enabled: boolean;
   enableAuto: boolean;
   qualityProfileId: number;
   rootFolderPath: string;

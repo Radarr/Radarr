@@ -7,6 +7,7 @@ import TableRow from 'Components/Table/TableRow';
 import TagListConnector from 'Components/TagListConnector';
 import { createQualityProfileSelectorForHook } from 'Store/Selectors/createQualityProfileSelector';
 import { SelectStateInputProps } from 'typings/props';
+import translate from 'Utilities/String/translate';
 import styles from './ManageImportListsModalRow.css';
 
 interface ManageImportListsModalRowProps {
@@ -16,6 +17,7 @@ interface ManageImportListsModalRowProps {
   qualityProfileId: number;
   implementation: string;
   tags: number[];
+  enabled: boolean;
   enableAuto: boolean;
   columns: Column[];
   isSelected?: boolean;
@@ -30,6 +32,7 @@ function ManageImportListsModalRow(props: ManageImportListsModalRowProps) {
     rootFolderPath,
     qualityProfileId,
     implementation,
+    enabled,
     enableAuto,
     tags,
     onSelectedChange,
@@ -63,15 +66,19 @@ function ManageImportListsModalRow(props: ManageImportListsModalRowProps) {
       </TableRowCell>
 
       <TableRowCell className={styles.qualityProfileId}>
-        {qualityProfile?.name ?? 'None'}
+        {qualityProfile?.name ?? translate('None')}
       </TableRowCell>
 
       <TableRowCell className={styles.rootFolderPath}>
         {rootFolderPath}
       </TableRowCell>
 
+      <TableRowCell className={styles.enabled}>
+        {enabled ? translate('Yes') : translate('No')}
+      </TableRowCell>
+
       <TableRowCell className={styles.enableAuto}>
-        {enableAuto ? 'Yes' : 'No'}
+        {enableAuto ? translate('Yes') : translate('No')}
       </TableRowCell>
 
       <TableRowCell className={styles.tags}>
