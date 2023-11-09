@@ -74,9 +74,15 @@ class ImportList extends Component {
         <div className={styles.enabled}>
 
           {
-            enabled &&
+            enabled ?
               <Label kind={kinds.SUCCESS}>
                 {translate('Enabled')}
+              </Label> :
+              <Label
+                kind={kinds.DISABLED}
+                outline={true}
+              >
+                {translate('Disabled')}
               </Label>
           }
 
@@ -84,16 +90,6 @@ class ImportList extends Component {
             enableAuto &&
               <Label kind={kinds.SUCCESS}>
                 {translate('Auto')}
-              </Label>
-          }
-
-          {
-            !enabled && !enableAuto &&
-              <Label
-                kind={kinds.DISABLED}
-                outline={true}
-              >
-                {translate('Disabled')}
               </Label>
           }
         </div>
