@@ -10,17 +10,15 @@ function createMapStateToProps() {
     createExistingMovieSelector(),
     createExclusionMovieSelector(),
     createDimensionsSelector(),
-    (state) => state.queue.details.items,
     (state, { internalId }) => internalId,
-    (isExistingMovie, isExclusionMovie, dimensions, queueItems, internalId) => {
-      const firstQueueItem = queueItems.find((q) => q.movieId === internalId && internalId > 0);
-
+    (state) => state.settings.ui.item.movieRuntimeFormat,
+    (isExistingMovie, isExclusionMovie, dimensions, internalId, movieRuntimeFormat) => {
       return {
+        existingMovieId: internalId,
         isExistingMovie,
         isExclusionMovie,
         isSmallScreen: dimensions.isSmallScreen,
-        queueStatus: firstQueueItem ? firstQueueItem.status : null,
-        queueState: firstQueueItem ? firstQueueItem.trackedDownloadState : null
+        movieRuntimeFormat
       };
     }
   );

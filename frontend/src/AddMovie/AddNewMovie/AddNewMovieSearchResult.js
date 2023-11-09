@@ -66,6 +66,7 @@ class AddNewMovieSearchResult extends Component {
       ratings,
       folder,
       images,
+      existingMovieId,
       isExistingMovie,
       isExclusionMovie,
       isSmallScreen,
@@ -74,8 +75,7 @@ class AddNewMovieSearchResult extends Component {
       monitored,
       hasFile,
       isAvailable,
-      queueStatus,
-      queueState,
+      movieFile,
       runtime,
       movieRuntimeFormat,
       certification
@@ -120,13 +120,13 @@ class AddNewMovieSearchResult extends Component {
                 {
                   isExistingMovie &&
                     <MovieIndexProgressBar
+                      movieId={existingMovieId}
+                      movieFile={movieFile}
                       monitored={monitored}
                       hasFile={hasFile}
                       status={status}
                       width={posterWidth}
                       detailedProgressBar={true}
-                      queueStatus={queueStatus}
-                      queueState={queueState}
                       isAvailable={isAvailable}
                     />
                 }
@@ -278,6 +278,7 @@ AddNewMovieSearchResult.propTypes = {
   ratings: PropTypes.object.isRequired,
   folder: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
+  existingMovieId: PropTypes.number,
   isExistingMovie: PropTypes.bool.isRequired,
   isExclusionMovie: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
@@ -286,9 +287,8 @@ AddNewMovieSearchResult.propTypes = {
   monitored: PropTypes.bool.isRequired,
   hasFile: PropTypes.bool.isRequired,
   isAvailable: PropTypes.bool.isRequired,
+  movieFile: PropTypes.object,
   colorImpairedMode: PropTypes.bool,
-  queueStatus: PropTypes.string,
-  queueState: PropTypes.string,
   runtime: PropTypes.number.isRequired,
   movieRuntimeFormat: PropTypes.string.isRequired,
   certification: PropTypes.string
