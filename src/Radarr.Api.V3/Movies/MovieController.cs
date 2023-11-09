@@ -214,7 +214,15 @@ namespace Radarr.Api.V3.Movies
                 };
             }
 
-            translations.TryGetValue(movie.Id, out var translation);
+            if (!translations.TryGetValue(movie.Id, out var translation))
+            {
+                translation = new MovieTranslation
+                {
+                    Title = movie.Title,
+                    Language = Language.English
+                };
+            }
+
             return translation;
         }
 
