@@ -145,6 +145,8 @@ function createMapStateToProps() {
         return acc;
       }, []);
 
+      const queueItem = queueItems.find((item) => item.movieId === movie.id);
+
       return {
         ...movie,
         alternateTitles,
@@ -165,7 +167,7 @@ function createMapStateToProps() {
         nextMovie,
         isSmallScreen: dimensions.isSmallScreen,
         isSidebarVisible,
-        queueItems,
+        queueItem,
         movieRuntimeFormat
       };
     }

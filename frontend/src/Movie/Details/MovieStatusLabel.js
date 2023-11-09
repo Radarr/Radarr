@@ -8,7 +8,6 @@ import translate from 'Utilities/String/translate';
 import styles from './MovieStatusLabel.css';
 
 function getMovieStatus(hasFile, isMonitored, isAvailable, queueItem = false) {
-
   if (queueItem) {
     const queueStatus = queueItem.status;
     const queueState = queueItem.trackedDownloadStatus;
@@ -114,10 +113,6 @@ MovieStatusLabel.propTypes = {
   queueItem: PropTypes.object,
   useLabel: PropTypes.bool,
   colorImpairedMode: PropTypes.bool
-};
-
-MovieStatusLabel.defaultProps = {
-  title: ''
 };
 
 export default MovieStatusLabel;
