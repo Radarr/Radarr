@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using FluentValidation.Results;
 using NLog;
@@ -84,7 +85,8 @@ namespace NzbDrone.Core.Download.Clients.Flood
         }
 
         public override string Name => "Flood";
-        public override ProviderMessage Message => new ProviderMessage("Radarr will handle automatic removal of torrents based on the current seed criteria in Settings -> Indexers", ProviderMessageType.Info);
+        public override ProviderMessage Message => new ProviderMessage(_localizationService.GetLocalizedString("DownloadClientFloodSettingsRemovalInfo"), ProviderMessageType.Info);
+
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentByFile(Convert.ToBase64String(fileContent), HandleTags(remoteMovie, Settings), Settings);
@@ -223,7 +225,7 @@ namespace NzbDrone.Core.Download.Clients.Flood
                 if (list.ContainsKey(downloadClientItem.DownloadId))
                 {
                     _proxy.SetTorrentsTags(downloadClientItem.DownloadId,
-                        list[downloadClientItem.DownloadId].Tags.Concat(Settings.PostImportTags).ToHashSet(),
+                        list[downloadClientItem.DownloadId].Tags.Concat(Settings.PostImportTags).ToImmutableHashSet(),
                         Settings);
                 }
             }

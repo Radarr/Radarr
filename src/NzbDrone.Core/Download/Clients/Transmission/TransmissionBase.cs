@@ -176,6 +176,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         public override DownloadClientInfo GetStatus()
         {
             string destDir;
+
             if (Settings.MovieDirectory.IsNotNullOrWhiteSpace())
             {
                 destDir = Settings.MovieDirectory;
@@ -187,7 +188,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
                 if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
                 {
-                    destDir = string.Format("{0}/{1}", destDir, Settings.MovieCategory);
+                    destDir = $"{destDir}/{Settings.MovieCategory}";
                 }
             }
 
@@ -273,16 +274,16 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             catch (DownloadClientAuthenticationException ex)
             {
                 _logger.Error(ex, ex.Message);
-                return new NzbDroneValidationFailure("Username", "Authentication failure")
+                return new NzbDroneValidationFailure("Username", _localizationService.GetLocalizedString("DownloadClientValidationAuthenticationFailure"))
                 {
-                    DetailedDescription = string.Format("Please verify your username and password. Also verify if the host running Radarr isn't blocked from accessing {0} by WhiteList limitations in the {0} configuration.", Name)
+                    DetailedDescription = _localizationService.GetLocalizedString("DownloadClientValidationAuthenticationFailureDetail", new Dictionary<string, object> { { "clientName", Name } })
                 };
             }
             catch (DownloadClientUnavailableException ex)
             {
                 _logger.Error(ex, ex.Message);
 
-                return new NzbDroneValidationFailure("Host", "Unable to connect to Transmission")
+                return new NzbDroneValidationFailure("Host", _localizationService.GetLocalizedString("DownloadClientValidationUnableToConnect", new Dictionary<string, object> { { "clientName", Name } }))
                        {
                            DetailedDescription = ex.Message
                        };
@@ -291,7 +292,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             {
                 _logger.Error(ex, "Failed to test");
 
-                return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
+                return new NzbDroneValidationFailure(string.Empty, _localizationService.GetLocalizedString("DownloadClientValidationUnknownException", new Dictionary<string, object> { { "exception", ex.Message } }));
             }
         }
 
@@ -306,7 +307,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             catch (Exception ex)
             {
                 _logger.Error(ex, "Failed to get torrents");
-                return new NzbDroneValidationFailure(string.Empty, "Failed to get the list of torrents: " + ex.Message);
+                return new NzbDroneValidationFailure(string.Empty, _localizationService.GetLocalizedString("DownloadClientValidationTestTorrents", new Dictionary<string, object> { { "exceptionMessage", ex.Message } }));
             }
 
             return null;

@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Download.Clients.Aria2
             _proxy = proxy;
         }
 
-        protected override string AddFromMagnetLink(RemoteMovie remoteEpisode, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             var gid = _proxy.AddMagnet(Settings, magnetLink);
 
@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Download.Clients.Aria2
             return hash;
         }
 
-        protected override string AddFromTorrentFile(RemoteMovie remoteEpisode, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
             var gid = _proxy.AddTorrent(Settings, fileContent);
 
@@ -81,6 +81,7 @@ namespace NzbDrone.Core.Download.Clients.Aria2
             {
                 var firstFile = torrent.Files?.FirstOrDefault();
 
+                // skip metadata download
                 if (firstFile?.Path?.Contains("[METADATA]") == true)
                 {
                     continue;
@@ -236,14 +237,19 @@ namespace NzbDrone.Core.Download.Clients.Aria2
 
                 if (new Version(version) < new Version("1.34.0"))
                 {
-                    return new ValidationFailure(string.Empty, "Aria2 version should be at least 1.34.0. Version reported is {0}", version);
+                    return new ValidationFailure(string.Empty,
+                        _localizationService.GetLocalizedString("DownloadClientValidationErrorVersion",
+                            new Dictionary<string, object>
+                            {
+                                { "clientName", "Aria2" }, { "requiredVersion", "1.34.0" }, { "reportedVersion", version }
+                            }));
                 }
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, "Failed to test Aria2");
 
-                return new NzbDroneValidationFailure("Host", "Unable to connect to Aria2")
+                return new NzbDroneValidationFailure("Host", _localizationService.GetLocalizedString("DownloadClientValidationUnableToConnect", new Dictionary<string, object> { { "clientName", "Aria2" } }))
                 {
                     DetailedDescription = ex.Message
                 };

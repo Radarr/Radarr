@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
         public override string Name => "Download Station";
 
-        public override ProviderMessage Message => new ProviderMessage("Radarr is unable to connect to Download Station if 2-Factor Authentication is enabled on your DSM account", ProviderMessageType.Warning);
+        public override ProviderMessage Message => new ProviderMessage(_localizationService.GetLocalizedString("DownloadClientDownloadStationProviderMessage"), ProviderMessageType.Warning);
 
         private IDownloadStationTaskProxy DsTaskProxy => _dsTaskProxySelector.GetProxy(Settings);
 
@@ -267,9 +267,9 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             catch (DownloadClientAuthenticationException ex)
             {
                 _logger.Error(ex, ex.Message);
-                return new NzbDroneValidationFailure("Username", "Authentication failure")
+                return new NzbDroneValidationFailure("Username", _localizationService.GetLocalizedString("DownloadClientValidationAuthenticationFailure"))
                 {
-                    DetailedDescription = $"Please verify your username and password. Also verify if the host running Radarr isn't blocked from accessing {Name} by WhiteList limitations in the {Name} configuration."
+                    DetailedDescription = _localizationService.GetLocalizedString("DownloadClientValidationAuthenticationFailureDetail", new Dictionary<string, object> { { "clientName", Name } })
                 };
             }
             catch (WebException ex)
@@ -278,19 +278,19 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
                 if (ex.Status == WebExceptionStatus.ConnectFailure)
                 {
-                    return new NzbDroneValidationFailure("Host", "Unable to connect")
+                    return new NzbDroneValidationFailure("Host", _localizationService.GetLocalizedString("DownloadClientValidationUnableToConnect", new Dictionary<string, object> { { "clientName", Name } }))
                     {
-                        DetailedDescription = "Please verify the hostname and port."
+                        DetailedDescription = _localizationService.GetLocalizedString("DownloadClientValidationUnableToConnectDetail")
                     };
                 }
 
-                return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
+                return new NzbDroneValidationFailure(string.Empty, _localizationService.GetLocalizedString("DownloadClientValidationUnknownException", new Dictionary<string, object> { { "exception", ex.Message } }));
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, "Error testing Torrent Download Station");
 
-                return new NzbDroneValidationFailure("Host", "Unable to connect to Usenet Download Station")
+                return new NzbDroneValidationFailure("Host", _localizationService.GetLocalizedString("DownloadClientValidationUnableToConnect", new Dictionary<string, object> { { "clientName", Name } }))
                        {
                            DetailedDescription = ex.Message
                        };
@@ -305,7 +305,12 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
             if (info.MinVersion > 2 || info.MaxVersion < 2)
             {
-                return new ValidationFailure(string.Empty, $"Download Station API version not supported, should be at least 2. It supports from {info.MinVersion} to {info.MaxVersion}");
+                return new ValidationFailure(string.Empty,
+                    _localizationService.GetLocalizedString("DownloadClientDownloadStationValidationApiVersion",
+                        new Dictionary<string, object>
+                        {
+                            { "requiredVersion", 2 }, { "minVersion", info.MinVersion }, { "maxVersion", info.MaxVersion }
+                        }));
             }
 
             return null;
@@ -317,7 +322,9 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             {
                 if (task.Status == DownloadStationTaskStatus.Extracting)
                 {
-                    return $"Extracting: {int.Parse(task.StatusExtra["unzip_progress"])}%";
+                    return _localizationService.GetLocalizedString("DownloadStationStatusExtracting",
+                        new Dictionary<string, object>
+                            { { "progress", int.Parse(task.StatusExtra["unzip_progress"]) } });
                 }
 
                 if (task.Status == DownloadStationTaskStatus.Error)
@@ -396,7 +403,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             }
             catch (Exception ex)
             {
-                return new NzbDroneValidationFailure(string.Empty, "Failed to get the list of NZBs: " + ex.Message);
+                return new NzbDroneValidationFailure(string.Empty, _localizationService.GetLocalizedString("DownloadClientValidationTestNzbs", new Dictionary<string, object> { { "exceptionMessage", ex.Message } }));
             }
         }
 
