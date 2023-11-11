@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Alert from 'Components/Alert';
 import TextInput from 'Components/Form/TextInput';
 import Icon from 'Components/Icon';
 import Button from 'Components/Link/Button';
@@ -130,7 +131,12 @@ class AddNewMovie extends Component {
                 <div className={styles.helpText}>
                   {translate('FailedLoadingSearchResults')}
                 </div>
-                <div>{getErrorMessage(error)}</div>
+                <Alert kind={kinds.WARNING}>{getErrorMessage(error)}</Alert>
+                <div>
+                  <Link to="https://wiki.servarr.com/radarr/troubleshooting#invalid-response-received-from-tmdb">
+                    {translate('WhySearchesCouldBeFailing')}
+                  </Link>
+                </div>
               </div> : null
           }
 
