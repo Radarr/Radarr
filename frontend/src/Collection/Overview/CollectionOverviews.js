@@ -53,7 +53,8 @@ class CollectionOverviews extends Component {
       columnCount: 1,
       posterWidth: 162,
       posterHeight: 238,
-      rowHeight: calculateRowHeight(238, null, props.isSmallScreen, {})
+      rowHeight: calculateRowHeight(238, null, props.isSmallScreen, {}),
+      navigateToId: props.location.state ? props.location.state.navigateToId : 0
     };
 
     this._grid = null;
@@ -72,7 +73,8 @@ class CollectionOverviews extends Component {
     const {
       width,
       rowHeight,
-      scrollRestored
+      scrollRestored,
+      navigateToId
     } = this.state;
 
     if (prevProps.sortKey !== sortKey ||
@@ -105,6 +107,10 @@ class CollectionOverviews extends Component {
           columnIndex: 0
         });
       }
+    }
+
+    if (navigateToId) {
+      this.scrollToItem(navigateToId)
     }
   }
 
@@ -184,6 +190,18 @@ class CollectionOverviews extends Component {
         />
       </div>
     );
+  };
+
+  scrollToItem = (itemId) => {
+    const index = this.props.items.findIndex((item) => item.id === itemId);
+
+    if (index !== -1 && this._grid) {
+      this._grid.scrollToCell({
+        columnIndex: 0,
+        rowIndex: index,
+        align: 'start',
+      });
+    }
   };
 
   //

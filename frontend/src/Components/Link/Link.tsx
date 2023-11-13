@@ -9,7 +9,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import styles from './Link.css';
 
 interface ReactRouterLinkProps {
-  to?: string;
+  to?: any;
 }
 
 export interface LinkProps extends React.HTMLProps<HTMLAnchorElement> {
@@ -19,6 +19,7 @@ export interface LinkProps extends React.HTMLProps<HTMLAnchorElement> {
     | FunctionComponent<LinkProps>
     | ComponentClass<LinkProps, unknown>;
   to?: string;
+  toState?: string;
   target?: string;
   isDisabled?: boolean;
   noRouter?: boolean;

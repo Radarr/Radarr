@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
 import styles from './MovieCollectionLabel.css';
+import Link from '../Components/Link/Link';
 
 class MovieCollectionLabel extends Component {
 
@@ -18,6 +19,7 @@ class MovieCollectionLabel extends Component {
 
   render() {
     const {
+      id,
       title,
       monitored,
       onMonitorTogglePress
@@ -31,7 +33,11 @@ class MovieCollectionLabel extends Component {
           size={15}
           onPress={onMonitorTogglePress}
         />
-        {title}
+        <Link
+          to={'/collections'}
+          toState={{ navigateToId: id}}>
+          {title}
+        </Link>
       </div>
     );
   }
