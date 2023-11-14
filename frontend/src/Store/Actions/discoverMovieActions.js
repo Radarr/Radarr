@@ -9,7 +9,7 @@ import getNewMovie from 'Utilities/Movie/getNewMovie';
 import getSectionState from 'Utilities/State/getSectionState';
 import updateSectionState from 'Utilities/State/updateSectionState';
 import translate from 'Utilities/String/translate';
-import { removeItem, set, updateItem } from './baseActions';
+import { removeItem, set, update, updateItem } from './baseActions';
 import createHandleActions from './Creators/createHandleActions';
 import createClearReducer from './Creators/Reducers/createClearReducer';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
@@ -507,11 +507,11 @@ export const actionHandlers = handleThunks({
     }).request;
 
     promise.done((data) => {
-      // set an Id so the selectors and updaters done blow up.
+      // set an ID so the selectors and updaters done blow up.
       data = data.map((movie) => ({ ...movie, id: movie.tmdbId }));
 
       dispatch(batchActions([
-        ...data.map((movie) => updateItem({ section, ...movie })),
+        update({ section, data }),
 
         set({
           section,

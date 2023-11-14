@@ -78,7 +78,8 @@ function createMapDispatchToProps(dispatch, props) {
 
     onImportListSyncPress() {
       dispatch(executeCommand({
-        name: commandNames.IMPORT_LIST_SYNC
+        name: commandNames.IMPORT_LIST_SYNC,
+        commandFinished: this.dispatchFetchListMovies
       }));
     }
   };
