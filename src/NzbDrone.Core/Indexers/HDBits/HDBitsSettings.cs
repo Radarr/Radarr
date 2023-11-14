@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
@@ -20,40 +21,40 @@ namespace NzbDrone.Core.Indexers.HDBits
 
     public class HDBitsSettings : ITorrentIndexerSettings
     {
-        private static readonly HDBitsSettingsValidator Validator = new HDBitsSettingsValidator();
+        private static readonly HDBitsSettingsValidator Validator = new ();
 
         public HDBitsSettings()
         {
             BaseUrl = "https://hdbits.org";
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
 
-            Categories = new int[] { (int)HdBitsCategory.Movie };
-            Codecs = System.Array.Empty<int>();
-            Mediums = System.Array.Empty<int>();
+            Categories = new[] { (int)HdBitsCategory.Movie };
+            Codecs = Array.Empty<int>();
+            Mediums = Array.Empty<int>();
             MultiLanguages = new List<int>();
             RequiredFlags = new List<int>();
         }
 
-        [FieldDefinition(0, Label = "Username", Privacy = PrivacyLevel.UserName)]
-        public string Username { get; set; }
+        [FieldDefinition(0, Label = "API URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your API key will be sent to that host.")]
+        public string BaseUrl { get; set; }
 
-        [FieldDefinition(1, Type = FieldType.Select, SelectOptions = typeof(RealLanguageFieldConverter), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
-        public IEnumerable<int> MultiLanguages { get; set; }
+        [FieldDefinition(1, Label = "Username", Privacy = PrivacyLevel.UserName)]
+        public string Username { get; set; }
 
         [FieldDefinition(2, Label = "API Key", Privacy = PrivacyLevel.ApiKey)]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(3, Label = "API URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your API key will be sent to that host.")]
-        public string BaseUrl { get; set; }
-
-        [FieldDefinition(4, Label = "Categories", Type = FieldType.TagSelect, SelectOptions = typeof(HdBitsCategory), HelpText = "Options: Movie, TV, Documentary, Music, Sport, Audio, XXX, MiscDemo. If unspecified, all options are used.")]
+        [FieldDefinition(3, Label = "Categories", Type = FieldType.TagSelect, SelectOptions = typeof(HdBitsCategory), HelpText = "Options: Movie, TV, Documentary, Music, Sport, Audio, XXX, MiscDemo. If unspecified, all options are used.")]
         public IEnumerable<int> Categories { get; set; }
 
-        [FieldDefinition(5, Label = "Codecs", Type = FieldType.TagSelect, SelectOptions = typeof(HdBitsCodec), Advanced = true, HelpText = "Options: h264, Mpeg2, VC1, Xvid. If unspecified, all options are used.")]
+        [FieldDefinition(4, Label = "Codecs", Type = FieldType.TagSelect, SelectOptions = typeof(HdBitsCodec), Advanced = true, HelpText = "Options: h264, Mpeg2, VC1, Xvid. If unspecified, all options are used.")]
         public IEnumerable<int> Codecs { get; set; }
 
-        [FieldDefinition(6, Label = "Mediums", Type = FieldType.TagSelect, SelectOptions = typeof(HdBitsMedium), Advanced = true, HelpText = "Options: BluRay, Encode, Capture, Remux, WebDL. If unspecified, all options are used.")]
+        [FieldDefinition(5, Label = "Mediums", Type = FieldType.TagSelect, SelectOptions = typeof(HdBitsMedium), Advanced = true, HelpText = "Options: BluRay, Encode, Capture, Remux, WebDL. If unspecified, all options are used.")]
         public IEnumerable<int> Mediums { get; set; }
+
+        [FieldDefinition(6, Type = FieldType.Select, SelectOptions = typeof(RealLanguageFieldConverter), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
+        public IEnumerable<int> MultiLanguages { get; set; }
 
         [FieldDefinition(7, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
@@ -62,7 +63,7 @@ namespace NzbDrone.Core.Indexers.HDBits
         public IEnumerable<int> RequiredFlags { get; set; }
 
         [FieldDefinition(9)]
-        public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new ();
 
         public NzbDroneValidationResult Validate()
         {

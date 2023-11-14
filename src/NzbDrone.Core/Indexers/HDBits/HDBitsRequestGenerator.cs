@@ -45,8 +45,9 @@ namespace NzbDrone.Core.Indexers.HDBits
 
             if (imdbId != 0)
             {
-                query.ImdbInfo = query.ImdbInfo ?? new ImdbInfo();
+                query.ImdbInfo ??= new ImdbInfo();
                 query.ImdbInfo.Id = imdbId;
+
                 return true;
             }
 
@@ -73,6 +74,8 @@ namespace NzbDrone.Core.Indexers.HDBits
             query.Category = Settings.Categories.ToArray();
             query.Codec = Settings.Codecs.ToArray();
             query.Medium = Settings.Mediums.ToArray();
+
+            query.Limit = 100;
 
             request.SetContent(query.ToJson());
             request.ContentSummary = query.ToJson(Formatting.None);
