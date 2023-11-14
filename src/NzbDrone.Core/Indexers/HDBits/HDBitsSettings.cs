@@ -44,13 +44,13 @@ namespace NzbDrone.Core.Indexers.HDBits
         [FieldDefinition(2, Label = "API Key", Privacy = PrivacyLevel.ApiKey)]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(3, Label = "Categories", Type = FieldType.TagSelect, SelectOptions = typeof(HdBitsCategory), HelpText = "Options: Movie, TV, Documentary, Music, Sport, Audio, XXX, MiscDemo. If unspecified, all options are used.")]
+        [FieldDefinition(3, Label = "Categories", Type = FieldType.Select, SelectOptions = typeof(HdBitsCategory), HelpText = "If unspecified, all options are used.")]
         public IEnumerable<int> Categories { get; set; }
 
-        [FieldDefinition(4, Label = "Codecs", Type = FieldType.TagSelect, SelectOptions = typeof(HdBitsCodec), Advanced = true, HelpText = "Options: h264, Mpeg2, VC1, Xvid. If unspecified, all options are used.")]
+        [FieldDefinition(4, Label = "Codecs", Type = FieldType.Select, SelectOptions = typeof(HdBitsCodec), Advanced = true, HelpText = "If unspecified, all options are used.")]
         public IEnumerable<int> Codecs { get; set; }
 
-        [FieldDefinition(5, Label = "Mediums", Type = FieldType.TagSelect, SelectOptions = typeof(HdBitsMedium), Advanced = true, HelpText = "Options: BluRay, Encode, Capture, Remux, WebDL. If unspecified, all options are used.")]
+        [FieldDefinition(5, Label = "Mediums", Type = FieldType.Select, SelectOptions = typeof(HdBitsMedium), Advanced = true, HelpText = "If unspecified, all options are used.")]
         public IEnumerable<int> Mediums { get; set; }
 
         [FieldDefinition(6, Type = FieldType.Select, SelectOptions = typeof(RealLanguageFieldConverter), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
@@ -73,31 +73,49 @@ namespace NzbDrone.Core.Indexers.HDBits
 
     public enum HdBitsCategory
     {
+        [FieldOption("Movie")]
         Movie = 1,
+        [FieldOption("TV")]
         Tv = 2,
+        [FieldOption("Documentary")]
         Documentary = 3,
+        [FieldOption("Music")]
         Music = 4,
+        [FieldOption("Sport")]
         Sport = 5,
+        [FieldOption("Audio Track")]
         Audio = 6,
+        [FieldOption("XXX")]
         Xxx = 7,
+        [FieldOption("Misc/Demo")]
         MiscDemo = 8
     }
 
     public enum HdBitsCodec
     {
+        [FieldOption("H.264")]
         H264 = 1,
+        [FieldOption("MPEG-2")]
         Mpeg2 = 2,
+        [FieldOption("VC-1")]
         Vc1 = 3,
+        [FieldOption("XviD")]
         Xvid = 4,
+        [FieldOption("HEVC")]
         HEVC = 5
     }
 
     public enum HdBitsMedium
     {
+        [FieldOption("Blu-ray/HD DVD")]
         Bluray = 1,
+        [FieldOption("Encode")]
         Encode = 3,
+        [FieldOption("Capture")]
         Capture = 4,
+        [FieldOption("Remux")]
         Remux = 5,
+        [FieldOption("WEB-DL")]
         WebDl = 6
     }
 }
