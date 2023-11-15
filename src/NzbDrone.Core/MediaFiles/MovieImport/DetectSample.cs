@@ -71,7 +71,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                 return DetectSampleResult.Sample;
             }
 
-            _logger.Debug("Runtime of {0} is more than {1} seconds, Not Sample", runTime.Value.TotalSeconds, minimumRuntime);
+            _logger.Debug("[{0}] does not appear to be a sample. Runtime {1} seconds is more than minimum of {2} seconds", path, runTime, minimumRuntime);
             return DetectSampleResult.NotSample;
         }
 
