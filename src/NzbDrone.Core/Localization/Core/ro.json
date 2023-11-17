@@ -1014,7 +1014,7 @@
     "DeleteFormatMessageText": "Sigur doriți să ștergeți eticheta format {0}?",
     "DeleteImportListExclusionMessageText": "Sigur doriți să ștergeți această excludere din lista de importuri?",
     "DeleteConditionMessageText": "Sigur doriți să ștergeți eticheta „{0}”?",
-    "DeleteCustomFormatMessageText": "Sigur doriți să ștergeți indexatorul „{0}”?",
+    "DeleteCustomFormatMessageText": "Sigur doriți să ștergeți indexatorul „{customFormatName}”?",
     "ApplyTagsHelpTextAdd": "Adăugare: adăugați etichetele la lista de etichete existentă",
     "ApplyTagsHelpTextHowToApplyIndexers": "Cum se aplică etichete indexatoarelor selectate",
     "ApplyTagsHelpTextRemove": "Eliminați: eliminați etichetele introduse",

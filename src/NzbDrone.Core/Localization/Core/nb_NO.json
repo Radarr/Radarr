@@ -244,7 +244,7 @@
     "PreferredProtocol": "Foretrukket Protokoll",
     "Reset": "Tilbakestill",
     "DeleteConditionMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
-    "DeleteCustomFormatMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
+    "DeleteCustomFormatMessageText": "Er du sikker på at du vil slette formattaggen {customFormatName}?",
     "DeleteDelayProfileMessageText": "Er du sikker på at du vil slette denne forsinkelsesprofilen?",
     "DeleteFormatMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
     "DeleteImportListExclusionMessageText": "Er du sikker på at du vil slette denne ekskluderingen av importlister?",

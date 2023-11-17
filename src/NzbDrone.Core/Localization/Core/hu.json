@@ -1098,7 +1098,7 @@
     "CloneCondition": "Feltétel klónozása",
     "DeleteCondition": "Feltétel törlése",
     "DeleteConditionMessageText": "Biztosan törölni akarod a '{0}' feltételt?",
-    "DeleteCustomFormatMessageText": "Biztosan törölni akarod a/az '{0}' egyéni formátumot?",
+    "DeleteCustomFormatMessageText": "Biztosan törölni akarod a/az '{customFormatName}' egyéni formátumot?",
     "RemoveSelectedItemsQueueMessageText": "Biztosan el akar távolítani {0} elemet a várólistáról?",
     "RemoveSelectedItemQueueMessageText": "Biztosan el akar távolítani 1 elemet a várólistáról?",
     "ApiKeyValidationHealthCheckMessage": "Kérlek frissítsd az API kulcsot, ami legalább {length} karakter hosszú. Ezt megteheted a Beállításokban, vagy a config file-ban",

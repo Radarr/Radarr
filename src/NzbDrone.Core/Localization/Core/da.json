@@ -1010,7 +1010,7 @@
     "DeleteImportListExclusionMessageText": "Er du sikker på, at du vil slette denne undtagelse fra importlisten?",
     "DeleteFormatMessageText": "Er du sikker på, at du vil slette formattag {0}?",
     "DeleteConditionMessageText": "Er du sikker på, at du vil slette listen '{0}'?",
-    "DeleteCustomFormatMessageText": "Er du sikker på, at du vil slette indeksøren '{0}'?",
+    "DeleteCustomFormatMessageText": "Er du sikker på, at du vil slette indeksøren '{customFormatName}'?",
     "RemoveSelectedItemQueueMessageText": "Er du sikker på, at du vil fjerne {0} element {1} fra køen?",
     "RemoveSelectedItemsQueueMessageText": "Er du sikker på, at du vil fjerne {0} element {1} fra køen?",
     "ResetAPIKeyMessageText": "Er du sikker på, at du vil nulstille din API-nøgle?",

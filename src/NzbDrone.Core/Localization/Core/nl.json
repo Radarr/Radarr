@@ -1106,7 +1106,7 @@
     "DeleteSelectedIndexers": "Verwijder Indexeerder",
     "ResetAPIKeyMessageText": "Bent u zeker dat u uw API-sleutel wilt resetten?",
     "DeleteConditionMessageText": "Bent u zeker dat u de lijst '{0}' wilt verwijderen?",
-    "DeleteCustomFormatMessageText": "Bent u zeker dat u de indexeerder '{0}' wilt verwijderen?",
+    "DeleteCustomFormatMessageText": "Bent u zeker dat u de indexeerder '{customFormatName}' wilt verwijderen?",
     "DeleteFormatMessageText": "Weet je zeker dat je formaat tag {0} wilt verwijderen?",
     "DeleteImportListExclusionMessageText": "Bent u zeker dat u dit van de uitzonderingenlijst wilt verwijderen?",
     "RemoveSelectedItemsQueueMessageText": "Weet je zeker dat je {0} van de wachtrij wilt verwijderen?",

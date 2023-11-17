@@ -1004,7 +1004,7 @@
     "EditMovies": "แก้ไขภาพยนตร์",
     "DeleteRemotePathMapping": "แก้ไขการแมปเส้นทางระยะไกล",
     "ApplyTagsHelpTextReplace": "แทนที่: แทนที่แท็กด้วยแท็กที่ป้อน (ป้อนไม่มีแท็กเพื่อล้างแท็กทั้งหมด)",
-    "DeleteCustomFormatMessageText": "แน่ใจไหมว่าต้องการลบตัวสร้างดัชนี \"{0}\"",
+    "DeleteCustomFormatMessageText": "แน่ใจไหมว่าต้องการลบตัวสร้างดัชนี \"{customFormatName}\"",
     "RemoveSelectedItemQueueMessageText": "แน่ใจไหมว่าต้องการนำ {0} ออกจากคิว",
     "RemoveSelectedItemsQueueMessageText": "แน่ใจไหมว่าต้องการนำ {0} ออกจากคิว",
     "ResetAPIKeyMessageText": "แน่ใจไหมว่าต้องการรีเซ็ตคีย์ API",

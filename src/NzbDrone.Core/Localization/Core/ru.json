@@ -1107,7 +1107,7 @@
     "ApplyChanges": "Применить изменения",
     "DeleteSelectedDownloadClients": "Удалить клиент(ы) загрузки",
     "EditSelectedImportLists": "Редактировать выбранные списки импорта",
-    "DeleteCustomFormatMessageText": "Вы уверены, что хотите удалить пользовательский формат '{name}'?",
+    "DeleteCustomFormatMessageText": "Вы уверены, что хотите удалить пользовательский формат '{customFormatName}'?",
     "DeleteDelayProfileMessageText": "Вы уверены, что хотите удалить этот профиль задержки?",
     "DeleteFormatMessageText": "Вы уверены, что хотите удалить тэг {0} ?",
     "DeleteImportListExclusionMessageText": "Вы уверены, что хотите удалить это исключение из списка импорта?",

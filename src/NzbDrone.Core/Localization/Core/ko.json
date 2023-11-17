@@ -1001,7 +1001,7 @@
     "RssSyncHelpText": "간격 (분)입니다. 사용하지 않으려면 0으로 설정합니다 (모든 자동 릴리스 잡기가 중지됨).",
     "File": "파일",
     "DeleteRemotePathMapping": "원격 경로 매핑 편집",
-    "DeleteCustomFormatMessageText": "인덱서 '{0}'을 (를) 삭제 하시겠습니까?",
+    "DeleteCustomFormatMessageText": "인덱서 '{customFormatName}'을 (를) 삭제 하시겠습니까?",
     "DeleteDelayProfileMessageText": "이 지연 프로필을 삭제하시겠습니까?",
     "ResetAPIKeyMessageText": "API 키를 재설정하시겠습니까?",
     "DeleteConditionMessageText": "'{0}' 태그를 삭제하시겠습니까?",

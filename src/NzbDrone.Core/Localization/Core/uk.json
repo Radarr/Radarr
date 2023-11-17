@@ -1092,7 +1092,7 @@
     "ShowCinemaReleaseHelpText": "Показати дату випуску під плакатом",
     "EditMovies": "Редагувати фільм",
     "DeleteRemotePathMapping": "Додати віддалений шлях",
-    "DeleteCustomFormatMessageText": "Ви впевнені, що хочете видалити тег {0} ?",
+    "DeleteCustomFormatMessageText": "Ви впевнені, що хочете видалити тег {customFormatName} ?",
     "DeleteDelayProfileMessageText": "Ви впевнені, що хочете видалити цей профіль затримки?",
     "DeleteFormatMessageText": "Ви впевнені, що хочете видалити тег {0} ?",
     "DeleteImportListExclusionMessageText": "Ви впевнені, що хочете видалити це виключення зі списку імпорту?",

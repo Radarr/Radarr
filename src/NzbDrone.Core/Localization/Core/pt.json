@@ -1112,7 +1112,7 @@
     "ApplyTagsHelpTextRemove": "Remover: eliminar as etiquetas adicionadas",
     "ApplyTagsHelpTextReplace": "Substituir: mudar as etiquetas pelas adicionadas (deixe em branco para limpar todas as etiquetas)",
     "DeleteConditionMessageText": "Tem a certeza de que pretende eliminar a condição '{name}'?",
-    "DeleteCustomFormatMessageText": "Tem a certeza de que pretende eliminar o formato personalizado '{name}'?",
+    "DeleteCustomFormatMessageText": "Tem a certeza de que pretende eliminar o formato personalizado '{customFormatName}'?",
     "DeleteSelectedDownloadClients": "Eliminar cliente de transferências",
     "DeleteSelectedImportLists": "Eliminar lista de importação",
     "AddAutoTag": "Adicionar Etiqueta Automática",

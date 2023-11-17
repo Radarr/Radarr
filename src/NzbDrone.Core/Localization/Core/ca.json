@@ -1096,7 +1096,7 @@
     "DeleteRemotePathMappingMessageText": "Esteu segur que voleu suprimir aquesta assignació remota de camins?",
     "DeleteImportListExclusionMessageText": "Esteu segur que voleu suprimir aquesta exclusió de la llista d'importació?",
     "DeleteConditionMessageText": "Esteu segur que voleu suprimir la notificació '{0}'?",
-    "DeleteCustomFormatMessageText": "Esteu segur que voleu suprimir l'indexador '{0}'?",
+    "DeleteCustomFormatMessageText": "Esteu segur que voleu suprimir l'indexador '{customFormatName}'?",
     "DeleteDelayProfileMessageText": "Esteu segur que voleu suprimir aquest perfil de retard?",
     "DeleteFormatMessageText": "Esteu segur que voleu suprimir l'etiqueta de format {0} ?",
     "RemoveSelectedItemQueueMessageText": "Esteu segur que voleu eliminar {0} de la cua?",

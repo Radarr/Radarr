@@ -1112,7 +1112,7 @@
     "RemoveSelectedItemQueueMessageText": "Êtes-vous sûr de vouloir supprimer 1 élément de la file d'attente ?",
     "CountIndexersSelected": "{count} indexeur(s) sélectionné(s)",
     "DeleteConditionMessageText": "Voulez-vous vraiment supprimer la condition « {name} » ?",
-    "DeleteCustomFormatMessageText": "Voulez-vous vraiment supprimer le format personnalisé « {name} » ?",
+    "DeleteCustomFormatMessageText": "Voulez-vous vraiment supprimer le format personnalisé « {customFormatName} » ?",
     "DeleteDelayProfileMessageText": "Êtes-vous sûr de vouloir supprimer ce profil de retard ?",
     "ResetAPIKeyMessageText": "Êtes-vous sûr de vouloir réinitialiser votre clé API ?",
     "ResetDefinitionTitlesHelpText": "Réinitialiser les titres de définition ainsi que les valeurs",

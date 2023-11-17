@@ -1094,7 +1094,7 @@
     "ShowCinemaReleaseHelpText": "Mostrar la fecha de lanzamiento debajo del cartel",
     "DeleteRemotePathMapping": "Editar Mapeo de Ruta Remota",
     "DownloadClientTagHelpText": "Solo utilizar este indexador para películas que coincidan con al menos una etiqueta. Déjelo en blanco para utilizarlo con todas las películas.",
-    "DeleteCustomFormatMessageText": "Seguro que quieres eliminar el indexer '{name}'?",
+    "DeleteCustomFormatMessageText": "Seguro que quieres eliminar el indexer '{customFormatName}'?",
     "DeleteDelayProfileMessageText": "Está seguro que quieres borrar este perfil de retraso?",
     "DeleteConditionMessageText": "Seguro que quieres eliminar la etiqueta '{name}'?",
     "DeleteFormatMessageText": "¿Está seguro de que desea eliminar la etiqueta de formato {0}?",

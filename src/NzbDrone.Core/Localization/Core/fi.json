@@ -1101,7 +1101,7 @@
     "DeleteImportListExclusionMessageText": "Haluatko varmasti poistaa poikkeussäännön?",
     "CountIndexersSelected": "{0} valittua tietolähdettä",
     "DeleteConditionMessageText": "Haluatko varmasti poistaa tunnisteen '{0}'?",
-    "DeleteCustomFormatMessageText": "Haluatko varmasti poistaa pääkansion '{0}'?",
+    "DeleteCustomFormatMessageText": "Haluatko varmasti poistaa pääkansion '{customFormatName}'?",
     "DeleteDelayProfileMessageText": "Haluatko varmasti poistaa viiveprofiilin?",
     "DeleteSelectedImportLists": "Poista tuontilista",
     "DeleteSelectedIndexers": "Poista tietolähde",

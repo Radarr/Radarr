@@ -1105,7 +1105,7 @@
     "DeleteCondition": "删除条件",
     "DeleteConditionMessageText": "你确定要删除条件 “{name}” 吗？",
     "DeleteDelayProfileMessageText": "你确定要删除此延迟配置吗？",
-    "DeleteCustomFormatMessageText": "您确定要删除自定义格式“{name}”吗?",
+    "DeleteCustomFormatMessageText": "您确定要删除自定义格式“{customFormatName}”吗?",
     "DeleteRemotePathMappingMessageText": "你确定要删除此远程路径映射吗？",
     "ImportScriptPath": "导入脚本路径",
     "ImportUsingScript": "使用脚本导入",
