@@ -27,9 +27,9 @@ dotnet clean $slnFile -c Release
 dotnet msbuild -restore $slnFile -p:Configuration=Debug -p:Platform=$platform -p:RuntimeIdentifiers=$RUNTIME -t:PublishAllRids
 
 dotnet new tool-manifest
-dotnet tool install --version 6.5.0 Swashbuckle.AspNetCore.Cli
+dotnet tool install --version 6.6.2 Swashbuckle.AspNetCore.Cli
 
-dotnet tool run swagger tofile --output ./src/Radarr.Api.V3/openapi.json "$outputFolder/net6.0/$RUNTIME/radarr.console.dll" v3 &
+dotnet tool run swagger tofile --output ./src/Radarr.Api.V3/openapi.json "$outputFolder/net8.0/$RUNTIME/radarr.console.dll" v3 &
 
 sleep 45
 
