@@ -25,20 +25,18 @@ export async function fetchTranslations(): Promise<boolean> {
 
 export default function translate(
   key: string,
-  tokens?: Record<string, string | number | boolean>
+  tokens: Record<string, string | number | boolean> = {}
 ) {
   const translation = translations[key] || key;
 
-  if (tokens) {
-    // Fallback to the old behaviour for translations not yet updated to use named tokens
-    Object.values(tokens).forEach((value, index) => {
-      tokens[index] = value;
-    });
+  tokens.appName = 'Radarr';
 
-    return translation.replace(/\{([a-z0-9]+?)\}/gi, (match, tokenMatch) =>
-      String(tokens[tokenMatch] ?? match)
-    );
-  }
+  // Fallback to the old behaviour for translations not yet updated to use named tokens
+  Object.values(tokens).forEach((value, index) => {
+    tokens[index] = value;
+  });
 
-  return translation;
+  return translation.replace(/\{([a-z0-9]+?)\}/gi, (match, tokenMatch) =>
+    String(tokens[tokenMatch] ?? match)
+  );
 }
