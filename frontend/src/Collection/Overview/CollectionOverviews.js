@@ -110,7 +110,7 @@ class CollectionOverviews extends Component {
     }
 
     if (navigateToId) {
-      this.scrollToItem(navigateToId)
+      this.scrollToItem(navigateToId);
     }
   }
 
@@ -199,7 +199,7 @@ class CollectionOverviews extends Component {
       this._grid.scrollToCell({
         columnIndex: 0,
         rowIndex: index,
-        align: 'start',
+        align: 'start'
       });
     }
   };
@@ -283,7 +283,8 @@ CollectionOverviews.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired,
   selectedState: PropTypes.object.isRequired,
-  onSelectedChange: PropTypes.func.isRequired
+  onSelectedChange: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired
 };
 
 export default CollectionOverviews;

@@ -8,18 +8,13 @@ import React, {
 import { Link as RouterLink } from 'react-router-dom';
 import styles from './Link.css';
 
-interface ReactRouterLinkProps {
-  to?: any;
-}
-
 export interface LinkProps extends React.HTMLProps<HTMLAnchorElement> {
   className?: string;
   component?:
     | string
     | FunctionComponent<LinkProps>
     | ComponentClass<LinkProps, unknown>;
-  to?: string;
-  toState?: string;
+  to?: string | { pathname: string; state?: object };
   target?: string;
   isDisabled?: boolean;
   noRouter?: boolean;
@@ -47,26 +42,38 @@ function Link(props: LinkProps) {
     [isDisabled, onPress]
   );
 
-  const linkProps: React.HTMLProps<HTMLAnchorElement> & ReactRouterLinkProps = {
+  const linkProps: React.HTMLProps<HTMLAnchorElement> & LinkProps = {
     target,
   };
   let el = component;
 
   if (to) {
-    if (/\w+?:\/\//.test(to)) {
-      el = 'a';
-      linkProps.href = to;
-      linkProps.target = target || '_blank';
-      linkProps.rel = 'noreferrer';
-    } else if (noRouter) {
-      el = 'a';
-      linkProps.href = to;
-      linkProps.target = target || '_self';
+    if (typeof to === 'string') {
+      if (/\w+?:\/\//.test(to)) {
+        el = 'a';
+        linkProps.href = to;
+        linkProps.target = target || '_blank';
+        linkProps.rel = 'noreferrer';
+      } else if (noRouter) {
+        el = 'a';
+        linkProps.href = to;
+        linkProps.target = target || '_self';
+      } else {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        el = RouterLink;
+        linkProps.to = `${window.Radarr.urlBase}/${to.replace(/^\//, '')}`;
+        linkProps.target = target;
+      }
     } else {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       el = RouterLink;
-      linkProps.to = `${window.Radarr.urlBase}/${to.replace(/^\//, '')}`;
+      const url = `${window.Radarr.urlBase}/${to.pathname.replace(/^\//, '')}`;
+      linkProps.to = {
+        pathname: url,
+        ...(to.state && { state: to.state }),
+      };
       linkProps.target = target;
     }
   }
