@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Validation;
@@ -27,7 +28,7 @@ namespace NzbDrone.Core.AutoTagging.Specifications
 
         protected override bool IsSatisfiedByWithoutNegate(Movie movie)
         {
-            return movie.MovieMetadata.Value.Genres.Any(genre => Value.Contains(genre));
+            return movie?.MovieMetadata?.Value?.Genres.Any(genre => Value.ContainsIgnoreCase(genre)) ?? false;
         }
 
         public override NzbDroneValidationResult Validate()
