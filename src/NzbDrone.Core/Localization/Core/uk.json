@@ -564,7 +564,7 @@
     "QuickImport": "Рухатися автоматично",
     "RadarrCalendarFeed": "Стрічка календаря {appName}",
     "RadarrSupportsCustomConditionsAgainstTheReleasePropertiesBelow": "{appName} підтримує спеціальні умови щодо наведених нижче властивостей випуску.",
-    "RadarrTags": "Теги Radar",
+    "RadarrTags": "Теги {appName}",
     "Rating": "Рейтинг",
     "Ratings": "Рейтинги",
     "Real": "Справжня",

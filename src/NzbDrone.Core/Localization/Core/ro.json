@@ -466,7 +466,7 @@
     "ProxyType": "Tip proxy",
     "QualityProfileInUse": "Nu se poate șterge un profil de calitate atașat unui film",
     "QueueIsEmpty": "Coada este goală",
-    "RadarrCalendarFeed": "Feed Radar Calendar",
+    "RadarrCalendarFeed": "Feed {appName} Calendar",
     "ReadTheWikiForMoreInformation": "Citiți Wiki pentru mai multe informații",
     "Reason": "Motiv",
     "RegularExpressionsCanBeTested": "Expresiile regulate pot fi testate ",

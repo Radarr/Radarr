@@ -44,7 +44,7 @@
     "DownloadPropersAndRepacks": "適切なものと再梱包",
     "EditCustomFormat": "カスタムフォーマットの編集",
     "EnableAutoHelpText": "有効にすると、映画はこのリストから{appName}に自動的に追加されます",
-    "EnableAutomaticSearchHelpText": "UIまたはRadarによって自動検索が実行されるときに使用されます",
+    "EnableAutomaticSearchHelpText": "UIまたは{appName}によって自動検索が実行されるときに使用されます",
     "EnableCompletedDownloadHandlingHelpText": "完了したダウンロードをダウンロードクライアントから自動的にインポートします",
     "EnableInteractiveSearch": "インタラクティブ検索を有効にする",
     "ErrorRestoringBackup": "バックアップの復元中にエラーが発生しました",

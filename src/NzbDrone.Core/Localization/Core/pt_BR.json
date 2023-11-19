@@ -790,7 +790,7 @@
     "ReadTheWikiForMoreInformation": "Leia o Wiki para obter mais informações",
     "Ratings": "Classificações",
     "RadarrTags": "Tags do {appName}",
-    "RadarrSupportsCustomConditionsAgainstTheReleasePropertiesBelow": "O Radar suporta condições personalizadas em relação às propriedades das versões abaixo.",
+    "RadarrSupportsCustomConditionsAgainstTheReleasePropertiesBelow": "O {appName} suporta condições personalizadas em relação às propriedades das versões abaixo.",
     "RadarrSupportsAnyRSSMovieListsAsWellAsTheOneStatedBelow": "O {appName} oferece suporte a qualquer lista de filmes em RSS, além da descrita abaixo.",
     "RadarrSupportsAnyIndexer": "O {appName} oferece suporte a qualquer indexador que usa o padrão Newznab, além de outros indexadores, listados abaixo.",
     "RadarrSupportsAnyDownloadClient": "{appName} suporta muitos clientes populares de download de torrent e usenet.",

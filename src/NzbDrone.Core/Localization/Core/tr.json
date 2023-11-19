@@ -782,7 +782,7 @@
     "ImportRootPath": "{appName}'ı belirli bir filmi değil, tüm filmlerinizi içeren klasöre yöneltin. Örneğin. {1} değil {0}. Ek olarak, her film kök / kitaplık klasöründe kendi klasöründe olmalıdır.",
     "InCinemasDate": "Sinemalarda Tarih",
     "InCinemasMsg": "Film Sinemalarda",
-    "IncludeRadarrRecommendations": "Radar Önerilerini Dahil Et",
+    "IncludeRadarrRecommendations": "{appName} Önerilerini Dahil Et",
     "IncludeRecommendationsHelpText": "{appName} tarafından önerilen filmleri keşif görünümüne dahil et",
     "IncludeUnmonitored": "İzlenmeyenleri Dahil Et",
     "ImportMovies": "Filmleri İçe Aktar",

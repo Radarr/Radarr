@@ -228,7 +228,7 @@
     "CollectionShowPostersHelpText": "Prikaži Kolekciju postera",
     "CollectionsSelectedInterp": "{0} Kolekcija odabrano",
     "ColonReplacement": "Zamjena Zareza",
-    "ColonReplacementFormatHelpText": "izmijeni kako Radar upravlja zamjenama zareza",
+    "ColonReplacementFormatHelpText": "izmijeni kako {appName} upravlja zamjenama zareza",
     "Columns": "Stupci",
     "DeleteBackupMessageText": "Jeste li sigurni da želite obrisati oznaku formata {0}?",
     "DeleteCustomFormat": "Kloniraj Prilagođeni Format",
