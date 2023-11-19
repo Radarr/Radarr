@@ -9849,6 +9849,10 @@
             "type": "string",
             "nullable": true
           },
+          "passwordConfirmation": {
+            "type": "string",
+            "nullable": true
+          },
           "logLevel": {
             "type": "string",
             "nullable": true
