@@ -84,6 +84,8 @@ namespace NzbDrone.Core.Blocklisting
                                 PublishedDate = remoteMovie.Release.PublishDate,
                                 Size = remoteMovie.Release.Size,
                                 Indexer = remoteMovie.Release.Indexer,
+                                IndexerFlags = remoteMovie.Release.IndexerFlags,
+                                IndexerId = remoteMovie.Release.IndexerId,
                                 Protocol = remoteMovie.Release.DownloadProtocol,
                                 Message = message,
                                 Languages = remoteMovie.ParsedMovieInfo.Languages
@@ -192,6 +194,11 @@ namespace NzbDrone.Core.Blocklisting
             if (Enum.TryParse(message.Data.GetValueOrDefault("indexerFlags"), true, out IndexerFlags flags))
             {
                 blocklist.IndexerFlags = flags;
+            }
+
+            if (int.TryParse(message.Data.GetValueOrDefault("indexerId"), out var indexerId))
+            {
+                blocklist.IndexerId = indexerId;
             }
 
             _blocklistRepository.Insert(blocklist);

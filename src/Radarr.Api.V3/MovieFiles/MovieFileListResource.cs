@@ -13,5 +13,6 @@ namespace Radarr.Api.V3.MovieFiles
         public string ReleaseGroup { get; set; }
         public string SceneName { get; set; }
         public int? IndexerFlags { get; set; }
+        public int? IndexerId { get; set; }
     }
 }

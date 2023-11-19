@@ -20,6 +20,7 @@ namespace Radarr.Api.V3.MovieFiles
         public DateTime DateAdded { get; set; }
         public string SceneName { get; set; }
         public int IndexerFlags { get; set; }
+        public int IndexerId { get; set; }
         public QualityModel Quality { get; set; }
         public List<CustomFormatResource> CustomFormats { get; set; }
         public int CustomFormatScore { get; set; }
@@ -52,6 +53,7 @@ namespace Radarr.Api.V3.MovieFiles
                 DateAdded = model.DateAdded,
                 SceneName = model.SceneName,
                 IndexerFlags = (int)model.IndexerFlags,
+                IndexerId = model.IndexerId,
                 Quality = model.Quality,
                 Languages = model.Languages,
                 ReleaseGroup = model.ReleaseGroup,
@@ -79,6 +81,7 @@ namespace Radarr.Api.V3.MovieFiles
                 DateAdded = model.DateAdded,
                 SceneName = model.SceneName,
                 IndexerFlags = (int)model.IndexerFlags,
+                IndexerId = model.IndexerId,
                 Quality = model.Quality,
                 Languages = model.Languages,
                 Edition = model.Edition,

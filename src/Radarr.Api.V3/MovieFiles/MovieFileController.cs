@@ -94,6 +94,7 @@ namespace Radarr.Api.V3.MovieFiles
         {
             var movieFile = _mediaFileService.GetMovie(movieFileResource.Id);
             movieFile.IndexerFlags = (IndexerFlags)movieFileResource.IndexerFlags;
+            movieFile.IndexerId = movieFileResource.IndexerId;
             movieFile.Quality = movieFileResource.Quality;
             movieFile.Languages = movieFileResource.Languages;
             movieFile.Edition = movieFileResource.Edition;
@@ -133,6 +134,11 @@ namespace Radarr.Api.V3.MovieFiles
                 if (resource.IndexerFlags != null)
                 {
                     movieFile.IndexerFlags = (IndexerFlags)resource.IndexerFlags.Value;
+                }
+
+                if (resource.IndexerId != null)
+                {
+                    movieFile.IndexerId = resource.IndexerId.Value;
                 }
 
                 if (resource.Edition != null)
