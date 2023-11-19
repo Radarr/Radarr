@@ -121,7 +121,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
 
                 CleanMediaFiles(movie, new List<string>());
-                CompletedScanning(movie);
+                CompletedScanning(movie, new List<string>());
 
                 return;
             }
@@ -173,8 +173,11 @@ namespace NzbDrone.Core.MediaFiles
             fileInfoStopwatch.Stop();
             _logger.Trace("Reprocessing existing files complete for: {0} [{1}]", movie, decisionsStopwatch.Elapsed);
 
+            var filesOnDisk = GetNonVideoFiles(movie.Path);
+            var possibleExtraFiles = FilterPaths(movie.Path, filesOnDisk);
+
             RemoveEmptyMovieFolder(movie.Path);
-            CompletedScanning(movie);
+            CompletedScanning(movie, possibleExtraFiles);
         }
 
         private void CleanMediaFiles(Movie movie, List<string> mediaFileList)
@@ -183,10 +186,10 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileTableCleanupService.Clean(movie, mediaFileList);
         }
 
-        private void CompletedScanning(Movie movie)
+        private void CompletedScanning(Movie movie, List<string> possibleExtraFiles)
         {
             _logger.Info("Completed scanning disk for {0}", movie.Title);
-            _eventAggregator.PublishEvent(new MovieScannedEvent(movie));
+            _eventAggregator.PublishEvent(new MovieScannedEvent(movie, possibleExtraFiles));
         }
 
         public string[] GetVideoFiles(string path, bool allDirectories = true)

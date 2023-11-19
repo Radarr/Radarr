@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Extras
 {
     public interface IExtraService
     {
+        void MoveFilesAfterRename(Movie movie, MovieFile movieFile);
         void ImportMovie(LocalMovie localMovie, MovieFile movieFile, bool isReadOnly);
     }
 
@@ -136,6 +137,16 @@ namespace NzbDrone.Core.Extras
             foreach (var extraFileManager in _extraFileManagers)
             {
                 extraFileManager.CreateAfterMovieFolder(movie, message.MovieFolder);
+            }
+        }
+
+        public void MoveFilesAfterRename(Movie movie, MovieFile movieFile)
+        {
+            var movieFiles = new List<MovieFile> { movieFile };
+
+            foreach (var extraFileManager in _extraFileManagers)
+            {
+                extraFileManager.MoveFilesAfterRename(movie, movieFiles);
             }
         }
 
