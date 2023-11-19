@@ -28,11 +28,11 @@ function ConnectionLostModal(props) {
 
         <ModalBody>
           <div>
-            {translate('ConnectionLostToBackend', { appName: 'Radarr' })}
+            {translate('ConnectionLostToBackend')}
           </div>
 
           <div className={styles.automatic}>
-            {translate('ConnectionLostReconnect', { appName: 'Radarr' })}
+            {translate('ConnectionLostReconnect')}
           </div>
         </ModalBody>
         <ModalFooter>

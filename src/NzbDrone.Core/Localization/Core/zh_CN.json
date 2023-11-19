@@ -1303,7 +1303,7 @@
     "OverrideGrabNoLanguage": "请选择至少一种语言",
     "PendingDownloadClientUnavailable": "挂起 - 下载客户端不可用",
     "QueueLoadError": "加载队列失败",
-    "RemotePathMappingsInfo": "很少需要远程路径映射，如果{app}和你的下载客户端在同一个系统上，最好匹配你的路径。有关更多信息，请参阅[wiki]({wikiink})。",
+    "RemotePathMappingsInfo": "很少需要远程路径映射，如果{appName}和你的下载客户端在同一个系统上，最好匹配你的路径。有关更多信息，请参阅[wiki]({wikiink})。",
     "RemoveFromDownloadClientHelpTextWarning": "删除将从下载客户端删除下载和文件。",
     "ShowTmdbRatingHelpText": "在海报下显示TMDb评分",
     "ShowUnknownMovieItemsHelpText": "显示队列中没有电影的项目。这可能包括被删除的电影或任何其他在{appName}的类别",

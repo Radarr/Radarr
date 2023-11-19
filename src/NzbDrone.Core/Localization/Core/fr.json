@@ -1285,7 +1285,7 @@
     "AutoRedownloadFailed": "Retélécharger les fichiers ayant échoué",
     "AutoRedownloadFailedFromInteractiveSearch": "Retélécharger les fichiers ayant échoué depuis la recherche interactive",
     "AutoRedownloadFailedFromInteractiveSearchHelpText": "Rechercher et tenter automatiquement de télécharger une version différente lorsque la version ayant échoué a été récupérée à partir de la recherche interactive",
-    "RemotePathMappingsInfo": "Les mappages de chemins distants sont très rarement requis. Si {app} et votre client de téléchargement sont sur le même système, il est préférable de faire correspondre vos chemins. Pour plus d'informations, consultez le [wiki]({wikiLink}).",
+    "RemotePathMappingsInfo": "Les mappages de chemins distants sont très rarement requis. Si {appName} et votre client de téléchargement sont sur le même système, il est préférable de faire correspondre vos chemins. Pour plus d'informations, consultez le [wiki]({wikiLink}).",
     "SkipRedownload": "Ignorer le nouveau téléchargement",
     "Complete": "Complet",
     "RemoveCompletedDownloads": "Supprimer les téléchargements terminés",

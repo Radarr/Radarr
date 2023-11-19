@@ -961,7 +961,7 @@
   "RemotePathMappingCheckRemoteDownloadClient": "Remote download client {downloadClientName} reported files in {path} but this directory does not appear to exist.  Likely missing remote path mapping.",
   "RemotePathMappingCheckWrongOSPath": "Remote download client {downloadClientName} places downloads in {path} but this is not a valid {osName} path.  Review your remote path mappings and download client settings.",
   "RemotePathMappings": "Remote Path Mappings",
-  "RemotePathMappingsInfo": "Remote Path Mappings are very rarely required, if {app} and your download client are on the same system it is better to match your paths. For more information see the [wiki]({wikiLink}).",
+  "RemotePathMappingsInfo": "Remote Path Mappings are very rarely required, if {appName} and your download client are on the same system it is better to match your paths. For more information see the [wiki]({wikiLink}).",
   "Remove": "Remove",
   "RemoveCompleted": "Remove Completed",
   "RemoveCompletedDownloads": "Remove Completed Downloads",

@@ -1219,7 +1219,7 @@
     "NotificationStatusAllClientHealthCheckMessage": "Todas as notificações estão indisponíveis devido a falhas",
     "NotificationStatusSingleClientHealthCheckMessage": "Notificações indisponíveis devido a falhas: {notificationNames}",
     "AutomaticUpdatesDisabledDocker": "As atualizações automáticas não têm suporte direto ao usar o mecanismo de atualização do Docker. Você precisará atualizar a imagem do contêiner fora de {appName} ou usar um script",
-    "RemotePathMappingsInfo": "Raramente são necessários mapeamentos de caminho remoto, se {app} e seu cliente de download estiverem no mesmo sistema, é melhor combinar seus caminhos. Para obter mais informações, consulte o [wiki]({wikiLink}).",
+    "RemotePathMappingsInfo": "Raramente são necessários mapeamentos de caminho remoto, se {appName} e seu cliente de download estiverem no mesmo sistema, é melhor combinar seus caminhos. Para obter mais informações, consulte o [wiki]({wikiLink}).",
     "DisabledForLocalAddresses": "Desabilitado para endereços locais",
     "AudioLanguages": "Idiomas do áudio",
     "SubtitleLanguages": "Idiomas das Legendas",
