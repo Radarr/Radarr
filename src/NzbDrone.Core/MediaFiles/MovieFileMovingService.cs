@@ -126,6 +126,7 @@ namespace NzbDrone.Core.MediaFiles
                     try
                     {
                         MoveMovieFile(movieFile, movie);
+                        localMovie.FileRenamedAfterScriptImport = true;
                     }
                     catch (SameFilenameException)
                     {

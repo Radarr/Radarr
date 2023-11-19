@@ -27,6 +27,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         private readonly IUpgradeMediaFiles _movieFileUpgrader;
         private readonly IMediaFileService _mediaFileService;
         private readonly IExtraService _extraService;
+        private readonly IExistingExtraFiles _existingExtraFiles;
         private readonly IDiskProvider _diskProvider;
         private readonly IHistoryService _historyService;
         private readonly IEventAggregator _eventAggregator;
@@ -36,6 +37,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         public ImportApprovedMovie(IUpgradeMediaFiles movieFileUpgrader,
                                    IMediaFileService mediaFileService,
                                    IExtraService extraService,
+                                   IExistingExtraFiles existingExtraFiles,
                                    IDiskProvider diskProvider,
                                    IHistoryService historyService,
                                    IEventAggregator eventAggregator,
@@ -45,6 +47,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             _movieFileUpgrader = movieFileUpgrader;
             _mediaFileService = mediaFileService;
             _extraService = extraService;
+            _existingExtraFiles = existingExtraFiles;
             _diskProvider = diskProvider;
             _historyService = historyService;
             _eventAggregator = eventAggregator;
@@ -146,7 +149,20 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
                     if (newDownload)
                     {
-                        _extraService.ImportMovie(localMovie, movieFile, copyOnly);
+                        if (localMovie.ScriptImported)
+                        {
+                            _existingExtraFiles.ImportExtraFiles(localMovie.Movie, localMovie.PossibleExtraFiles);
+
+                            if (localMovie.FileRenamedAfterScriptImport)
+                            {
+                                _extraService.MoveFilesAfterRename(localMovie.Movie, movieFile);
+                            }
+                        }
+
+                        if (!localMovie.ScriptImported || localMovie.ShouldImportExtras)
+                        {
+                            _extraService.ImportMovie(localMovie, movieFile, copyOnly);
+                        }
                     }
 
                     _eventAggregator.PublishEvent(new MovieFileImportedEvent(localMovie, movieFile, oldFiles, newDownload, downloadClientItem));

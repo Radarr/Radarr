@@ -2,44 +2,32 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
-using NzbDrone.Common.Disk;
-using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Extras
 {
-    public class ExistingExtraFileService : IHandle<MovieScannedEvent>
+    public interface IExistingExtraFiles
     {
-        private readonly IDiskProvider _diskProvider;
-        private readonly IDiskScanService _diskScanService;
+        List<string> ImportExtraFiles(Movie movie, List<string> possibleExtraFiles);
+    }
+
+    public class ExistingExtraFileService : IExistingExtraFiles, IHandle<MovieScannedEvent>
+    {
         private readonly List<IImportExistingExtraFiles> _existingExtraFileImporters;
         private readonly Logger _logger;
 
-        public ExistingExtraFileService(IDiskProvider diskProvider,
-                                        IDiskScanService diskScanService,
-                                        IEnumerable<IImportExistingExtraFiles> existingExtraFileImporters,
+        public ExistingExtraFileService(IEnumerable<IImportExistingExtraFiles> existingExtraFileImporters,
                                         Logger logger)
         {
-            _diskProvider = diskProvider;
-            _diskScanService = diskScanService;
             _existingExtraFileImporters = existingExtraFileImporters.OrderBy(e => e.Order).ToList();
             _logger = logger;
         }
 
-        public void Handle(MovieScannedEvent message)
+        public List<string> ImportExtraFiles(Movie movie, List<string> possibleExtraFiles)
         {
-            var movie = message.Movie;
-
-            if (!_diskProvider.FolderExists(movie.Path))
-            {
-                return;
-            }
-
             _logger.Debug("Looking for existing extra files in {0}", movie.Path);
-
-            var filesOnDisk = _diskScanService.GetNonVideoFiles(movie.Path);
-            var possibleExtraFiles = _diskScanService.FilterPaths(movie.Path, filesOnDisk, false);
 
             var importedFiles = new List<string>();
 
@@ -49,6 +37,15 @@ namespace NzbDrone.Core.Extras
 
                 importedFiles.AddRange(imported.Select(f => Path.Combine(movie.Path, f.RelativePath)));
             }
+
+            return importedFiles;
+        }
+
+        public void Handle(MovieScannedEvent message)
+        {
+            var movie = message.Movie;
+            var possibleExtraFiles = message.PossibleExtraFiles;
+            var importedFiles = ImportExtraFiles(movie, possibleExtraFiles);
 
             _logger.Info("Found {0} possible extra files, imported {1} files.", possibleExtraFiles.Count, importedFiles.Count);
         }
