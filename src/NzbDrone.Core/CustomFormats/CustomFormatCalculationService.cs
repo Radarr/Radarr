@@ -108,7 +108,7 @@ namespace NzbDrone.Core.CustomFormats
                 Movie = movie,
                 Size = size,
                 IndexerFlags = flags,
-                IndexerId = int.TryParse(history.Data.GetValueOrDefault("IndexerId"), out var id) ? id : -1,
+                IndexerId = int.TryParse(history.Data.GetValueOrDefault("indexerId"), out var indexerId) ? indexerId : -1,
                 Languages = history.Languages
             };
 
