@@ -180,7 +180,12 @@ class MovieDetails extends Component {
     if (
       touchStart < 50 ||
       this.props.isSidebarVisible ||
-      this.state.isEventModalOpen
+      this.state.isOrganizeModalOpen ||
+      this.state.isEditMovieModalOpen ||
+      this.state.isDeleteMovieModalOpen ||
+      this.state.isInteractiveImportModalOpen ||
+      this.state.isInteractiveSearchModalOpen ||
+      this.state.isMovieHistoryModalOpen
     ) {
       return;
     }
