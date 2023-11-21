@@ -92,6 +92,7 @@ class DiscoverMoviePoster extends Component {
       showRelativeDates,
       shortDateFormat,
       timeFormat,
+      movieRuntimeFormat,
       ...otherProps
     } = this.props;
 
@@ -110,7 +111,7 @@ class DiscoverMoviePoster extends Component {
 
     return (
       <div className={styles.content}>
-        <div className={styles.posterContainer}>
+        <div className={styles.posterContainer} title={title}>
           {
             <div className={styles.editorSelect}>
               <CheckInput
@@ -185,7 +186,7 @@ class DiscoverMoviePoster extends Component {
 
         {
           showTitle &&
-            <div className={styles.title}>
+            <div className={styles.title} title={title}>
               {title}
             </div>
         }
@@ -194,6 +195,7 @@ class DiscoverMoviePoster extends Component {
           showRelativeDates={showRelativeDates}
           shortDateFormat={shortDateFormat}
           timeFormat={timeFormat}
+          movieRuntimeFormat={movieRuntimeFormat}
           {...otherProps}
         />
 
@@ -236,6 +238,7 @@ DiscoverMoviePoster.propTypes = {
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
+  movieRuntimeFormat: PropTypes.string.isRequired,
   isExisting: PropTypes.bool.isRequired,
   isExcluded: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,

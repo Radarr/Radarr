@@ -50,7 +50,7 @@ $hoverScale: 1.05;
 .title {
   @add-mixin truncate;
 
-  background-color: #fafbfc;
+  background-color: var(--movieBackgroundColor);
   text-align: center;
   font-size: $smallFontSize;
 }

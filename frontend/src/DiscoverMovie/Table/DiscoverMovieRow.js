@@ -76,6 +76,7 @@ class DiscoverMovieRow extends Component {
       ratings,
       popularity,
       certification,
+      movieRuntimeFormat,
       collection,
       columns,
       isExisting,
@@ -230,7 +231,7 @@ class DiscoverMovieRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
-                  {formatRuntime(runtime)}
+                  {formatRuntime(runtime, movieRuntimeFormat)}
                 </VirtualTableRowCell>
               );
             }
@@ -397,6 +398,7 @@ DiscoverMovieRow.propTypes = {
   popularity: PropTypes.number.isRequired,
   certification: PropTypes.string,
   collection: PropTypes.object,
+  movieRuntimeFormat: PropTypes.string.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   isExisting: PropTypes.bool.isRequired,
   isExcluded: PropTypes.bool.isRequired,
