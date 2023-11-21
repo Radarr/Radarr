@@ -328,7 +328,6 @@ class MovieDetails extends Component {
             <PageToolbarButton
               label={translate('History')}
               iconName={icons.HISTORY}
-              isDisabled={!hasMovieFiles}
               onPress={this.onMovieHistoryPress}
             />
 

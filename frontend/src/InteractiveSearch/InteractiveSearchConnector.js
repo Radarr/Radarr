@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { clearMovieHistory, fetchMovieHistory } from 'Store/Actions/movieHistoryActions';
 import * as releaseActions from 'Store/Actions/releaseActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
@@ -29,6 +30,14 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(releaseActions.fetchReleases(payload));
     },
 
+    dispatchFetchMovieHistory({ movieId }) {
+      dispatch(fetchMovieHistory({ movieId }));
+    },
+
+    dispatchClearMovieHistory() {
+      dispatch(clearMovieHistory());
+    },
+
     onSortPress(sortKey, sortDirection) {
       dispatch(releaseActions.setReleasesSort({ sortKey, sortDirection }));
     },
@@ -52,7 +61,8 @@ class InteractiveSearchConnector extends Component {
     const {
       searchPayload,
       isPopulated,
-      dispatchFetchReleases
+      dispatchFetchReleases,
+      dispatchFetchMovieHistory
     } = this.props;
 
     // If search results are not yet isPopulated fetch them,
@@ -60,6 +70,12 @@ class InteractiveSearchConnector extends Component {
     if (!isPopulated) {
       dispatchFetchReleases(searchPayload);
     }
+
+    dispatchFetchMovieHistory(searchPayload);
+  }
+
+  componentWillUnmount() {
+    this.props.dispatchClearMovieHistory();
   }
 
   //
@@ -68,6 +84,8 @@ class InteractiveSearchConnector extends Component {
   render() {
     const {
       dispatchFetchReleases,
+      dispatchFetchMovieHistory,
+      dispatchClearMovieHistory,
       ...otherProps
     } = this.props;
 
@@ -83,7 +101,9 @@ class InteractiveSearchConnector extends Component {
 InteractiveSearchConnector.propTypes = {
   searchPayload: PropTypes.object.isRequired,
   isPopulated: PropTypes.bool.isRequired,
-  dispatchFetchReleases: PropTypes.func.isRequired
+  dispatchFetchReleases: PropTypes.func.isRequired,
+  dispatchFetchMovieHistory: PropTypes.func.isRequired,
+  dispatchClearMovieHistory: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, createMapDispatchToProps)(InteractiveSearchConnector);

@@ -133,9 +133,9 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
     longDateFormat,
     timeFormat,
     grabError,
-    historyGrabbedData,
-    historyFailedData,
-    blocklistData,
+    historyGrabbedData = {} as MovieHistory,
+    historyFailedData = {} as MovieHistory,
+    blocklistData = {} as MovieBlocklist,
     searchPayload,
     onGrabPress,
   } = props;
