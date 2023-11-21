@@ -47,6 +47,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
                     EnableAuto = true,
                     QualityProfileId = 1,
                     Implementation = GetType().Name,
+                    MinRefreshInterval = MinRefreshInterval,
                     Settings = new IMDbListSettings { ListId = "top250" },
                 };
                 yield return new ImportListDefinition
@@ -56,6 +57,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
                     EnableAuto = true,
                     QualityProfileId = 1,
                     Implementation = GetType().Name,
+                    MinRefreshInterval = MinRefreshInterval,
                     Settings = new IMDbListSettings { ListId = "popular" },
                 };
             }
