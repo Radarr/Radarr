@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment/moment';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import { filterBuilderTypes, filterBuilderValueTypes, filterTypes, sortDirections } from 'Helpers/Props';
@@ -219,6 +220,42 @@ export const defaultState = {
       const { ratings = {} } = item;
 
       return ratings.tmdb? ratings.tmdb.value : 0;
+    },
+
+    inCinemas: function(item, direction) {
+      if (item.inCinemas) {
+        return moment(item.inCinemas).unix();
+      }
+
+      if (direction === sortDirections.DESCENDING) {
+        return -1 * Number.MAX_VALUE;
+      }
+
+      return Number.MAX_VALUE;
+    },
+
+    physicalRelease: function(item, direction) {
+      if (item.physicalRelease) {
+        return moment(item.physicalRelease).unix();
+      }
+
+      if (direction === sortDirections.DESCENDING) {
+        return -1 * Number.MAX_VALUE;
+      }
+
+      return Number.MAX_VALUE;
+    },
+
+    digitalRelease: function(item, direction) {
+      if (item.digitalRelease) {
+        return moment(item.digitalRelease).unix();
+      }
+
+      if (direction === sortDirections.DESCENDING) {
+        return -1 * Number.MAX_VALUE;
+      }
+
+      return Number.MAX_VALUE;
     }
   },
 
