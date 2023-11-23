@@ -1072,6 +1072,7 @@
   "SearchOnAddCollectionHelpText": "Search for movies on this collection when added to library",
   "SearchOnAddHelpText": "Search for movies on this list when added to library",
   "SearchSelected": "Search Selected",
+  "SearchMoviesConfirmationMessageText": "Are you sure you want to run a search for {count} movie(s)?",
   "Seconds": "Seconds",
   "Security": "Security",
   "Seeders": "Seeders",
