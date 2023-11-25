@@ -318,6 +318,8 @@
   "DownloadClientCheckDownloadingToRoot": "Download client {downloadClientName} places downloads in the root folder {path}. You should not download to a root folder.",
   "DownloadClientCheckNoneAvailableMessage": "No download client is available",
   "DownloadClientCheckUnableToCommunicateMessage": "Unable to communicate with {downloadClientName}. {errorMessage}",
+  "DownloadClientQbittorrentSettingsContentLayout": "Content Layout",
+  "DownloadClientQbittorrentSettingsContentLayoutHelpText": "Whether to use qBittorrent's configured content layout, the original layout from the torrent or always create a subfolder (qBittorrent 4.3.2+)",
   "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "Download client {downloadClientName} is set to remove completed downloads. This can result in downloads being removed from your client before {1} can import them.",
   "DownloadClientSettings": "Download Client Settings",
   "DownloadClientSortingCheckMessage": "Download client {downloadClientName} has {sortingMode} sorting enabled for {appName}'s category. You should disable sorting in your download client to avoid import issues.",
