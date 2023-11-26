@@ -38,6 +38,7 @@ class MovieCollectionLabel extends Component {
             pathname: '/collections',
             state: { navigateToId: id }
           }}
+          className={styles.titleLink}
         >
           {title}
         </Link>
