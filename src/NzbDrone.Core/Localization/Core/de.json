@@ -1178,5 +1178,6 @@
     "IMDbId": "TMDb ID",
     "DisabledForLocalAddresses": "Für Lokale Adressen deaktivieren",
     "AddCondition": "Bedingung hinzufügen",
-    "AddAutoTag": "Automatisches Tag hinzufügen"
+    "AddAutoTag": "Automatisches Tag hinzufügen",
+    "AppUpdated": "{appName} aktualisiert"
 }
