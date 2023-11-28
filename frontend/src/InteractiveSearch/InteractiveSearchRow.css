@@ -22,6 +22,10 @@
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 }
 
+.quality {
+  white-space: nowrap;
+}
+
 .languages {
   width: 100px;
 }
