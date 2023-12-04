@@ -59,9 +59,14 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                         flags |= IndexerFlags.PTP_Approved;
                     }
 
-                    if (torrent.FreeleechType == "Freeleech")
+                    switch (torrent.FreeleechType?.ToUpperInvariant())
                     {
-                        flags |= IndexerFlags.G_Freeleech;
+                        case "FREELEECH":
+                            flags |= IndexerFlags.G_Freeleech;
+                            break;
+                        case "HALF LEECH":
+                            flags |= IndexerFlags.G_Halfleech;
+                            break;
                     }
 
                     if (torrent.Scene)
