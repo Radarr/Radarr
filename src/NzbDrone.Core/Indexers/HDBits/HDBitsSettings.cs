@@ -31,8 +31,8 @@ namespace NzbDrone.Core.Indexers.HDBits
             Categories = new[] { (int)HdBitsCategory.Movie };
             Codecs = Array.Empty<int>();
             Mediums = Array.Empty<int>();
-            MultiLanguages = new List<int>();
-            RequiredFlags = new List<int>();
+            MultiLanguages = Array.Empty<int>();
+            RequiredFlags = Array.Empty<int>();
         }
 
         [FieldDefinition(0, Label = "API URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your API key will be sent to that host.")]
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Indexers.HDBits
         [FieldDefinition(7, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
-        [FieldDefinition(8, Type = FieldType.TagSelect, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
+        [FieldDefinition(8, Type = FieldType.Select, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
         [FieldDefinition(9)]

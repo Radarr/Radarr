@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
@@ -28,15 +29,15 @@ namespace NzbDrone.Core.Indexers.FileList
             BaseUrl = "https://filelist.io";
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
 
-            Categories = new int[]
+            Categories = new[]
             {
                 (int)FileListCategories.Movie_HD,
                 (int)FileListCategories.Movie_SD,
                 (int)FileListCategories.Movie_4K
             };
 
-            MultiLanguages = new List<int>();
-            RequiredFlags = new List<int>();
+            MultiLanguages = Array.Empty<int>();
+            RequiredFlags = Array.Empty<int>();
         }
 
         [FieldDefinition(0, Label = "Username", Privacy = PrivacyLevel.UserName)]
@@ -57,7 +58,7 @@ namespace NzbDrone.Core.Indexers.FileList
         [FieldDefinition(5, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
-        [FieldDefinition(6, Type = FieldType.TagSelect, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
+        [FieldDefinition(6, Type = FieldType.Select, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
         [FieldDefinition(7)]

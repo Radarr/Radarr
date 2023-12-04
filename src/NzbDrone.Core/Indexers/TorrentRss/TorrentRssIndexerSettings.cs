@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
@@ -26,8 +27,8 @@ namespace NzbDrone.Core.Indexers.TorrentRss
             BaseUrl = string.Empty;
             AllowZeroSize = false;
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
-            MultiLanguages = new List<int>();
-            RequiredFlags = new List<int>();
+            MultiLanguages = Array.Empty<int>();
+            RequiredFlags = Array.Empty<int>();
         }
 
         [FieldDefinition(0, Label = "Full RSS Feed URL")]
@@ -48,7 +49,7 @@ namespace NzbDrone.Core.Indexers.TorrentRss
         [FieldDefinition(5)]
         public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
 
-        [FieldDefinition(6, Type = FieldType.TagSelect, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
+        [FieldDefinition(6, Type = FieldType.Select, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
         public NzbDroneValidationResult Validate()

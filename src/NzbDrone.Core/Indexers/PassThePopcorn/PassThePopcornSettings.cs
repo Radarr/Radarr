@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
@@ -26,9 +27,9 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public PassThePopcornSettings()
         {
             BaseUrl = "https://passthepopcorn.me";
-            MinimumSeeders = 0;
-            MultiLanguages = new List<int>();
-            RequiredFlags = new List<int>();
+            MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
+            MultiLanguages = Array.Empty<int>();
+            RequiredFlags = Array.Empty<int>();
         }
 
         [FieldDefinition(0, Label = "URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your cookie will be sent to that host.")]
@@ -49,7 +50,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         [FieldDefinition(5)]
         public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
 
-        [FieldDefinition(6, Type = FieldType.TagSelect, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
+        [FieldDefinition(6, Type = FieldType.Select, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
         public NzbDroneValidationResult Validate()
