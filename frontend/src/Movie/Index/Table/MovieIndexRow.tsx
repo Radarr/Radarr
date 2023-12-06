@@ -26,7 +26,7 @@ import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import { SelectStateInputProps } from 'typings/props';
 import formatRuntime from 'Utilities/Date/formatRuntime';
 import formatBytes from 'Utilities/Number/formatBytes';
-import titleCase from 'Utilities/String/titleCase';
+import firstCharToUpper from 'Utilities/String/firstCharToUpper';
 import translate from 'Utilities/String/translate';
 import MovieIndexProgressBar from '../ProgressBar/MovieIndexProgressBar';
 import MovieStatusCell from './MovieStatusCell';
@@ -286,7 +286,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
         if (name === 'minimumAvailability') {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
-              {titleCase(minimumAvailability)}
+              {translate(firstCharToUpper(minimumAvailability))}
             </VirtualTableRowCell>
           );
         }
