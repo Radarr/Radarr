@@ -10094,6 +10094,9 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "minimumAvailability": {
+            "$ref": "#/components/schemas/MovieStatusType"
           }
         },
         "additionalProperties": false
