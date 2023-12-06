@@ -7,6 +7,7 @@ interface CssExports {
   'controls': string;
   'editorSelect': string;
   'excluded': string;
+  'existing': string;
   'externalLinks': string;
   'link': string;
   'overlayTitle': string;

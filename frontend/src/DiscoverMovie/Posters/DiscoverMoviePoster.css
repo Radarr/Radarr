@@ -68,6 +68,19 @@ $hoverScale: 1.05;
   color: var(--white);
 }
 
+.existing {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 0;
+  height: 0;
+  border-width: 25px 25px 0 0;
+  border-style: solid;
+  border-color: #37bc9b transparent transparent;
+  color: var(--white);
+}
+
 .controls {
   position: absolute;
   bottom: 10px;

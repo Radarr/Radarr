@@ -159,6 +159,14 @@ class DiscoverMoviePoster extends Component {
               />
           }
 
+          {
+            isExisting &&
+              <div
+                className={styles.existing}
+                title={translate('Existing')}
+              />
+          }
+
           <Link
             className={styles.link}
             style={elementStyle}
