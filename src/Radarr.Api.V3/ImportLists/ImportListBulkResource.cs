@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using NzbDrone.Core.ImportLists;
+using NzbDrone.Core.Movies;
 
 namespace Radarr.Api.V3.ImportLists
 {
@@ -9,6 +10,7 @@ namespace Radarr.Api.V3.ImportLists
         public bool? EnableAuto { get; set; }
         public string RootFolderPath { get; set; }
         public int? QualityProfileId { get; set; }
+        public MovieStatusType? MinimumAvailability { get; set; }
     }
 
     public class ImportListBulkResourceMapper : ProviderBulkResourceMapper<ImportListBulkResource, ImportListDefinition>
@@ -26,6 +28,7 @@ namespace Radarr.Api.V3.ImportLists
                 existing.EnableAuto = resource.EnableAuto ?? existing.EnableAuto;
                 existing.RootFolderPath = resource.RootFolderPath ?? existing.RootFolderPath;
                 existing.QualityProfileId = resource.QualityProfileId ?? existing.QualityProfileId;
+                existing.MinimumAvailability = resource.MinimumAvailability ?? existing.MinimumAvailability;
             });
 
             return existingDefinitions;

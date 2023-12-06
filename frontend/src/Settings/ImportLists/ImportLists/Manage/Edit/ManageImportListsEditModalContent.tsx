@@ -15,6 +15,7 @@ interface SavePayload {
   enabled?: boolean;
   enableAuto?: boolean;
   qualityProfileId?: number;
+  minimumAvailability?: string;
   rootFolderPath?: string;
 }
 
@@ -58,6 +59,7 @@ function ManageImportListsEditModalContent(
   const [qualityProfileId, setQualityProfileId] = useState<string | number>(
     NO_CHANGE
   );
+  const [minimumAvailability, setMinimumAvailability] = useState(NO_CHANGE);
   const [rootFolderPath, setRootFolderPath] = useState(NO_CHANGE);
 
   const save = useCallback(() => {
@@ -79,6 +81,11 @@ function ManageImportListsEditModalContent(
       payload.qualityProfileId = qualityProfileId as number;
     }
 
+    if (minimumAvailability !== NO_CHANGE) {
+      hasChanges = true;
+      payload.minimumAvailability = minimumAvailability as string;
+    }
+
     if (rootFolderPath !== NO_CHANGE) {
       hasChanges = true;
       payload.rootFolderPath = rootFolderPath;
@@ -93,6 +100,7 @@ function ManageImportListsEditModalContent(
     enabled,
     enableAuto,
     qualityProfileId,
+    minimumAvailability,
     rootFolderPath,
     onSavePress,
     onModalClose,
@@ -109,6 +117,9 @@ function ManageImportListsEditModalContent(
           break;
         case 'qualityProfileId':
           setQualityProfileId(value);
+          break;
+        case 'minimumAvailability':
+          setMinimumAvailability(value);
           break;
         case 'rootFolderPath':
           setRootFolderPath(value);
@@ -158,6 +169,19 @@ function ManageImportListsEditModalContent(
             type={inputTypes.QUALITY_PROFILE_SELECT}
             name="qualityProfileId"
             value={qualityProfileId}
+            includeNoChange={true}
+            includeNoChangeDisabled={false}
+            onChange={onInputChange}
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <FormLabel>{translate('MinimumAvailability')}</FormLabel>
+
+          <FormInputGroup
+            type={inputTypes.AVAILABILITY_SELECT}
+            name="minimumAvailability"
+            value={minimumAvailability}
             includeNoChange={true}
             includeNoChangeDisabled={false}
             onChange={onInputChange}
