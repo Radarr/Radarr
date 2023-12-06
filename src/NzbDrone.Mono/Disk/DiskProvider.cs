@@ -168,6 +168,8 @@ namespace NzbDrone.Mono.Disk
 
         protected override List<IMount> GetAllMounts()
         {
+            _logger.Debug("[Mono.DiskProvider] GetAllMounts()");
+
             var mounts = new List<IMount>();
 
             try

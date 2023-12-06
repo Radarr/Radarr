@@ -470,6 +470,8 @@ namespace NzbDrone.Common.Disk
 
         protected virtual List<IMount> GetAllMounts()
         {
+            Logger.Debug("[DiskProviderBase] GetAllMounts()");
+
             return GetDriveInfoMounts().Where(d => d.DriveType == DriveType.Fixed || d.DriveType == DriveType.Network || d.DriveType == DriveType.Removable)
                                        .Select(d => new DriveInfoMount(d))
                                        .Cast<IMount>()
@@ -483,6 +485,8 @@ namespace NzbDrone.Common.Disk
 
         public virtual IMount GetMount(string path)
         {
+            Logger.Debug("[DiskProviderBase] GetMount({0})", path);
+
             try
             {
                 var mounts = GetAllMounts();

@@ -148,7 +148,7 @@ namespace NzbDrone.Common.Instrumentation
             fileTarget.ConcurrentWrites = false;
             fileTarget.ConcurrentWriteAttemptDelay = 50;
             fileTarget.ConcurrentWriteAttempts = 10;
-            fileTarget.ArchiveAboveSize = 1024000;
+            fileTarget.ArchiveAboveSize = 10240000;
             fileTarget.MaxArchiveFiles = maxArchiveFiles;
             fileTarget.EnableFileDelete = true;
             fileTarget.ArchiveNumbering = ArchiveNumberingMode.Rolling;
