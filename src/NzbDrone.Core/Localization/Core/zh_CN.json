@@ -1337,5 +1337,6 @@
     "AuthenticationRequiredPasswordConfirmationHelpTextWarning": "确认新密码",
     "ClearBlocklist": "清空黑名单",
     "ClearBlocklistMessageText": "你确定要将黑名单中的所有项目清空吗？",
-    "PasswordConfirmation": "确认密码"
+    "PasswordConfirmation": "确认密码",
+    "InteractiveSearchModalHeader": "交互式搜索"
 }
