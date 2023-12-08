@@ -1155,5 +1155,7 @@
     "BlocklistLoadError": "Не вдалося завантажити список блокувань",
     "BlocklistReleaseHelpText": "Забороняє {appName} знову автоматично захопити цей випуск",
     "DelayingDownloadUntil": "Завантаження відкладається до {0} о {1}",
-    "DeletedReasonUpgrade": "Файл видалено, щоб імпортувати оновлення"
+    "DeletedReasonUpgrade": "Файл видалено, щоб імпортувати оновлення",
+    "AutoRedownloadFailed": "Помилка завантаження",
+    "InteractiveSearchModalHeader": "Інтерактивний пошук"
 }

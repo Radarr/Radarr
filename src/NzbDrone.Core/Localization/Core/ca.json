@@ -1159,5 +1159,7 @@
     "FormatAgeMinute": "Minuts",
     "FormatAgeMinutes": "Minuts",
     "FormatAgeHour": "Hores",
-    "BlocklistLoadError": "No es pot carregar la llista de bloqueig"
+    "BlocklistLoadError": "No es pot carregar la llista de bloqueig",
+    "AutoRedownloadFailed": "La baixada ha fallat",
+    "InteractiveSearchModalHeader": "Cerca interactiva"
 }
