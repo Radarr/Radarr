@@ -1345,5 +1345,6 @@
     "InteractiveSearchModalHeader": "Recherche interactive",
     "PreviouslyInstalled": "Installé précédemment",
     "WhySearchesCouldBeFailing": "Cliquez ici pour savoir pourquoi les recherches pourraient échouer",
-    "PasswordConfirmation": "Confirmation du mot de passe"
+    "PasswordConfirmation": "Confirmation du mot de passe",
+    "UpdaterLogFiles": "Journaux du programme de mise à jour"
 }
