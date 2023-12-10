@@ -7,7 +7,7 @@
     <PackageReference Include="Diacritical.Net" Version="1.0.4" />
     <PackageReference Include="Equ" Version="2.3.0" />
     <PackageReference Include="MailKit" Version="3.6.0" />
-    <PackageReference Include="Npgsql" Version="7.0.4" />
+    <PackageReference Include="Npgsql" Version="7.0.6" />
     <PackageReference Include="Servarr.FFMpegCore" Version="4.7.0-26" />
     <PackageReference Include="Servarr.FFprobe" Version="5.1.4.112" />
     <PackageReference Include="System.Memory" Version="4.5.5" />
@@ -24,7 +24,7 @@
     <PackageReference Include="NLog" Version="5.2.3" />
     <PackageReference Include="System.Data.SQLite.Core.Servarr" Version="1.0.115.5-18" />
     <PackageReference Include="MonoTorrent" Version="2.0.7" />
-    <PackageReference Include="System.Text.Json" Version="6.0.8" />
+    <PackageReference Include="System.Text.Json" Version="6.0.9" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Common\Radarr.Common.csproj" />
