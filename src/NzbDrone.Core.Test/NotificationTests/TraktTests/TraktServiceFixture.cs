@@ -48,13 +48,14 @@ namespace NzbDrone.Core.Test.NotificationTests
             Subject.Definition = _traktDefinition;
         }
 
-        private void GiventValidMediaInfo(Quality quality, string audioChannels, string audioFormat, string scanType)
+        private void GiventValidMediaInfo(Quality quality, string audioChannels, string audioFormat, string scanType, HdrFormat hdrFormat = HdrFormat.None)
         {
             _downloadMessage.MovieFile.MediaInfo = new MediaInfoModel
             {
                 AudioChannelPositions = audioChannels,
                 AudioFormat = audioFormat,
-                ScanType = scanType
+                ScanType = scanType,
+                VideoHdrFormat = hdrFormat
             };
 
             _downloadMessage.MovieFile.Quality.Quality = quality;
@@ -72,7 +73,7 @@ namespace NzbDrone.Core.Test.NotificationTests
         [Test]
         public void should_add_collection_movie_if_valid_mediainfo()
         {
-            GiventValidMediaInfo(Quality.Bluray1080p, "5.1", "DTS", "Progressive");
+            GiventValidMediaInfo(Quality.Bluray2160p, "5.1", "DTS", "Progressive", HdrFormat.DolbyVisionHdr10);
 
             Subject.OnDownload(_downloadMessage);
 
@@ -80,15 +81,16 @@ namespace NzbDrone.Core.Test.NotificationTests
                   .Verify(v => v.AddToCollection(It.Is<TraktCollectMoviesResource>(t =>
                     t.Movies.First().Audio == "dts" &&
                     t.Movies.First().AudioChannels == "5.1" &&
-                    t.Movies.First().Resolution == "hd_1080p" &&
-                    t.Movies.First().MediaType == "bluray"),
+                    t.Movies.First().Resolution == "uhd_4k" &&
+                    t.Movies.First().MediaType == "bluray" &&
+                    t.Movies.First().Hdr == "hdr10"),
                   It.IsAny<string>()), Times.Once());
         }
 
         [Test]
         public void should_format_audio_channels_to_one_decimal_when_adding_collection_movie()
         {
-            GiventValidMediaInfo(Quality.Bluray1080p, "2.0", "DTS", "Progressive");
+            GiventValidMediaInfo(Quality.Bluray2160p, "2.0", "DTS", "Progressive", HdrFormat.DolbyVisionHdr10);
 
             Subject.OnDownload(_downloadMessage);
 
@@ -96,8 +98,9 @@ namespace NzbDrone.Core.Test.NotificationTests
                   .Verify(v => v.AddToCollection(It.Is<TraktCollectMoviesResource>(t =>
                     t.Movies.First().Audio == "dts" &&
                     t.Movies.First().AudioChannels == "2.0" &&
-                    t.Movies.First().Resolution == "hd_1080p" &&
-                    t.Movies.First().MediaType == "bluray"),
+                    t.Movies.First().Resolution == "uhd_4k" &&
+                    t.Movies.First().MediaType == "bluray" &&
+                    t.Movies.First().Hdr == "hdr10"),
                   It.IsAny<string>()), Times.Once());
         }
     }
