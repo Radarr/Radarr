@@ -10,14 +10,18 @@ function createMapStateToProps() {
     createExistingMovieSelector(),
     createExclusionMovieSelector(),
     createDimensionsSelector(),
+    (state) => state.queue.details.items,
     (state, { internalId }) => internalId,
     (state) => state.settings.ui.item.movieRuntimeFormat,
-    (isExistingMovie, isExclusionMovie, dimensions, internalId, movieRuntimeFormat) => {
+    (isExistingMovie, isExclusionMovie, dimensions, queueItems, internalId, movieRuntimeFormat) => {
+      const queueItem = queueItems.find((item) => internalId > 0 && item.movieId === internalId);
+
       return {
         existingMovieId: internalId,
         isExistingMovie,
         isExclusionMovie,
         isSmallScreen: dimensions.isSmallScreen,
+        queueItem,
         movieRuntimeFormat
       };
     }
