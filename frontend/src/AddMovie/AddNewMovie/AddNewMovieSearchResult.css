@@ -85,8 +85,13 @@
   margin-top: 20px;
 }
 
+.studio,
+.genres {
+  margin-left: 5px;
+}
+
 .links {
-  margin-left: 8px;
+  margin-left: 5px;
   pointer-events: all;
 }
 
