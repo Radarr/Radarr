@@ -1,1 +1,15 @@
-{}
+{
+    "About": "Par",
+    "AcceptConfirmationModal": "Apstiprināt Apstiprināšanas Modālu",
+    "Actions": "Darbības",
+    "Activity": "Aktivitāte",
+    "Add": "Pievienot",
+    "AddAutoTag": "Pievienot Automātisko Tagu",
+    "AddCondition": "Pievienot Nosacījumu",
+    "AddCustomFormat": "Pievienot Pielāgotu Formātu",
+    "AddConditionImplementation": "Pievienot Nosacījumu - {implementationName}",
+    "AddConnection": "Pievienot Savienojumu",
+    "AddConnectionImplementation": "Pievienot Savienojumu - {implementationName}",
+    "AddDelayProfile": "Pievienot Aizkaves Profilu",
+    "AddDownloadClient": "Pievienot Lejupielādes Klientu"
+}
