@@ -21,6 +21,7 @@ namespace NzbDrone.Common.Http.Dispatchers
         private static bool useIPv6 = Socket.OSSupportsIPv6;
         private static bool hasResolvedIPv6Availability;
 
+        private static bool forceIPv6;
         private readonly IHttpProxySettingsProvider _proxySettingsProvider;
         private readonly ICreateManagedWebProxy _createManagedWebProxy;
         private readonly ICertificateValidationService _certificateValidationService;
@@ -32,7 +33,8 @@ namespace NzbDrone.Common.Http.Dispatchers
             ICreateManagedWebProxy createManagedWebProxy,
             ICertificateValidationService certificateValidationService,
             IUserAgentBuilder userAgentBuilder,
-            ICacheManager cacheManager)
+            ICacheManager cacheManager,
+            bool forceIPv6)
         {
             _proxySettingsProvider = proxySettingsProvider;
             _createManagedWebProxy = createManagedWebProxy;
@@ -41,6 +43,8 @@ namespace NzbDrone.Common.Http.Dispatchers
 
             _httpClientCache = cacheManager.GetCache<System.Net.Http.HttpClient>(typeof(ManagedHttpDispatcher));
             _credentialCache = cacheManager.GetCache<CredentialCache>(typeof(ManagedHttpDispatcher), "credentialcache");
+
+            ManagedHttpDispatcher.forceIPv6 = forceIPv6;
         }
 
         public async Task<HttpResponse> GetResponseAsync(HttpRequest request, CookieContainer cookies)
@@ -243,7 +247,7 @@ namespace NzbDrone.Common.Http.Dispatchers
         {
             // Until .NET supports an implementation of Happy Eyeballs (https://tools.ietf.org/html/rfc8305#section-2), let's make IPv4 fallback work in a simple way.
             // This issue is being tracked at https://github.com/dotnet/runtime/issues/26177 and expected to be fixed in .NET 6.
-            if (useIPv6)
+            if (useIPv6 || forceIPv6)
             {
                 try
                 {

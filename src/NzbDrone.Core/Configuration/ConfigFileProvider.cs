@@ -41,6 +41,7 @@ namespace NzbDrone.Core.Configuration
         bool LogSql { get; }
         int LogRotate { get; }
         bool FilterSentryEvents { get; }
+        bool ForceIPv6 { get; }
         string Branch { get; }
         string ApiKey { get; }
         string SslCertPath { get; }
@@ -211,6 +212,7 @@ namespace NzbDrone.Core.Configuration
         public bool LogSql => GetValueBoolean("LogSql", false, persist: false);
         public int LogRotate => GetValueInt("LogRotate", 50, persist: false);
         public bool FilterSentryEvents => GetValueBoolean("FilterSentryEvents", true, persist: false);
+        public bool ForceIPv6 => GetValueBoolean("ForceIPv6", false, persist: false);
         public string SslCertPath => GetValue("SslCertPath", "");
         public string SslCertPassword => GetValue("SslCertPassword", "");
 
