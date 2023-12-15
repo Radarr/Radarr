@@ -187,6 +187,8 @@ class SignalRConnector extends Component {
       repopulatePage('movieFileUpdated');
     } else if (body.action === 'deleted') {
       this.props.dispatchRemoveItem({ section, id: body.resource.id });
+
+      repopulatePage('movieFileDeleted');
     }
   };
 
