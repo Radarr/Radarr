@@ -10,6 +10,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         DolbyVision,
         DolbyVisionHdr10,
         DolbyVisionSdr,
-        DolbyVisionHlg
+        DolbyVisionHlg,
+        DolbyVisionHdr10Plus
     }
 }
