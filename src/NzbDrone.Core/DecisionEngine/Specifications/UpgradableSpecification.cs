@@ -70,11 +70,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             if (newFormatScore <= currentFormatScore)
             {
-                _logger.Debug("New item's custom formats [{0}] ({1}) do not improve on [{2}] ({3}), skipping", newCustomFormats.ConcatToString(), newFormatScore, currentCustomFormats.ConcatToString(), currentFormatScore);
+                _logger.Debug("New file's custom formats [{0}] scoring ({1}) do not improve on [{2}] scoring ({3}), accepting", newFormats.ConcatToString(), newScore, currentFormats.ConcatToString(), currentScore);
                 return false;
             }
 
-            _logger.Debug("New item's custom formats [{0}] ({1}) do improve on [{2}] ({3}), accepting", newCustomFormats.ConcatToString(), newFormatScore, currentCustomFormats.ConcatToString(), currentFormatScore);
+            _logger.Debug("New file's custom formats [{0}] scoring ({1}) do improve on [{2}] scoring ({3}), accepting", newFormats.ConcatToString(), newScore, currentFormats.ConcatToString(), currentScore);
             return true;
         }
 
