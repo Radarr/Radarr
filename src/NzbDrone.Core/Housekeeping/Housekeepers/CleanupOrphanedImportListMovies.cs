@@ -14,14 +14,32 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
+            CleanupOrphanedByImportLists();
+            CleanupOrphanedByMovieMetadata();
+        }
+
+        private void CleanupOrphanedByImportLists()
+        {
             using var mapper = _database.OpenConnection();
 
             mapper.Execute(@"DELETE FROM ""ImportListMovies""
-                                     WHERE ""Id"" IN (
-                                     SELECT ""ImportListMovies"".""Id"" FROM ""ImportListMovies""
-                                     LEFT OUTER JOIN ""ImportLists""
-                                     ON ""ImportListMovies"".""ListId"" = ""ImportLists"".""Id""
-                                     WHERE ""ImportLists"".""Id"" IS NULL)");
+                                 WHERE ""Id"" IN (
+                                 SELECT ""ImportListMovies"".""Id""
+                                 FROM ""ImportListMovies""
+                                 LEFT OUTER JOIN ""ImportLists"" ON ""ImportListMovies"".""ListId"" = ""ImportLists"".""Id""
+                                 WHERE ""ImportLists"".""Id"" IS NULL)");
+        }
+
+        private void CleanupOrphanedByMovieMetadata()
+        {
+            using var mapper = _database.OpenConnection();
+
+            mapper.Execute(@"DELETE FROM ""ImportListMovies""
+                                 WHERE ""Id"" IN (
+                                 SELECT ""ImportListMovies"".""Id""
+                                 FROM ""ImportListMovies""
+                                 LEFT OUTER JOIN ""MovieMetadata"" ON ""ImportListMovies"".""MovieMetadataId"" = ""MovieMetadata"".""Id""
+                                 WHERE ""MovieMetadata"".""Id"" IS NULL)");
         }
     }
 }
