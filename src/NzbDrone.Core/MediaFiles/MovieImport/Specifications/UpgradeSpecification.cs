@@ -61,17 +61,27 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                 }
 
                 movieFile.Movie = localMovie.Movie;
-                var currentFormats = _formatService.ParseCustomFormat(movieFile);
-                var currentScore = qualityProfile.CalculateCustomFormatScore(currentFormats);
+                var currentCustomFormats = _formatService.ParseCustomFormat(movieFile);
+                var currentFormatScore = qualityProfile.CalculateCustomFormatScore(currentCustomFormats);
+                var newCustomFormats = localMovie.CustomFormats;
+                var newFormatScore = localMovie.CustomFormatScore;
 
-                if (qualityCompare == 0 && localMovie.CustomFormatScore < currentScore)
+                if (qualityCompare == 0 && newFormatScore < currentFormatScore)
                 {
-                    _logger.Debug("New file's custom formats [{0}] do not improve on [{1}], skipping",
-                        localMovie.CustomFormats.ConcatToString(),
-                        currentFormats.ConcatToString());
+                    _logger.Debug("New item's custom formats [{0}] ({1}) do not improve on [{2}] ({3}), skipping",
+                        newCustomFormats != null ? newCustomFormats.ConcatToString() : "",
+                        newFormatScore,
+                        currentCustomFormats != null ? currentCustomFormats.ConcatToString() : "",
+                        currentFormatScore);
 
                     return Decision.Reject("Not a Custom Format upgrade for existing movie file(s)");
                 }
+
+                _logger.Debug("New item's custom formats [{0}] ({1}) do improve on [{2}] ({3}), accepting",
+                    newCustomFormats != null ? newCustomFormats.ConcatToString() : "",
+                    newFormatScore,
+                    currentCustomFormats != null ? currentCustomFormats.ConcatToString() : "",
+                    currentFormatScore);
             }
 
             return Decision.Accept();
