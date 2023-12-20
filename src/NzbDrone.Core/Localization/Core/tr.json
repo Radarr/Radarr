@@ -1006,6 +1006,9 @@
     "DeleteRemotePathMappingMessageText": "Bu uzak yol eşlemesini silmek istediğinizden emin misiniz?",
     "AddAutoTag": "Otomatik Etiket Ekle",
     "AddCondition": "Koşul Ekle",
-    "AddConditionImplementation": "Koşul Ekle - {uygulama Adı}",
-    "AddConnection": "Bağlantı Ekle"
+    "AddConditionImplementation": "Koşul Ekle - {implementationName}",
+    "AddConnection": "Bağlantı Ekle",
+    "AddIndexerImplementation": "Koşul Ekle - {implementationName}",
+    "AddConnectionImplementation": "Koşul Ekle - {implementationName}",
+    "EditIndexerImplementation": "Koşul Ekle - {implementationName}"
 }
