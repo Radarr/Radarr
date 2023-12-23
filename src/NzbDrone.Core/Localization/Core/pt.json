@@ -274,7 +274,7 @@
     "Cancel": "Cancelar",
     "Calendar": "Calendário",
     "BackupNow": "Criar cópia de segurança",
-    "Backup": "Cópia de segurança",
+    "Backup": "Backup",
     "AudioInfo": "Informações do áudio",
     "Apply": "Aplicar",
     "Analytics": "Análise",
@@ -468,7 +468,7 @@
     "BindAddressHelpText": "Endereço de IP válido, localhost ou \"*\" para todas as interfaces",
     "BindAddress": "Endereço de vínculo",
     "Backups": "Cópias de segurança",
-    "BackupFolderHelpText": "Caminhos relativos estarão na pasta AppData do {appName}",
+    "BackupFolderHelpText": "Caminhos relativos estarão no diretório AppData do {appName}",
     "BackupIntervalHelpText": "Intervalo entre cópias de segurança automáticas",
     "BackupRetentionHelpText": "Cópias de segurança automáticas anteriores ao período de retenção serão eliminadas automaticamente",
     "Cutoff": "Limite",
@@ -1189,5 +1189,6 @@
     "DeleteImportList": "Eliminar Lista de Importação",
     "DeleteImportListMessageText": "Tem a certeza de que pretende eliminar a lista '{name}'?",
     "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "O cliente de descarregamento {downloadClientName} está definido para remover descarregamentos concluídos. Isto pode fazer com que as transferências sejam removidas do seu cliente antes de {1} as poder importar.",
-    "AppUpdated": "{appName} Atualizado"
+    "AppUpdated": "{appName} Atualizado",
+    "AuthenticationRequiredPasswordConfirmationHelpTextWarning": "Confirmar nova senha"
 }
