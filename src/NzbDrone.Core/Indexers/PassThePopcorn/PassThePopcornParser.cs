@@ -91,6 +91,10 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                             Scene = torrent.Scene,
                             Approved = torrent.Checked,
                             ImdbId = result.ImdbId.IsNotNullOrWhiteSpace() ? int.Parse(result.ImdbId) : 0,
+                            Source = torrent.Source,
+                            Container = torrent.Container,
+                            Codec = torrent.Codec,
+                            Resolution = torrent.Resolution,
                             IndexerFlags = flags
                         });
                     }
