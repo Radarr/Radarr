@@ -9,3 +9,9 @@
 .container {
   padding: 10px;
 }
+
+.sliderContainer {
+  --swiper-navigation-color: var(--white);
+
+  display: block;
+}
