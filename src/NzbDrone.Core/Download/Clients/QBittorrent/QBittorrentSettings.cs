@@ -28,6 +28,8 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             Host = "localhost";
             Port = 8080;
             MovieCategory = "radarr";
+            StalledThreshold = 604800; // a week
+            StalledInactivityThreshold = 86400; // a day
         }
 
         [FieldDefinition(0, Label = "Host", Type = FieldType.Textbox)]
@@ -68,6 +70,15 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         [FieldDefinition(12, Label = "First and Last First", Type = FieldType.Checkbox, HelpText = "Download first and last pieces first (qBittorrent 4.1.0+)")]
         public bool FirstAndLast { get; set; }
+
+        [FieldDefinition(13, Label = "Remove stalled downloads", Type = FieldType.Checkbox, Advanced = true, HelpText = "Remove stalled downloads from the client. BEWARE: This could get you banned from trackers!")]
+        public bool RemoveStalledDownloads { get; set; }
+
+        [FieldDefinition(14, Label = "Stalled age threshold", Type = FieldType.Textbox, Advanced = true, Unit = "Minute", HelpText = "Age threshold before a stalled torrent is considered for deletion")]
+        public long StalledThreshold { get; set; }
+
+        [FieldDefinition(15, Label = "Stalled inactivity threshold", Type = FieldType.Textbox, Advanced = true, Unit = "Minute", HelpText = "Inactivity threshold before a stalled torrent is considered for deletion")]
+        public long StalledInactivityThreshold { get; set; }
 
         public NzbDroneValidationResult Validate()
         {

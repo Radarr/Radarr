@@ -156,6 +156,20 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
                 .Returns(files);
         }
 
+        private void GivenStalledPolicy(IEnumerable<QBittorrentTorrent> torrents)
+        {
+            foreach (var torrent in torrents)
+            {
+                Mocker.GetMock<IQBittorrentStalledPolicy>()
+                    .Setup(s => s.Apply(torrent, It.IsAny<DownloadClientItem>(), It.IsAny<QBittorrentSettings>()))
+                    .Callback<QBittorrentTorrent, DownloadClientItem, QBittorrentSettings>((torr, ditem, _) =>
+                    {
+                        ditem.Status = DownloadItemStatus.Warning;
+                        ditem.Message = $"{torr.Name} Processed by stale download policy";
+                    });
+            }
+        }
+
         [Test]
         public void error_item_should_have_required_properties()
         {
@@ -269,23 +283,29 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         }
 
         [Test]
-        public void stalledDL_item_should_have_required_properties()
+        public void stalledDL_item_should_have_properties_set_by_stale_policy()
         {
-            var torrent = new QBittorrentTorrent
+            var torrents = new List<QBittorrentTorrent>
             {
-                Hash = "HASH",
-                Name = _title,
-                Size = 1000,
-                Progress = 0.7,
-                Eta = 8640000,
-                State = "stalledDL",
-                Label = "",
-                SavePath = ""
+                new QBittorrentTorrent
+                {
+                    Hash = "HASH",
+                    Name = _title,
+                    Size = 1000,
+                    Progress = 0.7,
+                    Eta = 8640000,
+                    State = "stalledDL",
+                    Label = "",
+                    SavePath = "",
+                },
             };
-            GivenTorrents(new List<QBittorrentTorrent> { torrent });
+
+            GivenStalledPolicy(torrents);
+            GivenTorrents(torrents);
 
             var item = Subject.GetItems().Single();
             VerifyWarning(item);
+            item.Message.Should().Be("Droned.1998.1080p.WEB-DL-DRONE Processed by stale download policy");
             item.RemainingTime.Should().NotHaveValue();
         }
 

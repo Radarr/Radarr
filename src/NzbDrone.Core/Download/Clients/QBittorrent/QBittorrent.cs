@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
     {
         private readonly IQBittorrentProxySelector _proxySelector;
         private readonly ICached<SeedingTimeCacheEntry> _seedingTimeCache;
+        private readonly IQBittorrentStalledPolicy _stalledPolicy;
 
         private class SeedingTimeCacheEntry
         {
@@ -36,12 +37,15 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                            IDiskProvider diskProvider,
                            IRemotePathMappingService remotePathMappingService,
                            ICacheManager cacheManager,
+                           IQBittorrentStalledPolicy stalledPolicy,
                            Logger logger)
             : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _proxySelector = proxySelector;
 
             _seedingTimeCache = cacheManager.GetCache<SeedingTimeCacheEntry>(GetType(), "seedingTime");
+
+            _stalledPolicy = stalledPolicy;
         }
 
         private IQBittorrentProxy Proxy => _proxySelector.GetProxy(Settings);
@@ -265,8 +269,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                         break;
 
                     case "stalledDL": // torrent is being downloaded, but no connection were made
-                        item.Status = DownloadItemStatus.Warning;
-                        item.Message = "The download is stalled with no connections";
+                        _stalledPolicy.Apply(torrent, item, this.Settings);
                         break;
 
                     case "missingFiles": // torrent is being downloaded, but no connection were made
