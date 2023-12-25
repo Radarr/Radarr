@@ -14,24 +14,6 @@ import 'swiper/css/navigation';
 const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
 const columnPaddingSmallScreen = parseInt(dimensions.movieIndexColumnPaddingSmallScreen);
 
-const additionalColumnCount = {
-  small: 3,
-  medium: 2,
-  large: 1
-};
-
-function calculateColumnWidth(width, posterSize, isSmallScreen) {
-  const maxiumColumnWidth = isSmallScreen ? 172 : 182;
-  const columns = Math.floor(width / maxiumColumnWidth);
-  const remainder = width % maxiumColumnWidth;
-
-  if (remainder === 0 && posterSize === 'large') {
-    return maxiumColumnWidth;
-  }
-
-  return Math.floor(width / (columns + additionalColumnCount[posterSize]));
-}
-
 function calculateRowHeight(posterHeight, isSmallScreen) {
   const titleHeight = 19;
   const characterHeight = 19;
@@ -44,10 +26,6 @@ function calculateRowHeight(posterHeight, isSmallScreen) {
   ];
 
   return heights.reduce((acc, height) => acc + height, 0);
-}
-
-function calculatePosterHeight(posterWidth) {
-  return Math.ceil((250 / 170) * posterWidth);
 }
 
 class MovieCreditPosters extends Component {
