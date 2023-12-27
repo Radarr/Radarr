@@ -1,8 +1,10 @@
-﻿using NLog;
+﻿using System.Collections.Generic;
+using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Test.IndexerTests
 {
@@ -30,6 +32,11 @@ namespace NzbDrone.Core.Test.IndexerTests
         public override IParseIndexerResponse GetParser()
         {
             return _parser;
+        }
+
+        public new IList<ReleaseInfo> CleanupReleases(IEnumerable<ReleaseInfo> releases)
+        {
+            return base.CleanupReleases(releases);
         }
     }
 }
