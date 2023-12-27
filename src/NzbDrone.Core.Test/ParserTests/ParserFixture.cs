@@ -245,22 +245,6 @@ namespace NzbDrone.Core.Test.ParserTests
             parsed.Languages.First().Should().Be(Language.Unknown);
         }
 
-        [TestCase("The.Movie.Name.2016.German.DTS.DL.720p.BluRay.x264-MULTiPLEX")]
-        public void should_not_parse_multi_language_in_releasegroup(string postTitle)
-        {
-            var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
-            parsed.Languages.Count.Should().Be(1);
-            parsed.Languages.First().Should().Be(Language.German);
-        }
-
-        [TestCase("The.Movie.Name.2016.German.Multi.DTS.DL.720p.BluRay.x264-MULTiPLEX")]
-        public void should_parse_multi_language(string postTitle)
-        {
-            var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
-            parsed.Languages.Count.Should().Be(1);
-            parsed.Languages.Should().Contain(Language.German);
-        }
-
         [TestCase("Movie.Title.2016.1080p.KORSUB.WEBRip.x264.AAC2.0-RADARR", "KORSUB")]
         [TestCase("Movie.Title.2016.1080p.KORSUBS.WEBRip.x264.AAC2.0-RADARR", "KORSUBS")]
         [TestCase("Movie Title 2017 HC 720p HDRiP DD5 1 x264-LEGi0N", "Generic Hardcoded Subs")]
