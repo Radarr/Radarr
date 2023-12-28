@@ -21,7 +21,6 @@ function MovieIndexSearchButton(props: MovieIndexSearchButtonProps) {
   const isSearching = useSelector(createCommandExecutingSelector(MOVIE_SEARCH));
   const {
     items,
-    totalItems,
   }: MoviesAppState & MovieIndexAppState & ClientSideCollectionAppState =
     useSelector(createMovieClientSideCollectionItemsSelector('movieIndex'));
 
@@ -62,7 +61,7 @@ function MovieIndexSearchButton(props: MovieIndexSearchButtonProps) {
     <PageToolbarButton
       label={isSelectMode ? searchSelectLabel : searchIndexLabel}
       isSpinning={isSearching}
-      isDisabled={!totalItems}
+      isDisabled={!items.length}
       iconName={icons.SEARCH}
       onPress={onPress}
     />
