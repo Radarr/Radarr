@@ -121,7 +121,7 @@ namespace NzbDrone.Core.IndexerSearch
                 _logger.Debug("Setting last search time to: {0}", lastSearchTime);
 
                 criteriaBase.Movie.LastSearchTime = lastSearchTime;
-                _movieService.UpdateMovie(criteriaBase.Movie);
+                _movieService.UpdateLastSearchTime(criteriaBase.Movie);
             }
 
             return _makeDownloadDecision.GetSearchDecision(reports, criteriaBase).ToList();
