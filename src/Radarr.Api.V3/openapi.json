@@ -8520,31 +8520,6 @@
         },
         "additionalProperties": false
       },
-      "AlternativeTitle": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sourceType": {
-            "$ref": "#/components/schemas/SourceType"
-          },
-          "movieMetadataId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "cleanTitle": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "AlternativeTitleResource": {
         "type": "object",
         "properties": {
@@ -10942,81 +10917,16 @@
         ],
         "type": "string"
       },
-      "MovieCollection": {
+      "MovieCollectionResource": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
           "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "cleanTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "sortTitle": {
             "type": "string",
             "nullable": true
           },
           "tmdbId": {
             "type": "integer",
             "format": "int32"
-          },
-          "overview": {
-            "type": "string",
-            "nullable": true
-          },
-          "monitored": {
-            "type": "boolean"
-          },
-          "qualityProfileId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "rootFolderPath": {
-            "type": "string",
-            "nullable": true
-          },
-          "searchOnAdd": {
-            "type": "boolean"
-          },
-          "minimumAvailability": {
-            "$ref": "#/components/schemas/MovieStatusType"
-          },
-          "lastInfoSync": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "images": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MediaCover"
-            },
-            "nullable": true
-          },
-          "added": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "movies": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MovieMetadata"
-            },
-            "nullable": true
-          },
-          "tags": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11202,158 +11112,6 @@
         ],
         "type": "string"
       },
-      "MovieMetadata": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "tmdbId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "images": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MediaCover"
-            },
-            "nullable": true
-          },
-          "genres": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "inCinemas": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "physicalRelease": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "digitalRelease": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "certification": {
-            "type": "string",
-            "nullable": true
-          },
-          "year": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ratings": {
-            "$ref": "#/components/schemas/Ratings"
-          },
-          "collectionTmdbId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "collectionTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastInfoSync": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "runtime": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "website": {
-            "type": "string",
-            "nullable": true
-          },
-          "imdbId": {
-            "type": "string",
-            "nullable": true
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "cleanTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "sortTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "$ref": "#/components/schemas/MovieStatusType"
-          },
-          "overview": {
-            "type": "string",
-            "nullable": true
-          },
-          "alternativeTitles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AlternativeTitle"
-            },
-            "nullable": true
-          },
-          "translations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MovieTranslation"
-            },
-            "nullable": true
-          },
-          "secondaryYear": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "youTubeTrailerId": {
-            "type": "string",
-            "nullable": true
-          },
-          "studio": {
-            "type": "string",
-            "nullable": true
-          },
-          "originalTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "cleanOriginalTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "originalLanguage": {
-            "$ref": "#/components/schemas/Language"
-          },
-          "recommendations": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "nullable": true
-          },
-          "popularity": {
-            "type": "number",
-            "format": "float"
-          },
-          "isRecentMovie": {
-            "type": "boolean",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
       "MovieResource": {
         "type": "object",
         "properties": {
@@ -11536,7 +11294,7 @@
             "$ref": "#/components/schemas/MovieFileResource"
           },
           "collection": {
-            "$ref": "#/components/schemas/MovieCollection"
+            "$ref": "#/components/schemas/MovieCollectionResource"
           },
           "popularity": {
             "type": "number",
@@ -11561,35 +11319,6 @@
           "deleted"
         ],
         "type": "string"
-      },
-      "MovieTranslation": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "movieMetadataId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "cleanTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "overview": {
-            "type": "string",
-            "nullable": true
-          },
-          "language": {
-            "$ref": "#/components/schemas/Language"
-          }
-        },
-        "additionalProperties": false
       },
       "NamingConfigResource": {
         "type": "object",
