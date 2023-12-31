@@ -5,6 +5,29 @@ import { createSelector } from 'reselect';
 import MovieCreditPosters from '../MovieCreditPosters';
 import MovieCrewPoster from './MovieCrewPoster';
 
+function crewSort(a, b) {
+  const jobOrder = ['Director', 'Writer', 'Producer', 'Executive Producer', 'Director of Photography'];
+
+  const indexA = jobOrder.indexOf(a.job);
+  const indexB = jobOrder.indexOf(b.job);
+
+  if (indexA === -1 && indexB === -1) {
+    return 0;
+  } else if (indexA === -1) {
+    return 1;
+  } else if (indexB === -1) {
+    return -1;
+  }
+
+  if (indexA < indexB) {
+    return -1;
+  } else if (indexA > indexB) {
+    return 1;
+  }
+
+  return 0;
+}
+
 function createMapStateToProps() {
   return createSelector(
     (state) => state.movieCredits.items,
@@ -17,8 +40,10 @@ function createMapStateToProps() {
         return acc;
       }, []);
 
+      const sortedCrew = crew.sort(crewSort);
+
       return {
-        items: _.uniqBy(crew, 'personName')
+        items: _.uniqBy(sortedCrew, 'personName')
       };
     }
   );
