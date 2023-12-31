@@ -7,7 +7,6 @@ using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Parser;
 using Radarr.Api.V3.MovieFiles;
@@ -76,7 +75,7 @@ namespace Radarr.Api.V3.Movies
         public AddMovieOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
         public MovieFileResource MovieFile { get; set; }
-        public MovieCollection Collection { get; set; }
+        public MovieCollectionResource Collection { get; set; }
         public float Popularity { get; set; }
     }
 
@@ -96,7 +95,7 @@ namespace Radarr.Api.V3.Movies
             var translatedTitle = movieTranslation?.Title ?? model.Title;
             var translatedOverview = movieTranslation?.Overview ?? model.MovieMetadata.Value.Overview;
 
-            var collection = model.MovieMetadata.Value.CollectionTmdbId > 0 ? new MovieCollection { Title = model.MovieMetadata.Value.CollectionTitle, TmdbId = model.MovieMetadata.Value.CollectionTmdbId } : null;
+            var collection = model.MovieMetadata.Value.CollectionTmdbId > 0 ? new MovieCollectionResource { Title = model.MovieMetadata.Value.CollectionTitle, TmdbId = model.MovieMetadata.Value.CollectionTmdbId } : null;
 
             return new MovieResource
             {
