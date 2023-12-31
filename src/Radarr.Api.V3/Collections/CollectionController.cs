@@ -98,7 +98,7 @@ namespace Radarr.Api.V3.Collections
         [HttpPut]
         public ActionResult UpdateCollections(CollectionUpdateResource resource)
         {
-            var collectionsToUpdate = _collectionService.GetCollections(resource.CollectionIds);
+            var collectionsToUpdate = _collectionService.GetCollections(resource.CollectionIds).ToList();
 
             foreach (var collection in collectionsToUpdate)
             {
@@ -132,7 +132,7 @@ namespace Radarr.Api.V3.Collections
                 }
             }
 
-            var updated = _collectionService.UpdateCollections(collectionsToUpdate.ToList()).ToResource();
+            var updated = _collectionService.UpdateCollections(collectionsToUpdate).ToResource();
 
             _commandQueueManager.Push(new RefreshCollectionsCommand());
 
