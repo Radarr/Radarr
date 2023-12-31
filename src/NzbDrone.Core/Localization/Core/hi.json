@@ -982,7 +982,6 @@
     "Download": "डाउनलोड",
     "DownloadClientCheckDownloadingToRoot": "डाउनलोड क्लाइंट {downloadClientName} रूट फ़ोल्डर में डाउनलोड करता है {path}। आपको रूट फ़ोल्डर में डाउनलोड नहीं करना चाहिए।",
     "DeleteFileLabel": "{0} मूवी फ़ाइलें हटाएं",
-    "UnableToAddRootFolder": "रूट फ़ोल्डर लोड करने में असमर्थ",
     "Blocklist": "काला सूची में डालना",
     "BlocklistRelease": "ब्लैकलिस्ट रिलीज़",
     "RemoveFromBlocklist": "ब्लैकलिस्ट से निकालें",

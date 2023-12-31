@@ -982,7 +982,6 @@
     "Download": "Hent",
     "DownloadClientCheckDownloadingToRoot": "Download klient {downloadClientName} placerer downloads i rodmappen {path}. Du skal ikke downloade til en rodmappe.",
     "DeleteFileLabel": "Slet {0} filmfiler",
-    "UnableToAddRootFolder": "Kan ikke indlæse rodmapper",
     "Blocklist": "Blacklist",
     "BlocklistRelease": "Udgivelse af sortliste",
     "RemoveFromBlocklist": "Fjern fra sortlisten",

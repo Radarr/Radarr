@@ -904,7 +904,6 @@
     "Type": "Тип",
     "UnableToAddANewConditionPleaseTryAgain": "Не вдалося додати нову умову, спробуйте ще раз.",
     "UnableToAddANewQualityProfilePleaseTryAgain": "Не вдалося додати новий профіль якості, спробуйте ще раз.",
-    "UnableToAddRootFolder": "Не вдалося додати кореневу папку",
     "UnableToLoadDelayProfiles": "Неможливо завантажити профілі затримки",
     "UnableToLoadGeneralSettings": "Не вдалося завантажити загальні налаштування",
     "UnableToLoadIndexerOptions": "Не вдалося завантажити параметри індексатора",

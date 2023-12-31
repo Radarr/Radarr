@@ -1007,7 +1007,6 @@
     "BypassDelayIfHighestQualityHelpText": "Ignorar o atraso quando a versão tiver a qualidade mais alta ativada no perfil de qualidade com o protocolo preferido",
     "BypassDelayIfHighestQuality": "Ignorar se a qualidade for mais alta",
     "NotificationTriggersHelpText": "Seleciona quais eventos acionam esta notificação",
-    "UnableToAddRootFolder": "Não foi possível carregar as pastas raiz",
     "Blocklist": "Lista de bloqueio",
     "BlocklistRelease": "Bloquear versão",
     "RemoveFromBlocklist": "Remover da lista de bloqueio",

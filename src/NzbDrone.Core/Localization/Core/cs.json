@@ -982,7 +982,6 @@
     "Download": "Stažení",
     "DownloadClientCheckDownloadingToRoot": "Stahovací klient {downloadClientName} umístí stažené soubory do kořenové složky {path}. Neměli byste stahovat do kořenové složky.",
     "DeleteFileLabel": "Smažte {0} filmové soubory",
-    "UnableToAddRootFolder": "Nelze načíst kořenové složky",
     "Blocklist": "Blocklist",
     "BlocklistRelease": "Blocklist pro vydání",
     "RemoveFromBlocklist": "Odebrat z černé listiny",

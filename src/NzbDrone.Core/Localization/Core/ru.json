@@ -996,7 +996,6 @@
     "UpdateAvailable": "Доступно новое обновление",
     "RemotePathMappingCheckDownloadPermissions": "{appName} видит загруженный фильм {path}, но не может получить доступ к нему.  Возможно, ошибка в правах доступа.",
     "Letterboxd": "Letterboxd",
-    "UnableToAddRootFolder": "Невозможно загрузить корневые папки",
     "RemotePathMappingCheckBadDockerPath": "Вы используете docker; клиент загрузки {downloadClientName} сообщил о файлах в {path}, но это не корректный путь {osName}.  Проверьте правильность указанного пути и настройки клиента загрузки.",
     "Blocklist": "Черный список",
     "BlocklistRelease": "Релиз из черного списка",

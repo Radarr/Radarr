@@ -997,7 +997,6 @@
     "RemotePathMappingCheckWrongOSPath": "远程下载客户端 {downloadClientName} 报告文件在 {path} 中，但是该地址 {osName} 非法。请检查您的远程地址映射和下载客户端设置。",
     "RemotePathMappingCheckFilesBadDockerPath": "您正在使用docker；下载客户端 {downloadClientName} 的下载目录为 {path} ，但是该地址 {osName} 不合法。请检查您的远程地址映射和下载客户端设置。",
     "RemotePathMappingCheckRemoteDownloadClient": "远程客户端 {downloadClientName} 将下载文件放置在 {path} 中，但该目录似乎不存在，可能目录确实或远程地址映射错误。",
-    "UnableToAddRootFolder": "无法加载根目录",
     "RemotePathMappingCheckDockerFolderMissing": "您正在使用docker；下载客户端 {downloadClientName} 报告文件在 {path} 中，但是该目录似乎不存在docker容器中。请检查您的远程地址映射和容器的卷设置。",
     "Blocklist": "黑名单",
     "BlocklistRelease": "黑名单版本",

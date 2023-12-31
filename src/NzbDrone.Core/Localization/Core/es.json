@@ -979,7 +979,6 @@
     "ImportListMissingRoot": "Falta la capeta raíz para las listas: {rootFolderInfo}",
     "From": "de",
     "BypassDelayIfHighestQuality": "Pasar sí es la calidad más alta",
-    "UnableToAddRootFolder": "No se han podido cargar las carpetas raiz",
     "Blocklist": "Bloqueadas",
     "BlocklistRelease": "Lista de lanzamientos bloqueados",
     "RemoveFromBlocklist": "Eliminar de lista de bloqueados",
