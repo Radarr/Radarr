@@ -982,7 +982,6 @@
     "Download": "다운로드",
     "DownloadClientCheckDownloadingToRoot": "다운로드 클라이언트 {downloadClientName} 은(는) 루트 폴더 {path}에 다운로드를 저장합니다. 루트 폴더에 다운로드해서는 안됩니다.",
     "DeleteFileLabel": "{0} 영화 파일 삭제",
-    "UnableToAddRootFolder": "루트 폴더를 불러올 수 없습니다.",
     "Blocklist": "블랙리스트",
     "BlocklistRelease": "블랙리스트 릴리스",
     "RemoveFromBlocklist": "블랙리스트에서 제거",

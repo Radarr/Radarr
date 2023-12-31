@@ -982,7 +982,6 @@
     "Download": "Sækja",
     "DownloadClientCheckDownloadingToRoot": "Sæktu viðskiptavinur {downloadClientName} setur niðurhal í rótarmöppuna {path}. Þú ættir ekki að hlaða niður í rótarmöppu.",
     "DeleteFileLabel": "Eyða {0} kvikmyndaskrám",
-    "UnableToAddRootFolder": "Ekki er hægt að hlaða rótarmöppum",
     "Blocklist": "Svartur listi",
     "BlocklistRelease": "Útgáfa svartalista",
     "RemoveFromBlocklist": "Fjarlægja af svörtum lista",

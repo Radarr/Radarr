@@ -983,7 +983,6 @@
     "Download": "تحميل",
     "DownloadClientCheckDownloadingToRoot": "يقوم برنامج التنزيل {downloadClientName} بوضع التنزيلات في المجلد الجذر {path}. يجب ألا تقوم بالتنزيل إلى مجلد جذر.",
     "DeleteFileLabel": "احذف {0} ملفات الأفلام",
-    "UnableToAddRootFolder": "تعذر تحميل مجلدات الجذر",
     "Blocklist": "القائمة السوداء",
     "BlocklistRelease": "إصدار القائمة السوداء",
     "RemoveFromBlocklist": "إزالة من القائمة السوداء",

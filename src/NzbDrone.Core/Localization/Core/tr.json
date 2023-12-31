@@ -982,7 +982,6 @@
     "Download": "İndir",
     "DownloadClientCheckDownloadingToRoot": "İndirme istemcisi {downloadClientName}, indirmeleri kök klasöre yerleştirir {path}. Bir kök klasöre indirmemelisiniz.",
     "DeleteFileLabel": "{0} Film Dosyasını Sil",
-    "UnableToAddRootFolder": "Kök klasörler yüklenemiyor",
     "Blocklist": "Kara liste",
     "BlocklistRelease": "Kara Liste Yayını",
     "RemoveFromBlocklist": "Kara listeden kaldır",

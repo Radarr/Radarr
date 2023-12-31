@@ -982,7 +982,6 @@
     "Download": "ดาวน์โหลด",
     "DownloadClientCheckDownloadingToRoot": "ดาวน์โหลดไคลเอนต์ {downloadClientName} จะทำการดาวน์โหลดในโฟลเดอร์รูท {path} คุณไม่ควรดาวน์โหลดไปยังโฟลเดอร์รูท",
     "DeleteFileLabel": "ลบ {0} ไฟล์ภาพยนตร์",
-    "UnableToAddRootFolder": "ไม่สามารถโหลดโฟลเดอร์รูท",
     "Blocklist": "บัญชีดำ",
     "BlocklistRelease": "Blacklist Release",
     "RemoveFromBlocklist": "ลบออกจากบัญชีดำ",

@@ -983,7 +983,6 @@
     "Download": "Descarca",
     "DownloadClientCheckDownloadingToRoot": "Clientul de descărcare {downloadClientName} plasează descărcările în folderul rădăcină {path}. Nu trebuie să descărcați într-un folder rădăcină.",
     "DeleteFileLabel": "Ștergeți {0} Fișiere de filme",
-    "UnableToAddRootFolder": "Imposibil de încărcat folderele rădăcină",
     "Blocklist": "Listă Neagră",
     "BlocklistRelease": "Lansare pe lista neagră",
     "RemoveFromBlocklist": "Eliminați de pe lista neagră",

@@ -982,7 +982,6 @@
     "Download": "Изтегли",
     "DownloadClientCheckDownloadingToRoot": "Клиентът за изтегляне {downloadClientName} поставя изтеглянията в основната папка {path}. Не трябва да изтегляте в основна папка.",
     "DeleteFileLabel": "Изтрийте {0} филмови файлове",
-    "UnableToAddRootFolder": "Не може да се заредят коренови папки",
     "Blocklist": "Черен списък",
     "BlocklistRelease": "Освобождаване на черния списък",
     "RemoveFromBlocklist": "Премахване от черния списък",

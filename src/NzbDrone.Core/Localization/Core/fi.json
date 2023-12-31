@@ -982,7 +982,6 @@
     "Download": "Lataa",
     "DownloadClientCheckDownloadingToRoot": "Lataustyökalu '{downloadClientName}' sijoittaa lataukset juurikansioon '{path}' ja näin ei pitäisi tehdä, vaan lataukset tulee tallentaa erilliseen sijaintiin.",
     "DeleteFileLabel": "Poista {0} elokuvatiedosto",
-    "UnableToAddRootFolder": "Juurikansioiden lataus epäonnistui.",
     "Blocklist": "Estolista",
     "BlocklistRelease": "Lisää julkaisu estolistalle",
     "RemoveFromBlocklist": "Poista estolistalta",

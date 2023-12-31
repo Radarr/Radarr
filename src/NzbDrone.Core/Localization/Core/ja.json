@@ -982,7 +982,6 @@
     "Download": "ダウンロード",
     "DownloadClientCheckDownloadingToRoot": "ダウンロードクライアント{downloadClientName}は、ダウンロードをルートフォルダ{path}に配置します。ルートフォルダにダウンロードしないでください。",
     "DeleteFileLabel": "{0}ムービーファイルを削除する",
-    "UnableToAddRootFolder": "ルートフォルダを読み込めません",
     "Blocklist": "ブラックリスト",
     "BlocklistRelease": "ブラックリストリリース",
     "RemoveFromBlocklist": "ブラックリストから削除する",

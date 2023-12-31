@@ -982,7 +982,6 @@
     "Download": "הורד",
     "DownloadClientCheckDownloadingToRoot": "הורד לקוח {downloadClientName} ממקם הורדות בתיקיית הבסיס {path}. אתה לא צריך להוריד לתיקיית שורש.",
     "DeleteFileLabel": "מחק {0} קבצי סרט",
-    "UnableToAddRootFolder": "לא ניתן לטעון תיקיות שורש",
     "Blocklist": "רשימה שחורה",
     "BlocklistRelease": "שחרור הרשימה השחורה",
     "RemoveFromBlocklist": "הסר מהרשימה השחורה",
