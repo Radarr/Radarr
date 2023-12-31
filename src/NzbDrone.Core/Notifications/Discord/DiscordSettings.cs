@@ -33,7 +33,8 @@ namespace NzbDrone.Core.Notifications.Discord
                 (int)DiscordGrabFieldType.Fanart,
                 (int)DiscordGrabFieldType.Indexer,
                 (int)DiscordGrabFieldType.CustomFormats,
-                (int)DiscordGrabFieldType.CustomFormatScore
+                (int)DiscordGrabFieldType.CustomFormatScore,
+                (int)DiscordGrabFieldType.Tags
             };
             ImportFields = new[]
             {
@@ -49,7 +50,8 @@ namespace NzbDrone.Core.Notifications.Discord
                 (int)DiscordImportFieldType.Links,
                 (int)DiscordImportFieldType.Release,
                 (int)DiscordImportFieldType.Poster,
-                (int)DiscordImportFieldType.Fanart
+                (int)DiscordImportFieldType.Fanart,
+                (int)DiscordImportFieldType.Tags
             };
             ManualInteractionFields = new[]
             {
@@ -62,7 +64,8 @@ namespace NzbDrone.Core.Notifications.Discord
                 (int)DiscordManualInteractionFieldType.Links,
                 (int)DiscordManualInteractionFieldType.DownloadTitle,
                 (int)DiscordManualInteractionFieldType.Poster,
-                (int)DiscordManualInteractionFieldType.Fanart
+                (int)DiscordManualInteractionFieldType.Fanart,
+                (int)DiscordManualInteractionFieldType.Tags
             };
         }
 
