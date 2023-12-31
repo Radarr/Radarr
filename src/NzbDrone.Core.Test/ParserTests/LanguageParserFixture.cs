@@ -300,6 +300,7 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Hebrew.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.1994.1080p.BluRay.HebDubbed.Also.English.x264-P2P")]
         public void should_parse_language_hebrew(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);

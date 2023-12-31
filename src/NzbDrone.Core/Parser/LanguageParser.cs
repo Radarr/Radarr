@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<russian>\brus\b)|
                                                                             (?<english>\beng\b)|
                                                                             (?<hungarian>\b(?:HUNDUB|HUN)\b)|
-                                                                            (?<hebrew>\bHebDub\b)|
+                                                                            (?<hebrew>\b(?:HebDub|HebDubbed)\b)|
                                                                             (?<polish>\b(?:PL\W?DUB|DUB\W?PL|LEK\W?PL|PL\W?LEK)\b)|
                                                                             (?<chinese>\[(?:CH[ST]|BIG5|GB)\]|简|繁|字幕)|
                                                                             (?<ukrainian>(?:(?:\dx)?UKR))|
