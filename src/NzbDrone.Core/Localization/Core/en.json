@@ -611,6 +611,7 @@
   "MaintenanceRelease": "Maintenance Release: bug fixes and other improvements. See Github Commit History for more details",
   "ManageClients": "Manage Clients",
   "ManageDownloadClients": "Manage Download Clients",
+  "ManageFiles": "Manage Files",
   "ManageImportLists": "Manage Import Lists",
   "ManageIndexers": "Manage Indexers",
   "ManageLists": "Manage Lists",
