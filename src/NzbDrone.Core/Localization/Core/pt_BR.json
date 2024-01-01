@@ -1345,5 +1345,8 @@
     "PreviouslyInstalled": "Instalado anteriormente",
     "UpdaterLogFiles": "Arquivos de log do atualizador",
     "InteractiveSearchModalHeader": "Pesquisa Interativa",
-    "WhySearchesCouldBeFailing": "Clique aqui para descobrir por que as pesquisas podem estar falhando"
+    "WhySearchesCouldBeFailing": "Clique aqui para descobrir por que as pesquisas podem estar falhando",
+    "AddRootFolderError": "Não foi possível adicionar a pasta raiz",
+    "DownloadClientQbittorrentSettingsContentLayout": "Layout de Conteúdo",
+    "DownloadClientQbittorrentSettingsContentLayoutHelpText": "Seja para usar o layout de conteúdo configurado do qBittorrent, o layout original do torrent ou sempre criar uma subpasta (qBittorrent 4.3.2+)"
 }

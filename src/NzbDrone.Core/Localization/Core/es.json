@@ -37,7 +37,7 @@
     "Day": "Día",
     "Dates": "Fechas",
     "Date": "Fecha",
-    "CustomFormats": "Formatos Personalizados",
+    "CustomFormats": "Formatos personalizados",
     "CustomFilters": "Filtros Personalizados",
     "Crew": "Equipo",
     "Connections": "Conexiones",
@@ -195,7 +195,7 @@
     "Details": "Detalles",
     "Deleted": "Eliminado",
     "CutoffUnmet": "Corte No Alcanzado",
-    "CustomFormatsSettingsSummary": "Formatos Personalizados y Ajustes",
+    "CustomFormatsSettingsSummary": "Formatos y configuraciones personalizados",
     "ConnectSettingsSummary": "Notificaciones, conexiones a servidores/reproductores y scripts personalizados",
     "Collection": "Colección",
     "Certification": "Certificación",
@@ -578,7 +578,7 @@
     "EnableAutomaticAdd": "Habilitar Añadido Automático",
     "EnableAutoHelpText": "Si se habilita, las Películas en esta lista se añadirán automáticamente a {appName}",
     "CutoffFormatScoreHelpText": "Una la vez que la calidad objetivo es cumplida o excedida y esta puntuación de formato propio es alcanzada {appName} dejará de descargar o importar mejoras para estas películas",
-    "CustomFormatsSettings": "Ajustes de Formatos Propios",
+    "CustomFormatsSettings": "Configuración de formatos personalizados",
     "CopyUsingHardlinksHelpTextWarning": "Ocasionalmente, los archivos bloqueados impiden renombrar los archivos que siguen seedeando. Puedes desactivar el seedeo temporalmete y usar la función de renombrado de Radarr como alternativa.",
     "CopyUsingHardlinksHelpText": "Los Hardlinks permiten a {appName} importar torrents que siguen seedeando a la carpeta de películas sin ocupar espacio extra en el disco o copiando los contenidos al completo del archivo. Los Hardlinks solo funcionarán si el orígen y destino se encuentran en el mismo volumen",
     "ConnectSettings": "Conectar Ajustes",
@@ -1069,7 +1069,7 @@
     "UnableToLoadCollections": "No se han podido cargar las colecciones",
     "MovieCollectionMissingRoot": "Carpeta raíz faltante para colección de películas: {0}",
     "MovieOnly": "Solo Película",
-    "Database": "Base de Datos",
+    "Database": "Base de datos",
     "File": "Archivo",
     "ResetDefinitions": "Restablecer definiciones",
     "ResetQualityDefinitions": "Restablecer definiciones de calidad",
@@ -1230,5 +1230,6 @@
     "FailedToFetchUpdates": "Fallo al buscar las actualizaciones",
     "FailedToUpdateSettings": "Fallo al actualizar los ajustes",
     "EditConditionImplementation": "Editar Condición - {implementationName}",
-    "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "El cliente de descarga {downloadClientName} esta configurado para eliminar las descargas completadas. Esto puede causar que las descargas sean eliminadas del cliente antes que {1} las pueda importar."
+    "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "El cliente de descarga {downloadClientName} esta configurado para eliminar las descargas completadas. Esto puede causar que las descargas sean eliminadas del cliente antes que {1} las pueda importar.",
+    "AddRootFolderError": "No se puede agregar la carpeta raíz"
 }
