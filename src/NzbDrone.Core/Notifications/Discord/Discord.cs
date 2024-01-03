@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MediaInfo;
@@ -17,11 +18,13 @@ namespace NzbDrone.Core.Notifications.Discord
     {
         private readonly IDiscordProxy _proxy;
         private readonly ITagRepository _tagRepository;
+        private readonly ILocalizationService _localizationService;
 
-        public Discord(IDiscordProxy proxy, ITagRepository tagRepository)
+        public Discord(IDiscordProxy proxy, ITagRepository tagRepository, ILocalizationService localizationService)
         {
             _proxy = proxy;
             _tagRepository = tagRepository;
+            _localizationService = localizationService;
         }
 
         public override string Name => "Discord";
@@ -547,7 +550,7 @@ namespace NzbDrone.Core.Notifications.Discord
             }
             catch (DiscordException ex)
             {
-                return new NzbDroneValidationFailure("Unable to post", ex.Message);
+                return new NzbDroneValidationFailure(string.Empty, _localizationService.GetLocalizedString("NotificationsValidationUnableToSendTestMessage", new Dictionary<string, object> { { "exceptionMessage", ex.Message } }));
             }
 
             return null;
