@@ -7,8 +7,7 @@ import ConfirmModal from 'Components/Modal/ConfirmModal';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRow from 'Components/Table/TableRow';
-import Tooltip from 'Components/Tooltip/Tooltip';
-import { icons, kinds, tooltipPositions } from 'Helpers/Props';
+import { icons, kinds } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import MovieQuality from 'Movie/MovieQuality';
@@ -103,20 +102,11 @@ class MovieHistoryRow extends Component {
         </TableRowCell>
 
         <TableRowCell>
-          <MovieFormats
-            formats={customFormats}
-          />
+          <MovieFormats formats={customFormats} />
         </TableRowCell>
 
         <TableRowCell className={styles.customFormatScore}>
-          <Tooltip
-            anchor={formatCustomFormatScore(
-              customFormatScore,
-              customFormats.length
-            )}
-            tooltip={<MovieFormats formats={customFormats} />}
-            position={tooltipPositions.TOP}
-          />
+          {formatCustomFormatScore(customFormatScore, customFormats.length)}
         </TableRowCell>
 
         <RelativeDateCellConnector
@@ -134,6 +124,7 @@ class MovieHistoryRow extends Component {
               <IconButton
                 title={translate('MarkAsFailed')}
                 name={icons.REMOVE}
+                size={14}
                 onPress={this.onMarkAsFailedPress}
               />
           }

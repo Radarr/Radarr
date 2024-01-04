@@ -56,7 +56,6 @@ const columns = [
   },
   {
     name: 'actions',
-    label: () => translate('Actions'),
     isVisible: true
   }
 ];
