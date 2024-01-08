@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<brazilian>dublado)|
                                                                             (?<greek>greek)|
                                                                             (?<french>\b(?:FR|VO|VF|VFF|VFQ|VFI|VF2|TRUEFRENCH|FRE|FRA)\b)|
-                                                                            (?<russian>\brus\b)|
+                                                                            (?<russian>\b(?:rus|ru)\b)|
                                                                             (?<english>\beng\b)|
                                                                             (?<hungarian>\b(?:HUNDUB|HUN)\b)|
                                                                             (?<hebrew>\b(?:HebDub|HebDubbed)\b)|
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<chinese>\[(?:CH[ST]|BIG5|GB)\]|简|繁|字幕)|
                                                                             (?<ukrainian>(?:(?:\dx)?UKR))|
                                                                             (?<spanish>\b(?:español|castellano)\b)|
-                                                                            (?<latvian>\bLV\b)|
+                                                                            (?<latvian>\b(?:lat|lav|lv)\b)|
                                                                             (?<telugu>\btel\b)|
                                                                             (?<vietnamese>\bVIE\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);

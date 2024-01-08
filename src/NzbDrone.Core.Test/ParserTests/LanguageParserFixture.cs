@@ -140,6 +140,8 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Russian.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.2020.WEB-DLRip.AVC.AC3.EN.RU.ENSub.RUSub-LOL")]
+        [TestCase("Movie Title (2020) WEB-DL (720p) Rus-Eng")]
         public void should_parse_language_russian(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -388,6 +390,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.2022.lv.WEBRip.XviD-LOL")]
         [TestCase("Movie.Title.2022.LATVIAN.WEBRip.XviD-LOL")]
         [TestCase("Movie.Title.2022.Latvian.WEBRip.XviD-LOL")]
+        [TestCase("Movie.Title.2022.1080p.WEB-DL.DDP5.1.Atmos.H.264.Lat.Eng")]
+        [TestCase("Movie.Title.2022.1080p.WEB-DL.LAV.RUS-NPPK")]
         public void should_parse_language_latvian(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle);
