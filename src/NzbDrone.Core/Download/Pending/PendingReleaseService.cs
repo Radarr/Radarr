@@ -326,7 +326,8 @@ namespace NzbDrone.Core.Download.Pending
                 Reason = reason,
                 AdditionalInfo = new PendingReleaseAdditionalInfo
                 {
-                    MovieMatchType = decision.RemoteMovie.MovieMatchType
+                    MovieMatchType = decision.RemoteMovie.MovieMatchType,
+                    ReleaseSource = decision.RemoteMovie.ReleaseSource
                 }
             };
 
