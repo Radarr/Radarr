@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using NLog;
 using NzbDrone.Common.Cache;
@@ -13,14 +15,17 @@ namespace NzbDrone.Core.Download.Clients.Transmission
     public interface ITransmissionProxy
     {
         List<TransmissionTorrent> GetTorrents(TransmissionSettings settings);
-        void AddTorrentFromUrl(string torrentUrl, string downloadDirectory, TransmissionSettings settings);
-        void AddTorrentFromData(byte[] torrentData, string downloadDirectory, TransmissionSettings settings);
+        TransmissionTorrent GetSingleTorrent(string hash, TransmissionSettings settings);
+        void AddTorrentFromUrl(string torrentUrl, string downloadDirectory, IEnumerable<string> labels, TransmissionSettings settings);
+        void AddTorrentFromData(byte[] torrentData, string downloadDirectory, IEnumerable<string> labels, TransmissionSettings settings);
         void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfiguration, TransmissionSettings settings);
+        void SetTorrentLabel(string hash, IEnumerable<string> labels, TransmissionSettings settings);
         TransmissionConfig GetConfig(TransmissionSettings settings);
         string GetProtocolVersion(TransmissionSettings settings);
-        string GetClientVersion(TransmissionSettings settings);
+        Version GetClientVersion(TransmissionSettings settings);
         void RemoveTorrent(string hash, bool removeData, TransmissionSettings settings);
         void MoveTorrentToTopInQueue(string hashString, TransmissionSettings settings);
+        public bool SupportLabels(TransmissionSettings settings);
     }
 
     public class TransmissionProxy : ITransmissionProxy
@@ -38,6 +43,11 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             _authSessionIDCache = cacheManager.GetCache<string>(GetType(), "authSessionID");
         }
 
+        public bool SupportLabels(TransmissionSettings settings)
+        {
+            return GetClientVersion(settings) >= new Version(3, 0);
+        }
+
         public List<TransmissionTorrent> GetTorrents(TransmissionSettings settings)
         {
             var result = GetTorrentStatus(settings);
@@ -47,7 +57,16 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             return torrents;
         }
 
-        public void AddTorrentFromUrl(string torrentUrl, string downloadDirectory, TransmissionSettings settings)
+        public TransmissionTorrent GetSingleTorrent(string hash, TransmissionSettings settings)
+        {
+            var result = GetTorrentStatus(new[] { hash }, settings);
+
+            var torrents = ((JArray)result.Arguments["torrents"]).ToObject<List<TransmissionTorrent>>();
+
+            return torrents.FirstOrDefault();
+        }
+
+        public void AddTorrentFromUrl(string torrentUrl, string downloadDirectory, IEnumerable<string> labels, TransmissionSettings settings)
         {
             var arguments = new Dictionary<string, object>();
             arguments.Add("filename", torrentUrl);
@@ -58,10 +77,15 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 arguments.Add("download-dir", downloadDirectory);
             }
 
+            if (labels != null && labels.Any())
+            {
+                arguments.Add("labels", labels);
+            }
+
             ProcessRequest("torrent-add", arguments, settings);
         }
 
-        public void AddTorrentFromData(byte[] torrentData, string downloadDirectory, TransmissionSettings settings)
+        public void AddTorrentFromData(byte[] torrentData, string downloadDirectory, IEnumerable<string> labels, TransmissionSettings settings)
         {
             var arguments = new Dictionary<string, object>();
             arguments.Add("metainfo", Convert.ToBase64String(torrentData));
@@ -70,6 +94,11 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             if (!downloadDirectory.IsNullOrWhiteSpace())
             {
                 arguments.Add("download-dir", downloadDirectory);
+            }
+
+            if (labels != null && labels.Any())
+            {
+                arguments.Add("labels", labels);
             }
 
             ProcessRequest("torrent-add", arguments, settings);
@@ -100,6 +129,22 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             ProcessRequest("torrent-set", arguments, settings);
         }
 
+        public void SetTorrentLabel(string hash, IEnumerable<string> labels, TransmissionSettings settings)
+        {
+            if (labels != null && !labels.Any())
+            {
+                return;
+            }
+
+            var arguments = new Dictionary<string, object>
+            {
+                { "ids", new[] { hash } },
+                { "labels", labels }
+            };
+
+            ProcessRequest("torrent-set", arguments, settings);
+        }
+
         public string GetProtocolVersion(TransmissionSettings settings)
         {
             var config = GetConfig(settings);
@@ -107,11 +152,15 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             return config.RpcVersion;
         }
 
-        public string GetClientVersion(TransmissionSettings settings)
+        public Version GetClientVersion(TransmissionSettings settings)
         {
             var config = GetConfig(settings);
+            var versionString = config.Version;
 
-            return config.Version;
+            var versionResult = Regex.Match(versionString, @"(?<!\(|(\d|\.)+)(\d|\.)+(?!\)|(\d|\.)+)").Value;
+            var version = Version.Parse(versionResult);
+
+            return version;
         }
 
         public TransmissionConfig GetConfig(TransmissionSettings settings)
@@ -158,7 +207,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         private TransmissionResponse GetTorrentStatus(IEnumerable<string> hashStrings, TransmissionSettings settings)
         {
-            var fields = new string[]
+            var fields = new List<string>
             {
                 "id",
                 "hashString", // Unique torrent ID. Use this instead of the client id?
@@ -178,8 +227,13 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 "seedRatioMode",
                 "seedIdleLimit",
                 "seedIdleMode",
-                "fileCount"
+                "fileCount",
             };
+
+            if (SupportLabels(settings))
+            {
+                fields.Add("labels");
+            }
 
             var arguments = new Dictionary<string, object>();
             arguments.Add("fields", fields);

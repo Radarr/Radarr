@@ -1,4 +1,6 @@
-﻿namespace NzbDrone.Core.Download.Clients.Transmission
+﻿using System.Collections.Generic;
+
+namespace NzbDrone.Core.Download.Clients.Transmission
 {
     public class TransmissionTorrent
     {
@@ -21,5 +23,6 @@
         public long SeedIdleLimit { get; set; }
         public int SeedIdleMode { get; set; }
         public int FileCount { get; set; }
+        public List<string> Labels { get; set; }
     }
 }
