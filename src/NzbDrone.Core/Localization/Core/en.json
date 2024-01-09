@@ -320,7 +320,7 @@
   "DownloadClientCheckUnableToCommunicateMessage": "Unable to communicate with {downloadClientName}. {errorMessage}",
   "DownloadClientQbittorrentSettingsContentLayout": "Content Layout",
   "DownloadClientQbittorrentSettingsContentLayoutHelpText": "Whether to use qBittorrent's configured content layout, the original layout from the torrent or always create a subfolder (qBittorrent 4.3.2+)",
-  "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "Download client {downloadClientName} is set to remove completed downloads. This can result in downloads being removed from your client before {1} can import them.",
+  "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "Download client {downloadClientName} is set to remove completed downloads. This can result in downloads being removed from your client before {appName} can import them.",
   "DownloadClientSettings": "Download Client Settings",
   "DownloadClientSortingCheckMessage": "Download client {downloadClientName} has {sortingMode} sorting enabled for {appName}'s category. You should disable sorting in your download client to avoid import issues.",
   "DownloadClientStatusCheckAllClientMessage": "All download clients are unavailable due to failures",
