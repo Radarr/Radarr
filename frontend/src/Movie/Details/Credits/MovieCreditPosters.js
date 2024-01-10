@@ -52,7 +52,8 @@ class MovieCreditPosters extends Component {
   render() {
     const {
       items,
-      itemComponent
+      itemComponent,
+      isSmallScreen
     } = this.props;
 
     const {
@@ -67,7 +68,7 @@ class MovieCreditPosters extends Component {
         <Swiper
           slidesPerView='auto'
           spaceBetween={10}
-          slidesPerGroup={3}
+          slidesPerGroup={isSmallScreen ? 1 : 3}
           navigation={true}
           loop={false}
           loopFillGroupWithBlank={true}
