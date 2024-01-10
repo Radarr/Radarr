@@ -209,7 +209,7 @@ export const defaultState = {
     {
       name: 'tags',
       label: () => translate('Tags'),
-      isSortable: false,
+      isSortable: true,
       isVisible: false
     },
     {
