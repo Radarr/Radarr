@@ -89,7 +89,7 @@
     "CreateEmptyMovieFolders": "Створіть порожні папки для фільмів",
     "CreateEmptyMovieFoldersHelpText": "Створити папки для не знайдених фільмів під час сканування",
     "CustomFormatUnknownConditionOption": "Невідомий параметр '{0}' для умови '{1}'",
-    "AddNew": "Додати",
+    "AddNew": "Додати новий",
     "AddNewMessage": "Додати новий фільм дуже легко! Почни друкувати назву фільму, який хочете додати",
     "AddNewMovie": "Додати фільм",
     "AddNewTmdbIdMessage": "Ви також можете шукати використовуючи TMDb id фільму. Наприклад 'tmdb:71663'",
@@ -1156,5 +1156,7 @@
     "DelayingDownloadUntil": "Завантаження відкладається до {0} о {1}",
     "DeletedReasonUpgrade": "Файл видалено, щоб імпортувати оновлення",
     "AutoRedownloadFailed": "Помилка завантаження",
-    "InteractiveSearchModalHeader": "Інтерактивний пошук"
+    "InteractiveSearchModalHeader": "Інтерактивний пошук",
+    "AddRootFolderError": "Не вдалося додати кореневу папку",
+    "AddConditionImplementation": "Додати умому"
 }

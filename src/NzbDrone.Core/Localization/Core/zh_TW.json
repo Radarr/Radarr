@@ -12,7 +12,7 @@
     "All": "全部",
     "Analytics": "分析",
     "AddCustomFormat": "新增自定義格式",
-    "AddDelayProfile": "新增延時配置",
+    "AddDelayProfile": "加入延遲設定",
     "AddedToDownloadQueue": "已添加到下載隊列",
     "EditCustomFormat": "新增自定義格式",
     "EditDelayProfile": "新增延時配置",
@@ -99,5 +99,14 @@
     "AppDataLocationHealthCheckMessage": "為了避免在更新過程中刪除AppData，將無法進行更新。",
     "Apply": "套用",
     "ApplyTags": "套用標籤",
-    "ApiKeyValidationHealthCheckMessage": "請將您的API金鑰更新為至少{length}個字元長。您可以通過設定或配置文件進行此操作。"
+    "ApiKeyValidationHealthCheckMessage": "請將您的API金鑰更新為至少{length}個字元長。您可以通過設定或配置文件進行此操作。",
+    "AddAutoTag": "新增自動標籤",
+    "AddCondition": "新增條件",
+    "AddConditionImplementation": "新增條件 - {implementationName}",
+    "AddConnection": "新增連接",
+    "AddConnectionImplementation": "新增連接 - {implementationName}",
+    "AddDownloadClientImplementation": "新增下載用戶端 - {implementationName}",
+    "AddIndexerImplementation": "新增索引 - {implementationName}",
+    "AddImportList": "新增匯入清單",
+    "AddImportListImplementation": "新增匯入清單 - {implementationName}"
 }
