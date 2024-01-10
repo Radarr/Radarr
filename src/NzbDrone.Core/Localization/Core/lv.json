@@ -11,5 +11,16 @@
     "AddConnection": "Pievienot Savienojumu",
     "AddConnectionImplementation": "Pievienot Savienojumu - {implementationName}",
     "AddDelayProfile": "Pievienot Aizkaves Profilu",
-    "AddDownloadClient": "Pievienot Lejupielādes Klientu"
+    "AddDownloadClient": "Pievienot Lejupielādes Klientu",
+    "EditCustomFormat": "Pievienot Pielāgotu Formātu",
+    "EditDelayProfile": "Pievienot Aizkaves Profilu",
+    "ImportCustomFormat": "Pievienot Pielāgotu Formātu",
+    "EditConnectionImplementation": "Pievienot Savienojumu - {implementationName}",
+    "Movie": "Filma",
+    "AddIndexerImplementation": "Pievienot Nosacījumu - {implementationName}",
+    "Movies": "Filmu",
+    "EditIndexerImplementation": "Pievienot Nosacījumu - {implementationName}",
+    "EditConditionImplementation": "Pievienot Nosacījumu - {implementationName}",
+    "ExportCustomFormat": "Pievienot Pielāgotu Formātu",
+    "New": "Jauns"
 }
