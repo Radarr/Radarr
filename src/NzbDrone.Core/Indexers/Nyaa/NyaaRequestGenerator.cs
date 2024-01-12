@@ -9,51 +9,13 @@ namespace NzbDrone.Core.Indexers.Nyaa
     {
         public NyaaSettings Settings { get; set; }
 
-        public int MaxPages { get; set; }
-        public int PageSize { get; set; }
-
-        public NyaaRequestGenerator()
-        {
-            MaxPages = 30;
-            PageSize = 100;
-        }
-
         public virtual IndexerPageableRequestChain GetRecentRequests()
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            pageableRequests.Add(GetPagedRequests(MaxPages, null));
+            pageableRequests.Add(GetPagedRequests(null));
 
             return pageableRequests;
-        }
-
-        private IEnumerable<IndexerRequest> GetPagedRequests(int maxPages, string term)
-        {
-            var baseUrl = string.Format("{0}/?page=rss{1}", Settings.BaseUrl.TrimEnd('/'), Settings.AdditionalParameters);
-
-            if (term != null)
-            {
-                baseUrl += "&term=" + term;
-            }
-
-            if (PageSize == 0)
-            {
-                yield return new IndexerRequest(baseUrl, HttpAccept.Rss);
-            }
-            else
-            {
-                yield return new IndexerRequest(baseUrl, HttpAccept.Rss);
-
-                for (var page = 1; page < maxPages; page++)
-                {
-                    yield return new IndexerRequest($"{baseUrl}&offset={page + 1}", HttpAccept.Rss);
-                }
-            }
-        }
-
-        private string PrepareQuery(string query)
-        {
-            return query.Replace(' ', '+');
         }
 
         public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
@@ -62,10 +24,27 @@ namespace NzbDrone.Core.Indexers.Nyaa
 
             foreach (var queryTitle in searchCriteria.SceneTitles)
             {
-                pageableRequests.Add(GetPagedRequests(MaxPages, PrepareQuery(string.Format("{0} {1}", queryTitle, searchCriteria.Movie.Year))));
+                pageableRequests.Add(GetPagedRequests(PrepareQuery($"{queryTitle} {searchCriteria.Movie.Year}")));
             }
 
             return pageableRequests;
+        }
+
+        private IEnumerable<IndexerRequest> GetPagedRequests(string term)
+        {
+            var baseUrl = $"{Settings.BaseUrl.TrimEnd('/')}/?page=rss{Settings.AdditionalParameters}";
+
+            if (term != null)
+            {
+                baseUrl += "&term=" + term;
+            }
+
+            yield return new IndexerRequest(baseUrl, HttpAccept.Rss);
+        }
+
+        private string PrepareQuery(string query)
+        {
+            return query.Replace(' ', '+');
         }
 
         public Func<IDictionary<string, string>> GetCookies { get; set; }
