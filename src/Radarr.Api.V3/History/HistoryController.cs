@@ -68,8 +68,7 @@ namespace Radarr.Api.V3.History
 
             if (eventTypes != null && eventTypes.Any())
             {
-                var filterValues = eventTypes.Cast<MovieHistoryEventType>().ToArray();
-                pagingSpec.FilterExpressions.Add(v => filterValues.Contains(v.EventType));
+                 pagingSpec.FilterExpressions.Add(v => eventTypes.Contains((int)v.EventType));
             }
 
             if (downloadId.IsNotNullOrWhiteSpace())
