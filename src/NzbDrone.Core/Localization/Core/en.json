@@ -696,6 +696,7 @@
   "MovieExcludedFromAutomaticAdd": "Movie Excluded From Automatic Add",
   "MovieFileDeleted": "Movie File Deleted",
   "MovieFileDeletedTooltip": "Movie file deleted",
+  "MovieFileMissingTooltip": "Movie file missing",
   "MovieFileRenamed": "Movie File Renamed",
   "MovieFileRenamedTooltip": "Movie file renamed",
   "MovieFiles": "Movie Files",
