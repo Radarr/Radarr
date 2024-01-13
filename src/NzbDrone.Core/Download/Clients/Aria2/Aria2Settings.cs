@@ -40,6 +40,10 @@ namespace NzbDrone.Core.Download.Clients.Aria2
 
         [FieldDefinition(4, Label = "Secret token", Type = FieldType.Password, Privacy = PrivacyLevel.Password)]
         public string SecretToken { get; set; }
+
+        [FieldDefinition(5, Label = "Directory", Type = FieldType.Textbox, HelpText = "DownloadClientAriaSettingsDirectoryHelpText")]
+        public string Directory { get; set; }
+
         public NzbDroneValidationResult Validate()
         {
                 return new NzbDroneValidationResult(Validator.Validate(this));

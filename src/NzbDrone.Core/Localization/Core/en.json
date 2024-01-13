@@ -315,6 +315,7 @@
   "DoneEditingGroups": "Done Editing Groups",
   "Download": "Download",
   "DownloadClient": "Download Client",
+  "DownloadClientAriaSettingsDirectoryHelpText": "Optional location to put downloads in, leave blank to use the default Aria2 location",
   "DownloadClientCheckDownloadingToRoot": "Download client {downloadClientName} places downloads in the root folder {path}. You should not download to a root folder.",
   "DownloadClientCheckNoneAvailableMessage": "No download client is available",
   "DownloadClientCheckUnableToCommunicateMessage": "Unable to communicate with {downloadClientName}. {errorMessage}",
