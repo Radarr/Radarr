@@ -373,7 +373,7 @@
     "Docker": "Docker",
     "DestinationRelativePath": "Chemin relatif de destination",
     "DestinationPath": "Chemin de destination",
-    "DeleteTag": "Supprimer le tag",
+    "DeleteTag": "Supprimer l'étiquette",
     "DeleteSelectedMovieFiles": "Supprimer les fichiers film sélectionnés",
     "DeleteRestriction": "Supprimer la restriction",
     "DeleteQualityProfile": "Supprimer le profil de qualité",

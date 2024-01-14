@@ -545,7 +545,7 @@
     "DoNotUpgradeAutomatically": "Neupgradovat automaticky",
     "DownloadClient": "Stáhnout klienta",
     "DownloadClientCheckNoneAvailableMessage": "Není k dispozici žádný klient pro stahování",
-    "DownloadClientCheckUnableToCommunicateMessage": "S uživatelem {downloadClientName} nelze komunikovat.",
+    "DownloadClientCheckUnableToCommunicateMessage": "Nepodařilo se spojit s {downloadClientName}. {errorMessage}",
     "DownloadClientSettings": "Stáhněte si nastavení klienta",
     "DownloadClientStatusCheckSingleClientMessage": "Stahování klientů není k dispozici z důvodu selhání: {downloadClientNames}",
     "Downloaded": "Staženo",
@@ -1134,5 +1134,6 @@
     "EnableProfile": "Povolit profil",
     "AutoRedownloadFailedFromInteractiveSearchHelpText": "Automaticky vyhledat a pokusit se o stažení jiného vydání, pokud bylo neúspěšné vydání zachyceno z interaktivního vyhledávání",
     "DeleteSelectedImportLists": "Smazat seznam k importu",
-    "DeleteSelectedImportListsMessageText": "Opravdu chcete smazat {count} vybraných seznamů k importu?"
+    "DeleteSelectedImportListsMessageText": "Opravdu chcete smazat {count} vybraných seznamů k importu?",
+    "AddRootFolderError": "Nepodařilo se přidat kořenový adresář"
 }

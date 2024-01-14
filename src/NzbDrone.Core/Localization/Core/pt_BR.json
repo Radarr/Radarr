@@ -203,7 +203,7 @@
     "DestinationPath": "Caminho de destino",
     "DeleteTheMovieFolder": "A pasta do filme '{path}' e todo o seu conteúdo serão excluídos.",
     "DeleteTagMessageText": "Tem certeza de que deseja excluir a tag '{label}'?",
-    "DeleteTag": "Excluir tag",
+    "DeleteTag": "Excluir Etiqueta",
     "DeleteSelectedMovieFiles": "Excluir arquivos do filme selecionado",
     "DeleteSelectedMovie": "Excluir filme(s) selecionado(s)",
     "DeleteRestrictionHelpText": "Tem certeza de que deseja excluir esta restrição?",
@@ -1520,5 +1520,7 @@
     "NotificationsTelegramSettingsTopicIdHelpText": "Especifique um ID de tópico para enviar notificações para esse tópico. Deixe em branco para usar o tópico geral (somente Supergrupos)",
     "NotificationsTwitterSettingsDirectMessageHelpText": "Envie uma mensagem direta em vez de uma mensagem pública",
     "NotificationsValidationInvalidApiKeyExceptionMessage": "A chave de API é inválida: {exceptionMessage}",
-    "NotificationsValidationUnableToConnectToApi": "Não foi possível conectar-se à API {service}. Falha na conexão do servidor: ({responseCode}) {exceptionMessage}"
+    "NotificationsValidationUnableToConnectToApi": "Não foi possível conectar-se à API {service}. Falha na conexão do servidor: ({responseCode}) {exceptionMessage}",
+    "DownloadClientAriaSettingsDirectoryHelpText": "Local opcional para colocar downloads, deixe em branco para usar o local padrão do Aria2",
+    "MovieFileMissingTooltip": "Arquivo de filme ausente"
 }
