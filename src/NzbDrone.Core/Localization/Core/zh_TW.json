@@ -90,7 +90,7 @@
     "AfterManualRefresh": "在手動重新整理之後",
     "Agenda": "日程表",
     "AllMoviesHiddenDueToFilter": "根據所使用的篩選器已隱藏所有電影。",
-    "AllMoviesInPathHaveBeenImported": "在 {0} 的所有電影已被導入",
+    "AllMoviesInPathHaveBeenImported": "已加入所有在 {檔案路徑} 的電影",
     "AlreadyInYourLibrary": "已經在您的資源庫中",
     "AlternativeTitle": "其他標題",
     "Always": "總是",
@@ -108,5 +108,14 @@
     "AddDownloadClientImplementation": "新增下載用戶端 - {implementationName}",
     "AddIndexerImplementation": "新增索引 - {implementationName}",
     "AddImportList": "新增匯入清單",
-    "AddImportListImplementation": "新增匯入清單 - {implementationName}"
+    "AddImportListImplementation": "新增匯入清單 - {implementationName}",
+    "AppUpdatedVersion": "重新載入",
+    "AppUpdated": "{appName}已更新",
+    "ApplyChanges": "應用",
+    "ApplyTagsHelpTextAdd": "加入：將標籤加入已存在的標籤清單",
+    "AllTitles": "所有標題",
+    "ApplyTagsHelpTextHowToApplyDownloadClients": "如何將標籤套用在被選擇的下載客戶端",
+    "ApplyTagsHelpTextHowToApplyImportLists": "如何套用標籤在所選擇的輸入清單",
+    "AgeWhenGrabbed": "年齡（當獲取時）",
+    "AddRootFolderError": "無法加進根目錄"
 }
