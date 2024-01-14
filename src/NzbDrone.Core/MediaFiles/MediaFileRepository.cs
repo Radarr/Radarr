@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 
@@ -7,6 +8,7 @@ namespace NzbDrone.Core.MediaFiles
     public interface IMediaFileRepository : IBasicRepository<MovieFile>
     {
         List<MovieFile> GetFilesByMovie(int movieId);
+        List<MovieFile> GetFilesByMovies(IEnumerable<int> movieIds);
         List<MovieFile> GetFilesWithoutMediaInfo();
         void DeleteForMovies(List<int> movieIds);
 
@@ -23,6 +25,11 @@ namespace NzbDrone.Core.MediaFiles
         public List<MovieFile> GetFilesByMovie(int movieId)
         {
             return Query(x => x.MovieId == movieId);
+        }
+
+        public List<MovieFile> GetFilesByMovies(IEnumerable<int> movieIds)
+        {
+            return Query(x => movieIds.Contains(x.MovieId));
         }
 
         public List<MovieFile> GetFilesWithoutMediaInfo()
