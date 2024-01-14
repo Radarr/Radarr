@@ -3,10 +3,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { clearAddMovie, lookupMovie } from 'Store/Actions/addMovieActions';
+import { clearMovieFiles, fetchMovieFiles } from 'Store/Actions/movieFileActions';
 import { clearQueueDetails, fetchQueueDetails } from 'Store/Actions/queueActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import { fetchImportExclusions } from 'Store/Actions/Settings/importExclusions';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
+import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
+import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import parseUrl from 'Utilities/String/parseUrl';
 import AddNewMovie from './AddNewMovie';
 
@@ -35,7 +38,9 @@ const mapDispatchToProps = {
   fetchRootFolders,
   fetchImportExclusions,
   fetchQueueDetails,
-  clearQueueDetails
+  clearQueueDetails,
+  fetchMovieFiles,
+  clearMovieFiles
 };
 
 class AddNewMovieConnector extends Component {
@@ -55,6 +60,20 @@ class AddNewMovieConnector extends Component {
     this.props.fetchQueueDetails();
   }
 
+  componentDidUpdate(prevProps) {
+    const {
+      items
+    } = this.props;
+
+    if (hasDifferentItems(prevProps.items, items)) {
+      const movieIds = selectUniqueIds(items, 'internalId');
+
+      if (movieIds.length) {
+        this.props.fetchMovieFiles({ movieId: movieIds });
+      }
+    }
+  }
+
   componentWillUnmount() {
     if (this._movieLookupTimeout) {
       clearTimeout(this._movieLookupTimeout);
@@ -62,6 +81,7 @@ class AddNewMovieConnector extends Component {
 
     this.props.clearAddMovie();
     this.props.clearQueueDetails();
+    this.props.clearMovieFiles();
   }
 
   //
@@ -107,12 +127,15 @@ class AddNewMovieConnector extends Component {
 
 AddNewMovieConnector.propTypes = {
   term: PropTypes.string,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
   lookupMovie: PropTypes.func.isRequired,
   clearAddMovie: PropTypes.func.isRequired,
   fetchRootFolders: PropTypes.func.isRequired,
   fetchImportExclusions: PropTypes.func.isRequired,
   fetchQueueDetails: PropTypes.func.isRequired,
-  clearQueueDetails: PropTypes.func.isRequired
+  clearQueueDetails: PropTypes.func.isRequired,
+  fetchMovieFiles: PropTypes.func.isRequired,
+  clearMovieFiles: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(AddNewMovieConnector);
