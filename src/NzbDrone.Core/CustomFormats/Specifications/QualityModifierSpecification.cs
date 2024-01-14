@@ -28,7 +28,7 @@ namespace NzbDrone.Core.CustomFormats
         public override int Order => 7;
         public override string ImplementationName => "Quality Modifier";
 
-        [FieldDefinition(1, Label = "Quality Modifier", Type = FieldType.Select, SelectOptions = typeof(Modifier))]
+        [FieldDefinition(1, Label = "CustomFormatsSpecificationQualityModifier", Type = FieldType.Select, SelectOptions = typeof(Modifier))]
         public int Value { get; set; }
 
         protected override bool IsSatisfiedByWithoutNegate(CustomFormatInput input)
