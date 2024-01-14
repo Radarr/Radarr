@@ -17,7 +17,7 @@ variables:
   sentryUrl: 'https://sentry.servarr.com'
   dotnetVersion: '6.0.417'
   nodeVersion: '16.X'
-  innoVersion: '6.2.0'
+  innoVersion: '6.2.2'
   windowsImage: 'windows-2022'
   linuxImage: 'ubuntu-20.04'
   macImage: 'macOS-11'
