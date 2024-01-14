@@ -281,7 +281,7 @@ namespace Radarr.Api.V3.Movies
         [NonAction]
         public void Handle(MovieFileImportedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, MapToResource(message.ImportedMovie.Movie));
+            BroadcastResourceChange(ModelAction.Updated, message.MovieInfo.Movie.Id);
         }
 
         [NonAction]
