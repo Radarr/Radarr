@@ -19,6 +19,7 @@ import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import createMovieIndexItemSelector from 'Movie/Index/createMovieIndexItemSelector';
+import { Statistics } from 'Movie/Movie';
 import MoviePopularityIndex from 'Movie/MoviePopularityIndex';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -60,6 +61,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     originalLanguage,
     originalTitle,
     added,
+    statistics = {} as Statistics,
     year,
     inCinemas,
     digitalRelease,
@@ -67,7 +69,6 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     runtime,
     minimumAvailability,
     path,
-    sizeOnDisk,
     genres = [],
     ratings,
     popularity,
@@ -81,6 +82,8 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     youTubeTrailerId,
     isSaving = false,
   } = movie;
+
+  const { sizeOnDisk = 0, releaseGroups = [] } = statistics;
 
   const dispatch = useDispatch();
   const [isEditMovieModalOpen, setIsEditMovieModalOpen] = useState(false);
@@ -376,6 +379,20 @@ function MovieIndexRow(props: MovieIndexRowProps) {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
               {certification}
+            </VirtualTableRowCell>
+          );
+        }
+
+        if (name === 'releaseGroups') {
+          const joinedReleaseGroups = releaseGroups.join(', ');
+          const truncatedReleaseGroups =
+            releaseGroups.length > 3
+              ? `${releaseGroups.slice(0, 3).join(', ')}...`
+              : joinedReleaseGroups;
+
+          return (
+            <VirtualTableRowCell key={name} className={styles[name]}>
+              <span title={joinedReleaseGroups}>{truncatedReleaseGroups}</span>
             </VirtualTableRowCell>
           );
         }

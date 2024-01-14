@@ -16,6 +16,7 @@ import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MovieIndexPosterSelect from 'Movie/Index/Select/MovieIndexPosterSelect';
+import { Statistics } from 'Movie/Movie';
 import MoviePoster from 'Movie/MoviePoster';
 import { executeCommand } from 'Store/Actions/commandActions';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
@@ -75,11 +76,13 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     path,
     movieFile,
     ratings,
-    sizeOnDisk,
+    statistics = {} as Statistics,
     certification,
     originalTitle,
     originalLanguage,
   } = movie;
+
+  const { sizeOnDisk = 0 } = statistics;
 
   const dispatch = useDispatch();
   const [hasPosterError, setHasPosterError] = useState(false);
