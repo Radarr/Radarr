@@ -139,6 +139,7 @@ namespace Radarr.Api.V3.Movies
                     .GetAllTranslationsForLanguage(configLanguage);
 
                 var tdict = translations.ToDictionary(x => x.MovieMetadataId);
+                var sdict = movieStats.ToDictionary(x => x.MovieId);
 
                 if (!excludeLocalCovers)
                 {
@@ -160,7 +161,7 @@ namespace Radarr.Api.V3.Movies
                     MapCoversToLocal(moviesResources, coverFileInfos);
                 }
 
-                LinkMovieStatistics(moviesResources, movieStats);
+                LinkMovieStatistics(moviesResources, sdict);
 
                 var rootFolders = _rootFolderService.All();
 
@@ -292,17 +293,14 @@ namespace Radarr.Api.V3.Movies
             LinkMovieStatistics(resource, _movieStatisticsService.MovieStatistics(resource.Id));
         }
 
-        private void LinkMovieStatistics(List<MovieResource> resources, List<MovieStatistics> movieStatistics)
+        private void LinkMovieStatistics(List<MovieResource> resources, Dictionary<int, MovieStatistics> sDict)
         {
             foreach (var movie in resources)
             {
-                var stats = movieStatistics.SingleOrDefault(mv => mv.MovieId == movie.Id);
-                if (stats == null)
+                if (sDict.TryGetValue(movie.Id, out var stats))
                 {
-                    continue;
+                    LinkMovieStatistics(movie, stats);
                 }
-
-                LinkMovieStatistics(movie, stats);
             }
         }
 
