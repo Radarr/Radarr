@@ -47,7 +47,7 @@ namespace NzbDrone.Core.ImportLists.Rss.Plex
 
             if (info.ImdbId.IsNullOrWhiteSpace() && info.TmdbId == 0)
             {
-                _logger.Warn("Each item in the RSS feed must have a guid element with a IMDB ID or TMDB ID");
+                _logger.Warn("Each item in the RSS feed must have a guid element with a IMDB ID or TMDB ID: '{0}'", info.Title);
 
                 return null;
             }
