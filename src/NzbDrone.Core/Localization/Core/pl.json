@@ -340,7 +340,6 @@
     "PendingChangesMessage": "Masz niezapisane zmiany, czy na pewno chcesz opuścić tę stronę?",
     "PendingChangesStayReview": "Zostań i przejrzyj zmiany",
     "Pending": "W oczekiwaniu",
-    "PriorityHelpText": "Nadaj priorytet wielu klientom pobierania. W przypadku klientów o tym samym priorytecie używane jest działanie okrężne.",
     "Profiles": "Profile",
     "ShowCertification": "Pokaż certyfikat",
     "MovieIsUnmonitored": "Film jest niemonitorowany",
@@ -1110,5 +1109,8 @@
     "ApiKeyValidationHealthCheckMessage": "Zaktualizuj swój klucz API aby był długi na co najmniej {length} znaków. Możesz to zrobić poprzez ustawienia lub plik konfiguracyjny",
     "AddAutoTag": "Dodaj automatyczne tagi",
     "AutoTaggingNegateHelpText": "Jeśli zaznaczone, zasada automatycznego tagowania nie będzie zastosowana, jeśli ten {0} warunek będzie spełniony",
-    "AddConnection": "Dodaj połączenie"
+    "AddConnection": "Dodaj połączenie",
+    "AddConditionImplementation": "Dodaj condition - {implementationName}",
+    "AddConnectionImplementation": "Dodaj Connection - {implementationName}",
+    "AddDownloadClientImplementation": "Dodaj klienta pobierania - {implementationName}"
 }

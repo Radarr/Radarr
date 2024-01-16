@@ -585,7 +585,6 @@
     "MovieYear": "Film Yılı",
     "MovieYearHelpText": "Hariç tutulacak film yılı",
     "PendingChangesDiscardChanges": "Değişiklikleri atın ve ayrıl",
-    "PriorityHelpText": "Birden çok İndirme İstemcisine öncelik verin. Round-Robin, aynı önceliğe sahip müşteriler için kullanılır.",
     "PreferredSize": "Tercih Edilen Boyut",
     "Proper": "Uygun",
     "PtpOldSettingsCheckMessage": "Aşağıdaki PassThePopcorn dizinleyicilerinin ayarları kullanımdan kaldırıldı ve güncellenmeleri gerekiyor: {0}",

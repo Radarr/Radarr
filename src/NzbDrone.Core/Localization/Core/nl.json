@@ -459,7 +459,6 @@
     "IndexerFlags": "Indexeerder Flags",
     "IncludeCustomFormatWhenRenamingHelpText": "Voeg toe aan het {Eigen Formaten} hernoemingsformaat",
     "EnableSslHelpText": " Vereist herstart als administrator om in werking te treden",
-    "PriorityHelpText": "Geef prioriteit aan meerdere downloaders. Round-Robin wordt gebruikt voor downloaders met dezelfde prioriteit.",
     "ProtocolHelpText": "Kies welk(e) protocol(len) te gebruiken en welke de voorkeur krijgt bij het kiezen tussen anders gelijke uitgaves",
     "RecycleBinCleanupDaysHelpText": "Zet op 0 om automatisch opschonen uit te schakelen",
     "RecycleBinHelpText": "Filmbestanden zullen bij verwijdering hier naartoe gaan in plaats van permanent te worden verwijderd",

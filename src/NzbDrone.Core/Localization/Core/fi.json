@@ -76,7 +76,6 @@
     "UpdateCheckUINotWritableMessage": "Päivityksen asennus ei onnistu, koska käyttäjällä \"{userName}\" ei ole kirjoitusoikeutta käyttöliittymäkansioon \"{uiFolder}\".",
     "UpdateScriptPathHelpText": "Polku komentosarjaan, joka käsittelee puretun päivitystiedoston ja hoitaa asennuksen loppuosuuden.",
     "Version": "Versio",
-    "PriorityHelpText": "Määritä useiden lataustyökalujen painotus. Tasaveroiset lataajat erotetaan Round-Robin-tekniikalla.",
     "AddExclusion": "Lisää poikkeussääntö",
     "AddNew": "Lisää uusi",
     "AudioInfo": "Äänitiedot",
@@ -1323,5 +1322,7 @@
     "QueueFilterHasNoItems": "Mikään kohde ei vastaa valittua jonon suodatinta",
     "NotificationsSlackSettingsUsernameHelpText": "Slack-julkaisulle käytettävä käyttäjätunnus",
     "ReleaseProfiles": "Julkaisuprofiilit",
-    "UnknownEventTooltip": "Tuntematon tapahtuma"
+    "UnknownEventTooltip": "Tuntematon tapahtuma",
+    "DeleteSelectedMovieFilesHelpText": "Haluatko varmasti poistaa valitut elokuvatiedostot?",
+    "ApplyTagsHelpTextHowToApplyMovies": "Miten tunnisteita käytetään valituille elokuville."
 }

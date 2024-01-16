@@ -17,7 +17,6 @@
     "MinFormatScoreHelpText": "다운 불러올 수있는 최소 사용자 지정 형식 점수",
     "MovieIsRecommend": "최근 추가 한 동영상을 기준으로 추천 영화",
     "None": "없음",
-    "PriorityHelpText": "여러 다운로드 클라이언트의 우선 순위를 지정합니다. 라운드 로빈은 우선 순위가 같은 클라이언트에 사용됩니다.",
     "QualitySettings": "품질 설정",
     "ImportNotForDownloads": "다운로드 클라이언트에서 다운로드를 가져 오는 데 사용하지 마십시오. 이것은 정렬되지 않은 파일이 아닌 기존에 구성된 라이브러리에만 해당됩니다.",
     "MovieFolderFormat": "영화 폴더 형식",

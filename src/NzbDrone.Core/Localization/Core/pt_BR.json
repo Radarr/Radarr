@@ -829,7 +829,6 @@
     "Profiles": "Perfis",
     "ProcessingFolders": "Processando Pastas",
     "PrioritySettings": "Prioridade: {priority}",
-    "PriorityHelpText": "Priorize vários clientes de download. Round-Robin é usado para clientes com a mesma prioridade.",
     "Priority": "Prioridade",
     "PreviewRenameHelpText": "Dica: ao visualizar uma renomeação, selecione \"Cancelar\", clique em qualquer título de filme e use o(a)",
     "PreviewRename": "Visualizar renomeação",

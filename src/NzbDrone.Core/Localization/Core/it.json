@@ -437,7 +437,6 @@
     "ProxyPasswordHelpText": "Devi inserire nome utente e password solo se richiesto. Altrimenti lascia vuoto.",
     "ProxyBypassFilterHelpText": "Usa ',' come separatore, e '*.' come jolly per i sottodomini",
     "ProtocolHelpText": "Scegli che protocollo(i) usare e quale è preferito quando si deve scegliere tra release altrimenti uguali",
-    "PriorityHelpText": "Dai priorità a multipli Client di download. Round-Robin è usato per i client con la stessa priorità.",
     "PreferredSize": "Dimensione preferita",
     "PreferIndexerFlagsHelpText": "Dai priorità alle release con etichette speciali",
     "PreferIndexerFlags": "Etichetta dell'indexer preferita",

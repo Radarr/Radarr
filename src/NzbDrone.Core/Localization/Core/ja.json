@@ -166,7 +166,6 @@
     "FailedDownloadHandling": "ダウンロード処理の失敗",
     "ChmodFolderHelpTextWarning": "これは、{appName}を実行しているユーザーがファイルの所有者である場合にのみ機能します。ダウンロードクライアントが権限を適切に設定していることを確認することをお勧めします。",
     "MinAvailability": "最小可用性",
-    "PriorityHelpText": "複数のダウンロードクライアントに優先順位を付けます。ラウンドロビンは、同じ優先度のクライアントに使用されます。",
     "Profiles": "プロファイル",
     "RadarrTags": "{appName}タグ",
     "AutomaticSearch": "自動検索",

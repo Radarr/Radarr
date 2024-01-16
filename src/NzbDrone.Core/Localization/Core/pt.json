@@ -681,7 +681,6 @@
     "UsenetDelay": "Atraso para Usenet",
     "UnableToLoadDelayProfiles": "Não foi possível carregar os perfis de atraso",
     "TorrentDelayHelpText": "Atraso, em minutos, para aguardar antes de capturar um torrent",
-    "PriorityHelpText": "Priorizar múltiplos clientes de transferências. Utilizaremos round robin para clientes com a mesma prioridade.",
     "RemovedFromTaskQueue": "Eliminado da fila de tarefas",
     "RegularExpressionsCanBeTested": "É possível testar expressões regulares ",
     "RecycleBinHelpText": "Ficheiros de filmes virão para cá ao serem apagados, em vez de serem permanentemente eliminados",

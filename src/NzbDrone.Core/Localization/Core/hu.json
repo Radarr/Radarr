@@ -434,7 +434,6 @@
     "ProfilesSettingsSummary": "Minőség, Nyelv, és Késleltetési profil",
     "Profiles": "Profilok",
     "ProcessingFolders": "Mappák feldolgozása",
-    "PriorityHelpText": "Priorizálj több letöltési klienst. A Round-Robint azonos prioritású letöltőkliensek használják.",
     "Priority": "Elsőbbség",
     "PreviewRename": "Előnézet átnevezése",
     "PreferIndexerFlagsHelpText": "Prioritizáld a kiadásokat speciális zászlók segítségével",
@@ -1140,5 +1139,6 @@
     "DefaultNameCopiedProfile": "{name} - Másolat",
     "DefaultNameCopiedSpecification": "{name} - Másolat",
     "DelayingDownloadUntil": "Késleltetni a letöltést {date} -tól {time} -ig",
-    "Default": "Alapértelmezett"
+    "Default": "Alapértelmezett",
+    "AddRootFolderError": "Hozzáadás a gyökérmappához"
 }

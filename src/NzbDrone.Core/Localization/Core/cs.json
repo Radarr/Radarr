@@ -305,7 +305,6 @@
     "PreferTorrent": "Preferuji Torrent",
     "PreferUsenet": "Upřednostňujte Usenet",
     "Presets": "Předvolby",
-    "PriorityHelpText": "Upřednostněte více klientů pro stahování. Round-Robin se používá pro klienty se stejnou prioritou.",
     "Profiles": "Profily",
     "ProxyType": "Typ serveru proxy",
     "PtpOldSettingsCheckMessage": "Následující indexovače PassThePopcorn mají zastaralá nastavení a měla by být aktualizována: {0}",
