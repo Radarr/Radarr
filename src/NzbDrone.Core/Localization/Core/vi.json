@@ -8,7 +8,6 @@
     "MinFormatScoreHelpText": "Điểm định dạng tùy chỉnh tối thiểu được phép tải xuống",
     "PendingChangesDiscardChanges": "Hủy các thay đổi và rời khỏi",
     "PendingChangesMessage": "Bạn có các thay đổi chưa được lưu, bạn có chắc chắn muốn rời khỏi trang này không?",
-    "PriorityHelpText": "Ưu tiên nhiều Khách hàng tải xuống. Round-Robin được sử dụng cho các khách hàng có cùng mức độ ưu tiên.",
     "QualitiesHelpText": "Các phẩm chất cao hơn trong danh sách được ưu tiên hơn. Các phẩm chất trong cùng một nhóm là ngang nhau. Chỉ những phẩm chất đã được kiểm tra mới được mong muốn",
     "QualityProfileInUse": "Không thể xóa hồ sơ chất lượng được đính kèm với phim",
     "RecyclingBinCleanup": "Thu dọn thùng rác tái chế",

@@ -281,7 +281,6 @@
     "PreferTorrent": "Kjósa Torrent",
     "PreferUsenet": "Kjósa Usenet",
     "Presets": "Forstillingar",
-    "PriorityHelpText": "Forgangsraðaðu mörgum niðurhal viðskiptavinum. Round-Robin er notað fyrir viðskiptavini með sömu forgang.",
     "ProxyType": "Umboðsmaður",
     "PtpOldSettingsCheckMessage": "Eftirfarandi PassThePopcorn vísitölur hafa úrelt stillingar og ætti að uppfæra þær: {0}",
     "QualityProfileInUse": "Ekki er hægt að eyða gæðaprófíl sem er festur við kvikmynd",

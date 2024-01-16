@@ -631,7 +631,6 @@
     "Released": "Släppte",
     "AuthenticationMethodHelpText": "Kräva användarnamn och lösenord för att komma åt {appName}",
     "AvailabilityDelayHelpText": "Mängden tid före eller efter tillgängligt datum för att söka efter film",
-    "PriorityHelpText": "Prioritera flera nedladdningsklienter. Round-Robin används för kunder med samma prioritet.",
     "ListSyncLevelHelpTextWarning": "Filmfiler raderas permanent, detta kan leda till att du torkar ditt bibliotek om dina listor är tomma",
     "OnHealthIssueHelpText": "På hälsofrågan",
     "ImportIncludeQuality": "Se till att dina filer inkluderar kvaliteten i filnamnen. t.ex. {0}",

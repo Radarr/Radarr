@@ -217,7 +217,6 @@
     "PreferTorrent": "העדיפו את טורנט",
     "PreferUsenet": "העדיפו את Usenet",
     "Presets": "הגדרות קבועות מראש",
-    "PriorityHelpText": "העדיפו עדיפות למספר לקוחות הורדה. Round-Robin משמש ללקוחות עם אותה עדיפות.",
     "Profiles": "פרופילים",
     "PtpOldSettingsCheckMessage": "האינדקסים הבאים של PassThePopcorn ביטלו את ההגדרות ויש לעדכן אותם: {0}",
     "QualitiesHelpText": "תכונות גבוהות יותר ברשימה עדיפות יותר. איכויות באותה קבוצה שוות. רק איכויות בדוקות רצויות",

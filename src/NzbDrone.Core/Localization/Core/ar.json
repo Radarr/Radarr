@@ -198,7 +198,6 @@
     "Profiles": "مظهر",
     "ProcessingFolders": "مجلدات المعالجة",
     "PrioritySettings": "الأولوية: {0}",
-    "PriorityHelpText": "تحديد أولويات عملاء التنزيل المتعددين. يتم استخدام Round-Robin للعملاء الذين لديهم نفس الأولوية.",
     "Priority": "أفضلية",
     "PreviewRenameHelpText": "نصيحة: لمعاينة إعادة تسمية ... حدد \"إلغاء\" ثم انقر فوق أي عنوان فيلم واستخدم ملف",
     "PreviewRename": "معاينة إعادة تسمية",

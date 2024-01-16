@@ -578,7 +578,6 @@
     "UnableToAddANewConditionPleaseTryAgain": "Impossible d'ajouter une nouvelle condition, veuillez réessayer.",
     "TorrentDelayHelpText": "Délai en minutes avant de récupérer un torrent",
     "TorrentDelay": "Retard du torrent",
-    "PriorityHelpText": "Donnez la priorité à plusieurs clients de téléchargement. Round-Robin est utilisé pour les clients ayant la même priorité.",
     "TagIsNotUsedAndCanBeDeleted": "L'étiquette n'est pas utilisée et peut être supprimée",
     "TagsHelpText": "S'applique aux films avec au moins une balise correspondante",
     "StartTypingOrSelectAPathBelow": "Commencer à écrire ou sélectionner un chemin ci-dessous",

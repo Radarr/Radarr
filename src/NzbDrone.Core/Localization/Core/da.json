@@ -301,7 +301,6 @@
     "PreferTorrent": "Foretrækker Torrent",
     "PreferUsenet": "Foretrækker Usenet",
     "Presets": "Forudindstillinger",
-    "PriorityHelpText": "Prioriter flere downloadklienter. Round-Robin bruges til klienter med samme prioritet.",
     "Profiles": "Profiler",
     "ProxyType": "Proxy-type",
     "PtpOldSettingsCheckMessage": "Følgende PassThePopcorn-indeksatorer har forældede indstillinger og skal opdateres: {0}",

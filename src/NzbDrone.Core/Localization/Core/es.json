@@ -491,7 +491,6 @@
     "ProxyBypassFilterHelpText": "Usa ',' como separador, y '*.' como wildcard para subdominios",
     "ProtocolHelpText": "Elige qué protocolo(s) se usará y cual será el preferido cuando haya que elegir entre lanzamientos iguales",
     "Proper": "Apropiado",
-    "PriorityHelpText": "Priorizar múltiples Gestores de Descargas. Se usa Round-Robin para gestores con la misma prioridad.",
     "PreferredSize": "Tamaño Preferido",
     "PreferIndexerFlagsHelpText": "Priorizar lanzamientos con marcas especiales",
     "PreferIndexerFlags": "Preferir Marcas del Indexer",

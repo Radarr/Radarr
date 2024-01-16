@@ -559,7 +559,6 @@
     "ImportExtraFilesHelpText": "Importiere zutreffende Extra Dateien (Untertitel, nfo, etc.) nach dem Importieren einer Filmdatei",
     "PreferIndexerFlags": "Bevorzugte Indexer Flags",
     "CopyUsingHardlinksHelpText": "Hardlinks erlauben es {appName}, Torrents zu importieren die derzeit geseeded werden, ohne dabei weiteren Speicherplatz zu belegen oder die Datei vollständig zu kopieren. Hardlinks funktionieren nur, wenn sich die Quelle und das Ziel auf dem selben Volume befinden",
-    "PriorityHelpText": "Priorisiere mehrere Downloader. Rundlauf-Verfahren wird für Downloader mit der gleichen Priorität verwendet.",
     "SearchForMovie": "Film suchen",
     "AuthenticationMethodHelpText": "Für den Zugriff auf {appName} sind Benutzername und Passwort erforderlich.",
     "CopyUsingHardlinksHelpTextWarning": "Gelegentlich können Dateisperren das Umbenennen von Dateien verhindern, die geseedet werden. Sie können das Seeding vorübergehend deaktivieren und als Workaround die Umbenennungsfunktion von {appName} verwenden.",
