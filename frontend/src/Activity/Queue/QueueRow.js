@@ -97,6 +97,7 @@ class QueueRow extends Component {
       outputPath,
       downloadClient,
       estimatedCompletionTime,
+      added,
       timeleft,
       size,
       sizeleft,
@@ -315,6 +316,15 @@ class QueueRow extends Component {
               );
             }
 
+            if (name === 'added') {
+              return (
+                <RelativeDateCellConnector
+                  key={name}
+                  date={added}
+                />
+              );
+            }
+
             if (name === 'actions') {
               return (
                 <TableRowCell
@@ -393,6 +403,7 @@ QueueRow.propTypes = {
   outputPath: PropTypes.string,
   downloadClient: PropTypes.string,
   estimatedCompletionTime: PropTypes.string,
+  added: PropTypes.string,
   timeleft: PropTypes.string,
   size: PropTypes.number,
   year: PropTypes.number,

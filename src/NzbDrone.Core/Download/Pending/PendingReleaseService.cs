@@ -203,6 +203,7 @@ namespace NzbDrone.Core.Download.Pending
                         RemoteMovie = pendingRelease.RemoteMovie,
                         Timeleft = timeleft,
                         EstimatedCompletionTime = ect,
+                        Added = pendingRelease.Added,
                         Status = pendingRelease.Reason.ToString(),
                         Protocol = pendingRelease.RemoteMovie.Release.DownloadProtocol,
                         Indexer = pendingRelease.RemoteMovie.Release.Indexer

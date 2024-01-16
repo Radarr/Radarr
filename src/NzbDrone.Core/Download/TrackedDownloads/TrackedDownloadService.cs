@@ -141,6 +141,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     var grabbedEvent = historyItems.FirstOrDefault(v => v.EventType == MovieHistoryEventType.Grabbed);
 
                     trackedDownload.Indexer = grabbedEvent?.Data["indexer"];
+                    trackedDownload.Added = grabbedEvent?.Date;
 
                     if (parsedMovieInfo == null ||
                         trackedDownload.RemoteMovie == null ||
