@@ -238,7 +238,7 @@ class MovieDetails extends Component {
       certification,
       ratings,
       path,
-      sizeOnDisk,
+      statistics,
       qualityProfileId,
       monitored,
       studio,
@@ -266,6 +266,10 @@ class MovieDetails extends Component {
       queueItem,
       movieRuntimeFormat
     } = this.props;
+
+    const {
+      sizeOnDisk = 0
+    } = statistics;
 
     const {
       isOrganizeModalOpen,
@@ -734,7 +738,7 @@ MovieDetails.propTypes = {
   certification: PropTypes.string,
   ratings: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
-  sizeOnDisk: PropTypes.number.isRequired,
+  statistics: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
@@ -773,9 +777,9 @@ MovieDetails.propTypes = {
 
 MovieDetails.defaultProps = {
   genres: [],
+  statistics: {},
   tags: [],
-  isSaving: false,
-  sizeOnDisk: 0
+  isSaving: false
 };
 
 export default MovieDetails;

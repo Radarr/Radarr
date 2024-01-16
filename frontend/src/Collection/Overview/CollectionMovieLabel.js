@@ -74,11 +74,7 @@ CollectionMovieLabel.propTypes = {
 
 CollectionMovieLabel.defaultProps = {
   isSaving: false,
-  statistics: {
-    episodeFileCount: 0,
-    totalEpisodeCount: 0,
-    percentOfEpisodes: 0
-  }
+  statistics: {}
 };
 
 export default CollectionMovieLabel;

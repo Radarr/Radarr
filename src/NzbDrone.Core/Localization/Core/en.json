@@ -1114,6 +1114,7 @@
   "ReleaseBranchCheckOfficialBranchMessage": "Branch {0} is not a valid {appName} release branch, you will not receive updates",
   "ReleaseDates": "Release Dates",
   "ReleaseGroup": "Release Group",
+  "ReleaseGroups": "Release Groups",
   "ReleaseHash": "Release Hash",
   "ReleaseProfiles": "Release Profiles",
   "ReleaseProfilesLoadError": "Unable to load Release Profiles",
