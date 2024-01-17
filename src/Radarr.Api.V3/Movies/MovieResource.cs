@@ -50,11 +50,12 @@ namespace Radarr.Api.V3.Movies
         public string YouTubeTrailerId { get; set; }
         public string Studio { get; set; }
 
-        public bool HasFile { get; set; }
-
         // View & Edit
         public string Path { get; set; }
         public int QualityProfileId { get; set; }
+
+        // Compatibility
+        public bool HasFile { get; set; }
 
         // Editing Only
         public bool Monitored { get; set; }
@@ -90,8 +91,6 @@ namespace Radarr.Api.V3.Movies
                 return null;
             }
 
-            var size = model.MovieFile?.Size ?? 0;
-
             var movieFile = model.MovieFile?.ToResource(model, upgradableSpecification, formatCalculationService);
 
             var translatedTitle = movieTranslation?.Title ?? model.Title;
@@ -110,9 +109,7 @@ namespace Radarr.Api.V3.Movies
                 InCinemas = model.MovieMetadata.Value.InCinemas,
                 PhysicalRelease = model.MovieMetadata.Value.PhysicalRelease,
                 DigitalRelease = model.MovieMetadata.Value.DigitalRelease,
-                HasFile = model.HasFile,
 
-                SizeOnDisk = size,
                 Status = model.MovieMetadata.Value.Status,
                 Overview = translatedOverview,
 
