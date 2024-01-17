@@ -8,6 +8,7 @@ using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Translations;
+using NzbDrone.Core.MovieStats;
 using NzbDrone.Core.Tags;
 using NzbDrone.SignalR;
 using Radarr.Api.V3.Movies;
@@ -21,6 +22,7 @@ namespace Radarr.Api.V3.Calendar
     {
         private readonly IMovieService _moviesService;
         private readonly IMovieTranslationService _movieTranslationService;
+        private readonly IMovieStatisticsService _movieStatisticsService;
         private readonly IUpgradableSpecification _qualityUpgradableSpecification;
         private readonly ITagService _tagService;
         private readonly IConfigService _configService;
@@ -28,6 +30,7 @@ namespace Radarr.Api.V3.Calendar
         public CalendarController(IBroadcastSignalRMessage signalR,
                             IMovieService moviesService,
                             IMovieTranslationService movieTranslationService,
+                            IMovieStatisticsService movieStatisticsService,
                             IUpgradableSpecification qualityUpgradableSpecification,
                             ITagService tagService,
                             IConfigService configService)
@@ -35,6 +38,7 @@ namespace Radarr.Api.V3.Calendar
         {
             _moviesService = moviesService;
             _movieTranslationService = movieTranslationService;
+            _movieStatisticsService = movieStatisticsService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
             _tagService = tagService;
             _configService = configService;
@@ -97,7 +101,10 @@ namespace Radarr.Api.V3.Calendar
                 var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
                 var translation = GetMovieTranslation(translations, movie.MovieMetadata, language);
 
-                resources.Add(movie.ToResource(availDelay, translation, _qualityUpgradableSpecification));
+                var resource = movie.ToResource(availDelay, translation, _qualityUpgradableSpecification);
+                FetchAndLinkMovieStatistics(resource);
+
+                resources.Add(resource);
             }
 
             return resources;
@@ -115,6 +122,18 @@ namespace Radarr.Api.V3.Calendar
             }
 
             return translations.FirstOrDefault(t => t.Language == language && t.MovieMetadataId == movie.Id);
+        }
+
+        private void FetchAndLinkMovieStatistics(MovieResource resource)
+        {
+            LinkMovieStatistics(resource, _movieStatisticsService.MovieStatistics(resource.Id));
+        }
+
+        private void LinkMovieStatistics(MovieResource resource, MovieStatistics movieStatistics)
+        {
+            resource.Statistics = movieStatistics.ToResource();
+            resource.HasFile = movieStatistics.MovieFileCount > 0;
+            resource.SizeOnDisk = movieStatistics.SizeOnDisk;
         }
     }
 }
