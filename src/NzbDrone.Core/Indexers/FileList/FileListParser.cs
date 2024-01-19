@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Indexers.FileList
 
             if (!indexerResponse.HttpResponse.Headers.ContentType.Contains(HttpAccept.Json.Value))
             {
-                throw new IndexerException(indexerResponse, "Unexpected response header {0} from indexer request, expected {1}", indexerResponse.HttpResponse.Headers.ContentType, HttpAccept.Json.Value);
+                throw new IndexerException(indexerResponse, "Unexpected response header '{0}' from indexer request, expected '{1}'", indexerResponse.HttpResponse.Headers.ContentType, HttpAccept.Json.Value);
             }
 
             var torrentInfos = new List<ReleaseInfo>();
