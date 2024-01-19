@@ -11,8 +11,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
     public interface IUpgradableSpecification
     {
         bool IsUpgradable(QualityProfile profile, QualityModel currentQuality, List<CustomFormat> currentCustomFormats, QualityModel newQuality, List<CustomFormat> newCustomFormats);
-        bool CutoffNotMet(QualityProfile profile, QualityModel currentQuality, List<CustomFormat> currentFormats, QualityModel newQuality = null);
         bool QualityCutoffNotMet(QualityProfile profile, QualityModel currentQuality, QualityModel newQuality = null);
+        bool CutoffNotMet(QualityProfile profile, QualityModel currentQuality, List<CustomFormat> currentFormats, QualityModel newQuality = null);
         bool IsRevisionUpgrade(QualityModel currentQuality, QualityModel newQuality);
         bool IsUpgradeAllowed(QualityProfile qualityProfile, QualityModel currentQuality, List<CustomFormat> currentCustomFormats, QualityModel newQuality, List<CustomFormat> newCustomFormats);
     }
@@ -28,9 +28,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             _logger = logger;
         }
 
-        public bool IsUpgradable(QualityProfile profile, QualityModel currentQuality, List<CustomFormat> currentCustomFormats, QualityModel newQuality, List<CustomFormat> newCustomFormats)
+        public bool IsUpgradable(QualityProfile qualityProfile, QualityModel currentQuality, List<CustomFormat> currentCustomFormats, QualityModel newQuality, List<CustomFormat> newCustomFormats)
         {
-            var qualityComparer = new QualityModelComparer(profile);
+            var qualityComparer = new QualityModelComparer(qualityProfile);
             var qualityCompare = qualityComparer.Compare(newQuality?.Quality, currentQuality.Quality);
             var downloadPropersAndRepacks = _configService.DownloadPropersAndRepacks;
 
@@ -57,14 +57,23 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 return true;
             }
 
-            var currentFormatScore = profile.CalculateCustomFormatScore(currentCustomFormats);
-            var newFormatScore = profile.CalculateCustomFormatScore(newCustomFormats);
-
             // Reject unless the user does not prefer propers/repacks and it's a revision downgrade.
             if (downloadPropersAndRepacks != ProperDownloadTypes.DoNotPrefer &&
                 qualityRevisionCompare < 0)
             {
                 _logger.Debug("Existing item has a better quality revision, skipping. Existing: {0}. New: {1}", currentQuality, newQuality);
+                return false;
+            }
+
+            var currentFormatScore = qualityProfile.CalculateCustomFormatScore(currentCustomFormats);
+            var newFormatScore = qualityProfile.CalculateCustomFormatScore(newCustomFormats);
+
+            if (qualityProfile.UpgradeAllowed && currentFormatScore >= qualityProfile.CutoffFormatScore)
+            {
+                _logger.Debug("Existing item meets cut-off for custom formats, skipping. Existing: [{0}] ({1}). Cutoff score: {2}",
+                    currentCustomFormats.ConcatToString(),
+                    currentFormatScore,
+                    qualityProfile.CutoffFormatScore);
                 return false;
             }
 
@@ -123,7 +132,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 return true;
             }
 
-            _logger.Debug("Existing item meets cut-off. skipping. Existing: {0}", currentQuality);
+            _logger.Debug("Existing item meets cut-off, skipping. Existing: {0}", currentQuality);
 
             return false;
         }
