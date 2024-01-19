@@ -6,6 +6,7 @@ interface CssExports {
   'audio': string;
   'audioLanguages': string;
   'customFormatScore': string;
+  'dateAdded': string;
   'download': string;
   'formats': string;
   'language': string;

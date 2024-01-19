@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
+import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRow from 'Components/Table/TableRow';
 import Tooltip from 'Components/Tooltip/Tooltip';
@@ -82,6 +83,7 @@ class MovieFileEditorRow extends Component {
       customFormats,
       customFormatScore,
       languages,
+      dateAdded,
       columns
     } = this.props;
 
@@ -287,6 +289,16 @@ class MovieFileEditorRow extends Component {
               );
             }
 
+            if (name === 'dateAdded') {
+              return (
+                <RelativeDateCellConnector
+                  key={name}
+                  className={styles.dateAdded}
+                  date={dateAdded}
+                />
+              );
+            }
+
             if (name === 'actions') {
               return (
                 <TableRowCell key={name} className={styles.actions}>
@@ -354,6 +366,7 @@ MovieFileEditorRow.propTypes = {
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   mediaInfo: PropTypes.object,
+  dateAdded: PropTypes.string,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   onDeletePress: PropTypes.func.isRequired
 };
