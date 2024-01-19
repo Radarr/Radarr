@@ -19,7 +19,7 @@ class MovieCollectionLabel extends Component {
 
   render() {
     const {
-      id,
+      tmdbId,
       title,
       monitored,
       onMonitorTogglePress
@@ -36,7 +36,7 @@ class MovieCollectionLabel extends Component {
         <Link
           to={{
             pathname: '/collections',
-            state: { navigateToId: id }
+            state: { navigateToId: tmdbId }
           }}
           className={styles.titleLink}
         >
@@ -51,7 +51,7 @@ MovieCollectionLabel.propTypes = {
   title: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   onMonitorTogglePress: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired
+  tmdbId: PropTypes.string.isRequired
 };
 
 export default MovieCollectionLabel;

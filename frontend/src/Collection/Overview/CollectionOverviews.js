@@ -193,7 +193,7 @@ class CollectionOverviews extends Component {
   };
 
   scrollToItem = (itemId) => {
-    const index = this.props.items.findIndex((item) => item.id === itemId);
+    const index = this.props.items.findIndex((item) => item.tmdbId === itemId);
 
     if (index !== -1 && this._grid) {
       this._grid.scrollToCell({
