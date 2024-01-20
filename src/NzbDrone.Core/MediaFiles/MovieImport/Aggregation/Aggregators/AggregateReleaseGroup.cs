@@ -6,6 +6,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
 {
     public class AggregateReleaseGroup : IAggregateLocalMovie
     {
+        public int Order => 1;
+
         public LocalMovie Aggregate(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             var releaseGroup = localMovie.DownloadClientMovieInfo?.ReleaseGroup;

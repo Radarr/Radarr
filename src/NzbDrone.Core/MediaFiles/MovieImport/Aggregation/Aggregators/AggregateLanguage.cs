@@ -10,6 +10,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
 {
     public class AggregateLanguage : IAggregateLocalMovie
     {
+        public int Order => 1;
+
         private readonly List<IAugmentLanguage> _augmentLanguages;
         private readonly Logger _logger;
 

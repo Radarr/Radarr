@@ -10,6 +10,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
 {
     public class AggregateQuality : IAggregateLocalMovie
     {
+        public int Order => 1;
+
         private readonly List<IAugmentQuality> _augmentQualities;
         private readonly Logger _logger;
 
