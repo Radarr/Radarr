@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.History;
@@ -25,10 +26,12 @@ namespace NzbDrone.Core.CustomFormats
     public class CustomFormatCalculationService : ICustomFormatCalculationService
     {
         private readonly ICustomFormatService _formatService;
+        private readonly Logger _logger;
 
-        public CustomFormatCalculationService(ICustomFormatService formatService)
+        public CustomFormatCalculationService(ICustomFormatService formatService, Logger logger)
         {
             _formatService = formatService;
+            _logger = logger;
         }
 
         public List<CustomFormat> ParseCustomFormat(RemoteMovie remoteMovie, long size)
@@ -165,20 +168,23 @@ namespace NzbDrone.Core.CustomFormats
             return matches.OrderBy(x => x.Name).ToList();
         }
 
-        private static List<CustomFormat> ParseCustomFormat(MovieFile movieFile, Movie movie, List<CustomFormat> allCustomFormats)
+        private List<CustomFormat> ParseCustomFormat(MovieFile movieFile, Movie movie, List<CustomFormat> allCustomFormats)
         {
             var releaseTitle = string.Empty;
 
             if (movieFile.SceneName.IsNotNullOrWhiteSpace())
             {
+                _logger.Trace("Using scene name for release title: {0}", movieFile.SceneName);
                 releaseTitle = movieFile.SceneName;
             }
             else if (movieFile.OriginalFilePath.IsNotNullOrWhiteSpace())
             {
+                _logger.Trace("Using original file path for release title: {0}", Path.GetFileName(movieFile.OriginalFilePath));
                 releaseTitle = Path.GetFileName(movieFile.OriginalFilePath);
             }
             else if (movieFile.RelativePath.IsNotNullOrWhiteSpace())
             {
+                _logger.Trace("Using relative path for release title: {0}", Path.GetFileName(movieFile.RelativePath));
                 releaseTitle = Path.GetFileName(movieFile.RelativePath);
             }
 
