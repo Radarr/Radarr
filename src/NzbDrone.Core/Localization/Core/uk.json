@@ -556,8 +556,6 @@
     "PrioritySettings": "Пріоритет: {0}",
     "ProxyCheckFailedToTestMessage": "Не вдалося перевірити проксі: {url}",
     "Qualities": "Якості",
-    "QualityCutoffHasNotBeenMet": "Порогова якість не досягнута",
-    "QualityOrLangCutoffHasNotBeenMet": "Обрізання якості чи мови не виконано",
     "QualityProfile": "Профіль якості",
     "QueueIsEmpty": "Черга порожня",
     "QuickImport": "Рухатися автоматично",
