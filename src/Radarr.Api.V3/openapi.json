@@ -5220,8 +5220,11 @@
             "name": "movieId",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
             }
           },
           {
@@ -11942,6 +11945,11 @@
             "$ref": "#/components/schemas/TimeSpan"
           },
           "estimatedCompletionTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "added": {
             "type": "string",
             "format": "date-time",
             "nullable": true
