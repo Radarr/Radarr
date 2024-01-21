@@ -802,8 +802,6 @@
     "ProxyCheckFailedToTestMessage": "प्रॉक्सी का परीक्षण करने में विफल: {url}",
     "PublishedDate": "प्रकाशित तिथि",
     "Qualities": "गुणों",
-    "QualityCutoffHasNotBeenMet": "क्वालिटी कटऑफ नहीं मिला है",
-    "QualityOrLangCutoffHasNotBeenMet": "गुणवत्ता या भाषा कटऑफ पूरा नहीं किया गया है",
     "Queue": "कतार",
     "Ratings": "रेटिंग्स",
     "RecycleBinCleanupDaysHelpText": "स्वचालित सफाई को अक्षम करने के लिए 0 पर सेट करें",

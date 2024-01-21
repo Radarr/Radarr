@@ -804,10 +804,8 @@
     "QualityProfiles": "Perfis de Qualidade",
     "QualityProfileInUse": "Não é possível excluir um perfil de qualidade anexado a um filme, lista ou coleção",
     "QualityProfile": "Perfil de qualidade",
-    "QualityOrLangCutoffHasNotBeenMet": "Limite de qualidade ou de idioma não atingido",
     "QualityLimitsHelpText": "Os limites são ajustados automaticamente para o tempo de execução do filme.",
     "QualityDefinitions": "Definições de Qualidade",
-    "QualityCutoffHasNotBeenMet": "Limite de qualidade não atingido",
     "Quality": "Qualidade",
     "QualitiesHelpText": "As qualidades mais altas na lista são mais preferidas, mesmo que não sejam verificadas. As qualidades dentro do mesmo grupo são iguais. Somente qualidades verificadas são desejadas",
     "Qualities": "Qualidades",
@@ -1521,5 +1519,11 @@
     "NotificationsValidationInvalidApiKeyExceptionMessage": "A chave de API é inválida: {exceptionMessage}",
     "NotificationsValidationUnableToConnectToApi": "Não foi possível conectar-se à API {service}. Falha na conexão do servidor: ({responseCode}) {exceptionMessage}",
     "DownloadClientAriaSettingsDirectoryHelpText": "Local opcional para colocar downloads, deixe em branco para usar o local padrão do Aria2",
-    "MovieFileMissingTooltip": "Arquivo de filme ausente"
+    "MovieFileMissingTooltip": "Arquivo de filme ausente",
+    "IndexerSettingsRejectBlocklistedTorrentHashes": "Rejeitar Torrent com Hashes na Lista de Bloqueio Enquanto Capturando",
+    "IndexerSettingsRejectBlocklistedTorrentHashesHelpText": "se um torrent for bloqueado por hash, ele pode não ser rejeitado corretamente durante o RSS/Pesquisa de alguns indexadores. Ativar isso permitirá que ele seja rejeitado após o torrent ser capturado, mas antes de ser enviado ao cliente.",
+    "DownloadClientPriorityHelpText": "Prioridade do Cliente de Download de 1 (mais alta) a 50 (mais baixa). Padrão: 1. Round-Robin é usado para clientes com a mesma prioridade.",
+    "ReleaseGroups": "Grupos do Lançamento",
+    "CutoffNotMet": "Corte Não Alcançado",
+    "QualityCutoffNotMet": "Corte da Qualidade ainda não foi alcançado"
 }

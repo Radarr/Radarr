@@ -22,7 +22,6 @@
     "DeleteQualityProfile": "刪除品質設定檔",
     "AllCollectionsHiddenDueToFilter": "因為使用了篩選器，所有集合將被隱藏。",
     "CustomFormatHelpText": "{appName}使用匹配的自定義格式的分數總和來評分每個發行版本。如果一個新的發行版本可以在相同或更好的品質下提供更高分數，{appName}將抓取該版本。",
-    "QualityCutoffHasNotBeenMet": "影片還未滿足所選品質",
     "QualityDefinitions": "品質定義",
     "AutoRedownloadFailedHelpText": "自動搜尋並嘗試下載不同的版本",
     "BypassDelayIfHighestQuality": "如果有最高的質量就跳過",
