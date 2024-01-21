@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -6,10 +6,10 @@ namespace NzbDrone.Core.MediaFiles
     {
         public MovieFileMoveResult()
         {
-            OldFiles = new List<MovieFile>();
+            OldFiles = new List<DeletedMovieFile>();
         }
 
         public MovieFile MovieFile { get; set; }
-        public List<MovieFile> OldFiles { get; set; }
+        public List<DeletedMovieFile> OldFiles { get; set; }
     }
 }

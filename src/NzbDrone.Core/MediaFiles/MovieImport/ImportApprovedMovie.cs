@@ -73,7 +73,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             foreach (var importDecision in qualifiedImports.OrderByDescending(e => e.LocalMovie.Size))
             {
                 var localMovie = importDecision.LocalMovie;
-                var oldFiles = new List<MovieFile>();
+                var oldFiles = new List<DeletedMovieFile>();
 
                 try
                 {

@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Notifications.Synology
             {
                 foreach (var oldFile in message.OldMovieFiles)
                 {
-                    var fullPath = Path.Combine(message.Movie.Path, oldFile.RelativePath);
+                    var fullPath = Path.Combine(message.Movie.Path, oldFile.MovieFile.RelativePath);
 
                     _indexerProxy.DeleteFile(fullPath);
                 }

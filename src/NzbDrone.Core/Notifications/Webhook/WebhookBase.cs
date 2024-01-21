@@ -66,9 +66,10 @@ namespace NzbDrone.Core.Notifications.Webhook
             if (message.OldMovieFiles.Any())
             {
                 payload.DeletedFiles = message.OldMovieFiles.ConvertAll(x =>
-                    new WebhookMovieFile(x)
+                    new WebhookMovieFile(x.MovieFile)
                     {
-                        Path = Path.Combine(message.Movie.Path, x.RelativePath)
+                        Path = Path.Combine(message.Movie.Path, x.MovieFile.RelativePath),
+                        RecycleBinPath = x.RecycleBinPath
                     });
             }
 

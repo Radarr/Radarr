@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Notifications
         public Movie Movie { get; set; }
         public LocalMovie MovieInfo { get; set; }
         public MovieFile MovieFile { get; set; }
-        public List<MovieFile> OldMovieFiles { get; set; }
+        public List<DeletedMovieFile> OldMovieFiles { get; set; }
         public string SourcePath { get; set; }
         public DownloadClientItemClientInfo DownloadClientInfo { get; set; }
         public string DownloadId { get; set; }

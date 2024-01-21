@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
             _downloadMessage = Builder<DownloadMessage>.CreateNew()
                                                        .With(d => d.Movie = movie)
                                                        .With(d => d.MovieFile = movieFile)
-                                                       .With(d => d.OldMovieFiles = new List<MovieFile>())
+                                                       .With(d => d.OldMovieFiles = new List<DeletedMovieFile>())
                                                        .Build();
 
             Subject.Definition = new NotificationDefinition();
@@ -40,9 +40,12 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 
         private void GivenOldFiles()
         {
-            _downloadMessage.OldMovieFiles = Builder<MovieFile>.CreateListOfSize(1)
-                                                               .Build()
-                                                               .ToList();
+            _downloadMessage.OldMovieFiles = Builder<DeletedMovieFile>
+                .CreateListOfSize(1)
+                .All()
+                .WithFactory(() => new DeletedMovieFile(Builder<MovieFile>.CreateNew().Build(), null))
+                .Build()
+                .ToList();
 
             Subject.Definition.Settings = new XbmcSettings
             {

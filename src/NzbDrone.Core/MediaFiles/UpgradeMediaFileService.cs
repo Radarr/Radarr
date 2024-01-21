@@ -55,14 +55,15 @@ namespace NzbDrone.Core.MediaFiles
             {
                 var movieFilePath = Path.Combine(localMovie.Movie.Path, existingFile.RelativePath);
                 var subfolder = rootFolder.GetRelativePath(_diskProvider.GetParentFolder(movieFilePath));
+                string recycleBinPath = null;
 
                 if (_diskProvider.FileExists(movieFilePath))
                 {
                     _logger.Debug("Removing existing movie file: {0}", existingFile);
-                    _recycleBinProvider.DeleteFile(movieFilePath, subfolder);
+                    recycleBinPath = _recycleBinProvider.DeleteFile(movieFilePath, subfolder);
                 }
 
-                moveFileResult.OldFiles.Add(existingFile);
+                moveFileResult.OldFiles.Add(new DeletedMovieFile(existingFile, recycleBinPath));
                 _mediaFileService.Delete(existingFile, DeleteMediaFileReason.Upgrade);
             }
 

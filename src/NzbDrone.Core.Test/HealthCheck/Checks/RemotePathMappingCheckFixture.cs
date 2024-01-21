@@ -176,7 +176,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         public void should_return_ok_on_movie_imported_event()
         {
             GivenFolderExists(_downloadRootPath);
-            var importEvent = new MovieFileImportedEvent(new LocalMovie(), new MovieFile(), new List<MovieFile>(), true, new DownloadClientItem());
+            var importEvent = new MovieFileImportedEvent(new LocalMovie(), new MovieFile(), new List<DeletedMovieFile>(), true, new DownloadClientItem());
 
             Subject.Check(importEvent).ShouldBeOk();
         }
