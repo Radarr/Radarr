@@ -83,6 +83,36 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             items.First().ConfigContract.Should().Be("EmailSettings");
             items.First().Settings.UseEncryption.Should().Be((int)EmailEncryptionType.Always);
         }
+
+        [Test]
+        public void should_use_defaults_when_settings_are_empty()
+        {
+            var db = WithMigrationTestDb(c =>
+            {
+                c.Insert.IntoTable("Notifications").Row(new
+                {
+                    OnGrab = true,
+                    OnDownload = true,
+                    OnUpgrade = true,
+                    OnHealthIssue = true,
+                    IncludeHealthWarnings = true,
+                    OnRename = true,
+                    OnMovieDelete = false,
+                    Name = "Mail Radarr",
+                    Implementation = "Email",
+                    Tags = "[]",
+                    Settings = new { }.ToJson(),
+                    ConfigContract = "EmailSettings"
+                });
+            });
+
+            var items = db.Query<NotificationDefinition235>("SELECT * FROM \"Notifications\"");
+
+            items.Should().HaveCount(1);
+            items.First().Implementation.Should().Be("Email");
+            items.First().ConfigContract.Should().Be("EmailSettings");
+            items.First().Settings.UseEncryption.Should().Be((int)EmailEncryptionType.Preferred);
+        }
     }
 
     public class NotificationDefinition235
