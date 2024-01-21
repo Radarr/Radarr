@@ -350,7 +350,7 @@
     "Importing": "Importând",
     "AcceptConfirmationModal": "Acceptare modal de confirmare",
     "LastExecution": "Ultima executare",
-    "DBMigration": "Migrarea BD",
+    "DatabaseMigration": "Migrarea BD",
     "Manual": "Manual",
     "OnHealthIssue": "Cu privire la problema sănătății",
     "OnImport": "La import",

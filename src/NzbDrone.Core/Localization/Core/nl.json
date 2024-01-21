@@ -335,7 +335,7 @@
     "DestinationPath": "Doelmap",
     "DeleteEmptyFoldersHelpText": "Lege mappen verwijderen, tijdens de schijfscan en wanneer filmbestanden worden verwijderd",
     "DelayProfile": "Vertragingsprofiel",
-    "DBMigration": "DB Migratie",
+    "DatabaseMigration": "DB Migratie",
     "CutoffHelpText": "Wanneer deze kwaliteit is behaald, zal {appName} niet langer films downloaden",
     "CutoffFormatScoreHelpText": "Wanneer deze eigen formaat score is behaald, zal {appName} niet langer films downloaden",
     "CustomFormatsSettings": "Eigen Formaten Instellingen",

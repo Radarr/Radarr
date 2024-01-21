@@ -321,7 +321,7 @@
     "About": "के बारे में",
     "AddQualityProfile": "गुणवत्ता प्रोफ़ाइल जोड़ें",
     "Date": "दिनांक",
-    "DBMigration": "DB प्रवासन",
+    "DatabaseMigration": "DB प्रवासन",
     "Restore": "पुनर्स्थापित",
     "AddRootFolder": "रूट फ़ोल्डर जोड़ें",
     "AddToDownloadQueue": "कतार में डाउनलोड करने के लिए जोड़ा गया",

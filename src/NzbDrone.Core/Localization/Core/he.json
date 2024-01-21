@@ -336,7 +336,7 @@
     "Date": "תַאֲרִיך",
     "Dates": "תאריכים",
     "Day": "יְוֹם",
-    "DBMigration": "הגירת DB",
+    "DatabaseMigration": "הגירת DB",
     "MustNotContain": "אסור להכיל",
     "NamingSettings": "הגדרת שמות",
     "NetCore": ".NET Core",

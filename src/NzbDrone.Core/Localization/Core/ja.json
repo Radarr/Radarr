@@ -162,7 +162,7 @@
     "Date": "日付",
     "Dates": "日付",
     "Day": "日",
-    "DBMigration": "DB移行",
+    "DatabaseMigration": "DB移行",
     "FailedDownloadHandling": "ダウンロード処理の失敗",
     "ChmodFolderHelpTextWarning": "これは、{appName}を実行しているユーザーがファイルの所有者である場合にのみ機能します。ダウンロードクライアントが権限を適切に設定していることを確認することをお勧めします。",
     "MinAvailability": "最小可用性",

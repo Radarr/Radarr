@@ -386,7 +386,7 @@
     "DeleteDownloadClient": "Supprimer le client de téléchargement",
     "DeleteCustomFormat": "Supprimer le format personnalisé",
     "DeleteBackup": "Supprimer la sauvegarde",
-    "DBMigration": "Migration de la base de données",
+    "DatabaseMigration": "Migration de la base de données",
     "CutoffHelpText": "Quand cette qualité est atteinte, {appName} ne téléchargera plus de films",
     "CutoffFormatScoreHelpText": "Quand ce score de format personnalisé est atteint, {appName} ne téléchargera plus de films",
     "CustomFormatsSettings": "Paramètres de formats personnalisés",

@@ -331,7 +331,7 @@
     "DeleteCustomFormat": "Eliminar Formato Personalizado",
     "DeleteBackup": "Eliminar copia de seguridad",
     "DelayProfile": "Perfil de retardo",
-    "DBMigration": "Migración de DB",
+    "DatabaseMigration": "Migración de DB",
     "CutoffHelpText": "Una vez que la calidad es alcanzada {appName} no descargará películas tras alcanzar o exceder la puntuación del formato objetivo",
     "CreateGroup": "Crear grupo",
     "CreateEmptyMovieFoldersHelpText": "Crear carpetas de películas que faltan durante la exploración del disco",

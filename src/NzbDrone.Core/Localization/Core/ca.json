@@ -263,7 +263,7 @@
     "CustomFormat": "Format personalitzat",
     "CutoffUnmet": "Tall no assolit",
     "Days": "Dies",
-    "DBMigration": "Migració de BD",
+    "DatabaseMigration": "Migració de BD",
     "DefaultCase": "Cas per defecte",
     "DefaultDelayProfile": "Aquest és el perfil predeterminat. S'aplica a totes les pel·lícules que no tenen un perfil explícit.",
     "DeleteBackupMessageText": "Esteu segur que voleu suprimir la còpia de seguretat '{name}'?",

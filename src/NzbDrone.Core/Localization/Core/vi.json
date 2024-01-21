@@ -300,7 +300,7 @@
     "AddedToDownloadQueue": "Đã thêm vào hàng đợi tải xuống",
     "ClientPriority": "Ưu tiên khách hàng",
     "CustomFormat": "Định dạng tùy chỉnh",
-    "DBMigration": "Di chuyển DB",
+    "DatabaseMigration": "Di chuyển DB",
     "DockerUpdater": "cập nhật vùng chứa docker để nhận bản cập nhật",
     "AddQualityProfile": "Thêm hồ sơ chất lượng",
     "HomePage": "Trang chủ",

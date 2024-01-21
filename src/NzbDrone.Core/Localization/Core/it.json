@@ -311,7 +311,7 @@
     "DeleteCustomFormat": "Cancella Formato Personalizzato",
     "DeleteBackup": "Cancella Backup",
     "DelayProfile": "Profilo di Ritardo",
-    "DBMigration": "Migrazione DB",
+    "DatabaseMigration": "Migrazione DB",
     "CutoffHelpText": "Una volta raggiunta questa qualità, {appName} non scaricherà più film",
     "CutoffFormatScoreHelpText": "Una volta raggiunto questo formato personalizzato, {appName} non scaricherà più i film",
     "CustomFormatsSettings": "Formati Personalizzati Impostazioni",

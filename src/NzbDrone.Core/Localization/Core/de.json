@@ -565,7 +565,7 @@
     "ProxyPasswordHelpText": "Sie müssen nur einen Benutzernamen und ein Passwort eingeben, wenn dies erforderlich ist. Andernfalls lassen Sie sie leer.",
     "SendAnonymousUsageData": "Sende anonyme Nutzungsdaten",
     "AutoRedownloadFailedHelpText": "Suchen Sie automatisch nach einer anderen Version und versuchen Sie, sie herunterzuladen",
-    "DBMigration": "DB Migration",
+    "DatabaseMigration": "DB Migration",
     "LaunchBrowserHelpText": " Öffne die Startseite von {appName} im Webbrowser nach dem Start.",
     "ReadTheWikiForMoreInformation": "Lesen Sie das Wiki für weitere Informationen",
     "SetPermissionsLinuxHelpText": "Soll CHMOD ausgeführt werden wenn Datien importiert/umbenannt werden?",

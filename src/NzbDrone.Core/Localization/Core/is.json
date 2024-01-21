@@ -164,7 +164,7 @@
     "ICalHttpUrlHelpText": "Afritaðu þessa slóð til viðskiptavinar þíns eða smelltu til að gerast áskrifandi ef vafrinn þinn styður vefsíðu",
     "Max": "Hámark",
     "MoveFiles": "Færa skrár",
-    "DBMigration": "DB fólksflutningar",
+    "DatabaseMigration": "DB fólksflutningar",
     "OnHealthIssueHelpText": "Um heilbrigðismál",
     "Status": "Staða",
     "Actions": "Aðgerðir",

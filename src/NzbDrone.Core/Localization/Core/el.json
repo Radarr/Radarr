@@ -154,7 +154,7 @@
     "NotMonitored": "Δεν παρακολουθείται",
     "NoUpdatesAreAvailable": "Δεν υπάρχουν διαθέσιμες ενημερώσεις",
     "AcceptConfirmationModal": "Αποδοχή Modal επιβεβαίωσης",
-    "DBMigration": "Μετεγκατάσταση DB",
+    "DatabaseMigration": "Μετεγκατάσταση DB",
     "AddDownloadClient": "Προσθήκη προγράμματος-πελάτη λήψης",
     "AddedToDownloadQueue": "Προστέθηκε στην ουρά λήψης",
     "ChangeFileDate": "Αλλαγή ημερομηνίας αρχείου",

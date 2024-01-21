@@ -20,7 +20,7 @@
     "DeleteNotificationMessageText": "您确定要删除通知“{name}”吗?",
     "DeleteMovieFolderLabel": "删除电影目录",
     "DeleteMovieFolderHelpText": "删除电影目录及其内容",
-    "DBMigration": "数据库迁移版本",
+    "DatabaseMigration": "数据库迁移版本",
     "ConnectSettings": "连接设置",
     "Connections": "连接",
     "ConnectionLost": "连接丢失",

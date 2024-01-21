@@ -437,7 +437,7 @@
     "DeleteCustomFormat": "Eliminar formato personalizado",
     "DeleteBackup": "Eliminar cópia de segurança",
     "DelayProfile": "Perfil de atraso",
-    "DBMigration": "Migração da base de dados",
+    "DatabaseMigration": "Migração da base de dados",
     "CutoffHelpText": "Quando esta qualidade for atingida, o {appName} deixará de transferir filmes depois de a pontuação de corte do formato personalizado ser atingida ou ultrapassada",
     "CutoffFormatScoreHelpText": "Assim que o limite de qualidade for atingido ou ultrapassado e esta pontuação de formato personalizado for atingida, o {appName} deixará de obter ou importar actualizações para esses filmes",
     "CustomFormatsSettings": "Definições de formatos personalizados",

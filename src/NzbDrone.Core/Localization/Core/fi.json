@@ -81,7 +81,7 @@
     "BeforeUpdate": "Ennen päivitystä",
     "DownloadPropersAndRepacksHelpText2": "Käytä 'Älä suosi' -valintaa suosiaksesi mukautettujen muotojen pisteytystä Proper- ja Repack-merkintöjä enemmän.",
     "Day": "Päivä",
-    "DBMigration": "Tietokannan siirto",
+    "DatabaseMigration": "Tietokannan siirto",
     "ApiKey": "API-avain",
     "AcceptConfirmationModal": "Hyväksy vahvistus",
     "AvailabilityDelay": "Saatavuusviive",

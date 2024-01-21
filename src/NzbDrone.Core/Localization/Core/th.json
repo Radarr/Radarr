@@ -253,7 +253,7 @@
     "Authentication": "การรับรองความถูกต้อง",
     "Announced": "ประกาศ",
     "ApplyTags": "ใช้แท็ก",
-    "DBMigration": "การย้ายฐานข้อมูล",
+    "DatabaseMigration": "การย้ายฐานข้อมูล",
     "AuthenticationMethodHelpText": "ต้องการชื่อผู้ใช้และรหัสผ่านเพื่อเข้าถึงเรดาร์",
     "AuthForm": "แบบฟอร์ม (หน้าเข้าสู่ระบบ)",
     "Automatic": "อัตโนมัติ",

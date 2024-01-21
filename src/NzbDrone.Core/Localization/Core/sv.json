@@ -715,7 +715,7 @@
     "MediaInfo": "Media information",
     "MediaManagementSettings": "Inställningar för mediahantering",
     "MovieFolderFormat": "Filmmappformat",
-    "DBMigration": "DB Migration",
+    "DatabaseMigration": "DB Migration",
     "ImportExtraFiles": "Importera extra filer",
     "ImportExtraFilesHelpText": "Importera matchande extrafiler (undertexter, nfo, etc) efter import av en filmfil",
     "IncludeHealthWarningsHelpText": "Inkludera hälsovarningar",

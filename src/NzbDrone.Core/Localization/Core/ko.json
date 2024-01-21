@@ -97,7 +97,7 @@
     "CertificationCountry": "인증 국가",
     "Dates": "날짜",
     "Day": "일",
-    "DBMigration": "DB 마이그레이션",
+    "DatabaseMigration": "DB 마이그레이션",
     "AcceptConfirmationModal": "확인 모달 수락",
     "DownloadPropersAndRepacksHelpText2": "Propers / Repacks보다 사용자 지정 형식 점수별로 정렬하려면 '선호 안함'을 사용하십시오.",
     "Announced": "발표됨",

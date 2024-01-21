@@ -224,7 +224,7 @@
     "CertValidationNoLocal": "Deaktiveret for lokale adresser",
     "ChangeFileDate": "Skift fildato",
     "CustomFormatUnknownCondition": "Ukendt tilstand for tilpasset format '{0}'",
-    "DBMigration": "DB Migration",
+    "DatabaseMigration": "DB Migration",
     "ChmodGroupHelpTextWarning": "Dette fungerer kun, hvis den bruger, der kører {appName}, er ejeren af filen. Det er bedre at sikre, at downloadklienten bruger den samme gruppe som {appName}.",
     "ExcludeMovie": "Ekskluder film",
     "ClientPriority": "Kundens prioritet",

@@ -442,7 +442,7 @@
     "ImportExistingMovies": "Mevcut Filmleri İçe Aktar",
     "ImportExtraFiles": "Ekstra Dosyaları İçe Aktar",
     "Component": "Bileşen",
-    "DBMigration": "DB Geçişi",
+    "DatabaseMigration": "DB Geçişi",
     "ImportErrors": "Hataları İçe Aktar",
     "Enabled": "Etkin",
     "FileNameTokens": "Dosya Adı Belirteçleri",

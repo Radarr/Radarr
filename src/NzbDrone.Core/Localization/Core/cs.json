@@ -259,7 +259,7 @@
     "NoMinimumForAnyRuntime": "Žádné minimum za běhu",
     "NoMoveFilesSelf": " Ne, přesunu soubory sám",
     "NoMoviesExist": "Nebyly nalezeny žádné filmy. Chcete-li začít, budete chtít přidat nový film nebo importovat některé stávající.",
-    "DBMigration": "Migrace databáze",
+    "DatabaseMigration": "Migrace databáze",
     "ImportExtraFiles": "Importujte další soubory",
     "ImportIncludeQuality": "Ujistěte se, že vaše soubory obsahují kvalitu svých názvů souborů. např. {0}",
     "ImportLibrary": "Import z knihovny",

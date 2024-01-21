@@ -801,7 +801,7 @@
     "Info": "Информация",
     "CustomFormatUnknownCondition": "Неизвестно условие за персонализиран формат „{0}“",
     "Date": "Дата",
-    "DBMigration": "DB миграция",
+    "DatabaseMigration": "DB миграция",
     "DockerUpdater": "актуализирайте контейнера на докера, за да получите актуализацията",
     "DownloadClientStatusCheckAllClientMessage": "Всички клиенти за изтегляне са недостъпни поради неуспехи",
     "InvalidFormat": "Невалиден формат",
