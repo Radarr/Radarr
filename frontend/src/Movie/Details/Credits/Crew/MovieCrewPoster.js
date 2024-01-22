@@ -55,6 +55,7 @@ class MovieCrewPoster extends Component {
       personName,
       job,
       images,
+      tmdbId,
       posterWidth,
       posterHeight,
       importList
@@ -95,23 +96,27 @@ class MovieCrewPoster extends Component {
           <div
             style={elementStyle}
           >
-            <MovieHeadshot
-              className={styles.poster}
-              style={elementStyle}
-              images={images}
-              size={250}
-              lazy={false}
-              overflow={true}
-              onError={this.onPosterLoadError}
-              onLoad={this.onPosterLoad}
-            />
+            <a href={`https://www.themoviedb.org/person/${tmdbId}`} target="_blank"
+              rel="noopener noreferrer"
+            >
+              <MovieHeadshot
+                className={styles.poster}
+                style={elementStyle}
+                images={images}
+                size={250}
+                lazy={false}
+                overflow={true}
+                onError={this.onPosterLoadError}
+                onLoad={this.onPosterLoad}
+              />
 
-            {
-              hasPosterError &&
-                <div className={styles.overlayTitle}>
-                  {personName}
-                </div>
-            }
+              {
+                hasPosterError &&
+                  <div className={styles.overlayTitle}>
+                    {personName}
+                  </div>
+              }
+            </a>
           </div>
         </div>
 
