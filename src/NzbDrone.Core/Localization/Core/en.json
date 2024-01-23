@@ -220,6 +220,8 @@
   "CustomFormats": "Custom Formats",
   "CustomFormatsSettings": "Custom Formats Settings",
   "CustomFormatsSettingsSummary": "Custom Formats and Settings",
+  "CustomFormatsSpecificationRegularExpression": "Regular Expression",
+  "CustomFormatsSpecificationRegularExpressionHelpText": "Custom Format RegEx is Case Insensitive",
   "Cutoff": "Cutoff",
   "CutoffFormatScoreHelpText": "Once the quality cutoff is met or exceeded and this custom format score is reached {appName} will no longer grab or import upgrades for those movies",
   "CutoffHelpText": "Once this quality is reached {appName} will no longer download movies after the custom format cutoff score is met or exceeded",
