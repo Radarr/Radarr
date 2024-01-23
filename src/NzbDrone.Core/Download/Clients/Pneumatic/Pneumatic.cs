@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
 
                 var historyItem = new DownloadClientItem
                 {
-                    DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this),
+                    DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this, false),
                     DownloadId = GetDownloadClientId(file),
                     Title = title,
 

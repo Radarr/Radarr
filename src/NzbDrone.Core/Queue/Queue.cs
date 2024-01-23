@@ -29,6 +29,7 @@ namespace NzbDrone.Core.Queue
         public RemoteMovie RemoteMovie { get; set; }
         public DownloadProtocol Protocol { get; set; }
         public string DownloadClient { get; set; }
+        public bool DownloadClientHasPostImportCategory { get; set; }
         public string Indexer { get; set; }
         public string OutputPath { get; set; }
         public string ErrorMessage { get; set; }
