@@ -1152,7 +1152,6 @@
     "AuthenticationRequiredHelpText": "Modifier les demandes pour lesquelles l'authentification est requise. Ne rien modifier si vous n'en comprenez pas les risques.",
     "NotificationStatusAllClientHealthCheckMessage": "Toutes les notifications ne sont pas disponibles en raison d'échecs",
     "NotificationStatusSingleClientHealthCheckMessage": "Notifications indisponibles en raison d'échecs : {notificationNames}",
-    "RemoveFromDownloadClientHelpTextWarning": "La suppression supprimera le téléchargement et le(s) fichier(s) du client de téléchargement.",
     "AddConditionImplementation": "Ajouter une condition - {implementationName}",
     "AddConnectionImplementation": "Ajouter une connexion - {implementationName}",
     "BlocklistLoadError": "Impossible de charger la liste de blocage",

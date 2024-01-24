@@ -1220,7 +1220,6 @@
     "ParseModalErrorParsing": "Ошибка при парсинге, попробуйте еще раз.",
     "MovieSearchResultsLoadError": "Невозможно загрузить результаты для этого поискового запроса. Повторите попытку позже",
     "ParseModalHelpTextDetails": "{appName} попытается определить название и показать подробную информацию о нем",
-    "RemoveFromDownloadClientHelpTextWarning": "Удаление приведет к удалению загрузки и файла(ов) из клиента загрузки.",
     "SelectDownloadClientModalTitle": "{modalTitle} - Выберите клиент для загрузки",
     "SelectLanguageModalTitle": "{modalTitle} - Выберите язык",
     "True": "Правильно",

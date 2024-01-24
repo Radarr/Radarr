@@ -1211,7 +1211,6 @@
     "BypassDelayIfAboveCustomFormatScoreHelpText": "Ativar ignorar quando a versão tiver uma pontuação maior que a pontuação mínima configurada do formato personalizado",
     "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Pontuação mínima de formato personalizado",
     "BypassDelayIfAboveCustomFormatScoreMinimumScoreHelpText": "Pontuação mínima de formato personalizado necessária para ignorar o atraso do protocolo preferido",
-    "RemoveFromDownloadClientHelpTextWarning": "A remoção removerá o download e o(s) arquivo(s) do cliente de download.",
     "NotificationStatusAllClientHealthCheckMessage": "Todas as notificações estão indisponíveis devido a falhas",
     "NotificationStatusSingleClientHealthCheckMessage": "Notificações indisponíveis devido a falhas: {notificationNames}",
     "AutomaticUpdatesDisabledDocker": "As atualizações automáticas não têm suporte direto ao usar o mecanismo de atualização do Docker. Você precisará atualizar a imagem do contêiner fora de {appName} ou usar um script",

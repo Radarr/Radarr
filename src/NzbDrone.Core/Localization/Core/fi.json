@@ -1200,7 +1200,6 @@
     "OrganizeModalHeader": "Järjestele ja uudelleennimeä",
     "RemoveQueueItemConfirmation": "Haluatko varmasti poistaa kohteen \"{sourceTitle}\" jonosta?",
     "EditSelectedDownloadClients": "Muokkaa valittuja lataustyökaluja",
-    "RemoveFromDownloadClientHelpTextWarning": "Poistaminen poistaa latauksen ja sen sisältämät tiedostot lataustyökalusta.",
     "DownloadClientSortingCheckMessage": "Lataustyökalun \"{downloadClientName}\" {sortingMode} on kytketty käyttöön {appName}in kategorialle ja tuontiongelmien välttämiseksi se tulisi poistaa käytöstä.",
     "OrganizeRenamingDisabled": "Uudelleennimeäminen ei ole käytössä, eikä uudelleennimettävää ole",
     "QueueLoadError": "Virhe ladattaessa jonoa",
