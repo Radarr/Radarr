@@ -1,13 +1,17 @@
 $hoverScale: 1.05;
 
 .content {
-  border-radius: '5px';
   transition: all 200ms ease-in;
 
   &:hover {
     z-index: 2;
     box-shadow: 0 0 12px var(--black);
     transition: all 200ms ease-in;
+
+    .controls {
+      opacity: 0.9;
+      transition: opacity 200ms linear 150ms;
+    }
   }
 }
 
@@ -44,13 +48,13 @@ $hoverScale: 1.05;
   font-size: $smallFontSize;
 }
 
-.controls {
+.toggleMonitoredContainer {
   position: absolute;
   top: 10px;
   z-index: 3;
 }
 
-.action {
+.monitorToggleButton {
   composes: toggleButton from '~Components/MonitorToggleButton.css';
 
   width: 25px;
@@ -61,8 +65,39 @@ $hoverScale: 1.05;
   }
 }
 
+.controls {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 3;
+  border-radius: 4px;
+  background-color: #707070;
+  color: var(--white);
+  font-size: $smallFontSize;
+  opacity: 0;
+  transition: opacity 0;
+}
+
+.action {
+  composes: button from '~Components/Link/IconButton.css';
+
+  &:hover {
+    color: var(--iconButtonHoverLightColor);
+  }
+}
+
 @media only screen and (max-width: $breakpointSmall) {
   .container {
     padding: 5px;
   }
+}
+
+.externalLinks {
+  margin: 0 2px;
+}
+
+.externalLinkLabel {
+  composes: label from '~Components/Label.css';
+
+  cursor: pointer;
 }
