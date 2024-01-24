@@ -1121,7 +1121,6 @@
     "NotificationStatusAllClientHealthCheckMessage": "Усі списки недоступні через помилки",
     "NotificationStatusSingleClientHealthCheckMessage": "Списки недоступні через помилки: {notificationNames}",
     "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Мінімальна оцінка спеціального формату",
-    "RemoveFromDownloadClientHelpTextWarning": "Видалення видалить завантаження та файл(и) із клієнта завантаження.",
     "DownloadClientsLoadError": "Не вдалося завантажити клієнти для завантаження",
     "IMDbId": "Ідентифікатор TMDb",
     "DisabledForLocalAddresses": "Відключено для локальних адрес",

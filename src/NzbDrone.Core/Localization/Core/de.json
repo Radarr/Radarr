@@ -1158,7 +1158,6 @@
     "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Mindestpunktzahl für benutzerdefiniertes Format",
     "NotificationStatusAllClientHealthCheckMessage": "Wegen Fehlern sind keine Applikationen verfügbar",
     "NotificationStatusSingleClientHealthCheckMessage": "Applikationen wegen folgender Fehler nicht verfügbar: {notificationNames}",
-    "RemoveFromDownloadClientHelpTextWarning": "Durch das Entfernen werden der Download und die Datei(en) vom Download-Client entfernt.",
     "DownloadClientsLoadError": "Downloader konnten nicht geladen werden",
     "IMDbId": "TMDb ID",
     "DisabledForLocalAddresses": "Für lokale Adressen deaktiviert",
