@@ -1,6 +1,6 @@
 {
     "IndexerStatusCheckAllClientMessage": "Tous les indexeurs sont indisponibles en raison d'échecs",
-    "IndexerSearchCheckNoInteractiveMessage": "Aucun indexeur disponible avec la recherche interactive activée, {appName} ne fournira aucun résultat de recherche interactif",
+    "IndexerSearchCheckNoInteractiveMessage": "Aucun indexeur actif n'est disponible avec la recherche interactive, {appName} ne fournira aucun résultat lors d'une recherche interactif",
     "IndexerSearchCheckNoAvailableIndexersMessage": "Tous les indexeurs compatibles avec la recherche sont temporairement indisponibles en raison d'erreurs d'indexation récentes",
     "IndexerSearchCheckNoAutomaticMessage": "Aucun indexeur disponible avec la recherche automatique activée, {appName} ne fournira aucun résultat de recherche automatique",
     "Indexers": "Indexeurs",
@@ -707,7 +707,7 @@
     "PreferredSize": "Taille préférée",
     "PortNumber": "Numéro de port",
     "Port": "Port",
-    "Permissions": "Permissions",
+    "Permissions": "Autorisations",
     "Pending": "En attente",
     "Password": "Mot de passe",
     "PackageVersion": "Version du paquet",
@@ -748,7 +748,7 @@
     "CloseCurrentModal": "Fermer cette fenêtre modale",
     "AddingTag": "Ajout d'une étiquette",
     "OnHealthIssueHelpText": "Lors d'un problème de santé",
-    "AcceptConfirmationModal": "Accepter la fenêtre de confirmation",
+    "AcceptConfirmationModal": "Accepter les modalités d'utilisation",
     "StartSearchForMissingMovie": "Lancer la recherche de film manquant",
     "StartProcessing": "Démarrer le traitement",
     "StartImport": "Démarrer l'importation",
@@ -1516,5 +1516,6 @@
     "NotificationsPushBulletSettingSenderIdHelpText": "L'identifiant de l'appareil depuis lequel envoyer les notifications, utilisez « device_iden » dans l'URL de l'appareil sur pushbullet.com (laisser vide pour l'envoyer vous-même)",
     "ManageFiles": "Gérer les fichiers",
     "DownloadClientQbittorrentSettingsContentLayout": "Disposition du contenu",
-    "DownloadClientQbittorrentSettingsContentLayoutHelpText": "Utiliser la disposition du contenu configurée par qBittorrent, la disposition originale du torrent ou toujours créer un sous-dossier (qBittorrent 4.3.2+)"
+    "DownloadClientQbittorrentSettingsContentLayoutHelpText": "Utiliser la disposition du contenu configurée par qBittorrent, la disposition originale du torrent ou toujours créer un sous-dossier (qBittorrent 4.3.2+)",
+    "DownloadClientPriorityHelpText": "Priorité du client de téléchargement de 1 (la plus haute) à 50 (la plus faible). Par défaut : 1. Le Round-Robin est utilisé pour les clients ayant la même priorité."
 }
