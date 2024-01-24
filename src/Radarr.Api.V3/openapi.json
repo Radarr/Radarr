@@ -11223,7 +11223,8 @@
             "format": "int32"
           },
           "hasFile": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           },
           "monitored": {
             "type": "boolean"
