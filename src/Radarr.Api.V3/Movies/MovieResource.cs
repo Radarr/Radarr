@@ -55,7 +55,7 @@ namespace Radarr.Api.V3.Movies
         public int QualityProfileId { get; set; }
 
         // Compatibility
-        public bool HasFile { get; set; }
+        public bool? HasFile { get; set; }
 
         // Editing Only
         public bool Monitored { get; set; }
@@ -198,9 +198,9 @@ namespace Radarr.Api.V3.Movies
 
         public static Movie ToModel(this MovieResource resource, Movie movie)
         {
-            var updatedmovie = resource.ToModel();
+            var updatedMovie = resource.ToModel();
 
-            movie.ApplyChanges(updatedmovie);
+            movie.ApplyChanges(updatedMovie);
 
             return movie;
         }
