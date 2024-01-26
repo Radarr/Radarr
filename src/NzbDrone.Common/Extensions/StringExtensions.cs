@@ -219,5 +219,14 @@ namespace NzbDrone.Common.Extensions
         {
             return input.Contains(':') ? $"[{input}]" : input;
         }
+
+        public static string Reverse(this string text)
+        {
+            var array = text.ToCharArray();
+
+            Array.Reverse(array);
+
+            return new string(array);
+        }
     }
 }

@@ -134,6 +134,7 @@ namespace NzbDrone.Core.Organizer
 
                 component = FileNameCleanupRegex.Replace(component, match => match.Captures[0].Value[0].ToString());
                 component = TrimSeparatorsRegex.Replace(component, string.Empty);
+                component = component.Replace("{ellipsis}", "...");
                 component = ReplaceReservedDeviceNames(component);
 
                 if (component.IsNotNullOrWhiteSpace())
@@ -197,6 +198,7 @@ namespace NzbDrone.Core.Organizer
 
                 var component = ReplaceTokens(splitPattern, tokenHandlers, namingConfig);
                 component = CleanFolderName(component);
+                component = component.Replace("{ellipsis}", "...");
                 component = ReplaceReservedDeviceNames(component);
 
                 if (component.IsNotNullOrWhiteSpace())
@@ -264,15 +266,15 @@ namespace NzbDrone.Core.Organizer
 
         private void AddMovieTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie)
         {
-            tokenHandlers["{Movie Title}"] = m => GetLanguageTitle(movie, m.CustomFormat);
-            tokenHandlers["{Movie CleanTitle}"] = m => CleanTitle(GetLanguageTitle(movie, m.CustomFormat));
-            tokenHandlers["{Movie TitleThe}"] = m => TitleThe(movie.Title);
+            tokenHandlers["{Movie Title}"] = m => Truncate(GetLanguageTitle(movie, m.CustomFormat), m.CustomFormat);
+            tokenHandlers["{Movie CleanTitle}"] = m => Truncate(CleanTitle(GetLanguageTitle(movie, m.CustomFormat)), m.CustomFormat);
+            tokenHandlers["{Movie TitleThe}"] = m => Truncate(TitleThe(movie.Title), m.CustomFormat);
             tokenHandlers["{Movie TitleFirstCharacter}"] = m => TitleFirstCharacter(TitleThe(GetLanguageTitle(movie, m.CustomFormat)));
-            tokenHandlers["{Movie OriginalTitle}"] = m => movie.MovieMetadata.Value.OriginalTitle ?? string.Empty;
-            tokenHandlers["{Movie CleanOriginalTitle}"] = m => CleanTitle(movie.MovieMetadata.Value.OriginalTitle ?? string.Empty);
+            tokenHandlers["{Movie OriginalTitle}"] = m => Truncate(movie.MovieMetadata.Value.OriginalTitle, m.CustomFormat) ?? string.Empty;
+            tokenHandlers["{Movie CleanOriginalTitle}"] = m => Truncate(CleanTitle(movie.MovieMetadata.Value.OriginalTitle ?? string.Empty), m.CustomFormat);
 
             tokenHandlers["{Movie Certification}"] = m => movie.MovieMetadata.Value.Certification ?? string.Empty;
-            tokenHandlers["{Movie Collection}"] = m => movie.MovieMetadata.Value.CollectionTitle ?? string.Empty;
+            tokenHandlers["{Movie Collection}"] = m => Truncate(movie.MovieMetadata.Value.CollectionTitle, m.CustomFormat) ?? string.Empty;
         }
 
         private string GetLanguageTitle(Movie movie, string isoCodes)
@@ -306,7 +308,7 @@ namespace NzbDrone.Core.Organizer
         {
             if (movieFile.Edition.IsNotNullOrWhiteSpace())
             {
-                tokenHandlers["{Edition Tags}"] = m => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(movieFile.Edition.ToLower());
+                tokenHandlers["{Edition Tags}"] = m => Truncate(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(movieFile.Edition.ToLower()), m.CustomFormat);
             }
         }
 
@@ -331,8 +333,7 @@ namespace NzbDrone.Core.Organizer
         {
             tokenHandlers["{Original Title}"] = m => GetOriginalTitle(movieFile, multipleTokens);
             tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(movieFile, multipleTokens);
-
-            tokenHandlers["{Release Group}"] = m => movieFile.ReleaseGroup ?? m.DefaultValue("Radarr");
+            tokenHandlers["{Release Group}"] = m => Truncate(movieFile.ReleaseGroup, m.CustomFormat) ?? m.DefaultValue("Radarr");
         }
 
         private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie, MovieFile movieFile)
@@ -622,6 +623,30 @@ namespace NzbDrone.Core.Organizer
         {
             // Replace reserved windows device names with an alternative
             return ReservedDeviceNamesRegex.Replace(input, match => match.Value.Replace(".", "_"));
+        }
+
+        private string Truncate(string input, string formatter)
+        {
+            var maxLength = GetMaxLengthFromFormatter(formatter);
+
+            if (maxLength == 0 || input.Length <= Math.Abs(maxLength))
+            {
+                return input;
+            }
+
+            if (maxLength < 0)
+            {
+                return $"{{ellipsis}}{input.Reverse().Truncate(Math.Abs(maxLength) - 3).TrimEnd(' ', '.').Reverse()}";
+            }
+
+            return $"{input.Truncate(maxLength - 3).TrimEnd(' ', '.')}{{ellipsis}}";
+        }
+
+        private int GetMaxLengthFromFormatter(string formatter)
+        {
+            int.TryParse(formatter, out var maxCustomLength);
+
+            return maxCustomLength;
         }
     }
 
