@@ -1390,8 +1390,6 @@
     "NotificationsDiscordSettingsUsernameHelpText": "发送消息所用的用户名，默认使用 Discord webhook 的缺省值",
     "NotificationsDiscordSettingsWebhookUrlHelpText": "Discord 频道 webhook URL",
     "NotificationsEmailSettingsBccAddress": "Bcc 地址",
-    "NotificationsEmailSettingsRequireEncryption": "要求加密",
-    "NotificationsEmailSettingsRequireEncryptionHelpText": "要求 SSL（仅 465 端口）或 STARTTLS（其他任意端口）",
     "NotificationsEmailSettingsCcAddressHelpText": "电子邮件的 Cc 对象，以逗号分开",
     "NotificationsEmailSettingsCcAddress": "Cc 地址",
     "NotificationsEmailSettingsBccAddressHelpText": "电子邮件的 Bcc 对象，以逗号分开",
