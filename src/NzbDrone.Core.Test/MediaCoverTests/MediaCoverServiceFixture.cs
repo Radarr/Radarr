@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
@@ -78,7 +79,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         {
             Mocker.GetMock<ICoverExistsSpecification>()
                   .Setup(v => v.AlreadyExists(It.IsAny<string>(), It.IsAny<string>()))
-                  .Returns(false);
+                  .Returns(Task.FromResult(false));
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.FileExists(It.IsAny<string>()))
@@ -95,7 +96,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         {
             Mocker.GetMock<ICoverExistsSpecification>()
                   .Setup(v => v.AlreadyExists(It.IsAny<string>(), It.IsAny<string>()))
-                  .Returns(true);
+                  .Returns(Task.FromResult(true));
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.FileExists(It.IsAny<string>()))
@@ -112,7 +113,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         {
             Mocker.GetMock<ICoverExistsSpecification>()
                   .Setup(v => v.AlreadyExists(It.IsAny<string>(), It.IsAny<string>()))
-                  .Returns(true);
+                  .Returns(Task.FromResult(true));
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.FileExists(It.IsAny<string>()))
@@ -133,7 +134,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         {
             Mocker.GetMock<ICoverExistsSpecification>()
                   .Setup(v => v.AlreadyExists(It.IsAny<string>(), It.IsAny<string>()))
-                  .Returns(true);
+                  .Returns(Task.FromResult(true));
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.FileExists(It.IsAny<string>()))
@@ -154,7 +155,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         {
             Mocker.GetMock<ICoverExistsSpecification>()
                   .Setup(v => v.AlreadyExists(It.IsAny<string>(), It.IsAny<string>()))
-                  .Returns(true);
+                  .Returns(Task.FromResult(true));
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.FileExists(It.IsAny<string>()))

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.ImportLists;
@@ -54,6 +55,7 @@ namespace Radarr.Api.V3.ImportLists
         }
 
         [HttpGet]
+        [Produces("application/json")]
         public object GetDiscoverMovies(bool includeRecommendations = false)
         {
             var movieLanguage = (Language)_configService.MovieInfoLanguage;
@@ -100,11 +102,14 @@ namespace Radarr.Api.V3.ImportLists
         }
 
         [HttpPost]
-        public object AddMovies([FromBody] List<MovieResource> resource)
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        public async Task<List<MovieResource>> AddMovies([FromBody] List<MovieResource> resource)
         {
             var newMovies = resource.ToModel();
+            var addedMovies = await _addMovieService.AddMovies(newMovies, true);
 
-            return _addMovieService.AddMovies(newMovies, true).ToResource(0);
+            return addedMovies.ToResource(0);
         }
 
         private IEnumerable<ImportListMoviesResource> MapToResource(IEnumerable<Movie> movies, Language language)

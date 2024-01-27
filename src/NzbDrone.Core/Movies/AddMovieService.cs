@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
 using NLog;
@@ -15,8 +16,8 @@ namespace NzbDrone.Core.Movies
 {
     public interface IAddMovieService
     {
-        Movie AddMovie(Movie newMovie);
-        List<Movie> AddMovies(List<Movie> newMovies, bool ignoreErrors = false);
+        Task<Movie> AddMovie(Movie newMovie);
+        Task<List<Movie>> AddMovies(List<Movie> newMovies, bool ignoreErrors = false);
     }
 
     public class AddMovieService : IAddMovieService
@@ -43,11 +44,11 @@ namespace NzbDrone.Core.Movies
             _logger = logger;
         }
 
-        public Movie AddMovie(Movie newMovie)
+        public async Task<Movie> AddMovie(Movie newMovie)
         {
             Ensure.That(newMovie, () => newMovie).IsNotNull();
 
-            newMovie = AddSkyhookData(newMovie);
+            newMovie = await AddSkyhookData(newMovie);
             newMovie = SetPropertiesAndValidate(newMovie);
 
             _logger.Info("Adding Movie {0} Path: [{1}]", newMovie, newMovie.Path);
@@ -60,7 +61,7 @@ namespace NzbDrone.Core.Movies
             return newMovie;
         }
 
-        public List<Movie> AddMovies(List<Movie> newMovies, bool ignoreErrors = false)
+        public async Task<List<Movie>> AddMovies(List<Movie> newMovies, bool ignoreErrors = false)
         {
             var added = DateTime.UtcNow;
             var moviesToAdd = new List<Movie>();
@@ -71,7 +72,7 @@ namespace NzbDrone.Core.Movies
 
                 try
                 {
-                    var movie = AddSkyhookData(m);
+                    var movie = await AddSkyhookData(m);
                     movie = SetPropertiesAndValidate(movie);
 
                     movie.Added = added;
@@ -95,13 +96,14 @@ namespace NzbDrone.Core.Movies
             return _movieService.AddMovies(moviesToAdd);
         }
 
-        private Movie AddSkyhookData(Movie newMovie)
+        private async Task<Movie> AddSkyhookData(Movie newMovie)
         {
             var movie = new Movie();
 
             try
             {
-                movie.MovieMetadata = _movieInfo.GetMovieInfo(newMovie.TmdbId).Item1;
+                var movieInfo = await _movieInfo.GetMovieInfo(newMovie.TmdbId);
+                movie.MovieMetadata = movieInfo.Item1;
             }
             catch (MovieNotFoundException)
             {

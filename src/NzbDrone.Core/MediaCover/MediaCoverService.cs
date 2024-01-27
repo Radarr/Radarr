@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.Disk;
@@ -143,7 +144,7 @@ namespace NzbDrone.Core.MediaCover
             return Path.Combine(_coverRootFolder, movieId.ToString());
         }
 
-        private bool EnsureCovers(Movie movie)
+        private async Task<bool> EnsureCovers(Movie movie)
         {
             var updated = false;
             var toResize = new List<Tuple<MediaCover, bool>>();
@@ -160,11 +161,11 @@ namespace NzbDrone.Core.MediaCover
 
                 try
                 {
-                    alreadyExists = _coverExistsSpecification.AlreadyExists(cover.RemoteUrl, fileName);
+                    alreadyExists = await _coverExistsSpecification.AlreadyExists(cover.RemoteUrl, fileName);
 
                     if (!alreadyExists)
                     {
-                        DownloadCover(movie, cover);
+                        await DownloadCover(movie, cover);
                         updated = true;
                     }
                 }
@@ -186,7 +187,7 @@ namespace NzbDrone.Core.MediaCover
 
             try
             {
-                _semaphore.Wait();
+                await _semaphore.WaitAsync();
 
                 foreach (var tuple in toResize)
                 {
@@ -201,12 +202,12 @@ namespace NzbDrone.Core.MediaCover
             return updated;
         }
 
-        private void DownloadCover(Movie movie, MediaCover cover)
+        private async Task DownloadCover(Movie movie, MediaCover cover)
         {
             var fileName = GetCoverPath(movie.Id, cover.CoverType);
 
             _logger.Info("Downloading {0} for {1} {2}", cover.CoverType, movie, cover.RemoteUrl);
-            _httpClient.DownloadFile(cover.RemoteUrl, fileName);
+            await _httpClient.DownloadFileAsync(cover.RemoteUrl, fileName);
         }
 
         private void EnsureResizedCovers(Movie movie, MediaCover cover, bool forceResize)
@@ -265,7 +266,7 @@ namespace NzbDrone.Core.MediaCover
 
         public void HandleAsync(MovieUpdatedEvent message)
         {
-            var updated = EnsureCovers(message.Movie);
+            var updated = EnsureCovers(message.Movie).GetAwaiter().GetResult();
 
             _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie, updated));
         }

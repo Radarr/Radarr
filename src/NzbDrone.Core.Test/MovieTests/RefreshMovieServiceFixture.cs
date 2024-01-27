@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
@@ -67,7 +68,7 @@ namespace NzbDrone.Core.Test.MovieTests
         {
             Mocker.GetMock<IProvideMovieInfo>()
                   .Setup(s => s.GetMovieInfo(_movie.TmdbId))
-                  .Returns(new Tuple<MovieMetadata, List<Credit>>(movie, new List<Credit>()));
+                  .Returns(Task.FromResult(new Tuple<MovieMetadata, List<Credit>>(movie, new List<Credit>())));
         }
 
         [Test]

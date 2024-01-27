@@ -313,7 +313,7 @@ namespace NzbDrone.Common.Http
         public void DownloadFile(string url, string fileName)
         {
             // https://docs.microsoft.com/en-us/archive/msdn-magazine/2015/july/async-programming-brownfield-async-development#the-thread-pool-hack
-            Task.Run(() => DownloadFileAsync(url, fileName)).GetAwaiter().GetResult();
+            DownloadFileAsync(url, fileName).GetAwaiter().GetResult();
         }
 
         public Task<HttpResponse> GetAsync(HttpRequest request)
@@ -324,7 +324,7 @@ namespace NzbDrone.Common.Http
 
         public HttpResponse Get(HttpRequest request)
         {
-            return Task.Run(() => GetAsync(request)).GetAwaiter().GetResult();
+            return GetAsync(request).GetAwaiter().GetResult();
         }
 
         public async Task<HttpResponse<T>> GetAsync<T>(HttpRequest request)
@@ -338,7 +338,7 @@ namespace NzbDrone.Common.Http
         public HttpResponse<T> Get<T>(HttpRequest request)
             where T : new()
         {
-            return Task.Run(() => GetAsync<T>(request)).GetAwaiter().GetResult();
+            return GetAsync<T>(request).GetAwaiter().GetResult();
         }
 
         public Task<HttpResponse> HeadAsync(HttpRequest request)
@@ -349,7 +349,7 @@ namespace NzbDrone.Common.Http
 
         public HttpResponse Head(HttpRequest request)
         {
-            return Task.Run(() => HeadAsync(request)).GetAwaiter().GetResult();
+            return HeadAsync(request).GetAwaiter().GetResult();
         }
 
         public Task<HttpResponse> PostAsync(HttpRequest request)
@@ -360,7 +360,7 @@ namespace NzbDrone.Common.Http
 
         public HttpResponse Post(HttpRequest request)
         {
-            return Task.Run(() => PostAsync(request)).GetAwaiter().GetResult();
+            return PostAsync(request).GetAwaiter().GetResult();
         }
 
         public async Task<HttpResponse<T>> PostAsync<T>(HttpRequest request)
@@ -374,7 +374,7 @@ namespace NzbDrone.Common.Http
         public HttpResponse<T> Post<T>(HttpRequest request)
             where T : new()
         {
-            return Task.Run(() => PostAsync<T>(request)).GetAwaiter().GetResult();
+            return PostAsync<T>(request).GetAwaiter().GetResult();
         }
 
         private void CheckResponseContentType(HttpResponse response)

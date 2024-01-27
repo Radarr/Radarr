@@ -190,7 +190,7 @@ namespace NzbDrone.Core.ImportLists
 
         private List<ImportListMovie> MapMovieReports(IEnumerable<ImportListMovie> reports)
         {
-            var mappedMovies = reports.Select(m => _movieSearch.MapMovieToTmdbMovie(new MovieMetadata { Title = m.Title, TmdbId = m.TmdbId, ImdbId = m.ImdbId, Year = m.Year }))
+            var mappedMovies = reports.Select(m => _movieSearch.MapMovieToTmdbMovie(new MovieMetadata { Title = m.Title, TmdbId = m.TmdbId, ImdbId = m.ImdbId, Year = m.Year }).GetAwaiter().GetResult())
                 .Where(x => x != null)
                 .DistinctBy(x => x.TmdbId)
                 .ToList();

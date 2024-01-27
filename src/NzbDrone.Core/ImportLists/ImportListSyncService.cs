@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
@@ -41,7 +42,7 @@ namespace NzbDrone.Core.ImportLists
             _configService = configService;
         }
 
-        private void SyncAll()
+        private async Task SyncAll()
         {
             if (_importListFactory.Enabled().Empty())
             {
@@ -62,16 +63,16 @@ namespace NzbDrone.Core.ImportLists
                 CleanLibrary();
             }
 
-            ProcessListItems(listItemsResult);
+            await ProcessListItems(listItemsResult);
         }
 
-        private void SyncList(ImportListDefinition definition)
+        private async Task SyncList(ImportListDefinition definition)
         {
             _logger.ProgressInfo("Starting Import List Refresh for List {0}", definition.Name);
 
             var listItemsResult = _listFetcherAndParser.FetchSingleList(definition);
 
-            ProcessListItems(listItemsResult);
+            await ProcessListItems(listItemsResult);
         }
 
         private void ProcessMovieReport(ImportListDefinition importList, ImportListMovie report, List<ImportExclusion> listExclusions, List<int> dbMovies, List<Movie> moviesToAdd)
@@ -123,7 +124,7 @@ namespace NzbDrone.Core.ImportLists
             }
         }
 
-        private void ProcessListItems(ImportListFetchResult listFetchResult)
+        private async Task ProcessListItems(ImportListFetchResult listFetchResult)
         {
             listFetchResult.Movies = listFetchResult.Movies.DistinctBy(x =>
             {
@@ -164,7 +165,7 @@ namespace NzbDrone.Core.ImportLists
             if (moviesToAdd.Any())
             {
                 _logger.ProgressInfo("Adding {0} movies from your auto enabled lists to library", moviesToAdd.Count);
-                _addMovieService.AddMovies(moviesToAdd, true);
+                await _addMovieService.AddMovies(moviesToAdd, true);
             }
         }
 
@@ -172,11 +173,11 @@ namespace NzbDrone.Core.ImportLists
         {
             if (message.DefinitionId.HasValue)
             {
-                SyncList(_importListFactory.Get(message.DefinitionId.Value));
+                SyncList(_importListFactory.Get(message.DefinitionId.Value)).GetAwaiter().GetResult();
             }
             else
             {
-                SyncAll();
+                SyncAll().GetAwaiter().GetResult();
             }
         }
 
