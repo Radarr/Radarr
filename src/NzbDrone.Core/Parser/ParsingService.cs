@@ -147,7 +147,7 @@ namespace NzbDrone.Core.Parser
 
             if (result == null)
             {
-                _logger.Debug($"No matching movie for titles '{string.Join(", ", parsedMovieInfo.MovieTitles)} ({parsedMovieInfo.Year})"');
+                _logger.Debug($"No matching movie for titles '{string.Join(", ", parsedMovieInfo.MovieTitles)} ({parsedMovieInfo.Year})'");
             }
 
             return result;
