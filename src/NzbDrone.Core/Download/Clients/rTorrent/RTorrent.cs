@@ -12,6 +12,7 @@ using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.Clients.rTorrent;
 using NzbDrone.Core.Exceptions;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
@@ -35,9 +36,10 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
                         IRemotePathMappingService remotePathMappingService,
                         IDownloadSeedConfigProvider downloadSeedConfigProvider,
                         IRTorrentDirectoryValidator rTorrentDirectoryValidator,
+                        ILocalizationService localizationService,
                         IBlocklistService blocklistService,
                         Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, blocklistService, logger)
+            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, localizationService, blocklistService, logger)
         {
             _proxy = proxy;
             _rTorrentDirectoryValidator = rTorrentDirectoryValidator;

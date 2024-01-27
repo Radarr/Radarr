@@ -10,6 +10,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
@@ -35,9 +36,10 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                            IDiskProvider diskProvider,
                            IRemotePathMappingService remotePathMappingService,
                            ICacheManager cacheManager,
+                           ILocalizationService localizationService,
                            IBlocklistService blocklistService,
                            Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, blocklistService, logger)
+            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, localizationService, blocklistService, logger)
         {
             _proxySelector = proxySelector;
 
