@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Newtonsoft.Json;
 using NzbDrone.Core.Download.Clients.Sabnzbd.JsonConverters;
 

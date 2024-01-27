@@ -1,4 +1,4 @@
-﻿namespace NzbDrone.Core.Download.Clients.NzbVortex
+namespace NzbDrone.Core.Download.Clients.NzbVortex
 {
     public enum NzbVortexStateType
     {

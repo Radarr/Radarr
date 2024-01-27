@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using FluentValidation;
 using Newtonsoft.Json;
 using NzbDrone.Core.Annotations;

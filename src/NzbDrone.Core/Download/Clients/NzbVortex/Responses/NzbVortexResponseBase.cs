@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using NzbDrone.Core.Download.Clients.NzbVortex.JsonConverters;
 
 namespace NzbDrone.Core.Download.Clients.NzbVortex.Responses

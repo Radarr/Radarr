@@ -1,4 +1,4 @@
-﻿namespace NzbDrone.Core.Download.Clients.QBittorrent
+namespace NzbDrone.Core.Download.Clients.QBittorrent
 {
     public enum QBittorrentPriority
     {
