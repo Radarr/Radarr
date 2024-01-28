@@ -3491,6 +3491,22 @@
               "type": "boolean",
               "default": false
             }
+          },
+          {
+            "name": "includeTrending",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "includePopular",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
