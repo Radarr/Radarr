@@ -57,10 +57,12 @@
   flex: 0 0 115px;
 }
 
+.isTrending,
+.isPopular,
 .isRecommendation {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
-  flex: 0 0 50px;
+  flex: 0 0 30px;
 }
 
 .actions {

@@ -89,6 +89,20 @@ export const defaultState = {
       isModifiable: false
     },
     {
+      name: 'isTrending',
+      columnLabel: 'Trending',
+      isSortable: true,
+      isVisible: true,
+      isModifiable: false
+    },
+    {
+      name: 'isPopular',
+      columnLabel: 'Popular',
+      isSortable: true,
+      isVisible: true,
+      isModifiable: false
+    },
+    {
       name: 'sortTitle',
       label: () => translate('MovieTitle'),
       isSortable: true,
@@ -266,6 +280,28 @@ export const defaultState = {
       key: 'all',
       label: () => translate('All'),
       filters: []
+    },
+    {
+      key: 'popular',
+      label: 'Popular',
+      filters: [
+        {
+          key: 'isPopular',
+          value: true,
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
+      key: 'trending',
+      label: 'Trending',
+      filters: [
+        {
+          key: 'isTrending',
+          value: true,
+          type: filterTypes.EQUAL
+        }
+      ]
     },
     {
       key: 'newNotExcluded',
@@ -454,6 +490,18 @@ export const defaultState = {
     {
       name: 'isRecommendation',
       label: 'Recommended',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.BOOL
+    },
+    {
+      name: 'isTrending',
+      label: 'Trending',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.BOOL
+    },
+    {
+      name: 'isPopular',
+      label: 'Popular',
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.BOOL
     }

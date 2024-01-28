@@ -7,7 +7,9 @@ interface CssExports {
   'digitalRelease': string;
   'genres': string;
   'inCinemas': string;
+  'isPopular': string;
   'isRecommendation': string;
+  'isTrending': string;
   'lists': string;
   'originalLanguage': string;
   'physicalRelease': string;

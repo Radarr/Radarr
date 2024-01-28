@@ -23,6 +23,7 @@ import {
 import {
   faArrowCircleLeft as fasArrowCircleLeft,
   faArrowCircleRight as fasArrowCircleRight,
+  faArrowTrendUp as fasArrowTrendUp,
   faAsterisk as fasAsterisk,
   faBackward as fasBackward,
   faBan as fasBan,
@@ -233,6 +234,7 @@ export const TAGS = fasTags;
 export const TBA = fasQuestionCircle;
 export const TEST = fasVial;
 export const TRANSLATE = fasLanguage;
+export const TRENDING = fasArrowTrendUp;
 export const UNGROUP = farObjectUngroup;
 export const UNKNOWN = fasQuestion;
 export const UNMONITORED = farBookmark;
