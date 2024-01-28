@@ -326,13 +326,13 @@ namespace NzbDrone.Core.Movies
                     recommendations = conn.Query<int>(@"SELECT DISTINCT ""Rec"" FROM (
                                                     SELECT DISTINCT ""Rec"" FROM
                                                     (
-                                                    SELECT DISTINCT CAST(""value"" AS INT) AS ""Rec"" FROM ""MovieMetadata"", json_array_elements_text((""MovieMetadata"".""Recommendations"")::json)
+                                                    SELECT DISTINCT CAST(""value"" AS INT) AS ""Rec"" FROM ""MovieMetadata"" JOIN ""Movies"" ON ""Movies"".""MovieMetadataId"" == ""MovieMetadata"".""Id"", json_array_elements_text((""MovieMetadata"".""Recommendations"")::json)
                                                     WHERE CAST(""value"" AS INT) NOT IN (SELECT ""TmdbId"" FROM ""MovieMetadata"" union SELECT ""TmdbId"" from ""ImportExclusions"" as sub1) LIMIT 10
                                                     ) as sub2
                                                     UNION
                                                     SELECT ""Rec"" FROM
                                                     (
-                                                    SELECT CAST(""value"" AS INT) AS ""Rec"" FROM ""MovieMetadata"", json_array_elements_text((""MovieMetadata"".""Recommendations"")::json)
+                                                    SELECT CAST(""value"" AS INT) AS ""Rec"" FROM ""MovieMetadata"" JOIN ""Movies"" ON ""Movies"".""MovieMetadataId"" == ""MovieMetadata"".""Id"", json_array_elements_text((""MovieMetadata"".""Recommendations"")::json)
                                                     WHERE CAST(""value"" AS INT) NOT IN (SELECT ""TmdbId"" FROM ""MovieMetadata"" union SELECT ""TmdbId"" from ""ImportExclusions"" as sub2)
                                                     GROUP BY ""Rec"" ORDER BY count(*) DESC LIMIT 120
                                                     ) as sub4
@@ -344,13 +344,15 @@ namespace NzbDrone.Core.Movies
                     recommendations = conn.Query<int>(@"SELECT DISTINCT ""Rec"" FROM (
                                                     SELECT DISTINCT ""Rec"" FROM
                                                     (
-                                                    SELECT DISTINCT CAST(""j"".""value"" AS INT) AS ""Rec"" FROM ""MovieMetadata"" CROSS JOIN json_each(""MovieMetadata"".""Recommendations"") AS ""j""
+                                                    SELECT DISTINCT CAST(""j"".""value"" AS INT) AS ""Rec"" FROM ""MovieMetadata"" JOIN ""Movies"" ON ""Movies"".""MovieMetadataId"" == ""MovieMetadata"".""Id""
+                                                    CROSS JOIN json_each(""MovieMetadata"".""Recommendations"") AS ""j""
                                                     WHERE ""Rec"" NOT IN (SELECT ""TmdbId"" FROM ""MovieMetadata"" union SELECT ""TmdbId"" from ""ImportExclusions"") LIMIT 10
                                                     )
                                                     UNION
                                                     SELECT ""Rec"" FROM
                                                     (
-                                                    SELECT CAST(""j"".""value"" AS INT) AS ""Rec"" FROM ""MovieMetadata"" CROSS JOIN json_each(""MovieMetadata"".""Recommendations"") AS ""j""
+                                                    SELECT CAST(""j"".""value"" AS INT) AS ""Rec"" FROM ""MovieMetadata"" JOIN ""Movies"" ON ""Movies"".""MovieMetadataId"" == ""MovieMetadata"".""Id""
+                                                    CROSS JOIN json_each(""MovieMetadata"".""Recommendations"") AS ""j""
                                                     WHERE ""Rec"" NOT IN (SELECT ""TmdbId"" FROM ""MovieMetadata"" union SELECT ""TmdbId"" from ""ImportExclusions"")
                                                     GROUP BY ""Rec"" ORDER BY count(*) DESC LIMIT 120
                                                     )
