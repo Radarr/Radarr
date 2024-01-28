@@ -12,7 +12,9 @@ interface CssExports {
   'externalLinks': string;
   'genres': string;
   'inCinemas': string;
+  'isPopular': string;
   'isRecommendation': string;
+  'isTrending': string;
   'lists': string;
   'originalLanguage': string;
   'physicalRelease': string;
@@ -21,6 +23,7 @@ interface CssExports {
   'runtime': string;
   'sortTitle': string;
   'status': string;
+  'statusIcon': string;
   'studio': string;
 }
 export const cssExports: CssExports;

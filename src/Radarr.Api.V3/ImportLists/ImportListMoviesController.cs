@@ -54,7 +54,7 @@ namespace Radarr.Api.V3.ImportLists
         }
 
         [HttpGet]
-        public object GetDiscoverMovies(bool includeRecommendations = false)
+        public object GetDiscoverMovies(bool includeRecommendations = false, bool includeTrending = false, bool includePopular = false)
         {
             var movieLanguage = (Language)_configService.MovieInfoLanguage;
 
@@ -77,6 +77,17 @@ namespace Radarr.Api.V3.ImportLists
                 realResults.ForEach(x => x.IsRecommendation = true);
             }
 
+            // Add TMDB Trending
+            var trendingResults = _movieInfo.GetTrendingMovies();
+
+            realResults.AddRange(MapToResource(trendingResults.Select(m => new Movie { MovieMetadata = m }).Where(x => x != null), movieLanguage, true));
+
+            // Add TMDB Popular
+            var popularResults = _movieInfo.GetPopularMovies();
+
+            realResults.AddRange(MapToResource(popularResults.Select(m => new Movie { MovieMetadata = m }).Where(x => x != null), movieLanguage, false, true));
+
+            // Add List Movies
             var listMovies = MapToResource(_listMovieService.GetAllForLists(_importListFactory.Enabled().Select(x => x.Definition.Id).ToList()), movieLanguage).ToList();
 
             realResults.AddRange(listMovies);
@@ -92,6 +103,8 @@ namespace Radarr.Api.V3.ImportLists
                 movie.IsExcluded = listExclusions.Any(e => e.TmdbId == movie.TmdbId);
                 movie.IsExisting = existingTmdbIds.Any(e => e == movie.TmdbId);
                 movie.IsRecommendation = x.Any(m => m.IsRecommendation);
+                movie.IsPopular = x.Any(m => m.IsPopular);
+                movie.IsTrending = x.Any(m => m.IsTrending);
 
                 return movie;
             }).ToList();
@@ -107,7 +120,7 @@ namespace Radarr.Api.V3.ImportLists
             return _addMovieService.AddMovies(newMovies, true).ToResource(0);
         }
 
-        private IEnumerable<ImportListMoviesResource> MapToResource(IEnumerable<Movie> movies, Language language)
+        private IEnumerable<ImportListMoviesResource> MapToResource(IEnumerable<Movie> movies, Language language, bool isTrending = false, bool isPopular = false)
         {
             // Avoid calling for naming spec on every movie in filenamebuilder
             var namingConfig = _namingService.GetConfig();
@@ -127,6 +140,8 @@ namespace Radarr.Api.V3.ImportLists
                 resource.Title = translation?.Title ?? resource.Title;
                 resource.Overview = translation?.Overview ?? resource.Overview;
                 resource.Folder = _fileNameBuilder.GetMovieFolder(currentMovie, namingConfig);
+                resource.IsTrending = isTrending;
+                resource.IsPopular = isPopular;
 
                 yield return resource;
             }

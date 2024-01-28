@@ -70,6 +70,34 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return new HashSet<int>(response.Resource);
         }
 
+        public List<MovieMetadata> GetTrendingMovies()
+        {
+            var request = _radarrMetadata.Create()
+                .SetSegment("route", "list/tmdb/trending")
+                .Build();
+
+            request.AllowAutoRedirect = true;
+            request.SuppressHttpError = true;
+
+            var response = _httpClient.Get<List<MovieResource>>(request);
+
+            return response.Resource.DistinctBy(x => x.TmdbId).Select(MapMovie).ToList();
+        }
+
+        public List<MovieMetadata> GetPopularMovies()
+        {
+            var request = _radarrMetadata.Create()
+                .SetSegment("route", "list/tmdb/popular")
+                .Build();
+
+            request.AllowAutoRedirect = true;
+            request.SuppressHttpError = true;
+
+            var response = _httpClient.Get<List<MovieResource>>(request);
+
+            return response.Resource.DistinctBy(x => x.TmdbId).Select(MapMovie).ToList();
+        }
+
         public Tuple<MovieMetadata, List<Credit>> GetMovieInfo(int tmdbId)
         {
             var httpRequest = _radarrMetadata.Create()

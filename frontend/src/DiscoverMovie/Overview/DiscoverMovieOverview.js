@@ -97,6 +97,8 @@ class DiscoverMovieOverview extends Component {
       isExisting,
       isExcluded,
       isRecommendation,
+      isPopular,
+      isTrending,
       isSelected,
       overviewOptions,
       ...otherProps
@@ -214,6 +216,26 @@ class DiscoverMovieOverview extends Component {
                   null
               }
 
+              {
+                isPopular ?
+                  <Label
+                    kind={kinds.INFO}
+                  >
+                    {translate('Popular')}
+                  </Label> :
+                  null
+              }
+
+              {
+                isTrending ?
+                  <Label
+                    kind={kinds.INFO}
+                  >
+                    {translate('Trending')}
+                  </Label> :
+                  null
+              }
+
               <ImportListListConnector
                 lists={lists}
               />
@@ -283,6 +305,8 @@ DiscoverMovieOverview.propTypes = {
   isExisting: PropTypes.bool.isRequired,
   isExcluded: PropTypes.bool.isRequired,
   isRecommendation: PropTypes.bool.isRequired,
+  isPopular: PropTypes.bool.isRequired,
+  isTrending: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
   lists: PropTypes.arrayOf(PropTypes.number).isRequired,
   onSelectedChange: PropTypes.func.isRequired
