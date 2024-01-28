@@ -46,7 +46,7 @@ class ExtraFileTableContent extends Component {
         {
           !items.length &&
             <div className={styles.blankpad}>
-              No extra files to manage.
+              {translate('NoExtraFilesToManage')}
             </div>
         }
 
