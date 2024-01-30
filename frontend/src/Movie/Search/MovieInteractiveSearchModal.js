@@ -8,6 +8,7 @@ function MovieInteractiveSearchModal(props) {
   const {
     isOpen,
     movieId,
+    movieTitle,
     onModalClose
   } = props;
 
@@ -20,6 +21,7 @@ function MovieInteractiveSearchModal(props) {
     >
       <MovieInteractiveSearchModalContent
         movieId={movieId}
+        movieTitle={movieTitle}
         onModalClose={onModalClose}
       />
     </Modal>
@@ -29,6 +31,7 @@ function MovieInteractiveSearchModal(props) {
 MovieInteractiveSearchModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   movieId: PropTypes.number.isRequired,
+  movieTitle: PropTypes.string,
   onModalClose: PropTypes.func.isRequired
 };
 

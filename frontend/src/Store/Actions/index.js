@@ -28,6 +28,7 @@ import * as rootFolders from './rootFolderActions';
 import * as settings from './settingsActions';
 import * as system from './systemActions';
 import * as tags from './tagActions';
+import * as wanted from './wantedActions';
 
 export default [
   addMovie,
@@ -59,5 +60,6 @@ export default [
   movieCredits,
   settings,
   system,
-  tags
+  tags,
+  wanted
 ];

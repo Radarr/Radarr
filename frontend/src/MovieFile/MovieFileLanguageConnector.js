@@ -8,7 +8,7 @@ function createMapStateToProps() {
     createMovieFileSelector(),
     (movieFile) => {
       return {
-        language: movieFile ? movieFile.language : undefined
+        languages: movieFile ? movieFile.languages : undefined
       };
     }
   );
