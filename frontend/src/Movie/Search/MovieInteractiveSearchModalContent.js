@@ -12,13 +12,17 @@ import translate from 'Utilities/String/translate';
 function MovieInteractiveSearchModalContent(props) {
   const {
     movieId,
+    movieTitle,
     onModalClose
   } = props;
 
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {translate('InteractiveSearchModalHeader')}
+        {movieTitle === undefined ?
+          translate('InteractiveSearchModalHeader') :
+          translate('InteractiveSearchModalHeaderTitle', { title: movieTitle })
+        }
       </ModalHeader>
 
       <ModalBody scrollDirection={scrollDirections.BOTH}>
@@ -38,6 +42,7 @@ function MovieInteractiveSearchModalContent(props) {
 
 MovieInteractiveSearchModalContent.propTypes = {
   movieId: PropTypes.number.isRequired,
+  movieTitle: PropTypes.string,
   onModalClose: PropTypes.func.isRequired
 };
 

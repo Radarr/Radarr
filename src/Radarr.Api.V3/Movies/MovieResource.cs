@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
@@ -56,6 +57,7 @@ namespace Radarr.Api.V3.Movies
 
         // Compatibility
         public bool? HasFile { get; set; }
+        public int MovieFileId { get; set; }
 
         // Editing Only
         public bool Monitored { get; set; }
@@ -80,6 +82,10 @@ namespace Radarr.Api.V3.Movies
         public MovieCollectionResource Collection { get; set; }
         public float Popularity { get; set; }
         public MovieStatisticsResource Statistics { get; set; }
+
+        // Hiding this so people don't think its usable (only used to set the initial state)
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public bool Grabbed { get; set; }
     }
 
     public static class MovieResourceMapper
@@ -117,6 +123,8 @@ namespace Radarr.Api.V3.Movies
 
                 Year = model.Year,
                 SecondaryYear = model.MovieMetadata.Value.SecondaryYear,
+
+                MovieFileId = model.MovieFileId,
 
                 Path = model.Path,
                 QualityProfileId = model.QualityProfileId,

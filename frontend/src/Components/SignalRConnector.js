@@ -244,6 +244,26 @@ class SignalRConnector extends Component {
     this.props.dispatchSetVersion({ version });
   };
 
+  handleWantedCutoff = (body) => {
+    if (body.action === 'updated') {
+      this.props.dispatchUpdateItem({
+        section: 'wanted.cutoffUnmet',
+        updateOnly: true,
+        ...body.resource
+      });
+    }
+  };
+
+  handleWantedMissing = (body) => {
+    if (body.action === 'updated') {
+      this.props.dispatchUpdateItem({
+        section: 'wanted.missing',
+        updateOnly: true,
+        ...body.resource
+      });
+    }
+  };
+
   handleSystemTask = () => {
     this.props.dispatchFetchCommands();
   };

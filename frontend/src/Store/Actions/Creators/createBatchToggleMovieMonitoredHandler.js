@@ -1,29 +1,29 @@
 import createAjaxRequest from 'Utilities/createAjaxRequest';
-import updateEpisodes from 'Utilities/Episode/updateEpisodes';
+import updateMovies from 'Utilities/Movie/updateMovies';
 import getSectionState from 'Utilities/State/getSectionState';
 
-function createBatchToggleEpisodeMonitoredHandler(section, fetchHandler) {
+function createBatchToggleMovieMonitoredHandler(section, fetchHandler) {
   return function(getState, payload, dispatch) {
     const {
-      episodeIds,
+      movieIds,
       monitored
     } = payload;
 
     const state = getSectionState(getState(), section, true);
 
-    dispatch(updateEpisodes(section, state.items, episodeIds, {
+    dispatch(updateMovies(section, state.items, movieIds, {
       isSaving: true
     }));
 
     const promise = createAjaxRequest({
-      url: '/episode/monitor',
+      url: '/movie/editor',
       method: 'PUT',
-      data: JSON.stringify({ episodeIds, monitored }),
+      data: JSON.stringify({ movieIds, monitored }),
       dataType: 'json'
     }).request;
 
     promise.done(() => {
-      dispatch(updateEpisodes(section, state.items, episodeIds, {
+      dispatch(updateMovies(section, state.items, movieIds, {
         isSaving: false,
         monitored
       }));
@@ -32,11 +32,11 @@ function createBatchToggleEpisodeMonitoredHandler(section, fetchHandler) {
     });
 
     promise.fail(() => {
-      dispatch(updateEpisodes(section, state.items, episodeIds, {
+      dispatch(updateMovies(section, state.items, movieIds, {
         isSaving: false
       }));
     });
   };
 }
 
-export default createBatchToggleEpisodeMonitoredHandler;
+export default createBatchToggleMovieMonitoredHandler;
