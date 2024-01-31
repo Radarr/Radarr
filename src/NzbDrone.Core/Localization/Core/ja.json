@@ -690,7 +690,7 @@
     "Qualities": "品質",
     "Quality": "品質",
     "QualityDefinitions": "品質の定義",
-    "QualityLimitsHelpText": "制限は、ムービーの実行時間に合わせて自動的に調整されます。",
+    "QualityLimitsMovieRuntimeHelpText": "制限は、ムービーの実行時間に合わせて自動的に調整されます。",
     "QualitySettingsSummary": "品質のサイズと命名",
     "Queue": "キュー",
     "SupportedIndexers": "{appName}は、Newznab標準を使用するすべてのインデクサー、および以下にリストされている他のインデクサーをサポートします。",

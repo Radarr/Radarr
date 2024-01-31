@@ -710,7 +710,7 @@
     "Qualities": "Qualitats",
     "QualitiesHelpText": "Les qualitats més altes a la llista són més preferides encara que no es comproven. Les qualitats dins d'un mateix grup són iguals. Només es volen qualitats verificades",
     "QualityDefinitions": "Definicions de qualitat",
-    "QualityLimitsHelpText": "Els límits s'ajusten automàticament per al temps d'execució de la pel·lícula.",
+    "QualityLimitsMovieRuntimeHelpText": "Els límits s'ajusten automàticament per al temps d'execució de la pel·lícula.",
     "QueueIsEmpty": "La cua està buida",
     "QuickImport": "Mou automàticament",
     "CalendarFeed": "Canal del calendari {appName}",

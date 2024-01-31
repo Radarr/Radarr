@@ -712,7 +712,7 @@
     "Qualities": "Cechy",
     "Quality": "Jakość",
     "QualityDefinitions": "Definicje jakości",
-    "QualityLimitsHelpText": "Limity są automatycznie dostosowywane do czasu odtwarzania filmu.",
+    "QualityLimitsMovieRuntimeHelpText": "Limity są automatycznie dostosowywane do czasu odtwarzania filmu.",
     "QualitySettingsSummary": "Jakościowe rozmiary i nazewnictwo",
     "Queue": "Kolejka",
     "Ratings": "Oceny",

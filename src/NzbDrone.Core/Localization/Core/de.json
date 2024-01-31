@@ -824,7 +824,7 @@
     "CalendarFeed": "{appName} Kalender Feed",
     "QueueIsEmpty": "Die Warteschlange ist leer",
     "QualityProfileInUseMovieListCollection": "Ein Qualitätsprofil mit zugeordneten Filmen, Listen oder Sammlungen kann nicht gelöscht werden",
-    "QualityLimitsHelpText": "Limitierungen werden automatisch an die Filmlänge angepasst.",
+    "QualityLimitsMovieRuntimeHelpText": "Limitierungen werden automatisch an die Filmlänge angepasst.",
     "QualitiesHelpText": "Qualitätsprofile oben sind mehr bevorzugt, auch wenn diese nicht angehakt sind. Profile in einer Gruppe sind gleichgestellt. Nur ausgewählte werden gesucht",
     "Qualities": "Qualitäten",
     "PrioritySettings": "Priorität: {0}",

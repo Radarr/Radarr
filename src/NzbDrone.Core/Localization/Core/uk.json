@@ -283,7 +283,7 @@
     "ProxyPasswordHelpText": "Вам потрібно лише ввести ім’я користувача та пароль, якщо вони потрібні. В іншому випадку залиште їх порожніми.",
     "PublishedDate": "Дата публікації",
     "QualityDefinitions": "Визначення якості",
-    "QualityLimitsHelpText": "Обмеження автоматично регулюються для тривалості фільму.",
+    "QualityLimitsMovieRuntimeHelpText": "Обмеження автоматично регулюються для тривалості фільму.",
     "RemotePathMappingCheckFilesGenericPermissions": "Завантажте файли звітів клієнта {downloadClientName} в {path}, але {appName} не бачить цей каталог. Можливо, вам знадобиться налаштувати дозволи для папки.",
     "RescanMovieFolderAfterRefresh": "Перескануйте папку фільму після оновлення",
     "Reset": "Скинути",

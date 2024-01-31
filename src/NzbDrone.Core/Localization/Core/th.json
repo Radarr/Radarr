@@ -752,7 +752,7 @@
     "PublishedDate": "วันที่เผยแพร่",
     "Qualities": "คุณภาพ",
     "Quality": "คุณภาพ",
-    "QualityLimitsHelpText": "ขีด จำกัด จะถูกปรับโดยอัตโนมัติสำหรับรันไทม์ของภาพยนตร์",
+    "QualityLimitsMovieRuntimeHelpText": "ขีด จำกัด จะถูกปรับโดยอัตโนมัติสำหรับรันไทม์ของภาพยนตร์",
     "Queue": "คิว",
     "SupportedIndexers": "{appName} รองรับตัวสร้างดัชนีใด ๆ ที่ใช้มาตรฐาน Newznab รวมถึงดัชนีอื่น ๆ ที่แสดงด้านล่าง",
     "SupportedCustomConditions": "{appName} รองรับเงื่อนไขที่กำหนดเองกับคุณสมบัติการเปิดตัวด้านล่าง",

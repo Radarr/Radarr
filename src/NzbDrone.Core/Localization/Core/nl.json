@@ -882,7 +882,7 @@
     "CalendarFeed": "{appName} kalender feed",
     "QueueIsEmpty": "Wachtrij is leeg",
     "QualityProfileInUseMovieListCollection": "Kan een kwaliteitsprofiel dat aan een film, lijst, of collectie is gekoppeld niet verwijderen",
-    "QualityLimitsHelpText": "Limieten zijn automatisch aangepast voor de tijdsduur van de film.",
+    "QualityLimitsMovieRuntimeHelpText": "Limieten zijn automatisch aangepast voor de tijdsduur van de film.",
     "QualitiesHelpText": "Kwaliteiten hoger in de lijst krijgen meer voorkeur. Kwaliteiten in dezelfde groep zijn gelijk. Enkel geselecteerde kwaliteiten zijn gewenst",
     "Qualities": "Kwaliteiten",
     "ProcessingFolders": "Mappen Verwerken",

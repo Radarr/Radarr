@@ -951,7 +951,7 @@
     "QualitiesHelpText": "即使未选中，列表中的质量排序越高优先级也越高。同组内的质量优先级相同。质量只有选中才标记为需要",
     "DownloadPropersAndRepacksHelpTextCustomFormat": "使用“不喜欢”按Propers / Repacks中的自定义格式分数排序",
     "LookingForReleaseProfiles1": "寻找发行档案？尝试",
-    "QualityLimitsHelpText": "影片运行时会自动调整限制。",
+    "QualityLimitsMovieRuntimeHelpText": "影片运行时会自动调整限制。",
     "QualitySettingsSummary": "质量尺寸和命名",
     "RetentionHelpText": "仅限Usenet：设置为零以设置无限保留",
     "TorrentDelayHelpText": "延迟几分钟等待获取洪流",

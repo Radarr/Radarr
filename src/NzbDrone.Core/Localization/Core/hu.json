@@ -898,7 +898,7 @@
     "CalendarFeed": "{appName} Naptár Feed",
     "QueueIsEmpty": "A várakozási sor üres",
     "QualityProfileInUseMovieListCollection": "A filmhez, listához vagy gyűjteményhez csatolt minőségi profil nem törölhető",
-    "QualityLimitsHelpText": "A korlátozások automatikusan beállítódnak a film hossza szerint.",
+    "QualityLimitsMovieRuntimeHelpText": "A korlátozások automatikusan beállítódnak a film hossza szerint.",
     "QualitiesHelpText": "A listán magasabb minőségek előnyösebbek, még akkor is, ha nincs bejelölve. Ugyanazon csoporton belül a tulajdonságok egyenlőek. Csak ellenőrzött minőségek szükségesek",
     "Qualities": "Minőségek",
     "PrioritySettings": "Prioritás: {0}",

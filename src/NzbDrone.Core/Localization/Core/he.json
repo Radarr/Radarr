@@ -702,7 +702,7 @@
     "Qualities": "איכויות",
     "Quality": "איכות",
     "QualityDefinitions": "הגדרות איכות",
-    "QualityLimitsHelpText": "המגבלות מותאמות אוטומטית לזמן הריצה של הסרט.",
+    "QualityLimitsMovieRuntimeHelpText": "המגבלות מותאמות אוטומטית לזמן הריצה של הסרט.",
     "QualitySettingsSummary": "מידות איכות ושמות",
     "Queue": "תוֹר",
     "SupportedIndexers": "{appName} תומך בכל אינדקס שמשתמש בתקן Newznab, כמו גם באינדקסים אחרים המפורטים להלן.",

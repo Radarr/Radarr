@@ -80,7 +80,7 @@
     "PreviewRename": "Náhled Přejmenovat",
     "PreviewRenameHelpText": "Tip: Chcete-li zobrazit náhled přejmenování ... vyberte možnost Zrušit, klikněte na libovolný název filmu a použijte ikonu",
     "ProxyCheckFailedToTestMessage": "Nepodařilo se otestovat proxy: {url}",
-    "QualityLimitsHelpText": "Limity se automaticky upraví podle doby běhu filmu.",
+    "QualityLimitsMovieRuntimeHelpText": "Limity se automaticky upraví podle doby běhu filmu.",
     "SupportedIndexers": "{appName} podporuje jakýkoli indexer, který používá standard Newznab, stejně jako další indexery uvedené níže.",
     "SupportedCustomConditions": "{appName} podporuje vlastní podmínky oproti níže uvedeným vlastnostem vydání.",
     "RecentFolders": "Nedávné složky",

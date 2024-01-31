@@ -863,7 +863,7 @@
     "ProxyUsernameHelpText": "Gerekirse yalnızca bir kullanıcı adı ve şifre girmeniz gerekir. Aksi takdirde boş bırakın.",
     "PublishedDate": "yayınlanma tarihi",
     "Qualities": "Nitelikler",
-    "QualityLimitsHelpText": "Sınırlar, film çalışma süresine göre otomatik olarak ayarlanır.",
+    "QualityLimitsMovieRuntimeHelpText": "Sınırlar, film çalışma süresine göre otomatik olarak ayarlanır.",
     "SupportedIndexers": "{appName}, Newznab standardını kullanan tüm indeksleyicileri ve aşağıda listelenen diğer indeksleyicileri destekler.",
     "SupportedCustomConditions": "{appName}, aşağıdaki sürüm özelliklerine göre özel koşulları destekler.",
     "RecentChanges": "Son değişiklikler",

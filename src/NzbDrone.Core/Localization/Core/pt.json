@@ -910,7 +910,7 @@
     "PreviewRenameHelpText": "Dica: para pré-visualizar uma renomeação, selecione \"Cancelar\" e clique em qualquer título de filme e use o(a)",
     "PrioritySettings": "Prioridade: {0}",
     "Qualities": "Qualidades",
-    "QualityLimitsHelpText": "Os limites são ajustados automaticamente para o tempo de execução do filme.",
+    "QualityLimitsMovieRuntimeHelpText": "Os limites são ajustados automaticamente para o tempo de execução do filme.",
     "RecentChanges": "Mudanças recentes",
     "RefreshLists": "Atualizar listas",
     "RemoveMovieAndDeleteFiles": "Remover filme e eliminar ficheiros",

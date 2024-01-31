@@ -911,7 +911,7 @@
     "PreviewRenameHelpText": "Conseil : pour prévisualiser un changement de nom... Sélectionnez 'Annuler', puis cliquez sur n'importe quel titre de film et utilisez le",
     "PrioritySettings": "Priorité : {priority}",
     "Qualities": "Qualités",
-    "QualityLimitsHelpText": "Les limites sont automatiquement ajustées en fonction de la durée du film.",
+    "QualityLimitsMovieRuntimeHelpText": "Les limites sont automatiquement ajustées en fonction de la durée du film.",
     "RecentChanges": "Changements récents",
     "RefreshLists": "Actualiser les listes",
     "RemoveMovieAndDeleteFiles": "Supprimer le film et supprimer les fichiers",

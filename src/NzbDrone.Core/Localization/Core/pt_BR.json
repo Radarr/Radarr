@@ -800,7 +800,7 @@
     "QualityProfiles": "Perfis de Qualidade",
     "QualityProfileInUseMovieListCollection": "Não é possível excluir um perfil de qualidade anexado a um filme, lista ou coleção",
     "QualityProfile": "Perfil de qualidade",
-    "QualityLimitsHelpText": "Os limites são ajustados automaticamente para o tempo de execução do filme.",
+    "QualityLimitsMovieRuntimeHelpText": "Os limites são ajustados automaticamente para o tempo de execução do filme.",
     "QualityDefinitions": "Definições de Qualidade",
     "Quality": "Qualidade",
     "QualitiesHelpText": "As qualidades mais altas na lista são mais preferidas, mesmo que não sejam verificadas. As qualidades dentro do mesmo grupo são iguais. Somente qualidades verificadas são desejadas",

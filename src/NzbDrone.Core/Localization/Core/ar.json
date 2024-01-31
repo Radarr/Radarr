@@ -173,7 +173,7 @@
     "QualityProfiles": "ملامح الجودة",
     "QualityProfileInUseMovieListCollection": "لا يمكن حذف ملف تعريف الجودة المرفق بفيلم",
     "QualityProfile": "ملف الجودة",
-    "QualityLimitsHelpText": "يتم ضبط الحدود تلقائيًا لوقت تشغيل الفيلم.",
+    "QualityLimitsMovieRuntimeHelpText": "يتم ضبط الحدود تلقائيًا لوقت تشغيل الفيلم.",
     "QualityDefinitions": "تعريفات الجودة",
     "Quality": "جودة",
     "QualitiesHelpText": "الصفات الأعلى في القائمة هي الأفضل. الصفات داخل نفس المجموعة متساوية. فقط الصفات المحددة مطلوبة",

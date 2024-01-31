@@ -697,7 +697,7 @@
     "ProxyUsernameHelpText": "Du skal kun indtaste et brugernavn og en adgangskode, hvis der kræves et. Lad dem være tomme ellers.",
     "Qualities": "Kvaliteter",
     "Quality": "Kvalitet",
-    "QualityLimitsHelpText": "Grænser justeres automatisk for filmens kørselstid.",
+    "QualityLimitsMovieRuntimeHelpText": "Grænser justeres automatisk for filmens kørselstid.",
     "QualitySettingsSummary": "Kvalitetsstørrelser og navngivning",
     "Queue": "Kø",
     "SupportedCustomConditions": "{appName} understøtter brugerdefinerede betingelser mod frigivelsesegenskaberne nedenfor.",

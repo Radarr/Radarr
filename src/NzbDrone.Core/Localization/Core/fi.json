@@ -696,7 +696,7 @@
     "Qualities": "Ominaisuudet",
     "Quality": "Laatu",
     "QualityDefinitions": "Laatumääritykset",
-    "QualityLimitsHelpText": "Rajoitukset suhteutetaan automaattisesti elokuvan kestoon.",
+    "QualityLimitsMovieRuntimeHelpText": "Rajoitukset suhteutetaan automaattisesti elokuvan kestoon.",
     "QualitySettingsSummary": "Laatukoot ja nimeäminen",
     "SupportedIndexers": "{appName} tukee Newznab- ja Torznab-yhteensopivien tietolähteiden ohella myös monia muita alla lueteltuja tietolähteitä.",
     "SupportedCustomConditions": "{appName} tukee mukautettuja ehtoja perustuen julkaisujen alla oleviin ominaisuuksiin.",

@@ -137,7 +137,7 @@
     "ProxyCheckFailedToTestMessage": "Không thể kiểm tra proxy: {url}",
     "Quality": "Chất lượng",
     "QualityDefinitions": "Định nghĩa chất lượng",
-    "QualityLimitsHelpText": "Các giới hạn được tự động điều chỉnh cho thời gian chạy phim.",
+    "QualityLimitsMovieRuntimeHelpText": "Các giới hạn được tự động điều chỉnh cho thời gian chạy phim.",
     "QualitySettingsSummary": "Kích thước chất lượng và cách đặt tên",
     "Queue": "Xếp hàng",
     "SupportedIndexers": "{appName} hỗ trợ bất kỳ trình chỉ mục nào sử dụng tiêu chuẩn Newznab, cũng như các trình chỉ mục khác được liệt kê bên dưới.",

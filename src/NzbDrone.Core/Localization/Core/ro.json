@@ -784,7 +784,7 @@
     "ProxyUsernameHelpText": "Trebuie să introduceți un nume de utilizator și o parolă numai dacă este necesară. Lasă-le necompletate altfel.",
     "PublishedDate": "Data publicării",
     "Qualities": "Calități",
-    "QualityLimitsHelpText": "Limitele sunt ajustate automat pentru durata de rulare a filmului.",
+    "QualityLimitsMovieRuntimeHelpText": "Limitele sunt ajustate automat pentru durata de rulare a filmului.",
     "SupportedIndexers": "{appName} acceptă orice indexer care utilizează standardul Newznab, precum și alți indexatori enumerați mai jos.",
     "SupportedCustomConditions": "{appName} acceptă condiții personalizate împotriva proprietăților de lansare de mai jos.",
     "RecentChanges": "Schimbări recente",

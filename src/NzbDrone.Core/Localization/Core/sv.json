@@ -852,7 +852,7 @@
     "ProxyPasswordHelpText": "Du behöver bara ange ett användarnamn och lösenord om det krävs. Lämna dem tomma annars.",
     "ProxyUsernameHelpText": "Du behöver bara ange ett användarnamn och lösenord om det krävs. Lämna dem tomma annars.",
     "PublishedDate": "Publiceringsdatum",
-    "QualityLimitsHelpText": "Gränserna justeras automatiskt för filmens körtid.",
+    "QualityLimitsMovieRuntimeHelpText": "Gränserna justeras automatiskt för filmens körtid.",
     "SupportedIndexers": "{appName} stöder alla indexerare som använder Newznab-standarden, liksom andra indexerare som anges nedan.",
     "SupportedCustomConditions": "{appName} stöder anpassade villkor mot utgåvoregenskaperna nedan.",
     "ReleaseDates": "Lanseringsdatum",

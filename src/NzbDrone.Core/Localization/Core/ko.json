@@ -699,7 +699,7 @@
     "Qualities": "자질",
     "Quality": "품질",
     "QualityDefinitions": "품질 정의",
-    "QualityLimitsHelpText": "동영상 런타임에 대한 제한이 자동으로 조정됩니다.",
+    "QualityLimitsMovieRuntimeHelpText": "동영상 런타임에 대한 제한이 자동으로 조정됩니다.",
     "QualitySettingsSummary": "품질 크기 및 이름 지정",
     "Queue": "열",
     "SupportedIndexers": "{appName}는 Newznab 표준을 사용하는 모든 인덱서와 아래 나열된 다른 인덱서를 지원합니다.",

@@ -909,7 +909,7 @@
     "PreviewRenameHelpText": "Suggerimento: per visualizzare l'anteprima di una ridenominazione ... seleziona \"Annulla\", quindi fai clic su qualsiasi titolo del film e utilizza il file",
     "PrioritySettings": "Priorità: {0}",
     "Qualities": "Qualità",
-    "QualityLimitsHelpText": "I limiti vengono regolati automaticamente per la durata del film.",
+    "QualityLimitsMovieRuntimeHelpText": "I limiti vengono regolati automaticamente per la durata del film.",
     "RecentChanges": "Cambiamenti recenti",
     "RefreshLists": "Aggiorna elenchi",
     "RemoveMovieAndDeleteFiles": "Rimuovi film ed elimina file",
