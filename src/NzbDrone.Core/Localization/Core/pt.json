@@ -324,8 +324,6 @@
     "PackageVersion": "Versão do pacote",
     "Original": "Original",
     "OpenBrowserOnStart": "Abrir browser ao iniciar",
-    "OnRenameHelpText": "Ao renomear",
-    "OnGrabHelpText": "Ao capturar",
     "NotMonitored": "Não monitorado",
     "NotificationTriggers": "Acionadores de notificação",
     "NotAvailable": "Indisponível",

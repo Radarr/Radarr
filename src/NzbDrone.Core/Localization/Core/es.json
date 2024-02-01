@@ -577,8 +577,6 @@
     "CleanLibraryLevel": "Limpiar el nivel de la librería",
     "BindAddress": "Dirección de Ligado",
     "OpenBrowserOnStart": "Abrir navegador al arrancar",
-    "OnRenameHelpText": "Al Renombrar",
-    "OnGrabHelpText": "Al Capturar",
     "RuntimeFormat": "Formato de Tiempo de ejecución",
     "MovieIsOnImportExclusionList": "La película está en la Lista de Exclusión",
     "WaitingToProcess": "Esperando para Procesar",

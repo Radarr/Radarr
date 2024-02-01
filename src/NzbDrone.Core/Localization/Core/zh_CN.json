@@ -540,7 +540,6 @@
     "OrganizeConfirm": "您确定要在{count}个选中的电影中组织所有文件吗?",
     "OpenThisModal": "打开该模组",
     "OpenBrowserOnStart": "打开浏览器时启动",
-    "OnRenameHelpText": "重命名中",
     "OnRename": "重命名中",
     "OnlyUsenet": "只有usenet",
     "OnlyTorrent": "只有torrent",

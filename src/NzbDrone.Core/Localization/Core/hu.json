@@ -460,8 +460,6 @@
     "Options": "Lehetőségek",
     "OpenThisModal": "Nyissa meg ezt a modált",
     "OpenBrowserOnStart": "Indításkor nyissa meg a böngészőt",
-    "OnRenameHelpText": "Átnevezés alatt",
-    "OnDownloadHelpText": "Importálás alatt",
     "Ok": "Ok",
     "OAuthPopupMessage": "A böngésződ blokkolja az előugró ablakokat",
     "NoUpdatesAreAvailable": "Nem érhetők el frissítések",
