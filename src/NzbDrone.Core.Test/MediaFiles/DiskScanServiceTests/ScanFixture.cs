@@ -178,6 +178,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
                            Path.Combine(_movie.Path, "Scenes", "file7.mkv").AsOsAgnostic(),
                            Path.Combine(_movie.Path, "Shorts", "file8.mkv").AsOsAgnostic(),
                            Path.Combine(_movie.Path, "Trailers", "file9.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Other", "file9.mkv").AsOsAgnostic(),
                            Path.Combine(_movie.Path, "The Count of Monte Cristo (2002) (1080p BluRay x265 10bit Tigole).mkv").AsOsAgnostic(),
                        });
 
