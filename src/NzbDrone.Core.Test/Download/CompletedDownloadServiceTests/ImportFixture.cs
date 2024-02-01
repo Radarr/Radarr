@@ -138,7 +138,7 @@ namespace NzbDrone.Core.Test.Download
                                        new LocalMovie { Path = @"C:\TestPath\Droned.1998.mkv" }, new Rejection("Rejected!")), "Test Failure")
                            });
 
-            _trackedDownload.RemoteMovie.Movie = null;
+            _trackedDownload.RemoteMovie.Movie = new Movie();
 
             Subject.Import(_trackedDownload);
 
