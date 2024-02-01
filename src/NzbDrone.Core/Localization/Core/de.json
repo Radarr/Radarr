@@ -427,8 +427,6 @@
     "NotAvailable": "Nicht verfügbar",
     "NotificationTriggers": "Benachrichtigungs Auslöser",
     "NotMonitored": "Nicht beobachtet",
-    "OnHealthIssueHelpText": "Zustandsproblem",
-    "OnUpgradeHelpText": "Upgrade",
     "OpenBrowserOnStart": "Browser beim Start öffnen",
     "Original": "Orginal",
     "PackageVersion": "Paket Version",

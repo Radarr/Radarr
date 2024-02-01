@@ -88,7 +88,6 @@
     "Authentication": "認証",
     "AuthenticationMethodHelpText": "{appName}にアクセスするにはユーザー名とパスワードが必要です",
     "Component": "成分",
-    "OnUpgradeHelpText": "アップグレード時",
     "Proxy": "プロキシ",
     "MovieTitleHelpText": "除外する映画のタイトル（意味のあるものであれば何でもかまいません）",
     "TestAllIndexers": "すべてのインデクサーをテストする",
