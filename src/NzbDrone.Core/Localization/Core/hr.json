@@ -205,7 +205,6 @@
     "ChmodFolder": "chmod Mapa",
     "ChmodFolderHelpText": "Octal, primjenjeno na dokumentima i mapama tijekom uvoza/promjene imena (bez izvršnih bitova)",
     "ChmodFolderHelpTextWarning": "Ovo jedino radi ako je korisnik koji je pokrenuo {appName} vlasnik datoteke. Bolje je osigurati da klijent za preuzimanje postavi dozvolu ispravno.",
-    "ChmodGroup": "chmod Grupa",
     "ChownGroupHelpText": "Naziv grupe ili gid. Koristite gid za udaljene sustave datoteka.",
     "ChooseAnotherFolder": "Odaberite Drugu Mapu",
     "ChooseImportMode": "Odaberite Način Uvoza",

@@ -75,7 +75,6 @@
     "CheckForFinishedDownloadsInterval": "Se etter intervall for ferdige nedlastinger",
     "ChmodFolder": "chmod mappe",
     "ChmodFolderHelpTextWarning": "Dette fungerer bare hvis brukeren som kjører {appName} er eieren av filen. Det er bedre å sikre at nedlastingsklienten angir tillatelsene riktig.",
-    "ChmodGroup": "chmod Gruppe",
     "ChooseAnotherFolder": "Velg En Annen Mappe",
     "CleanLibraryLevel": "Rengjør biblioteksnivå",
     "Clear": "Klar",
