@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
@@ -15,6 +16,7 @@ namespace NzbDrone.Core.Notifications.Webhook
         public int TmdbId { get; set; }
         public string ImdbId { get; set; }
         public string Overview { get; set; }
+        public IEnumerable<string> Tags { get; set; }
 
         public WebhookMovie()
         {
@@ -30,6 +32,12 @@ namespace NzbDrone.Core.Notifications.Webhook
             TmdbId = movie.TmdbId;
             ImdbId = movie.ImdbId;
             Overview = movie.MovieMetadata.Value.Overview;
+        }
+
+        public WebhookMovie(Movie movie, IEnumerable<string> tags)
+            : this(movie)
+        {
+            Tags = tags;
         }
 
         public WebhookMovie(Movie movie, MovieFile movieFile)

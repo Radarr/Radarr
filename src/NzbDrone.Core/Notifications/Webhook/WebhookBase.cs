@@ -5,6 +5,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Tags;
 using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Notifications.Webhook
@@ -15,12 +16,14 @@ namespace NzbDrone.Core.Notifications.Webhook
         private readonly IConfigFileProvider _configFileProvider;
         private readonly IConfigService _configService;
         protected readonly ILocalizationService _localizationService;
+        private readonly ITagRepository _tagRepository;
 
-        protected WebhookBase(IConfigFileProvider configFileProvider, IConfigService configService, ILocalizationService localizationService)
+        protected WebhookBase(IConfigFileProvider configFileProvider, IConfigService configService, ILocalizationService localizationService, ITagRepository tagRepository)
         {
             _configFileProvider = configFileProvider;
             _configService = configService;
             _localizationService = localizationService;
+            _tagRepository = tagRepository;
         }
 
         protected WebhookGrabPayload BuildOnGrabPayload(GrabMessage message)
@@ -33,7 +36,7 @@ namespace NzbDrone.Core.Notifications.Webhook
                 EventType = WebhookEventType.Grab,
                 InstanceName = _configFileProvider.InstanceName,
                 ApplicationUrl = _configService.ApplicationUrl,
-                Movie = new WebhookMovie(message.Movie),
+                Movie = new WebhookMovie(message.Movie, tags: GetTagLabels(message.Movie)),
                 RemoteMovie = new WebhookRemoteMovie(remoteMovie),
                 Release = new WebhookRelease(quality, remoteMovie),
                 DownloadClient = message.DownloadClientName,
@@ -52,7 +55,7 @@ namespace NzbDrone.Core.Notifications.Webhook
                 EventType = WebhookEventType.Download,
                 InstanceName = _configFileProvider.InstanceName,
                 ApplicationUrl = _configService.ApplicationUrl,
-                Movie = new WebhookMovie(message.Movie),
+                Movie = new WebhookMovie(message.Movie, tags: GetTagLabels(message.Movie)),
                 RemoteMovie = new WebhookRemoteMovie(message.Movie),
                 MovieFile = new WebhookMovieFile(movieFile),
                 Release = new WebhookGrabbedRelease(message.Release),
@@ -83,7 +86,7 @@ namespace NzbDrone.Core.Notifications.Webhook
                 EventType = WebhookEventType.MovieAdded,
                 InstanceName = _configFileProvider.InstanceName,
                 ApplicationUrl = _configService.ApplicationUrl,
-                Movie = new WebhookMovie(movie),
+                Movie = new WebhookMovie(movie, tags: GetTagLabels(movie)),
                 AddMethod = movie.AddOptions.AddMethod
             };
         }
@@ -95,7 +98,7 @@ namespace NzbDrone.Core.Notifications.Webhook
                 EventType = WebhookEventType.MovieFileDelete,
                 InstanceName = _configFileProvider.InstanceName,
                 ApplicationUrl = _configService.ApplicationUrl,
-                Movie = new WebhookMovie(deleteMessage.Movie),
+                Movie = new WebhookMovie(deleteMessage.Movie, tags: GetTagLabels(deleteMessage.Movie)),
                 MovieFile = new WebhookMovieFile(deleteMessage.MovieFile),
                 DeleteReason = deleteMessage.Reason
             };
@@ -108,7 +111,7 @@ namespace NzbDrone.Core.Notifications.Webhook
                 EventType = WebhookEventType.MovieDelete,
                 InstanceName = _configFileProvider.InstanceName,
                 ApplicationUrl = _configService.ApplicationUrl,
-                Movie = new WebhookMovie(deleteMessage.Movie),
+                Movie = new WebhookMovie(deleteMessage.Movie, tags: GetTagLabels(deleteMessage.Movie)),
                 DeletedFiles = deleteMessage.DeletedFiles
             };
 
@@ -127,7 +130,7 @@ namespace NzbDrone.Core.Notifications.Webhook
                 EventType = WebhookEventType.Rename,
                 InstanceName = _configFileProvider.InstanceName,
                 ApplicationUrl = _configService.ApplicationUrl,
-                Movie = new WebhookMovie(movie),
+                Movie = new WebhookMovie(movie, tags: GetTagLabels(movie)),
                 RenamedMovieFiles = renamedFiles.ConvertAll(x => new WebhookRenamedMovieFile(x))
             };
         }
@@ -182,7 +185,7 @@ namespace NzbDrone.Core.Notifications.Webhook
                 EventType = WebhookEventType.ManualInteractionRequired,
                 InstanceName = _configFileProvider.InstanceName,
                 ApplicationUrl = _configService.ApplicationUrl,
-                Movie = new WebhookMovie(message.Movie),
+                Movie = new WebhookMovie(message.Movie, tags: GetTagLabels(message.Movie)),
                 DownloadInfo = new WebhookDownloadClientItem(quality, message.TrackedDownload.DownloadItem),
                 DownloadClient = message.DownloadClientName,
                 DownloadClientType = message.DownloadClientType,
@@ -205,7 +208,8 @@ namespace NzbDrone.Core.Notifications.Webhook
                     Title = "Test Title",
                     Year = 1970,
                     FolderPath = "C:\\testpath",
-                    ReleaseDate = "1970-01-01"
+                    ReleaseDate = "1970-01-01",
+                    Tags = new[] { "test-tag" }
                 },
                 RemoteMovie = new WebhookRemoteMovie
                 {
@@ -224,6 +228,11 @@ namespace NzbDrone.Core.Notifications.Webhook
                     Size = 9999999
                 }
             };
+        }
+
+        private IEnumerable<string> GetTagLabels(Movie movie)
+        {
+            return movie.Tags?.Select(t => _tagRepository.Get(t)?.Label).OrderBy(t => t);
         }
     }
 }
