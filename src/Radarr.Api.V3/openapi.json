@@ -8955,6 +8955,10 @@
             "type": "boolean",
             "nullable": true
           },
+          "searchOnAdd": {
+            "type": "boolean",
+            "nullable": true
+          },
           "qualityProfileId": {
             "type": "integer",
             "format": "int32",
@@ -12924,6 +12928,10 @@
             "nullable": true
           },
           "path": {
+            "type": "string",
+            "nullable": true
+          },
+          "relativePath": {
             "type": "string",
             "nullable": true
           }
