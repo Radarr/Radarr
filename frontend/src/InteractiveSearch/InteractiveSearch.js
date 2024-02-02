@@ -89,18 +89,18 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'releaseWeight',
-    label: React.createElement(Icon, { name: icons.DOWNLOAD }),
-    isSortable: true,
-    fixedSortDirection: sortDirections.ASCENDING,
-    isVisible: true
-  },
-  {
     name: 'rejections',
     label: React.createElement(Icon, {
       name: icons.DANGER,
       title: () => translate('Rejections')
     }),
+    isSortable: true,
+    fixedSortDirection: sortDirections.ASCENDING,
+    isVisible: true
+  },
+  {
+    name: 'releaseWeight',
+    label: React.createElement(Icon, { name: icons.DOWNLOAD }),
     isSortable: true,
     fixedSortDirection: sortDirections.ASCENDING,
     isVisible: true
