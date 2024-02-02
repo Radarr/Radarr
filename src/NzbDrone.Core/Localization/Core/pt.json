@@ -1029,7 +1029,7 @@
     "MonitorMovies": "Monitorizar filmes",
     "NoCollections": "Nenhuma coleção encontrada. Para iniciar, poderás adicionar um novo filme ou importar alguns já existentes",
     "MovieAndCollection": "Filme e Coleção",
-    "CollectionsSelectedInterp": "{0} Coleções Selecionadas",
+    "CountCollectionsSelected": "{count} Coleções Selecionadas",
     "EditCollection": "Editar Coleção",
     "ChooseImportMode": "Selecionar Modo de Importação",
     "InstanceName": "Nome da Instancia",

@@ -1021,7 +1021,7 @@
     "Theme": "Tema",
     "ShowCollectionDetails": "Mostra stato collezione",
     "Waiting": "In attesa",
-    "CollectionsSelectedInterp": "{0} Collezione(i) Selezionate",
+    "CountCollectionsSelected": "{count} Collezione(i) Selezionate",
     "CollectionShowOverviewsHelpText": "Mostra panoramica della collezione",
     "ImdbVotes": "Voti IMDb",
     "ImdbRating": "Valutazione IMDb",

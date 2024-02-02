@@ -1036,7 +1036,7 @@
     "RefreshMonitoredIntervalHelpText": "Как часто обновлять отслеживаемые загрузки с клиентов загрузки, минимум 1 минута",
     "Never": "Никогда",
     "OriginalTitle": "Оригинальное название",
-    "CollectionsSelectedInterp": "{0} коллекция(ий) выбрано",
+    "CountCollectionsSelected": "{count} коллекция(ий) выбрано",
     "UnableToLoadCollections": "Не удалось загрузить коллекции",
     "OnMovieAdded": "Добавлено в фильм",
     "OriginalLanguage": "Язык оригинала",

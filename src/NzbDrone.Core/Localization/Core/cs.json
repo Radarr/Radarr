@@ -1081,7 +1081,7 @@
     "CollectionShowOverviewsHelpText": "Zobrazit přehledy kolekcí",
     "Database": "Databáze",
     "Duration": "Trvání",
-    "CollectionsSelectedInterp": "Vybráno {0} kolekcí",
+    "CountCollectionsSelected": "Vybráno {0} kolekcí",
     "CountImportListsSelected": "{count} vybraných seznamů pro import",
     "CollectionShowDetailsHelpText": "Zobrazit stav a vlastnosti kolekce",
     "AutoTaggingNegateHelpText": "Pokud je zaškrtnuto, pravidlo automatického označování se nepoužije, pokud odpovídá této podmínce {0}.",

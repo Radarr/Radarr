@@ -8,6 +8,7 @@ namespace Radarr.Api.V3.Collections
         public List<int> CollectionIds { get; set; }
         public bool? Monitored { get; set; }
         public bool? MonitorMovies { get; set; }
+        public bool? SearchOnAdd { get; set; }
         public int? QualityProfileId { get; set; }
         public string RootFolderPath { get; set; }
         public MovieStatusType? MinimumAvailability { get; set; }

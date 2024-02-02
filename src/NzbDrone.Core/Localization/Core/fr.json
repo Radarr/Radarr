@@ -1029,7 +1029,7 @@
     "MonitorMovies": "Surveiller les films",
     "NoCollections": "Aucune collection n'a été trouvée. Pour commencer, vous devez ajouter un nouveau film ou importer des films existants",
     "RssSyncIntervalHelpText": "Intervalle en minutes. Régler à zéro pour désactiver (cela arrêtera tous les déclenchements automatiques)",
-    "CollectionsSelectedInterp": "{0} collection(s) sélectionnée(s)",
+    "CountCollectionsSelected": "{count} collection(s) sélectionnée(s)",
     "ChooseImportMode": "Sélectionnez le mode d'importation",
     "CollectionOptions": "Options de collection",
     "CollectionShowDetailsHelpText": "Afficher l'état et les propriétés de la collection",

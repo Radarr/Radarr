@@ -391,7 +391,7 @@
     "CollectionShowOverviewsHelpText": "Mostra la vista general de la col·lecció",
     "CloseCurrentModal": "Tanca el modal actual",
     "CollectionShowDetailsHelpText": "Mostra l'estat i les propietats de la col·lecció",
-    "CollectionsSelectedInterp": "{0} Col·lecció(ns) seleccionades",
+    "CountCollectionsSelected": "{count} Col·lecció(ns) seleccionades",
     "ColonReplacement": "Substitució de dos punts",
     "ColonReplacementFormatHelpText": "Canvieu com {appName} gestiona la substitució de dos punts",
     "Columns": "Columnes",

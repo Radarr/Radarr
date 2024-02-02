@@ -1033,7 +1033,7 @@
     "EditCollection": "Muokkaa kokoelmaa",
     "SearchOnAddCollectionHelpText": "Etsi kokoelman elokuvia, kun ne lisätään kirjastoon.",
     "ChooseImportMode": "Valitse tuontitila",
-    "CollectionsSelectedInterp": "{0} kokoelma(a) on valittu",
+    "CountCollectionsSelected": "{count} kokoelma(a) on valittu",
     "MonitorCollection": "Valvo kokoelmaa",
     "MonitoredCollectionHelpText": "Valvonta lisää kokoelman elokuvat kirjastoon automaattisesti.",
     "MovieAndCollection": "Elokuva ja kokoelma",

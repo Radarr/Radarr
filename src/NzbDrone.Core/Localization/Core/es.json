@@ -1027,7 +1027,7 @@
     "RefreshMonitoredIntervalHelpText": "Cada cuánto actualizar las descargas monitoreadeas desde los clientes de descarga, mínimo 1 minuto",
     "SearchOnAddCollectionHelpText": "Buscar películas en esta colección cuando se añada a la biblioteca",
     "TotalMovies": "Películas Totales",
-    "CollectionsSelectedInterp": "{0} Colección(es) seleccionada(s)",
+    "CountCollectionsSelected": "{count} Colección(es) seleccionada(s)",
     "EditCollection": "Editar Colección",
     "MonitorCollection": "Monitorear Colección",
     "MonitoredCollectionHelpText": "Monitorear para que las películas de esta colección se añadan automáticamente a la biblioteca",

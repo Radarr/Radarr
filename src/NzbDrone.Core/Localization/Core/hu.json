@@ -1039,7 +1039,7 @@
     "ScrollMovies": "Filmek görgetése",
     "ShowCollectionDetails": "Gyűjtemény állapotának megjelenítése",
     "ShowOverview": "Áttekintés megjelenítése",
-    "CollectionsSelectedInterp": "{0} Gyűjtemény(ek) kiválasztva",
+    "CountCollectionsSelected": "{count} Gyűjtemény(ek) kiválasztva",
     "MonitorCollection": "Gyűjtemény monitorozása",
     "SearchOnAddCollectionHelpText": "Ebben a gyűjteményben található filmek keresése, a hozzáadás adás után",
     "UnableToLoadCollections": "Nem sikerült betölteni a gyűjteményeket",

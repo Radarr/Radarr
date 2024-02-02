@@ -14,6 +14,50 @@ import styles from './CollectionFooter.css';
 
 const NO_CHANGE = 'noChange';
 
+const monitoredOptions = [
+  {
+    key: NO_CHANGE,
+    get value() {
+      return translate('NoChange');
+    },
+    disabled: true
+  },
+  {
+    key: 'monitored',
+    get value() {
+      return translate('Monitored');
+    }
+  },
+  {
+    key: 'unmonitored',
+    get value() {
+      return translate('Unmonitored');
+    }
+  }
+];
+
+const searchOnAddOptions = [
+  {
+    key: NO_CHANGE,
+    get value() {
+      return translate('NoChange');
+    },
+    disabled: true
+  },
+  {
+    key: 'yes',
+    get value() {
+      return translate('Yes');
+    }
+  },
+  {
+    key: 'no',
+    get value() {
+      return translate('No');
+    }
+  }
+];
+
 class CollectionFooter extends Component {
 
   //
@@ -23,12 +67,12 @@ class CollectionFooter extends Component {
     super(props, context);
 
     this.state = {
-      monitor: NO_CHANGE,
       monitored: NO_CHANGE,
+      monitor: NO_CHANGE,
       qualityProfileId: NO_CHANGE,
       minimumAvailability: NO_CHANGE,
       rootFolderPath: NO_CHANGE,
-      destinationRootFolder: null
+      searchOnAdd: NO_CHANGE
     };
   }
 
@@ -44,8 +88,9 @@ class CollectionFooter extends Component {
         monitored: NO_CHANGE,
         monitor: NO_CHANGE,
         qualityProfileId: NO_CHANGE,
+        minimumAvailability: NO_CHANGE,
         rootFolderPath: NO_CHANGE,
-        minimumAvailability: NO_CHANGE
+        searchOnAdd: NO_CHANGE
       });
     }
 
@@ -63,11 +108,12 @@ class CollectionFooter extends Component {
 
   onUpdateSelectedPress = () => {
     const {
-      monitor,
       monitored,
+      monitor,
       qualityProfileId,
       minimumAvailability,
-      rootFolderPath
+      rootFolderPath,
+      searchOnAdd
     } = this.state;
 
     const changes = {};
@@ -92,6 +138,10 @@ class CollectionFooter extends Component {
       changes.rootFolderPath = rootFolderPath;
     }
 
+    if (searchOnAdd !== NO_CHANGE) {
+      changes.searchOnAdd = searchOnAdd === 'yes';
+    }
+
     this.props.onUpdateSelectedPress(changes);
   };
 
@@ -109,14 +159,9 @@ class CollectionFooter extends Component {
       monitor,
       qualityProfileId,
       minimumAvailability,
-      rootFolderPath
+      rootFolderPath,
+      searchOnAdd
     } = this.state;
-
-    const monitoredOptions = [
-      { key: NO_CHANGE, value: translate('NoChange'), disabled: true },
-      { key: 'monitored', value: translate('Monitored') },
-      { key: 'unmonitored', value: translate('Unmonitored') }
-    ];
 
     const selectedCount = selectedIds.length;
 
@@ -125,7 +170,7 @@ class CollectionFooter extends Component {
         <div className={styles.inputContainer}>
           <CollectionFooterLabel
             label={translate('MonitorCollection')}
-            isSaving={isSaving}
+            isSaving={isSaving && monitored !== NO_CHANGE}
           />
 
           <SelectInput
@@ -140,7 +185,7 @@ class CollectionFooter extends Component {
         <div className={styles.inputContainer}>
           <CollectionFooterLabel
             label={translate('MonitorMovies')}
-            isSaving={isSaving}
+            isSaving={isSaving && monitor !== NO_CHANGE}
           />
 
           <SelectInput
@@ -198,10 +243,25 @@ class CollectionFooter extends Component {
           />
         </div>
 
+        <div className={styles.inputContainer}>
+          <CollectionFooterLabel
+            label={translate('SearchMoviesOnAdd')}
+            isSaving={isSaving && searchOnAdd !== NO_CHANGE}
+          />
+
+          <SelectInput
+            name="searchOnAdd"
+            value={searchOnAdd}
+            values={searchOnAddOptions}
+            isDisabled={!selectedCount}
+            onChange={this.onInputChange}
+          />
+        </div>
+
         <div className={styles.buttonContainer}>
           <div className={styles.buttonContainerContent}>
             <CollectionFooterLabel
-              label={translate('CollectionsSelectedInterp', [selectedCount])}
+              label={translate('CountCollectionsSelected', { count: selectedCount })}
               isSaving={false}
             />
 

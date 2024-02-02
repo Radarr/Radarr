@@ -1034,7 +1034,7 @@
     "MovieOnly": "Somente Filme",
     "UnableToLoadCollections": "Não foi possível carregar as coleções",
     "ChooseImportMode": "Escolha o modo de importação",
-    "CollectionsSelectedInterp": "{0} Coleção(ões) Selecionadas",
+    "CountCollectionsSelected": "{count} Coleção(ões) Selecionadas",
     "EditCollection": "Editar Coleção",
     "MonitorCollection": "Monitorar Coleção",
     "MovieAndCollection": "Filme e Coleção",

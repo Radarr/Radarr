@@ -1020,7 +1020,7 @@
     "RssSyncIntervalHelpText": "Intervall in Minuten. Zum deaktivieren auf 0 setzen ( Dies wird das automatische Release erfassen deaktivieren )",
     "CollectionOptions": "Sammlung Optionen",
     "ChooseImportMode": "Wählen Sie den Importmodus aus",
-    "CollectionsSelectedInterp": "{0} Ausgewählte Sammlung(en)",
+    "CountCollectionsSelected": "{count} Ausgewählte Sammlung(en)",
     "MovieCollectionMissingRoot": "Fehlender Stammordner für die Filmsammlung: {0}",
     "EditCollection": "Sammlung bearbeiten",
     "MonitoredCollectionHelpText": "Beobachten zur automatischen Aufnahme von Filmen aus dieser Sammlung in die Bibliothek",

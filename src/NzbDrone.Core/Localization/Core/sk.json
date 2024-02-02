@@ -124,7 +124,7 @@
     "Columns": "Stĺpce",
     "CheckDownloadClientForDetails": "ďalšie podrobnosti nájdete v klientovi na sťahovanie",
     "Collections": "Kolekcie",
-    "CollectionsSelectedInterp": "{0} Označených kolekcií",
+    "CountCollectionsSelected": "{count} Označených kolekcií",
     "AnnouncedMsg": "Film je ohlásený",
     "ChooseImportMode": "Zvoliť Import mód",
     "ApplicationURL": "URL aplikácie",

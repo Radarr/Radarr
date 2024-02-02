@@ -138,7 +138,7 @@
     "Close": "Lukk",
     "Collection": "Samling",
     "Collections": "Samlinger",
-    "CollectionsSelectedInterp": "{0} samling(er) valgt",
+    "CountCollectionsSelected": "{count} samling(er) valgt",
     "ColonReplacement": "Kolon erstatntning",
     "Columns": "Kolonner",
     "Conditions": "Tilstander",

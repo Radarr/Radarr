@@ -1019,7 +1019,7 @@
     "MonitorMovies": "Monitor film",
     "ApplicationURL": "Applicatie URL",
     "ApplicationUrlHelpText": "De externe URL van deze applicatie inclusief http(s)://,Port en URL base",
-    "CollectionsSelectedInterp": "{0} Collectie(s) geselecteerd",
+    "CountCollectionsSelected": "{count} Collectie(s) geselecteerd",
     "ChooseImportMode": "Kies Importmodus",
     "CollectionOptions": "Collectieopties",
     "CollectionShowDetailsHelpText": "Collectie status en details weergeven",

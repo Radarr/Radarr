@@ -224,7 +224,7 @@
     "CollectionShowDetailsHelpText": "Prikaži status i svojstva kolekcije",
     "CollectionShowOverviewsHelpText": "Prikaži pregled kolekcije",
     "CollectionShowPostersHelpText": "Prikaži Kolekciju postera",
-    "CollectionsSelectedInterp": "{0} Kolekcija odabrano",
+    "CountCollectionsSelected": "{count} Kolekcija odabrano",
     "ColonReplacement": "Zamjena Zareza",
     "ColonReplacementFormatHelpText": "izmijeni kako {appName} upravlja zamjenama zareza",
     "Columns": "Stupci",

@@ -1028,7 +1028,7 @@
     "UnableToLoadCollections": "不能加载收藏",
     "Collections": "集合",
     "AllCollectionsHiddenDueToFilter": "由于应用了过滤器，所有集合都被隐藏。",
-    "CollectionsSelectedInterp": "已选择 {0} 个集合",
+    "CountCollectionsSelected": "已选择 {0} 个集合",
     "ChooseImportMode": "选择导入方式",
     "EditCollection": "编辑集合",
     "MonitorCollection": "监视集合",

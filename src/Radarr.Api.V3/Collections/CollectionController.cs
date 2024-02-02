@@ -122,6 +122,11 @@ namespace Radarr.Api.V3.Collections
                     collection.RootFolderPath = resource.RootFolderPath;
                 }
 
+                if (resource.SearchOnAdd.HasValue)
+                {
+                    collection.SearchOnAdd = resource.SearchOnAdd.Value;
+                }
+
                 if (resource.MonitorMovies.HasValue)
                 {
                     var movies = _movieService.GetMoviesByCollectionTmdbId(collection.TmdbId);

@@ -563,7 +563,7 @@
     "SearchMissing": "Пошук відсутній",
     "StartImport": "Розпочати імпорт",
     "System": "Система",
-    "CollectionsSelectedInterp": "Вибрано колекцій: {0}",
+    "CountCollectionsSelected": "Вибрано колекцій: {0}",
     "DeleteNotification": "Видалити сповіщення",
     "DeleteFileLabel": "Видалити файл фільму {0}",
     "DeleteFilesHelpText": "Видалити файли фільмів і папку фільмів",

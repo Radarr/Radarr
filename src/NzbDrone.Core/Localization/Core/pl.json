@@ -980,7 +980,7 @@
     "OnApplicationUpdate": "Przy aktualizacji aplikacji",
     "SelectReleaseGroup": "Wybierz grupę wydającą",
     "SizeLimit": "Ograniczenie rozmiaru",
-    "CollectionsSelectedInterp": "Wybrane kolekcje: {0}",
+    "CountCollectionsSelected": "Wybrane kolekcje: {0}",
     "ImdbVotes": "Głosy IMDb",
     "ImdbRating": "Ocena IMDb",
     "ImportListMissingRoot": "Brak katalogu głównego dla list importu: {rootFolderInfo}",
