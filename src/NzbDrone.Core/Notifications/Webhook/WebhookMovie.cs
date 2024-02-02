@@ -34,12 +34,6 @@ namespace NzbDrone.Core.Notifications.Webhook
             Overview = movie.MovieMetadata.Value.Overview;
         }
 
-        public WebhookMovie(Movie movie, IEnumerable<string> tags)
-            : this(movie)
-        {
-            Tags = tags;
-        }
-
         public WebhookMovie(Movie movie, MovieFile movieFile)
             : this(movie)
         {
