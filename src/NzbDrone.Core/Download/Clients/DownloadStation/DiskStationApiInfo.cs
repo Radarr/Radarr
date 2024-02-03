@@ -1,4 +1,4 @@
-﻿namespace NzbDrone.Core.Download.Clients.DownloadStation
+namespace NzbDrone.Core.Download.Clients.DownloadStation
 {
     public class DiskStationApiInfo
     {

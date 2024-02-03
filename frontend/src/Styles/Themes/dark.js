@@ -70,7 +70,7 @@ module.exports = {
   // Toolbar
   toolbarColor: '#e1e2e3',
   toolbarBackgroundColor: '#262626',
-  toolbarMenuItemBackgroundColor: '#606060',
+  toolbarMenuItemBackgroundColor: '#303030',
   toolbarMenuItemHoverBackgroundColor: '#515151',
   toolbarLabelColor: '#e1e2e3',
 
@@ -214,6 +214,8 @@ module.exports = {
   calendarBorderColor: '#393f45',
   calendarTextDim: '#eee',
   calendarTextDimAlternate: '#fff',
+
+  calendarFullColorFilter: 'grayscale(90%) contrast(200%) saturate(50%)',
 
   //
   // Table

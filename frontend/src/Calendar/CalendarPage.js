@@ -104,7 +104,7 @@ class CalendarPage extends Component {
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label={translate('iCalLink')}
+              label={translate('ICalLink')}
               iconName={icons.CALENDAR}
               onPress={this.onGetCalendarLinkPress}
             />
@@ -112,7 +112,7 @@ class CalendarPage extends Component {
             <PageToolbarSeparator />
 
             <PageToolbarButton
-              label={translate('RSSSync')}
+              label={translate('RssSync')}
               iconName={icons.RSS}
               isSpinning={isRssSyncExecuting}
               onPress={onRssSyncPress}
@@ -180,7 +180,7 @@ class CalendarPage extends Component {
 
           {
             !movieError && movieIsPopulated && !hasMovie &&
-              <NoMovie />
+              <NoMovie totalItems={0} />
           }
 
           {

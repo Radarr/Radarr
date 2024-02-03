@@ -244,11 +244,15 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
 
     if (isSmallScreen) {
       const padding = bodyPaddingSmallScreen - 5;
+      const width = window.innerWidth - padding * 2;
+      const height = window.innerHeight;
 
-      setSize({
-        width: window.innerWidth - padding * 2,
-        height: window.innerHeight,
-      });
+      if (width !== size.width || height !== size.height) {
+        setSize({
+          width,
+          height,
+        });
+      }
 
       return;
     }
@@ -256,13 +260,18 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
     if (current) {
       const width = current.clientWidth;
       const padding = bodyPadding - 5;
+      const finalWidth = width - padding * 2;
+
+      if (Math.abs(size.width - finalWidth) < 20 || size.width === finalWidth) {
+        return;
+      }
 
       setSize({
-        width: width - padding * 2,
+        width: finalWidth,
         height: window.innerHeight,
       });
     }
-  }, [isSmallScreen, scrollerRef, bounds]);
+  }, [isSmallScreen, size, scrollerRef, bounds]);
 
   useEffect(() => {
     const currentScrollerRef = scrollerRef.current as HTMLElement;

@@ -454,6 +454,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
 
         [TestCase("0")]
         [TestCase("15d")]
+        [TestCase("")]
+        [TestCase(null)]
         public void should_set_history_removes_completed_downloads_false(string historyRetention)
         {
             _config.Misc.history_retention = historyRetention;
@@ -541,6 +543,52 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
 
             result.IsValid.Should().BeTrue();
             result.HasWarnings.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_test_success_if_sorters_are_empty()
+        {
+            _config.Misc.enable_tv_sorting = false;
+            _config.Misc.tv_categories = null;
+            _config.Sorters = new List<SabnzbdSorter>();
+
+            var result = new NzbDroneValidationResult(Subject.Test());
+
+            result.IsValid.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_test_failed_if_sorter_is_enabled_for_non_tv_category()
+        {
+            _config.Misc.enable_tv_sorting = false;
+            _config.Misc.tv_categories = null;
+            _config.Sorters = Builder<SabnzbdSorter>.CreateListOfSize(1)
+                .All()
+                .With(s => s.is_active = true)
+                .With(s => s.sort_cats = new List<string> { "movie-custom" })
+                .Build()
+                .ToList();
+
+            var result = new NzbDroneValidationResult(Subject.Test());
+
+            result.IsValid.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_test_failed_if_sorter_is_enabled_for_tv_category()
+        {
+            _config.Misc.enable_tv_sorting = false;
+            _config.Misc.tv_categories = null;
+            _config.Sorters = Builder<SabnzbdSorter>.CreateListOfSize(1)
+                .All()
+                .With(s => s.is_active = true)
+                .With(s => s.sort_cats = new List<string> { "movie" })
+                .Build()
+                .ToList();
+
+            var result = new NzbDroneValidationResult(Subject.Test());
+
+            result.IsValid.Should().BeFalse();
         }
 
         [Test]

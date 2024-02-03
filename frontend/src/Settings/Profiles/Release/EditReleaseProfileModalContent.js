@@ -41,7 +41,7 @@ function EditReleaseProfileModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {id ? translate('Edit Release Profile') : translate('Add Release Profile')}
+        {id ? translate('EditReleaseProfile') : translate('AddReleaseProfile')}
       </ModalHeader>
 
       <ModalBody>
@@ -54,7 +54,7 @@ function EditReleaseProfileModalContent(props) {
               type={inputTypes.TEXT}
               name="name"
               {...name}
-              placeholder="Optional name"
+              placeholder={translate('OptionalName')}
               canEdit={true}
               onChange={onInputChange}
             />
@@ -66,7 +66,7 @@ function EditReleaseProfileModalContent(props) {
             <FormInputGroup
               type={inputTypes.CHECK}
               name="enabled"
-              helpText="Check to enable release profile"
+              helpText={translate('EnableProfileHelpText')}
               {...enabled}
               onChange={onInputChange}
             />
@@ -80,9 +80,9 @@ function EditReleaseProfileModalContent(props) {
               inputClassName={styles.tagInternalInput}
               type={inputTypes.TEXT_TAG}
               name="required"
-              helpText="The release must contain at least one of these terms (case insensitive)"
+              helpText={translate('MustContainHelpText')}
               kind={kinds.SUCCESS}
-              placeholder={translate('RequiredRestrictionPlaceHolder')}
+              placeholder={translate('AddNewRestriction')}
               delimiters={tagInputDelimiters}
               canEdit={true}
               onChange={onInputChange}
@@ -97,9 +97,9 @@ function EditReleaseProfileModalContent(props) {
               inputClassName={styles.tagInternalInput}
               type={inputTypes.TEXT_TAG}
               name="ignored"
-              helpText="The release will be rejected if it contains one or more of terms (case insensitive)"
+              helpText={translate('MustNotContainHelpText')}
               kind={kinds.DANGER}
-              placeholder={translate('IgnoredPlaceHolder')}
+              placeholder={translate('AddNewRestriction')}
               delimiters={tagInputDelimiters}
               canEdit={true}
               onChange={onInputChange}
@@ -112,8 +112,8 @@ function EditReleaseProfileModalContent(props) {
             <FormInputGroup
               type={inputTypes.INDEXER_SELECT}
               name="indexerId"
-              helpText="Specify what indexer the profile applies to"
-              helpTextWarning="Using a specific indexer with release profiles can lead to duplicate releases being grabbed"
+              helpText={translate('ReleaseProfileIndexerHelpText')}
+              helpTextWarning={translate('ReleaseProfileIndexerHelpTextWarning')}
               {...indexerId}
               includeAny={true}
               onChange={onInputChange}
@@ -126,7 +126,7 @@ function EditReleaseProfileModalContent(props) {
             <FormInputGroup
               type={inputTypes.TAG}
               name="tags"
-              helpText="Release profiles will apply to movies with at least one matching tag. Leave blank to apply to all movies"
+              helpText={translate('ReleaseProfileTagMovieHelpText')}
               {...tags}
               onChange={onInputChange}
             />

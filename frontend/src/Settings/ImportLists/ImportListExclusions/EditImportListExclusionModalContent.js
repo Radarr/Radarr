@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Alert from 'Components/Alert';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
@@ -39,7 +40,7 @@ function EditImportListExclusionModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {id ? translate('EditListExclusion') : translate('AddListExclusion')}
+        {id ? translate('EditImportListExclusion') : translate('AddImportListExclusion')}
       </ModalHeader>
 
       <ModalBody className={styles.body}>
@@ -50,9 +51,9 @@ function EditImportListExclusionModalContent(props) {
 
         {
           !isFetching && !!error &&
-            <div>
-              {translate('UnableToAddANewListExclusionPleaseTryAgain')}
-            </div>
+            <Alert kind={kinds.DANGER}>
+              {translate('AddImportListExclusionError')}
+            </Alert>
         }
 
         {

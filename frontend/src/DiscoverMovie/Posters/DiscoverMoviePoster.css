@@ -50,7 +50,7 @@ $hoverScale: 1.05;
 .title {
   @add-mixin truncate;
 
-  background-color: #fafbfc;
+  background-color: var(--movieBackgroundColor);
   text-align: center;
   font-size: $smallFontSize;
 }
@@ -65,6 +65,19 @@ $hoverScale: 1.05;
   border-width: 0 25px 25px 0;
   border-style: solid;
   border-color: transparent var(--dangerColor) transparent transparent;
+  color: var(--white);
+}
+
+.existing {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 0;
+  height: 0;
+  border-width: 25px 25px 0 0;
+  border-style: solid;
+  border-color: #37bc9b transparent transparent;
   color: var(--white);
 }
 

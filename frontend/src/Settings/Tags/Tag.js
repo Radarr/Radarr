@@ -88,50 +88,55 @@ class Tag extends Component {
           isTagUsed ?
             <div>
               <TagInUse
-                label="movie"
+                label={translate('Movie')}
+                labelPlural={translate('Movies')}
                 count={movieIds.length}
               />
 
               <TagInUse
-                label="delay profile"
+                label={translate('DelayProfile')}
+                labelPlural={translate('DelayProfiles')}
                 count={delayProfileIds.length}
               />
 
               <TagInUse
-                label="import list"
+                label={translate('ImportList')}
+                labelPlural={translate('ImportLists')}
                 count={importListIds.length}
               />
 
               <TagInUse
-                label="connection"
+                label={translate('Connection')}
+                labelPlural={translate('Connections')}
                 count={notificationIds.length}
               />
 
               <TagInUse
-                label="release profile"
-                count={releaseProfileIds.length}
-              />
-
-              <TagInUse
-                label="indexer"
+                label={translate('Indexer')}
+                labelPlural={translate('Indexers')}
                 count={indexerIds.length}
               />
 
               <TagInUse
-                label="download client"
+                label={translate('DownloadClient')}
+                labelPlural={translate('DownloadClients')}
                 count={downloadClientIds.length}
               />
 
               <TagInUse
-                label="auto tagging"
+                label={translate('AutoTagging')}
                 count={autoTagIds.length}
-                shouldPluralize={false}
               />
             </div> :
             null
         }
 
-        {!isTagUsed && <div>{translate('NoLinks')}</div>}
+        {
+          !isTagUsed &&
+            <div>
+              {translate('NoLinks')}
+            </div>
+        }
 
         <TagDetailsModal
           label={label}

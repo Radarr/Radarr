@@ -3,6 +3,8 @@
 interface CssExports {
   'container': string;
   'grid': string;
+  'movie': string;
+  'sliderContainer': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

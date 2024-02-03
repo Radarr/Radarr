@@ -56,6 +56,8 @@ export const defaultState = {
 };
 
 export const persistState = [
+  'interactiveImport.sortKey',
+  'interactiveImport.sortDirection',
   'interactiveImport.recentFolders',
   'interactiveImport.importMode'
 ];

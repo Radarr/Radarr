@@ -2490,8 +2490,11 @@
             "name": "eventType",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
             }
           },
           {
@@ -3488,6 +3491,22 @@
               "type": "boolean",
               "default": false
             }
+          },
+          {
+            "name": "includeTrending",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "includePopular",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -4304,23 +4323,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ManualImportResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ManualImportResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -4339,22 +4342,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ManualImportReprocessResource"
-                }
-              }
-            },
-            "text/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ManualImportReprocessResource"
-                }
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "type": "array",
                 "items": {
@@ -5217,8 +5204,11 @@
             "name": "movieId",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
             }
           },
           {
@@ -6590,6 +6580,14 @@
               "type": "boolean",
               "default": false
             }
+          },
+          {
+            "name": "changeCategory",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -6661,6 +6659,14 @@
           },
           {
             "name": "skipRedownload",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "changeCategory",
             "in": "query",
             "schema": {
               "type": "boolean",
@@ -8520,31 +8526,6 @@
         },
         "additionalProperties": false
       },
-      "AlternativeTitle": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sourceType": {
-            "$ref": "#/components/schemas/SourceType"
-          },
-          "movieMetadataId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "cleanTitle": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "AlternativeTitleResource": {
         "type": "object",
         "properties": {
@@ -8971,6 +8952,10 @@
             "nullable": true
           },
           "monitorMovies": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "searchOnAdd": {
             "type": "boolean",
             "nullable": true
           },
@@ -9849,6 +9834,10 @@
             "type": "string",
             "nullable": true
           },
+          "passwordConfirmation": {
+            "type": "string",
+            "nullable": true
+          },
           "logLevel": {
             "type": "string",
             "nullable": true
@@ -10090,6 +10079,9 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "minimumAvailability": {
+            "$ref": "#/components/schemas/MovieStatusType"
           }
         },
         "additionalProperties": false
@@ -10935,81 +10927,16 @@
         ],
         "type": "string"
       },
-      "MovieCollection": {
+      "MovieCollectionResource": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
           "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "cleanTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "sortTitle": {
             "type": "string",
             "nullable": true
           },
           "tmdbId": {
             "type": "integer",
             "format": "int32"
-          },
-          "overview": {
-            "type": "string",
-            "nullable": true
-          },
-          "monitored": {
-            "type": "boolean"
-          },
-          "qualityProfileId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "rootFolderPath": {
-            "type": "string",
-            "nullable": true
-          },
-          "searchOnAdd": {
-            "type": "boolean"
-          },
-          "minimumAvailability": {
-            "$ref": "#/components/schemas/MovieStatusType"
-          },
-          "lastInfoSync": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "images": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MediaCover"
-            },
-            "nullable": true
-          },
-          "added": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "movies": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MovieMetadata"
-            },
-            "nullable": true
-          },
-          "tags": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11195,158 +11122,6 @@
         ],
         "type": "string"
       },
-      "MovieMetadata": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "tmdbId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "images": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MediaCover"
-            },
-            "nullable": true
-          },
-          "genres": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "inCinemas": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "physicalRelease": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "digitalRelease": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "certification": {
-            "type": "string",
-            "nullable": true
-          },
-          "year": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ratings": {
-            "$ref": "#/components/schemas/Ratings"
-          },
-          "collectionTmdbId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "collectionTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastInfoSync": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "runtime": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "website": {
-            "type": "string",
-            "nullable": true
-          },
-          "imdbId": {
-            "type": "string",
-            "nullable": true
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "cleanTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "sortTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "$ref": "#/components/schemas/MovieStatusType"
-          },
-          "overview": {
-            "type": "string",
-            "nullable": true
-          },
-          "alternativeTitles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AlternativeTitle"
-            },
-            "nullable": true
-          },
-          "translations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MovieTranslation"
-            },
-            "nullable": true
-          },
-          "secondaryYear": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "youTubeTrailerId": {
-            "type": "string",
-            "nullable": true
-          },
-          "studio": {
-            "type": "string",
-            "nullable": true
-          },
-          "originalTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "cleanOriginalTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "originalLanguage": {
-            "$ref": "#/components/schemas/Language"
-          },
-          "recommendations": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "nullable": true
-          },
-          "popularity": {
-            "type": "number",
-            "format": "float"
-          },
-          "isRecentMovie": {
-            "type": "boolean",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
       "MovieResource": {
         "type": "object",
         "properties": {
@@ -11435,9 +11210,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "hasFile": {
-            "type": "boolean"
-          },
           "youTubeTrailerId": {
             "type": "string",
             "nullable": true
@@ -11453,6 +11225,10 @@
           "qualityProfileId": {
             "type": "integer",
             "format": "int32"
+          },
+          "hasFile": {
+            "type": "boolean",
+            "nullable": true
           },
           "monitored": {
             "type": "boolean"
@@ -11529,11 +11305,14 @@
             "$ref": "#/components/schemas/MovieFileResource"
           },
           "collection": {
-            "$ref": "#/components/schemas/MovieCollection"
+            "$ref": "#/components/schemas/MovieCollectionResource"
           },
           "popularity": {
             "type": "number",
             "format": "float"
+          },
+          "statistics": {
+            "$ref": "#/components/schemas/MovieStatisticsResource"
           }
         },
         "additionalProperties": false
@@ -11545,6 +11324,27 @@
         ],
         "type": "string"
       },
+      "MovieStatisticsResource": {
+        "type": "object",
+        "properties": {
+          "movieFileCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sizeOnDisk": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "releaseGroups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MovieStatusType": {
         "enum": [
           "tba",
@@ -11554,35 +11354,6 @@
           "deleted"
         ],
         "type": "string"
-      },
-      "MovieTranslation": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "movieMetadataId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "cleanTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "overview": {
-            "type": "string",
-            "nullable": true
-          },
-          "language": {
-            "$ref": "#/components/schemas/Language"
-          }
-        },
-        "additionalProperties": false
       },
       "NamingConfigResource": {
         "type": "object",
@@ -12183,6 +11954,11 @@
             "format": "date-time",
             "nullable": true
           },
+          "added": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "status": {
             "type": "string",
             "nullable": true
@@ -12214,6 +11990,9 @@
           "downloadClient": {
             "type": "string",
             "nullable": true
+          },
+          "downloadClientHasPostImportCategory": {
+            "type": "boolean"
           },
           "indexer": {
             "type": "string",
@@ -13149,6 +12928,10 @@
             "nullable": true
           },
           "path": {
+            "type": "string",
+            "nullable": true
+          },
+          "relativePath": {
             "type": "string",
             "nullable": true
           }

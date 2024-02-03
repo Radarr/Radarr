@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
+import translate from 'Utilities/String/translate';
 import MovieFileEditorRow from './MovieFileEditorRow';
 import styles from './MovieFileEditorTableContent.css';
 
@@ -22,7 +23,7 @@ class MovieFileEditorTableContent extends Component {
         {
           !items.length &&
             <div className={styles.blankpad}>
-              No movie files to manage.
+              {translate('NoMovieFilesToManage')}
             </div>
         }
 

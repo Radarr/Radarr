@@ -42,6 +42,8 @@ namespace Radarr.Api.V3.ImportLists
         public MovieCollection Collection { get; set; }
         public bool IsExcluded { get; set; }
         public bool IsExisting { get; set; }
+        public bool IsTrending { get; set; }
+        public bool IsPopular { get; set; }
 
         public bool IsRecommendation { get; set; }
         public HashSet<int> Lists { get; set; }

@@ -3,8 +3,6 @@
 interface CssExports {
   'age': string;
   'blocklist': string;
-  'cell': string;
-  'customFormat': string;
   'customFormatScore': string;
   'download': string;
   'downloadIcon': string;

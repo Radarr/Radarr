@@ -1,4 +1,4 @@
-﻿namespace NzbDrone.Core.Download.Clients.Sabnzbd.Responses
+namespace NzbDrone.Core.Download.Clients.Sabnzbd.Responses
 {
     public class SabnzbdConfigResponse
     {

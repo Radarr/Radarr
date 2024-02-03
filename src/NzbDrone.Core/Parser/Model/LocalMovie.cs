@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Parser.Model
         public DownloadClientItem DownloadItem { get; set; }
         public ParsedMovieInfo FolderMovieInfo { get; set; }
         public Movie Movie { get; set; }
-        public List<MovieFile> OldFiles { get; set; }
+        public List<DeletedMovieFile> OldFiles { get; set; }
         public QualityModel Quality { get; set; }
         public List<Language> Languages { get; set; }
         public MediaInfoModel MediaInfo { get; set; }
@@ -36,6 +36,10 @@ namespace NzbDrone.Core.Parser.Model
         public List<CustomFormat> CustomFormats { get; set; }
         public int CustomFormatScore { get; set; }
         public GrabbedReleaseInfo Release { get; set; }
+        public bool ScriptImported { get; set; }
+        public bool FileRenamedAfterScriptImport { get; set; }
+        public bool ShouldImportExtras { get; set; }
+        public List<string> PossibleExtraFiles { get; set; }
 
         public override string ToString()
         {

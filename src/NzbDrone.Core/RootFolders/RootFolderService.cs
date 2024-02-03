@@ -9,6 +9,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Core.RootFolders
 {
@@ -28,6 +29,7 @@ namespace NzbDrone.Core.RootFolders
         private readonly IDiskProvider _diskProvider;
         private readonly IMovieRepository _movieRepository;
         private readonly IConfigService _configService;
+        private readonly INamingConfigService _namingConfigService;
         private readonly Logger _logger;
 
         private static readonly HashSet<string> SpecialFolders = new HashSet<string>
@@ -47,12 +49,14 @@ namespace NzbDrone.Core.RootFolders
                                  IDiskProvider diskProvider,
                                  IMovieRepository movieRepository,
                                  IConfigService configService,
+                                 INamingConfigService namingConfigService,
                                  Logger logger)
         {
             _rootFolderRepository = rootFolderRepository;
             _diskProvider = diskProvider;
             _movieRepository = movieRepository;
             _configService = configService;
+            _namingConfigService = namingConfigService;
             _logger = logger;
         }
 
@@ -145,7 +149,17 @@ namespace NzbDrone.Core.RootFolders
                 return results;
             }
 
+            var subFolderDepth = _namingConfigService.GetConfig().MovieFolderFormat.Count(f => f == Path.DirectorySeparatorChar);
             var possibleMovieFolders = _diskProvider.GetDirectories(path).ToList();
+
+            if (subFolderDepth > 0)
+            {
+                for (var i = 0; i < subFolderDepth; i++)
+                {
+                    possibleMovieFolders = possibleMovieFolders.SelectMany(_diskProvider.GetDirectories).ToList();
+                }
+            }
+
             var unmappedFolders = possibleMovieFolders.Except(moviePaths.Select(s => s.Value), PathEqualityComparer.Instance).ToList();
 
             var recycleBinPath = _configService.RecycleBin;
@@ -158,7 +172,12 @@ namespace NzbDrone.Core.RootFolders
                 {
                     if (string.IsNullOrWhiteSpace(recycleBinPath) || di.FullName.PathNotEquals(recycleBinPath))
                     {
-                        results.Add(new UnmappedFolder { Name = di.Name, Path = di.FullName });
+                        results.Add(new UnmappedFolder
+                        {
+                            Name = di.Name,
+                            Path = di.FullName,
+                            RelativePath = path.GetRelativePath(di.FullName)
+                        });
                     }
                 }
             }

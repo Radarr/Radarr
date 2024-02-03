@@ -76,11 +76,14 @@ class DiscoverMovieRow extends Component {
       ratings,
       popularity,
       certification,
+      movieRuntimeFormat,
       collection,
       columns,
       isExisting,
       isExcluded,
       isRecommendation,
+      isTrending,
+      isPopular,
       isSelected,
       lists,
       onSelectedChange
@@ -230,7 +233,7 @@ class DiscoverMovieRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
-                  {formatRuntime(runtime)}
+                  {formatRuntime(runtime, movieRuntimeFormat)}
                 </VirtualTableRowCell>
               );
             }
@@ -304,9 +307,50 @@ class DiscoverMovieRow extends Component {
                   {
                     isRecommendation ?
                       <Icon
+                        className={styles.statusIcon}
                         name={icons.RECOMMENDED}
                         size={12}
                         title={translate('MovieIsRecommend')}
+                      /> :
+                      null
+                  }
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'isTrending') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {
+                    isTrending ?
+                      <Icon
+                        className={styles.statusIcon}
+                        name={icons.TRENDING}
+                        size={12}
+                        title={translate('MovieIsTrending')}
+                      /> :
+                      null
+                  }
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'isPopular') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {
+                    isPopular ?
+                      <Icon
+                        className={styles.statusIcon}
+                        name={icons.POPULAR}
+                        size={12}
+                        title={translate('MovieIsPopular')}
                       /> :
                       null
                   }
@@ -397,11 +441,14 @@ DiscoverMovieRow.propTypes = {
   popularity: PropTypes.number.isRequired,
   certification: PropTypes.string,
   collection: PropTypes.object,
+  movieRuntimeFormat: PropTypes.string.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   isExisting: PropTypes.bool.isRequired,
   isExcluded: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
   isRecommendation: PropTypes.bool.isRequired,
+  isPopular: PropTypes.bool.isRequired,
+  isTrending: PropTypes.bool.isRequired,
   lists: PropTypes.arrayOf(PropTypes.number).isRequired,
   onSelectedChange: PropTypes.func.isRequired
 };

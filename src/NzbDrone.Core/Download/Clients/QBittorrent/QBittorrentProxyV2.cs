@@ -265,6 +265,15 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             {
                 request.AddFormParameter("firstLastPiecePrio", true);
             }
+
+            if ((QBittorrentContentLayout)settings.ContentLayout == QBittorrentContentLayout.Original)
+            {
+                request.AddFormParameter("contentLayout", "Original");
+            }
+            else if ((QBittorrentContentLayout)settings.ContentLayout == QBittorrentContentLayout.Subfolder)
+            {
+                request.AddFormParameter("contentLayout", "Subfolder");
+            }
         }
 
         public void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfiguration, QBittorrentSettings settings)
@@ -438,9 +447,9 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                     throw new DownloadClientUnavailableException("Failed to connect to qBittorrent, please check your settings.", ex);
                 }
 
-                // returns "Fails." on bad login
                 if (response.Content != "Ok.")
                 {
+                    // returns "Fails." on bad login
                     _logger.Debug("qbitTorrent authentication failed.");
                     throw new DownloadClientAuthenticationException("Failed to authenticate with qBittorrent.");
                 }

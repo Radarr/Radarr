@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.Clients.Flood.Models;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
-using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.ThingiProvider;
@@ -26,11 +28,12 @@ namespace NzbDrone.Core.Download.Clients.Flood
                         ITorrentFileInfoReader torrentFileInfoReader,
                         IHttpClient httpClient,
                         IConfigService configService,
-                        INamingConfigService namingConfigService,
                         IDiskProvider diskProvider,
                         IRemotePathMappingService remotePathMappingService,
+                        ILocalizationService localizationService,
+                        IBlocklistService blocklistService,
                         Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
+            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, localizationService, blocklistService, logger)
         {
             _proxy = proxy;
             _downloadSeedConfigProvider = downloadSeedConfigProvider;
@@ -78,11 +81,12 @@ namespace NzbDrone.Core.Download.Clients.Flood
                 }
             }
 
-            return result;
+            return result.Where(t => t.IsNotNullOrWhiteSpace());
         }
 
         public override string Name => "Flood";
-        public override ProviderMessage Message => new ProviderMessage("Radarr will handle automatic removal of torrents based on the current seed criteria in Settings -> Indexers", ProviderMessageType.Info);
+        public override ProviderMessage Message => new ProviderMessage(_localizationService.GetLocalizedString("DownloadClientFloodSettingsRemovalInfo"), ProviderMessageType.Info);
+
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentByFile(Convert.ToBase64String(fileContent), HandleTags(remoteMovie, Settings), Settings);
@@ -114,7 +118,7 @@ namespace NzbDrone.Core.Download.Clients.Flood
 
                 var item = new DownloadClientItem
                 {
-                    DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this),
+                    DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this, false),
                     DownloadId = torrent.Key,
                     Title = properties.Name,
                     OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(properties.Directory)),
@@ -221,7 +225,7 @@ namespace NzbDrone.Core.Download.Clients.Flood
                 if (list.ContainsKey(downloadClientItem.DownloadId))
                 {
                     _proxy.SetTorrentsTags(downloadClientItem.DownloadId,
-                        list[downloadClientItem.DownloadId].Tags.Concat(Settings.PostImportTags).ToHashSet(),
+                        list[downloadClientItem.DownloadId].Tags.Concat(Settings.PostImportTags).ToImmutableHashSet(),
                         Settings);
                 }
             }

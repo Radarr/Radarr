@@ -70,7 +70,8 @@ function UpdateSettings(props) {
       </FormGroup>
 
       {
-        !isWindows &&
+        isWindows ?
+          null :
           <div>
             <FormGroup
               advancedSettings={advancedSettings}
@@ -83,7 +84,7 @@ function UpdateSettings(props) {
                 type={inputTypes.CHECK}
                 name="updateAutomatically"
                 helpText={translate('UpdateAutomaticallyHelpText')}
-                helpTextWarning={updateMechanism.value === 'docker' ? translate('AutomaticUpdatesDisabledDocker', { appName: 'Radarr' }) : undefined}
+                helpTextWarning={updateMechanism.value === 'docker' ? translate('AutomaticUpdatesDisabledDocker') : undefined}
                 onChange={onInputChange}
                 {...updateAutomatically}
               />

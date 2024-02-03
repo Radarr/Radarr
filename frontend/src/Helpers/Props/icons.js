@@ -23,6 +23,7 @@ import {
 import {
   faArrowCircleLeft as fasArrowCircleLeft,
   faArrowCircleRight as fasArrowCircleRight,
+  faArrowTrendUp as fasArrowTrendUp,
   faAsterisk as fasAsterisk,
   faBackward as fasBackward,
   faBan as fasBan,
@@ -59,6 +60,7 @@ import {
   faEye as fasEye,
   faFastBackward as fasFastBackward,
   faFastForward as fasFastForward,
+  faFileCircleQuestion as fasFileCircleQuestion,
   faFileExport as fasFileExport,
   faFileInvoice as farFileInvoice,
   faFilm as fasFilm,
@@ -159,6 +161,7 @@ export const EXPORT = fasFileExport;
 export const EXTERNAL_LINK = fasExternalLinkAlt;
 export const FATAL = fasTimesCircle;
 export const FILE = farFile;
+export const FILE_MISSING = fasFileCircleQuestion;
 export const FILM = fasFilm;
 export const FILTER = fasFilter;
 export const FLAG = fasFlag;
@@ -231,6 +234,7 @@ export const TAGS = fasTags;
 export const TBA = fasQuestionCircle;
 export const TEST = fasVial;
 export const TRANSLATE = fasLanguage;
+export const TRENDING = fasArrowTrendUp;
 export const UNGROUP = farObjectUngroup;
 export const UNKNOWN = fasQuestion;
 export const UNMONITORED = farBookmark;

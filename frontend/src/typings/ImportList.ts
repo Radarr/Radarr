@@ -15,6 +15,7 @@ interface ImportList extends ModelBase {
   enabled: boolean;
   enableAuto: boolean;
   qualityProfileId: number;
+  minimumAvailability: string;
   rootFolderPath: string;
   name: string;
   fields: Field[];

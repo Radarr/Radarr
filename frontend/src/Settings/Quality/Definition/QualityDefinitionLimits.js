@@ -20,13 +20,13 @@ function QualityDefinitionLimits(props) {
   return (
     <div>
       <div>
-        {translate('MinutesSixty', [sixty])}
+        {translate('MinutesSixty', { sixty })}
       </div>
       <div>
-        {translate('MinutesNinety', [ninety])}
+        {translate('MinutesNinety', { ninety })}
       </div>
       <div>
-        {translate('MinutesHundredTwenty', [hundredTwenty])}
+        {translate('MinutesHundredTwenty', { hundredTwenty })}
       </div>
     </div>
   );

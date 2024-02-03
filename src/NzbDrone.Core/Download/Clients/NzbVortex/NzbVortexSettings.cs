@@ -42,19 +42,21 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
         [FieldDefinition(1, Label = "Port", Type = FieldType.Textbox)]
         public int Port { get; set; }
 
-        [FieldDefinition(2, Label = "Url Base", Type = FieldType.Textbox, Advanced = true, HelpText = "Adds a prefix to the NZBVortex url, e.g. http://[host]:[port]/[urlBase]/api")]
+        [FieldDefinition(2, Label = "UrlBase", Type = FieldType.Textbox, Advanced = true, HelpText = "DownloadClientSettingsUrlBaseHelpText")]
+        [FieldToken(TokenField.HelpText, "UrlBase", "clientName", "NZBVortex")]
+        [FieldToken(TokenField.HelpText, "UrlBase", "url", "http://[host]:[port]/[urlBase]/api")]
         public string UrlBase { get; set; }
 
-        [FieldDefinition(3, Label = "API Key", Type = FieldType.Textbox, Privacy = PrivacyLevel.ApiKey)]
+        [FieldDefinition(3, Label = "ApiKey", Type = FieldType.Textbox, Privacy = PrivacyLevel.ApiKey)]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(4, Label = "Group", Type = FieldType.Textbox, HelpText = "Adding a category specific to Radarr avoids conflicts with unrelated non-Radarr downloads. Using a category is optional, but strongly recommended.")]
+        [FieldDefinition(4, Label = "Group", Type = FieldType.Textbox, HelpText = "DownloadClientSettingsCategoryHelpText")]
         public string TvCategory { get; set; }
 
-        [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(NzbVortexPriority), HelpText = "Priority to use when grabbing movies that released within the last 21 days")]
+        [FieldDefinition(5, Label = "DownloadClientSettingsRecentPriority", Type = FieldType.Select, SelectOptions = typeof(NzbVortexPriority), HelpText = "DownloadClientSettingsRecentPriorityMovieHelpText")]
         public int RecentMoviePriority { get; set; }
 
-        [FieldDefinition(6, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(NzbVortexPriority), HelpText = "Priority to use when grabbing movies that released over 21 days ago")]
+        [FieldDefinition(6, Label = "DownloadClientSettingsOlderPriority", Type = FieldType.Select, SelectOptions = typeof(NzbVortexPriority), HelpText = "DownloadClientSettingsOlderPriorityMovieHelpText")]
         public int OlderMoviePriority { get; set; }
 
         public NzbDroneValidationResult Validate()

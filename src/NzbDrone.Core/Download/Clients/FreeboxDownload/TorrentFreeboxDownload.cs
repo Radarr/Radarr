@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
 using NLog;
-using NzbDrone.Common.Cache;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.Clients.FreeboxDownload.Responses;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
-using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 
@@ -21,15 +21,15 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
         private readonly IFreeboxDownloadProxy _proxy;
 
         public TorrentFreeboxDownload(IFreeboxDownloadProxy proxy,
-                           ITorrentFileInfoReader torrentFileInfoReader,
-                           IHttpClient httpClient,
-                           IConfigService configService,
-                           INamingConfigService namingConfigService,
-                           IDiskProvider diskProvider,
-                           IRemotePathMappingService remotePathMappingService,
-                           ICacheManager cacheManager,
-                           Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
+            ITorrentFileInfoReader torrentFileInfoReader,
+            IHttpClient httpClient,
+            IConfigService configService,
+            IDiskProvider diskProvider,
+            IRemotePathMappingService remotePathMappingService,
+            ILocalizationService localizationService,
+            IBlocklistService blocklistService,
+            Logger logger)
+            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, localizationService, blocklistService, logger)
         {
             _proxy = proxy;
         }
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
                     Category = Settings.Category,
                     Title = torrent.Name,
                     TotalSize = torrent.Size,
-                    DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this),
+                    DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this, false),
                     RemainingSize = (long)(torrent.Size * (double)(1 - ((double)torrent.ReceivedPrct / 10000))),
                     RemainingTime = torrent.Eta <= 0 ? null : TimeSpan.FromSeconds(torrent.Eta),
                     SeedRatio = torrent.StopRatio <= 0 ? 0 : torrent.StopRatio / 100,
@@ -112,8 +112,9 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
 
                     case FreeboxDownloadTaskStatus.Unknown:
                     default: // new status in API? default to downloading
-                        item.Message = "Unknown download state: " + torrent.Status;
-                        _logger.Info(item.Message);
+                        item.Message = _localizationService.GetLocalizedString("UnknownDownloadState",
+                            new Dictionary<string, object> { { "state", torrent.Status } });
+                        _logger.Info($"Unknown download state: {torrent.Status}");
                         item.Status = DownloadItemStatus.Downloading;
                         break;
                 }

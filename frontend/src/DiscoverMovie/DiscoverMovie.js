@@ -329,10 +329,7 @@ class DiscoverMovie extends Component {
                 null
             }
 
-            {
-              (view === 'posters' || view === 'overview') &&
-                <PageToolbarSeparator />
-            }
+            <PageToolbarSeparator />
 
             <DiscoverMovieViewMenu
               view={view}

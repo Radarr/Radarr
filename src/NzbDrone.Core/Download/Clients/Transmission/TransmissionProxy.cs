@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json.Linq;
@@ -141,7 +141,8 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         private TransmissionResponse GetSessionVariables(TransmissionSettings settings)
         {
-            // Retrieve transmission information such as the default download directory, bandwith throttling and seed ratio.
+            // Retrieve transmission information such as the default download directory, bandwidth throttling and seed ratio.
+
             return ProcessRequest("session-get", null, settings);
         }
 

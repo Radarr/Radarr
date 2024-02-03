@@ -25,10 +25,11 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    onMovieLookup(name, path) {
+    onMovieLookup(name, path, relativePath) {
       dispatch(queueLookupMovie({
         name,
         path,
+        relativePath,
         term: name
       }));
     },

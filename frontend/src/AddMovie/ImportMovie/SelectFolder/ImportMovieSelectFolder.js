@@ -148,7 +148,7 @@ class ImportMovieSelectFolder extends Component {
                       className={styles.addErrorAlert}
                       kind={kinds.DANGER}
                     >
-                      {translate('UnableToAddRootFolder')}
+                      {translate('AddRootFolderError')}
 
                       <ul>
                         {

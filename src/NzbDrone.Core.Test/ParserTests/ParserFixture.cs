@@ -62,6 +62,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("G.I.Movie.Movie.2013.THEATRiCAL.COMPLETE.BLURAY-GLiMMER", "G.I. Movie Movie")]
         [TestCase("www.Torrenting.org - Movie.2008.720p.X264-DIMENSION", "Movie")]
         [TestCase("The.French.Movie.2013.720p.BluRay.x264 - ROUGH[PublicHD]", "The French Movie")]
+        [TestCase("The.Good.German.2006.720p.BluRay.x264-RlsGrp", "The Good German", Description = "Hardcoded to exclude from German regex")]
         public void should_parse_movie_title(string postTitle, string title)
         {
             Parser.Parser.ParseMovieTitle(postTitle).PrimaryMovieTitle.Should().Be(title);
@@ -124,6 +125,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Die.fantastische.Reise.des.Dr.Dolittle.2020.German.DL.LD.1080p.WEBRip.x264-PRD", "Die fantastische Reise des Dr. Dolittle", "", 2020, Description = "dot after dr")]
         [TestCase("Der.Film.deines.Lebens.German.2011.PAL.DVDR-ETM", "Der Film deines Lebens", "", 2011, Description = "year at wrong position")]
         [TestCase("Kick.Ass.2.2013.German.DTS.DL.720p.BluRay.x264-Pate_", "Kick Ass 2", "", 2013, Description = "underscore at the end")]
+        [TestCase("The.Good.German.2006.GERMAN.720p.HDTV.x264-RLsGrp", "The Good German", "", 2006, Description = "German in the title")]
         public void should_parse_german_movie(string postTitle, string title, string edition, int year)
         {
             var movie = Parser.Parser.ParseMovieTitle(postTitle);
@@ -238,27 +240,15 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("The.Italian.Movie.2025.720p.BluRay.X264-AMIABLE")]
         [TestCase("The.French.Movie.2013.720p.BluRay.x264 - ROUGH[PublicHD]")]
+        [TestCase("The.German.Doctor.2013.LIMITED.DVDRip.x264-RedBlade", Description = "When German is not followed by a year or a SCENE word it is not matched")]
+        [TestCase("The.Good.German.2006.720p.HDTV.x264-TVP", Description = "The Good German is hardcoded not to match")]
+        [TestCase("German.Lancers.2019.720p.BluRay.x264-UNiVERSUM", Description = "German at the beginning is never matched")]
+        [TestCase("The.German.2019.720p.BluRay.x264-UNiVERSUM", Description = "The German is hardcoded not to match")]
         public void should_not_parse_wrong_language_in_title(string postTitle)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
             parsed.Languages.Count.Should().Be(1);
             parsed.Languages.First().Should().Be(Language.Unknown);
-        }
-
-        [TestCase("The.Movie.Name.2016.German.DTS.DL.720p.BluRay.x264-MULTiPLEX")]
-        public void should_not_parse_multi_language_in_releasegroup(string postTitle)
-        {
-            var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
-            parsed.Languages.Count.Should().Be(1);
-            parsed.Languages.First().Should().Be(Language.German);
-        }
-
-        [TestCase("The.Movie.Name.2016.German.Multi.DTS.DL.720p.BluRay.x264-MULTiPLEX")]
-        public void should_parse_multi_language(string postTitle)
-        {
-            var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
-            parsed.Languages.Count.Should().Be(1);
-            parsed.Languages.Should().Contain(Language.German);
         }
 
         [TestCase("Movie.Title.2016.1080p.KORSUB.WEBRip.x264.AAC2.0-RADARR", "KORSUB")]

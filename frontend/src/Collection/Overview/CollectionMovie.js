@@ -70,6 +70,7 @@ class CollectionMovie extends Component {
       hasFile,
       folder,
       isAvailable,
+      movieFile,
       isExistingMovie,
       posterWidth,
       posterHeight,
@@ -131,6 +132,8 @@ class CollectionMovie extends Component {
                 id ?
                   <div className={styles.overlayStatus}>
                     <MovieIndexProgressBar
+                      movieId={id}
+                      movieFile={movieFile}
                       monitored={monitored}
                       hasFile={hasFile}
                       status={status}
@@ -180,6 +183,7 @@ CollectionMovie.propTypes = {
   hasFile: PropTypes.bool,
   folder: PropTypes.string,
   isAvailable: PropTypes.bool,
+  movieFile: PropTypes.object,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   posterWidth: PropTypes.number.isRequired,
   posterHeight: PropTypes.number.isRequired,

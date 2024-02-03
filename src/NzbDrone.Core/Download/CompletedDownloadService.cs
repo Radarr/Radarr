@@ -94,7 +94,9 @@ namespace NzbDrone.Core.Download
 
                 if (movie == null)
                 {
-                    trackedDownload.Warn("Movie title mismatch, Manual Import required.");
+                    trackedDownload.Warn("Movie title mismatch, automatic import is not possible. Manual Import required.");
+                    SendManualInteractionRequiredNotification(trackedDownload);
+
                     return;
                 }
 
@@ -105,16 +107,7 @@ namespace NzbDrone.Core.Download
                 if (movieMatchType == MovieMatchType.Id && releaseSource != ReleaseSourceType.InteractiveSearch)
                 {
                     trackedDownload.Warn("Found matching movie via grab history, but release was matched to movie by ID. Manual Import required.");
-
-                    if (!trackedDownload.HasNotifiedManualInteractionRequired)
-                    {
-                        trackedDownload.HasNotifiedManualInteractionRequired = true;
-
-                        var releaseInfo = new GrabbedReleaseInfo(grabbedHistories);
-                        var manualInteractionEvent = new ManualInteractionRequiredEvent(trackedDownload, releaseInfo);
-
-                        _eventAggregator.PublishEvent(manualInteractionEvent);
-                    }
+                    SendManualInteractionRequiredNotification(trackedDownload);
 
                     return;
                 }
@@ -132,18 +125,21 @@ namespace NzbDrone.Core.Download
                 return;
             }
 
-            trackedDownload.State = TrackedDownloadState.Importing;
-
-            var outputPath = trackedDownload.ImportItem.OutputPath.FullPath;
-
             if (trackedDownload.RemoteMovie?.Movie == null)
             {
-                trackedDownload.State = TrackedDownloadState.ImportPending;
-                trackedDownload.Warn("Unknown Movie", outputPath);
+                trackedDownload.Warn("Unable to parse download, automatic import is not possible.");
+                SendManualInteractionRequiredNotification(trackedDownload);
+
                 return;
             }
 
-            var importResults = _downloadedMovieImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteMovie.Movie, trackedDownload.ImportItem);
+            trackedDownload.State = TrackedDownloadState.Importing;
+
+            var outputPath = trackedDownload.ImportItem.OutputPath.FullPath;
+            var importResults = _downloadedMovieImportService.ProcessPath(outputPath,
+                ImportMode.Auto,
+                trackedDownload.RemoteMovie.Movie,
+                trackedDownload.ImportItem);
 
             if (VerifyImport(trackedDownload, importResults))
             {
@@ -155,6 +151,8 @@ namespace NzbDrone.Core.Download
             if (importResults.Empty())
             {
                 trackedDownload.Warn("No files found are eligible for import in {0}", outputPath);
+
+                return;
             }
 
             if (importResults.Count == 1)
@@ -176,14 +174,19 @@ namespace NzbDrone.Core.Download
 
             if (importResults.Any(c => c.Result != ImportResultType.Imported))
             {
-                statusMessages.AddRange(importResults
-                    .Where(v => v.Result != ImportResultType.Imported && v.ImportDecision.LocalMovie != null)
-                    .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalMovie.Path), v.Errors)));
+                statusMessages.AddRange(
+                    importResults
+                        .Where(v => v.Result != ImportResultType.Imported && v.ImportDecision.LocalMovie != null)
+                        .OrderBy(v => v.ImportDecision.LocalMovie.Path)
+                        .Select(v =>
+                            new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalMovie.Path),
+                                v.Errors)));
+            }
 
-                if (statusMessages.Any())
-                {
-                    trackedDownload.Warn(statusMessages.ToArray());
-                }
+            if (statusMessages.Any())
+            {
+                trackedDownload.Warn(statusMessages.ToArray());
+                SendManualInteractionRequiredNotification(trackedDownload);
             }
         }
 
@@ -240,6 +243,21 @@ namespace NzbDrone.Core.Download
 
             _logger.Debug("Not all movies have been imported for {0}", trackedDownload.DownloadItem.Title);
             return false;
+        }
+
+        private void SendManualInteractionRequiredNotification(TrackedDownload trackedDownload)
+        {
+            if (!trackedDownload.HasNotifiedManualInteractionRequired)
+            {
+                var grabbedHistories = _historyService.FindByDownloadId(trackedDownload.DownloadItem.DownloadId).Where(h => h.EventType == MovieHistoryEventType.Grabbed).ToList();
+
+                trackedDownload.HasNotifiedManualInteractionRequired = true;
+
+                var releaseInfo = grabbedHistories.Count > 0 ? new GrabbedReleaseInfo(grabbedHistories) : null;
+                var manualInteractionEvent = new ManualInteractionRequiredEvent(trackedDownload, releaseInfo);
+
+                _eventAggregator.PublishEvent(manualInteractionEvent);
+            }
         }
 
         private void SetImportItem(TrackedDownload trackedDownload)

@@ -140,6 +140,8 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Russian.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.2020.WEB-DLRip.AVC.AC3.EN.RU.ENSub.RUSub-LOL")]
+        [TestCase("Movie Title (2020) WEB-DL (720p) Rus-Eng")]
         public void should_parse_language_russian(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -300,6 +302,7 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Hebrew.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.1994.1080p.BluRay.HebDubbed.Also.English.x264-P2P")]
         public void should_parse_language_hebrew(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -387,6 +390,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.2022.lv.WEBRip.XviD-LOL")]
         [TestCase("Movie.Title.2022.LATVIAN.WEBRip.XviD-LOL")]
         [TestCase("Movie.Title.2022.Latvian.WEBRip.XviD-LOL")]
+        [TestCase("Movie.Title.2022.1080p.WEB-DL.DDP5.1.Atmos.H.264.Lat.Eng")]
+        [TestCase("Movie.Title.2022.1080p.WEB-DL.LAV.RUS-NPPK")]
         public void should_parse_language_latvian(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle);
@@ -428,6 +433,36 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             var result = LanguageParser.ParseSubtitleLanguage(fileName);
             result.Should().Be(Language.Unknown);
+        }
+
+        [TestCase("The.Movie.Name.2016.German.DTS.DL.720p.BluRay.x264-RlsGrp")]
+        public void should_add_original_language_to_german_release_with_dl_tag(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle);
+            result.Languages.Count.Should().Be(2);
+            result.Languages.Should().Contain(Language.German);
+            result.Languages.Should().Contain(Language.Original);
+        }
+
+        [TestCase("The.Movie.Name.2016.GERMAN.WEB-DL.h264-RlsGrp")]
+        [TestCase("The.Movie.Name.2016.GERMAN.WEB.DL.h264-RlsGrp")]
+        [TestCase("The Movie Name 2016 GERMAN WEB DL h264-RlsGrp")]
+        [TestCase("The.Movie.Name.2016.GERMAN.WEBDL.h264-RlsGrp")]
+        public void should_not_add_original_language_to_german_release_when_title_contains_web_dl(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle);
+            result.Languages.Count.Should().Be(1);
+            result.Languages.Should().Contain(Language.German);
+        }
+
+        [TestCase("The.Movie.Name.2023.German.ML.EAC3.720p.NF.WEB.H264-RlsGrp")]
+        public void should_add_original_language_and_english_to_german_release_with_ml_tag(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle);
+            result.Languages.Count.Should().Be(3);
+            result.Languages.Should().Contain(Language.German);
+            result.Languages.Should().Contain(Language.Original);
+            result.Languages.Should().Contain(Language.English);
         }
     }
 }

@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Icon from 'Components/Icon';
 import Label from 'Components/Label';
-import IconButton from 'Components/Link/IconButton';
-import { icons } from 'Helpers/Props';
+import Link from 'Components/Link/Link';
+import MonitorToggleButton from 'Components/MonitorToggleButton';
+import Popover from 'Components/Tooltip/Popover';
+import { icons, kinds, sizes } from 'Helpers/Props';
 import MovieHeadshot from 'Movie/MovieHeadshot';
 import EditImportListModalConnector from 'Settings/ImportLists/ImportLists/EditImportListModalConnector';
 import translate from 'Utilities/String/translate';
@@ -55,12 +58,13 @@ class MovieCrewPoster extends Component {
 
   render() {
     const {
+      tmdbId,
       personName,
       job,
       images,
       posterWidth,
       posterHeight,
-      importListId
+      importList
     } = this.props;
 
     const {
@@ -69,12 +73,16 @@ class MovieCrewPoster extends Component {
 
     const elementStyle = {
       width: `${posterWidth}px`,
-      height: `${posterHeight}px`
+      height: `${posterHeight}px`,
+      borderRadius: '5px'
     };
 
     const contentStyle = {
       width: `${posterWidth}px`
     };
+
+    const monitored = importList !== undefined && importList.enabled && importList.enableAuto;
+    const importListId = importList ? importList.id : 0;
 
     return (
       <div
@@ -82,22 +90,33 @@ class MovieCrewPoster extends Component {
         style={contentStyle}
       >
         <div className={styles.posterContainer}>
+          <div className={styles.toggleMonitoredContainer}>
+            <MonitorToggleButton
+              className={styles.monitorToggleButton}
+              monitored={monitored}
+              size={20}
+              onPress={importListId > 0 ? this.onEditImportListPress : this.onAddImportListPress}
+            />
+          </div>
+
           <Label className={styles.controls}>
-            {
-              importListId > 0 ?
-                <IconButton
-                  className={styles.action}
-                  name={icons.EDIT}
-                  title={translate('EditPerson')}
-                  onPress={this.onEditImportListPress}
-                /> :
-                <IconButton
-                  className={styles.action}
-                  name={icons.ADD}
-                  title={translate('FollowPerson')}
-                  onPress={this.onAddImportListPress}
-                />
-            }
+            <span className={styles.externalLinks}>
+              <Popover
+                anchor={<Icon name={icons.EXTERNAL_LINK} size={12} />}
+                title={translate('Links')}
+                body={
+                  <Link to={`https://www.themoviedb.org/person/${tmdbId}`}>
+                    <Label
+                      className={styles.externalLinkLabel}
+                      kind={kinds.INFO}
+                      size={sizes.LARGE}
+                    >
+                      {translate('TMDb')}
+                    </Label>
+                  </Link>
+                }
+              />
+            </span>
           </Label>
 
           <div
@@ -148,12 +167,8 @@ MovieCrewPoster.propTypes = {
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   posterWidth: PropTypes.number.isRequired,
   posterHeight: PropTypes.number.isRequired,
-  importListId: PropTypes.number.isRequired,
+  importList: PropTypes.object,
   onImportListSelect: PropTypes.func.isRequired
-};
-
-MovieCrewPoster.defaultProps = {
-  importListId: 0
 };
 
 export default MovieCrewPoster;

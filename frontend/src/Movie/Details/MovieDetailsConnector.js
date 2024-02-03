@@ -11,7 +11,6 @@ import { toggleMovieMonitored } from 'Store/Actions/movieActions';
 import { clearMovieBlocklist, fetchMovieBlocklist } from 'Store/Actions/movieBlocklistActions';
 import { clearMovieCredits, fetchMovieCredits } from 'Store/Actions/movieCreditsActions';
 import { clearMovieFiles, fetchMovieFiles } from 'Store/Actions/movieFileActions';
-import { clearMovieHistory, fetchMovieHistory } from 'Store/Actions/movieHistoryActions';
 import { clearQueueDetails, fetchQueueDetails } from 'Store/Actions/queueActions';
 import { cancelFetchReleases, clearReleases } from 'Store/Actions/releaseActions';
 import { fetchImportListSchema } from 'Store/Actions/settingsActions';
@@ -34,14 +33,11 @@ const selectMovieFiles = createSelector(
 
     const hasMovieFiles = !!items.length;
 
-    const sizeOnDisk = items.map((item) => item.size).reduce((prev, curr) => prev + curr, 0);
-
     return {
       isMovieFilesFetching: isFetching,
       isMovieFilesPopulated: isPopulated,
       movieFilesError: error,
-      hasMovieFiles,
-      sizeOnDisk
+      hasMovieFiles
     };
   }
 );
@@ -105,8 +101,7 @@ function createMapStateToProps() {
         isMovieFilesFetching,
         isMovieFilesPopulated,
         movieFilesError,
-        hasMovieFiles,
-        sizeOnDisk
+        hasMovieFiles
       } = movieFiles;
 
       const {
@@ -162,7 +157,6 @@ function createMapStateToProps() {
         movieCreditsError,
         extraFilesError,
         hasMovieFiles,
-        sizeOnDisk,
         previousMovie,
         nextMovie,
         isSmallScreen: dimensions.isSmallScreen,
@@ -181,12 +175,6 @@ function createMapDispatchToProps(dispatch, props) {
     },
     dispatchClearMovieFiles() {
       dispatch(clearMovieFiles());
-    },
-    dispatchFetchMovieHistory({ movieId }) {
-      dispatch(fetchMovieHistory({ movieId }));
-    },
-    dispatchClearMovieHistory() {
-      dispatch(clearMovieHistory());
     },
     dispatchFetchMovieCredits({ movieId }) {
       dispatch(fetchMovieCredits({ movieId }));
@@ -283,7 +271,6 @@ class MovieDetailsConnector extends Component {
 
     this.props.dispatchFetchMovieFiles({ movieId });
     this.props.dispatchFetchMovieBlocklist({ movieId });
-    this.props.dispatchFetchMovieHistory({ movieId });
     this.props.dispatchFetchExtraFiles({ movieId });
     this.props.dispatchFetchMovieCredits({ movieId });
     this.props.dispatchFetchQueueDetails({ movieId });
@@ -294,7 +281,6 @@ class MovieDetailsConnector extends Component {
     this.props.dispatchCancelFetchReleases();
     this.props.dispatchClearMovieBlocklist();
     this.props.dispatchClearMovieFiles();
-    this.props.dispatchClearMovieHistory();
     this.props.dispatchClearExtraFiles();
     this.props.dispatchClearMovieCredits();
     this.props.dispatchClearQueueDetails();
@@ -351,8 +337,6 @@ MovieDetailsConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   dispatchFetchMovieFiles: PropTypes.func.isRequired,
   dispatchClearMovieFiles: PropTypes.func.isRequired,
-  dispatchFetchMovieHistory: PropTypes.func.isRequired,
-  dispatchClearMovieHistory: PropTypes.func.isRequired,
   dispatchFetchExtraFiles: PropTypes.func.isRequired,
   dispatchClearExtraFiles: PropTypes.func.isRequired,
   dispatchFetchMovieCredits: PropTypes.func.isRequired,

@@ -122,7 +122,7 @@ export default {
       return selectProviderSchema(state, section, payload, (selectedSchema) => {
         selectedSchema.name = payload.presetName ?? payload.implementationName;
         selectedSchema.implementationName = payload.implementationName;
-        selectedSchema.minRefreshInterval = payload.minRefreshInterval;
+        selectedSchema.minRefreshInterval = selectedSchema.minRefreshInterval ?? payload.minRefreshInterval;
         selectedSchema.minimumAvailability = 'released';
         selectedSchema.rootFolderPath = '';
 

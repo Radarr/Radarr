@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment/moment';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import { filterBuilderTypes, filterBuilderValueTypes, filterTypes, sortDirections } from 'Helpers/Props';
@@ -9,7 +10,7 @@ import getNewMovie from 'Utilities/Movie/getNewMovie';
 import getSectionState from 'Utilities/State/getSectionState';
 import updateSectionState from 'Utilities/State/updateSectionState';
 import translate from 'Utilities/String/translate';
-import { removeItem, set, updateItem } from './baseActions';
+import { removeItem, set, update, updateItem } from './baseActions';
 import createHandleActions from './Creators/createHandleActions';
 import createClearReducer from './Creators/Reducers/createClearReducer';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
@@ -83,6 +84,20 @@ export const defaultState = {
     {
       name: 'isRecommendation',
       columnLabel: 'Recommedation',
+      isSortable: true,
+      isVisible: true,
+      isModifiable: false
+    },
+    {
+      name: 'isTrending',
+      columnLabel: 'Trending',
+      isSortable: true,
+      isVisible: true,
+      isModifiable: false
+    },
+    {
+      name: 'isPopular',
+      columnLabel: 'Popular',
       isSortable: true,
       isVisible: true,
       isModifiable: false
@@ -219,6 +234,42 @@ export const defaultState = {
       const { ratings = {} } = item;
 
       return ratings.tmdb? ratings.tmdb.value : 0;
+    },
+
+    inCinemas: function(item, direction) {
+      if (item.inCinemas) {
+        return moment(item.inCinemas).unix();
+      }
+
+      if (direction === sortDirections.DESCENDING) {
+        return -1 * Number.MAX_VALUE;
+      }
+
+      return Number.MAX_VALUE;
+    },
+
+    physicalRelease: function(item, direction) {
+      if (item.physicalRelease) {
+        return moment(item.physicalRelease).unix();
+      }
+
+      if (direction === sortDirections.DESCENDING) {
+        return -1 * Number.MAX_VALUE;
+      }
+
+      return Number.MAX_VALUE;
+    },
+
+    digitalRelease: function(item, direction) {
+      if (item.digitalRelease) {
+        return moment(item.digitalRelease).unix();
+      }
+
+      if (direction === sortDirections.DESCENDING) {
+        return -1 * Number.MAX_VALUE;
+      }
+
+      return Number.MAX_VALUE;
     }
   },
 
@@ -229,6 +280,28 @@ export const defaultState = {
       key: 'all',
       label: () => translate('All'),
       filters: []
+    },
+    {
+      key: 'popular',
+      label: 'Popular',
+      filters: [
+        {
+          key: 'isPopular',
+          value: true,
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
+      key: 'trending',
+      label: 'Trending',
+      filters: [
+        {
+          key: 'isTrending',
+          value: true,
+          type: filterTypes.EQUAL
+        }
+      ]
     },
     {
       key: 'newNotExcluded',
@@ -419,6 +492,18 @@ export const defaultState = {
       label: 'Recommended',
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.BOOL
+    },
+    {
+      name: 'isTrending',
+      label: 'Trending',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.BOOL
+    },
+    {
+      name: 'isPopular',
+      label: 'Popular',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.BOOL
     }
   ]
 };
@@ -507,11 +592,11 @@ export const actionHandlers = handleThunks({
     }).request;
 
     promise.done((data) => {
-      // set an Id so the selectors and updaters done blow up.
+      // set an ID so the selectors and updaters done blow up.
       data = data.map((movie) => ({ ...movie, id: movie.tmdbId }));
 
       dispatch(batchActions([
-        ...data.map((movie) => updateItem({ section, ...movie })),
+        update({ section, data }),
 
         set({
           section,

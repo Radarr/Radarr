@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -76,6 +77,7 @@ namespace NzbDrone.Core.Notifications.Trakt
         {
             var request = new HttpRequestBuilder(RenewUri)
                     .AddQueryParam("refresh_token", refreshToken)
+                    .WithRateLimit(2)
                     .Build();
 
             return _httpClient.Get<TraktAuthRefreshResource>(request)?.Resource ?? null;
@@ -85,6 +87,7 @@ namespace NzbDrone.Core.Notifications.Trakt
         {
             var request = new HttpRequestBuilder(URL).Resource(resource).Build();
 
+            request.RateLimit = TimeSpan.FromSeconds(2);
             request.Headers.Accept = HttpAccept.Json.Value;
             request.Method = method;
 

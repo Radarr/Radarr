@@ -48,6 +48,23 @@ $hoverScale: 1.05;
   font-size: $smallFontSize;
 }
 
+.toggleMonitoredContainer {
+  position: absolute;
+  top: 10px;
+  z-index: 3;
+}
+
+.monitorToggleButton {
+  composes: toggleButton from '~Components/MonitorToggleButton.css';
+
+  width: 25px;
+  color: var(--white);
+
+  &:hover {
+    color: var(--iconButtonHoverLightColor);
+  }
+}
+
 .controls {
   position: absolute;
   bottom: 10px;
@@ -65,7 +82,7 @@ $hoverScale: 1.05;
   composes: button from '~Components/Link/IconButton.css';
 
   &:hover {
-    color: var(--radarrYellow);
+    color: var(--iconButtonHoverLightColor);
   }
 }
 
@@ -73,4 +90,14 @@ $hoverScale: 1.05;
   .container {
     padding: 5px;
   }
+}
+
+.externalLinks {
+  margin: 0 2px;
+}
+
+.externalLinkLabel {
+  composes: label from '~Components/Label.css';
+
+  cursor: pointer;
 }

@@ -130,7 +130,10 @@ export const actionHandlers = handleThunks({
 
     promise.done((data) => {
       const updatedItem = _.cloneDeep(data);
+      updatedItem.internalId = updatedItem.id;
       updatedItem.id = updatedItem.tmdbId;
+      delete updatedItem.images;
+
       const actions = [
         updateItem({ section: 'movies', ...data }),
         updateItem({ section: 'addMovie', ...updatedItem }),

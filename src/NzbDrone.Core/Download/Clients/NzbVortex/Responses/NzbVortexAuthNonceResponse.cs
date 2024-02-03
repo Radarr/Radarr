@@ -1,4 +1,4 @@
-﻿namespace NzbDrone.Core.Download.Clients.NzbVortex.Responses
+namespace NzbDrone.Core.Download.Clients.NzbVortex.Responses
 {
     public class NzbVortexAuthNonceResponse
     {

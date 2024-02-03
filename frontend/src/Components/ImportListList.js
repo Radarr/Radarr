@@ -19,7 +19,7 @@ function ImportListList({ lists, importListList }) {
           return (
             <Label
               key={list.id}
-              kind={kinds.INFO}
+              kind={kinds.SUCCESS}
               size={sizes.MEDIUM}
             >
               {list.name}

@@ -3,15 +3,17 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.ImportLists.ImportListMovies;
 using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Indexers.Exceptions;
 
 namespace NzbDrone.Core.ImportLists.Rss.Plex
 {
     public class PlexRssImportParser : RssImportBaseParser
     {
+        private readonly Logger _logger;
+
         public PlexRssImportParser(Logger logger)
             : base(logger)
         {
+            _logger = logger;
         }
 
         protected override ImportListMovie ProcessItem(XElement item)
@@ -45,7 +47,9 @@ namespace NzbDrone.Core.ImportLists.Rss.Plex
 
             if (info.ImdbId.IsNullOrWhiteSpace() && info.TmdbId == 0)
             {
-                throw new UnsupportedFeedException("Each item in the RSS feed must have a guid element with a IMDB ID or TMDB ID");
+                _logger.Warn("Each item in the RSS feed must have a guid element with a IMDB ID or TMDB ID: '{0}'", info.Title);
+
+                return null;
             }
 
             return info;

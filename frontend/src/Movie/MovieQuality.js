@@ -3,6 +3,7 @@ import React from 'react';
 import Label from 'Components/Label';
 import { kinds } from 'Helpers/Props';
 import formatBytes from 'Utilities/Number/formatBytes';
+import translate from 'Utilities/String/translate';
 
 function getTooltip(title, quality, size, isMonitored, isCutoffNotMet) {
   const revision = quality.revision;
@@ -28,6 +29,36 @@ function getTooltip(title, quality, size, isMonitored, isCutoffNotMet) {
   return title;
 }
 
+function revisionLabel(className, quality, showRevision) {
+  if (!showRevision) {
+    return;
+  }
+
+  if (quality.revision.isRepack) {
+    return (
+      <Label
+        className={className}
+        kind={kinds.PRIMARY}
+        title={translate('Repack')}
+      >
+        R
+      </Label>
+    );
+  }
+
+  if (quality.revision.version && quality.revision.version > 1) {
+    return (
+      <Label
+        className={className}
+        kind={kinds.PRIMARY}
+        title={translate('Proper')}
+      >
+        P
+      </Label>
+    );
+  }
+}
+
 function MovieQuality(props) {
   const {
     className,
@@ -35,7 +66,8 @@ function MovieQuality(props) {
     quality,
     size,
     isMonitored,
-    isCutoffNotMet
+    isCutoffNotMet,
+    showRevision
   } = props;
 
   let kind = kinds.DEFAULT;
@@ -50,13 +82,15 @@ function MovieQuality(props) {
   }
 
   return (
-    <Label
-      className={className}
-      kind={kind}
-      title={getTooltip(title, quality, size, isMonitored, isCutoffNotMet)}
-    >
-      {quality.quality.name}
-    </Label>
+    <span>
+      <Label
+        className={className}
+        kind={kind}
+        title={getTooltip(title, quality, size, isMonitored, isCutoffNotMet)}
+      >
+        {quality.quality.name}
+      </Label>{revisionLabel(className, quality, showRevision)}
+    </span>
   );
 }
 
@@ -66,12 +100,14 @@ MovieQuality.propTypes = {
   quality: PropTypes.object.isRequired,
   size: PropTypes.number,
   isMonitored: PropTypes.bool,
-  isCutoffNotMet: PropTypes.bool
+  isCutoffNotMet: PropTypes.bool,
+  showRevision: PropTypes.bool
 };
 
 MovieQuality.defaultProps = {
   title: '',
-  isMonitored: true
+  isMonitored: true,
+  showRevision: false
 };
 
 export default MovieQuality;

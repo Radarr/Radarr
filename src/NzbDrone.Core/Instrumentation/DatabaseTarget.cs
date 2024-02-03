@@ -88,16 +88,15 @@ namespace NzbDrone.Core.Instrumentation
 
                 log.Level = logEvent.Level.Name;
 
-                var connectionString = _connectionStringFactory.LogDbConnectionString;
+                var connectionInfo = _connectionStringFactory.LogDbConnection;
 
-                // TODO: Probably need more robust way to differentiate what's being used
-                if (connectionString.Contains(".db"))
+                if (connectionInfo.DatabaseType == DatabaseType.SQLite)
                 {
-                    WriteSqliteLog(log, connectionString);
+                    WriteSqliteLog(log, connectionInfo.ConnectionString);
                 }
                 else
                 {
-                    WritePostgresLog(log, connectionString);
+                    WritePostgresLog(log, connectionInfo.ConnectionString);
                 }
             }
             catch (NpgsqlException ex)
@@ -136,8 +135,10 @@ namespace NzbDrone.Core.Instrumentation
         private void WriteSqliteLog(Log log, string connectionString)
         {
             using (var connection =
-                new SQLiteConnection(connectionString).OpenAndReturn())
+                SQLiteFactory.Instance.CreateConnection())
             {
+                connection.ConnectionString = connectionString;
+                connection.Open();
                 using (var sqlCommand = connection.CreateCommand())
                 {
                     sqlCommand.CommandText = INSERT_COMMAND;

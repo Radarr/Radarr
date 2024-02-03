@@ -23,9 +23,7 @@ function createMapStateToProps() {
     ) => {
       const languages = languageProfiles.items;
       const qualities = getQualities(qualityProfiles.schema.items);
-      const filesForMovie = movieFiles.items.filter((obj) => {
-        return obj.movieId === movieId;
-      });
+      const filesForMovie = movieFiles.items.filter((file) => file.movieId === movieId);
 
       return {
         items: filesForMovie,
@@ -42,11 +40,11 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    dispatchFetchQualityProfileSchema(name, path) {
+    dispatchFetchQualityProfileSchema() {
       dispatch(fetchQualityProfileSchema());
     },
 
-    dispatchFetchLanguages(name, path) {
+    dispatchFetchLanguages() {
       dispatch(fetchLanguages());
     },
 

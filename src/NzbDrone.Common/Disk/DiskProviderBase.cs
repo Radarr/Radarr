@@ -130,7 +130,7 @@ namespace NzbDrone.Common.Disk
             try
             {
                 var testPath = Path.Combine(path, "radarr_write_test.txt");
-                var testContent = string.Format("This file was created to verify if '{0}' is writable. It should've been automatically deleted. Feel free to delete it.", path);
+                var testContent = $"This file was created to verify if '{path}' is writable. It should've been automatically deleted. Feel free to delete it.";
                 WriteAllText(testPath, testContent);
                 File.Delete(testPath);
                 return true;

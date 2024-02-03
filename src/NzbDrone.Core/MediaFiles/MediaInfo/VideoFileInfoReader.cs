@@ -22,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         private readonly List<FFProbePixelFormat> _pixelFormats;
 
         public const int MINIMUM_MEDIA_INFO_SCHEMA_REVISION = 8;
-        public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 10;
+        public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 12;
 
         private static readonly string[] ValidHdrColourPrimaries = { "bt2020" };
         private static readonly string[] HlgTransferFunctions = { "bt2020-10", "arib-std-b67" };
@@ -117,7 +117,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 // if it looks like PQ10 or similar HDR, do a frame analysis to figure out which type it is
                 if (PqTransferFunctions.Contains(mediaInfoModel.VideoTransferCharacteristics))
                 {
-                    var frameOutput = FFProbe.GetFrameJson(filename, ffOptions: new () { ExtraArguments = "-read_intervals \"%+#1\" -select_streams v" });
+                    var frameOutput = FFProbe.GetFrameJson(filename, ffOptions: new () { ExtraArguments = $"-read_intervals \"%+#1\" -select_streams v:{primaryVideoStream?.Index ?? 0}" });
                     mediaInfoModel.RawFrameData = frameOutput;
 
                     frames = FFProbe.AnalyseFrameJson(frameOutput);
@@ -188,12 +188,14 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             if (TryGetSideData<DoviConfigurationRecordSideData>(sideData, out var dovi))
             {
+                var hasHdr10Plus = TryGetSideData<HdrDynamicMetadataSpmte2094>(sideData, out _);
+
                 return dovi.DvBlSignalCompatibilityId switch
                 {
-                    1 => HdrFormat.DolbyVisionHdr10,
+                    1 => hasHdr10Plus ? HdrFormat.DolbyVisionHdr10Plus : HdrFormat.DolbyVisionHdr10,
                     2 => HdrFormat.DolbyVisionSdr,
                     4 => HdrFormat.DolbyVisionHlg,
-                    6 => HdrFormat.DolbyVisionHdr10,
+                    6 => hasHdr10Plus ? HdrFormat.DolbyVisionHdr10Plus : HdrFormat.DolbyVisionHdr10,
                     _ => HdrFormat.DolbyVision
                 };
             }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
@@ -20,49 +21,52 @@ namespace NzbDrone.Core.Indexers.HDBits
 
     public class HDBitsSettings : ITorrentIndexerSettings
     {
-        private static readonly HDBitsSettingsValidator Validator = new HDBitsSettingsValidator();
+        private static readonly HDBitsSettingsValidator Validator = new ();
 
         public HDBitsSettings()
         {
             BaseUrl = "https://hdbits.org";
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
 
-            Categories = new int[] { (int)HdBitsCategory.Movie };
-            Codecs = System.Array.Empty<int>();
-            Mediums = System.Array.Empty<int>();
-            MultiLanguages = new List<int>();
-            RequiredFlags = new List<int>();
+            Categories = new[] { (int)HdBitsCategory.Movie };
+            Codecs = Array.Empty<int>();
+            Mediums = Array.Empty<int>();
+            MultiLanguages = Array.Empty<int>();
+            RequiredFlags = Array.Empty<int>();
         }
 
-        [FieldDefinition(0, Label = "Username", Privacy = PrivacyLevel.UserName)]
-        public string Username { get; set; }
+        [FieldDefinition(0, Label = "API URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your API key will be sent to that host.")]
+        public string BaseUrl { get; set; }
 
-        [FieldDefinition(1, Type = FieldType.Select, SelectOptions = typeof(RealLanguageFieldConverter), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
-        public IEnumerable<int> MultiLanguages { get; set; }
+        [FieldDefinition(1, Label = "Username", Privacy = PrivacyLevel.UserName)]
+        public string Username { get; set; }
 
         [FieldDefinition(2, Label = "API Key", Privacy = PrivacyLevel.ApiKey)]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(3, Label = "API URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your API key will be sent to that host.")]
-        public string BaseUrl { get; set; }
-
-        [FieldDefinition(4, Label = "Categories", Type = FieldType.TagSelect, SelectOptions = typeof(HdBitsCategory), HelpText = "Options: Movie, TV, Documentary, Music, Sport, Audio, XXX, MiscDemo. If unspecified, all options are used.")]
+        [FieldDefinition(3, Label = "Categories", Type = FieldType.Select, SelectOptions = typeof(HdBitsCategory), HelpText = "If unspecified, all options are used.")]
         public IEnumerable<int> Categories { get; set; }
 
-        [FieldDefinition(5, Label = "Codecs", Type = FieldType.TagSelect, SelectOptions = typeof(HdBitsCodec), Advanced = true, HelpText = "Options: h264, Mpeg2, VC1, Xvid. If unspecified, all options are used.")]
+        [FieldDefinition(4, Label = "Codecs", Type = FieldType.Select, SelectOptions = typeof(HdBitsCodec), Advanced = true, HelpText = "If unspecified, all options are used.")]
         public IEnumerable<int> Codecs { get; set; }
 
-        [FieldDefinition(6, Label = "Mediums", Type = FieldType.TagSelect, SelectOptions = typeof(HdBitsMedium), Advanced = true, HelpText = "Options: BluRay, Encode, Capture, Remux, WebDL. If unspecified, all options are used.")]
+        [FieldDefinition(5, Label = "Mediums", Type = FieldType.Select, SelectOptions = typeof(HdBitsMedium), Advanced = true, HelpText = "If unspecified, all options are used.")]
         public IEnumerable<int> Mediums { get; set; }
+
+        [FieldDefinition(6, Type = FieldType.Select, SelectOptions = typeof(RealLanguageFieldConverter), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
+        public IEnumerable<int> MultiLanguages { get; set; }
 
         [FieldDefinition(7, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
-        [FieldDefinition(8, Type = FieldType.TagSelect, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
+        [FieldDefinition(8, Type = FieldType.Select, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
         [FieldDefinition(9)]
-        public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new ();
+
+        [FieldDefinition(10, Type = FieldType.Checkbox, Label = "IndexerSettingsRejectBlocklistedTorrentHashes", HelpText = "IndexerSettingsRejectBlocklistedTorrentHashesHelpText", Advanced = true)]
+        public bool RejectBlocklistedTorrentHashesWhileGrabbing { get; set; }
 
         public NzbDroneValidationResult Validate()
         {
@@ -72,31 +76,49 @@ namespace NzbDrone.Core.Indexers.HDBits
 
     public enum HdBitsCategory
     {
+        [FieldOption("Movie")]
         Movie = 1,
+        [FieldOption("TV")]
         Tv = 2,
+        [FieldOption("Documentary")]
         Documentary = 3,
+        [FieldOption("Music")]
         Music = 4,
+        [FieldOption("Sport")]
         Sport = 5,
+        [FieldOption("Audio Track")]
         Audio = 6,
+        [FieldOption("XXX")]
         Xxx = 7,
+        [FieldOption("Misc/Demo")]
         MiscDemo = 8
     }
 
     public enum HdBitsCodec
     {
+        [FieldOption("H.264")]
         H264 = 1,
+        [FieldOption("MPEG-2")]
         Mpeg2 = 2,
+        [FieldOption("VC-1")]
         Vc1 = 3,
+        [FieldOption("XviD")]
         Xvid = 4,
+        [FieldOption("HEVC")]
         HEVC = 5
     }
 
     public enum HdBitsMedium
     {
+        [FieldOption("Blu-ray/HD DVD")]
         Bluray = 1,
+        [FieldOption("Encode")]
         Encode = 3,
+        [FieldOption("Capture")]
         Capture = 4,
+        [FieldOption("Remux")]
         Remux = 5,
+        [FieldOption("WEB-DL")]
         WebDl = 6
     }
 }

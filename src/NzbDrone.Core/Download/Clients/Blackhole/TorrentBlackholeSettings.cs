@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using FluentValidation;
 using Newtonsoft.Json;
 using NzbDrone.Core.Annotations;
@@ -28,23 +28,24 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
         private static readonly TorrentBlackholeSettingsValidator Validator = new TorrentBlackholeSettingsValidator();
 
-        [FieldDefinition(0, Label = "Torrent Folder", Type = FieldType.Path, HelpText = "Folder in which Radarr will store the .torrent file")]
+        [FieldDefinition(0, Label = "TorrentBlackholeTorrentFolder", Type = FieldType.Path, HelpText = "BlackholeFolderHelpText")]
+        [FieldToken(TokenField.HelpText, "TorrentBlackholeTorrentFolder", "extension", ".torrent")]
         public string TorrentFolder { get; set; }
 
-        [FieldDefinition(1, Label = "Watch Folder", Type = FieldType.Path, HelpText = "Folder from which Radarr should import completed downloads")]
+        [FieldDefinition(1, Label = "BlackholeWatchFolder", Type = FieldType.Path, HelpText = "BlackholeWatchFolderHelpText")]
         public string WatchFolder { get; set; }
 
         [DefaultValue(false)]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        [FieldDefinition(2, Label = "Save Magnet Files", Type = FieldType.Checkbox, HelpText = "Save a .magnet file with the magnet link if no .torrent file is available (only useful if the download client supports .magnet files)")]
+        [FieldDefinition(2, Label = "TorrentBlackholeSaveMagnetFiles", Type = FieldType.Checkbox, HelpText = "TorrentBlackholeSaveMagnetFilesHelpText")]
         public bool SaveMagnetFiles { get; set; }
 
-        [FieldDefinition(3, Label = "Save Magnet Files", Type = FieldType.Textbox, HelpText = "Extension to use for magnet links, defaults to '.magnet'")]
+        [FieldDefinition(3, Label = "TorrentBlackholeSaveMagnetFilesExtension", Type = FieldType.Textbox, HelpText = "TorrentBlackholeSaveMagnetFilesExtensionHelpText")]
         public string MagnetFileExtension { get; set; }
 
         [DefaultValue(false)]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        [FieldDefinition(4, Label = "Read Only", Type = FieldType.Checkbox, HelpText = "Instead of moving files this will instruct Radarr to Copy or Hardlink (depending on settings/system configuration)")]
+        [FieldDefinition(4, Label = "TorrentBlackholeSaveMagnetFilesReadOnly", Type = FieldType.Checkbox, HelpText = "TorrentBlackholeSaveMagnetFilesReadOnlyHelpText")]
         public bool ReadOnly { get; set; }
 
         public NzbDroneValidationResult Validate()

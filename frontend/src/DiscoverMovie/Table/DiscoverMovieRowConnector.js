@@ -5,9 +5,11 @@ import DiscoverMovieRow from './DiscoverMovieRow';
 
 function createMapStateToProps() {
   return createSelector(
+    (state) => state.settings.ui.item.movieRuntimeFormat,
     createDimensionsSelector(),
-    (dimensions) => {
+    (movieRuntimeFormat, dimensions) => {
       return {
+        movieRuntimeFormat,
         isSmallScreen: dimensions.isSmallScreen
       };
     }

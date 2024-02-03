@@ -87,9 +87,9 @@ function EditDelayProfileModalContent(props) {
 
         {
           !isFetching && !!error ?
-            <div>
-              {translate('UnableToAddANewQualityProfilePleaseTryAgain')}
-            </div> :
+            <Alert kind={kinds.DANGER}>
+              {translate('AddDelayProfileError')}
+            </Alert> :
             null
         }
 
@@ -186,7 +186,7 @@ function EditDelayProfileModalContent(props) {
               {
                 id === 1 ?
                   <Alert>
-                    {translate('DefaultDelayProfile')}
+                    {translate('DefaultDelayProfileMovie')}
                   </Alert> :
 
                   <FormGroup>
@@ -196,7 +196,7 @@ function EditDelayProfileModalContent(props) {
                       type={inputTypes.TAG}
                       name="tags"
                       {...tags}
-                      helpText={translate('TagsHelpText')}
+                      helpText={translate('DelayProfileMovieTagsHelpText')}
                       onChange={onInputChange}
                     />
                   </FormGroup>

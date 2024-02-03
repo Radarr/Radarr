@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Emby
@@ -17,11 +19,13 @@ namespace NzbDrone.Core.Notifications.Emby
     public class MediaBrowserService : IMediaBrowserService
     {
         private readonly MediaBrowserProxy _proxy;
+        private readonly ILocalizationService _localizationService;
         private readonly Logger _logger;
 
-        public MediaBrowserService(MediaBrowserProxy proxy, Logger logger)
+        public MediaBrowserService(MediaBrowserProxy proxy, ILocalizationService localizationService, Logger logger)
         {
             _proxy = proxy;
+            _localizationService = localizationService;
             _logger = logger;
         }
 
@@ -47,13 +51,13 @@ namespace NzbDrone.Core.Notifications.Emby
             {
                 if (ex.Response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    return new ValidationFailure("ApiKey", "API Key is incorrect");
+                    return new ValidationFailure("ApiKey", _localizationService.GetLocalizedString("NotificationsValidationInvalidApiKey"));
                 }
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, "Unable to send test message");
-                return new ValidationFailure("Host", "Unable to send test message: " + ex.Message);
+                return new ValidationFailure("Host", _localizationService.GetLocalizedString("NotificationsValidationUnableToSendTestMessage", new Dictionary<string, object> { { "exceptionMessage", ex.Message } }));
             }
 
             return null;

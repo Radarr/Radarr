@@ -7,7 +7,6 @@ using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Parser;
 using Radarr.Api.V3.MovieFiles;
@@ -48,13 +47,15 @@ namespace Radarr.Api.V3.Movies
         // public bool Downloaded { get; set; }
         public string RemotePoster { get; set; }
         public int Year { get; set; }
-        public bool HasFile { get; set; }
         public string YouTubeTrailerId { get; set; }
         public string Studio { get; set; }
 
         // View & Edit
         public string Path { get; set; }
         public int QualityProfileId { get; set; }
+
+        // Compatibility
+        public bool? HasFile { get; set; }
 
         // Editing Only
         public bool Monitored { get; set; }
@@ -76,8 +77,9 @@ namespace Radarr.Api.V3.Movies
         public AddMovieOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
         public MovieFileResource MovieFile { get; set; }
-        public MovieCollection Collection { get; set; }
+        public MovieCollectionResource Collection { get; set; }
         public float Popularity { get; set; }
+        public MovieStatisticsResource Statistics { get; set; }
     }
 
     public static class MovieResourceMapper
@@ -89,14 +91,12 @@ namespace Radarr.Api.V3.Movies
                 return null;
             }
 
-            var size = model.MovieFile?.Size ?? 0;
-
             var movieFile = model.MovieFile?.ToResource(model, upgradableSpecification, formatCalculationService);
 
             var translatedTitle = movieTranslation?.Title ?? model.Title;
             var translatedOverview = movieTranslation?.Overview ?? model.MovieMetadata.Value.Overview;
 
-            var collection = model.MovieMetadata.Value.CollectionTmdbId > 0 ? new MovieCollection { Title = model.MovieMetadata.Value.CollectionTitle, TmdbId = model.MovieMetadata.Value.CollectionTmdbId } : null;
+            var collection = model.MovieMetadata.Value.CollectionTmdbId > 0 ? new MovieCollectionResource { Title = model.MovieMetadata.Value.CollectionTitle, TmdbId = model.MovieMetadata.Value.CollectionTmdbId } : null;
 
             return new MovieResource
             {
@@ -109,9 +109,7 @@ namespace Radarr.Api.V3.Movies
                 InCinemas = model.MovieMetadata.Value.InCinemas,
                 PhysicalRelease = model.MovieMetadata.Value.PhysicalRelease,
                 DigitalRelease = model.MovieMetadata.Value.DigitalRelease,
-                HasFile = model.HasFile,
 
-                SizeOnDisk = size,
                 Status = model.MovieMetadata.Value.Status,
                 Overview = translatedOverview,
 
@@ -200,9 +198,9 @@ namespace Radarr.Api.V3.Movies
 
         public static Movie ToModel(this MovieResource resource, Movie movie)
         {
-            var updatedmovie = resource.ToModel();
+            var updatedMovie = resource.ToModel();
 
-            movie.ApplyChanges(updatedmovie);
+            movie.ApplyChanges(updatedMovie);
 
             return movie;
         }

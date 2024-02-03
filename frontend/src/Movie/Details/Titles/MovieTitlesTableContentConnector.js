@@ -6,16 +6,27 @@ import MovieTitlesTableContent from './MovieTitlesTableContent';
 
 function createMapStateToProps() {
   return createSelector(
+    (state, { movieId }) => movieId,
     (state) => state.movies,
-    (movies) => {
-      return movies;
+    (movieId, movies) => {
+      const {
+        isFetching,
+        isPopulated,
+        error,
+        items
+      } = movies;
+
+      const alternateTitles = items.find((m) => m.id === movieId)?.alternateTitles;
+
+      return {
+        isFetching,
+        isPopulated,
+        error,
+        alternateTitles
+      };
     }
   );
 }
-
-const mapDispatchToProps = {
-//  fetchMovies
-};
 
 class MovieTitlesTableContentConnector extends Component {
 
@@ -23,14 +34,15 @@ class MovieTitlesTableContentConnector extends Component {
   // Render
 
   render() {
-    const movie = this.props.items.filter((obj) => {
-      return obj.id === this.props.movieId;
-    });
+    const {
+      alternateTitles,
+      ...otherProps
+    } = this.props;
 
     return (
       <MovieTitlesTableContent
-        {...this.props}
-        items={movie[0].alternateTitles}
+        {...otherProps}
+        items={alternateTitles}
       />
     );
   }
@@ -38,7 +50,11 @@ class MovieTitlesTableContentConnector extends Component {
 
 MovieTitlesTableContentConnector.propTypes = {
   movieId: PropTypes.number.isRequired,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired
+  alternateTitles: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(MovieTitlesTableContentConnector);
+MovieTitlesTableContentConnector.defaultProps = {
+  alternateTitles: []
+};
+
+export default connect(createMapStateToProps)(MovieTitlesTableContentConnector);

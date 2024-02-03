@@ -17,13 +17,13 @@ function createUnoptimizedSelector() {
     createClientSideCollectionSelector('movies', 'movieIndex'),
     (movies: MoviesAppState) => {
       return movies.items.map((m) => {
-        const { monitored, status, hasFile, sizeOnDisk } = m;
+        const { monitored, status, hasFile, statistics } = m;
 
         return {
           monitored,
           status,
           hasFile,
-          sizeOnDisk,
+          statistics,
         };
       });
     }
@@ -44,16 +44,20 @@ export default function MovieIndexFooter() {
   let monitored = 0;
   let totalFileSize = 0;
 
-  movies.forEach((s) => {
-    if (s.hasFile) {
+  movies.forEach((m) => {
+    const { statistics = { sizeOnDisk: 0 } } = m;
+
+    const { sizeOnDisk = 0 } = statistics;
+
+    if (m.hasFile) {
       movieFiles += 1;
     }
 
-    if (s.monitored) {
+    if (m.monitored) {
       monitored++;
     }
 
-    totalFileSize += s.sizeOnDisk;
+    totalFileSize += sizeOnDisk;
   });
 
   return (

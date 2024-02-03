@@ -10,7 +10,6 @@ namespace NzbDrone.Core.Indexers.Nyaa
         public override string Name => "Nyaa";
 
         public override DownloadProtocol Protocol => DownloadProtocol.Torrent;
-        public override int PageSize => 100;
 
         public Nyaa(IHttpClient httpClient, IIndexerStatusService indexerStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, indexerStatusService, configService, parsingService, logger)
@@ -19,7 +18,7 @@ namespace NzbDrone.Core.Indexers.Nyaa
 
         public override IIndexerRequestGenerator GetRequestGenerator()
         {
-            return new NyaaRequestGenerator() { Settings = Settings, PageSize = PageSize };
+            return new NyaaRequestGenerator() { Settings = Settings };
         }
 
         public override IParseIndexerResponse GetParser()

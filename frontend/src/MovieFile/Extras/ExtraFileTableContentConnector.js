@@ -14,9 +14,7 @@ function createMapStateToProps() {
       movieId,
       extraFiles
     ) => {
-      const filesForMovie = extraFiles.items.filter((obj) => {
-        return obj.movieId === movieId;
-      });
+      const filesForMovie = extraFiles.items.filter((file) => file.movieId === movieId);
 
       return {
         items: filesForMovie,
@@ -24,11 +22,6 @@ function createMapStateToProps() {
       };
     }
   );
-}
-
-function createMapDispatchToProps(dispatch, props) {
-  return {
-  };
 }
 
 class ExtraFileTableContentConnector extends Component {
@@ -53,4 +46,4 @@ ExtraFileTableContentConnector.propTypes = {
   movieId: PropTypes.number.isRequired
 };
 
-export default connect(createMapStateToProps, createMapDispatchToProps)(ExtraFileTableContentConnector);
+export default connect(createMapStateToProps, null)(ExtraFileTableContentConnector);

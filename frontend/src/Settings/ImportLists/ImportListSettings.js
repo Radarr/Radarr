@@ -70,7 +70,7 @@ class ImportListSettings extends Component {
     } = this.state;
 
     return (
-      <PageContent title={translate('ListSettings')}>
+      <PageContent title={translate('ImportListSettings')}>
         <SettingsToolbarConnector
           isSaving={isSaving}
           hasPendingChanges={hasPendingChanges}

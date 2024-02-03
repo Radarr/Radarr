@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Icon from 'Components/Icon';
 import TmdbRating from 'Components/TmdbRating';
+import { icons } from 'Helpers/Props';
 import { getMovieStatusDetails } from 'Movie/MovieStatus';
 import formatRuntime from 'Utilities/Date/formatRuntime';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
+import translate from 'Utilities/String/translate';
 import styles from './DiscoverMoviePosterInfo.css';
 
 function DiscoverMoviePosterInfo(props) {
@@ -19,12 +22,13 @@ function DiscoverMoviePosterInfo(props) {
     sortKey,
     showRelativeDates,
     shortDateFormat,
-    timeFormat
+    timeFormat,
+    movieRuntimeFormat
   } = props;
 
   if (sortKey === 'status' && status) {
     return (
-      <div className={styles.info}>
+      <div className={styles.info} title={translate('Status')}>
         {getMovieStatusDetails(status).title}
       </div>
     );
@@ -32,7 +36,7 @@ function DiscoverMoviePosterInfo(props) {
 
   if (sortKey === 'studio' && studio) {
     return (
-      <div className={styles.info}>
+      <div className={styles.info} title={translate('Studio')}>
         {studio}
       </div>
     );
@@ -50,8 +54,8 @@ function DiscoverMoviePosterInfo(props) {
     );
 
     return (
-      <div className={styles.info}>
-        {`In Cinemas ${inCinemasDate}`}
+      <div className={styles.info} title={translate('InCinemas')}>
+        <Icon name={icons.IN_CINEMAS} /> {inCinemasDate}
       </div>
     );
   }
@@ -68,8 +72,8 @@ function DiscoverMoviePosterInfo(props) {
     );
 
     return (
-      <div className={styles.info}>
-        {`Digital ${digitalReleaseDate}`}
+      <div className={styles.info} title={translate('DigitalRelease')}>
+        <Icon name={icons.MOVIE_FILE} /> {digitalReleaseDate}
       </div>
     );
   }
@@ -86,15 +90,15 @@ function DiscoverMoviePosterInfo(props) {
     );
 
     return (
-      <div className={styles.info}>
-        {`Released ${physicalReleaseDate}`}
+      <div className={styles.info} title={translate('PhysicalRelease')}>
+        <Icon name={icons.DISC} /> {physicalReleaseDate}
       </div>
     );
   }
 
   if (sortKey === 'certification' && certification) {
     return (
-      <div className={styles.info}>
+      <div className={styles.info} title={translate('Certification')}>
         {certification}
       </div>
     );
@@ -102,8 +106,8 @@ function DiscoverMoviePosterInfo(props) {
 
   if (sortKey === 'runtime' && runtime) {
     return (
-      <div className={styles.info}>
-        {formatRuntime(runtime)}
+      <div className={styles.info} title={translate('Runtime')}>
+        {formatRuntime(runtime, movieRuntimeFormat)}
       </div>
     );
   }
@@ -111,9 +115,7 @@ function DiscoverMoviePosterInfo(props) {
   if (sortKey === 'ratings' && ratings) {
     return (
       <div className={styles.info}>
-        <TmdbRating
-          ratings={ratings}
-        />
+        <TmdbRating ratings={ratings} />
       </div>
     );
   }
@@ -133,7 +135,8 @@ DiscoverMoviePosterInfo.propTypes = {
   sortKey: PropTypes.string.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
-  timeFormat: PropTypes.string.isRequired
+  timeFormat: PropTypes.string.isRequired,
+  movieRuntimeFormat: PropTypes.string.isRequired
 };
 
 export default DiscoverMoviePosterInfo;

@@ -84,11 +84,11 @@ function Settings() {
           className={styles.link}
           to="/settings/importlists"
         >
-          {translate('Lists')}
+          {translate('ImportLists')}
         </Link>
 
         <div className={styles.summary}>
-          {translate('ListsSettingsSummary')}
+          {translate('ImportListsSettingsSummary')}
         </div>
 
         <Link
@@ -110,7 +110,7 @@ function Settings() {
         </Link>
 
         <div className={styles.summary}>
-          {translate('MetadataSettingsSummary')}
+          {translate('MetadataSettingsMovieSummary')}
         </div>
 
         <Link
@@ -139,11 +139,11 @@ function Settings() {
           className={styles.link}
           to="/settings/ui"
         >
-          {translate('UI')}
+          {translate('Ui')}
         </Link>
 
         <div className={styles.summary}>
-          {translate('UISettingsSummary')}
+          {translate('UiSettingsSummary')}
         </div>
       </PageContentBody>
     </PageContent>

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -55,7 +56,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             ApiPath = "/api";
             Categories = new[] { 2000, 2010, 2020, 2030, 2040, 2045, 2050, 2060 };
-            MultiLanguages = new List<int>();
+            MultiLanguages = Array.Empty<int>();
         }
 
         [FieldDefinition(0, Label = "URL")]

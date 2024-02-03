@@ -1,4 +1,4 @@
-﻿namespace NzbDrone.Core.Download.Clients.Transmission
+namespace NzbDrone.Core.Download.Clients.Transmission
 {
     public class TransmissionException : DownloadClientException
     {

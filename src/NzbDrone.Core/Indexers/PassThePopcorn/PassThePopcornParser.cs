@@ -59,9 +59,14 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                         flags |= IndexerFlags.PTP_Approved;
                     }
 
-                    if (torrent.FreeleechType == "Freeleech")
+                    switch (torrent.FreeleechType?.ToUpperInvariant())
                     {
-                        flags |= IndexerFlags.G_Freeleech;
+                        case "FREELEECH":
+                            flags |= IndexerFlags.G_Freeleech;
+                            break;
+                        case "HALF LEECH":
+                            flags |= IndexerFlags.G_Halfleech;
+                            break;
                     }
 
                     if (torrent.Scene)
@@ -86,6 +91,10 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                             Scene = torrent.Scene,
                             Approved = torrent.Checked,
                             ImdbId = result.ImdbId.IsNotNullOrWhiteSpace() ? int.Parse(result.ImdbId) : 0,
+                            Source = torrent.Source,
+                            Container = torrent.Container,
+                            Codec = torrent.Codec,
+                            Resolution = torrent.Resolution,
                             IndexerFlags = flags
                         });
                     }

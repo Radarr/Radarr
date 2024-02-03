@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-
 using NLog;
 using NzbDrone.Common.Cache;
-
-using NzbDrone.Common.Http;
 
 namespace NzbDrone.Core.Download.Clients.QBittorrent
 {
@@ -49,7 +46,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public QBittorrentProxySelector(QBittorrentProxyV1 proxyV1,
                                          QBittorrentProxyV2 proxyV2,
-                                         IHttpClient httpClient,
                                          ICacheManager cacheManager,
                                          Logger logger)
         {

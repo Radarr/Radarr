@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
@@ -43,7 +44,14 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
                     if (status.SortingMode.IsNotNullOrWhiteSpace())
                     {
-                        return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("DownloadClientSortingCheckMessage"), clientName, status.SortingMode), "#download-folder-and-library-folder-not-different-folders");
+                        return new HealthCheck(GetType(),
+                            HealthCheckResult.Warning,
+                            _localizationService.GetLocalizedString("DownloadClientSortingCheckMessage", new Dictionary<string, object>
+                            {
+                                { "downloadClientName", clientName },
+                                { "sortingMode", status.SortingMode }
+                            }),
+                            "#download-folder-and-library-folder-not-different-folders");
                     }
                 }
                 catch (DownloadClientException ex)

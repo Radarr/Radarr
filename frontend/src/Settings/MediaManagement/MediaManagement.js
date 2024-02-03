@@ -119,7 +119,7 @@ class MediaManagement extends Component {
             !isFetching && error ?
               <FieldSet legend={translate('NamingSettings')}>
                 <Alert kind={kinds.DANGER}>
-                  {translate('UnableToLoadMediaManagementSettings')}
+                  {translate('MediaManagementSettingsLoadError')}
                 </Alert>
               </FieldSet> : null
           }
@@ -204,7 +204,7 @@ class MediaManagement extends Component {
                           type={inputTypes.NUMBER}
                           unit='MB'
                           name="minimumFreeSpaceWhenImporting"
-                          helpText={translate('MinimumFreeSpaceWhenImportingHelpText')}
+                          helpText={translate('MinimumFreeSpaceHelpText')}
                           onChange={onInputChange}
                           {...settings.minimumFreeSpaceWhenImporting}
                         />
@@ -220,7 +220,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.CHECK}
                           name="copyUsingHardlinks"
-                          helpText={translate('CopyUsingHardlinksHelpText')}
+                          helpText={translate('CopyUsingHardlinksMovieHelpText')}
                           helpTextWarning={translate('CopyUsingHardlinksHelpTextWarning')}
                           onChange={onInputChange}
                           {...settings.copyUsingHardlinks}
@@ -237,7 +237,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.CHECK}
                           name="useScriptImport"
-                          helpText={translate('UseScriptImportHelpText')}
+                          helpText={translate('ImportUsingScriptHelpText')}
                           onChange={onInputChange}
                           {...settings.useScriptImport}
                         />
@@ -255,7 +255,7 @@ class MediaManagement extends Component {
                               type={inputTypes.PATH}
                               includeFiles={true}
                               name="scriptImportPath"
-                              helpText={translate('ScriptImportPathHelpText')}
+                              helpText={translate('ImportScriptPathHelpText')}
                               onChange={onInputChange}
                               {...settings.scriptImportPath}
                             />
@@ -268,7 +268,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.CHECK}
                           name="importExtraFiles"
-                          helpText={translate('ImportExtraFilesHelpText')}
+                          helpText={translate('ImportExtraFilesMovieHelpText')}
                           onChange={onInputChange}
                           {...settings.importExtraFiles}
                         />
@@ -286,8 +286,8 @@ class MediaManagement extends Component {
                               type={inputTypes.TEXT}
                               name="extraFileExtensions"
                               helpTexts={[
-                                translate('ExtraFileExtensionsHelpTexts1'),
-                                translate('ExtraFileExtensionsHelpTexts2')
+                                translate('ExtraFileExtensionsHelpText'),
+                                translate('ExtraFileExtensionsHelpTextsExamples')
                               ]}
                               onChange={onInputChange}
                               {...settings.extraFileExtensions}
@@ -323,8 +323,8 @@ class MediaManagement extends Component {
                       type={inputTypes.SELECT}
                       name="downloadPropersAndRepacks"
                       helpTexts={[
-                        translate('DownloadPropersAndRepacksHelpText1'),
-                        translate('DownloadPropersAndRepacksHelpText2')
+                        translate('DownloadPropersAndRepacksHelpText'),
+                        translate('DownloadPropersAndRepacksHelpTextCustomFormat')
                       ]}
                       helpTextWarning={
                         settings.downloadPropersAndRepacks.value === 'doNotPrefer' ?
@@ -347,7 +347,7 @@ class MediaManagement extends Component {
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="enableMediaInfo"
-                      helpText={translate('EnableMediaInfoHelpText')}
+                      helpText={translate('AnalyseVideoFilesHelpText')}
                       onChange={onInputChange}
                       {...settings.enableMediaInfo}
                     />
@@ -362,7 +362,7 @@ class MediaManagement extends Component {
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="rescanAfterRefresh"
-                      helpText={translate('RescanAfterRefreshHelpText')}
+                      helpText={translate('RescanAfterRefreshMovieHelpText')}
                       helpTextWarning={translate('RescanAfterRefreshHelpTextWarning')}
                       values={rescanAfterRefreshOptions}
                       onChange={onInputChange}
@@ -379,7 +379,7 @@ class MediaManagement extends Component {
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="fileDate"
-                      helpText={translate('FileDateHelpText')}
+                      helpText={translate('ChangeFileDateHelpText')}
                       values={fileDateOptions}
                       onChange={onInputChange}
                       {...settings.fileDate}
@@ -395,7 +395,7 @@ class MediaManagement extends Component {
                     <FormInputGroup
                       type={inputTypes.PATH}
                       name="recycleBin"
-                      helpText={translate('RecycleBinHelpText')}
+                      helpText={translate('RecyclingBinHelpText')}
                       onChange={onInputChange}
                       {...settings.recycleBin}
                     />
@@ -410,8 +410,8 @@ class MediaManagement extends Component {
                     <FormInputGroup
                       type={inputTypes.NUMBER}
                       name="recycleBinCleanupDays"
-                      helpText={translate('RecycleBinCleanupDaysHelpText')}
-                      helpTextWarning={translate('RecycleBinCleanupDaysHelpTextWarning')}
+                      helpText={translate('RecyclingBinCleanupHelpText')}
+                      helpTextWarning={translate('RecyclingBinCleanupHelpTextWarning')}
                       min={0}
                       onChange={onInputChange}
                       {...settings.recycleBinCleanupDays}
@@ -461,13 +461,13 @@ class MediaManagement extends Component {
                         advancedSettings={advancedSettings}
                         isAdvanced={true}
                       >
-                        <FormLabel>{translate('ChmodGroup')}</FormLabel>
+                        <FormLabel>{translate('ChownGroup')}</FormLabel>
 
                         <FormInputGroup
                           type={inputTypes.TEXT}
                           name="chownGroup"
-                          helpText={translate('ChmodGroupHelpText')}
-                          helpTextWarning={translate('ChmodGroupHelpTextWarning')}
+                          helpText={translate('ChownGroupHelpText')}
+                          helpTextWarning={translate('ChownGroupHelpTextWarning')}
                           values={fileDateOptions}
                           onChange={onInputChange}
                           {...settings.chownGroup}

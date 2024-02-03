@@ -11,6 +11,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
         public CustomScriptSettingsValidator()
         {
             RuleFor(c => c.Path).IsValidPath();
+            RuleFor(c => c.Path).SetValidator(new SystemFolderValidator()).WithMessage("Must not be a descendant of '{systemFolder}'");
             RuleFor(c => c.Arguments).Empty().WithMessage("Arguments are no longer supported for custom scripts");
         }
     }
@@ -22,7 +23,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
         [FieldDefinition(0, Label = "Path", Type = FieldType.FilePath)]
         public string Path { get; set; }
 
-        [FieldDefinition(1, Label = "Arguments", HelpText = "Arguments to pass to the script", Hidden = HiddenType.HiddenIfNotSet)]
+        [FieldDefinition(1, Label = "NotificationsCustomScriptSettingsArguments", HelpText = "NotificationsCustomScriptSettingsArgumentsHelpText", Hidden = HiddenType.HiddenIfNotSet)]
         public string Arguments { get; set; }
 
         public NzbDroneValidationResult Validate()

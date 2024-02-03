@@ -67,7 +67,7 @@ function EditIndexerModalContent(props) {
         {
           !isFetching && !!error &&
             <div>
-              {translate('UnableToAddANewIndexerPleaseTryAgain')}
+              {translate('AddIndexerError')}
             </div>
         }
 
@@ -86,13 +86,13 @@ function EditIndexerModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>{translate('EnableRSS')}</FormLabel>
+                <FormLabel>{translate('EnableRss')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="enableRss"
-                  helpText={supportsRss.value ? translate('RSSHelpText') : undefined}
-                  helpTextWarning={supportsRss.value ? undefined : translate('RSSIsNotSupportedWithThisIndexer')}
+                  helpText={supportsRss.value ? translate('EnableRssHelpText') : undefined}
+                  helpTextWarning={supportsRss.value ? undefined : translate('RssIsNotSupportedWithThisIndexer')}
                   isDisabled={!supportsRss.value}
                   {...enableRss}
                   onChange={onInputChange}
@@ -106,7 +106,7 @@ function EditIndexerModalContent(props) {
                   type={inputTypes.CHECK}
                   name="enableAutomaticSearch"
                   helpText={supportsSearch.value ? translate('EnableAutomaticSearchHelpText') : undefined}
-                  helpTextWarning={supportsSearch.value ? undefined : translate('EnableAutomaticSearchHelpTextWarning')}
+                  helpTextWarning={supportsSearch.value ? undefined : translate('SearchIsNotSupportedWithThisIndexer')}
                   isDisabled={!supportsSearch.value}
                   {...enableAutomaticSearch}
                   onChange={onInputChange}
@@ -120,7 +120,7 @@ function EditIndexerModalContent(props) {
                   type={inputTypes.CHECK}
                   name="enableInteractiveSearch"
                   helpText={supportsSearch.value ? translate('EnableInteractiveSearchHelpText') : undefined}
-                  helpTextWarning={supportsSearch.value ? undefined : translate('EnableInteractiveSearchHelpTextWarning')}
+                  helpTextWarning={supportsSearch.value ? undefined : translate('SearchIsNotSupportedWithThisIndexer')}
                   isDisabled={!supportsSearch.value}
                   {...enableInteractiveSearch}
                   onChange={onInputChange}
@@ -182,7 +182,7 @@ function EditIndexerModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.TAG}
                   name="tags"
-                  helpText={translate('IndexerTagHelpText')}
+                  helpText={translate('IndexerTagMovieHelpText')}
                   {...tags}
                   onChange={onInputChange}
                 />

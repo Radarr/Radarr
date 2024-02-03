@@ -7,9 +7,10 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
-using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Validation;
@@ -24,11 +25,12 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                       ITorrentFileInfoReader torrentFileInfoReader,
                       IHttpClient httpClient,
                       IConfigService configService,
-                      INamingConfigService namingConfigService,
                       IDiskProvider diskProvider,
                       IRemotePathMappingService remotePathMappingService,
+                      ILocalizationService localizationService,
+                      IBlocklistService blocklistService,
                       Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
+            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, localizationService, blocklistService, logger)
         {
             _proxy = proxy;
         }
@@ -135,7 +137,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 item.Title = torrent.Name;
                 item.Category = Settings.MovieCategory;
 
-                item.DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this);
+                item.DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this, Settings.MovieImportedCategory.IsNotNullOrWhiteSpace());
 
                 var outputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.DownloadPath));
                 item.OutputPath = outputPath + torrent.Name;
@@ -157,7 +159,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 if (torrent.State == DelugeTorrentStatus.Error)
                 {
                     item.Status = DownloadItemStatus.Warning;
-                    item.Message = "Deluge is reporting an error";
+                    item.Message = _localizationService.GetLocalizedString("DownloadClientDelugeTorrentStateError");
                 }
                 else if (torrent.IsFinished && torrent.State != DelugeTorrentStatus.Checking)
                 {
@@ -250,7 +252,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             {
                 _logger.Error(ex, ex.Message);
 
-                return new NzbDroneValidationFailure("Password", "Authentication failed");
+                return new NzbDroneValidationFailure("Password", _localizationService.GetLocalizedString("DownloadClientValidationAuthenticationFailure"));
             }
             catch (WebException ex)
             {
@@ -258,29 +260,29 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 switch (ex.Status)
                 {
                     case WebExceptionStatus.ConnectFailure:
-                        return new NzbDroneValidationFailure("Host", "Unable to connect")
+                        return new NzbDroneValidationFailure("Host", _localizationService.GetLocalizedString("DownloadClientValidationUnableToConnect", new Dictionary<string, object> { { "clientName", Name } }))
                         {
-                            DetailedDescription = "Please verify the hostname and port."
+                            DetailedDescription = _localizationService.GetLocalizedString("DownloadClientValidationUnableToConnectDetail")
                         };
                     case WebExceptionStatus.ConnectionClosed:
-                        return new NzbDroneValidationFailure("UseSsl", "Verify SSL settings")
+                        return new NzbDroneValidationFailure("UseSsl", _localizationService.GetLocalizedString("DownloadClientValidationVerifySsl"))
                         {
-                            DetailedDescription = "Please verify your SSL configuration on both Deluge and Radarr."
+                            DetailedDescription = _localizationService.GetLocalizedString("DownloadClientValidationVerifySslDetail", new Dictionary<string, object> { { "clientName", Name } })
                         };
                     case WebExceptionStatus.SecureChannelFailure:
-                        return new NzbDroneValidationFailure("UseSsl", "Unable to connect through SSL")
+                        return new NzbDroneValidationFailure("UseSsl", _localizationService.GetLocalizedString("DownloadClientValidationSslConnectFailure"))
                         {
-                            DetailedDescription = "Radarr is unable to connect to Deluge using SSL. This problem could be computer related. Please try to configure both Radarr and Deluge to not use SSL."
+                            DetailedDescription = _localizationService.GetLocalizedString("DownloadClientValidationSslConnectFailureDetail", new Dictionary<string, object> { { "clientName", Name } })
                         };
                     default:
-                        return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
+                        return new NzbDroneValidationFailure(string.Empty, _localizationService.GetLocalizedString("DownloadClientValidationUnknownException", new Dictionary<string, object> { { "exception", ex.Message } }));
                 }
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, "Failed to test connection");
 
-                return new NzbDroneValidationFailure("Host", "Unable to connect to Deluge")
+                return new NzbDroneValidationFailure("Host", _localizationService.GetLocalizedString("DownloadClientValidationUnableToConnect", new Dictionary<string, object> { { "clientName", Name } }))
                        {
                            DetailedDescription = ex.Message
                        };
@@ -300,9 +302,9 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             if (!enabledPlugins.Contains("Label"))
             {
-                return new NzbDroneValidationFailure("MovieCategory", "Label plugin not activated")
+                return new NzbDroneValidationFailure("MovieCategory", _localizationService.GetLocalizedString("DownloadClientDelugeValidationLabelPluginInactive"))
                 {
-                    DetailedDescription = "You must have the Label plugin enabled in Deluge to use categories."
+                    DetailedDescription = _localizationService.GetLocalizedString("DownloadClientDelugeValidationLabelPluginInactiveDetail", new Dictionary<string, object> { { "clientName", Name } })
                 };
             }
 
@@ -315,9 +317,9 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
                 if (!labels.Contains(Settings.MovieCategory))
                 {
-                    return new NzbDroneValidationFailure("MovieCategory", "Configuration of label failed")
+                    return new NzbDroneValidationFailure("MovieCategory", _localizationService.GetLocalizedString("DownloadClientDelugeValidationLabelPluginFailure"))
                     {
-                        DetailedDescription = "Radarr was unable to add the label to Deluge."
+                        DetailedDescription = _localizationService.GetLocalizedString("DownloadClientDelugeValidationLabelPluginFailureDetail", new Dictionary<string, object> { { "clientName", Name } })
                     };
                 }
             }
@@ -329,9 +331,9 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
                 if (!labels.Contains(Settings.MovieImportedCategory))
                 {
-                    return new NzbDroneValidationFailure("MovieImportedCategory", "Configuration of label failed")
+                    return new NzbDroneValidationFailure("MovieImportedCategory", _localizationService.GetLocalizedString("DownloadClientDelugeValidationLabelPluginFailure"))
                     {
-                        DetailedDescription = "Radarr was unable to add the label to Deluge."
+                        DetailedDescription = _localizationService.GetLocalizedString("DownloadClientDelugeValidationLabelPluginFailureDetail", new Dictionary<string, object> { { "clientName", Name } })
                     };
                 }
             }
@@ -348,7 +350,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             catch (Exception ex)
             {
                 _logger.Error(ex, "Unable to get torrents");
-                return new NzbDroneValidationFailure(string.Empty, "Failed to get the list of torrents: " + ex.Message);
+                return new NzbDroneValidationFailure(string.Empty, _localizationService.GetLocalizedString("DownloadClientValidationTestTorrents", new Dictionary<string, object> { { "exceptionMessage", ex.Message } }));
             }
 
             return null;

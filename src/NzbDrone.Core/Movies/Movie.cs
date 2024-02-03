@@ -30,6 +30,7 @@ namespace NzbDrone.Core.Movies
         public QualityProfile QualityProfile { get; set; }
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
+        public DateTime? LastSearchTime { get; set; }
         public MovieFile MovieFile { get; set; }
         public int MovieFileId { get; set; }
 

@@ -47,7 +47,7 @@ namespace NzbDrone.Common.Test.Http
             // Use mirrors for tests that use two hosts
             var candidates = new[] { "httpbin1.servarr.com" };
 
-            // httpbin.org is broken right now, occassionally redirecting to https if it's unavailable.
+            // httpbin.org is broken right now, occasionally redirecting to https if it's unavailable.
             _httpBinHost = mainHost;
             _httpBinHosts = candidates.Where(IsTestSiteAvailable).ToArray();
 
@@ -127,6 +127,16 @@ namespace NzbDrone.Common.Test.Http
             var response = await Subject.ExecuteAsync(request);
 
             response.Content.Should().NotBeNullOrWhiteSpace();
+        }
+
+        [Test]
+        public void should_throw_timeout_request()
+        {
+            var request = new HttpRequest($"https://{_httpBinHost}/delay/10");
+
+            request.RequestTimeout = new TimeSpan(0, 0, 5);
+
+            Assert.ThrowsAsync<WebException>(async () => await Subject.ExecuteAsync(request));
         }
 
         [Test]

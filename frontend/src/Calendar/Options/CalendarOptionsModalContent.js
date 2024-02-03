@@ -135,7 +135,7 @@ class CalendarOptionsModalContent extends Component {
                   type={inputTypes.CHECK}
                   name="showCutoffUnmetIcon"
                   value={showCutoffUnmetIcon}
-                  helpText={translate('ShowCutoffUnmetIconHelpText')}
+                  helpText={translate('IconForCutoffUnmetHelpText')}
                   onChange={this.onOptionInputChange}
                 />
               </FormGroup>
@@ -177,7 +177,7 @@ class CalendarOptionsModalContent extends Component {
                   values={weekColumnOptions}
                   value={calendarWeekColumnHeader}
                   onChange={this.onGlobalInputChange}
-                  helpText={translate('SettingsWeekColumnHeaderHelpText')}
+                  helpText={translate('WeekColumnHeaderHelpText')}
                 />
               </FormGroup>
 

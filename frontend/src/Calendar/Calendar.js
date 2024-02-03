@@ -33,9 +33,7 @@ class Calendar extends Component {
 
         {
           !isFetching && !!error &&
-            <Alert kind={kinds.DANGER}>
-              {translate('UnableToLoadTheCalendar')}
-            </Alert>
+            <Alert kind={kinds.DANGER}>{translate('CalendarLoadError')}</Alert>
         }
 
         {

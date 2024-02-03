@@ -7,6 +7,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
@@ -22,12 +23,12 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
         public UsenetBlackhole(IScanWatchFolder scanWatchFolder,
                                IHttpClient httpClient,
                                IConfigService configService,
-                               INamingConfigService namingConfigService,
                                IDiskProvider diskProvider,
                                IRemotePathMappingService remotePathMappingService,
                                IValidateNzbs nzbValidationService,
-                               Logger logger)
-            : base(httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, nzbValidationService, logger)
+                               Logger logger,
+                               ILocalizationService localizationService)
+            : base(httpClient, configService, diskProvider, remotePathMappingService, nzbValidationService, logger, localizationService)
         {
             _scanWatchFolder = scanWatchFolder;
 
@@ -52,7 +53,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
             return null;
         }
 
-        public override string Name => "Usenet Blackhole";
+        public override string Name => _localizationService.GetLocalizedString("UsenetBlackhole");
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
@@ -60,7 +61,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
             {
                 yield return new DownloadClientItem
                 {
-                    DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this),
+                    DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this, false),
                     DownloadId = Definition.Name + "_" + item.DownloadId,
                     Category = "Radarr",
                     Title = item.Title,

@@ -21,15 +21,11 @@ function createMovieCreditListSelector() {
         return acc;
       }, []);
 
-      let importListId = 0;
-
-      if (importListIds.length > 0) {
-        importListId = importListIds[0].id;
+      if (importListIds.length === 0) {
+        return undefined;
       }
 
-      return {
-        importListId
-      };
+      return importListIds[0];
     }
   );
 }

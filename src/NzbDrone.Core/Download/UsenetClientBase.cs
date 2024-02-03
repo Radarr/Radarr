@@ -6,6 +6,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
@@ -21,12 +22,12 @@ namespace NzbDrone.Core.Download
 
         protected UsenetClientBase(IHttpClient httpClient,
                                    IConfigService configService,
-                                   INamingConfigService namingConfigService,
                                    IDiskProvider diskProvider,
                                    IRemotePathMappingService remotePathMappingService,
                                    IValidateNzbs nzbValidationService,
-                                   Logger logger)
-            : base(configService, namingConfigService, diskProvider, remotePathMappingService, logger)
+                                   Logger logger,
+                                   ILocalizationService localizationService)
+            : base(configService, diskProvider, remotePathMappingService, logger, localizationService)
         {
             _httpClient = httpClient;
             _nzbValidationService = nzbValidationService;
@@ -48,7 +49,9 @@ namespace NzbDrone.Core.Download
                 var request = indexer?.GetDownloadRequest(url) ?? new HttpRequest(url);
                 request.RateLimitKey = remoteMovie?.Release?.IndexerId.ToString();
 
-                var response = await _httpClient.GetAsync(request);
+                var response = await RetryStrategy
+                    .ExecuteAsync(static async (state, _) => await state._httpClient.GetAsync(state.request), (_httpClient, request))
+                    .ConfigureAwait(false);
 
                 nzbData = response.ResponseData;
 

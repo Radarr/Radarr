@@ -242,25 +242,6 @@ function InteractiveImportModalContent(
   const [interactiveImportErrorMessage, setInteractiveImportErrorMessage] =
     useState<string | null>(null);
   const [selectState, setSelectState] = useSelectState();
-  const [bulkSelectOptions, setBulkSelectOptions] = useState([
-    {
-      key: 'select',
-      value: translate('SelectDropdown'),
-      disabled: true,
-    },
-    {
-      key: 'quality',
-      value: translate('SelectQuality'),
-    },
-    {
-      key: 'releaseGroup',
-      value: translate('SelectReleaseGroup'),
-    },
-    {
-      key: 'language',
-      value: translate('SelectLanguage'),
-    },
-  ]);
   const { allSelected, allUnselected, selectedState } = selectState;
   const previousIsDeleting = usePrevious(isDeleting);
   const dispatch = useDispatch();
@@ -283,19 +264,39 @@ function InteractiveImportModalContent(
     return getSelectedIds(selectedState);
   }, [selectedState]);
 
+  const bulkSelectOptions = useMemo(() => {
+    const options = [
+      {
+        key: 'select',
+        value: translate('SelectDropdown'),
+        disabled: true,
+      },
+      {
+        key: 'quality',
+        value: translate('SelectQuality'),
+      },
+      {
+        key: 'releaseGroup',
+        value: translate('SelectReleaseGroup'),
+      },
+      {
+        key: 'language',
+        value: translate('SelectLanguage'),
+      },
+    ];
+
+    if (allowMovieChange) {
+      options.splice(1, 0, {
+        key: 'movie',
+        value: translate('SelectMovie'),
+      });
+    }
+
+    return options;
+  }, [allowMovieChange]);
+
   useEffect(
     () => {
-      if (allowMovieChange) {
-        const newBulkSelectOptions = [...bulkSelectOptions];
-
-        newBulkSelectOptions.splice(1, 0, {
-          key: 'movie',
-          value: translate('SelectMovie'),
-        });
-
-        setBulkSelectOptions(newBulkSelectOptions);
-      }
-
       if (initialSortKey) {
         const sortProps: { sortKey: string; sortDirection?: string } = {
           sortKey: initialSortKey,

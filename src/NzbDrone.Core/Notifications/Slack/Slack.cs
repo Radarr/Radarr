@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Notifications.Slack.Payloads;
@@ -13,10 +14,12 @@ namespace NzbDrone.Core.Notifications.Slack
     public class Slack : NotificationBase<SlackSettings>
     {
         private readonly ISlackProxy _proxy;
+        private readonly ILocalizationService _localizationService;
 
-        public Slack(ISlackProxy proxy)
+        public Slack(ISlackProxy proxy, ILocalizationService localizationService)
         {
             _proxy = proxy;
+            _localizationService = localizationService;
         }
 
         public override string Name => "Slack";
@@ -195,7 +198,7 @@ namespace NzbDrone.Core.Notifications.Slack
             }
             catch (SlackExeption ex)
             {
-                return new NzbDroneValidationFailure("Unable to post", ex.Message);
+                return new NzbDroneValidationFailure("Unable to post", _localizationService.GetLocalizedString("NotificationsValidationUnableToSendTestMessage", new Dictionary<string, object> { { "exceptionMessage", ex.Message } }));
             }
 
             return null;

@@ -59,9 +59,9 @@ class ImportLists extends Component {
     } = this.state;
 
     return (
-      <FieldSet legend={translate('Lists')}>
+      <FieldSet legend={translate('ImportLists')} >
         <PageSectionContent
-          errorMessage={translate('UnableToLoadLists')}
+          errorMessage={translate('ImportListsLoadError')}
           {...otherProps}
         >
           <div className={styles.importLists}>

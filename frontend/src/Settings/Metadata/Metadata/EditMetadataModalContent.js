@@ -36,7 +36,7 @@ function EditMetadataModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        Edit {name.value} Metadata
+        {translate('EditMetadata', { metadataType: name.value })}
       </ModalHeader>
 
       <ModalBody>
@@ -47,7 +47,7 @@ function EditMetadataModalContent(props) {
             <FormInputGroup
               type={inputTypes.CHECK}
               name="enable"
-              helpText={translate('EnableHelpText')}
+              helpText={translate('EnableMetadataHelpText')}
               {...enable}
               onChange={onInputChange}
             />

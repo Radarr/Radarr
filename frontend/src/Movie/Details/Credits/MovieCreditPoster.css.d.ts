@@ -5,10 +5,14 @@ interface CssExports {
   'container': string;
   'content': string;
   'controls': string;
+  'externalLinkLabel': string;
+  'externalLinks': string;
+  'monitorToggleButton': string;
   'overlayTitle': string;
   'poster': string;
   'posterContainer': string;
   'title': string;
+  'toggleMonitoredContainer': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

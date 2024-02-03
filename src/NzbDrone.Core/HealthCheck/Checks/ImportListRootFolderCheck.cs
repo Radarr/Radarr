@@ -54,11 +54,23 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 if (missingRootFolders.Count == 1)
                 {
                     var missingRootFolder = missingRootFolders.First();
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ImportListMissingRoot"), FormatRootFolder(missingRootFolder.Key, missingRootFolder.Value)), "#import-list-missing-root-folder");
+
+                    return new HealthCheck(GetType(),
+                        HealthCheckResult.Error,
+                        _localizationService.GetLocalizedString("ImportListMissingRoot", new Dictionary<string, object>
+                        {
+                            { "rootFolderInfo", FormatRootFolder(missingRootFolder.Key, missingRootFolder.Value) }
+                        }),
+                        "#import-list-missing-root-folder");
                 }
 
-                var message = string.Format(_localizationService.GetLocalizedString("ImportListMultipleMissingRoots"), string.Join(" | ", missingRootFolders.Select(m => FormatRootFolder(m.Key, m.Value))));
-                return new HealthCheck(GetType(), HealthCheckResult.Error, message, "#import-list-missing-root-folder");
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Error,
+                    _localizationService.GetLocalizedString("ImportListMultipleMissingRoots", new Dictionary<string, object>
+                    {
+                        { "rootFoldersInfo", string.Join(" | ", missingRootFolders.Select(m => FormatRootFolder(m.Key, m.Value))) }
+                    }),
+                    "#import-list-missing-root-folder");
             }
 
             return new HealthCheck(GetType());

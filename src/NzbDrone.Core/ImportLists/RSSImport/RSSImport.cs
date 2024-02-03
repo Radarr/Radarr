@@ -38,6 +38,7 @@ namespace NzbDrone.Core.ImportLists.RSSImport
                     EnableAuto = true,
                     QualityProfileId = 1,
                     Implementation = GetType().Name,
+                    MinRefreshInterval = MinRefreshInterval,
                     Settings = new RSSImportSettings { Link = "https://rss.imdb.com/list/YOURLISTID" },
                 };
                 yield return new ImportListDefinition
@@ -47,6 +48,7 @@ namespace NzbDrone.Core.ImportLists.RSSImport
                     EnableAuto = true,
                     QualityProfileId = 1,
                     Implementation = GetType().Name,
+                    MinRefreshInterval = MinRefreshInterval,
                     Settings = new RSSImportSettings { Link = "https://rss.imdb.com/user/IMDBUSERID/watchlist" },
                 };
             }

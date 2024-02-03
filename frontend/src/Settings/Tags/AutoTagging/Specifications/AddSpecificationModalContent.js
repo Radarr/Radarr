@@ -55,9 +55,9 @@ export default function AddSpecificationModalContent(props) {
 
         {
           !isSchemaFetching && !!schemaError ?
-            <div>
-              {'Unable to add a new condition, please try again.'}
-            </div> :
+            <Alert kind={kinds.DANGER}>
+              {translate('AddConditionError')}
+            </Alert> :
             null
         }
 
@@ -67,7 +67,7 @@ export default function AddSpecificationModalContent(props) {
 
               <Alert kind={kinds.INFO}>
                 <div>
-                  {'Radarr supports the follow properties for auto tagging rules'}
+                  {translate('SupportedAutoTaggingProperties')}
                 </div>
               </Alert>
 

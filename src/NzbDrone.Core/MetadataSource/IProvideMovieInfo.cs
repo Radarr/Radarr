@@ -12,6 +12,8 @@ namespace NzbDrone.Core.MetadataSource
         Tuple<MovieMetadata, List<Credit>> GetMovieInfo(int tmdbId);
         MovieCollection GetCollectionInfo(int tmdbId);
         List<MovieMetadata> GetBulkMovieInfo(List<int> tmdbIds);
+        List<MovieMetadata> GetTrendingMovies();
+        List<MovieMetadata> GetPopularMovies();
 
         HashSet<int> GetChangedMovies(DateTime startTime);
     }

@@ -8,7 +8,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Organizer;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Validation;
@@ -22,12 +22,12 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
         public NzbVortex(INzbVortexProxy proxy,
                        IHttpClient httpClient,
                        IConfigService configService,
-                       INamingConfigService namingConfigService,
                        IDiskProvider diskProvider,
                        IRemotePathMappingService remotePathMappingService,
                        IValidateNzbs nzbValidationService,
-                       Logger logger)
-            : base(httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, nzbValidationService, logger)
+                       Logger logger,
+                       ILocalizationService localizationService)
+            : base(httpClient, configService, diskProvider, remotePathMappingService, nzbValidationService, logger, localizationService)
         {
             _proxy = proxy;
         }
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             {
                 var queueItem = new DownloadClientItem();
 
-                queueItem.DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this);
+                queueItem.DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this, false);
                 queueItem.DownloadId = vortexQueueItem.AddUUID ?? vortexQueueItem.Id.ToString();
                 queueItem.Category = vortexQueueItem.GroupName;
                 queueItem.Title = vortexQueueItem.UiTitle;
@@ -174,7 +174,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             {
                 _logger.Error(ex, "Unable to connect to NZBVortex");
 
-                return new NzbDroneValidationFailure("Host", "Unable to connect to NZBVortex")
+                return new NzbDroneValidationFailure("Host", _localizationService.GetLocalizedString("DownloadClientValidationUnableToConnect", new Dictionary<string, object> { { "clientName", Name } }))
                        {
                            DetailedDescription = ex.Message
                        };
@@ -192,13 +192,16 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
 
                 if (version.Major < 2 || (version.Major == 2 && version.Minor < 3))
                 {
-                    return new ValidationFailure("Host", "NZBVortex needs to be updated");
+                    return new ValidationFailure("Host",
+                        _localizationService.GetLocalizedString("DownloadClientValidationErrorVersion",
+                            new Dictionary<string, object>
+                                { { "clientName", Name }, { "requiredVersion", "2.3" }, { "reportedVersion", version } }));
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, ex.Message);
-                return new ValidationFailure("Host", "Unable to connect to NZBVortex");
+                _logger.Error(ex, "Unable to connect to NZBVortex");
+                return new NzbDroneValidationFailure("Host",  _localizationService.GetLocalizedString("DownloadClientValidationUnableToConnect", new Dictionary<string, object> { { "clientName", Name } }));
             }
 
             return null;
@@ -212,7 +215,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             }
             catch (NzbVortexAuthenticationException)
             {
-                return new ValidationFailure("ApiKey", "API Key Incorrect");
+                return new ValidationFailure("ApiKey", _localizationService.GetLocalizedString("DownloadClientValidationApiKeyIncorrect"));
             }
 
             return null;
@@ -226,9 +229,9 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             {
                 if (Settings.TvCategory.IsNotNullOrWhiteSpace())
                 {
-                    return new NzbDroneValidationFailure("TvCategory", "Group does not exist")
+                    return new NzbDroneValidationFailure("TvCategory", _localizationService.GetLocalizedString("DownloadClientValidationGroupMissing"))
                     {
-                        DetailedDescription = "The Group you entered doesn't exist in NzbVortex. Go to NzbVortex to create it."
+                        DetailedDescription = _localizationService.GetLocalizedString("DownloadClientValidationGroupMissingDetail", new Dictionary<string, object> { { "clientName", Name } })
                     };
                 }
             }
@@ -255,7 +258,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
 
             if (filesResponse.Count > 1)
             {
-                var message = string.Format("Download contains multiple files and is not in a job folder: {0}", outputPath);
+                var message = _localizationService.GetLocalizedString("DownloadClientNzbVortexMultipleFilesMessage", new Dictionary<string, object> { { "outputPath", outputPath } });
 
                 queueItem.Status = DownloadItemStatus.Warning;
                 queueItem.Message = message;

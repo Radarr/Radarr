@@ -8,6 +8,7 @@ import translate from 'Utilities/String/translate';
 import DelayProfilesConnector from './Delay/DelayProfilesConnector';
 import QualityProfilesConnector from './Quality/QualityProfilesConnector';
 import ReleaseProfilesConnector from './Release/ReleaseProfilesConnector';
+
 // Only a single DragDrop Context can exist so it's done here to allow editing
 // quality profiles and reordering delay profiles to work.
 
@@ -19,9 +20,7 @@ class Profiles extends Component {
   render() {
     return (
       <PageContent title={translate('Profiles')}>
-        <SettingsToolbarConnector
-          showSave={false}
-        />
+        <SettingsToolbarConnector showSave={false} />
 
         <PageContentBody>
           <DndProvider options={HTML5toTouch}>

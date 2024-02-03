@@ -20,12 +20,14 @@ namespace NzbDrone.Core.ImportLists
     public abstract class HttpImportListBase<TSettings> : ImportListBase<TSettings>
         where TSettings : IProviderConfig, new()
     {
+        protected const int MaxNumResultsPerQuery = 1000;
+
         protected readonly IHttpClient _httpClient;
 
         public override bool Enabled => true;
-        public bool SupportsPaging => PageSize > 20;
+        public override bool EnableAuto => false;
 
-        public virtual int PageSize => 20;
+        public virtual int PageSize => 0;
         public virtual TimeSpan RateLimit => TimeSpan.FromSeconds(2);
 
         public abstract IImportListRequestGenerator GetRequestGenerator();
@@ -71,6 +73,16 @@ namespace NzbDrone.Core.ImportLists
                             var page = FetchPage(request, parser);
 
                             pagedMovies.AddRange(page);
+
+                            if (pagedMovies.Count >= MaxNumResultsPerQuery)
+                            {
+                                break;
+                            }
+
+                            if (!IsFullPage(page))
+                            {
+                                break;
+                            }
                         }
 
                         movies.AddRange(pagedMovies.Where(IsValidItem));
@@ -159,6 +171,11 @@ namespace NzbDrone.Core.ImportLists
             }
 
             return true;
+        }
+
+        protected virtual bool IsFullPage(IList<ImportListMovie> page)
+        {
+            return PageSize != 0 && page.Count >= PageSize;
         }
 
         protected virtual IList<ImportListMovie> FetchPage(ImportListRequest request, IParseImportListResponse parser)

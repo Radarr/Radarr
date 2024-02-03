@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace NzbDrone.Core.Download.Clients.DownloadStation

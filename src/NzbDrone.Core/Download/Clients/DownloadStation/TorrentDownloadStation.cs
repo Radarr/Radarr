@@ -8,10 +8,11 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.Clients.DownloadStation.Proxies;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
-using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.ThingiProvider;
@@ -35,11 +36,12 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                                       ITorrentFileInfoReader torrentFileInfoReader,
                                       IHttpClient httpClient,
                                       IConfigService configService,
-                                      INamingConfigService namingConfigService,
                                       IDiskProvider diskProvider,
                                       IRemotePathMappingService remotePathMappingService,
+                                      ILocalizationService localizationService,
+                                      IBlocklistService blocklistService,
                                       Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
+            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, localizationService, blocklistService, logger)
         {
             _dsInfoProxy = dsInfoProxy;
             _dsTaskProxySelector = dsTaskProxySelector;
@@ -50,7 +52,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
         public override string Name => "Download Station";
 
-        public override ProviderMessage Message => new ProviderMessage("Radarr is unable to connect to Download Station if 2-Factor Authentication is enabled on your DSM account", ProviderMessageType.Warning);
+        public override ProviderMessage Message => new ProviderMessage(_localizationService.GetLocalizedString("DownloadClientDownloadStationProviderMessage"), ProviderMessageType.Warning);
 
         private IDownloadStationTaskProxy DsTaskProxy => _dsTaskProxySelector.GetProxy(Settings);
 
@@ -89,7 +91,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                 var item = new DownloadClientItem()
                 {
                     Category = Settings.TvCategory,
-                    DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this),
+                    DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this, false),
                     DownloadId = CreateDownloadId(torrent.Id, serialNumber),
                     Title = torrent.Title,
                     TotalSize = torrent.Size,
@@ -224,7 +226,9 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             {
                 if (torrent.Status == DownloadStationTaskStatus.Extracting)
                 {
-                    return $"Extracting: {int.Parse(torrent.StatusExtra["unzip_progress"])}%";
+                    return _localizationService.GetLocalizedString("DownloadStationStatusExtracting",
+                        new Dictionary<string, object>
+                            { { "progress", int.Parse(torrent.StatusExtra["unzip_progress"]) } });
                 }
 
                 if (torrent.Status == DownloadStationTaskStatus.Error)
@@ -306,53 +310,49 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
         {
             try
             {
-                var downloadDir = GetDefaultDir();
+                var downloadDir = GetDownloadDirectory();
 
                 if (downloadDir == null)
                 {
-                    return new NzbDroneValidationFailure(nameof(Settings.TvDirectory), "No default destination")
+                    return new NzbDroneValidationFailure(nameof(Settings.TvDirectory), _localizationService.GetLocalizedString("DownloadClientDownloadStationValidationNoDefaultDestination"))
                     {
-                        DetailedDescription = $"You must login into your Diskstation as {Settings.Username} and manually set it up into DownloadStation settings under BT/HTTP/FTP/NZB -> Location."
+                        DetailedDescription = _localizationService.GetLocalizedString("DownloadClientDownloadStationValidationNoDefaultDestinationDetail", new Dictionary<string, object> { { "username", Settings.Username } })
                     };
                 }
 
-                downloadDir = GetDownloadDirectory();
+                var sharedFolder = downloadDir.Split('\\', '/')[0];
+                var fieldName = Settings.TvDirectory.IsNotNullOrWhiteSpace() ? nameof(Settings.TvDirectory) : nameof(Settings.TvCategory);
 
-                if (downloadDir != null)
+                var folderInfo = _fileStationProxy.GetInfoFileOrDirectory($"/{downloadDir}", Settings);
+
+                if (folderInfo.Additional == null)
                 {
-                    var sharedFolder = downloadDir.Split('\\', '/')[0];
-                    var fieldName = Settings.TvDirectory.IsNotNullOrWhiteSpace() ? nameof(Settings.TvDirectory) : nameof(Settings.TvCategory);
-
-                    var folderInfo = _fileStationProxy.GetInfoFileOrDirectory($"/{downloadDir}", Settings);
-
-                    if (folderInfo.Additional == null)
+                    return new NzbDroneValidationFailure(fieldName, _localizationService.GetLocalizedString("DownloadClientDownloadStationValidationSharedFolderMissing"))
                     {
-                        return new NzbDroneValidationFailure(fieldName, $"Shared folder does not exist")
-                        {
-                            DetailedDescription = $"The Diskstation does not have a Shared Folder with the name '{sharedFolder}', are you sure you specified it correctly?"
-                        };
-                    }
+                        DetailedDescription = _localizationService.GetLocalizedString("DownloadClientDownloadStationValidationSharedFolderMissingDetail", new Dictionary<string, object> { { "sharedFolder", sharedFolder } })
+                    };
+                }
 
-                    if (!folderInfo.IsDir)
+                if (!folderInfo.IsDir)
+                {
+                    return new NzbDroneValidationFailure(fieldName, _localizationService.GetLocalizedString("DownloadClientDownloadStationValidationFolderMissing"))
                     {
-                        return new NzbDroneValidationFailure(fieldName, $"Folder does not exist")
-                        {
-                            DetailedDescription = $"The folder '{downloadDir}' does not exist, it must be created manually inside the Shared Folder '{sharedFolder}'."
-                        };
-                    }
+                        DetailedDescription = _localizationService.GetLocalizedString("DownloadClientDownloadStationValidationFolderMissingDetail", new Dictionary<string, object> { { "downloadDir", downloadDir }, { "sharedFolder", sharedFolder } })
+                    };
                 }
 
                 return null;
             }
             catch (DownloadClientAuthenticationException ex)
             {
+                // User could not have permission to access to downloadstation
                 _logger.Error(ex, ex.Message);
                 return new NzbDroneValidationFailure(string.Empty, ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, "Error testing Torrent Download Station");
-                return new NzbDroneValidationFailure(string.Empty, $"Unknown exception: {ex.Message}");
+                return new NzbDroneValidationFailure(string.Empty, _localizationService.GetLocalizedString("DownloadClientValidationUnknownException", new Dictionary<string, object> { { "exception", ex.Message } }));
             }
         }
 
@@ -365,9 +365,9 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             catch (DownloadClientAuthenticationException ex)
             {
                 _logger.Error(ex, ex.Message);
-                return new NzbDroneValidationFailure("Username", "Authentication failure")
+                return new NzbDroneValidationFailure("Username", _localizationService.GetLocalizedString("DownloadClientValidationAuthenticationFailure"))
                 {
-                    DetailedDescription = $"Please verify your username and password. Also verify if the host running Radarr isn't blocked from accessing {Name} by WhiteList limitations in the {Name} configuration."
+                    DetailedDescription = _localizationService.GetLocalizedString("DownloadClientValidationAuthenticationFailureDetail", new Dictionary<string, object> { { "clientName", Name } })
                 };
             }
             catch (WebException ex)
@@ -376,19 +376,19 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
                 if (ex.Status == WebExceptionStatus.ConnectFailure)
                 {
-                    return new NzbDroneValidationFailure("Host", "Unable to connect")
+                    return new NzbDroneValidationFailure("Host", _localizationService.GetLocalizedString("DownloadClientValidationUnableToConnect", new Dictionary<string, object> { { "clientName", Name } }))
                     {
-                        DetailedDescription = "Please verify the hostname and port."
+                        DetailedDescription = _localizationService.GetLocalizedString("DownloadClientValidationUnableToConnectDetail")
                     };
                 }
 
-                return new NzbDroneValidationFailure(string.Empty, $"Unknown exception: {ex.Message}");
+                return new NzbDroneValidationFailure(string.Empty, _localizationService.GetLocalizedString("DownloadClientValidationUnknownException", new Dictionary<string, object> { { "exception", ex.Message } }));
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, "Error testing Torrent Download Station");
 
-                return new NzbDroneValidationFailure("Host", "Unable to connect to Torrent Download Station")
+                return new NzbDroneValidationFailure("Host", _localizationService.GetLocalizedString("DownloadClientValidationUnableToConnect", new Dictionary<string, object> { { "clientName", Name } }))
                        {
                            DetailedDescription = ex.Message
                        };
@@ -403,7 +403,12 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
             if (info.MinVersion > 2 || info.MaxVersion < 2)
             {
-                return new ValidationFailure(string.Empty, $"Download Station API version not supported, should be at least 2. It supports from {info.MinVersion} to {info.MaxVersion}");
+                return new ValidationFailure(string.Empty,
+                    _localizationService.GetLocalizedString("DownloadClientDownloadStationValidationApiVersion",
+                        new Dictionary<string, object>
+                        {
+                            { "requiredVersion", 2 }, { "minVersion", info.MinVersion }, { "maxVersion", info.MaxVersion }
+                        }));
             }
 
             return null;
@@ -418,7 +423,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             }
             catch (Exception ex)
             {
-                return new NzbDroneValidationFailure(string.Empty, $"Failed to get the list of torrents: {ex.Message}");
+                return new NzbDroneValidationFailure(string.Empty, _localizationService.GetLocalizedString("DownloadClientValidationTestTorrents", new Dictionary<string, object> { { "exceptionMessage", ex.Message } }));
             }
         }
 
@@ -450,7 +455,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
             var destDir = GetDefaultDir();
 
-            if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+            if (destDir.IsNotNullOrWhiteSpace() && Settings.TvCategory.IsNotNullOrWhiteSpace())
             {
                 return $"{destDir.TrimEnd('/')}/{Settings.TvCategory}";
             }

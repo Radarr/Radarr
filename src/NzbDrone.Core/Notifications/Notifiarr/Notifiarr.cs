@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Notifications.Webhook;
+using NzbDrone.Core.Tags;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Notifications.Notifiarr
@@ -13,8 +15,8 @@ namespace NzbDrone.Core.Notifications.Notifiarr
     {
         private readonly INotifiarrProxy _proxy;
 
-        public Notifiarr(INotifiarrProxy proxy, IConfigFileProvider configFileProvider, IConfigService configService)
-            : base(configFileProvider, configService)
+        public Notifiarr(INotifiarrProxy proxy, IConfigFileProvider configFileProvider, IConfigService configService, ILocalizationService localizationService, ITagRepository tagRepository)
+            : base(configFileProvider, configService, localizationService, tagRepository)
         {
             _proxy = proxy;
         }
@@ -89,7 +91,7 @@ namespace NzbDrone.Core.Notifications.Notifiarr
             }
             catch (NotifiarrException ex)
             {
-                return new NzbDroneValidationFailure("APIKey", ex.Message);
+                return new NzbDroneValidationFailure("APIKey", _localizationService.GetLocalizedString("NotificationsValidationUnableToSendTestMessage", new Dictionary<string, object> { { "exceptionMessage", ex.Message } }));
             }
 
             return null;

@@ -101,7 +101,7 @@ class Indexer extends Component {
           {
             supportsRss && enableRss &&
               <Label kind={kinds.SUCCESS}>
-                {translate('RSS')}
+                {translate('Rss')}
               </Label>
           }
 

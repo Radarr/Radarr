@@ -21,7 +21,7 @@ class QualityDefinitions extends Component {
     return (
       <FieldSet legend={translate('QualityDefinitions')}>
         <PageSectionContent
-          errorMessage={translate('UnableToLoadQualityDefinitions')}
+          errorMessage={translate('QualityDefinitionsLoadError')}
           {...otherProps}
         >
           <div className={styles.header}>
@@ -60,7 +60,7 @@ class QualityDefinitions extends Component {
 
           <div className={styles.sizeLimitHelpTextContainer}>
             <div className={styles.sizeLimitHelpText}>
-              {translate('QualityLimitsHelpText')}
+              {translate('QualityLimitsMovieRuntimeHelpText')}
             </div>
           </div>
         </PageSectionContent>

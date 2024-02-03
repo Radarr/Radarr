@@ -103,6 +103,40 @@ class DiscoverMovieHeader extends Component {
               );
             }
 
+            if (name === 'isTrending') {
+              return (
+                <VirtualTableHeaderCell
+                  key={name}
+                  className={styles[name]}
+                  name={name}
+                  isSortable={true}
+                  {...otherProps}
+                >
+                  <Icon
+                    name={icons.TRENDING}
+                    size={12}
+                  />
+                </VirtualTableHeaderCell>
+              );
+            }
+
+            if (name === 'isPopular') {
+              return (
+                <VirtualTableHeaderCell
+                  key={name}
+                  className={styles[name]}
+                  name={name}
+                  isSortable={true}
+                  {...otherProps}
+                >
+                  <Icon
+                    name={icons.POPULAR}
+                    size={12}
+                  />
+                </VirtualTableHeaderCell>
+              );
+            }
+
             return (
               <VirtualTableHeaderCell
                 key={name}

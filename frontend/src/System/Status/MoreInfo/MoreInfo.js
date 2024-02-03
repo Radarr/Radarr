@@ -26,7 +26,7 @@ class MoreInfo extends Component {
             {translate('Wiki')}
           </DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://wiki.servarr.com/radarr">{translate('Wiki')}</Link>
+            <Link to="https://wiki.servarr.com/radarr">wiki.servarr.com/radarr</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>

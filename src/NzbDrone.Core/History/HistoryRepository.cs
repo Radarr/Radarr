@@ -97,22 +97,20 @@ namespace NzbDrone.Core.History
 
         public PagingSpec<MovieHistory> GetPaged(PagingSpec<MovieHistory> pagingSpec, int[] languages, int[] qualities)
         {
-            pagingSpec.Records = GetPagedRecords(PagedBuilder(pagingSpec, languages, qualities), pagingSpec, PagedQuery);
+            pagingSpec.Records = GetPagedRecords(PagedBuilder(languages, qualities), pagingSpec, PagedQuery);
 
             var countTemplate = $"SELECT COUNT(*) FROM (SELECT /**select**/ FROM \"{TableMapping.Mapper.TableNameMapping(typeof(MovieHistory))}\" /**join**/ /**innerjoin**/ /**leftjoin**/ /**where**/ /**groupby**/ /**having**/) AS \"Inner\"";
-            pagingSpec.TotalRecords = GetPagedRecordCount(PagedBuilder(pagingSpec, languages, qualities).Select(typeof(MovieHistory)), pagingSpec, countTemplate);
+            pagingSpec.TotalRecords = GetPagedRecordCount(PagedBuilder(languages, qualities).Select(typeof(MovieHistory)), pagingSpec, countTemplate);
 
             return pagingSpec;
         }
 
-        private SqlBuilder PagedBuilder(PagingSpec<MovieHistory> pagingSpec, int[] languages, int[] qualities)
+        private SqlBuilder PagedBuilder(int[] languages, int[] qualities)
         {
             var builder = Builder()
                 .Join<MovieHistory, Movie>((h, m) => h.MovieId == m.Id)
                 .Join<Movie, QualityProfile>((m, p) => m.QualityProfileId == p.Id)
                 .LeftJoin<Movie, MovieMetadata>((m, mm) => m.MovieMetadataId == mm.Id);
-
-            AddFilters(builder, pagingSpec);
 
             if (languages is { Length: > 0 })
             {

@@ -347,8 +347,9 @@ export const actionHandlers = handleThunks({
       monitored,
       monitor,
       qualityProfileId,
+      minimumAvailability,
       rootFolderPath,
-      minimumAvailability
+      searchOnAdd
     } = payload;
 
     const response = {};
@@ -367,6 +368,10 @@ export const actionHandlers = handleThunks({
 
     if (payload.hasOwnProperty('minimumAvailability')) {
       response.minimumAvailability = minimumAvailability;
+    }
+
+    if (payload.hasOwnProperty('searchOnAdd')) {
+      response.searchOnAdd = searchOnAdd;
     }
 
     response.rootFolderPath = rootFolderPath;

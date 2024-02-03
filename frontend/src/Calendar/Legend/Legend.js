@@ -20,10 +20,11 @@ function Legend(props) {
   if (showCutoffUnmetIcon) {
     iconsToShow.push(
       <LegendIconItem
-        name={translate('CutoffUnmet')}
+        name={translate('CutoffNotMet')}
         icon={icons.MOVIE_FILE}
-        kind={fullColorEvents ? kinds.DEFAULT : kinds.WARNING}
-        tooltip={translate('QualityOrLangCutoffHasNotBeenMet')}
+        kind={kinds.WARNING}
+        fullColorEvents={fullColorEvents}
+        tooltip={translate('QualityCutoffNotMet')}
       />
     );
   }

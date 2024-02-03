@@ -44,8 +44,10 @@ namespace NzbDrone.Core.Download.Pending
         private readonly IDelayProfileService _delayProfileService;
         private readonly ITaskManager _taskManager;
         private readonly IConfigService _configService;
-        private readonly IRemoteMovieAggregationService _aggregationService;
         private readonly ICustomFormatCalculationService _formatCalculator;
+        private readonly IRemoteMovieAggregationService _aggregationService;
+        private readonly IDownloadClientFactory _downloadClientFactory;
+        private readonly IIndexerFactory _indexerFactory;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
@@ -56,8 +58,10 @@ namespace NzbDrone.Core.Download.Pending
                                      IDelayProfileService delayProfileService,
                                      ITaskManager taskManager,
                                      IConfigService configService,
-                                     IRemoteMovieAggregationService aggregationService,
                                      ICustomFormatCalculationService formatCalculator,
+                                     IRemoteMovieAggregationService aggregationService,
+                                     IDownloadClientFactory downloadClientFactory,
+                                     IIndexerFactory indexerFactory,
                                      IEventAggregator eventAggregator,
                                      Logger logger)
         {
@@ -68,8 +72,10 @@ namespace NzbDrone.Core.Download.Pending
             _delayProfileService = delayProfileService;
             _taskManager = taskManager;
             _configService = configService;
-            _aggregationService = aggregationService;
             _formatCalculator = formatCalculator;
+            _aggregationService = aggregationService;
+            _downloadClientFactory = downloadClientFactory;
+            _indexerFactory = indexerFactory;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -101,9 +107,16 @@ namespace NzbDrone.Core.Download.Pending
 
                         if (matchingReport.Reason != reason)
                         {
-                            _logger.Debug("The release {0} is already pending with reason {1}, changing to {2}", decision.RemoteMovie, matchingReport.Reason, reason);
-                            matchingReport.Reason = reason;
-                            _repository.Update(matchingReport);
+                            if (matchingReport.Reason == PendingReleaseReason.DownloadClientUnavailable)
+                            {
+                                _logger.Debug("The release {0} is already pending with reason {1}, not changing reason", decision.RemoteMovie, matchingReport.Reason);
+                            }
+                            else
+                            {
+                                _logger.Debug("The release {0} is already pending with reason {1}, changing to {2}", decision.RemoteMovie, matchingReport.Reason, reason);
+                                matchingReport.Reason = reason;
+                                _repository.Update(matchingReport);
+                            }
                         }
                         else
                         {
@@ -171,49 +184,22 @@ namespace NzbDrone.Core.Download.Pending
 
             foreach (var pendingRelease in pendingReleases)
             {
-                if (pendingRelease.RemoteMovie != null)
+                if (pendingRelease.RemoteMovie.Movie == null)
                 {
-                    var ect = pendingRelease.Release.PublishDate.AddMinutes(GetDelay(pendingRelease.RemoteMovie));
+                    var noMovieItem = GetQueueItem(pendingRelease, nextRssSync, null);
 
-                    if (ect < nextRssSync.Value)
-                    {
-                        ect = nextRssSync.Value;
-                    }
-                    else
-                    {
-                        ect = ect.AddMinutes(_configService.RssSyncInterval);
-                    }
+                    noMovieItem.ErrorMessage = "Unable to find matching movie(s)";
 
-                    var timeleft = ect.Subtract(DateTime.UtcNow);
+                    queued.Add(noMovieItem);
 
-                    if (timeleft.TotalSeconds < 0)
-                    {
-                        timeleft = TimeSpan.Zero;
-                    }
-
-                    var queue = new Queue.Queue
-                    {
-                        Id = GetQueueId(pendingRelease, pendingRelease.RemoteMovie.Movie),
-                        Movie = pendingRelease.RemoteMovie.Movie,
-                        Quality = pendingRelease.RemoteMovie.ParsedMovieInfo?.Quality ?? new QualityModel(),
-                        Languages = pendingRelease.RemoteMovie.Languages,
-                        Title = pendingRelease.Title,
-                        Size = pendingRelease.RemoteMovie.Release.Size,
-                        Sizeleft = pendingRelease.RemoteMovie.Release.Size,
-                        RemoteMovie = pendingRelease.RemoteMovie,
-                        Timeleft = timeleft,
-                        EstimatedCompletionTime = ect,
-                        Status = pendingRelease.Reason.ToString(),
-                        Protocol = pendingRelease.RemoteMovie.Release.DownloadProtocol,
-                        Indexer = pendingRelease.RemoteMovie.Release.Indexer
-                    };
-
-                    queued.Add(queue);
+                    continue;
                 }
+
+                queued.Add(GetQueueItem(pendingRelease, nextRssSync, pendingRelease.RemoteMovie.Movie));
             }
 
             // Return best quality release for each movie
-            var deduped = queued.GroupBy(q => q.Movie.Id).Select(g =>
+            var deduped = queued.Where(q => q.Movie != null).GroupBy(q => q.Movie.Id).Select(g =>
             {
                 var movies = g.First().Movie;
 
@@ -284,7 +270,7 @@ namespace NzbDrone.Core.Download.Pending
             {
                 var movie = movieMap.GetValueOrDefault(release.MovieId);
 
-                // Just in case the series was removed, but wasn't cleaned up yet (housekeeper will clean it up)
+                // Just in case the movie was removed, but wasn't cleaned up yet (housekeeper will clean it up)
                 if (movie == null)
                 {
                     return null;
@@ -314,6 +300,58 @@ namespace NzbDrone.Core.Download.Pending
             return result;
         }
 
+        private Queue.Queue GetQueueItem(PendingRelease pendingRelease, Lazy<DateTime> nextRssSync, Movie movie)
+        {
+            var ect = pendingRelease.Release.PublishDate.AddMinutes(GetDelay(pendingRelease.RemoteMovie));
+
+            if (ect < nextRssSync.Value)
+            {
+                ect = nextRssSync.Value;
+            }
+            else
+            {
+                ect = ect.AddMinutes(_configService.RssSyncInterval);
+            }
+
+            var timeleft = ect.Subtract(DateTime.UtcNow);
+
+            if (timeleft.TotalSeconds < 0)
+            {
+                timeleft = TimeSpan.Zero;
+            }
+
+            string downloadClientName = null;
+            var indexer = _indexerFactory.Find(pendingRelease.Release.IndexerId);
+
+            if (indexer is { DownloadClientId: > 0 })
+            {
+                var downloadClient = _downloadClientFactory.Find(indexer.DownloadClientId);
+
+                downloadClientName = downloadClient?.Name;
+            }
+
+            var queue = new Queue.Queue
+            {
+                Id = GetQueueId(pendingRelease, movie),
+                Movie = movie,
+                Quality = pendingRelease.RemoteMovie.ParsedMovieInfo?.Quality ?? new QualityModel(),
+                Languages = pendingRelease.RemoteMovie.Languages,
+                Title = pendingRelease.Title,
+                Size = pendingRelease.RemoteMovie.Release.Size,
+                Sizeleft = pendingRelease.RemoteMovie.Release.Size,
+                RemoteMovie = pendingRelease.RemoteMovie,
+                Timeleft = timeleft,
+                EstimatedCompletionTime = ect,
+                Added = pendingRelease.Added,
+                Status = pendingRelease.Reason.ToString(),
+                Protocol = pendingRelease.RemoteMovie.Release.DownloadProtocol,
+                Indexer = pendingRelease.RemoteMovie.Release.Indexer,
+                DownloadClient = downloadClientName
+            };
+
+            return queue;
+        }
+
         private void Insert(DownloadDecision decision, PendingReleaseReason reason)
         {
             var release = new PendingRelease
@@ -326,7 +364,8 @@ namespace NzbDrone.Core.Download.Pending
                 Reason = reason,
                 AdditionalInfo = new PendingReleaseAdditionalInfo
                 {
-                    MovieMatchType = decision.RemoteMovie.MovieMatchType
+                    MovieMatchType = decision.RemoteMovie.MovieMatchType,
+                    ReleaseSource = decision.RemoteMovie.ReleaseSource
                 }
             };
 
@@ -415,7 +454,7 @@ namespace NzbDrone.Core.Download.Pending
 
         private int GetQueueId(PendingRelease pendingRelease, Movie movie)
         {
-            return HashConverter.GetHashInt31(string.Format("pending-{0}-movie{1}", pendingRelease.Id, movie.Id));
+            return HashConverter.GetHashInt31(string.Format("pending-{0}-movie{1}", pendingRelease.Id, movie?.Id ?? 0));
         }
 
         private int PrioritizeDownloadProtocol(Movie movie, DownloadProtocol downloadProtocol)

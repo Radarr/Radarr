@@ -110,7 +110,7 @@ class Naming extends Component {
 
     if (examplesPopulated) {
       if (examples.movieExample) {
-        standardMovieFormatHelpTexts.push(`Movie: ${examples.movieExample}`);
+        standardMovieFormatHelpTexts.push(`${translate('Movie')}: ${examples.movieExample}`);
       } else {
         standardMovieFormatErrors.push({ get message() {
           return translate('MovieInvalidFormat');
@@ -118,7 +118,7 @@ class Naming extends Component {
       }
 
       if (examples.movieFolderExample) {
-        movieFolderFormatHelpTexts.push(`Example: ${examples.movieFolderExample}`);
+        movieFolderFormatHelpTexts.push(`${translate('Example')}: ${examples.movieFolderExample}`);
       } else {
         movieFolderFormatErrors.push({ get message() {
           return translate('InvalidFormat');
@@ -136,7 +136,7 @@ class Naming extends Component {
         {
           !isFetching && error &&
             <Alert kind={kinds.DANGER}>
-              {translate('UnableToLoadNamingSettings')}
+              {translate('NamingSettingsLoadError')}
             </Alert>
         }
 
@@ -214,7 +214,7 @@ class Naming extends Component {
                   buttons={<FormInputButton onPress={this.onMovieFolderNamingModalOpenClick}>?</FormInputButton>}
                   onChange={onInputChange}
                   {...settings.movieFolderFormat}
-                  helpTexts={['Used when adding a new movie or moving movies via the editor', ...movieFolderFormatHelpTexts]}
+                  helpTexts={[translate('MovieFolderFormatHelpText'), ...movieFolderFormatHelpTexts]}
                   errors={[...movieFolderFormatErrors, ...settings.movieFolderFormat.errors]}
                 />
               </FormGroup>
