@@ -205,6 +205,10 @@ class CollectionOverviews extends Component {
 
     // Replacing the history to prevent navigating back to this item on re-renders
     window.history.replaceState({}, '');
+
+    this.setState({
+      navigateToId: 0
+    });
   };
 
   //
