@@ -51,7 +51,7 @@ MovieCollectionLabel.propTypes = {
   title: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   onMonitorTogglePress: PropTypes.func.isRequired,
-  tmdbId: PropTypes.string.isRequired
+  tmdbId: PropTypes.number.isRequired
 };
 
 export default MovieCollectionLabel;

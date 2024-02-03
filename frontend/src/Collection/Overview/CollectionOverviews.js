@@ -54,7 +54,7 @@ class CollectionOverviews extends Component {
       posterWidth: 162,
       posterHeight: 238,
       rowHeight: calculateRowHeight(238, null, props.isSmallScreen, {}),
-      navigateToId: props.location.state ? props.location.state.navigateToId : 0
+      navigateToId: props.location.state?.navigateToId ?? 0
     };
 
     this._grid = null;
