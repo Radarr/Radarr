@@ -202,6 +202,9 @@ class CollectionOverviews extends Component {
         align: 'start'
       });
     }
+
+    // Replacing the history to prevent navigating back to this item on re-renders
+    window.history.replaceState({}, '')
   };
 
   //
