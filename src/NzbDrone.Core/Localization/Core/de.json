@@ -645,7 +645,7 @@
     "MediaManagementSettingsLoadError": "Media Verwaltungseinstellungen konnten nicht geladen werden",
     "NamingSettingsLoadError": "Umbenennungeinstellungen konnten nicht geladen werden",
     "UnableToLoadMovies": "Filme konnten nicht geladen werden",
-    "UnableToLoadListOptions": "Listen Einstellungen konnten nicht geladen werden",
+    "ListOptionsLoadError": "Listen Einstellungen konnten nicht geladen werden",
     "IndexerOptionsLoadError": "Indexer Einstellungen konnten nicht geladen werden",
     "GeneralSettingsLoadError": "Allgemeine Einstellungen konnten nicht geladen werden",
     "DownloadClientOptionsLoadError": "Downloader Einstellungen konnten nicht geladen werden",

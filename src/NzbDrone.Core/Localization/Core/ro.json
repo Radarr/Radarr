@@ -327,7 +327,7 @@
     "AddRemotePathMappingError": "Imposibil de adăugat o nouă mapare a căilor la distanță, încercați din nou.",
     "BackupsLoadError": "Imposibil de încărcat copiile de rezervă",
     "DelayProfilesLoadError": "Nu se pot încărca profilurile de întârziere",
-    "UnableToLoadListOptions": "Nu se pot încărca opțiunile listei",
+    "ListOptionsLoadError": "Nu se pot încărca opțiunile listei",
     "ImportListsLoadError": "Nu se pot încărca listele",
     "MediaManagementSettingsLoadError": "Nu se pot încărca setările de gestionare media",
     "UnableToLoadRestrictions": "Nu se pot încărca restricțiile",

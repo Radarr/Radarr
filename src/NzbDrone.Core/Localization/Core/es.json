@@ -647,7 +647,7 @@
     "NamingSettingsLoadError": "No se han podido cargar los ajustes de renombrado",
     "UnableToLoadMovies": "No se han podido cargar las películas",
     "MediaManagementSettingsLoadError": "No se han podido cargar los ajustes de Manipulación multimedia",
-    "UnableToLoadListOptions": "No se pueden cargar opciones de lista",
+    "ListOptionsLoadError": "No se pueden cargar opciones de lista",
     "IndexerOptionsLoadError": "No se han podido cargar las opciones del indexer",
     "GeneralSettingsLoadError": "No se han podido cargar los ajustes Generales",
     "DownloadClientOptionsLoadError": "No se han podido cargar las opciones del gestor de descargas",

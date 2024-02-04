@@ -630,7 +630,7 @@
     "MetadataLoadError": "Non riesco a caricare i metadati",
     "MediaManagementSettingsLoadError": "Non riesco a caricare le impostazioni di Gestione dei Media",
     "ImportListsLoadError": "Non riesco a caricare le liste",
-    "UnableToLoadListOptions": "Non riesco a caricare le opzione delle liste",
+    "ListOptionsLoadError": "Non riesco a caricare le opzione delle liste",
     "ImportListExclusionsLoadError": "Non riesco a caricare le liste di esclusione",
     "IndexersLoadError": "Impossibile caricare gli Indicizzatori",
     "IndexerOptionsLoadError": "Non riesco a caricare le opzioni dell'indexer",

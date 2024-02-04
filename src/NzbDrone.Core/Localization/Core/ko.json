@@ -888,7 +888,7 @@
     "IndexerOptionsLoadError": "인덱서 옵션을 불러올 수 없습니다.",
     "Unlimited": "무제한",
     "ImportListExclusionsLoadError": "목록 예외를 불러올 수 없습니다.",
-    "UnableToLoadListOptions": "목록 옵션을 불러올 수 없습니다.",
+    "ListOptionsLoadError": "목록 옵션을 불러올 수 없습니다.",
     "ImportListsLoadError": "목록을 불러올 수 없습니다.",
     "UnableToLoadManualImportItems": "수동 가져오기 항목을 불러올 수 없습니다.",
     "MediaManagementSettingsLoadError": "미디어 관리 설정을 불러올 수 없습니다.",

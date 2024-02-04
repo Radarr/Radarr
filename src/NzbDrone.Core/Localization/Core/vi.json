@@ -906,7 +906,7 @@
     "DelayProfilesLoadError": "Không thể tải hồ sơ độ trễ",
     "IndexerOptionsLoadError": "Không thể tải các tùy chọn trình lập chỉ mục",
     "IndexersLoadError": "Không thể tải Trình chỉ mục",
-    "UnableToLoadListOptions": "Không thể tải các tùy chọn danh sách",
+    "ListOptionsLoadError": "Không thể tải các tùy chọn danh sách",
     "ImportListsLoadError": "Không thể tải danh sách",
     "MetadataLoadError": "Không thể tải Siêu dữ liệu",
     "NamingSettingsLoadError": "Không thể tải cài đặt Đặt tên",

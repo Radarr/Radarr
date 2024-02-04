@@ -607,7 +607,7 @@
     "IndexerOptionsLoadError": "Опциите за индексатор не могат да се заредят",
     "IndexersLoadError": "Индексаторите не могат да се заредят",
     "ImportListExclusionsLoadError": "Изключенията от списъка не могат да се заредят",
-    "UnableToLoadListOptions": "Опциите за списъка не могат да се заредят",
+    "ListOptionsLoadError": "Опциите за списъка не могат да се заредят",
     "ImportListsLoadError": "Списъците не могат да се заредят",
     "UnableToLoadManualImportItems": "Елементите за ръчно импортиране не могат да бъдат заредени",
     "MediaManagementSettingsLoadError": "Не можете да заредите настройките за управление на медиите",

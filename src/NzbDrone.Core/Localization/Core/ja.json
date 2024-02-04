@@ -883,7 +883,7 @@
     "IndexerOptionsLoadError": "インデクサオプションを読み込めません",
     "IndexersLoadError": "インデクサーを読み込めません",
     "ImportListExclusionsLoadError": "リストの除外を読み込めません",
-    "UnableToLoadListOptions": "リストオプションを読み込めません",
+    "ListOptionsLoadError": "リストオプションを読み込めません",
     "ImportListsLoadError": "リストを読み込めません",
     "UnableToLoadManualImportItems": "手動インポートアイテムを読み込めません",
     "MediaManagementSettingsLoadError": "メディア管理設定を読み込めません",

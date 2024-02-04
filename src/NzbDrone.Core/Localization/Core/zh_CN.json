@@ -454,7 +454,7 @@
     "MediaManagementSettingsLoadError": "无法加载媒体管理设置",
     "UnableToLoadManualImportItems": "无法加载手动导入项目",
     "ImportListsLoadError": "无法加载列表",
-    "UnableToLoadListOptions": "无法加载列表选项",
+    "ListOptionsLoadError": "无法加载列表选项",
     "IndexersLoadError": "无法加载搜刮器",
     "IndexerOptionsLoadError": "无法加载搜刮器选项",
     "GeneralSettingsLoadError": "无法加载通用设置",

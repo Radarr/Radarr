@@ -883,7 +883,7 @@
     "IndexerOptionsLoadError": "Tietolähdeasetusten lataus ei onnistu",
     "IndexersLoadError": "Tietolähteiden lataus epäonnistui",
     "ImportListExclusionsLoadError": "Tuontilistapoikkeusten lataus epäonnistui",
-    "UnableToLoadListOptions": "Tuontilista-asetusten lataus ei onnistu.",
+    "ListOptionsLoadError": "Tuontilista-asetusten lataus ei onnistu.",
     "ImportListsLoadError": "Tuontilistojen lataus epäonnistui",
     "UnableToLoadManualImportItems": "Virhe ladattaessa manuaalituonnin kohteita.",
     "MediaManagementSettingsLoadError": "Virhe ladattaessa mediatiedostojen hallinta-asetuksia",

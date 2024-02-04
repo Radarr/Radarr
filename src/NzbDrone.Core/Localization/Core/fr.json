@@ -475,7 +475,7 @@
     "MetadataLoadError": "Impossible de charger les métadonnées",
     "MediaManagementSettingsLoadError": "Impossible de charger les paramètres de gestion des médias",
     "ImportListsLoadError": "Impossible de charger les listes",
-    "UnableToLoadListOptions": "Impossible de charger les options de la liste",
+    "ListOptionsLoadError": "Impossible de charger les options de la liste",
     "WaitingToProcess": "En attente de traitement",
     "WaitingToImport": "En attente d'import",
     "VisitTheWikiForMoreDetails": "Visitez le wiki pour plus de détails : ",

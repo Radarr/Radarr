@@ -179,7 +179,7 @@
     "BackupsLoadError": "ไม่สามารถโหลดข้อมูลสำรอง",
     "DelayProfilesLoadError": "ไม่สามารถโหลด Delay Profiles",
     "DownloadClientOptionsLoadError": "ไม่สามารถโหลดตัวเลือกไคลเอนต์ดาวน์โหลด",
-    "UnableToLoadListOptions": "ไม่สามารถโหลดตัวเลือกรายการ",
+    "ListOptionsLoadError": "ไม่สามารถโหลดตัวเลือกรายการ",
     "MediaManagementSettingsLoadError": "ไม่สามารถโหลดการตั้งค่าการจัดการสื่อ",
     "NotificationsLoadError": "ไม่สามารถโหลดการแจ้งเตือน",
     "QualityDefinitionsLoadError": "ไม่สามารถโหลดคำจำกัดความคุณภาพ",

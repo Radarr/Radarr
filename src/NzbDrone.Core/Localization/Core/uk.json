@@ -886,7 +886,7 @@
     "DelayProfilesLoadError": "Неможливо завантажити профілі затримки",
     "GeneralSettingsLoadError": "Не вдалося завантажити загальні налаштування",
     "IndexerOptionsLoadError": "Не вдалося завантажити параметри індексатора",
-    "UnableToLoadListOptions": "Не вдалося завантажити параметри списку",
+    "ListOptionsLoadError": "Не вдалося завантажити параметри списку",
     "ImportListsLoadError": "Не вдалося завантажити списки",
     "MediaManagementSettingsLoadError": "Не вдалося завантажити налаштування керування медіафайлами",
     "MetadataLoadError": "Не вдалося завантажити метадані",

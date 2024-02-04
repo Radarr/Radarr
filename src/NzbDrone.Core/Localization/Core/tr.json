@@ -936,7 +936,7 @@
     "AddImportListExclusionError": "Yeni bir liste dışlaması eklenemiyor, lütfen tekrar deneyin.",
     "DelayProfilesLoadError": "Gecikme Profilleri yüklenemiyor",
     "DownloadClientOptionsLoadError": "İndirme istemcisi seçenekleri yüklenemiyor",
-    "UnableToLoadListOptions": "Liste seçenekleri yüklenemiyor",
+    "ListOptionsLoadError": "Liste seçenekleri yüklenemiyor",
     "MediaManagementSettingsLoadError": "Medya Yönetimi ayarları yüklenemiyor",
     "CalendarLoadError": "Takvim yüklenemiyor",
     "UpdateAutomaticallyHelpText": "Güncellemeleri otomatik olarak indirin ve yükleyin. Yine de Sistem'den yükleyebileceksiniz: Güncellemeler",

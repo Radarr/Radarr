@@ -652,7 +652,7 @@
     "NamingSettingsLoadError": "Kon Naamgevingsinstellingen niet inladen",
     "UnableToLoadMovies": "Kon films niet inladen",
     "MediaManagementSettingsLoadError": "Kon Mediabeheer instellingen niet inladen",
-    "UnableToLoadListOptions": "Kon lijst opties niet inladen",
+    "ListOptionsLoadError": "Kon lijst opties niet inladen",
     "IndexerOptionsLoadError": "Kon indexeerder opties niet inladen",
     "GeneralSettingsLoadError": "Kon Algemene instellingen niet inladen",
     "DownloadClientOptionsLoadError": "Kon downloader opties niet inladen",

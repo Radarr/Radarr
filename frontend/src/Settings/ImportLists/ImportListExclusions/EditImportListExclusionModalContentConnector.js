@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -7,7 +6,7 @@ import { saveImportExclusion, setImportExclusionValue } from 'Store/Actions/sett
 import selectSettings from 'Store/Selectors/selectSettings';
 import EditImportListExclusionModalContent from './EditImportListExclusionModalContent';
 
-const newImportExclusion = {
+const newImportListExclusion = {
   movieTitle: '',
   tmdbId: 0,
   movieYear: 0
@@ -27,7 +26,7 @@ function createImportExclusionSelector() {
         items
       } = importExclusions;
 
-      const mapping = id ? _.find(items, { id }) : newImportExclusion;
+      const mapping = id ? items.find((i) => i.id === id) : newImportListExclusion;
       const settings = selectSettings(mapping, pendingChanges, saveError);
 
       return {
@@ -66,10 +65,10 @@ class EditImportExclusionModalContentConnector extends Component {
 
   componentDidMount() {
     if (!this.props.id) {
-      Object.keys(newImportExclusion).forEach((name) => {
+      Object.keys(newImportListExclusion).forEach((name) => {
         this.props.setImportExclusionValue({
           name,
-          value: newImportExclusion[name]
+          value: newImportListExclusion[name]
         });
       });
     }

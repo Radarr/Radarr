@@ -234,7 +234,7 @@
     "AddRemotePathMappingError": "नया दूरस्थ पथ मैपिंग जोड़ने में असमर्थ, कृपया पुनः प्रयास करें।",
     "CustomFormatsLoadError": "कस्टम प्रारूप लोड करने में असमर्थ",
     "IndexerOptionsLoadError": "अनुक्रमणिका विकल्पों को लोड करने में असमर्थ",
-    "UnableToLoadListOptions": "सूची विकल्पों को लोड करने में असमर्थ",
+    "ListOptionsLoadError": "सूची विकल्पों को लोड करने में असमर्थ",
     "UnableToLoadManualImportItems": "मैन्युअल आयात आइटम लोड करने में असमर्थ",
     "MediaManagementSettingsLoadError": "मीडिया प्रबंधन सेटिंग्स लोड करने में असमर्थ",
     "UnableToLoadMovies": "फिल्में लोड करने में असमर्थ",

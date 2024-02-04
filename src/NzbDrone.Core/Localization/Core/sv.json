@@ -923,7 +923,7 @@
     "IndexerOptionsLoadError": "Det gick inte att ladda indexeringsalternativ",
     "IndexersLoadError": "Det går inte att ladda indexerare",
     "ImportListExclusionsLoadError": "Det gick inte att läsa in listundantag",
-    "UnableToLoadListOptions": "Det går inte att ladda listalternativ",
+    "ListOptionsLoadError": "Det går inte att ladda listalternativ",
     "ImportListsLoadError": "Det gick inte att ladda listor",
     "UnableToLoadManualImportItems": "Det gick inte att ladda manuella importartiklar",
     "MediaManagementSettingsLoadError": "Det gick inte att läsa in inställningar för Media Management",

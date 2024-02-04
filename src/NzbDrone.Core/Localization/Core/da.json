@@ -881,7 +881,7 @@
     "IndexerOptionsLoadError": "Kan ikke indlæse indekseringsindstillinger",
     "IndexersLoadError": "Kan ikke indlæse indeksørerne",
     "ImportListExclusionsLoadError": "Kunne ikke indlæse listeekskluderinger",
-    "UnableToLoadListOptions": "Kan ikke indlæse listeindstillinger",
+    "ListOptionsLoadError": "Kan ikke indlæse listeindstillinger",
     "ImportListsLoadError": "Kunne ikke indlæse lister",
     "UnableToLoadManualImportItems": "Kunne ikke indlæse manuelle importvarer",
     "MetadataLoadError": "Kunne ikke indlæse metadata",

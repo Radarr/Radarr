@@ -711,7 +711,7 @@
     "MetadataLoadError": "Não foi possível carregar os metadados",
     "MediaManagementSettingsLoadError": "Não foi possível carregar as definições da gestão de multimédia",
     "ImportListsLoadError": "Não foi possível carregar as listas",
-    "UnableToLoadListOptions": "Não foi possível carregar as opções de lista",
+    "ListOptionsLoadError": "Não foi possível carregar as opções de lista",
     "ImportListExclusionsLoadError": "Não foi possível carregar as exclusões de lista",
     "GeneralSettingsLoadError": "Não foi possível carregar as definições gerais",
     "DownloadClientOptionsLoadError": "Não foi possível carregar as opções do cliente de transferências",

@@ -885,7 +885,7 @@
     "IndexerOptionsLoadError": "לא ניתן לטעון אפשרויות לאינדקס",
     "IndexersLoadError": "לא ניתן לטעון אינדקסים",
     "ImportListExclusionsLoadError": "לא ניתן לטעון אי הכללות ברשימה",
-    "UnableToLoadListOptions": "לא ניתן לטעון אפשרויות רשימה",
+    "ListOptionsLoadError": "לא ניתן לטעון אפשרויות רשימה",
     "ImportListsLoadError": "לא ניתן לטעון רשימות",
     "UnableToLoadManualImportItems": "לא ניתן לטעון פריטי ייבוא ידניים",
     "MediaManagementSettingsLoadError": "לא ניתן לטעון את הגדרות ניהול המדיה",

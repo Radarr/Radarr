@@ -881,7 +881,7 @@
     "IndexerOptionsLoadError": "Δεν είναι δυνατή η φόρτωση επιλογών ευρετηρίου",
     "IndexersLoadError": "Δεν είναι δυνατή η φόρτωση του ευρετηρίου",
     "ImportListExclusionsLoadError": "Δεν είναι δυνατή η φόρτωση εξαιρέσεων λίστας",
-    "UnableToLoadListOptions": "Δεν είναι δυνατή η φόρτωση των επιλογών λίστας",
+    "ListOptionsLoadError": "Δεν είναι δυνατή η φόρτωση των επιλογών λίστας",
     "ImportListsLoadError": "Δεν είναι δυνατή η φόρτωση λιστών",
     "UnableToLoadManualImportItems": "Δεν είναι δυνατή η φόρτωση στοιχείων μη αυτόματης εισαγωγής",
     "MediaManagementSettingsLoadError": "Δεν είναι δυνατή η φόρτωση των ρυθμίσεων διαχείρισης πολυμέσων",

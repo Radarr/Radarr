@@ -892,7 +892,7 @@
     "GeneralSettingsLoadError": "Nelze načíst obecná nastavení",
     "IndexersLoadError": "Nelze načíst indexery",
     "ImportListExclusionsLoadError": "Nelze načíst vyloučení seznamu",
-    "UnableToLoadListOptions": "Možnosti seznamu nelze načíst",
+    "ListOptionsLoadError": "Možnosti seznamu nelze načíst",
     "ImportListsLoadError": "Nelze načíst seznamy",
     "MediaManagementSettingsLoadError": "Nelze načíst nastavení správy médií",
     "MetadataLoadError": "Nelze načíst metadata",

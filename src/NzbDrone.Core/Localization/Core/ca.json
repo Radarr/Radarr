@@ -897,7 +897,7 @@
     "IndexerOptionsLoadError": "No es poden carregar les opcions de l'indexador",
     "IndexersLoadError": "No es poden carregar els indexadors",
     "ImportListExclusionsLoadError": "No es poden carregar les exclusions de la llista",
-    "UnableToLoadListOptions": "No es poden carregar les opcions de la llista",
+    "ListOptionsLoadError": "No es poden carregar les opcions de la llista",
     "ImportListsLoadError": "No es poden carregar les llistes",
     "UnableToLoadManualImportItems": "No es poden carregar els elements d'importació manual",
     "MediaManagementSettingsLoadError": "No es pot carregar la configuració de gestió de mitjans",

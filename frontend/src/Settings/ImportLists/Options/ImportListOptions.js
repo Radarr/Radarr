@@ -39,7 +39,7 @@ function ImportListOptions(props) {
         {
           !isFetching && error &&
             <Alert kind={kinds.DANGER}>
-              {translate('UnableToLoadListOptions')}
+              {translate('ListOptionsLoadError')}
             </Alert>
         }
 

@@ -742,7 +742,7 @@
     "MetadataLoadError": "Nem sikerült betölteni a Metaadatokat",
     "MediaManagementSettingsLoadError": "Nem sikerült betölteni a Média Kezelés beállításait",
     "ImportListsLoadError": "Listák betöltése sikertelen",
-    "UnableToLoadListOptions": "A listaopciók betöltése sikertelen",
+    "ListOptionsLoadError": "A listaopciók betöltése sikertelen",
     "ImportListExclusionsLoadError": "Nem sikerült betölteni az importálási lista kizárásait",
     "TableOptions": "Táblázat Beállítások",
     "Table": "Táblázat",

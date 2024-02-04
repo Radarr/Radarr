@@ -736,7 +736,7 @@
     "MediaManagementSettingsLoadError": "Не удалось загрузить настройки управления медиа",
     "UnableToLoadManualImportItems": "Невозможно загрузить элементы импорта вручную",
     "ImportListsLoadError": "Невозможно загрузить списки",
-    "UnableToLoadListOptions": "Не удалось загрузить параметры списка",
+    "ListOptionsLoadError": "Не удалось загрузить параметры списка",
     "ImportListExclusionsLoadError": "Не удалось загрузить исключения из списка",
     "IndexersLoadError": "Не удалось загрузить индексаторы",
     "IndexerOptionsLoadError": "Не удалось загрузить параметры индексатора",

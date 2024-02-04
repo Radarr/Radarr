@@ -72,7 +72,7 @@
     "MediaManagementSettingsLoadError": "تعذر تحميل إعدادات إدارة الوسائط",
     "UnableToLoadManualImportItems": "تعذر تحميل عناصر الاستيراد اليدوي",
     "ImportListsLoadError": "تعذر تحميل القوائم",
-    "UnableToLoadListOptions": "تعذر تحميل خيارات القائمة",
+    "ListOptionsLoadError": "تعذر تحميل خيارات القائمة",
     "ImportListExclusionsLoadError": "تعذر تحميل استثناءات القائمة",
     "IndexersLoadError": "تعذر تحميل المفهرسات",
     "IndexerOptionsLoadError": "تعذر تحميل خيارات المفهرس",

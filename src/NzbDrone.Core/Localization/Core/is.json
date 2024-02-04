@@ -891,7 +891,7 @@
     "IndexerOptionsLoadError": "Ekki er hægt að hlaða valkosti flokkara",
     "IndexersLoadError": "Ekki er hægt að hlaða Indexers",
     "ImportListExclusionsLoadError": "Ekki er hægt að hlaða undanþágu lista",
-    "UnableToLoadListOptions": "Ekki er hægt að hlaða listavalkosti",
+    "ListOptionsLoadError": "Ekki er hægt að hlaða listavalkosti",
     "MediaManagementSettingsLoadError": "Ekki er hægt að hlaða stillingar fjölmiðlastjórnunar",
     "MetadataLoadError": "Ekki er hægt að hlaða lýsigögn",
     "NamingSettingsLoadError": "Ekki er hægt að hlaða nafnastillingar",

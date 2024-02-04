@@ -41,7 +41,7 @@ class ReleaseProfile extends Component {
     });
   };
 
-  onDeleteReleaseProfileModalClose= () => {
+  onDeleteReleaseProfileModalClose = () => {
     this.setState({ isDeleteReleaseProfileModalOpen: false });
   };
 
@@ -70,7 +70,7 @@ class ReleaseProfile extends Component {
       isDeleteReleaseProfileModalOpen
     } = this.state;
 
-    const indexer = indexerList.find((i) => i.id === indexerId);
+    const indexer = indexerId !== 0 && indexerList.find((i) => i.id === indexerId);
 
     return (
       <Card

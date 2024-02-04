@@ -129,7 +129,7 @@
     "AddQualityProfileError": "Nie można dodać nowego profilu jakości, spróbuj ponownie.",
     "AddRemotePathMappingError": "Nie można dodać nowego mapowania ścieżki zdalnej, spróbuj ponownie.",
     "BackupsLoadError": "Nie można załadować kopii zapasowych",
-    "UnableToLoadListOptions": "Nie można załadować opcji listy",
+    "ListOptionsLoadError": "Nie można załadować opcji listy",
     "UnableToLoadRestrictions": "Nie można załadować ograniczeń",
     "UnmappedFilesOnly": "Tylko niezamapowane pliki",
     "UnmappedFolders": "Niezmapowane foldery",
