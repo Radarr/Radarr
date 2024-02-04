@@ -1075,7 +1075,7 @@
     "DeleteImportListExclusionMessageText": "Haluatko varmasti poistaa tuontilistapoikkeuksen?",
     "CountIndexersSelected": "{count} tietolähde(ttä) on valittu",
     "DeleteConditionMessageText": "Haluatko varmasti poistaa ehdon \"{name}\"?",
-    "DeleteCustomFormatMessageText": "Haluatko varmasti poistaa mukautetun muodon \"{customFormatName}\"?",
+    "DeleteCustomFormatMessageText": "Haluatko varmasti poistaa mukautetun muodon \"{name}\"?",
     "DeleteDelayProfileMessageText": "Haluatko varmasti poistaa viiveprofiilin?",
     "DeleteSelectedImportLists": "Poista tuontilista(t)",
     "DeleteSelectedIndexers": "Poista tietoläh(de/teet)",

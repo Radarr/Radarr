@@ -1092,7 +1092,7 @@
     "DeleteRemotePathMappingMessageText": "Tem certeza de que deseja excluir este mapeamento de caminho remoto?",
     "DeleteCondition": "Excluir condição",
     "CloneCondition": "Clonar Condição",
-    "DeleteCustomFormatMessageText": "Tem certeza de que deseja excluir o formato personalizado '{customFormatName}'?",
+    "DeleteCustomFormatMessageText": "Tem certeza de que deseja excluir o formato personalizado '{name}'?",
     "DeleteDelayProfileMessageText": "Tem certeza de que deseja excluir este perfil de atraso?",
     "DeleteFormatMessageText": "Tem certeza de que deseja excluir a etiqueta de formato {0} ?",
     "RemoveSelectedItemQueueMessageText": "Tem certeza de que deseja remover 1 item da fila?",

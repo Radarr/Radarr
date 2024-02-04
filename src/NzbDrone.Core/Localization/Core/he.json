@@ -1017,7 +1017,7 @@
     "DownloadClientMovieTagHelpText": "השתמש באינדקסר זה רק לסרטים שתואמים לתויות. השאר ריק כדי לחפש את כל הסרטים.",
     "RemoveSelectedItemsQueueMessageText": "האם אתה בטוח שברצונך להסיר את {0} פריט {1} מהתור?",
     "DeleteConditionMessageText": "האם אתה בטוח שברצונך למחוק את התג '{0}'?",
-    "DeleteCustomFormatMessageText": "האם אתה בטוח שברצונך למחוק את האינדקס '{customFormatName}'?",
+    "DeleteCustomFormatMessageText": "האם אתה בטוח שברצונך למחוק את האינדקס '{name}'?",
     "DeleteDelayProfileMessageText": "האם אתה בטוח שברצונך למחוק פרופיל עיכוב זה?",
     "ResetAPIKeyMessageText": "האם אתה בטוח שברצונך לאפס את מפתח ה- API שלך?",
     "DeleteSelectedIndexers": "מחק את אינדקס",

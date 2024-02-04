@@ -1081,7 +1081,7 @@
     "RemoveSelectedItemsQueueMessageText": "Bist du sicher, dass du {selectedCount} Einträge aus der Warteschlange entfernen willst?",
     "ResetDefinitionTitlesHelpText": "Definitionstitel und -werte zurücksetzen",
     "DeleteConditionMessageText": "Bist du sicher, dass du die Bedingung '{0}' löschen willst?",
-    "DeleteCustomFormatMessageText": "Bist du sicher, dass du das eigene Format '{customFormatName}' löschen willst?",
+    "DeleteCustomFormatMessageText": "Bist du sicher, dass du das eigene Format '{name}' löschen willst?",
     "DeleteDelayProfileMessageText": "Sind Sie sicher, dass Sie dieses Verzögerungsprofil löschen möchten?",
     "DeleteFormatMessageText": "Bist du sicher, dass du das Formatierungstag {0} löschen willst?",
     "ResetAPIKeyMessageText": "Sind Sie sicher, dass Sie Ihren API-Schlüssel zurücksetzen möchten?",

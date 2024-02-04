@@ -1066,7 +1066,7 @@
     "DeleteSelectedDownloadClients": "Usuń klienta pobierania",
     "DeleteSelectedIndexers": "Usuń indeksator",
     "DeleteConditionMessageText": "Czy na pewno chcesz usunąć tag „{0}”?",
-    "DeleteCustomFormatMessageText": "Czy na pewno chcesz usunąć indeksator „{customFormatName}”?",
+    "DeleteCustomFormatMessageText": "Czy na pewno chcesz usunąć indeksator „{name}”?",
     "DeleteDelayProfileMessageText": "Czy na pewno chcesz usunąć ten profil opóźnienia?",
     "DeleteFormatMessageText": "Czy na pewno chcesz usunąć tag formatu {0}?",
     "DeleteImportListExclusionMessageText": "Czy na pewno chcesz usunąć to wykluczenie listy importu?",

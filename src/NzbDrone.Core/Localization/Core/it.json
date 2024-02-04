@@ -1034,7 +1034,7 @@
     "ApplyTagsHelpTextReplace": "Sostituire: Sostituisce le etichette con quelle inserite (non inserire nessuna etichette per eliminarle tutte)",
     "DownloadClientMovieTagHelpText": "Usa questo indicizzatore per i film con almeno un tag corrispondente. Lascia in bianco per usarlo con tutti i film.",
     "DeleteConditionMessageText": "Sei sicuro di voler eliminare la condizione '{0}'?",
-    "DeleteCustomFormatMessageText": "Sei sicuro di voler eliminare il formato personalizzato '{customFormatName}'?",
+    "DeleteCustomFormatMessageText": "Sei sicuro di voler eliminare il formato personalizzato '{name}'?",
     "DeleteDelayProfileMessageText": "Sei sicuro di voler cancellare questo profilo di ritardo?",
     "DeleteFormatMessageText": "Sei sicuro di voler cancellare il formato etichetta {0} ?",
     "DeleteImportListExclusionMessageText": "Sei sicuro di voler cancellare questa lista di esclusioni delle importazioni?",

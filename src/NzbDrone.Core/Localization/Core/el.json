@@ -1092,7 +1092,7 @@
     "DeleteCondition": "Διαγραφή συνθήκης",
     "DeleteFormatMessageText": "Είστε βέβαιοι ότι θέλετε να διαγράψετε την ετικέτα μορφής {0};",
     "DeleteConditionMessageText": "Είστε σίγουροι πως θέλετε να διαγράψετε τη συνθήκη '{0}';",
-    "DeleteCustomFormatMessageText": "Είστε σίγουροι πως θέλετε να διαγράψετε τη προσαρμοσμένη μορφή '{customFormatName}';",
+    "DeleteCustomFormatMessageText": "Είστε σίγουροι πως θέλετε να διαγράψετε τη προσαρμοσμένη μορφή '{name}';",
     "DeleteDelayProfileMessageText": "Είστε σίγουροι πως θέλετε να διαγράψετε αυτό το Προφίλ χρονοκαθυστέρησης;",
     "DeleteImportListExclusionMessageText": "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτήν την εξαίρεση λίστας εισαγωγής;",
     "NoHistoryBlocklist": "Δεν υπάρχει λίστα αποκλεισμού ιστορικού",

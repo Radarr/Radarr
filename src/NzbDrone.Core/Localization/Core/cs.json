@@ -982,7 +982,7 @@
     "DeleteRemotePathMappingMessageText": "Opravdu chcete toto vzdálené mapování cesty odstranit?",
     "ApplyTagsHelpTextReplace": "Nahradit: Nahradit značky zadanými značkami (prázdné pole vymaže všechny značky)",
     "DeleteConditionMessageText": "Opravdu chcete odstranit podmínku '{name}'?",
-    "DeleteCustomFormatMessageText": "Opravdu chcete odstranit indexer „{customFormatName}“?",
+    "DeleteCustomFormatMessageText": "Opravdu chcete odstranit indexer „{name}“?",
     "DeleteDelayProfileMessageText": "Opravdu chcete smazat tento profil zpoždění?",
     "DeleteFormatMessageText": "Opravdu chcete smazat značku formátu {0}?",
     "RemoveSelectedItemQueueMessageText": "Opravdu chcete odebrat {0} položku {1} z fronty?",
