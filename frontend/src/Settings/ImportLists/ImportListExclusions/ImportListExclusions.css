@@ -5,7 +5,7 @@
 }
 
 .title {
-  flex: 0 0 600px;
+  flex: 0 1 600px;
 }
 
 .tmdbId,

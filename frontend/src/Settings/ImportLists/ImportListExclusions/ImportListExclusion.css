@@ -10,7 +10,7 @@
 .movieTitle {
   @add-mixin truncate;
 
-  flex: 0 0 600px;
+  flex: 0 1 600px;
 }
 
 .tmdbId,

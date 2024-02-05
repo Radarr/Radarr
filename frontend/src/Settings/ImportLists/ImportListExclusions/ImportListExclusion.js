@@ -67,7 +67,7 @@ class ImportListExclusion extends Component {
         )}
       >
         <div className={styles.tmdbId}>{tmdbId}</div>
-        <div className={styles.movieTitle}>{movieTitle}</div>
+        <div className={styles.movieTitle} title={movieTitle}>{movieTitle}</div>
         <div className={styles.movieYear}>{movieYear}</div>
 
         <div className={styles.actions}>
