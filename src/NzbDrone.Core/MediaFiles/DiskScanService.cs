@@ -201,7 +201,18 @@ namespace NzbDrone.Core.MediaFiles
             var mediaFileList = filesOnDisk.Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file)))
                                            .ToList();
 
+            // Find corrupted extensions in the format of: "[FileName.mkv]-[1_2]"
+            var mediaFilesListIncorrectExtension = filesOnDisk.Except(mediaFileList).Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file).Split(']').First())).ToList();
+
+            mediaFileList.AddRange(mediaFilesListIncorrectExtension);
+
             _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
+
+            if (mediaFilesListIncorrectExtension.Count > 0)
+            {
+                _logger.Debug("{0} video files were found in {1} with incorrect extensions", mediaFilesListIncorrectExtension.Count, path);
+            }
+
             _logger.Debug("{0} video files were found in {1}", mediaFileList.Count, path);
 
             return mediaFileList.ToArray();
@@ -213,13 +224,20 @@ namespace NzbDrone.Core.MediaFiles
 
             var filesOnDisk = _diskProvider.GetFiles(path, allDirectories).ToList();
 
-            var mediaFileList = filesOnDisk.Where(file => !MediaFileExtensions.Extensions.Contains(Path.GetExtension(file)))
+            var mediaFileList = filesOnDisk.Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file)))
                                            .ToList();
 
-            _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
-            _logger.Debug("{0} non-video files were found in {1}", mediaFileList.Count, path);
+            // Find corrupted extensions in the format of: "[FileName.mkv]-[1_2]"
+            var mediaFilesListIncorrectExtension = filesOnDisk.Except(mediaFileList).Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file).Split(']').First())).ToList();
 
-            return mediaFileList.ToArray();
+            mediaFileList.AddRange(mediaFilesListIncorrectExtension);
+
+            var nonVideoFiles = filesOnDisk.Except(mediaFileList).ToList();
+
+            _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
+            _logger.Debug("{0} non-video files were found in {1}", nonVideoFiles.Count, path);
+
+            return nonVideoFiles.ToArray();
         }
 
         public List<string> FilterPaths(string basePath, IEnumerable<string> paths, bool filterExtras = true)
