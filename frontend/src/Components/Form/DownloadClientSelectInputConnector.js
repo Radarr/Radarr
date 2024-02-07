@@ -25,7 +25,8 @@ function createMapStateToProps() {
       const values = _.map(filteredItems.sort(sortByName), (downloadClient) => {
         return {
           key: downloadClient.id,
-          value: downloadClient.name
+          value: downloadClient.name,
+          hint: `(${downloadClient.id})`
         };
       });
 
