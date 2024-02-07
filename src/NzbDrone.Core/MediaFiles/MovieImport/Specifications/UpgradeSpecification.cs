@@ -74,7 +74,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                         currentCustomFormats != null ? currentCustomFormats.ConcatToString() : "",
                         currentFormatScore);
 
-                    return Decision.Reject("Not a Custom Format upgrade for existing movie file(s)");
+                    return Decision.Reject("Not a Custom Format upgrade for existing movie file(s). New: [{0}] ({1}) do not improve on Existing: [{2}] ({3})",
+                        newCustomFormats != null ? newCustomFormats.ConcatToString() : "",
+                        newFormatScore,
+                        currentCustomFormats != null ? currentCustomFormats.ConcatToString() : "",
+                        currentFormatScore);
                 }
 
                 _logger.Debug("New item's custom formats [{0}] ({1}) do improve on [{2}] ({3}), accepting",
