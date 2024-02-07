@@ -625,7 +625,11 @@ namespace NzbDrone.Core.Notifications.Discord
 
         private IEnumerable<string> GetTagLabels(Movie movie)
         {
-            return movie.Tags?.Select(t => _tagRepository.Get(t)?.Label).OrderBy(t => t).Take(5);
+            return movie.Tags?
+                .Select(t => _tagRepository.Find(t)?.Label)
+                .Where(l => l.IsNotNullOrWhiteSpace())
+                .OrderBy(l => l)
+                .Take(5);
         }
     }
 }

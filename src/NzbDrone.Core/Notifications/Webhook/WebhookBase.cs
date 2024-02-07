@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles;
@@ -253,7 +254,10 @@ namespace NzbDrone.Core.Notifications.Webhook
 
         private IEnumerable<string> GetTagLabels(Movie movie)
         {
-            return movie.Tags?.Select(t => _tagRepository.Get(t)?.Label).OrderBy(t => t);
+            return movie.Tags?
+                .Select(t => _tagRepository.Find(t)?.Label)
+                .Where(l => l.IsNotNullOrWhiteSpace())
+                .OrderBy(l => l);
         }
     }
 }
