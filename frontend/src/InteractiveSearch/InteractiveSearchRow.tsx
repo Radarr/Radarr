@@ -11,7 +11,6 @@ import Tooltip from 'Components/Tooltip/Tooltip';
 import type DownloadProtocol from 'DownloadClient/DownloadProtocol';
 import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import Language from 'Language/Language';
-import IndexerFlags from 'Movie/IndexerFlags';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import MovieQuality from 'Movie/MovieQuality';
@@ -91,7 +90,7 @@ interface InteractiveSearchRowProps {
   customFormats: CustomFormat[];
   customFormatScore: number;
   mappedMovieId?: number;
-  indexerFlags: number;
+  indexerFlags: string[];
   rejections: string[];
   downloadAllowed: boolean;
   isGrabbing: boolean;
@@ -126,7 +125,7 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
     customFormatScore,
     customFormats,
     mappedMovieId,
-    indexerFlags = 0,
+    indexerFlags = [],
     rejections = [],
     downloadAllowed,
     isGrabbing = false,
@@ -282,11 +281,17 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
       </TableRowCell>
 
       <TableRowCell className={styles.indexerFlags}>
-        {indexerFlags ? (
+        {indexerFlags.length ? (
           <Popover
             anchor={<Icon name={icons.FLAG} kind={kinds.PRIMARY} />}
             title={translate('IndexerFlags')}
-            body={<IndexerFlags indexerFlags={indexerFlags} />}
+            body={
+              <ul>
+                {indexerFlags.map((flag, index) => {
+                  return <li key={index}>{flag}</li>;
+                })}
+              </ul>
+            }
             position={tooltipPositions.LEFT}
           />
         ) : null}
