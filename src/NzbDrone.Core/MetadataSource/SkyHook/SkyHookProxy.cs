@@ -407,7 +407,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
-        private List<Movie> ConvertDbLinkToId(string title)
+        private string ConvertDbLinkToId(string title)
         {
             var match = ImdbIdRegex.Match(title);
             if (match.Success)
