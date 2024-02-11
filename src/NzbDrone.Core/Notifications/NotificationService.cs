@@ -261,8 +261,7 @@ namespace NzbDrone.Core.Notifications
                 Quality = message.RemoteMovie.ParsedMovieInfo.Quality,
                 RemoteMovie = message.RemoteMovie,
                 TrackedDownload = message.TrackedDownload,
-                DownloadClientType = message.TrackedDownload.DownloadItem.DownloadClientInfo.Type,
-                DownloadClientName = message.TrackedDownload.DownloadItem.DownloadClientInfo.Name,
+                DownloadClientInfo = message.TrackedDownload.DownloadItem.DownloadClientInfo,
                 DownloadId = message.TrackedDownload.DownloadItem.DownloadId,
                 Release = message.Release
             };

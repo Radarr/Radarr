@@ -209,8 +209,8 @@ namespace NzbDrone.Core.Notifications.Webhook
                     Tags = GetTagLabels(message.Movie)
                 },
                 DownloadInfo = new WebhookDownloadClientItem(quality, message.TrackedDownload.DownloadItem),
-                DownloadClient = message.DownloadClientName,
-                DownloadClientType = message.DownloadClientType,
+                DownloadClient = message.DownloadClientInfo?.Name,
+                DownloadClientType = message.DownloadClientInfo?.Type,
                 DownloadId = message.DownloadId,
                 CustomFormatInfo = new WebhookCustomFormatInfo(remoteMovie.CustomFormats, remoteMovie.CustomFormatScore),
                 Release = new WebhookGrabbedRelease(message.Release)

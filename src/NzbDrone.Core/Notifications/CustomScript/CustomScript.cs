@@ -323,8 +323,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Movie_ImdbId", movie.MovieMetadata.Value.ImdbId ?? string.Empty);
             environmentVariables.Add("Radarr_Movie_TmdbId", movie.MovieMetadata.Value.TmdbId.ToString());
             environmentVariables.Add("Radarr_Movie_Overview", movie.MovieMetadata.Value.Overview);
-            environmentVariables.Add("Radarr_Download_Client", message.DownloadClientName ?? string.Empty);
-            environmentVariables.Add("Radarr_Download_Client_Type", message.DownloadClientType ?? string.Empty);
+            environmentVariables.Add("Radarr_Download_Client", message.DownloadClientInfo?.Name ?? string.Empty);
+            environmentVariables.Add("Radarr_Download_Client_Type", message.DownloadClientInfo?.Type ?? string.Empty);
             environmentVariables.Add("Radarr_Download_Id", message.DownloadId ?? string.Empty);
             environmentVariables.Add("Radarr_Download_Size", message.TrackedDownload.DownloadItem.TotalSize.ToString());
             environmentVariables.Add("Radarr_Download_Title", message.TrackedDownload.DownloadItem.Title);
