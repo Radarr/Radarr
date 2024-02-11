@@ -24,7 +24,6 @@ namespace NzbDrone.Core.Organizer
     {
         string BuildFileName(Movie movie, MovieFile movieFile, NamingConfig namingConfig = null, List<CustomFormat> customFormats = null);
         string BuildFilePath(Movie movie, string fileName, string extension);
-        BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec);
         string GetMovieFolder(Movie movie, NamingConfig namingConfig = null);
     }
 
@@ -153,11 +152,6 @@ namespace NzbDrone.Core.Organizer
             var path = movie.Path;
 
             return Path.Combine(path, fileName + extension);
-        }
-
-        public BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec)
-        {
-            return new BasicNamingConfig(); // For now let's be lazy
         }
 
         public string GetMovieFolder(Movie movie, NamingConfig namingConfig = null)

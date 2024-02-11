@@ -20,21 +20,8 @@ namespace Radarr.Api.V3.Config
                 ReplaceIllegalCharacters = model.ReplaceIllegalCharacters,
                 ColonReplacementFormat = model.ColonReplacementFormat,
                 StandardMovieFormat = model.StandardMovieFormat,
-                MovieFolderFormat = model.MovieFolderFormat,
-
-                // IncludeQuality
-                // ReplaceSpaces
-                // Separator
-                // NumberStyle
+                MovieFolderFormat = model.MovieFolderFormat
             };
-        }
-
-        public static void AddToResource(this BasicNamingConfig basicNamingConfig, NamingConfigResource resource)
-        {
-            resource.IncludeQuality = basicNamingConfig.IncludeQuality;
-            resource.ReplaceSpaces = basicNamingConfig.ReplaceSpaces;
-            resource.Separator = basicNamingConfig.Separator;
-            resource.NumberStyle = basicNamingConfig.NumberStyle;
         }
 
         public static NamingConfig ToModel(this NamingConfigResource resource)

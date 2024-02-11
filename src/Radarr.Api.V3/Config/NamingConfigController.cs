@@ -44,12 +44,6 @@ namespace Radarr.Api.V3.Config
             var nameSpec = _namingConfigService.GetConfig();
             var resource = nameSpec.ToResource();
 
-            if (resource.StandardMovieFormat.IsNotNullOrWhiteSpace())
-            {
-                var basicConfig = _filenameBuilder.GetBasicNamingConfig(nameSpec);
-                basicConfig.AddToResource(resource);
-            }
-
             return resource;
         }
 
