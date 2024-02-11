@@ -1087,5 +1087,7 @@
     "AuthenticationRequiredWarning": "Per prevenire accessi remoti non autorizzati, {appName} da ora richiede che l'autenticazione sia abilitata. Opzionalmente puoi disabilitare l'autenticazione per gli indirizzi di rete locali.",
     "CustomFormatJson": "Formato Personalizzato JSON",
     "AddImportListImplementation": "Aggiungi lista di importazione - {implementationName}",
-    "AutoRedownloadFailed": "Download fallito"
+    "AutoRedownloadFailed": "Download fallito",
+    "AddAutoTagError": "Impossibile aggiungere un nuovo tag automatico, riprova.",
+    "AddDelayProfileError": "Impossibile aggiungere un nuovo profilo di ritardo, riprova."
 }
