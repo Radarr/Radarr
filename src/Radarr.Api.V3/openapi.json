@@ -5740,34 +5740,6 @@
             }
           },
           {
-            "name": "includeQuality",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "replaceSpaces",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "separator",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "numberStyle",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "id",
             "in": "query",
             "schema": {
@@ -11376,20 +11348,6 @@
             "nullable": true
           },
           "movieFolderFormat": {
-            "type": "string",
-            "nullable": true
-          },
-          "includeQuality": {
-            "type": "boolean"
-          },
-          "replaceSpaces": {
-            "type": "boolean"
-          },
-          "separator": {
-            "type": "string",
-            "nullable": true
-          },
-          "numberStyle": {
             "type": "string",
             "nullable": true
           }
