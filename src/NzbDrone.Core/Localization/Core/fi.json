@@ -1573,7 +1573,7 @@
     "TorrentBlackholeSaveMagnetFilesExtensionHelpText": "Magnet-linkeille käytettävä tiedostopääte. Oletus on \".magnet\".",
     "DownloadClientDelugeValidationLabelPluginFailure": "Label-tunnisteen määritys epäonnistui.",
     "DownloadClientDownloadStationProviderMessage": "{appName} ei voi yhdistää Download Stationiin, jos DSM-tilisi on määritetty käyttämään kaksivaihesita tunnistautumista.",
-    "DownloadClientDownloadStationSettingsDirectory": "Valinnainen jaettu kansio latauksille. Download Stationin oletussijaintia jättämällä tyhjäksi.",
+    "DownloadClientDownloadStationSettingsDirectoryHelpText": "Valinnainen jaettu kansio latauksille. Download Stationin oletussijaintia jättämällä tyhjäksi.",
     "DownloadClientDownloadStationValidationApiVersion": "Download Stationin API-versiota ei tueta. Sen tulee olla vähintään {requiredVersion} (versioita {minVersion}–{maxVersion} tuetaan).",
     "DownloadClientDownloadStationValidationFolderMissingDetail": "Kansiota \"{downloadDir}\" ei ole olemassa. Se on luotava manuaalisesti jaettuun kansioon \"{sharedFolder}\".",
     "DownloadClientDownloadStationValidationNoDefaultDestination": "Oletussijaintia ei ole",

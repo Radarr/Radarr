@@ -1271,7 +1271,7 @@
     "DownloadClientFloodSettingsAdditionalTagsHelpText": "Hozzáadja a média tulajdonságait címkékként. A tippek példák.",
     "DownloadClientFloodSettingsAdditionalTags": "További címkék",
     "DownloadClientFloodSettingsStartOnAdd": "Kezdje a Hozzáadás lehetőséggel",
-    "DownloadClientDownloadStationSettingsDirectory": "Opcionális megosztott mappa a letöltések elhelyezéséhez, hagyja üresen az alapértelmezett Download Station hely használatához",
+    "DownloadClientDownloadStationSettingsDirectoryHelpText": "Opcionális megosztott mappa a letöltések elhelyezéséhez, hagyja üresen az alapértelmezett Download Station hely használatához",
     "DownloadClientDownloadStationValidationFolderMissing": "A mappa nem létezik",
     "EditMetadata": "Szerkessze a {metadataType} metaadatokat",
     "DeleteReleaseProfileMessageText": "Biztosan törli ezt a kiadási profilt: „{name}”?",

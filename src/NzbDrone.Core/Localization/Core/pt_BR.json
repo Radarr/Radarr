@@ -1537,7 +1537,7 @@
     "DownloadClientDelugeValidationLabelPluginInactive": "Plugin de rótulo não ativado",
     "DownloadClientDelugeValidationLabelPluginInactiveDetail": "Você deve ter o plugin rótulo habilitado no {clientName} para usar categorias.",
     "DownloadClientDownloadStationProviderMessage": "{appName} não consegue se conectar ao Download Station se a autenticação de dois fatores estiver habilitada em sua conta DSM",
-    "DownloadClientDownloadStationSettingsDirectory": "Pasta compartilhada opcional para colocar downloads, deixe em branco para usar o local padrão do Download Station",
+    "DownloadClientDownloadStationSettingsDirectoryHelpText": "Pasta compartilhada opcional para colocar downloads, deixe em branco para usar o local padrão do Download Station",
     "DownloadClientDownloadStationValidationApiVersion": "A versão da API do Download Station não é suportada; deve ser pelo menos {requiredVersion}. Suporta de {minVersion} a {maxVersion}",
     "DownloadClientFloodSettingsAddPaused": "Adicionar Pausado",
     "DownloadClientFloodSettingsAdditionalTags": "Etiquetas Adicionais",
