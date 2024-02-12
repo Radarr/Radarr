@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using NLog;
 using NzbDrone.Common.Cloud;
@@ -33,11 +32,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IMovieService _movieService;
         private readonly IMovieMetadataService _movieMetadataService;
         private readonly IMovieTranslationService _movieTranslationService;
-
-        private static readonly Regex ImdbIdRegex = new Regex(@"imdb\.com/title/(?<id>tt\d+)",
-                                                              RegexOptions.Compiled);
-        private static readonly Regex TmdbIdRegex = new Regex(@"themoviedb\.org/movie/(?<id>\d+)",
-                                                              RegexOptions.Compiled);
 
         public SkyHookProxy(IHttpClient httpClient,
             IRadarrCloudRequestBuilder requestBuilder,
@@ -407,30 +401,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
-        private string ConvertDbLinkToId(string title)
-        {
-            var match = ImdbIdRegex.Match(title);
-            if (match.Success)
-            {
-                return "imdb:" + match.Groups["id"].Value;
-            }
-
-            match = TmdbIdRegex.Match(title);
-            if (match.Success)
-            {
-                return "tmdb:" + match.Groups["id"].Value;
-            }
-
-            return title;
-        }
-
         public List<Movie> SearchForNewMovie(string title)
         {
             try
             {
                 var lowerTitle = title.ToLower();
-
-                lowerTitle = ConvertDbLinkToId(lowerTitle);
 
                 lowerTitle = lowerTitle.Replace(".", "");
 
