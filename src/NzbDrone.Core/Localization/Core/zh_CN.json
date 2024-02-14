@@ -528,7 +528,7 @@
     "AddToDownloadQueue": "添加到下载队列",
     "AddImportListExclusion": "添加列表例外",
     "AddingTag": "添加标签",
-    "AddImportExclusionHelpText": "防止列表中的电影被添加到 {appName} 中",
+    "AddListExclusionMovieHelpText": "防止列表中的电影被添加到 {appName} 中",
     "AddExclusion": "添加排除",
     "AddedToDownloadQueue": "已加入下载队列",
     "Added": "已添加",

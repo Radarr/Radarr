@@ -475,7 +475,7 @@
     "AvailabilityDelayHelpText": "Quantidade de tempo antes ou depois da data de disponibilidade para pesquisar pelo filme",
     "ApplyTagsHelpTextHowToApplyMovies": "Como aplicar etiquetas aos filmes selecionados",
     "AddingTag": "Adicionando etiqueta",
-    "AddImportExclusionHelpText": "Impedir a adição do filme ao {appName} por listas",
+    "AddListExclusionMovieHelpText": "Impedir a adição do filme ao {appName} por listas",
     "CopyToClipboard": "Copiar à área de transferência",
     "VisitTheWikiForMoreDetails": "Acesse a Wiki para obter mais detalhes: ",
     "CustomFormatsLoadError": "Não foi possível carregar os formatos personalizados",

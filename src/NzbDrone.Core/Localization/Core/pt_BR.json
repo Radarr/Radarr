@@ -449,7 +449,7 @@
     "AddImportListExclusion": "Adicionar exclusão à lista",
     "AddingTag": "Adicionar tag",
     "AddIndexer": "Adicionar indexador",
-    "AddImportExclusionHelpText": "Impedir a adição do filme ao {appName} por listas",
+    "AddListExclusionMovieHelpText": "Impedir a adição do filme ao {appName} por listas",
     "AddExclusion": "Adicionar exclusão",
     "AddedToDownloadQueue": "Adicionado à fila de download",
     "Added": "Adicionado",

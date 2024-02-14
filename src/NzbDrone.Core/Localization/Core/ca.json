@@ -1022,7 +1022,7 @@
     "Added": "Afegit",
     "AddedToDownloadQueue": "Afegit a la cua de baixades",
     "AddExclusion": "Afegeix exclusió",
-    "AddImportExclusionHelpText": "Eviteu que la pel·lícula s'afegeixi a {appName} per llistes d'importació",
+    "AddListExclusionMovieHelpText": "Eviteu que la pel·lícula s'afegeixi a {appName} per llistes d'importació",
     "AddIndexer": "Afegeix un indexador",
     "AddingTag": "Afegint etiqueta",
     "AddImportListExclusion": "Afegeix una llista d'exclusió",

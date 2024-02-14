@@ -502,7 +502,7 @@
     "SuggestTranslationChange": "Çeviri değişikliği önerin",
     "DownloadClientStatusCheckAllClientMessage": "Hatalar nedeniyle tüm indirme istemcileri kullanılamıyor",
     "MoveFiles": "Dosyaları Taşı",
-    "AddImportExclusionHelpText": "Listelerle filmin {appName}'a eklenmesini önleyin",
+    "AddListExclusionMovieHelpText": "Listelerle filmin {appName}'a eklenmesini önleyin",
     "MustContain": "İçermek zorundadır",
     "MustNotContain": "İçermemelidir",
     "AddImportListExclusion": "İçe Aktarma Listesi Hariç Tutma Ekle",

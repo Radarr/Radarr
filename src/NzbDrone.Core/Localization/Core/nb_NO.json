@@ -5,7 +5,7 @@
     "AddCustomFormat": "Legg til egendefinert format",
     "AddDelayProfile": "Legg til forsinkelsesprofil",
     "AddExclusion": "Legg til ekskludering",
-    "AddImportExclusionHelpText": "Forhindre at filmen legges til i {appName} av lister",
+    "AddListExclusionMovieHelpText": "Forhindre at filmen legges til i {appName} av lister",
     "AddIndexer": "Legg til indekser",
     "AddingTag": "Legger til tag",
     "AddImportListExclusion": "Legg til listeekskludering",

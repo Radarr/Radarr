@@ -285,7 +285,7 @@
     "AddRestriction": "Thêm hạn chế",
     "ChmodFolder": "Thư mục chmod",
     "ChmodFolderHelpText": "Hệ bát phân, được áp dụng trong quá trình nhập / đổi tên cho các thư mục và tệp phương tiện (không có bit thực thi)",
-    "AddImportExclusionHelpText": "Ngăn phim được thêm vào {appName} theo danh sách",
+    "AddListExclusionMovieHelpText": "Ngăn phim được thêm vào {appName} theo danh sách",
     "AddIndexer": "Thêm trình lập chỉ mục",
     "EditMovie": "Chỉnh sửa phim",
     "AddNewMessage": "Thật dễ dàng để thêm phim mới, chỉ cần bắt đầu nhập tên phim bạn muốn thêm",

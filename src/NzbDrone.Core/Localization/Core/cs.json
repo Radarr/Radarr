@@ -213,7 +213,7 @@
     "AddNewMovie": "Přidat nový film",
     "AddNewTmdbIdMessage": "Můžete také vyhledávat pomocí ID TMDb filmu. např. 'tmdb: 71663'",
     "IncludeHealthWarningsHelpText": "Zahrnout zdravotní varování",
-    "AddImportExclusionHelpText": "Zabraňte přidávání filmů do {appName}u pomocí seznamů",
+    "AddListExclusionMovieHelpText": "Zabraňte přidávání filmů do {appName}u pomocí seznamů",
     "ImportHeader": "Chcete-li přidat filmy do {appName}u, importujte existující organizovanou knihovnu",
     "ImportListStatusCheckSingleClientMessage": "Seznamy nejsou k dispozici z důvodu selhání: {importListNames}",
     "ChmodFolderHelpText": "Octal, aplikováno během importu / přejmenování na mediální složky a soubory (bez provádění bitů)",

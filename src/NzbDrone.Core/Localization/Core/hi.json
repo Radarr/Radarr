@@ -628,7 +628,7 @@
     "Deleted": "हटाए गए",
     "DeleteDelayProfile": "डिलीट प्रोफाइल को डिलीट करें",
     "DeleteDownloadClientMessageText": "क्या आप वाकई डाउनलोड क्लाइंट '{0}' को हटाना चाहते हैं?",
-    "AddImportExclusionHelpText": "मूवी को रेडर से सूचियों में जोड़े जाने से रोकें",
+    "AddListExclusionMovieHelpText": "मूवी को रेडर से सूचियों में जोड़े जाने से रोकें",
     "AddMovies": "फिल्में जोड़ें",
     "AddNew": "नया जोड़ें",
     "AddNewMessage": "एक नई फिल्म जोड़ना आसान है, बस उस फिल्म का नाम लिखना शुरू करें जिसे आप जोड़ना चाहते हैं",

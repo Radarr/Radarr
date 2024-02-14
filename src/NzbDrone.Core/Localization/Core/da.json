@@ -387,7 +387,7 @@
     "IncludeCustomFormatWhenRenamingHelpText": "Inkluder i {Custom Formats} omdøbningsformat",
     "Overview": "Oversigt",
     "OverviewOptions": "Oversigtsmuligheder",
-    "AddImportExclusionHelpText": "Undgå, at film føjes til {appName} af lister",
+    "AddListExclusionMovieHelpText": "Undgå, at film føjes til {appName} af lister",
     "ImportListStatusCheckSingleClientMessage": "Lister utilgængelige på grund af fejl: {importListNames}",
     "PortNumber": "Portnummer",
     "UpgradesAllowedHelpText": "Hvis deaktiveret, vil kvalitet ikke vil blive opgraderet",

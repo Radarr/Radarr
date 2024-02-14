@@ -63,7 +63,7 @@
     "CalendarOptions": "Možnosti kalendára",
     "Cancel": "Zrušiť",
     "AcceptConfirmationModal": "Akceptujte potvrdenie Modal",
-    "AddImportExclusionHelpText": "Zabráňte pridávaniu filmov do {appName}u pomocou zoznamov",
+    "AddListExclusionMovieHelpText": "Zabráňte pridávaniu filmov do {appName}u pomocou zoznamov",
     "AddNew": "Pridať nový",
     "AddNewTmdbIdMessage": "Môžete takisto vyhľadávať pomocou TMDb ID filmu. napr. 'tmdb:71663'",
     "AfterManualRefresh": "Po ručnom obnovení",

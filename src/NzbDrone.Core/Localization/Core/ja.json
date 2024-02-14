@@ -401,7 +401,7 @@
     "TagCannotBeDeletedWhileInUse": "使用中は削除できません",
     "Timeleft": "残り時間",
     "TotalFileSize": "合計ファイルサイズ",
-    "AddImportExclusionHelpText": "リストによって映画が{appName}に追加されないようにする",
+    "AddListExclusionMovieHelpText": "リストによって映画が{appName}に追加されないようにする",
     "ImportListStatusCheckAllClientMessage": "障害のため、すべてのリストを利用できません",
     "ImportListStatusCheckSingleClientMessage": "失敗のため利用できないリスト：{importListNames}",
     "UpgradesAllowedHelpText": "無効にされた品質がアップグレードされない場合",

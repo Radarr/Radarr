@@ -390,7 +390,7 @@
     "RootFolderCheckMultipleMessage": "Useita juurikansioita puuttuu: {rootFolderPaths}",
     "SendAnonymousUsageData": "Lähetä nimettömiä käyttötietoja",
     "Search": "Haku",
-    "AddImportExclusionHelpText": "Estä {appName}ia lisäämästä elokuvaa listoilta.",
+    "AddListExclusionMovieHelpText": "Estä {appName}ia lisäämästä elokuvaa listoilta.",
     "ImportListStatusCheckAllClientMessage": "Mitkään listat eivät ole virheiden vuoksi käytettävissä",
     "StartTypingOrSelectAPathBelow": "Aloita kirjoitus tai valitse sijainti alta",
     "StartupDirectory": "Käynnistyskansio",

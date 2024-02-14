@@ -433,7 +433,7 @@
     "Posters": "Veggspjöld",
     "TimeFormat": "Tímasnið",
     "Timeleft": "Tími eftir",
-    "AddImportExclusionHelpText": "Koma í veg fyrir að kvikmyndum verði bætt við {appName} af listum",
+    "AddListExclusionMovieHelpText": "Koma í veg fyrir að kvikmyndum verði bætt við {appName} af listum",
     "ImportListStatusCheckAllClientMessage": "Allir listar eru ekki tiltækir vegna bilana",
     "ImportListStatusCheckSingleClientMessage": "Listar ekki tiltækir vegna bilana: {importListNames}",
     "MovieIsOnImportExclusionList": "Kvikmynd er á lista yfir innflutningsútilokun",

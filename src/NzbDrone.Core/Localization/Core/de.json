@@ -297,7 +297,7 @@
     "UsenetDelayHelpText": "Verzögerung in Minuten, bevor Sie eine Veröffentlichung aus dem Usenet erhalten",
     "WhitelistedHardcodedSubsHelpText": "Hier gesetzte Untertitel Tags werden nciht als hartcodiert erachtet",
     "EnableAutomaticAddMovieHelpText": "Wenn aktiviert werden Filme dieser Liste automatisch hinzugefügt",
-    "AddImportExclusionHelpText": "Automatisches ( wieder- ) hinzufügen zu {appName} durch Listen verhindern",
+    "AddListExclusionMovieHelpText": "Automatisches ( wieder- ) hinzufügen zu {appName} durch Listen verhindern",
     "AgeWhenGrabbed": "Alter (zum Zeitpunkt der Entführung)",
     "AllowHardcodedSubs": "Hartcodierte Untertitel erlauben",
     "AlreadyInYourLibrary": "Bereits in Ihrer Bibliothek",

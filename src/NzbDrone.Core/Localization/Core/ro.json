@@ -506,7 +506,7 @@
     "MovieInfoLanguageHelpText": "Limba pe care {appName} o va folosi pentru informații despre film în interfața de utilizare",
     "MovieIsDownloading": "Se descarcă filmul",
     "MovieIsMonitored": "Filmul este monitorizat",
-    "AddImportExclusionHelpText": "Împiedicați ca filmele să fie adăugate la {appName} pe liste",
+    "AddListExclusionMovieHelpText": "Împiedicați ca filmele să fie adăugate la {appName} pe liste",
     "MovieIsUnmonitored": "Filmul nu este monitorizat",
     "MoviesSelectedInterp": "{0} film(e) selectat(e)",
     "AddingTag": "Se adaugă etichetă",

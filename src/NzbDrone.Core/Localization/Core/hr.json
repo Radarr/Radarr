@@ -9,7 +9,7 @@
     "AddDownloadClient": "Dodaj Klijenta za Preuzimanje",
     "Added": "Dodano",
     "AddExclusion": "Dodaj Iznimku",
-    "AddImportExclusionHelpText": "Spriječi dodavanje ovog filma na {appName} preko listi",
+    "AddListExclusionMovieHelpText": "Spriječi dodavanje ovog filma na {appName} preko listi",
     "AddIndexer": "Dodaj Indexer",
     "AddingTag": "Dodaj oznaku",
     "AddImportListExclusion": "Dodaj na Listu Isključenja",

@@ -402,7 +402,7 @@
     "TimeFormat": "시간 형식",
     "Timeleft": "Timeleft",
     "TotalFileSize": "총 파일 크기",
-    "AddImportExclusionHelpText": "영화가 목록별로 {appName}에 추가되지 않도록 방지",
+    "AddListExclusionMovieHelpText": "영화가 목록별로 {appName}에 추가되지 않도록 방지",
     "ImportListStatusCheckAllClientMessage": "실패로 인해 모든 목록을 사용할 수 없습니다.",
     "ImportListStatusCheckSingleClientMessage": "실패로 인해 사용할 수없는 목록 : {importListNames}",
     "TotalSpace": "총 공간",

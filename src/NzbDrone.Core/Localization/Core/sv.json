@@ -482,7 +482,7 @@
     "Always": "Alltid",
     "AddToDownloadQueue": "Lägg till i nedladdningskö",
     "AddRestriction": "Lägg till restriktion",
-    "AddImportExclusionHelpText": "Förhindra film att läggas till i {appName} från listor",
+    "AddListExclusionMovieHelpText": "Förhindra film att läggas till i {appName} från listor",
     "AddedToDownloadQueue": "Tillagd i nedladdningskö",
     "Unreleased": "Inte tillgänglig",
     "LinkHere": "här",

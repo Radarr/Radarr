@@ -75,7 +75,7 @@
     "Announced": "已公布",
     "ApiKey": "API 金鑰",
     "AddExclusion": "新增列外",
-    "AddImportExclusionHelpText": "防止清單中的電影被添加到 {appName} 中",
+    "AddListExclusionMovieHelpText": "防止清單中的電影被添加到 {appName} 中",
     "AnalyticsEnabledHelpText": "將使用和錯誤資訊匿名傳送至{appName}的伺服器。這些資訊包括您的瀏覽器資訊、使用的{appName} WebUI頁面、錯誤報告，以及作業系統和執行時版本。我們將使用這些資訊來優先處理功能和錯誤修復。",
     "AddQualityProfile": "加入品質設定檔",
     "AllFiles": "全部文件",

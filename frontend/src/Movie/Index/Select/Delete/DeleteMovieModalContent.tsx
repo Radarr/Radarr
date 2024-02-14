@@ -98,7 +98,7 @@ function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
               type={inputTypes.CHECK}
               name="addImportExclusion"
               value={addImportExclusion}
-              helpText={translate('AddImportExclusionHelpText')}
+              helpText={translate('AddListExclusionMovieHelpText')}
               onChange={onDeleteOptionChange}
             />
           </FormGroup>

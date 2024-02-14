@@ -410,7 +410,7 @@
     "PosterSize": "Rozmiar plakatu",
     "TimeFormat": "Format czasu",
     "Timeleft": "Pozostały czas",
-    "AddImportExclusionHelpText": "Zapobiegaj dodawaniu filmu do {appName} przez listy",
+    "AddListExclusionMovieHelpText": "Zapobiegaj dodawaniu filmu do {appName} przez listy",
     "ImportListStatusCheckAllClientMessage": "Wszystkie listy są niedostępne z powodu błędów",
     "ImportListStatusCheckSingleClientMessage": "Listy niedostępne z powodu błędów: {importListNames}",
     "New": "Nowy",

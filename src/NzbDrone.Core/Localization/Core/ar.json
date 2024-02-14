@@ -941,7 +941,7 @@
     "AddImportListExclusion": "إضافة استبعاد قائمة",
     "AddingTag": "مضيفا العلامة",
     "AddIndexer": "أضف مفهرس",
-    "AddImportExclusionHelpText": "منع إضافة الفيلم إلى {appName} بواسطة القوائم",
+    "AddListExclusionMovieHelpText": "منع إضافة الفيلم إلى {appName} بواسطة القوائم",
     "AddExclusion": "أضف استثناء",
     "AddedToDownloadQueue": "تمت الإضافة إلى قائمة انتظار التنزيلات",
     "Added": "مضاف",

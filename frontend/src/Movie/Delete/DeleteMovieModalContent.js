@@ -98,7 +98,7 @@ class DeleteMovieModalContent extends Component {
               type={inputTypes.CHECK}
               name="addImportExclusion"
               value={addImportExclusion}
-              helpText={translate('AddImportExclusionHelpText')}
+              helpText={translate('AddListExclusionMovieHelpText')}
               kind={kinds.DANGER}
               onChange={onDeleteOptionChange}
             />

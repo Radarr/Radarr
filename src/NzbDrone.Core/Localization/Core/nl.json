@@ -303,7 +303,7 @@
     "AuthenticationMethodHelpText": "Gebruikersnaam en wachtwoord nodig voor toegang tot {appName}",
     "Authentication": "Authenticatie",
     "AppDataDirectory": "AppData folder",
-    "AddImportExclusionHelpText": "Voorkom dat film wordt toegevoegd aan {appName} door een lijst",
+    "AddListExclusionMovieHelpText": "Voorkom dat film wordt toegevoegd aan {appName} door een lijst",
     "AgeWhenGrabbed": "Leeftijd (wanneer opgepakt)",
     "AnalyticsEnabledHelpText": "Stuur anonieme gebruiks- en foutinformatie naar de servers van {appName}. Dit omvat informatie over uw browser, welke {appName} WebUI pagina's u gebruikt, foutrapportage en OS en runtime versie. We zullen deze informatie gebruiken om prioriteiten te stellen voor functies en het verhelpen van fouten.",
     "AllowHardcodedSubsHelpText": "Gedetecteerde ingebrande ondertiteling zal automatisch worden gedownload",

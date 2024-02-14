@@ -15,7 +15,7 @@
     "AddMovies": "Film hozzáadása",
     "AddIndexer": "Indexelő hozzáadása",
     "AddingTag": "Címke hozzáadása",
-    "AddImportExclusionHelpText": "Megakadályozza film hozzáadását {appName}-hoz listáról",
+    "AddListExclusionMovieHelpText": "Megakadályozza film hozzáadását {appName}-hoz listáról",
     "AddExclusion": "Kizárás hozzáadása",
     "Activity": "Aktivitás",
     "Error": "Hiba",

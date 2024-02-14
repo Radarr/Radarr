@@ -397,7 +397,7 @@
     "CertificationCountry": "Pays de classification",
     "BackupFolderHelpText": "Les chemins relatifs pointeront sous le repertoire AppData de {appName}",
     "AvailabilityDelayHelpText": "Temps à laisser s’écouler (avant ou après la date de disponibilité) avant de chercher le film",
-    "AddImportExclusionHelpText": "Empêcher {appName} d'ajouter le film automatiquement via une liste",
+    "AddListExclusionMovieHelpText": "Empêcher {appName} d'ajouter le film automatiquement via une liste",
     "ImportExtraFilesMovieHelpText": "Importer les fichiers extra correspondants (sous-titres, .nfo etc.) après avoir importé un fichier film",
     "ImportExtraFiles": "Importer des fichiers supplémentaires",
     "ImportedTo": "Importé vers",

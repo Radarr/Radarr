@@ -10,7 +10,7 @@
     "Added": "Додано",
     "AddedToDownloadQueue": "Додано в чергу на завантаження",
     "AddExclusion": "Додати виняток",
-    "AddImportExclusionHelpText": "Заборонити додавання фільму до {appName} за списками",
+    "AddListExclusionMovieHelpText": "Заборонити додавання фільму до {appName} за списками",
     "AddIndexer": "Додати індексатор",
     "AddingTag": "Додавання тегу",
     "AddImportListExclusion": "Додати винятки списку",

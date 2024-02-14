@@ -370,7 +370,7 @@
     "AllowHardcodedSubsHelpText": "Hardcoded subs que sean detectados serán automáticamente descargados",
     "AllowHardcodedSubs": "Permitir Hardcoded Subs",
     "AgeWhenGrabbed": "Antigüedad (cuando se añadió)",
-    "AddImportExclusionHelpText": "Prevenir que la película sea añadida a {appName} mediante listas",
+    "AddListExclusionMovieHelpText": "Prevenir que la película sea añadida a {appName} mediante listas",
     "AddImportListExclusion": "Agregar Lista de Exclusión",
     "YesCancel": "Sí, Cancelar",
     "WhitelistedSubtitleTags": "Etiquetas de Subtítulos Permitidas",

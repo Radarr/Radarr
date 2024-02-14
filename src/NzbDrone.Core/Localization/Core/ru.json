@@ -38,7 +38,7 @@
     "AddMovie": "Добавить фильм",
     "AddImportListExclusion": "Добавить исключения списка",
     "AddIndexer": "Добавить индексер",
-    "AddImportExclusionHelpText": "Запретить добавлять фильм в {appName} из списков",
+    "AddListExclusionMovieHelpText": "Запретить добавлять фильм в {appName} из списков",
     "AddExclusion": "Добавить исключение",
     "Added": "Добавлено",
     "Actions": "Действия",

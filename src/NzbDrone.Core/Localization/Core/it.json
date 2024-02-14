@@ -338,7 +338,7 @@
     "BranchUpdateMechanism": "Ramo utilizzato dal sistema di aggiornamento esterno",
     "BranchUpdate": "Ramo da usare per aggiornare {appName}",
     "AddingTag": "Aggiungendo etichetta",
-    "AddImportExclusionHelpText": "Impedire che il film venga aggiunto a {appName} dalle liste",
+    "AddListExclusionMovieHelpText": "Impedire che il film venga aggiunto a {appName} dalle liste",
     "SupportedCustomConditions": "{appName} supporta condizioni personalizzate verso le seguenti release.",
     "Proper": "Proper",
     "Posters": "Locandine",

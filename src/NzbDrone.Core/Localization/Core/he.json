@@ -87,7 +87,7 @@
     "MovieTitleHelpText": "כותרת הסרט לאי הכללה (יכולה להיות כל דבר בעל משמעות)",
     "MovieYear": "שנת הסרט",
     "DownloadPropersAndRepacksHelpTextCustomFormat": "השתמש ב'אל תעדיף 'כדי למיין לפי ציון פורמט מותאם אישית על פני Propers / Repacks",
-    "AddImportExclusionHelpText": "מנע מלהוסיף סרט לרדאר על ידי רשימות",
+    "AddListExclusionMovieHelpText": "מנע מלהוסיף סרט לרדאר על ידי רשימות",
     "CustomFormatUnknownCondition": "מצב פורמט מותאם אישית לא ידוע '{0}'",
     "AcceptConfirmationModal": "קבל את מודל האישור",
     "AddNewMessage": "קל להוסיף סרט חדש, פשוט התחל להקליד את שם הסרט שתרצה להוסיף",

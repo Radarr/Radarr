@@ -217,7 +217,7 @@
     "AcceptConfirmationModal": "ยอมรับรูปแบบการยืนยัน",
     "Added": "เพิ่มแล้ว",
     "AddExclusion": "เพิ่มการยกเว้น",
-    "AddImportExclusionHelpText": "ป้องกันไม่ให้เพิ่มภาพยนตร์ไปยัง {appName} ตามรายการ",
+    "AddListExclusionMovieHelpText": "ป้องกันไม่ให้เพิ่มภาพยนตร์ไปยัง {appName} ตามรายการ",
     "ClientPriority": "ลำดับความสำคัญของลูกค้า",
     "ExcludeMovie": "ไม่รวมภาพยนตร์",
     "Failed": "ล้มเหลว",
