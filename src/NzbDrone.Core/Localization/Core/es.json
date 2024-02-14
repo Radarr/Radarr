@@ -1276,5 +1276,6 @@
     "NotificationsEmailSettingsUseEncryptionHelpText": "Si prefiere utilizar el cifrado si está configurado en el servidor, utilizar siempre el cifrado mediante SSL (sólo puerto 465) o StartTLS (cualquier otro puerto) o no utilizar nunca el cifrado",
     "DownloadClientQbittorrentValidationRemovesAtRatioLimitDetail": "{appName} no podrá efectuar el Manejo de Descargas Completadas según lo configurado. Puede arreglar esto en qBittorrent ('Herramientas -> Opciones...' en el menú) cambiando 'Opciones -> BitTorrent -> Límite de ratio ' de 'Eliminarlas' a 'Pausarlas'",
     "ListQualityProfileHelpText": "Los elementos de la lista del Perfil de Calidad se añadirán con",
-    "ListRootFolderHelpText": "Los elementos de la lista de carpetas raíz se añadirán a"
+    "ListRootFolderHelpText": "Los elementos de la lista de carpetas raíz se añadirán a",
+    "BlackholeFolderHelpText": "La carpeta en donde {appName} se almacenaran los {extension} file"
 }
