@@ -1516,5 +1516,6 @@
     "IndexerSettingsRejectBlocklistedTorrentHashesHelpText": "Si un torrent est bloqué par le hachage, il peut ne pas être correctement rejeté pendant le RSS/recherche pour certains indexeurs. L'activation de cette fonction permet de le rejeter après que le torrent a été saisi, mais avant qu'il ne soit envoyé au client.",
     "RemoveQueueItemsRemovalMethodHelpTextWarning": "Supprimer du client de téléchargement\" supprimera les téléchargements et les fichiers du client de téléchargement.",
     "DownloadClientAriaSettingsDirectoryHelpText": "Emplacement facultatif pour les téléchargements, laisser vide pour utiliser l'emplacement par défaut Aria2",
-    "RemoveFromDownloadClientHint": "Supprime le téléchargement et le(s) fichier(s) du client de téléchargement"
+    "RemoveFromDownloadClientHint": "Supprime le téléchargement et le(s) fichier(s) du client de téléchargement",
+    "AddAutoTagError": "Impossible d'ajouter un nouveau tag automatique, veuillez réessayer."
 }
