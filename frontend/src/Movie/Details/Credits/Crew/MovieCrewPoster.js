@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Icon from 'Components/Icon';
@@ -142,10 +143,10 @@ class MovieCrewPoster extends Component {
           </div>
         </div>
 
-        <div className={styles.title}>
+        <div className={classNames(styles.title, 'swiper-no-swiping')}>
           {personName}
         </div>
-        <div className={styles.title}>
+        <div className={classNames(styles.title, 'swiper-no-swiping')}>
           {job}
         </div>
 
