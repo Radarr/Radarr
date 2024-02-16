@@ -18,9 +18,9 @@ export default function getQueueStatusText(queueStatus, queueState) {
           status = titleCase(queueStatus);
           break;
         case 'delay':
+        case 'downloadClientUnavailable':
           status = translate('Pending');
           break;
-        case 'DownloadClientUnavailable':
         case 'warning':
           status = translate('Error');
           break;
