@@ -1003,6 +1003,7 @@
   "NoMinimumForAnyRuntime": "No minimum for any runtime",
   "NoMoveFilesSelf": " No, I'll Move the Files Myself",
   "NoMovieFilesToManage": "No movie files to manage.",
+  "NoMovieReleaseDatesAvailable": "No release dates available on TMDb for this movie.",
   "NoMoviesExist": "No movies found, to get started you'll want to add a new movie or import some existing ones.",
   "NoResultsFound": "No results found",
   "NoTagsHaveBeenAddedYet": "No tags have been added yet",
