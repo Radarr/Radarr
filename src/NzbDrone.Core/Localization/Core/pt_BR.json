@@ -1724,5 +1724,13 @@
     "SupportedAutoTaggingProperties": "{appName} oferece suporte às propriedades a seguir para regras de codificação automática",
     "WantMoreControlAddACustomFormat": "Quer mais controle sobre quais downloads são preferidos? Adicione um [Formato Personalizado](/settings/customformats)",
     "SearchMoviesOnAdd": "Pesquisar Filmes ao Adicionar",
-    "AddListExclusion": "Adicionar Exclusão de Lista"
+    "AddListExclusion": "Adicionar Exclusão de Lista",
+    "ExistsInLibrary": "Existe na Biblioteca",
+    "Lists": "Listas",
+    "Popular": "Popular",
+    "Recommendation": "Recomendação",
+    "Recommended": "Recomendado",
+    "NewNonExcluded": "Novos Não Excluídos",
+    "OnExcludedList": "Ao Ser Excluído da Lista",
+    "Trending": "Em Alta"
 }
