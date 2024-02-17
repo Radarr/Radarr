@@ -162,6 +162,13 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                         trackedDownload.RemoteMovie.Release ??= new ReleaseInfo();
                         trackedDownload.RemoteMovie.Release.IndexerFlags = flags;
                     }
+
+                    if (trackedDownload.RemoteMovie != null &&
+                        int.TryParse(grabbedEvent?.Data?.GetValueOrDefault("indexerId"), out var indexerId))
+                    {
+                        trackedDownload.RemoteMovie.Release ??= new ReleaseInfo();
+                        trackedDownload.RemoteMovie.Release.IndexerId = indexerId;
+                    }
                 }
 
                 // Calculate custom formats

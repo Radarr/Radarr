@@ -21,6 +21,7 @@ namespace NzbDrone.Core.MediaFiles
         public string SceneName { get; set; }
         public string ReleaseGroup { get; set; }
         public IndexerFlags IndexerFlags { get; set; }
+        public int IndexerId { get; set; } = -1;
         public QualityModel Quality { get; set; }
         public List<Language> Languages { get; set; }
         public MediaInfoModel MediaInfo { get; set; }

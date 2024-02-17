@@ -205,6 +205,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("CustomFormatScore", message.MovieInfo.CustomFormatScore.ToString());
             history.Data.Add("Size", message.MovieInfo.Size.ToString());
             history.Data.Add("IndexerFlags", message.ImportedMovie.IndexerFlags.ToString());
+            history.Data.Add("IndexerId", message.ImportedMovie.IndexerId.ToString());
 
             _historyRepository.Insert(history);
         }
@@ -231,6 +232,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("ReleaseGroup", message.MovieFile.ReleaseGroup);
             history.Data.Add("Size", message.MovieFile.Size.ToString());
             history.Data.Add("IndexerFlags", message.MovieFile.IndexerFlags.ToString());
+            history.Data.Add("IndexerId", message.MovieFile.IndexerId.ToString());
 
             _historyRepository.Insert(history);
         }
@@ -259,6 +261,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("ReleaseGroup", message.MovieFile.ReleaseGroup);
             history.Data.Add("Size", message.MovieFile.Size.ToString());
             history.Data.Add("IndexerFlags", message.MovieFile.IndexerFlags.ToString());
+            history.Data.Add("IndexerId", message.MovieFile.IndexerId.ToString());
 
             _historyRepository.Insert(history);
         }

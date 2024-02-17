@@ -42,7 +42,8 @@ namespace NzbDrone.Core.CustomFormats
                 Movie = remoteMovie.Movie,
                 Size = size,
                 Languages = remoteMovie.Languages,
-                IndexerFlags = remoteMovie.Release?.IndexerFlags ?? 0
+                IndexerFlags = remoteMovie.Release?.IndexerFlags ?? 0,
+                IndexerId = remoteMovie.Release?.IndexerId ?? -1
             };
 
             return ParseCustomFormat(input);
@@ -79,6 +80,7 @@ namespace NzbDrone.Core.CustomFormats
                 Movie = movie,
                 Size = blocklist.Size ?? 0,
                 IndexerFlags = blocklist.IndexerFlags,
+                IndexerId = blocklist.IndexerId,
                 Languages = blocklist.Languages
             };
 
@@ -109,6 +111,7 @@ namespace NzbDrone.Core.CustomFormats
                 Movie = movie,
                 Size = size,
                 IndexerFlags = flags,
+                IndexerId = int.TryParse(history.Data.GetValueOrDefault("indexerId"), out var indexerId) ? indexerId : -1,
                 Languages = history.Languages
             };
 
@@ -204,6 +207,7 @@ namespace NzbDrone.Core.CustomFormats
                 Movie = movie,
                 Size = movieFile.Size,
                 IndexerFlags = movieFile.IndexerFlags,
+                IndexerId = movieFile.IndexerId,
                 Languages = movieFile.Languages,
                 Filename = Path.GetFileName(movieFile.RelativePath)
             };

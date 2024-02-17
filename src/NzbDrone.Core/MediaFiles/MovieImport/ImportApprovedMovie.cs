@@ -107,6 +107,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                         {
                             movieFile.IndexerFlags = flags;
                         }
+
+                        if (int.TryParse(grabHistory?.Data.GetValueOrDefault("indexerId"), out var indexerId))
+                        {
+                            movieFile.IndexerId = indexerId;
+                        }
                     }
 
                     bool copyOnly;
