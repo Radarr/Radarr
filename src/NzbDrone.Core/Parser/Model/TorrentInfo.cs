@@ -8,7 +8,6 @@ namespace NzbDrone.Core.Parser.Model
         public string InfoHash { get; set; }
         public int? Seeders { get; set; }
         public int? Peers { get; set; }
-        public bool Freeleech { get; set; }
 
         public static int? GetSeeders(ReleaseInfo release)
         {
