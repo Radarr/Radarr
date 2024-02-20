@@ -161,12 +161,12 @@ class MovieSearchInput extends Component {
       return;
     }
 
-    // If a suggestion is highlighted, go to that movie
-    // otherwise search for a new movie
-    if (highlightedSuggestionIndex) {
-      this.goToMovie(suggestions[highlightedSuggestionIndex]);
-    } else {
+    // If no suggestion is highlighted, search for a new movie
+    // otherwise go to the suggested movie
+    if (highlightedSuggestionIndex == null) {
       this.props.onGoToAddNewMovie(value);
+    } else {
+      this.goToMovie(suggestions[highlightedSuggestionIndex]);
     }
 
     this._autosuggest.input.blur();
