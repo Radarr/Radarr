@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
@@ -54,7 +53,7 @@ namespace Radarr.Api.V3.Indexers
         public int? Seeders { get; set; }
         public int? Leechers { get; set; }
         public DownloadProtocol Protocol { get; set; }
-        public dynamic IndexerFlags { get; set; }
+        public int IndexerFlags { get; set; }
 
         // Sent when queuing an unknown release
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
@@ -78,7 +77,7 @@ namespace Radarr.Api.V3.Indexers
             var parsedMovieInfo = model.RemoteMovie.ParsedMovieInfo;
             var remoteMovie = model.RemoteMovie;
             var torrentInfo = (model.RemoteMovie.Release as TorrentInfo) ?? new TorrentInfo();
-            var indexerFlags = torrentInfo.IndexerFlags.ToString().Split(new[] { ", " }, StringSplitOptions.None).Where(x => x != "0");
+            var indexerFlags = torrentInfo.IndexerFlags;
 
             // TODO: Clean this mess up. don't mix data from multiple classes, use sub-resources instead? (Got a huge Deja Vu, didn't we talk about this already once?)
             return new ReleaseResource
@@ -121,7 +120,7 @@ namespace Radarr.Api.V3.Indexers
                 Seeders = torrentInfo.Seeders,
                 Leechers = (torrentInfo.Peers.HasValue && torrentInfo.Seeders.HasValue) ? (torrentInfo.Peers.Value - torrentInfo.Seeders.Value) : (int?)null,
                 Protocol = releaseInfo.DownloadProtocol,
-                IndexerFlags = indexerFlags
+                IndexerFlags = (int)indexerFlags
             };
         }
 
@@ -136,13 +135,9 @@ namespace Radarr.Api.V3.Indexers
                     MagnetUrl = resource.MagnetUrl,
                     InfoHash = resource.InfoHash,
                     Seeders = resource.Seeders,
-                    Peers = (resource.Seeders.HasValue && resource.Leechers.HasValue) ? (resource.Seeders + resource.Leechers) : null
+                    Peers = (resource.Seeders.HasValue && resource.Leechers.HasValue) ? (resource.Seeders + resource.Leechers) : null,
+                    IndexerFlags = (IndexerFlags)resource.IndexerFlags
                 };
-
-                if (resource.IndexerFlags is JsonElement { ValueKind: JsonValueKind.Number } indexerFlags)
-                {
-                    model.IndexerFlags = (IndexerFlags)indexerFlags.GetInt32();
-                }
             }
             else
             {

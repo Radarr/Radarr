@@ -22,7 +22,7 @@ interface Release {
   customFormats: CustomFormat[];
   customFormatScore: number;
   mappedMovieId?: number;
-  indexerFlags: string[];
+  indexerFlags: number;
   rejections: string[];
   movieRequested: boolean;
   downloadAllowed: boolean;

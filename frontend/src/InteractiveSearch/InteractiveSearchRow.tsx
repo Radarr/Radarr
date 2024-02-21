@@ -12,6 +12,7 @@ import TableRow from 'Components/Table/TableRow';
 import Popover from 'Components/Tooltip/Popover';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import { icons, kinds, tooltipPositions } from 'Helpers/Props';
+import IndexerFlags from 'Movie/IndexerFlags';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguages from 'Movie/MovieLanguages';
 import MovieQuality from 'Movie/MovieQuality';
@@ -130,7 +131,7 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
     customFormatScore,
     customFormats,
     mappedMovieId,
-    indexerFlags = [],
+    indexerFlags = 0,
     rejections = [],
     downloadAllowed,
     isGrabbing = false,
@@ -296,17 +297,11 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
       </TableRowCell>
 
       <TableRowCell className={styles.indexerFlags}>
-        {indexerFlags.length ? (
+        {indexerFlags ? (
           <Popover
             anchor={<Icon name={icons.FLAG} />}
             title={translate('IndexerFlags')}
-            body={
-              <ul>
-                {indexerFlags.map((flag, index) => {
-                  return <li key={index}>{flag}</li>;
-                })}
-              </ul>
-            }
+            body={<IndexerFlags indexerFlags={indexerFlags} />}
             position={tooltipPositions.LEFT}
           />
         ) : null}
