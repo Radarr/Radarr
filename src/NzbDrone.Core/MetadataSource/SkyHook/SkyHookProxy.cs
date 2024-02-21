@@ -236,6 +236,21 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.CleanOriginalTitle = resource.OriginalTitle.CleanMovieTitle();
             movie.Overview = resource.Overview;
 
+            // Modification starts here
+            // Check if OriginalTitle is different from Title and not already in AlternativeTitles
+            if (!string.IsNullOrWhiteSpace(movie.OriginalTitle) && movie.OriginalTitle != movie.Title &&
+                !resource.AlternativeTitles.Any(alt => alt.Title == movie.OriginalTitle))
+            {
+                var originalTitleAlt = new AlternativeTitle
+                {
+                    Title = movie.OriginalTitle,
+                    SourceType = SourceType.TMDB, // Assuming the source is TMDB, adjust if necessary
+                    CleanTitle = movie.OriginalTitle.CleanMovieTitle() // Clean the title if required
+                };
+                movie.AlternativeTitles.Add(originalTitleAlt);
+            }
+            // Modification ends here
+
             movie.AlternativeTitles.AddRange(resource.AlternativeTitles.Select(MapAlternativeTitle));
 
             movie.Translations.AddRange(resource.Translations.Select(MapTranslation));
