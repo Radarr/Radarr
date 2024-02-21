@@ -517,17 +517,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             catch (HttpException ex)
             {
                 _logger.Warn(ex);
-                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with TMDb.", ex, title);
+                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with RadarrAPI.", ex, title);
             }
             catch (WebException ex)
             {
                 _logger.Warn(ex);
-                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with TMDb.", ex, title, ex.Message);
+                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with RadarrAPI.", ex, title, ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.Warn(ex);
-                throw new SkyHookException("Search for '{0}' failed. Invalid response received from TMDb.", ex, title);
+                throw new SkyHookException("Search for '{0}' failed. Invalid response received from RadarrAPI.", ex, title);
             }
         }
 
