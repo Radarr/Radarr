@@ -57,13 +57,21 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("te", "", "tel", "Telugu", Language.Telugu)
                                                            };
 
+        private static readonly Dictionary<string, Language> AlternateIsoCodeMappings = new ()
+        {
+            { "cn", Language.Chinese }
+        };
+
         public static IsoLanguage Find(string isoCode)
         {
             var isoArray = isoCode.Split('-');
-
             var langCode = isoArray[0].ToLower();
 
-            if (langCode.Length == 2)
+            if (AlternateIsoCodeMappings.TryGetValue(isoCode, out var alternateLanguage))
+            {
+                return Get(alternateLanguage);
+            }
+            else if (langCode.Length == 2)
             {
                 // Lookup ISO639-1 code
                 var isoLanguages = All.Where(l => l.TwoLetterCode == langCode).ToList();
@@ -71,7 +79,8 @@ namespace NzbDrone.Core.Parser
                 if (isoArray.Length > 1)
                 {
                     isoLanguages = isoLanguages.Any(l => l.CountryCode == isoArray[1].ToLower()) ?
-                        isoLanguages.Where(l => l.CountryCode == isoArray[1].ToLower()).ToList() : isoLanguages.Where(l => string.IsNullOrEmpty(l.CountryCode)).ToList();
+                        isoLanguages.Where(l => l.CountryCode == isoArray[1].ToLower()).ToList() :
+                        isoLanguages.Where(l => string.IsNullOrEmpty(l.CountryCode)).ToList();
                 }
 
                 return isoLanguages.FirstOrDefault();
