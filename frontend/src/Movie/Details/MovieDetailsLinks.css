@@ -1,9 +1,10 @@
 .links {
+  display: flex;
+  flex-wrap: wrap;
   margin: 0;
 }
 
 .link {
-  display: inline-block;
   white-space: nowrap;
 }
 
