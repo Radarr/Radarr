@@ -1164,5 +1164,6 @@
     "DeleteImportListMessageText": "Tem a certeza de que pretende eliminar a lista '{name}'?",
     "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "O cliente de descarregamento {downloadClientName} está definido para remover descarregamentos concluídos. Isto pode fazer com que as transferências sejam removidas do seu cliente antes de {1} as poder importar.",
     "AppUpdated": "{appName} Atualizado",
-    "AuthenticationRequiredPasswordConfirmationHelpTextWarning": "Confirmar nova senha"
+    "AuthenticationRequiredPasswordConfirmationHelpTextWarning": "Confirmar nova senha",
+    "AddAutoTagError": "Não foi possível adicionar uma nova tag automática. Por favor, tente novamente."
 }
