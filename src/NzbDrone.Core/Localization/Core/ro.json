@@ -288,7 +288,7 @@
     "SupportedListsMoreInfo": "Pentru mai multe informații despre listele de import individuale, faceți clic pe butoanele de informații.",
     "LogLevelTraceHelpTextWarning": "Înregistrarea urmăririi trebuie activată doar temporar",
     "Lowercase": "Minuscule",
-    "MappedNetworkDrivesWindowsService": "Unitățile de rețea mapate nu sunt disponibile atunci când rulează ca serviciu Windows. Vă rugăm să consultați FAQ pentru mai multe informații",
+    "MappedNetworkDrivesWindowsService": "Unitățile de rețea mapate nu sunt disponibile atunci când rulează ca serviciu Windows. Vă rugăm să consultați [FAQ]({url}) pentru mai multe informații",
     "MinutesHundredTwenty": "120 de minute: {0}",
     "MinutesNinety": "90 de minute: {0}",
     "Months": "Luni",

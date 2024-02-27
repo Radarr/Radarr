@@ -662,7 +662,7 @@
     "AddDownloadClientError": "Kon geen nieuwe downloader toevoegen, gelieve opnieuw te proberen.",
     "AddCustomFormatError": "Kon geen nieuw eigen formaat toevoegen, gelieve opnieuw te proberen.",
     "AddConditionError": "Kon geen nieuwe conditie toevoegen, gelieve opnieuw te proberen.",
-    "RegularExpressionsCanBeTested": "Reguliere expressies kunnen [hier] worden getest (http:://regexstorm.net/tester).",
+    "RegularExpressionsCanBeTested": "Reguliere expressies kunnen [hier] worden getest ({url}).",
     "SupportedCustomConditions": "{appName} ondersteunt aangepaste condities tegenover de uitgave eigenschappen hieronder.",
     "SupportedListsMovie": "{appName} ondersteunt elke RSS filmlijst, tevens ook de ander hieronder weergegeven lijsten.",
     "SupportedIndexers": "{appName} ondersteund elke indexeerder die gebruik maakt van de Newznab standaard, tevens ook de ander hieronder weergegeven indexeerders.",

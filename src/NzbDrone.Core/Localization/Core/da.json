@@ -310,7 +310,7 @@
     "RecyclingBinCleanup": "Oprydning af papirkurven",
     "Refresh": "Opdater",
     "RefreshMovie": "Opdater film",
-    "RegularExpressionsCanBeTested": "Regulære udtryk kan testes [her](http://regexstorm.net/tester).",
+    "RegularExpressionsCanBeTested": "Regulære udtryk kan testes [her]({url}).",
     "RejectionCount": "Afvisningstal",
     "RelativePath": "Relativ sti",
     "Released": "Udgivet",

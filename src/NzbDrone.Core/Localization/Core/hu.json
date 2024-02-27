@@ -1337,7 +1337,7 @@
     "RemoveTagsAutomatically": "Címkék automatikus eltávolítása",
     "RestartLater": "Később újraindítom",
     "QualitiesLoadError": "Nem lehet minőségeket betölteni",
-    "RegularExpressionsTutorialLink": "További részletek a reguláris kifejezésekről [itt](https://www.regular-expressions.info/tutorial.html).",
+    "RegularExpressionsTutorialLink": "További részletek a reguláris kifejezésekről [itt]({url}).",
     "PasswordConfirmation": "Jelszó megerősítése",
     "SecretToken": "Titkos token",
     "AddListExclusion": "Listakizárás hozzáadása",

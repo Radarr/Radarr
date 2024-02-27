@@ -409,7 +409,7 @@
     "ReleaseRejected": "Release rifiutata",
     "ReleaseDates": "Date di rilascio",
     "RejectionCount": "Rifiuta il conteggio",
-    "RegularExpressionsCanBeTested": "Le espressioni regolari possono essere testate [qui](http://regexstorm.net/tester).",
+    "RegularExpressionsCanBeTested": "Le espressioni regolari possono essere testate [qui]({url}).",
     "RefreshMovie": "Aggiorna il Film",
     "RefreshInformationAndScanDisk": "Aggiorna le informazioni e scansiona il disco",
     "RecyclingBinCleanup": "Pulizia Cestino",

@@ -711,7 +711,7 @@
     "RefreshLists": "Actualitza llistes",
     "RefreshMonitoredIntervalHelpText": "Amb quina freqüència s'actualitzen les baixades monitorades dels clients de descàrrega, mínim 1 minut",
     "RefreshMovie": "Actualitza pel·lícula",
-    "RegularExpressionsCanBeTested": "Les expressions regulars es poden provar [aquí](http://regexstorm.net/tester).",
+    "RegularExpressionsCanBeTested": "Les expressions regulars es poden provar [aquí]({url}).",
     "RejectionCount": "Recompte de rebuigs",
     "RelativePath": "Camí relatiu",
     "ReleaseBranchCheckOfficialBranchMessage": "La branca {0} no és una branca de llançament de {appName} vàlida, no rebreu actualitzacions",
