@@ -511,8 +511,27 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 request.SuppressHttpError = true;
 
                 var httpResponse = _httpClient.Get<List<MovieResource>>(request);
+                var output = httpResponse.Resource.SelectList(MapSearchResult);
 
-                return httpResponse.Resource.SelectList(MapSearchResult);
+                // if output is zero and format is ttXXXXXXXX, use GetMovieByImdbId
+                if (output.Count == 0 && title.Length == 10 && title.StartsWith("tt"))
+                {
+                        var imdbid = title;
+                        try
+                        {
+                            var movieLookup = GetMovieByImdbId(imdbid);
+                            return new List<Movie>
+                            {
+                                new Movie { MovieMetadata = movieLookup }
+                            };
+                        }
+                        catch (MovieNotFoundException)
+                        {
+                            return new List<Movie>();
+                        }
+                }
+
+                return output;
             }
             catch (HttpException ex)
             {
