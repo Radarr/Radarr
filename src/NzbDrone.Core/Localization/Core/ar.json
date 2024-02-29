@@ -604,7 +604,7 @@
     "RssSyncInterval": "الفاصل الزمني لمزامنة RSS",
     "RssSync": "مزامنة RSS",
     "RssIsNotSupportedWithThisIndexer": "لا يتم دعم RSS مع هذا المفهرس",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RootFolders": "مجلدات الجذر",
     "RootFolderCheckSingleMessage": "مجلد الجذر مفقود: {rootFolderPath}",
     "RootFolderCheckMultipleMessage": "عدة مجلدات جذر مفقودة: {rootFolderPaths}",

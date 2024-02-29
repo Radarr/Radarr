@@ -458,7 +458,7 @@
     "RetentionHelpText": "Само Usenet: Задайте на нула, за да зададете за неограничено задържане",
     "RootFolderCheckSingleMessage": "Липсваща основна папка: {rootFolderPath}",
     "RootFolders": "Коренни папки",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RssIsNotSupportedWithThisIndexer": "RSS не се поддържа с този индексатор",
     "RssSync": "RSS синхронизиране",
     "RssSyncInterval": "RSS интервал за синхронизиране",

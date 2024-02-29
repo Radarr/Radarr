@@ -912,7 +912,7 @@
     "Required": "Obrigatório",
     "RequiredRestrictionHelpText": "A versão deve conter pelo menos um desses termos (não diferencia maiúsculas de minúsculas)",
     "RestartReloadNote": "Nota: o {appName} reiniciará e recarregará automaticamente a IU durante o processo de restauração.",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "Score": "Pontuação",
     "Script": "Script",
     "SearchCutoffUnmet": "Pesquisar Limite não alcançado",

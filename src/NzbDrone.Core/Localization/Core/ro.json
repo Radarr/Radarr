@@ -808,7 +808,7 @@
     "RestartRadarr": "Reporniți {appName}",
     "Retention": "Retenţie",
     "RetentionHelpText": "Numai Usenet: Setați la zero pentru a seta pentru păstrarea nelimitată",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RssIsNotSupportedWithThisIndexer": "RSS nu este suportat de acest indexator",
     "RssSyncInterval": "Interval de sincronizare RSS",
     "RssSyncIntervalHelpTextWarning": "Acest lucru se va aplica tuturor indexatorilor, vă rugăm să urmați regulile stabilite de aceștia",

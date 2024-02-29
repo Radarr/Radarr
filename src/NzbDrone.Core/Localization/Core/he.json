@@ -743,7 +743,7 @@
     "Restrictions": "מגבלות",
     "Retention": "הַחזָקָה",
     "RetentionHelpText": "Usenet בלבד: הגדר לאפס כדי להגדיר לשימור בלתי מוגבל",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RootFolderCheckSingleMessage": "תיקיית שורש חסרה: {rootFolderPath}",
     "RootFolders": "תיקיות שורש",
     "RssIsNotSupportedWithThisIndexer": "RSS אינו נתמך עם אינדקס זה",

@@ -755,7 +755,7 @@
     "Retention": "Zatrzymywanie",
     "RootFolderCheckSingleMessage": "Brak folderu głównego: {rootFolderPath}",
     "RootFolders": "Foldery główne",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RssIsNotSupportedWithThisIndexer": "RSS nie jest obsługiwany przez ten indeksator",
     "RssSync": "Synchronizacja RSS",
     "RssSyncInterval": "Częstotliwość synchronizacji RSS",
