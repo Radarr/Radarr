@@ -745,7 +745,7 @@
     "RetentionHelpText": "Vain Usenet: Aseta nollaan asettamaan rajoittamaton säilytys",
     "RootFolderCheckSingleMessage": "Juurikansio puuttuu: {rootFolderPath}.",
     "RootFolders": "Juurikansiot",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RssIsNotSupportedWithThisIndexer": "RSS-syötettä ei ole käytettävissä tälle tietolähteelle",
     "RssSyncInterval": "RSS-synkronoinnin ajoitus",
     "RssSyncIntervalHelpTextWarning": "Tämä koskee kaikkia tietolähteitä. Noudata niiden asettamia sääntöjä.",

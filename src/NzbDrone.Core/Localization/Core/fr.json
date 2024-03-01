@@ -912,7 +912,7 @@
     "ReplaceWithSpaceDashSpace": "Remplacer par un espace, un tiret puis un espace",
     "Required": "Obligatoire",
     "RestartReloadNote": "Remarque : {appName} redémarrera et rechargera automatiquement l'interface utilisateur pendant le processus de restauration.",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "Score": "Score",
     "Script": "Script",
     "SearchCutoffUnmet": "Limite de recherche non satisfaite",
@@ -1229,7 +1229,7 @@
     "EditIndexerImplementation": "Modifier l'indexeur - {implementationName}",
     "MovieFileDeleted": "Fichier du film supprimé",
     "MovieFileDeletedTooltip": "Fichier du film supprimé",
-    "BlocklistReleaseHelpText": "Empêche {appName} de récupérer automatiquement cette version",
+    "BlocklistReleaseHelpText": "Bloque le téléchargement de cette version par {appName} via RSS ou Recherche automatique",
     "InteractiveImportLoadError": "Impossible de charger les éléments d'importation manuelle",
     "MovieSearchResultsLoadError": "Impossible de charger les résultats de cette recherche de films. Réessayez plus tard",
     "QueueLoadError": "Échec du chargement de la file d'attente",
@@ -1517,5 +1517,6 @@
     "RemoveQueueItemsRemovalMethodHelpTextWarning": "Supprimer du client de téléchargement\" supprimera les téléchargements et les fichiers du client de téléchargement.",
     "DownloadClientAriaSettingsDirectoryHelpText": "Emplacement facultatif pour les téléchargements, laisser vide pour utiliser l'emplacement par défaut Aria2",
     "RemoveFromDownloadClientHint": "Supprime le téléchargement et le(s) fichier(s) du client de téléchargement",
-    "AddAutoTagError": "Impossible d'ajouter un nouveau tag automatique, veuillez réessayer."
+    "AddAutoTagError": "Impossible d'ajouter un nouveau tag automatique, veuillez réessayer.",
+    "AddDelayProfileError": "Impossible d'ajouter un nouveau profil de délai, veuillez réessayer."
 }

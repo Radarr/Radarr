@@ -885,7 +885,7 @@
     "RequiredRestrictionHelpText": "Sürüm, bu terimlerden en az birini içermelidir (büyük / küçük harfe duyarlı değildir)",
     "RescanAfterRefreshMovieHelpText": "Filmi yeniledikten sonra film klasörünü yeniden tarayın",
     "RescanAfterRefreshHelpTextWarning": "{appName}, 'Her Zaman' olarak ayarlanmadığında dosyalardaki değişiklikleri otomatik olarak algılamayacaktır",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RescanMovieFolderAfterRefresh": "Yenilemeden Sonra Film Klasörünü Yeniden Tara",
     "ResetAPIKey": "API Anahtarını Sıfırla",
     "Restart": "Tekrar başlat",

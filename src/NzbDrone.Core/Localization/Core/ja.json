@@ -738,7 +738,7 @@
     "RetentionHelpText": "Usenetのみ：無制限の保持を設定するには、ゼロに設定します",
     "RootFolderCheckSingleMessage": "ルートフォルダがありません：{rootFolderPath}",
     "RootFolders": "ルートフォルダ",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RssIsNotSupportedWithThisIndexer": "RSSはこのインデクサーではサポートされていません",
     "RssSync": "RSS同期",
     "RssSyncInterval": "RSS同期間隔",

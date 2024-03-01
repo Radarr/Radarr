@@ -739,7 +739,7 @@
     "Retention": "Tilbageholdelse",
     "RetentionHelpText": "Kun Usenet: Sæt til nul for at indstille til ubegrænset fastholdelse",
     "RootFolders": "Rodmapper",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RssIsNotSupportedWithThisIndexer": "RSS understøttes ikke med denne indekseringsenhed",
     "RssSync": "RSS-synkronisering",
     "RssSyncInterval": "RSS-synkroniseringsinterval",

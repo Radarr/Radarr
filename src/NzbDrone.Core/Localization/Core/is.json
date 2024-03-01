@@ -767,7 +767,7 @@
     "RetentionHelpText": "Aðeins usenet: stillt á núll til að stilla fyrir ótakmarkaða varðveislu",
     "RootFolderCheckSingleMessage": "Rótarmöppu vantar: {rootFolderPath}",
     "RootFolders": "Rótamöppur",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RssIsNotSupportedWithThisIndexer": "RSS er ekki studd með þessum flokkara",
     "RssSync": "RSS samstilling",
     "RssSyncIntervalHelpTextWarning": "Þetta á við um alla verðtryggjendur, vinsamlegast fylgdu reglunum sem settar eru fram af þeim",

@@ -860,7 +860,7 @@
     "RestartReloadNote": "Obs! {appName} startar automatiskt om och laddar om användargränssnittet under återställningsprocessen.",
     "Retention": "Bibehållande",
     "RetentionHelpText": "Endast Usenet: Ställ in på noll för att ställa in för obegränsad kvarhållning",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RssSyncInterval": "RSS-synkroniseringsintervall",
     "RssSyncIntervalHelpTextWarning": "Detta gäller för alla indexerare, följ reglerna som anges av dem",
     "Score": "Göra",

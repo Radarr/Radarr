@@ -813,7 +813,7 @@
     "RescanAfterRefreshHelpTextWarning": "当没有设置为“总是”时，{appName}将不会自动检测文件的更改",
     "Restrictions": "限制条件",
     "RootFolderCheckMultipleMessage": "多个根目录缺失：{rootFolderPaths}",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RssSyncInterval": "RSS同步间隔",
     "RssSyncIntervalHelpTextWarning": "这将适用于所有搜刮器，请遵循他们所制定的规则",
     "SearchFiltered": "搜索过滤后的",
@@ -1427,5 +1427,6 @@
     "RemoveMultipleFromDownloadClientHint": "从下载客户端删除下载和文件",
     "RemoveQueueItemRemovalMethodHelpTextWarning": "“从下载客户端移除”将从下载客户端移除下载内容和文件。",
     "IndexerSettingsRejectBlocklistedTorrentHashesHelpText": "如果 torrent 的哈希被屏蔽了，某些索引器在使用RSS或者搜索期间可能无法正确拒绝它，启用此功能将允许在抓取 torrent 之后但在将其发送到客户端之前拒绝它。",
-    "CustomFormatsSpecificationRegularExpression": "正则表达式"
+    "CustomFormatsSpecificationRegularExpression": "正则表达式",
+    "AddListExclusion": "新增 列表"
 }

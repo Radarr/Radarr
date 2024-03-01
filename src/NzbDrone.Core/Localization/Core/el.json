@@ -738,7 +738,7 @@
     "RetentionHelpText": "Μόνο Usenet: Ορίστε στο μηδέν για να ορίσετε απεριόριστη διατήρηση",
     "RootFolderCheckSingleMessage": "Λείπει ριζικός φάκελος: {rootFolderPath}",
     "RootFolders": "Φάκελοι ρίζας",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RssIsNotSupportedWithThisIndexer": "Το RSS δεν υποστηρίζεται με αυτό το ευρετήριο",
     "RssSync": "Συγχρονισμός RSS",
     "RssSyncInterval": "Διάστημα συγχρονισμού RSS",

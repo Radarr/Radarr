@@ -746,7 +746,7 @@
     "RetentionHelpText": "Usenet 전용 : 무제한 보존을 설정하려면 0으로 설정하십시오.",
     "RootFolderCheckSingleMessage": "누락 된 루트 폴더 : {rootFolderPath}",
     "RootFolders": "루트 폴더",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RssIsNotSupportedWithThisIndexer": "이 인덱서에서는 RSS가 지원되지 않습니다.",
     "RssSync": "RSS 동기화",
     "RssSyncInterval": "RSS 동기화 간격",

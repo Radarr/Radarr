@@ -789,7 +789,7 @@
     "RssSyncInterval": "Интервал синхронизации RSS",
     "RssSync": "Синхронизация RSS",
     "RssIsNotSupportedWithThisIndexer": "RSS не поддерживается этим индексатором",
-    "RSS": "RSS",
+    "Rss": "RSS",
     "RootFolders": "Корневые папки",
     "RootFolderCheckSingleMessage": "Отсутствует корневая папка: {rootFolderPath}",
     "RootFolderCheckMultipleMessage": "Отсутствуют несколько корневых папок: {rootFolderPaths}",
