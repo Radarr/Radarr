@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             var options = new
             {
                 download_location = settings.DownloadDirectory,
-                move_completed_path = settings.CompletedDirectory
+                move_completed_path = settings.CompletedDirectory,
                 move_completed = !string.IsNullOrEmpty(settings.CompletedDirectory),
                 add_paused = settings.AddPaused,
                 remove_at_ratio = false
@@ -120,7 +120,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             var options = new
             {
                 download_location = settings.DownloadDirectory,
-                move_completed_path = settings.CompletedDirectory
+                move_completed_path = settings.CompletedDirectory,
                 move_completed = !string.IsNullOrEmpty(settings.CompletedDirectory),
                 add_paused = settings.AddPaused,
                 remove_at_ratio = false
