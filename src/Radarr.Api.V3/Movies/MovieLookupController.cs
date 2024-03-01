@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
@@ -67,8 +69,28 @@ namespace Radarr.Api.V3.Movies
         public object Search([FromQuery] string term)
         {
             var searchResults = _searchProxy.SearchForNewMovie(term);
-
+            searchResults = PopulateFromImdbIfEmpty(searchResults, term);
             return MapToResource(searchResults);
+        }
+
+        private List<Movie> PopulateFromImdbIfEmpty(List<Movie> searchResults, string imdbid)
+        {
+            var regex = new Regex(@"^tt\d{7,8}$");
+            if (searchResults.Count == 0 && imdbid.StartsWith("tt") && regex.IsMatch(imdbid))
+            {
+                try
+                {
+                    var movieLookup = _searchProxy.GetMovieByImdbId(imdbid);
+                    var movies = new List<Movie> { new Movie { MovieMetadata = movieLookup } };
+                    return movies;
+                }
+                catch (MovieNotFoundException)
+                {
+                    return new List<Movie>();
+                }
+            }
+
+            return new List<Movie>();
         }
 
         private IEnumerable<MovieResource> MapToResource(IEnumerable<Movie> movies)
