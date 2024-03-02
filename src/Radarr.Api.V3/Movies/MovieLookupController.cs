@@ -90,7 +90,7 @@ namespace Radarr.Api.V3.Movies
                 }
             }
 
-            return new List<Movie>();
+            return searchResults;
         }
 
         private IEnumerable<MovieResource> MapToResource(IEnumerable<Movie> movies)
