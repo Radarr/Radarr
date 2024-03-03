@@ -20,11 +20,12 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
     public class XbmcSettings : IProviderConfig
     {
-        private static readonly XbmcSettingsValidator Validator = new XbmcSettingsValidator();
+        private static readonly XbmcSettingsValidator Validator = new ();
 
         public XbmcSettings()
         {
             Port = 8080;
+            UrlBase = "/jsonrpc";
             DisplayTime = 5;
         }
 
