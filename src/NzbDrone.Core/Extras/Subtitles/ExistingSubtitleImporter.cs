@@ -4,6 +4,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Files;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
@@ -76,11 +77,11 @@ namespace NzbDrone.Core.Extras.Subtitles
                         MovieId = movie.Id,
                         MovieFileId = movie.MovieFileId,
                         RelativePath = movie.Path.GetRelativePath(possibleSubtitleFile),
-                        Language = localMovie.SubtitleInfo.Language,
-                        LanguageTags = localMovie.SubtitleInfo.LanguageTags,
-                        Title = localMovie.SubtitleInfo.Title,
+                        Language = localMovie.SubtitleInfo?.Language ?? Language.Unknown,
+                        LanguageTags = localMovie.SubtitleInfo?.LanguageTags ?? new List<string>(),
+                        Title = localMovie.SubtitleInfo?.Title,
                         Extension = extension,
-                        Copy = localMovie.SubtitleInfo.Copy
+                        Copy = localMovie.SubtitleInfo?.Copy ?? 0
                     };
 
                     subtitleFiles.Add(subtitleFile);
