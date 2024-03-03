@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.Events;
 
@@ -11,6 +12,7 @@ namespace NzbDrone.Core.ImportLists.ImportExclusions
         ImportListExclusion Add(ImportListExclusion importListExclusion);
         List<ImportListExclusion> Add(List<ImportListExclusion> importListExclusions);
         List<ImportListExclusion> All();
+        PagingSpec<ImportListExclusion> Paged(PagingSpec<ImportListExclusion> pagingSpec);
         bool IsMovieExcluded(int tmdbId);
         void Delete(int id);
         void Delete(List<int> ids);
@@ -76,6 +78,11 @@ namespace NzbDrone.Core.ImportLists.ImportExclusions
         public List<ImportListExclusion> All()
         {
             return _repo.All().ToList();
+        }
+
+        public PagingSpec<ImportListExclusion> Paged(PagingSpec<ImportListExclusion> pagingSpec)
+        {
+            return _repo.GetPaged(pagingSpec);
         }
 
         public List<int> AllExcludedTmdbIds()

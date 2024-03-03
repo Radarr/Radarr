@@ -7,7 +7,7 @@ import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import { icons } from 'Helpers/Props';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import translate from 'Utilities/String/translate';
-import ImportListExclusionsConnector from './ImportListExclusions/ImportListExclusionsConnector';
+import ImportListExclusions from './ImportListExclusions/ImportListExclusions';
 import ImportListsConnector from './ImportLists/ImportListsConnector';
 import ManageImportListsModal from './ImportLists/Manage/ManageImportListsModal';
 import ImportListOptions from './Options/ImportListOptions';
@@ -103,7 +103,7 @@ class ImportListSettings extends Component {
             onChildStateChange={this.onChildStateChange}
           />
 
-          <ImportListExclusionsConnector />
+          <ImportListExclusions />
 
           <ManageImportListsModal
             isOpen={isManageImportListsOpen}
