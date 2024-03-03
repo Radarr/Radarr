@@ -14,6 +14,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
         {
             RuleFor(c => c.Host).ValidHost();
             RuleFor(c => c.DisplayTime).GreaterThanOrEqualTo(2);
+            RuleFor(c => c.UrlBase).ValidUrlBase();
         }
     }
 
@@ -65,7 +66,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
         public bool AlwaysUpdate { get; set; }
 
         [JsonIgnore]
-        public string Address => $"{Host.ToUrlHost()}:{Port}";
+        public string Address => $"{Host.ToUrlHost()}:{Port}{UrlBase}";
 
         public NzbDroneValidationResult Validate()
         {
