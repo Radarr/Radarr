@@ -254,15 +254,33 @@ namespace NzbDrone.Core.Notifications
 
         public void Handle(ManualInteractionRequiredEvent message)
         {
+            var movie = message.RemoteMovie.Movie;
+            var mess = "";
+
+            if (movie != null)
+            {
+                mess = GetMessage(movie, message.RemoteMovie.ParsedMovieInfo.Quality);
+            }
+
+            if (mess.IsNullOrWhiteSpace() && message.TrackedDownload.DownloadItem != null)
+            {
+                mess = message.TrackedDownload.DownloadItem.Title;
+            }
+
+            if (mess.IsNullOrWhiteSpace())
+            {
+                return;
+            }
+
             var manualInteractionMessage = new ManualInteractionRequiredMessage
             {
-                Message = GetMessage(message.RemoteMovie.Movie, message.RemoteMovie.ParsedMovieInfo.Quality),
-                Movie = message.RemoteMovie.Movie,
+                Message = mess,
+                Movie = movie,
                 Quality = message.RemoteMovie.ParsedMovieInfo.Quality,
                 RemoteMovie = message.RemoteMovie,
                 TrackedDownload = message.TrackedDownload,
-                DownloadClientInfo = message.TrackedDownload.DownloadItem.DownloadClientInfo,
-                DownloadId = message.TrackedDownload.DownloadItem.DownloadId,
+                DownloadClientInfo = message.TrackedDownload.DownloadItem?.DownloadClientInfo,
+                DownloadId = message.TrackedDownload.DownloadItem?.DownloadId,
                 Release = message.Release
             };
 
