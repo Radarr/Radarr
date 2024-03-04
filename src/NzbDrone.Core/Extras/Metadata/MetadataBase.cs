@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Extras.Metadata
         public abstract MetadataFile FindMetadataFile(Movie movie, string path);
 
         public abstract MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile);
-        public abstract List<ImageFileResult> MovieImages(Movie movie);
+        public abstract List<ImageFileResult> MovieImages(Movie movie, MovieFile movieFile);
 
         public virtual object RequestAction(string action, IDictionary<string, string> query)
         {

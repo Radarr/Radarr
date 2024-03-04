@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
             }
         }
 
-        public override List<ImageFileResult> MovieImages(Movie movie)
+        public override List<ImageFileResult> MovieImages(Movie movie, MovieFile movieFile)
         {
             return new List<ImageFileResult>();
         }
