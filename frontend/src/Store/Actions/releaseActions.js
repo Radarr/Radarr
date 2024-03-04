@@ -218,7 +218,9 @@ export const defaultState = {
 
 export const persistState = [
   'releases.customFilters',
-  'releases.selectedFilterKey'
+  'releases.selectedFilterKey',
+  'releases.sortKey',
+  'releases.sortDirection'
 ];
 
 //
@@ -306,7 +308,16 @@ export const actionHandlers = handleThunks({
 export const reducers = createHandleActions({
 
   [CLEAR_RELEASES]: (state) => {
-    return Object.assign({}, state, defaultState);
+    return Object.assign(
+      {},
+      state,
+      defaultState,
+      {
+        sortDirection: state.sortDirection,
+        sortKey: state.sortKey,
+        selectedFilterKey: state.selectedFilterKey
+      }
+    );
   },
 
   [UPDATE_RELEASE]: (state, { payload }) => {
