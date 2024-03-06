@@ -15,12 +15,12 @@ variables:
   buildName: '$(Build.SourceBranchName).$(radarrVersion)'
   sentryOrg: 'servarr'
   sentryUrl: 'https://sentry.servarr.com'
-  dotnetVersion: '6.0.417'
+  dotnetVersion: '8.0.201'
   nodeVersion: '20.X'
   innoVersion: '6.2.2'
   windowsImage: 'windows-2022'
   linuxImage: 'ubuntu-20.04'
-  macImage: 'macOS-11'
+  macImage: 'macOS-12'
 
 trigger:
   branches:
@@ -96,7 +96,7 @@ stages:
         submodules: true
         fetchDepth: 1
       - task: UseDotNet@2
-        displayName: 'Install .net core'
+        displayName: 'Install .NET core'
         inputs:
           version: $(dotnetVersion)
       - bash: |
@@ -122,27 +122,27 @@ stages:
         artifact: '$(osName)Backend'
         displayName: Publish Backend
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net6.0/win-x64/publish'
+      - publish: '$(testsFolder)/net8.0/win-x64/publish'
         artifact: win-x64-tests
         displayName: Publish win-x64 Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net6.0/linux-x64/publish'
+      - publish: '$(testsFolder)/net8.0/linux-x64/publish'
         artifact: linux-x64-tests
         displayName: Publish linux-x64 Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net6.0/linux-x86/publish'
+      - publish: '$(testsFolder)/net8.0/linux-x86/publish'
         artifact: linux-x86-tests
         displayName: Publish linux-x86 Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net6.0/linux-musl-x64/publish'
+      - publish: '$(testsFolder)/net8.0/linux-musl-x64/publish'
         artifact: linux-musl-x64-tests
         displayName: Publish linux-musl-x64 Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net6.0/freebsd-x64/publish'
+      - publish: '$(testsFolder)/net8.0/freebsd-x64/publish'
         artifact: freebsd-x64-tests
         displayName: Publish freebsd-x64 Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net6.0/osx-x64/publish'
+      - publish: '$(testsFolder)/net8.0/osx-x64/publish'
         artifact: osx-x64-tests
         displayName: Publish osx-x64 Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
@@ -166,10 +166,10 @@ stages:
       pool:
         vmImage: $(imageName)
       steps:
-      - task: NodeTool@0
+      - task: UseNode@1
         displayName: Set Node.js version
         inputs:
-          versionSpec: $(nodeVersion)
+          version: $(nodeVersion)
       - checkout: self
         submodules: true
         fetchDepth: 1
@@ -260,21 +260,21 @@ stages:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).windows-core-x64.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/win-x64/net6.0
+          rootFolderOrFile: $(artifactsFolder)/win-x64/net8.0
       - task: ArchiveFiles@2
         displayName: Create win-x86 zip
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).windows-core-x86.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/win-x86/net6.0
+          rootFolderOrFile: $(artifactsFolder)/win-x86/net8.0
       - task: ArchiveFiles@2
         displayName: Create osx-x64 app
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).osx-app-core-x64.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/osx-x64-app/net6.0
+          rootFolderOrFile: $(artifactsFolder)/osx-x64-app/net8.0
       - task: ArchiveFiles@2
         displayName: Create osx-x64 tar
         inputs:
@@ -282,14 +282,14 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/osx-x64/net6.0
+          rootFolderOrFile: $(artifactsFolder)/osx-x64/net8.0
       - task: ArchiveFiles@2
         displayName: Create osx-arm64 app
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).osx-app-core-arm64.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/osx-arm64-app/net6.0
+          rootFolderOrFile: $(artifactsFolder)/osx-arm64-app/net8.0
       - task: ArchiveFiles@2
         displayName: Create osx-arm64 tar
         inputs:
@@ -297,7 +297,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/osx-arm64/net6.0
+          rootFolderOrFile: $(artifactsFolder)/osx-arm64/net8.0
       - task: ArchiveFiles@2
         displayName: Create linux-x64 tar
         inputs:
@@ -305,7 +305,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-x64/net6.0
+          rootFolderOrFile: $(artifactsFolder)/linux-x64/net8.0
       - task: ArchiveFiles@2
         displayName: Create linux-musl-x64 tar
         inputs:
@@ -313,7 +313,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-musl-x64/net6.0
+          rootFolderOrFile: $(artifactsFolder)/linux-musl-x64/net8.0
       - task: ArchiveFiles@2
         displayName: Create linux-x86 tar
         inputs:
@@ -321,7 +321,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-x86/net6.0
+          rootFolderOrFile: $(artifactsFolder)/linux-x86/net8.0
       - task: ArchiveFiles@2
         displayName: Create linux-arm tar
         inputs:
@@ -329,7 +329,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-arm/net6.0
+          rootFolderOrFile: $(artifactsFolder)/linux-arm/net8.0
       - task: ArchiveFiles@2
         displayName: Create linux-musl-arm tar
         inputs:
@@ -337,7 +337,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-musl-arm/net6.0
+          rootFolderOrFile: $(artifactsFolder)/linux-musl-arm/net8.0
       - task: ArchiveFiles@2
         displayName: Create linux-arm64 tar
         inputs:
@@ -345,7 +345,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-arm64/net6.0
+          rootFolderOrFile: $(artifactsFolder)/linux-arm64/net8.0
       - task: ArchiveFiles@2
         displayName: Create linux-musl-arm64 tar
         inputs:
@@ -353,7 +353,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-musl-arm64/net6.0
+          rootFolderOrFile: $(artifactsFolder)/linux-musl-arm64/net8.0
       - task: ArchiveFiles@2
         displayName: Create freebsd-x64 tar
         inputs:
@@ -361,7 +361,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/freebsd-x64/net6.0
+          rootFolderOrFile: $(artifactsFolder)/freebsd-x64/net8.0
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'Packages'
         displayName: Publish Packages
@@ -448,7 +448,7 @@ stages:
       steps:
       - checkout: none
       - task: UseDotNet@2
-        displayName: 'Install .net core'
+        displayName: 'Install .NET core'
         inputs:
           version: $(dotnetVersion)
         condition: ne(variables['poolName'], 'FreeBSD')
@@ -560,7 +560,7 @@ stages:
         
       steps:
       - task: UseDotNet@2
-        displayName: 'Install .net core'
+        displayName: 'Install .NET core'
         inputs:
           version: $(dotnetVersion)
       - checkout: none
@@ -616,7 +616,7 @@ stages:
         
       steps:
       - task: UseDotNet@2
-        displayName: 'Install .net core'
+        displayName: 'Install .NET core'
         inputs:
           version: $(dotnetVersion)
       - checkout: none
@@ -698,7 +698,7 @@ stages:
         
       steps:
       - task: UseDotNet@2
-        displayName: 'Install .net core'
+        displayName: 'Install .NET core'
         inputs:
           version: $(dotnetVersion)
       - checkout: none
@@ -752,7 +752,7 @@ stages:
 
       steps:
         - task: UseDotNet@2
-          displayName: 'Install .net core'
+          displayName: 'Install .NET core'
           inputs:
             version: $(dotnetVersion)
         - checkout: none
@@ -815,7 +815,7 @@ stages:
 
       steps:
         - task: UseDotNet@2
-          displayName: 'Install .net core'
+          displayName: 'Install .NET core'
           inputs:
             version: $(dotnetVersion)
         - checkout: none
@@ -1008,7 +1008,7 @@ stages:
         
       steps:
       - task: UseDotNet@2
-        displayName: 'Install .net core'
+        displayName: 'Install .NET core'
         inputs:
           version: $(dotnetVersion)
       - checkout: none
@@ -1089,10 +1089,10 @@ stages:
       pool:
         vmImage: $(imageName)
       steps:
-      - task: NodeTool@0
+      - task: UseNode@1
         displayName: Set Node.js version
         inputs:
-          versionSpec: $(nodeVersion)
+          version: $(nodeVersion)
       - checkout: self
         submodules: true
         fetchDepth: 1
@@ -1145,7 +1145,7 @@ stages:
 
       steps:
       - task: UseDotNet@2
-        displayName: 'Install .net core'
+        displayName: 'Install .NET core'
         inputs:
           version: $(dotnetVersion)
       - checkout: self
@@ -1198,7 +1198,7 @@ stages:
 
       steps:
       - task: UseDotNet@2
-        displayName: 'Install .net core'
+        displayName: 'Install .NET core'
         inputs:
           version: $(dotnetVersion)
       - checkout: self # Need history for Sonar analysis
@@ -1220,13 +1220,13 @@ stages:
             sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/CoverageResults/**/coverage.opencover.xml
             sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResult.xml
       - bash: |
-          ./build.sh --backend -f net6.0 -r win-x64
-          TEST_DIR=_tests/net6.0/win-x64/publish/ ./test.sh Windows Unit Coverage
+          ./build.sh --backend -f net8.0 -r win-x64
+          TEST_DIR=_tests/net8.0/win-x64/publish/ ./test.sh Windows Unit Coverage
         displayName: Coverage Unit Tests
       - task: SonarCloudAnalyze@1
         condition: eq(variables['System.PullRequest.IsFork'], 'False')
         displayName: Publish SonarCloud Results
-      - task: reportgenerator@4
+      - task: reportgenerator@5
         displayName: Generate Coverage Report
         inputs:
           reports: '$(Build.SourcesDirectory)/CoverageResults/**/coverage.opencover.xml'
