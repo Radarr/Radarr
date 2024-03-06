@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Notifications.Emby
         {
             try
             {
-                _logger.Debug("Testing connection to MediaBrowser: {0}", settings.Address);
+                _logger.Debug("Testing connection to Emby/Jellyfin : {0}", settings.Address);
 
                 Notify(settings, "Test from Radarr", "Success! MediaBrowser has been successfully configured!");
             }
