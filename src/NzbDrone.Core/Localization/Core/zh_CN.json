@@ -1428,5 +1428,6 @@
     "RemoveQueueItemRemovalMethodHelpTextWarning": "“从下载客户端移除”将从下载客户端移除下载内容和文件。",
     "IndexerSettingsRejectBlocklistedTorrentHashesHelpText": "如果 torrent 的哈希被屏蔽了，某些索引器在使用RSS或者搜索期间可能无法正确拒绝它，启用此功能将允许在抓取 torrent 之后但在将其发送到客户端之前拒绝它。",
     "CustomFormatsSpecificationRegularExpression": "正则表达式",
-    "AddListExclusion": "新增 列表"
+    "AddListExclusion": "新增 列表",
+    "DownloadClientFreeboxAuthenticationError": "Freebox API 身份验证失败。 原因 {errorDescription}"
 }

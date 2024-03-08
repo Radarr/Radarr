@@ -1029,7 +1029,7 @@
     "ChangeCategoryMultipleHint": "İndirme istemcisinden indirmeleri 'İçe Aktarma Sonrası Kategorisi' olarak değiştirir",
     "CollectionShowPostersHelpText": "Koleksiyon öğesi posterlerini göster",
     "CloneCondition": "Klon Durumu",
-    "ApiKeyValidationHealthCheckMessage": "Lütfen API anahtarınızı en az {length} karakter uzunluğunda olacak şekilde güncelleyin. Bunu ayarlar veya yapılandırma dosyası aracılığıyla yapabilirsiniz.",
+    "ApiKeyValidationHealthCheckMessage": "Lütfen API anahtarınızı en az {length} karakter uzunluğunda olacak şekilde güncelleyin. Bunu ayarlar veya yapılandırma dosyası aracılığıyla yapabilirsiniz",
     "AutoRedownloadFailed": "Yeniden İndirme Başarısız",
     "AuthenticationRequiredPasswordConfirmationHelpTextWarning": "Yeni şifreyi onayla",
     "BypassDelayIfAboveCustomFormatScoreMinimumScore": "Minimum Özel Format Puanı",
@@ -1074,6 +1074,6 @@
     "BypassDelayIfAboveCustomFormatScore": "Özel Format Koşullarının Üstündeyse Baypas Et",
     "ChownGroup": "Chown Grubu",
     "AutoTaggingLoadError": "Otomatik etiketleme yüklenemiyor",
-    "ConditionUsingRegularExpressions": "Bu koşul Normal İfadeler kullanılarak eşleşir. `\\^$.|?*+()[{` karakterlerinin özel anlamlara sahip olduğunu ve `\\` ile kaçılması gerektiğini unutmayın.",
+    "ConditionUsingRegularExpressions": "Bu koşul Normal İfadeler kullanılarak eşleşir. `\\^$.|?*+()[{` karakterlerinin özel anlamlara sahip olduğunu ve `\\` ile kaçılması gerektiğini unutmayın",
     "ConnectionLostReconnect": "{appName} otomatik bağlanmayı deneyecek veya aşağıda yeniden yükle seçeneğini işaretleyebilirsiniz."
 }
