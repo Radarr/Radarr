@@ -1232,5 +1232,9 @@
     "AuthenticationMethod": "Способ авторизации",
     "AuthenticationRequiredPasswordHelpTextWarning": "Введите новый пароль",
     "AuthenticationRequiredUsernameHelpTextWarning": "Введите новое имя пользователя",
-    "CustomFormatsSpecificationRegularExpression": "Регулярное выражение"
+    "CustomFormatsSpecificationRegularExpression": "Регулярное выражение",
+    "AddAutoTag": "Добавить автоматический тег",
+    "AddListExclusion": "Добавить исключение из списка",
+    "AddAutoTagError": "Не удалось добавить новый авто тег, пожалуйста повторите попытку.",
+    "AddDelayProfileError": "Не удалось добавить новый профиль задержки. Повторите попытку."
 }

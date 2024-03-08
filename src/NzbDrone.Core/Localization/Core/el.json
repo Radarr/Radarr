@@ -1115,6 +1115,6 @@
     "ApplyTagsHelpTextRemove": "Αφαίρεση: Καταργήστε τις καταχωρημένες ετικέτες",
     "DeleteSelectedImportLists": "Διαγραφή λίστας εισαγωγής",
     "DeleteSelectedIndexers": "Διαγραφή ευρετηρίου",
-    "AddConditionImplementation": "Προσθήκη",
-    "AddConnectionImplementation": "Προσθήκη"
+    "AddConditionImplementation": "Προσθήκη - {implementationName}",
+    "AddConnectionImplementation": "Προσθήκη - {implementationName}"
 }
