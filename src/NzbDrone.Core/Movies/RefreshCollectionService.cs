@@ -6,9 +6,11 @@ using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.ImportLists.ImportExclusions;
 using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Commands;
+using NzbDrone.Core.Movies.Events;
 
 namespace NzbDrone.Core.Movies
 {
@@ -20,6 +22,7 @@ namespace NzbDrone.Core.Movies
         private readonly IMovieMetadataService _movieMetadataService;
         private readonly IAddMovieService _addMovieService;
         private readonly IImportExclusionsService _importExclusionService;
+        private readonly IEventAggregator _eventAggregator;
 
         private readonly Logger _logger;
 
@@ -29,6 +32,7 @@ namespace NzbDrone.Core.Movies
                                         IMovieMetadataService movieMetadataService,
                                         IAddMovieService addMovieService,
                                         IImportExclusionsService importExclusionsService,
+                                        IEventAggregator eventAggregator,
                                         Logger logger)
         {
             _movieInfo = movieInfo;
@@ -37,6 +41,7 @@ namespace NzbDrone.Core.Movies
             _movieMetadataService = movieMetadataService;
             _addMovieService = addMovieService;
             _importExclusionService = importExclusionsService;
+            _eventAggregator = eventAggregator;
             _logger = logger;
         }
 
@@ -179,6 +184,8 @@ namespace NzbDrone.Core.Movies
                     }
                 }
             }
+
+            _eventAggregator.PublishEvent(new CollectionRefreshCompleteEvent());
         }
     }
 }

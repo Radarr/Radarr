@@ -19,7 +19,6 @@ namespace NzbDrone.Core.HealthCheck.Checks
     [CheckOn(typeof(ProviderDeletedEvent<IDownloadClient>))]
     [CheckOn(typeof(ModelEvent<RootFolder>))]
     [CheckOn(typeof(ModelEvent<RemotePathMapping>))]
-
     public class DownloadClientRootFolderCheck : HealthCheckBase, IProvideHealthCheck
     {
         private readonly IProvideDownloadClient _downloadClientProvider;
