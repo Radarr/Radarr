@@ -1705,6 +1705,5 @@
     "RegularExpressionsTutorialLink": "Lisätietoja säännöllisistä lausekkeista löytyy [täältä](https://www.regular-expressions.info/tutorial.html).",
     "ReleaseProfileIndexerHelpText": "Määritä mitä tietolähdettä profiili koskee.",
     "ReleaseProfileTagMovieHelpText": "Julkaisuprofiileja sovelletaan elokuviin, jotka on merkitty ainakin yhdellä vastaavalla tunnisteella. Käytä kaikille elokuville jättämällä tyhjäksi.",
-    "ReleaseProfileIndexerHelpTextWarning": "Tietyn tietolähteen käyttö julkaisuprofiileilla saattaa aiheuttaa julkaisujen kaksoiskappaleiden kaappauksia.",
     "SearchMoviesOnAdd": "Etsi elokuvia kun ne lisätään"
 }

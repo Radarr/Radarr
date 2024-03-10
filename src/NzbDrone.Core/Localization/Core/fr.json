@@ -1602,7 +1602,6 @@
     "TorrentBlackholeSaveMagnetFilesExtensionHelpText": "Extension à utiliser pour les liens magnétiques, la valeur par défaut est '.magnet'",
     "DownloadClientTransmissionSettingsDirectoryHelpText": "Emplacement facultatif pour les téléchargements, laisser vide pour utiliser l'emplacement de transmission par défaut",
     "ReleaseProfileIndexerHelpText": "Spécifier l'indexeur auquel le profil s'applique",
-    "ReleaseProfileIndexerHelpTextWarning": "L'utilisation d'un indexeur spécifique avec des profils de version peut entraîner la saisie de publications en double.",
     "ReleaseProfileTagMovieHelpText": "Les profils de version s'appliquent aux films ayant au moins une étiquette correspondante. Laisser vide pour appliquer à tous les films",
     "Repack": "Repack",
     "RestartRequiredWindowsService": "En fonction de l'utilisateur qui exécute le service {appName}, vous devrez peut-être redémarrer {appName} en tant qu'administrateur une fois avant que le service ne démarre automatiquement.",

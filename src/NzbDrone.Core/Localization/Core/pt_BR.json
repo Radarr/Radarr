@@ -1719,7 +1719,6 @@
     "DeleteReleaseProfile": "Excluir Perfil de Lançamento",
     "MediaInfoFootNote": "MediaInfo Full/AudioLanguages/SubtitleLanguages suporta um sufixo `:EN+DE` permitindo filtrar os idiomas incluídos no nome do arquivo. Use `-DE` para excluir idiomas específicos. Anexar `+` (por exemplo, `:EN+`) resultará em `[EN]`/`[EN+--]`/`[--]` dependendo dos idiomas excluídos. Por exemplo, `{MediaInfo Full:EN+DE}`.",
     "RegularExpressionsTutorialLink": "Mais detalhes sobre expressões regulares podem ser encontrados [aqui](https://www.regular-expressions.info/tutorial.html).",
-    "ReleaseProfileIndexerHelpTextWarning": "Usar um indexador específico com perfis de lançamento pode levar à captura de lançamentos duplicados",
     "RestartRequiredToApplyChanges": "{appName} requer reinicialização para aplicar as alterações. Deseja reiniciar agora?",
     "SupportedAutoTaggingProperties": "{appName} oferece suporte às propriedades a seguir para regras de codificação automática",
     "WantMoreControlAddACustomFormat": "Quer mais controle sobre quais downloads são preferidos? Adicione um [Formato Personalizado](/settings/customformats)",

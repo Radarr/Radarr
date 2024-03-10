@@ -1484,7 +1484,6 @@
     "PendingDownloadClientUnavailable": "Pendiente - El cliente de descarga no está disponible",
     "PreviouslyInstalled": "Previamente instalado",
     "Rejections": "Rechazos",
-    "ReleaseProfileIndexerHelpTextWarning": "Usar un indexador específico con perfiles de lanzamientos puede conllevar que lanzamientos duplicados sean capturados",
     "RestartRequiredToApplyChanges": "{appName} requiere reiniciar para aplicar cambios. ¿Quieres reiniciar ahora?",
     "RestartLater": "Reiniciaré más tarde",
     "OptionalName": "Nombre opcional",
