@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Organizer
         private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly Logger _logger;
 
-        private static readonly Regex TitleRegex = new Regex(@"(?<tag>\{(?:imdb-|edition-))?\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[a-z0-9|+-]+(?<!-)))?(?<suffix>[-} ._)\]]*)\}",
+        private static readonly Regex TitleRegex = new Regex(@"(?<tag>\{(?:imdb-|edition-))?\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[ ,a-z0-9|+-]+(?<![- ])))?(?<suffix>[-} ._)\]]*)\}",
                                                              RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         public static readonly Regex MovieTitleRegex = new Regex(@"(?<token>\{((?:(Movie|Original))(?<separator>[- ._])(Clean)?(Original)?(Title|Filename)(The)?)(?::(?<customFormat>[a-z0-9|-]+))?\})",
@@ -414,7 +414,39 @@ namespace NzbDrone.Core.Organizer
                 customFormats = _formatCalculator.ParseCustomFormat(movieFile, movie);
             }
 
-            tokenHandlers["{Custom Formats}"] = m => string.Join(" ", customFormats.Where(x => x.IncludeCustomFormatWhenRenaming));
+            tokenHandlers["{Custom Formats}"] = m => GetCustomFormatsToken(customFormats, m.CustomFormat);
+            tokenHandlers["{Custom Format}"] = m =>
+            {
+                if (m.CustomFormat.IsNullOrWhiteSpace())
+                {
+                    return string.Empty;
+                }
+
+                return customFormats.FirstOrDefault(x => x.IncludeCustomFormatWhenRenaming && x.Name == m.CustomFormat)?.ToString() ?? string.Empty;
+            };
+        }
+
+        private string GetCustomFormatsToken(List<CustomFormat> customFormats, string filter)
+        {
+            var tokens = customFormats.Where(x => x.IncludeCustomFormatWhenRenaming).ToList();
+
+            var filteredTokens = tokens;
+
+            if (filter.IsNotNullOrWhiteSpace())
+            {
+                if (filter.StartsWith("-"))
+                {
+                    var splitFilter = filter.Substring(1).Split(',');
+                    filteredTokens = tokens.Where(c => !splitFilter.Contains(c.Name)).ToList();
+                }
+                else
+                {
+                    var splitFilter = filter.Split(',');
+                    filteredTokens = tokens.Where(c => splitFilter.Contains(c.Name)).ToList();
+                }
+            }
+
+            return string.Join(" ", filteredTokens);
         }
 
         private string GetLanguagesToken(List<string> mediaInfoLanguages, string filter, bool skipEnglishOnly, bool quoted)
