@@ -76,8 +76,8 @@ namespace NzbDrone.Mono.Test.EnvironmentInfo.VersionAdapters
             var version = Subject.Read();
             version.Should().NotBeNull();
             version.Name.Should().Be("ubuntu");
-            version.Version.Should().Be("14.04");
-            version.FullName.Should().Be("Ubuntu 14.04.5 LTS");
+            version.Version.Should().Be("20.04");
+            version.FullName.Should().Be("Ubuntu 20.04.6 LTS");
         }
     }
 }
