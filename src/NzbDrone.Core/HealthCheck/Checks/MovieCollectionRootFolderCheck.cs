@@ -5,10 +5,12 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Localization;
 using NzbDrone.Core.Movies.Collections;
+using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
+    [CheckOn(typeof(CollectionRefreshCompleteEvent))]
     [CheckOn(typeof(ModelEvent<RootFolder>))]
     public class MovieCollectionRootFolderCheck : HealthCheckBase
     {

@@ -130,7 +130,7 @@
     "Apply": "적용",
     "ChangeHasNotBeenSavedYet": "변경 사항이 아직 저장되지 않았습니다.",
     "Clear": "지우기",
-    "AuthenticationMethodHelpText": "{appName}에 접근하려면 사용자 이름과 암호가 필요합니다.",
+    "AuthenticationMethodHelpText": "{appName}에 접근하려면 사용자 이름과 암호가 필요합니다",
     "AuthForm": "양식 (로그인 페이지)",
     "Automatic": "자동",
     "AutoRedownloadFailedHelpText": "다른 출시를 자동으로 검색하고 다운로드 시도",

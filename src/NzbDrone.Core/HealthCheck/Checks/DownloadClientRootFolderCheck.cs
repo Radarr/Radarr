@@ -19,7 +19,6 @@ namespace NzbDrone.Core.HealthCheck.Checks
     [CheckOn(typeof(ProviderDeletedEvent<IDownloadClient>))]
     [CheckOn(typeof(ModelEvent<RootFolder>))]
     [CheckOn(typeof(ModelEvent<RemotePathMapping>))]
-
     public class DownloadClientRootFolderCheck : HealthCheckBase, IProvideHealthCheck
     {
         private readonly IProvideDownloadClient _downloadClientProvider;
@@ -58,7 +57,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                             _localizationService.GetLocalizedString("DownloadClientCheckDownloadingToRoot", new Dictionary<string, object>
                             {
                                 { "downloadClientName", client.Definition.Name },
-                                { "path", folder.FullPath }
+                                { "rootFolderPath", folder.FullPath }
                             }),
                             "#downloads-in-root-folder");
                     }
