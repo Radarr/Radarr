@@ -5,6 +5,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Commands;
@@ -18,18 +19,21 @@ namespace Radarr.Api.V3.Movies
     {
         private readonly IMovieService _movieService;
         private readonly IMovieTranslationService _movieTranslationService;
+        private readonly IMapCoversToLocal _coverMapper;
         private readonly IConfigService _configService;
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly IUpgradableSpecification _upgradableSpecification;
 
         public MovieEditorController(IMovieService movieService,
             IMovieTranslationService movieTranslationService,
+            IMapCoversToLocal coverMapper,
             IConfigService configService,
             IManageCommandQueue commandQueueManager,
             IUpgradableSpecification upgradableSpecification)
         {
             _movieService = movieService;
             _movieTranslationService = movieTranslationService;
+            _coverMapper = coverMapper;
             _configService = configService;
             _commandQueueManager = commandQueueManager;
             _upgradableSpecification = upgradableSpecification;
@@ -110,7 +114,11 @@ namespace Radarr.Api.V3.Movies
             foreach (var movie in updatedMovies)
             {
                 var translation = GetTranslationFromDict(tdict, movie.MovieMetadata, configLanguage);
-                moviesResources.Add(movie.ToResource(availabilityDelay, translation, _upgradableSpecification));
+                var movieResource = movie.ToResource(availabilityDelay, translation, _upgradableSpecification);
+
+                MapCoversToLocal(movieResource);
+
+                moviesResources.Add(movieResource);
             }
 
             return Accepted(moviesResources);
@@ -145,6 +153,11 @@ namespace Radarr.Api.V3.Movies
             }
 
             return translation;
+        }
+
+        private void MapCoversToLocal(MovieResource movie)
+        {
+            _coverMapper.ConvertToLocalUrls(movie.Id, movie.Images);
         }
     }
 }
