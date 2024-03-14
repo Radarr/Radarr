@@ -36,7 +36,7 @@ function AvailabilitySelectInput(props) {
     values.unshift({
       key: 'noChange',
       value: translate('NoChange'),
-      disabled: true
+      isDisabled: true
     });
   }
 
@@ -44,7 +44,7 @@ function AvailabilitySelectInput(props) {
     values.unshift({
       key: 'mixed',
       value: '(Mixed)',
-      disabled: true
+      isDisabled: true
     });
   }
 
