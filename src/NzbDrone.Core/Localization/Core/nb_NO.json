@@ -281,5 +281,8 @@
     "ConnectionLostReconnect": "{appName} vil forsøke å koble til automatisk, eller du kan klikke oppdater nedenfor.",
     "ConnectionLostToBackend": "{appName} har mistet tilkoblingen til baksystemet og må lastes inn på nytt for å gjenopprette funksjonalitet.",
     "BlocklistReleaseHelpText": "Hindrer {appName} i å automatisk gripe denne utgivelsen igjen",
-    "ReleaseProfiles": "utgivelseprofil"
+    "ReleaseProfiles": "utgivelseprofil",
+    "AddConditionImplementation": "Legg til betingelse - {implementationName}",
+    "AddAutoTagError": "Ikke mulig å legge til ny automatisk tagg, vennligst prøv igjen",
+    "AddConditionError": "Ikke mulig å legge til ny betingelse, vennligst prøv igjen"
 }

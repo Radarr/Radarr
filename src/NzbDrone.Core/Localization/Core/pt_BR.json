@@ -1744,5 +1744,6 @@
     "DownloadClientDelugeSettingsDirectory": "Diretório de Download",
     "DownloadClientDelugeSettingsDirectoryCompleted": "Mover para o Diretório Quando Concluído",
     "DownloadClientDelugeSettingsDirectoryCompletedHelpText": "Local opcional para mover os downloads concluídos, deixe em branco para usar o local padrão do Deluge",
-    "ConnectionSettingsUrlBaseHelpText": "Adiciona um prefixo a URL {connectionName}, como {url}"
+    "ConnectionSettingsUrlBaseHelpText": "Adiciona um prefixo a URL {connectionName}, como {url}",
+    "ReleaseProfileIndexerHelpTextWarning": "Definir um indexador específico em um perfil de lançamento fará com que esse perfil seja aplicado apenas a lançamentos desse indexador."
 }
