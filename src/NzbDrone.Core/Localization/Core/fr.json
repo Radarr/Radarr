@@ -57,7 +57,7 @@
     "AddExclusion": "Ajouter une exclusion",
     "AddNew": "Ajouter",
     "Activity": "Activité",
-    "About": "À propos",
+    "About": "Tagalog",
     "CustomFormatsSettingsSummary": "Paramètres de formats personnalisés",
     "IndexerStatusCheckSingleClientMessage": "Indexeurs indisponibles en raison d'échecs : {indexerNames}",
     "DownloadClientStatusCheckSingleClientMessage": "Clients de Téléchargement indisponibles en raison d'échecs : {downloadClientNames}",
@@ -1744,5 +1744,6 @@
     "ListRootFolderHelpText": "Les éléments de la liste du dossier racine seront ajoutés à la liste des dossiers racine",
     "Lists": "Listes",
     "DownloadClientRTorrentProviderMessage": "rTorrent ne mettra pas les torrents en pause lorsqu'ils répondent aux critères d'ensemencement. {appName} traitera la suppression automatique des torrents en fonction des critères d'ensemencement actuels dans Paramètres->Indexeurs uniquement lorsque l'option Supprimer terminé est activée.  Après l'importation, il définira également {importedView} comme une vue rTorrent, qui peut être utilisée dans les scripts rTorrent pour personnaliser le comportement.",
-    "MediaInfoFootNote": "MediaInfo Full/AudioLanguages/SubtitleLanguages supporte un suffixe `:EN+DE` vous permettant de filtrer les langues incluses dans le nom de fichier. Utilisez `-DE` pour exclure des langues spécifiques. En ajoutant `+` (par exemple `:EN+`), vous obtiendrez `[EN]`/`[EN+--]`/`[--]` en fonction des langues exclues. Par exemple `{MediaInfo Full:EN+DE}`."
+    "MediaInfoFootNote": "MediaInfo Full/AudioLanguages/SubtitleLanguages supporte un suffixe `:EN+DE` vous permettant de filtrer les langues incluses dans le nom de fichier. Utilisez `-DE` pour exclure des langues spécifiques. En ajoutant `+` (par exemple `:EN+`), vous obtiendrez `[EN]`/`[EN+--]`/`[--]` en fonction des langues exclues. Par exemple `{MediaInfo Full:EN+DE}`.",
+    "ReleaseProfileIndexerHelpTextWarning": "L'utilisation d'un indexeur spécifique avec des profils de version peut entraîner la saisie de publications en double."
 }
