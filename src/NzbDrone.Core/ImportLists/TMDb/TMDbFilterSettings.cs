@@ -38,6 +38,18 @@ namespace NzbDrone.Core.ImportLists.TMDb
                 .Matches(@"^\d+([,|]\d+)*$", RegexOptions.IgnoreCase)
                 .When(c => c.ExcludeGenreIds.IsNotNullOrWhiteSpace())
                 .WithMessage("Genre Ids must be comma (,) or pipe (|) separated number ids");
+
+            // CSV of numbers
+            RuleFor(c => c.IncludeCompanyIds)
+                .Matches(@"^\d+([,|]\d+)*$", RegexOptions.IgnoreCase)
+                .When(c => c.IncludeCompanyIds.IsNotNullOrWhiteSpace())
+                .WithMessage("Company Ids must be comma (,) or pipe (|) separated number ids");
+
+            // CSV of numbers
+            RuleFor(c => c.ExcludeCompanyIds)
+                .Matches(@"^\d+([,|]\d+)*$", RegexOptions.IgnoreCase)
+                .When(c => c.ExcludeCompanyIds.IsNotNullOrWhiteSpace())
+                .WithMessage("Company Ids must be comma (,) or pipe (|) separated number ids");
         }
     }
 
@@ -48,8 +60,10 @@ namespace NzbDrone.Core.ImportLists.TMDb
             MinVoteAverage = "5";
             MinVotes = "1";
             LanguageCode = (int)TMDbLanguageCodes.en;
-            ExcludeGenreIds = "";
             IncludeGenreIds = "";
+            ExcludeGenreIds = "";
+            IncludeCompanyIds = "";
+            ExcludeCompanyIds = "";
         }
 
         [FieldDefinition(1, Label = "Minimum Vote Average", HelpText = "Filter movies by votes (0.0-10.0)")]
@@ -67,7 +81,13 @@ namespace NzbDrone.Core.ImportLists.TMDb
         [FieldDefinition(5, Label = "Exclude Genre Ids", HelpText = "Filter movies by TMDb Genre Ids (Comma Separated)")]
         public string ExcludeGenreIds { get; set; }
 
-        [FieldDefinition(6, Label = "Original Language", Type = FieldType.Select, SelectOptions = typeof(TMDbLanguageCodes), HelpText = "Filter by Language")]
+        [FieldDefinition(6, Label = "Include Company Ids", HelpText = "Filter movies by TMDb Company Ids (Comma Separated)")]
+        public string IncludeCompanyIds { get; set; }
+
+        [FieldDefinition(7, Label = "Exclude Company Ids", HelpText = "Filter movies by TMDb Company Ids (Comma Separated)")]
+        public string ExcludeCompanyIds { get; set; }
+
+        [FieldDefinition(8, Label = "Original Language", Type = FieldType.Select, SelectOptions = typeof(TMDbLanguageCodes), HelpText = "Filter by Language")]
         public int LanguageCode { get; set; }
     }
 }
