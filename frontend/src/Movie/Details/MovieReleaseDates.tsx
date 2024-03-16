@@ -9,16 +9,27 @@ import styles from './MovieReleaseDates.css';
 
 interface MovieReleaseDatesProps {
   inCinemas: string;
-  physicalRelease: string;
   digitalRelease: string;
+  physicalRelease: string;
 }
 
 function MovieReleaseDates(props: MovieReleaseDatesProps) {
-  const { inCinemas, physicalRelease, digitalRelease } = props;
+  const { inCinemas, digitalRelease, physicalRelease } = props;
 
   const { showRelativeDates, shortDateFormat, timeFormat } = useSelector(
     createUISettingsSelector()
   );
+
+  if (!inCinemas && !physicalRelease && !digitalRelease) {
+    return (
+      <div>
+        <div className={styles.dateIcon}>
+          <Icon name={icons.MISSING} />
+        </div>
+        {translate('NoReleaseDatesAvailableAtTheMoment')}
+      </div>
+    );
+  }
 
   return (
     <div>
