@@ -36,17 +36,18 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
             var certification = Settings.FilterCriteria.Certification;
             var includeGenreIds = Settings.FilterCriteria.IncludeGenreIds;
             var excludeGenreIds = Settings.FilterCriteria.ExcludeGenreIds;
-            var languageCode = (TMDbLanguageCodes)Settings.FilterCriteria.LanguageCode;
+            var languageCode = Settings.FilterCriteria.LanguageCode;
 
             var todaysDate = DateTime.Now.ToString("yyyy-MM-dd");
             var threeMonthsAgo = DateTime.Parse(todaysDate).AddMonths(-3).ToString("yyyy-MM-dd");
             var threeMonthsFromNow = DateTime.Parse(todaysDate).AddMonths(3).ToString("yyyy-MM-dd");
 
             var requestBuilder = RequestBuilder.Create()
-                                               .SetSegment("api", "3")
-                                               .SetSegment("route", "discover")
-                                               .SetSegment("id", "")
-                                               .SetSegment("secondaryRoute", "movie");
+                .SetSegment("api", "3")
+                .SetSegment("route", "discover")
+                .SetSegment("id", "")
+                .SetSegment("secondaryRoute", "movie")
+                .Accept(HttpAccept.Json);
 
             switch (Settings.TMDbListType)
             {
@@ -92,9 +93,10 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
                 requestBuilder.AddQueryParam("without_genres", excludeGenreIds);
             }
 
-            requestBuilder
-                .AddQueryParam("with_original_language", languageCode)
-                .Accept(HttpAccept.Json);
+            if (languageCode.HasValue)
+            {
+                requestBuilder.AddQueryParam("with_original_language", (TMDbLanguageCodes)languageCode);
+            }
 
             for (var pageNumber = 1; pageNumber <= MaxPages; pageNumber++)
             {
