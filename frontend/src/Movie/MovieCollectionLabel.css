@@ -7,3 +7,7 @@
     color: var(--iconButtonHoverLightColor);
   }
 }
+
+.titleLink {
+  color: inherit;
+}

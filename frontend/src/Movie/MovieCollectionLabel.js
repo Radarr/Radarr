@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Link from 'Components/Link/Link';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
 import styles from './MovieCollectionLabel.css';
 
@@ -18,6 +19,7 @@ class MovieCollectionLabel extends Component {
 
   render() {
     const {
+      tmdbId,
       title,
       monitored,
       onMonitorTogglePress
@@ -31,7 +33,15 @@ class MovieCollectionLabel extends Component {
           size={15}
           onPress={onMonitorTogglePress}
         />
-        {title}
+        <Link
+          to={{
+            pathname: '/collections',
+            state: { navigateToId: tmdbId }
+          }}
+          className={styles.titleLink}
+        >
+          {title}
+        </Link>
       </div>
     );
   }
@@ -40,7 +50,8 @@ class MovieCollectionLabel extends Component {
 MovieCollectionLabel.propTypes = {
   title: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
-  onMonitorTogglePress: PropTypes.func.isRequired
+  onMonitorTogglePress: PropTypes.func.isRequired,
+  tmdbId: PropTypes.number.isRequired
 };
 
 export default MovieCollectionLabel;
