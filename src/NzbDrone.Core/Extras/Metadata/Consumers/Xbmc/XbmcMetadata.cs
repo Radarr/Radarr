@@ -156,13 +156,13 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                     details.Add(new XElement("sorttitle", Parser.Parser.NormalizeTitle(metadataTitle)));
 
-                    if (movie.MovieMetadata.Value.Ratings.Tmdb?.Votes > 0 || movie.MovieMetadata.Value.Ratings.Imdb?.Votes > 0)
+                    if (movie.MovieMetadata.Value.Ratings?.Tmdb?.Votes > 0 || movie.MovieMetadata.Value.Ratings?.Imdb?.Votes > 0 || movie.MovieMetadata.Value.Ratings?.RottenTomatoes?.Value > 0)
                     {
                         var setRating = new XElement("ratings");
 
                         var defaultRatingSet = false;
 
-                        if (movie.MovieMetadata.Value.Ratings.Imdb?.Votes > 0)
+                        if (movie.MovieMetadata.Value.Ratings?.Imdb?.Votes > 0)
                         {
                             var setRateImdb = new XElement("rating", new XAttribute("name", "imdb"), new XAttribute("max", "10"), new XAttribute("default", "true"));
                             setRateImdb.Add(new XElement("value", movie.MovieMetadata.Value.Ratings.Imdb.Value));
@@ -172,18 +172,32 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                             setRating.Add(setRateImdb);
                         }
 
-                        if (movie.MovieMetadata.Value.Ratings.Tmdb?.Votes > 0)
+                        if (movie.MovieMetadata.Value.Ratings?.Tmdb?.Votes > 0)
                         {
-                            var setRatethemoviedb = new XElement("rating", new XAttribute("name", "themoviedb"), new XAttribute("max", "10"));
-                            setRatethemoviedb.Add(new XElement("value", movie.MovieMetadata.Value.Ratings.Tmdb.Value));
-                            setRatethemoviedb.Add(new XElement("votes", movie.MovieMetadata.Value.Ratings.Tmdb.Votes));
+                            var setRateTheMovieDb = new XElement("rating", new XAttribute("name", "themoviedb"), new XAttribute("max", "10"));
+                            setRateTheMovieDb.Add(new XElement("value", movie.MovieMetadata.Value.Ratings.Tmdb.Value));
+                            setRateTheMovieDb.Add(new XElement("votes", movie.MovieMetadata.Value.Ratings.Tmdb.Votes));
 
                             if (!defaultRatingSet)
                             {
-                                setRatethemoviedb.SetAttributeValue("default", "true");
+                                defaultRatingSet = true;
+                                setRateTheMovieDb.SetAttributeValue("default", "true");
                             }
 
-                            setRating.Add(setRatethemoviedb);
+                            setRating.Add(setRateTheMovieDb);
+                        }
+
+                        if (movie.MovieMetadata.Value.Ratings?.RottenTomatoes?.Value > 0)
+                        {
+                            var setRateRottenTomatoes = new XElement("rating", new XAttribute("name", "tomatometerallcritics"), new XAttribute("max", "100"));
+                            setRateRottenTomatoes.Add(new XElement("value", movie.MovieMetadata.Value.Ratings.RottenTomatoes.Value));
+
+                            if (!defaultRatingSet)
+                            {
+                                setRateRottenTomatoes.SetAttributeValue("default", "true");
+                            }
+
+                            setRating.Add(setRateRottenTomatoes);
                         }
 
                         details.Add(setRating);
@@ -192,6 +206,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     if (movie.MovieMetadata.Value.Ratings?.Tmdb?.Votes > 0)
                     {
                         details.Add(new XElement("rating", movie.MovieMetadata.Value.Ratings.Tmdb.Value));
+                    }
+
+                    if (movie.MovieMetadata.Value.Ratings?.RottenTomatoes?.Value > 0)
+                    {
+                        details.Add(new XElement("criticrating", movie.MovieMetadata.Value.Ratings.RottenTomatoes.Value));
                     }
 
                     details.Add(new XElement("userrating"));
