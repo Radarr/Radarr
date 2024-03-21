@@ -155,7 +155,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     {
                         if (localMovie.ScriptImported)
                         {
-                            _existingExtraFiles.ImportExtraFiles(localMovie.Movie, localMovie.PossibleExtraFiles);
+                            _existingExtraFiles.ImportExtraFiles(localMovie.Movie, localMovie.PossibleExtraFiles, true);
 
                             if (localMovie.FileRenamedAfterScriptImport)
                             {
