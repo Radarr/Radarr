@@ -30,16 +30,16 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
                 return localMovie;
             }
 
-            localMovie.SubtitleInfo = CleanSubtitleTitleInfo(localMovie.Movie.MovieFile, path);
+            localMovie.SubtitleInfo = CleanSubtitleTitleInfo(localMovie.Movie.MovieFile, path, localMovie.FileNameBeforeRename);
 
             return localMovie;
         }
 
-        public SubtitleTitleInfo CleanSubtitleTitleInfo(MovieFile movieFile, string path)
+        public SubtitleTitleInfo CleanSubtitleTitleInfo(MovieFile movieFile, string path, string fileNameBeforeRename)
         {
             var subtitleTitleInfo = LanguageParser.ParseSubtitleLanguageInformation(path);
 
-            var movieFileTitle = Path.GetFileNameWithoutExtension(movieFile.RelativePath);
+            var movieFileTitle = Path.GetFileNameWithoutExtension(fileNameBeforeRename ?? movieFile.RelativePath);
             var originalMovieFileTitle = Path.GetFileNameWithoutExtension(movieFile.OriginalFilePath) ?? string.Empty;
 
             if (subtitleTitleInfo.TitleFirst && (movieFileTitle.Contains(subtitleTitleInfo.RawTitle, StringComparison.OrdinalIgnoreCase) || originalMovieFileTitle.Contains(subtitleTitleInfo.RawTitle, StringComparison.OrdinalIgnoreCase)))

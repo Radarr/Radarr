@@ -119,6 +119,11 @@ namespace NzbDrone.Core.MediaFiles
 
             movieFile.RelativePath = movie.Path.GetRelativePath(destinationFilePath);
 
+            if (localMovie is not null)
+            {
+                localMovie.FileNameBeforeRename = movieFile.RelativePath;
+            }
+
             if (localMovie is not null && _scriptImportDecider.TryImport(movieFilePath, destinationFilePath, localMovie, movieFile, mode) is var scriptImportDecision && scriptImportDecision != ScriptImportDecision.DeferMove)
             {
                 if (scriptImportDecision == ScriptImportDecision.RenameRequested)
@@ -126,7 +131,6 @@ namespace NzbDrone.Core.MediaFiles
                     try
                     {
                         MoveMovieFile(movieFile, movie);
-                        localMovie.FileRenamedAfterScriptImport = true;
                     }
                     catch (SameFilenameException)
                     {
