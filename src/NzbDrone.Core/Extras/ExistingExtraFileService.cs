@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Extras
 {
     public interface IExistingExtraFiles
     {
-        List<string> ImportExtraFiles(Movie movie, List<string> possibleExtraFiles, bool keepExistingEntries);
+        List<string> ImportExtraFiles(Movie movie, List<string> possibleExtraFiles, string fileNameBeforeRename);
     }
 
     public class ExistingExtraFileService : IExistingExtraFiles, IHandle<MovieScannedEvent>
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Extras
             _logger = logger;
         }
 
-        public List<string> ImportExtraFiles(Movie movie, List<string> possibleExtraFiles, bool keepExistingEntries)
+        public List<string> ImportExtraFiles(Movie movie, List<string> possibleExtraFiles, string fileNameBeforeRename)
         {
             _logger.Debug("Looking for existing extra files in {0}", movie.Path);
 
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Extras
 
             foreach (var existingExtraFileImporter in _existingExtraFileImporters)
             {
-                var imported = existingExtraFileImporter.ProcessFiles(movie, possibleExtraFiles, importedFiles, keepExistingEntries);
+                var imported = existingExtraFileImporter.ProcessFiles(movie, possibleExtraFiles, importedFiles, fileNameBeforeRename);
 
                 importedFiles.AddRange(imported.Select(f => Path.Combine(movie.Path, f.RelativePath)));
             }
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Extras
         {
             var movie = message.Movie;
             var possibleExtraFiles = message.PossibleExtraFiles;
-            var importedFiles = ImportExtraFiles(movie, possibleExtraFiles, false);
+            var importedFiles = ImportExtraFiles(movie, possibleExtraFiles, null);
 
             _logger.Info("Found {0} possible extra files, imported {1} files.", possibleExtraFiles.Count, importedFiles.Count);
         }
