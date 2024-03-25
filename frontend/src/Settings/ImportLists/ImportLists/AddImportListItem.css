@@ -17,6 +17,8 @@
 }
 
 .name {
+  @add-mixin truncate;
+
   text-align: center;
   font-weight: lighter;
   font-size: 24px;
