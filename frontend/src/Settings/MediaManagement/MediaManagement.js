@@ -76,6 +76,24 @@ const fileDateOptions = [
     get value() {
       return translate('PhysicalReleaseDate');
     }
+  },
+  {
+    key: 'cinemasOrRelease',
+    get value() {
+      return translate('InCinemasOrPhysicalReleaseDate');
+    }
+  },
+  {
+    key: 'oldest',
+    get value() {
+      return translate('OldestDate');
+    }
+  },
+  {
+    key: 'latest',
+    get value() {
+      return translate('LatestDate');
+    }
   }
 ];
 

@@ -70,6 +70,44 @@ namespace NzbDrone.Core.MediaFiles
 
                         return ChangeFileDate(movieFilePath, airDate.Value);
                     }
+
+                case FileDateType.CinemasOrRelease:
+                    {
+                        var finalDate = movie.MovieMetadata.Value.InCinemas ?? movie.MovieMetadata.Value.PhysicalRelease ?? movie.MovieMetadata.Value.DigitalRelease;
+
+                        if (finalDate.HasValue == false)
+                        {
+                            return false;
+                        }
+
+                        return ChangeFileDate(movieFilePath, finalDate.Value);
+                    }
+
+                case FileDateType.Oldest:
+                    {
+                        var oldestDate = new[] { movie.MovieMetadata.Value.InCinemas, movie.MovieMetadata.Value.PhysicalRelease, movie.MovieMetadata.Value.DigitalRelease }
+                            .Where(d => d.HasValue).OrderBy(d => d).FirstOrDefault();
+
+                        if (oldestDate.HasValue == false)
+                        {
+                            return false;
+                        }
+
+                        return ChangeFileDate(movieFilePath, oldestDate.Value);
+                    }
+
+                case FileDateType.Latest:
+                    {
+                        var latestDate = new[] { movie.MovieMetadata.Value.InCinemas, movie.MovieMetadata.Value.PhysicalRelease, movie.MovieMetadata.Value.DigitalRelease }
+                            .Where(d => d.HasValue).OrderBy(d => d).LastOrDefault();
+
+                        if (latestDate.HasValue == false)
+                        {
+                            return false;
+                        }
+
+                        return ChangeFileDate(movieFilePath, latestDate.Value);
+                    }
             }
 
             return false;
