@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Indexers
                 return Task.FromResult<IList<ReleaseInfo>>(Array.Empty<ReleaseInfo>());
             }
 
-            return FetchReleases(g => g.GetRecentRequests(), true);
+            return FetchReleases(g => g.GetRecentRequests(), false, true);
         }
 
         public override Task<IList<ReleaseInfo>> Fetch(MovieSearchCriteria searchCriteria)
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Indexers
                 return Task.FromResult<IList<ReleaseInfo>>(Array.Empty<ReleaseInfo>());
             }
 
-            return FetchReleases(g => g.GetSearchRequests(searchCriteria));
+            return FetchReleases(g => g.GetSearchRequests(searchCriteria), searchCriteria.InteractiveSearch);
         }
 
         protected IndexerPageableRequestChain GetRequestChain(SearchCriteriaBase searchCriteria = null)
@@ -92,11 +92,12 @@ namespace NzbDrone.Core.Indexers
             return new HttpRequest(link);
         }
 
-        protected virtual async Task<IList<ReleaseInfo>> FetchReleases(Func<IIndexerRequestGenerator, IndexerPageableRequestChain> pageableRequestChainSelector, bool isRecent = false)
+        protected virtual async Task<IList<ReleaseInfo>> FetchReleases(Func<IIndexerRequestGenerator, IndexerPageableRequestChain> pageableRequestChainSelector, bool interactiveSearch = false, bool isRecent = false)
         {
             var releases = new List<ReleaseInfo>();
             var url = string.Empty;
             var minimumBackoff = TimeSpan.FromHours(1);
+            var automaticSearchRateLimit = TimeSpan.FromSeconds(30);
 
             try
             {
@@ -127,6 +128,11 @@ namespace NzbDrone.Core.Indexers
                         foreach (var request in pageableRequest)
                         {
                             url = request.Url.FullUri;
+
+                            if (!interactiveSearch && request.HttpRequest.RateLimit < automaticSearchRateLimit)
+                            {
+                                request.HttpRequest.RateLimit = automaticSearchRateLimit;
+                            }
 
                             var page = await FetchPage(request, parser);
 
