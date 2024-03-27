@@ -1,7 +1,7 @@
 <Project>
   <!-- Common to all Radarr Projects -->
   <PropertyGroup>
-    <AnalysisLevel>6.0-all</AnalysisLevel>
+    <AnalysisLevel>8.0-all</AnalysisLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
@@ -101,14 +101,14 @@
 
   <!-- Standard testing packages -->
   <ItemGroup Condition="'$(TestProject)'=='true'">
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
-    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+    <PackageReference Include="NUnit" Version="4.1.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
-    <PackageReference Include="NunitXml.TestLogger" Version="3.0.131" />
+    <PackageReference Include="NunitXml.TestLogger" Version="3.1.20" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TestProject)'=='true' and '$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="coverlet.collector" Version="3.0.4-preview.27.ge7cb7c3b40" />
+  <ItemGroup Condition="'$(TestProject)'=='true' and '$(TargetFramework)'=='net8.0'">
+    <PackageReference Include="coverlet.collector" Version="6.0.1" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(RadarrProject)'=='true' and '$(EnableAnalyzers)'=='false'">
