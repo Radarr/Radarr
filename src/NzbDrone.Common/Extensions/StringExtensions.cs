@@ -12,6 +12,7 @@ namespace NzbDrone.Common.Extensions
     public static class StringExtensions
     {
         private static readonly Regex CamelCaseRegex = new Regex("(?<!^)[A-Z]", RegexOptions.Compiled);
+        private static readonly Regex TrailingDeterminerRegex = new Regex("(, The)$|(, A)$", RegexOptions.Compiled);
 
         public static string NullSafe(this string target)
         {
@@ -227,6 +228,19 @@ namespace NzbDrone.Common.Extensions
             Array.Reverse(array);
 
             return new string(array);
+        }
+
+        // Some files have their determiner (The, A) at the end of the title to help sorting, flip them back to prevent searching errors.
+        public static string SwapTrailingDeterminers(this string input)
+        {
+            var match = TrailingDeterminerRegex.Match(input);
+            if (match.Success)
+            {
+                input = TrailingDeterminerRegex.Replace(input, string.Empty);
+                input = match.Value.Replace(", ", string.Empty) + " " + input;
+            }
+
+            return input;
         }
     }
 }
