@@ -1404,7 +1404,7 @@
     "NotificationsPushcutSettingsNotificationNameHelpText": "Pushcut app 通知页中的通知名称",
     "DownloadClientPriorityHelpText": "下载客户端优先级，从1（最高）到50（最低），默认为1。具有相同优先级的客户端将轮换使用。",
     "IndexerSettingsRejectBlocklistedTorrentHashes": "抓取时舍弃列入黑名单的种子散列值",
-    "ChangeCategory": "改变分类",
+    "ChangeCategory": "修改分类",
     "Menu": "菜单",
     "BlocklistAndSearchMultipleHint": "列入黑名单后开始搜索替代版本",
     "BlocklistOnlyHint": "无需寻找替代版本的黑名单",

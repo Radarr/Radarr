@@ -985,7 +985,7 @@
     "AddConditionImplementation": "Koşul Ekle - {implementationName}",
     "AddConnection": "Bağlantı Ekle",
     "AddIndexerImplementation": "Yeni Dizin Ekle - {implementationName}",
-    "AddConnectionImplementation": "Koşul Ekle - {implementationName}",
+    "AddConnectionImplementation": "Bağlantı Ekle - {implementationName}",
     "EditIndexerImplementation": "Koşul Ekle - {implementationName}",
     "AllTitles": "Tüm Filmler",
     "AddRootFolderError": "Kök klasör eklenemiyor",
