@@ -1551,5 +1551,20 @@
     "ConnectionSettingsUrlBaseHelpText": "Añade un prefijo a la url {connectionName}, como {url}",
     "NotificationsSignalSettingsPasswordHelpText": "Contraseña usada para autenticar solicitudes hacia signal-api",
     "NotificationsValidationUnableToSendTestMessage": "No se pudo enviar un mensaje de prueba: {exceptionMessage}",
-    "NotificationsJoinSettingsDeviceIdsHelpText": "En desuso, usar Nombres de dispositivo en su lugar. Lista separada por coma de los IDs de dispositivo a los que te gustaría enviar notificaciones. Si no se establece, todos los dispositivos recibirán notificaciones."
+    "NotificationsJoinSettingsDeviceIdsHelpText": "En desuso, usar Nombres de dispositivo en su lugar. Lista separada por coma de los IDs de dispositivo a los que te gustaría enviar notificaciones. Si no se establece, todos los dispositivos recibirán notificaciones.",
+    "Destination": "Destino",
+    "DownloadClientFloodSettingsAdditionalTags": "Etiquetas adicionales",
+    "DownloadClientFreeboxSettingsApiUrlHelpText": "Define la URL base de la API Freebox con la versión de la API, p. ej. '{url}', por defecto a '{defaultApiUrl}'",
+    "DownloadClientFreeboxSettingsAppToken": "Token de la app",
+    "DownloadClientFloodSettingsAdditionalTagsHelpText": "Añade propiedades de medios como etiquetas. Los consejos son ejemplos.",
+    "DownloadClientFloodSettingsUrlBaseHelpText": "Añade un prefijo a la API de Flood, como {url}",
+    "DownloadClientFreeboxSettingsApiUrl": "URL de API",
+    "DownloadClientFreeboxSettingsAppId": "ID de la app",
+    "DownloadClientFreeboxSettingsAppIdHelpText": "ID de la app dada cuando se crea acceso a la API de Freebox (esto es 'app_id')",
+    "DownloadClientFloodSettingsTagsHelpText": "Etiquetas iniciales de una descarga. Para ser reconocida, una descarga debe tener todas las etiquetas iniciales. Esto evita conflictos con descargas no relacionadas.",
+    "DownloadClientDownloadStationSettingsDirectoryHelpText": "Carpeta compartida opcional en la que poner las descargas, dejar en blanco para usar la ubicación de la Estación de Descarga predeterminada",
+    "DownloadClientFreeboxSettingsAppTokenHelpText": "Token de la app recuperado cuando se crea acceso a la API de Freebox (esto es 'app_token')",
+    "Directory": "Directorio",
+    "Donate": "Donar",
+    "DownloadClientDelugeSettingsUrlBaseHelpText": "Añade un prefijo al url del json de deluge, vea {url}"
 }
