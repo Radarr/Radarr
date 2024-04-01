@@ -1685,7 +1685,7 @@
   "UnselectAll": "Unselect All",
   "UpdateAll": "Update All",
   "UpdateAutomaticallyHelpText": "Automatically download and install updates. You will still be able to install from System: Updates",
-  "UpdateAvailable": "New update is available",
+  "UpdateAvailable": "New Radarr update is available",
   "UpdateCheckStartupNotWritableMessage": "Cannot install update because startup folder '{startupFolder}' is not writable by the user '{userName}'.",
   "UpdateCheckStartupTranslocationMessage": "Cannot install update because startup folder '{startupFolder}' is in an App Translocation folder.",
   "UpdateCheckUINotWritableMessage": "Cannot install update because UI folder '{uiFolder}' is not writable by the user '{userName}'.",
