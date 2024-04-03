@@ -173,10 +173,16 @@ namespace NzbDrone.Core.MediaFiles
             fileInfoStopwatch.Stop();
             _logger.Trace("Reprocessing existing files complete for: {0} [{1}]", movie, decisionsStopwatch.Elapsed);
 
-            var filesOnDisk = GetNonVideoFiles(movie.Path);
-            var possibleExtraFiles = FilterPaths(movie.Path, filesOnDisk);
-
             RemoveEmptyMovieFolder(movie.Path);
+
+            var possibleExtraFiles = new List<string>();
+
+            if (_diskProvider.FolderExists(movie.Path))
+            {
+                var extraFiles = GetNonVideoFiles(movie.Path);
+                possibleExtraFiles = FilterPaths(movie.Path, extraFiles);
+            }
+
             CompletedScanning(movie, possibleExtraFiles);
         }
 
