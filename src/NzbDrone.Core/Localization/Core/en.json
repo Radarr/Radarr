@@ -725,7 +725,7 @@
   "InCinemasMsg": "Movie is in Cinemas",
   "IncludeCustomFormatWhenRenaming": "Include Custom Format when Renaming",
   "IncludeCustomFormatWhenRenamingHelpText": "Include in {Custom Formats} renaming format",
-  "IncludeHealthWarningsHelpText": "Include Health Warnings",
+  "IncludeHealthWarnings": "Include Health Warnings",
   "IncludeRadarrRecommendations": "Include {appName} Recommendations",
   "IncludeRecommendationsHelpText": "Include {appName} recommended movies in discovery view",
   "IncludeUnmonitored": "Include Unmonitored",
