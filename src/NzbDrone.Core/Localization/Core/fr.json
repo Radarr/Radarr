@@ -527,7 +527,6 @@
     "LoadingMovieCreditsFailed": "Échec du chargement des crédits du film",
     "ImportListSettings": "Paramètres liste",
     "HiddenClickToShow": "Masqué, cliquez pour afficher",
-    "IncludeHealthWarningsHelpText": "Inclure avertissements santé",
     "FocusSearchBox": "Placer le curseur sur la barre de recherche",
     "RequiredHelpText": "Cette condition {implementationName} doit être remplie pour que le format personnalisé s'applique. Dans le cas contraire, une seule correspondance avec {implementationName} suffit.",
     "ProxyBypassFilterHelpText": "Utilisez ',' comme séparateur et '*.' comme caractère générique pour les sous-domaines",

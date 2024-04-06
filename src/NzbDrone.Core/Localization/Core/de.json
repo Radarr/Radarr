@@ -386,7 +386,6 @@
     "ImportMovies": "Filme importieren",
     "IncludeCustomFormatWhenRenaming": "Eigenes Format beim umbennen einfügen",
     "IncludeCustomFormatWhenRenamingHelpText": "In {Custom Formats} umbennenungs Format",
-    "IncludeHealthWarningsHelpText": "Zustandswarnung",
     "IncludeUnmonitored": "Nicht beobachtete einbeziehen",
     "IndexerFlags": "Indexer-Flags",
     "Interval": "Intervall",

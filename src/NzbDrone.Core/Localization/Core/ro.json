@@ -424,7 +424,6 @@
     "CertificationCountry": "Țara certificării",
     "CertificationCountryHelpText": "Selectați Țara pentru certificări de film",
     "HomePage": "Pagina principală",
-    "IncludeHealthWarningsHelpText": "Includeți avertismente de sănătate",
     "InvalidFormat": "Format invalid",
     "LastDuration": "Ultima durată",
     "ListSyncLevelHelpTextWarning": "Fișierele filmelor vor fi șterse definitiv, ceea ce poate duce la ștergerea bibliotecii dvs. dacă listele dvs. sunt goale",
@@ -1081,5 +1080,6 @@
     "AddDownloadClientImplementation": "Adăugați client de descărcare - {implementationName}",
     "AddIndexerImplementation": "Adăugați Indexator - {implementationName}",
     "Umask": "Umask",
-    "AppUpdated": "{appName} actualizat"
+    "AppUpdated": "{appName} actualizat",
+    "CustomFilter": "Filtru personalizat"
 }

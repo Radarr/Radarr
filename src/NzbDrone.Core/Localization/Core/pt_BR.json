@@ -31,7 +31,6 @@
     "IncludeUnmonitored": "Incluir não monitorados",
     "IncludeRecommendationsHelpText": "Incluir filmes recomendados pelo {appName} na exibição de descoberta",
     "IncludeRadarrRecommendations": "Incluir recomendações do {appName}",
-    "IncludeHealthWarningsHelpText": "Incluir avisos de integridade",
     "IncludeCustomFormatWhenRenamingHelpText": "Incluir no formato de renomeação {Custom Formats}",
     "IncludeCustomFormatWhenRenaming": "Incluir formato personalizado ao renomear",
     "InCinemasMsg": "O filme está nos cinemas",
@@ -1745,5 +1744,6 @@
     "DownloadClientDelugeSettingsDirectoryCompleted": "Mover para o Diretório Quando Concluído",
     "DownloadClientDelugeSettingsDirectoryCompletedHelpText": "Local opcional para mover os downloads concluídos, deixe em branco para usar o local padrão do Deluge",
     "ConnectionSettingsUrlBaseHelpText": "Adiciona um prefixo a URL {connectionName}, como {url}",
-    "ReleaseProfileIndexerHelpTextWarning": "Definir um indexador específico em um perfil de lançamento fará com que esse perfil seja aplicado apenas a lançamentos desse indexador."
+    "ReleaseProfileIndexerHelpTextWarning": "Definir um indexador específico em um perfil de lançamento fará com que esse perfil seja aplicado apenas a lançamentos desse indexador.",
+    "IncludeHealthWarnings": "Incluir Alertas de Saúde"
 }

@@ -932,7 +932,6 @@
     "ImportRootPath": "Наведіть {appName} на папку з усіма вашими фільмами, а не на певний фільм. напр. {0}, а не {1}. Крім того, кожен фільм має бути у власній папці в кореневій папці/теці бібліотеки.",
     "ImportTipsMessage": "Кілька порад, щоб забезпечити безперешкодне імпортування:",
     "InCinemasMsg": "Фільм у кінотеатрах",
-    "IncludeHealthWarningsHelpText": "Включайте попередження про здоров’я",
     "IndexerPriority": "Пріоритет індексатора",
     "ImportListStatusCheckAllClientMessage": "Усі списки недоступні через помилки",
     "ImportListStatusCheckSingleClientMessage": "Списки недоступні через помилки: {importListNames}",
@@ -1144,5 +1143,12 @@
     "AuthenticationMethod": "Метод автентифікації",
     "AuthenticationMethodHelpTextWarning": "Виберіть дійсний метод автентифікації",
     "AddReleaseProfile": "Додати профіль релізу",
-    "AddDelayProfileError": "Неможливо додати новий профіль затримки, будь ласка спробуйте ще."
+    "AddDelayProfileError": "Неможливо додати новий профіль затримки, будь ласка спробуйте ще.",
+    "AutomaticUpdatesDisabledDocker": "Автоматичні оновлення не підтримуються безпосередньо під час використання механізму оновлення Docker. Вам потрібно буде оновити зображення контейнера за межами {appName} або скористатися сценарієм",
+    "AuthenticationRequired": "Потрібна Автентифікація",
+    "AuthenticationRequiredWarning": "Щоб запобігти віддаленому доступу без автентифікації, {appName} тепер вимагає ввімкнення автентифікації. За бажанням можна вимкнути автентифікацію з локальних адрес.",
+    "AuthenticationRequiredPasswordHelpTextWarning": "Введіть новий пароль",
+    "AuthenticationRequiredUsernameHelpTextWarning": "Введіть нове ім'я користувача",
+    "AppUpdatedVersion": "{appName} оновлено до версії `{version}`. Щоб отримати останні зміни, потрібно перезавантажити {appName}",
+    "Yes": "Так"
 }
