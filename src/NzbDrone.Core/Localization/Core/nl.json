@@ -475,7 +475,6 @@
     "UpdateAutomaticallyHelpText": "Download en installeer updates automatisch. Je zal nog steeds kunnen installeren vanuit Systeem: Updates",
     "UrlBaseHelpText": "Voor reverse proxy ondersteuning, leeg is standaard",
     "UsenetDelayHelpText": "Vertraging in minuten om te wachten voordat een uitgave wordt opgehaald van Usenet",
-    "IncludeHealthWarningsHelpText": "Voeg Gezondheidswaarschuwingen Toe",
     "IncludeUnmonitored": "Voeg Onbewaakte Toe",
     "ListSyncLevelHelpText": "Films in de bibliotheek zullen afgehandeld worden volgens jouw selectie wanneer ze van je lijst(en) afvallen of er niet in voorkomen",
     "LaunchBrowserHelpText": " Open een web browser en navigeer naar de {appName} startpagina bij het starten van de app.",

@@ -368,7 +368,6 @@
     "IndexerSettings": "Definições do indexador",
     "IndexerFlags": "Sinalizadores do indexador",
     "IncludeUnmonitored": "Incluir não monitorados",
-    "IncludeHealthWarningsHelpText": "Incluir avisos de estado de funcionamento",
     "IncludeCustomFormatWhenRenamingHelpText": "Incluir no formato de renomeação {Custom Formats}",
     "IncludeCustomFormatWhenRenaming": "Incluir formato personalizado ao renomear",
     "ImportMovies": "Importar filmes",

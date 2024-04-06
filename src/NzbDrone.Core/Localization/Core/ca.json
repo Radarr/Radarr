@@ -531,7 +531,6 @@
     "InCinemasMsg": "Estrena de pel·lícula",
     "IncludeCustomFormatWhenRenaming": "Inclou el format personalitzat en canviar el nom",
     "IncludeCustomFormatWhenRenamingHelpText": "Inclou en {Custom Formats} el format de canvi de nom",
-    "IncludeHealthWarningsHelpText": "Inclou advertències de salut",
     "IncludeRecommendationsHelpText": "Inclou les pel·lícules recomanades per {appName} a la vista de descobriment",
     "IndexerJackettAll": "Indexadors que utilitzen el punt final \"tot\" no compatible amb Jackett: {indexerNames}",
     "IndexerLongTermStatusCheckAllClientMessage": "Tots els indexadors no estan disponibles a causa d'errors durant més de 6 hores",

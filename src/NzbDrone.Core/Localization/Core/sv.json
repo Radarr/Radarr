@@ -709,7 +709,6 @@
     "DatabaseMigration": "DB Migration",
     "ImportExtraFiles": "Importera extra filer",
     "ImportExtraFilesMovieHelpText": "Importera matchande extrafiler (undertexter, nfo, etc) efter import av en filmfil",
-    "IncludeHealthWarningsHelpText": "Inkludera hälsovarningar",
     "MovieTitleHelpText": "Filmens titel att utesluta (kan vara något meningsfullt)",
     "MinimumCustomFormatScoreHelpText": "Lägsta möjliga anpassade formatpoäng tillåtet att ladda ner",
     "MovieYearHelpText": "Året för filmen att utesluta",
