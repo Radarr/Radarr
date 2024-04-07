@@ -17,6 +17,7 @@ import IndexerSelectInputConnector from './IndexerSelectInputConnector';
 import KeyValueListInput from './KeyValueListInput';
 import LanguageSelectInputConnector from './LanguageSelectInputConnector';
 import MovieMonitoredSelectInput from './MovieMonitoredSelectInput';
+import MovieTagInput from './MovieTagInput';
 import NumberInput from './NumberInput';
 import OAuthInputConnector from './OAuthInputConnector';
 import PasswordInput from './PasswordInput';
@@ -89,6 +90,10 @@ function getComponent(type) {
 
     case inputTypes.DYNAMIC_SELECT:
       return EnhancedSelectInputConnector;
+
+    case inputTypes.MOVIE_TAG:
+      return MovieTagInput;
+
     case inputTypes.TAG:
       return TagInputConnector;
 
