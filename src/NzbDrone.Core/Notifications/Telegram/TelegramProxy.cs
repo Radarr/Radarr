@@ -53,10 +53,11 @@ namespace NzbDrone.Core.Notifications.Telegram
         {
             try
             {
+                const string brandedTitle = "Radarr - Test Notification";
                 const string title = "Test Notification";
                 const string body = "This is a test message from Radarr";
 
-                SendNotification(title, body, settings);
+                SendNotification(settings.IncludeAppNameInTitle ? brandedTitle : title, body, settings);
             }
             catch (Exception ex)
             {
