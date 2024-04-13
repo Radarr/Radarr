@@ -12,8 +12,8 @@ namespace NzbDrone.Core.Datastore.Migration
             // so System.Text.Json refuses to parse it (even though Newtonsoft allows it)
             var badValue = "[{format:0, allowed:true}]";
             var defaultValue = "[{\"format\":0, \"allowed\":true}]";
-            Alter.Column("FormatItems").OnTable("Profiles").AsString().WithDefaultValue(defaultValue);
 
+            // Alter.Column("FormatItems").OnTable("Profiles").AsString().WithDefaultValue(defaultValue);
             Update.Table("Profiles").Set(new { FormatItems = defaultValue }).Where(new { FormatItems = badValue });
         }
     }
