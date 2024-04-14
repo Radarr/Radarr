@@ -8,7 +8,7 @@ using NzbDrone.Core.ThingiProvider;
 namespace NzbDrone.Core.Notifications
 {
     public abstract class NotificationBase<TSettings> : INotification
-        where TSettings : IProviderConfig, new()
+        where TSettings : NotificationSettingsBase<TSettings>, new()
     {
         protected const string MOVIE_GRABBED_TITLE = "Movie Grabbed";
         protected const string MOVIE_DOWNLOADED_TITLE = "Movie Downloaded";

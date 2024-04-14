@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Notifications.SendGrid
@@ -18,9 +17,9 @@ namespace NzbDrone.Core.Notifications.SendGrid
         }
     }
 
-    public class SendGridSettings : IProviderConfig
+    public class SendGridSettings : NotificationSettingsBase<SendGridSettings>
     {
-        private static readonly SendGridSettingsValidator Validator = new SendGridSettingsValidator();
+        private static readonly SendGridSettingsValidator Validator = new ();
 
         public SendGridSettings()
         {
@@ -39,7 +38,7 @@ namespace NzbDrone.Core.Notifications.SendGrid
         [FieldDefinition(3, Label = "NotificationsEmailSettingsRecipientAddress", Type = FieldType.Tag, Placeholder = "example@email.com,example1@email.com")]
         public IEnumerable<string> Recipients { get; set; }
 
-        public NzbDroneValidationResult Validate()
+        public override NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
         }

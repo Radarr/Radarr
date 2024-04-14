@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Equ;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Languages;
@@ -20,9 +21,9 @@ namespace NzbDrone.Core.Indexers.Nyaa
         }
     }
 
-    public class NyaaSettings : ITorrentIndexerSettings
+    public class NyaaSettings : PropertywiseEquatable<NyaaSettings>, ITorrentIndexerSettings
     {
-        private static readonly NyaaSettingsValidator Validator = new NyaaSettingsValidator();
+        private static readonly NyaaSettingsValidator Validator = new ();
 
         public NyaaSettings()
         {
@@ -43,7 +44,7 @@ namespace NzbDrone.Core.Indexers.Nyaa
         public int MinimumSeeders { get; set; }
 
         [FieldDefinition(3)]
-        public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new ();
 
         [FieldDefinition(4, Type = FieldType.Checkbox, Label = "IndexerSettingsRejectBlocklistedTorrentHashes", HelpText = "IndexerSettingsRejectBlocklistedTorrentHashesHelpText", Advanced = true)]
         public bool RejectBlocklistedTorrentHashesWhileGrabbing { get; set; }

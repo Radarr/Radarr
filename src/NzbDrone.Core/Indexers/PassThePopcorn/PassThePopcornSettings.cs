@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Equ;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Languages;
@@ -20,7 +21,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         }
     }
 
-    public class PassThePopcornSettings : ITorrentIndexerSettings
+    public class PassThePopcornSettings : PropertywiseEquatable<PassThePopcornSettings>, ITorrentIndexerSettings
     {
         private static readonly PassThePopcornSettingsValidator Validator = new ();
 
@@ -45,7 +46,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public int MinimumSeeders { get; set; }
 
         [FieldDefinition(4)]
-        public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new ();
 
         [FieldDefinition(5, Type = FieldType.Checkbox, Label = "IndexerSettingsRejectBlocklistedTorrentHashes", HelpText = "IndexerSettingsRejectBlocklistedTorrentHashesHelpText", Advanced = true)]
         public bool RejectBlocklistedTorrentHashesWhileGrabbing { get; set; }

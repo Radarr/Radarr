@@ -1,6 +1,5 @@
 using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.ImportLists.Plex
@@ -15,9 +14,9 @@ namespace NzbDrone.Core.ImportLists.Plex
         }
     }
 
-    public class PlexListSettings : IProviderConfig
+    public class PlexListSettings : ImportListSettingsBase<PlexListSettings>
     {
-        protected virtual PlexListSettingsValidator Validator => new PlexListSettingsValidator();
+        private static readonly PlexListSettingsValidator Validator = new ();
 
         public PlexListSettings()
         {
@@ -32,7 +31,7 @@ namespace NzbDrone.Core.ImportLists.Plex
         [FieldDefinition(99, Label = "Authenticate with Plex.tv", Type = FieldType.OAuth)]
         public string SignIn { get; set; }
 
-        public NzbDroneValidationResult Validate()
+        public override NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
         }

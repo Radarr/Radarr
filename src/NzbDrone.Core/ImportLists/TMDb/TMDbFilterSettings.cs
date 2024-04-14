@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Equ;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
@@ -53,7 +54,7 @@ namespace NzbDrone.Core.ImportLists.TMDb
         }
     }
 
-    public class TMDbFilterSettings
+    public class TMDbFilterSettings : PropertywiseEquatable<TMDbFilterSettings>
     {
         public TMDbFilterSettings()
         {

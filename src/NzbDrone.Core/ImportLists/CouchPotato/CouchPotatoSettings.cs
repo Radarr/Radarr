@@ -1,6 +1,5 @@
 using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.ImportLists.CouchPotato
@@ -15,9 +14,9 @@ namespace NzbDrone.Core.ImportLists.CouchPotato
         }
     }
 
-    public class CouchPotatoSettings : IProviderConfig
+    public class CouchPotatoSettings : ImportListSettingsBase<CouchPotatoSettings>
     {
-        private static readonly CouchPotatoSettingsValidator Validator = new CouchPotatoSettingsValidator();
+        private static readonly CouchPotatoSettingsValidator Validator = new ();
 
         public CouchPotatoSettings()
         {
@@ -42,7 +41,7 @@ namespace NzbDrone.Core.ImportLists.CouchPotato
         [FieldDefinition(4, Label = "Only Wanted", HelpText = "Only add wanted movies.", Type = FieldType.Checkbox)]
         public bool OnlyActive { get; set; }
 
-        public NzbDroneValidationResult Validate()
+        public override NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
         }

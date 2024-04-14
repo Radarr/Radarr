@@ -2,7 +2,6 @@ using System;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.ImportLists.Trakt
@@ -35,10 +34,10 @@ namespace NzbDrone.Core.ImportLists.Trakt
         }
     }
 
-    public class TraktSettingsBase<TSettings> : IProviderConfig
+    public class TraktSettingsBase<TSettings> : ImportListSettingsBase<TSettings>
         where TSettings : TraktSettingsBase<TSettings>
     {
-        protected virtual AbstractValidator<TSettings> Validator => new TraktSettingsBaseValidator<TSettings>();
+        private static readonly TraktSettingsBaseValidator<TSettings> Validator = new ();
 
         public TraktSettingsBase()
         {
@@ -70,7 +69,7 @@ namespace NzbDrone.Core.ImportLists.Trakt
         [FieldDefinition(99, Label = "Authenticate with Trakt", Type = FieldType.OAuth)]
         public string SignIn { get; set; }
 
-        public NzbDroneValidationResult Validate()
+        public override NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate((TSettings)this));
         }

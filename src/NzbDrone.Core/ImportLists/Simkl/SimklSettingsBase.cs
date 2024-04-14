@@ -2,7 +2,6 @@ using System;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.ImportLists.Simkl
@@ -25,18 +24,17 @@ namespace NzbDrone.Core.ImportLists.Simkl
         }
     }
 
-    public class SimklSettingsBase<TSettings> : IProviderConfig
+    public class SimklSettingsBase<TSettings> : ImportListSettingsBase<TSettings>
         where TSettings : SimklSettingsBase<TSettings>
     {
-        protected virtual AbstractValidator<TSettings> Validator => new SimklSettingsBaseValidator<TSettings>();
+        private static readonly SimklSettingsBaseValidator<TSettings> Validator = new ();
 
         public SimklSettingsBase()
         {
-            BaseUrl = "https://api.simkl.com";
             SignIn = "startOAuth";
         }
 
-        public string BaseUrl { get; set; }
+        public string BaseUrl { get; set; } = "https://api.simkl.com";
 
         [FieldDefinition(0, Label = "Access Token", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
         public string AccessToken { get; set; }
@@ -53,7 +51,7 @@ namespace NzbDrone.Core.ImportLists.Simkl
         [FieldDefinition(99, Label = "Authenticate with Simkl", Type = FieldType.OAuth)]
         public string SignIn { get; set; }
 
-        public NzbDroneValidationResult Validate()
+        public override NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate((TSettings)this));
         }

@@ -6,7 +6,6 @@ using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Notifications;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 using NzbDrone.Test.Common;
 
@@ -15,9 +14,9 @@ namespace NzbDrone.Core.Test.NotificationTests
     [TestFixture]
     public class NotificationBaseFixture : TestBase
     {
-        private class TestSetting : IProviderConfig
+        private class TestSetting : NotificationSettingsBase<TestSetting>
         {
-            public NzbDroneValidationResult Validate()
+            public override NzbDroneValidationResult Validate()
             {
                 return new NzbDroneValidationResult();
             }

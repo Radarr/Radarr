@@ -1,12 +1,12 @@
 using FluentValidation;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.ImportLists.Simkl.User
 {
     public class SimklUserSettingsValidator : SimklSettingsBaseValidator<SimklUserSettings>
     {
         public SimklUserSettingsValidator()
-        : base()
         {
             RuleFor(c => c.ListType).NotNull();
         }
@@ -14,7 +14,7 @@ namespace NzbDrone.Core.ImportLists.Simkl.User
 
     public class SimklUserSettings : SimklSettingsBase<SimklUserSettings>
     {
-        protected override AbstractValidator<SimklUserSettings> Validator => new SimklUserSettingsValidator();
+        private static readonly SimklUserSettingsValidator Validator = new ();
 
         public SimklUserSettings()
         {
@@ -23,5 +23,10 @@ namespace NzbDrone.Core.ImportLists.Simkl.User
 
         [FieldDefinition(1, Label = "List Type", Type = FieldType.Select, SelectOptions = typeof(SimklUserListType), HelpText = "Type of list you're seeking to import from")]
         public int ListType { get; set; }
+
+        public override NzbDroneValidationResult Validate()
+        {
+            return new NzbDroneValidationResult(Validator.Validate(this));
+        }
     }
 }

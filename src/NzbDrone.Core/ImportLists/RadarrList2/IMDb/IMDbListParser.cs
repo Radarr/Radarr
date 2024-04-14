@@ -13,7 +13,6 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
         private readonly IMDbListSettings _settings;
 
         public IMDbListParser(IMDbListSettings settings)
-            : base()
         {
             _settings = settings;
         }

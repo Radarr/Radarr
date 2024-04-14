@@ -1,11 +1,11 @@
 using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.ImportLists.Rss
 {
-    public class RssImportSettingsValidator : AbstractValidator<RssImportBaseSettings>
+    public class RssImportSettingsValidator<TSettings> : AbstractValidator<TSettings>
+        where TSettings : RssImportBaseSettings<TSettings>
     {
         public RssImportSettingsValidator()
         {
@@ -13,16 +13,17 @@ namespace NzbDrone.Core.ImportLists.Rss
         }
     }
 
-    public class RssImportBaseSettings : IProviderConfig
+    public class RssImportBaseSettings<TSettings> : ImportListSettingsBase<TSettings>
+        where TSettings : RssImportBaseSettings<TSettings>
     {
-        private RssImportSettingsValidator Validator => new ();
+        private static readonly RssImportSettingsValidator<TSettings> Validator = new ();
 
         [FieldDefinition(0, Label = "Url", Type = FieldType.Textbox)]
         public virtual string Url { get; set; }
 
-        public virtual NzbDroneValidationResult Validate()
+        public override NzbDroneValidationResult Validate()
         {
-            return new NzbDroneValidationResult(Validator.Validate(this));
+            return new NzbDroneValidationResult(Validator.Validate(this as TSettings));
         }
     }
 }

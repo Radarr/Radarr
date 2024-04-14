@@ -1,12 +1,12 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.ImportLists.TMDb.User
 {
     public class TMDbUserSettingsValidator : TMDbSettingsBaseValidator<TMDbUserSettings>
     {
         public TMDbUserSettingsValidator()
-        : base()
         {
             RuleFor(c => c.ListType).NotEmpty();
             RuleFor(c => c.AccessToken).NotEmpty();
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.User
 
     public class TMDbUserSettings : TMDbSettingsBase<TMDbUserSettings>
     {
-        protected override AbstractValidator<TMDbUserSettings> Validator => new TMDbUserSettingsValidator();
+        private static readonly TMDbUserSettingsValidator Validator = new ();
 
         public TMDbUserSettings()
         {
@@ -36,5 +36,10 @@ namespace NzbDrone.Core.ImportLists.TMDb.User
 
         [FieldDefinition(99, Label = "Authenticate with TMDB", Type = FieldType.OAuth)]
         public string SignIn { get; set; }
+
+        public override NzbDroneValidationResult Validate()
+        {
+            return new NzbDroneValidationResult(Validator.Validate(this));
+        }
     }
 }
