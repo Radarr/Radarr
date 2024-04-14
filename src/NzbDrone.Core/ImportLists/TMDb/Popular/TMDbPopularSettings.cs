@@ -1,12 +1,12 @@
 using FluentValidation;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.ImportLists.TMDb.Popular
 {
     public class TMDbPopularSettingsValidator : TMDbSettingsBaseValidator<TMDbPopularSettings>
     {
         public TMDbPopularSettingsValidator()
-        : base()
         {
             RuleFor(c => c.TMDbListType).NotNull();
 
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
 
     public class TMDbPopularSettings : TMDbSettingsBase<TMDbPopularSettings>
     {
-        protected override AbstractValidator<TMDbPopularSettings> Validator => new TMDbPopularSettingsValidator();
+        private static readonly TMDbPopularSettingsValidator Validator = new ();
 
         public TMDbPopularSettings()
         {
@@ -27,6 +27,11 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
         public int TMDbListType { get; set; }
 
         [FieldDefinition(2)]
-        public TMDbFilterSettings FilterCriteria { get; set; } = new TMDbFilterSettings();
+        public TMDbFilterSettings FilterCriteria { get; set; } = new ();
+
+        public override NzbDroneValidationResult Validate()
+        {
+            return new NzbDroneValidationResult(Validator.Validate(this));
+        }
     }
 }

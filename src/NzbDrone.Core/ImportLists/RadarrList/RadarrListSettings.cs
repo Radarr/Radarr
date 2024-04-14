@@ -1,6 +1,5 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.ImportLists.RadarrList
@@ -13,14 +12,14 @@ namespace NzbDrone.Core.ImportLists.RadarrList
         }
     }
 
-    public class RadarrListSettings : IProviderConfig
+    public class RadarrListSettings : ImportListSettingsBase<RadarrListSettings>
     {
-        private static readonly RadarrSettingsValidator Validator = new RadarrSettingsValidator();
+        private static readonly RadarrSettingsValidator Validator = new ();
 
         [FieldDefinition(0, Label = "List URL", HelpText = "The URL for the movie list")]
         public string Url { get; set; }
 
-        public NzbDroneValidationResult Validate()
+        public override NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
         }

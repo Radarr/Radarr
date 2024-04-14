@@ -1,5 +1,4 @@
 using FluentValidation;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.ImportLists.TMDb
@@ -9,12 +8,12 @@ namespace NzbDrone.Core.ImportLists.TMDb
     {
     }
 
-    public class TMDbSettingsBase<TSettings> : IProviderConfig
+    public class TMDbSettingsBase<TSettings> : ImportListSettingsBase<TSettings>
         where TSettings : TMDbSettingsBase<TSettings>
     {
-        protected virtual AbstractValidator<TSettings> Validator => new TMDbSettingsBaseValidator<TSettings>();
+        private static readonly TMDbSettingsBaseValidator<TSettings> Validator = new ();
 
-        public NzbDroneValidationResult Validate()
+        public override NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate((TSettings)this));
         }

@@ -1,13 +1,13 @@
 using System.Text.RegularExpressions;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.ImportLists.TMDb.Person
 {
     public class TMDbPersonSettingsValidator : TMDbSettingsBaseValidator<TMDbPersonSettings>
     {
         public TMDbPersonSettingsValidator()
-        : base()
         {
             RuleFor(c => c.PersonId).Matches(@"^[1-9][0-9]*$", RegexOptions.IgnoreCase);
 
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.Person
 
     public class TMDbPersonSettings : TMDbSettingsBase<TMDbPersonSettings>
     {
-        protected override AbstractValidator<TMDbPersonSettings> Validator => new TMDbPersonSettingsValidator();
+        private static readonly TMDbPersonSettingsValidator Validator = new ();
 
         public TMDbPersonSettings()
         {
@@ -60,5 +60,10 @@ namespace NzbDrone.Core.ImportLists.TMDb.Person
 
         [FieldDefinition(6, Label = "Person Writing Credits", HelpText = "Select if you want to include Writing credits", Type = FieldType.Checkbox)]
         public bool PersonCastWriting { get; set; }
+
+        public override NzbDroneValidationResult Validate()
+        {
+            return new NzbDroneValidationResult(Validator.Validate(this));
+        }
     }
 }

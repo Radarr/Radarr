@@ -1,12 +1,12 @@
 using FluentValidation;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.ImportLists.Trakt.User
 {
     public class TraktUserSettingsValidator : TraktSettingsBaseValidator<TraktUserSettings>
     {
         public TraktUserSettingsValidator()
-        : base()
         {
             RuleFor(c => c.TraktListType).NotNull();
             RuleFor(c => c.AuthUser).NotEmpty();
@@ -15,7 +15,7 @@ namespace NzbDrone.Core.ImportLists.Trakt.User
 
     public class TraktUserSettings : TraktSettingsBase<TraktUserSettings>
     {
-        protected override AbstractValidator<TraktUserSettings> Validator => new TraktUserSettingsValidator();
+        private static readonly TraktUserSettingsValidator Validator = new ();
 
         public TraktUserSettings()
         {
@@ -27,5 +27,10 @@ namespace NzbDrone.Core.ImportLists.Trakt.User
 
         [FieldDefinition(2, Label = "Username", HelpText = "Username for the List to import from (empty to use Auth User)")]
         public string Username { get; set; }
+
+        public override NzbDroneValidationResult Validate()
+        {
+            return new NzbDroneValidationResult(Validator.Validate(this));
+        }
     }
 }

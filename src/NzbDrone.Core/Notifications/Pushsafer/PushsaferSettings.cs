@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Notifications.Pushsafer
@@ -23,7 +22,7 @@ namespace NzbDrone.Core.Notifications.Pushsafer
         }
     }
 
-    public class PushsaferSettings : IProviderConfig
+    public class PushsaferSettings : NotificationSettingsBase<PushsaferSettings>
     {
         private static readonly PushsaferSettingsValidator Validator = new ();
 
@@ -60,7 +59,7 @@ namespace NzbDrone.Core.Notifications.Pushsafer
         [FieldDefinition(8, Label = "Icon Color", Type = FieldType.Textbox, Advanced = true, HelpText = "Icon color in hex format (leave blank to use the default Pushsafer icon color)", HelpLink = "https://www.pushsafer.com/en/pushapi_ext#API-C")]
         public string IconColor { get; set; }
 
-        public NzbDroneValidationResult Validate()
+        public override NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
         }
