@@ -48,6 +48,7 @@ namespace Radarr.Api.V3
         }
 
         [HttpGet]
+        [Produces("application/json")]
         public List<TProviderResource> GetAll()
         {
             var providerDefinitions = _providerFactory.All();
@@ -165,6 +166,7 @@ namespace Radarr.Api.V3
         public object DeleteProvider(int id)
         {
             _providerFactory.Delete(id);
+
             return new { };
         }
 
@@ -178,6 +180,7 @@ namespace Radarr.Api.V3
         }
 
         [HttpGet("schema")]
+        [Produces("application/json")]
         public List<TProviderResource> GetTemplates()
         {
             var defaultDefinitions = _providerFactory.GetDefaultDefinitions().OrderBy(p => p.ImplementationName).ToList();
@@ -201,6 +204,7 @@ namespace Radarr.Api.V3
 
         [SkipValidation(true, false)]
         [HttpPost("test")]
+        [Consumes("application/json")]
         public object Test([FromBody] TProviderResource providerResource)
         {
             var existingDefinition = providerResource.Id > 0 ? _providerFactory.Find(providerResource.Id) : null;
@@ -222,12 +226,15 @@ namespace Radarr.Api.V3
 
             foreach (var definition in providerDefinitions)
             {
-                var validationResult = _providerFactory.Test(definition);
+                var validationFailures = new List<ValidationFailure>();
+
+                validationFailures.AddRange(definition.Settings.Validate().Errors);
+                validationFailures.AddRange(_providerFactory.Test(definition).Errors);
 
                 result.Add(new ProviderTestAllResult
                 {
                     Id = definition.Id,
-                    ValidationFailures = validationResult.Errors.ToList()
+                    ValidationFailures = validationFailures
                 });
             }
 
