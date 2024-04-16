@@ -747,6 +747,8 @@
   "IndexerSearchCheckNoAvailableIndexersMessage": "All search-capable indexers are temporarily unavailable due to recent indexer errors",
   "IndexerSearchCheckNoInteractiveMessage": "No indexers available with Interactive Search enabled, {appName} will not provide any interactive search results",
   "IndexerSettings": "Indexer Settings",
+  "IndexerSettingsMultiLanguageRelease": "Multi Languages",
+  "IndexerSettingsMultiLanguageReleaseHelpText": "What languages are normally in a multi release on this indexer?",
   "IndexerSettingsRejectBlocklistedTorrentHashes": "Reject Blocklisted Torrent Hashes While Grabbing",
   "IndexerSettingsRejectBlocklistedTorrentHashesHelpText": "If a torrent is blocked by hash it may not properly be rejected during RSS/Search for some indexers, enabling this will allow it to be rejected after the torrent is grabbed, but before it is sent to the client.",
   "IndexerStatusCheckAllClientMessage": "All indexers are unavailable due to failures",
