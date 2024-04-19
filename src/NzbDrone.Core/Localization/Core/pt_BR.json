@@ -22,7 +22,7 @@
     "Indexers": "Indexadores",
     "IndexerRssHealthCheckNoIndexers": "Nenhum indexador disponível com sincronização RSS habilitada, o {appName} não capturará novas versões automaticamente",
     "IndexerRssHealthCheckNoAvailableIndexers": "Todos os indexadores compatíveis com rss estão temporariamente indisponíveis devido a erros recentes do indexador",
-    "IndexerPriorityHelpText": "Prioridade do indexador de 1 (maior) a 50 (menor). Padrão: 25. Usado quando obtendo lançamentos como um desempate para lançamentos iguais, o {appName} ainda usará todos os indexadores habilitados para Sync e pesquisa de RSS",
+    "IndexerPriorityHelpText": "Prioridade do indexador de 1 (mais alta) a 50 (mais baixa). Padrão: 25. Usado ao capturar lançamentos como desempate para lançamentos iguais, {appName} ainda usará todos os indexadores habilitados para sincronização e pesquisa de RSS",
     "IndexerPriority": "Prioridade do indexador",
     "IndexerLongTermStatusCheckSingleClientMessage": "Indexadores indisponíveis devido a falhas por mais de 6 horas: {indexerNames}",
     "IndexerLongTermStatusCheckAllClientMessage": "Todos os indexadores estão indisponíveis devido a falhas por mais de 6 horas",
@@ -1241,7 +1241,7 @@
     "FullColorEventsHelpText": "Estilo alterado para colorir todo o evento com a cor do status, em vez de apenas a borda esquerda. Não se aplica à Programação",
     "Unknown": "Desconhecido",
     "UnknownEventTooltip": "Evento desconhecido",
-    "DeletedReasonManual": "O arquivo foi excluído por meio da interface",
+    "DeletedReasonManual": "O arquivo foi excluído usando {appName} manualmente ou por outra ferramenta por meio da API",
     "FormatAgeDay": "dia",
     "MovieDownloadFailedTooltip": "Falha no download do filme",
     "MovieDownloadIgnoredTooltip": "Download do Filme Ignorado",
@@ -1745,5 +1745,11 @@
     "DownloadClientDelugeSettingsDirectoryCompletedHelpText": "Local opcional para mover os downloads concluídos, deixe em branco para usar o local padrão do Deluge",
     "ConnectionSettingsUrlBaseHelpText": "Adiciona um prefixo a URL {connectionName}, como {url}",
     "ReleaseProfileIndexerHelpTextWarning": "Definir um indexador específico em um perfil de lançamento fará com que esse perfil seja aplicado apenas a lançamentos desse indexador.",
-    "IncludeHealthWarnings": "Incluir Alertas de Saúde"
+    "IncludeHealthWarnings": "Incluir Alertas de Saúde",
+    "CustomFormatsSettingsTriggerInfo": "Um formato personalizado será aplicado a um lançamento ou arquivo quando corresponder a pelo menos um de cada um dos diferentes tipos de condição escolhidos.",
+    "AutoTaggingSpecificationTag": "Etiqueta",
+    "NotificationsTelegramSettingsIncludeAppName": "Incluir {appName} no Título",
+    "NotificationsTelegramSettingsIncludeAppNameHelpText": "Opcionalmente, prefixe o título da mensagem com {appName} para diferenciar notificações de diferentes aplicativos",
+    "IndexerSettingsMultiLanguageReleaseHelpText": "Quais idiomas normalmente estão em um lançamento multi neste indexador?",
+    "IndexerSettingsMultiLanguageRelease": "Multi Idiomas"
 }

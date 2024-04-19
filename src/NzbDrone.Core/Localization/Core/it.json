@@ -1087,5 +1087,6 @@
     "AddImportListImplementation": "Aggiungi lista di importazione - {implementationName}",
     "AutoRedownloadFailed": "Download fallito",
     "AddAutoTagError": "Impossibile aggiungere un nuovo tag automatico, riprova.",
-    "AddDelayProfileError": "Impossibile aggiungere un nuovo profilo di ritardo, riprova."
+    "AddDelayProfileError": "Impossibile aggiungere un nuovo profilo di ritardo, riprova.",
+    "AddListExclusion": "Aggiungi elenco esclusioni"
 }
