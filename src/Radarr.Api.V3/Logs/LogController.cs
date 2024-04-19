@@ -3,10 +3,12 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Instrumentation;
 using Radarr.Http;
 using Radarr.Http.Extensions;
+using Radarr.Http.REST.Filters;
 
 namespace Radarr.Api.V3.Logs
 {
     [V3ApiController]
+    [LogDatabaseDisabledActionFilter]
     public class LogController : Controller
     {
         private readonly ILogService _logService;

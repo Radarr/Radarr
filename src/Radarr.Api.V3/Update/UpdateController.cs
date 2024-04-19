@@ -5,10 +5,12 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Update;
 using NzbDrone.Core.Update.History;
 using Radarr.Http;
+using Radarr.Http.REST.Filters;
 
 namespace Radarr.Api.V3.Update
 {
     [V3ApiController]
+    [LogDatabaseDisabledActionFilter]
     public class UpdateController : Controller
     {
         private readonly IRecentUpdateProvider _recentUpdateProvider;
