@@ -346,7 +346,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.FreeboxDownloadTests
             var items = Subject.GetItems();
 
             items.Should().HaveCount(1);
-            items.First().OutputPath.Should().Be(decodedDownloadDirectory);
+            items.First().OutputPath.Should().Be($"{decodedDownloadDirectory}/name");
         }
 
         [Test]

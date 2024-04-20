@@ -69,6 +69,8 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
                     }
                 }
 
+                outputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, outputPath);
+
                 var item = new DownloadClientItem()
                 {
                     DownloadId = torrent.Id,
@@ -79,7 +81,7 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
                     RemainingSize = (long)(torrent.Size * (double)(1 - ((double)torrent.ReceivedPrct / 10000))),
                     RemainingTime = torrent.Eta <= 0 ? null : TimeSpan.FromSeconds(torrent.Eta),
                     SeedRatio = torrent.StopRatio <= 0 ? 0 : torrent.StopRatio / 100,
-                    OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, outputPath)
+                    OutputPath = GetOutputPath(outputPath, torrent)
                 };
 
                 switch (torrent.Status)
@@ -229,6 +231,11 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
             }
 
             return remoteMovie.SeedConfiguration.Ratio.Value * 100;
+        }
+
+        private OsPath GetOutputPath(OsPath outputPath, FreeboxDownloadTask torrent)
+        {
+            return outputPath + torrent.Name;
         }
     }
 }
