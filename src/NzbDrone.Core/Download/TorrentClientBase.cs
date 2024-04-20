@@ -205,10 +205,12 @@ namespace NzbDrone.Core.Download
 
             if (actualHash.IsNotNullOrWhiteSpace() && hash != actualHash)
             {
-                _logger.Debug(
-                    "{0} did not return the expected InfoHash for '{1}', Radarr could potentially lose track of the download in progress.",
+                _logger.Warn(
+                    "{0} did not return the expected InfoHash for '{1}', Radarr could potentially lose track of the download in progress. Expected '{2}', got '{3}'.",
                     Definition.Implementation,
-                    remoteMovie.Release.DownloadUrl);
+                    remoteMovie.Release.DownloadUrl,
+                    hash,
+                    actualHash);
             }
 
             return actualHash;

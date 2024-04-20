@@ -1,3 +1,4 @@
+using NLog;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.History;
 using NzbDrone.Core.Parser;
@@ -12,10 +13,12 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
         public string Name => "ReleaseName";
 
         private readonly IDownloadHistoryService _downloadHistoryService;
+        private readonly ILogger _logger;
 
-        public AugmentQualityFromReleaseName(IDownloadHistoryService downloadHistoryService)
+        public AugmentQualityFromReleaseName(IDownloadHistoryService downloadHistoryService, Logger logger)
         {
             _downloadHistoryService = downloadHistoryService;
+            _logger = logger;
         }
 
         public AugmentQualityResult AugmentQuality(LocalMovie localMovie, DownloadClientItem downloadClientItem)
@@ -26,11 +29,16 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
                 return null;
             }
 
+            _logger.Warn("Attempt to augment quality for Download ID '{0}'", downloadClientItem.DownloadId);
+
             var history = _downloadHistoryService.GetLatestGrab(downloadClientItem.DownloadId);
             if (history == null)
             {
+                _logger.Warn("No grabbed history found for '{0}'", downloadClientItem.DownloadId);
                 return null;
             }
+
+            _logger.Warn("Attempt to augment quality for release title '{0}'", history.SourceTitle);
 
             var historyQuality = QualityParser.ParseQuality(history.SourceTitle);
 
