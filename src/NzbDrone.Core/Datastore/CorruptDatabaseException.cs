@@ -16,12 +16,12 @@ namespace NzbDrone.Core.Datastore
         }
 
         public CorruptDatabaseException(string message, Exception innerException, params object[] args)
-            : base(message, innerException, args)
+            : base(innerException, message, args)
         {
         }
 
         public CorruptDatabaseException(string message, Exception innerException)
-            : base(message, innerException)
+            : base(innerException, message)
         {
         }
     }
