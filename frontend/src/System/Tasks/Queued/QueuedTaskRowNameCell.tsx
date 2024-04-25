@@ -6,6 +6,22 @@ import createMultiMoviesSelector from 'Store/Selectors/createMultiMoviesSelector
 import translate from 'Utilities/String/translate';
 import styles from './QueuedTaskRowNameCell.css';
 
+function formatTitles(titles: string[]) {
+  if (!titles) {
+    return null;
+  }
+
+  if (titles.length > 11) {
+    return (
+      <span title={titles.join(', ')}>
+        {titles.slice(0, 10).join(', ')}, {titles.length - 10} more
+      </span>
+    );
+  }
+
+  return <span>{titles.join(', ')}</span>;
+}
+
 export interface QueuedTaskRowNameCellProps {
   commandName: string;
   body: CommandBody;
@@ -32,7 +48,7 @@ export default function QueuedTaskRowNameCell(
       <span className={styles.commandName}>
         {commandName}
         {sortedMovies.length ? (
-          <span> - {sortedMovies.map((m) => m.title).join(', ')}</span>
+          <span> - {formatTitles(sortedMovies.map((m) => m.title))}</span>
         ) : null}
       </span>
 
