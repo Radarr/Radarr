@@ -31,6 +31,7 @@ namespace NzbDrone.Core.Movies
         List<int> GetRecommendations();
         bool ExistsByMetadataId(int metadataId);
         HashSet<int> AllMovieWithCollectionsTmdbIds();
+        List<Movie> FindMissing();
     }
 
     public class MovieRepository : BasicRepository<Movie>, IMovieRepository
@@ -377,6 +378,11 @@ namespace NzbDrone.Core.Movies
             {
                 return conn.Query<int>("SELECT \"TmdbId\" FROM \"MovieMetadata\" JOIN \"Movies\" ON (\"Movies\".\"MovieMetadataId\" = \"MovieMetadata\".\"Id\") WHERE \"CollectionTmdbId\" > 0").ToHashSet();
             }
+        }
+
+        public List<Movie> FindMissing()
+        {
+            return Query(x => x.Monitored == true && x.MovieFileId == 0);
         }
     }
 }

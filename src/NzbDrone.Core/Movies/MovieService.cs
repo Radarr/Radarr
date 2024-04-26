@@ -47,6 +47,8 @@ namespace NzbDrone.Core.Movies
         void RemoveAddOptions(Movie movie);
         bool ExistsByMetadataId(int metadataId);
         HashSet<int> AllMovieWithCollectionsTmdbIds();
+        List<Movie> GetMissingMovies();
+        List<Movie> GetWantedMovies();
     }
 
     public class MovieService : IMovieService, IHandle<MovieFileAddedEvent>,
@@ -411,6 +413,16 @@ namespace NzbDrone.Core.Movies
 
                 UpdateMovie(movie);
             }
+        }
+
+        public List<Movie> GetMissingMovies()
+        {
+            return _movieRepository.FindMissing();
+        }
+
+        public List<Movie> GetWantedMovies()
+        {
+            return _movieRepository.FindMissing().Where(m => m.IsAvailable() == true).ToList();
         }
     }
 }
