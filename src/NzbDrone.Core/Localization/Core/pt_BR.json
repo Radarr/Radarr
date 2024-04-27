@@ -1751,5 +1751,8 @@
     "NotificationsTelegramSettingsIncludeAppName": "Incluir {appName} no Título",
     "NotificationsTelegramSettingsIncludeAppNameHelpText": "Opcionalmente, prefixe o título da mensagem com {appName} para diferenciar notificações de diferentes aplicativos",
     "IndexerSettingsMultiLanguageReleaseHelpText": "Quais idiomas normalmente estão em um lançamento multi neste indexador?",
-    "IndexerSettingsMultiLanguageRelease": "Multi Idiomas"
+    "IndexerSettingsMultiLanguageRelease": "Multi Idiomas",
+    "EditionFootNote": "Opcionalmente, controle o truncamento para um número máximo de bytes, incluindo reticências (`...`). Truncar do final (por exemplo, `{Edition Tags:30}`) ou do início (por exemplo, `{Edition Tags:-30}`) é suportado.",
+    "MovieFootNote": "Opcionalmente, controle o truncamento para um número máximo de bytes, incluindo reticências (`...`). Truncar do final (por exemplo, `{Movie Title:30}`) ou do início (por exemplo, `{Movie Title:-30}`) é suportado.",
+    "ReleaseGroupFootNote": "Opcionalmente, controle o truncamento para um número máximo de bytes, incluindo reticências (`...`). Truncar do final (por exemplo, `{Release Group:30}`) ou do início (por exemplo, `{Release Group:-30}`) é suportado.`)."
 }
