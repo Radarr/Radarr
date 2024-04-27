@@ -658,7 +658,7 @@
     "Component": "组件",
     "ColonReplacementFormatHelpText": "修改{appName}如何处理冒号的替换",
     "CloseCurrentModal": "关闭当前模组",
-    "CleanLibraryLevel": "清理媒体库等级",
+    "CleanLibraryLevel": "清除库等级",
     "ChmodFolderHelpText": "八进制，当导入和重命名媒体文件夹和文件时应用（不带执行位）",
     "ChmodFolder": "修改文件夹权限",
     "BranchUpdateMechanism": "外部更新机制使用的分支",
@@ -1176,7 +1176,7 @@
     "DefaultNameCopiedProfile": "{name} - 复制",
     "DefaultNameCopiedSpecification": "{name} - 复制",
     "BlocklistLoadError": "无法加载黑名单",
-    "BlocklistReleaseHelpText": "阻止{appName}再次自动获取此版本",
+    "BlocklistReleaseHelpText": "禁止 {appName}通过 RSS 或自动搜索重新下载此版本",
     "AuthenticationMethodHelpTextWarning": "请选择一个有效的身份验证方式",
     "AuthenticationRequiredPasswordHelpTextWarning": "请输入新密码",
     "AuthenticationRequiredUsernameHelpTextWarning": "请输入新用户名",
@@ -1428,5 +1428,10 @@
     "IndexerSettingsRejectBlocklistedTorrentHashesHelpText": "如果 torrent 的哈希被屏蔽了，某些索引器在使用RSS或者搜索期间可能无法正确拒绝它，启用此功能将允许在抓取 torrent 之后但在将其发送到客户端之前拒绝它。",
     "CustomFormatsSpecificationRegularExpression": "正则表达式",
     "AddListExclusion": "新增 列表",
-    "DownloadClientFreeboxAuthenticationError": "Freebox API 身份验证失败。 原因 {errorDescription}"
+    "DownloadClientFreeboxAuthenticationError": "Freebox API 身份验证失败。 原因 {errorDescription}",
+    "AutoTaggingSpecificationTag": "标签",
+    "CustomFormatsSpecificationFlag": "标记",
+    "CustomFilter": "自定义过滤器",
+    "AddAutoTagError": "无法添加新的自动标签，请重试。",
+    "AddDelayProfileError": "无法添加新的延迟配置，请重试。"
 }
