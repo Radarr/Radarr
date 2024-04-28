@@ -34,13 +34,15 @@ namespace Radarr.Api.V3.Tags
         }
 
         [RestPostById]
-        public ActionResult<TagResource> Create(TagResource resource)
+        [Consumes("application/json")]
+        public ActionResult<TagResource> Create([FromBody] TagResource resource)
         {
             return Created(_tagService.Add(resource.ToModel()).Id);
         }
 
         [RestPutById]
-        public ActionResult<TagResource> Update(TagResource resource)
+        [Consumes("application/json")]
+        public ActionResult<TagResource> Update([FromBody] TagResource resource)
         {
             _tagService.Update(resource.ToModel());
             return Accepted(resource.Id);

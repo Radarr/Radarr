@@ -235,7 +235,8 @@ namespace Radarr.Api.V3.Movies
         }
 
         [RestPostById]
-        public ActionResult<MovieResource> AddMovie(MovieResource moviesResource)
+        [Consumes("application/json")]
+        public ActionResult<MovieResource> AddMovie([FromBody] MovieResource moviesResource)
         {
             var movie = _addMovieService.AddMovie(moviesResource.ToModel());
 
@@ -243,7 +244,8 @@ namespace Radarr.Api.V3.Movies
         }
 
         [RestPutById]
-        public ActionResult<MovieResource> UpdateMovie(MovieResource moviesResource, bool moveFiles = false)
+        [Consumes("application/json")]
+        public ActionResult<MovieResource> UpdateMovie([FromBody] MovieResource moviesResource, [FromQuery] bool moveFiles = false)
         {
             var movie = _moviesService.GetMovie(moviesResource.Id);
 

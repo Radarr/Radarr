@@ -29,7 +29,8 @@ namespace Radarr.Api.V3.CustomFilters
         }
 
         [RestPostById]
-        public ActionResult<CustomFilterResource> AddCustomFilter(CustomFilterResource resource)
+        [Consumes("application/json")]
+        public ActionResult<CustomFilterResource> AddCustomFilter([FromBody] CustomFilterResource resource)
         {
             var customFilter = _customFilterService.Add(resource.ToModel());
 
@@ -37,7 +38,8 @@ namespace Radarr.Api.V3.CustomFilters
         }
 
         [RestPutById]
-        public ActionResult<CustomFilterResource> UpdateCustomFilter(CustomFilterResource resource)
+        [Consumes("application/json")]
+        public ActionResult<CustomFilterResource> UpdateCustomFilter([FromBody] CustomFilterResource resource)
         {
             _customFilterService.Update(resource.ToModel());
             return Accepted(resource.Id);

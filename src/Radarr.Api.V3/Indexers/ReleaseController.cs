@@ -61,7 +61,7 @@ namespace Radarr.Api.V3.Indexers
 
         [HttpPost]
         [Consumes("application/json")]
-        public async Task<object> DownloadRelease(ReleaseResource release)
+        public async Task<object> DownloadRelease([FromBody] ReleaseResource release)
         {
             var remoteMovie = _remoteMovieCache.Find(GetCacheKey(release));
 

@@ -33,7 +33,7 @@ namespace Radarr.Api.V3.Config
         }
 
         [RestPutById]
-        public override ActionResult<UiConfigResource> SaveConfig(UiConfigResource resource)
+        public override ActionResult<UiConfigResource> SaveConfig([FromBody] UiConfigResource resource)
         {
             var dictionary = resource.GetType()
                                      .GetProperties(BindingFlags.Instance | BindingFlags.Public)

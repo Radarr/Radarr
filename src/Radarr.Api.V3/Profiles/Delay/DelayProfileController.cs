@@ -34,7 +34,8 @@ namespace Radarr.Api.V3.Profiles.Delay
         }
 
         [RestPostById]
-        public ActionResult<DelayProfileResource> Create(DelayProfileResource resource)
+        [Consumes("application/json")]
+        public ActionResult<DelayProfileResource> Create([FromBody] DelayProfileResource resource)
         {
             var model = resource.ToModel();
             model = _delayProfileService.Add(model);
@@ -54,7 +55,8 @@ namespace Radarr.Api.V3.Profiles.Delay
         }
 
         [RestPutById]
-        public ActionResult<DelayProfileResource> Update(DelayProfileResource resource)
+        [Consumes("application/json")]
+        public ActionResult<DelayProfileResource> Update([FromBody] DelayProfileResource resource)
         {
             var model = resource.ToModel();
             _delayProfileService.Update(model);

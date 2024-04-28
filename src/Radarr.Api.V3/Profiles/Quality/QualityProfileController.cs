@@ -47,7 +47,8 @@ namespace Radarr.Api.V3.Profiles.Quality
         }
 
         [RestPostById]
-        public ActionResult<QualityProfileResource> Create(QualityProfileResource resource)
+        [Consumes("application/json")]
+        public ActionResult<QualityProfileResource> Create([FromBody] QualityProfileResource resource)
         {
             var model = resource.ToModel();
             model = _qualityProfileService.Add(model);
@@ -61,7 +62,8 @@ namespace Radarr.Api.V3.Profiles.Quality
         }
 
         [RestPutById]
-        public ActionResult<QualityProfileResource> Update(QualityProfileResource resource)
+        [Consumes("application/json")]
+        public ActionResult<QualityProfileResource> Update([FromBody] QualityProfileResource resource)
         {
             var model = resource.ToModel();
 
