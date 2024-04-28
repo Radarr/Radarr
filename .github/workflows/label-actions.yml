@@ -3,10 +3,16 @@ name: 'Label Actions'
 on:
   issues:
     types: [labeled, unlabeled]
+  pull_request:
+    types: [labeled, unlabeled]
+  discussion:
+    types: [labeled, unlabeled]
 
 permissions:
   contents: read
   issues: write
+  pull-requests: write
+  discussions: write
 
 jobs:
   action:
@@ -14,4 +20,4 @@ jobs:
     steps:
       - uses: dessant/label-actions@v4
         with:
-          process-only: 'issues'
+          process-only: 'issues, prs'
