@@ -71,5 +71,13 @@ namespace Radarr.Api.V3.Profiles.Delay
         {
             return _delayProfileService.All().ToResource();
         }
+
+        [HttpPut("reorder/{id}")]
+        public List<DelayProfileResource> Reorder([FromRoute] int id, [FromQuery] int? after)
+        {
+            ValidateId(id);
+
+            return _delayProfileService.Reorder(id, after).ToResource();
+        }
     }
 }
