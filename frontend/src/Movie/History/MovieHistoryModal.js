@@ -15,7 +15,7 @@ function MovieHistoryModal(props) {
     <Modal
       isOpen={isOpen}
       onModalClose={onModalClose}
-      size={sizes.EXTRA_LARGE}
+      size={sizes.EXTRA_EXTRA_LARGE}
     >
       <MovieHistoryModalContentConnector
         {...otherProps}

@@ -4,13 +4,13 @@ import HistoryDetailsModal from 'Activity/History/Details/HistoryDetailsModal';
 import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
-import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRow from 'Components/Table/TableRow';
 import { icons, kinds } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import MovieQuality from 'Movie/MovieQuality';
+import formatDateTime from 'Utilities/Date/formatDateTime';
 import formatCustomFormatScore from 'Utilities/Number/formatCustomFormatScore';
 import translate from 'Utilities/String/translate';
 import styles from './MovieHistoryRow.css';
@@ -109,9 +109,9 @@ class MovieHistoryRow extends Component {
           {formatCustomFormatScore(customFormatScore, customFormats.length)}
         </TableRowCell>
 
-        <RelativeDateCellConnector
-          date={date}
-        />
+        <TableRowCell>
+          {formatDateTime(date, shortDateFormat, timeFormat, { includeSeconds: true })}
+        </TableRowCell>
 
         <TableRowCell className={styles.actions}>
           <IconButton
