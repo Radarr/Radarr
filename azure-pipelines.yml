@@ -99,17 +99,18 @@ stages:
         displayName: 'Install .NET core'
         inputs:
           version: $(dotnetVersion)
-      - bash: |
-          BUNDLEDVERSIONS=${AGENT_TOOLSDIRECTORY}/dotnet/sdk/${DOTNETVERSION}/Microsoft.NETCoreSdk.BundledVersions.props
-          echo $BUNDLEDVERSIONS
-          if grep -q freebsd-x64 $BUNDLEDVERSIONS; then
-            echo "Extra platforms already enabled"
-          else
-            echo "Enabling extra platform support"
-            sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64;linux-x86/' $BUNDLEDVERSIONS
-          fi
-        displayName: Enable Extra Platform Support
-      - bash: ./build.sh --backend --enable-extra-platforms
+#          - bash: |
+#          BUNDLEDVERSIONS=${AGENT_TOOLSDIRECTORY}/dotnet/sdk/${DOTNETVERSION}/Microsoft.NETCoreSdk.BundledVersions.props
+#          echo $BUNDLEDVERSIONS
+#          if grep -q freebsd-x64 $BUNDLEDVERSIONS; then
+#            echo "Extra platforms already enabled"
+#            else
+#            echo "Enabling extra platform support"
+#          sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64;linux-x86/' $BUNDLEDVERSIONS
+#          fi
+#        displayName: Enable Extra Platform Support
+#      - bash: ./build.sh --backend --enable-extra-platforms
+      - bash: ./build.sh --backend
         displayName: Build Radarr Backend
       - bash: |
           find ${OUTPUTFOLDER} -type f ! -path "*/publish/*" -exec rm -rf {} \;
@@ -130,18 +131,18 @@ stages:
         artifact: linux-x64-tests
         displayName: Publish linux-x64 Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net8.0/linux-x86/publish'
-        artifact: linux-x86-tests
-        displayName: Publish linux-x86 Test Package
-        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+#        - publish: '$(testsFolder)/net8.0/linux-x86/publish'
+#        artifact: linux-x86-tests
+#        displayName: Publish linux-x86 Test Package
+#        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - publish: '$(testsFolder)/net8.0/linux-musl-x64/publish'
         artifact: linux-musl-x64-tests
         displayName: Publish linux-musl-x64 Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net8.0/freebsd-x64/publish'
-        artifact: freebsd-x64-tests
-        displayName: Publish freebsd-x64 Test Package
-        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+#      - publish: '$(testsFolder)/net8.0/freebsd-x64/publish'
+#        artifact: freebsd-x64-tests
+#        displayName: Publish freebsd-x64 Test Package
+#        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - publish: '$(testsFolder)/net8.0/osx-x64/publish'
         artifact: osx-x64-tests
         displayName: Publish osx-x64 Test Package
@@ -189,7 +190,7 @@ stages:
         artifact: '$(osName)Frontend'
         displayName: Publish Frontend
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-        
+
   - stage: Installer
     dependsOn:
     - Build_Backend
@@ -247,7 +248,8 @@ stages:
           artifactName: WindowsFrontend
           targetPath: _output
         displayName: Fetch Frontend
-      - bash: ./build.sh --packages --enable-extra-platforms
+#      - bash: ./build.sh --packages --enable-extra-platforms
+      - bash: ./build.sh --packages
         displayName: Create Packages
       - bash: |
           find . -name "ffprobe" -exec chmod a+x {} \;
@@ -392,7 +394,7 @@ stages:
           SENTRY_AUTH_TOKEN: $(sentryAuthTokenServarr)
           SENTRY_ORG: $(sentryOrg)
           SENTRY_URL: $(sentryUrl)
-    
+
   - stage: Unit_Test
     displayName: Unit Tests
     dependsOn: Build_Backend
@@ -499,11 +501,11 @@ stages:
 
       pool:
         vmImage: ${{ variables.linuxImage }}
-      
+
       container: $[ variables['containerImage'] ]
 
       timeoutInMinutes: 10
-        
+
       steps:
       - task: UseDotNet@2
         displayName: 'Install .NET'
@@ -540,7 +542,7 @@ stages:
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(testName) Unit Tests'
           failTaskOnFailedTests: true
-          
+
     - job: Unit_LinuxCore_Postgres14
       displayName: Unit Native LinuxCore with Postgres14 Database
       dependsOn: Prepare
@@ -557,7 +559,7 @@ stages:
         vmImage: ${{ variables.linuxImage }}
 
       timeoutInMinutes: 10
-        
+
       steps:
       - task: UseDotNet@2
         displayName: 'Install .NET core'
@@ -608,12 +610,12 @@ stages:
         Radarr__Postgres__Port: '5432'
         Radarr__Postgres__User: 'radarr'
         Radarr__Postgres__Password: 'radarr'
-  
+
       pool:
         vmImage: ${{ variables.linuxImage }}
 
       timeoutInMinutes: 10
-        
+
       steps:
       - task: UseDotNet@2
         displayName: 'Install .NET core'
@@ -695,7 +697,7 @@ stages:
 
       pool:
         vmImage: $(imageName)
-        
+
       steps:
       - task: UseDotNet@2
         displayName: 'Install .NET core'
@@ -797,7 +799,6 @@ stages:
             testRunTitle: 'Integration LinuxCore Postgres14 Database Integration Tests'
             failTaskOnFailedTests: true
           displayName: Publish Test Results
-
 
     - job: Integration_LinuxCore_Postgres15
       displayName: Integration Native LinuxCore with Postgres Database
@@ -929,7 +930,7 @@ stages:
       container: $[ variables['containerImage'] ]
 
       timeoutInMinutes: 15
-        
+
       steps:
       - task: UseDotNet@2
         displayName: 'Install .NET'
@@ -979,7 +980,7 @@ stages:
   - stage: Automation
     displayName: Automation
     dependsOn: Packages
-    
+
     jobs:
     - job: Automation
       strategy:
@@ -1005,7 +1006,7 @@ stages:
 
       pool:
         vmImage: $(imageName)
-        
+
       steps:
       - task: UseDotNet@2
         displayName: 'Install .NET core'
@@ -1129,7 +1130,7 @@ stages:
           cliProjectVersion: '$(radarrVersion)'
           cliSources: './frontend'
       - task: SonarCloudAnalyze@1
-      
+
     - job: Api_Docs
       displayName: API Docs
       dependsOn: Prepare
@@ -1269,4 +1270,3 @@ stages:
             DISCORDCHANNELID: $(discordChannelId)
             DISCORDWEBHOOKKEY: $(discordWebhookKey)
             DISCORDTHREADID: $(discordThreadId)
-
