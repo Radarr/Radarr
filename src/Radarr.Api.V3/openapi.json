@@ -845,16 +845,6 @@
               "schema": {
                 "$ref": "#/components/schemas/CollectionUpdateResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionUpdateResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionUpdateResource"
-              }
             }
           }
         },
@@ -883,16 +873,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/CollectionResource"
               }
@@ -972,16 +952,6 @@
               "schema": {
                 "$ref": "#/components/schemas/CommandResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CommandResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CommandResource"
-              }
             }
           }
         },
@@ -989,17 +959,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CommandResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CommandResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CommandResource"
                 }
@@ -1223,16 +1183,6 @@
               "schema": {
                 "$ref": "#/components/schemas/CustomFilterResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomFilterResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomFilterResource"
-              }
             }
           }
         },
@@ -1278,16 +1228,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomFilterResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomFilterResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/CustomFilterResource"
               }
@@ -1565,16 +1505,6 @@
               "schema": {
                 "$ref": "#/components/schemas/DelayProfileResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DelayProfileResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/DelayProfileResource"
-              }
             }
           }
         },
@@ -1680,16 +1610,6 @@
               "schema": {
                 "$ref": "#/components/schemas/DelayProfileResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DelayProfileResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/DelayProfileResource"
-              }
             }
           }
         },
@@ -1748,6 +1668,63 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DelayProfileResource"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/delayprofile/reorder/{id}": {
+      "put": {
+        "tags": [
+          "DelayProfile"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DelayProfileResource"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DelayProfileResource"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DelayProfileResource"
+                  }
                 }
               }
             }
@@ -2809,16 +2786,6 @@
               "schema": {
                 "$ref": "#/components/schemas/ImportExclusionsResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportExclusionsResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportExclusionsResource"
-              }
             }
           }
         },
@@ -2864,16 +2831,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportExclusionsResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportExclusionsResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/ImportExclusionsResource"
               }
@@ -4828,16 +4785,6 @@
               "schema": {
                 "$ref": "#/components/schemas/MovieResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MovieResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/MovieResource"
-              }
             }
           }
         },
@@ -4891,16 +4838,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MovieResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MovieResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/MovieResource"
               }
@@ -6152,16 +6089,6 @@
               "schema": {
                 "$ref": "#/components/schemas/QualityProfileResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/QualityProfileResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/QualityProfileResource"
-              }
             }
           }
         },
@@ -6264,16 +6191,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/QualityProfileResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/QualityProfileResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/QualityProfileResource"
               }
@@ -7234,16 +7151,6 @@
               "schema": {
                 "$ref": "#/components/schemas/RemotePathMappingResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RemotePathMappingResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RemotePathMappingResource"
-              }
             }
           }
         },
@@ -7480,16 +7387,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RootFolderResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RootFolderResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/RootFolderResource"
               }
@@ -7809,16 +7706,6 @@
               "schema": {
                 "$ref": "#/components/schemas/TagResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TagResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/TagResource"
-              }
             }
           }
         },
@@ -7864,16 +7751,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TagResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TagResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/TagResource"
               }
