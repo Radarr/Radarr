@@ -16,6 +16,7 @@ import getSelectedIds from 'Utilities/Table/getSelectedIds';
 interface MovieIndexSearchButtonProps {
   isSelectMode: boolean;
   selectedFilterKey: string;
+  overflowComponent: React.FunctionComponent<never>;
 }
 
 function MovieIndexSearchButton(props: MovieIndexSearchButtonProps) {

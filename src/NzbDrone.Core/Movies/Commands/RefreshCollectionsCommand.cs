@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Core.Movies.Commands
@@ -20,6 +20,10 @@ namespace NzbDrone.Core.Movies.Commands
 
         public override bool SendUpdatesToClient => true;
 
-        public override bool UpdateScheduledTask => !CollectionIds.Any();
+        public override bool UpdateScheduledTask => CollectionIds.Empty();
+
+        public override bool IsLongRunning => true;
+
+        public override string CompletionMessage => "Completed";
     }
 }

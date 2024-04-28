@@ -212,7 +212,6 @@
     "AddNewMessage": "Přidání nového filmu je snadné, stačí začít psát název filmu, který chcete přidat",
     "AddNewMovie": "Přidat nový film",
     "AddNewTmdbIdMessage": "Můžete také vyhledávat pomocí ID TMDb filmu. např. 'tmdb: 71663'",
-    "IncludeHealthWarningsHelpText": "Zahrnout zdravotní varování",
     "AddListExclusionMovieHelpText": "Zabraňte přidávání filmů do {appName}u pomocí seznamů",
     "ImportHeader": "Chcete-li přidat filmy do {appName}u, importujte existující organizovanou knihovnu",
     "ImportListStatusCheckSingleClientMessage": "Seznamy nejsou k dispozici z důvodu selhání: {importListNames}",

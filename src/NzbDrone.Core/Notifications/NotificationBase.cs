@@ -24,6 +24,7 @@ namespace NzbDrone.Core.Notifications
         protected const string MOVIE_GRABBED_TITLE_BRANDED = "Radarr - " + MOVIE_GRABBED_TITLE;
         protected const string MOVIE_ADDED_TITLE_BRANDED = "Radarr - " + MOVIE_ADDED_TITLE;
         protected const string MOVIE_DOWNLOADED_TITLE_BRANDED = "Radarr - " + MOVIE_DOWNLOADED_TITLE;
+        protected const string MOVIE_UPGRADED_TITLE_BRANDED = "Radarr - " + MOVIE_UPGRADED_TITLE;
         protected const string MOVIE_DELETED_TITLE_BRANDED = "Radarr - " + MOVIE_DELETED_TITLE;
         protected const string MOVIE_FILE_DELETED_TITLE_BRANDED = "Radarr - " + MOVIE_FILE_DELETED_TITLE;
         protected const string HEALTH_ISSUE_TITLE_BRANDED = "Radarr - " + HEALTH_ISSUE_TITLE;

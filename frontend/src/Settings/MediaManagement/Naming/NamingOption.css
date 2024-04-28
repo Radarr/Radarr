@@ -17,7 +17,7 @@
 }
 
 .small {
-  width: 480px;
+  width: 490px;
 }
 
 .large {
@@ -26,8 +26,8 @@
 
 .token {
   flex: 0 0 50%;
-  padding: 6px 16px;
-  background-color: var(--popoverTitleBorderColor);
+  padding: 6px;
+  background-color: var(--popoverTitleBackgroundColor);
   font-family: $monoSpaceFontFamily;
 }
 
@@ -37,8 +37,8 @@
   align-self: stretch;
   justify-content: space-between;
   flex: 0 0 50%;
-  padding: 6px 16px;
-  background-color: var(--popoverTitleBackgroundColor);
+  padding: 6px;
+  background-color: var(--popoverBodyBackgroundColor);
 
   .footNote {
     padding: 2px;

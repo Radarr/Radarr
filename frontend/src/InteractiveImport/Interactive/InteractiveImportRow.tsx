@@ -104,7 +104,7 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
 
   useEffect(
     () => {
-      if (allowMovieChange && movie && quality && languages) {
+      if (allowMovieChange && movie && quality && languages && size > 0) {
         onSelectedChange({
           id,
           hasMovieFileId: !!movieFileId,

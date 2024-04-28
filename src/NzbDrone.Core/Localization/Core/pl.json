@@ -41,7 +41,6 @@
     "ImportFailed": "Import nieudany: {0}",
     "ImportHeader": "Importuj istniejącą zorganizowaną bibliotekę, aby dodać filmy do {appName}",
     "ImportIncludeQuality": "Upewnij się, że pliki zawierają jakość w nazwach plików. na przykład {0}",
-    "IncludeHealthWarningsHelpText": "Uwzględnij ostrzeżenia zdrowotne",
     "MinAvailability": "Minimalna dostępność",
     "MinimumCustomFormatScoreHelpText": "Minimalny wynik w formacie niestandardowym, który można pobrać",
     "MinimumAge": "Minimalny wiek",
