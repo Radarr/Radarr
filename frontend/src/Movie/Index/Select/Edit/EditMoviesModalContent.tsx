@@ -34,7 +34,7 @@ const monitoredOptions = [
     get value() {
       return translate('NoChange');
     },
-    disabled: true,
+    isDisabled: true,
   },
   {
     key: 'monitored',

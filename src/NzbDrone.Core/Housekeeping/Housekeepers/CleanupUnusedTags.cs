@@ -3,6 +3,8 @@ using System.Data;
 using System.Linq;
 using Dapper;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.AutoTagging;
+using NzbDrone.Core.AutoTagging.Specifications;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
@@ -10,17 +12,24 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
     public class CleanupUnusedTags : IHousekeepingTask
     {
         private readonly IMainDatabase _database;
+        private readonly IAutoTaggingRepository _autoTaggingRepository;
 
-        public CleanupUnusedTags(IMainDatabase database)
+        public CleanupUnusedTags(IMainDatabase database, IAutoTaggingRepository autoTaggingRepository)
         {
             _database = database;
+            _autoTaggingRepository = autoTaggingRepository;
         }
 
         public void Clean()
         {
             using var mapper = _database.OpenConnection();
-            var usedTags = new[] { "Movies", "Notifications", "DelayProfiles", "ReleaseProfiles", "ImportLists", "Indexers", "AutoTagging", "DownloadClients" }
+            var usedTags = new[]
+                {
+                    "Movies", "Notifications", "DelayProfiles", "ReleaseProfiles", "ImportLists", "Indexers",
+                    "AutoTagging", "DownloadClients"
+                }
                 .SelectMany(v => GetUsedTags(v, mapper))
+                .Concat(GetAutoTaggingTagSpecificationTags(mapper))
                 .Distinct()
                 .ToList();
 
@@ -45,10 +54,31 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         private int[] GetUsedTags(string table, IDbConnection mapper)
         {
-            return mapper.Query<List<int>>($"SELECT DISTINCT \"Tags\" FROM \"{table}\" WHERE NOT \"Tags\" = '[]' AND NOT \"Tags\" IS NULL")
+            return mapper
+                .Query<List<int>>(
+                    $"SELECT DISTINCT \"Tags\" FROM \"{table}\" WHERE NOT \"Tags\" = '[]' AND NOT \"Tags\" IS NULL")
                 .SelectMany(x => x)
                 .Distinct()
                 .ToArray();
+        }
+
+        private List<int> GetAutoTaggingTagSpecificationTags(IDbConnection mapper)
+        {
+            var tags = new List<int>();
+            var autoTags = _autoTaggingRepository.All();
+
+            foreach (var autoTag in autoTags)
+            {
+                foreach (var specification in autoTag.Specifications)
+                {
+                    if (specification is TagSpecification tagSpec)
+                    {
+                        tags.Add(tagSpec.Value);
+                    }
+                }
+            }
+
+            return tags;
         }
     }
 }

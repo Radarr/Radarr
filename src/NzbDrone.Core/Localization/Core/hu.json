@@ -656,7 +656,6 @@
     "IncludeUnmonitored": "Tartalmazza a Nem felügyeltet",
     "IncludeRecommendationsHelpText": "Helyezze be a {appName} ajánlásait a felfedező nézetbe",
     "IncludeRadarrRecommendations": "Tartalmazza a {appName} Ajánlásait",
-    "IncludeHealthWarningsHelpText": "Tartalmazza a Állapot Figyelmeztetéseket",
     "IncludeCustomFormatWhenRenamingHelpText": "Tartalmazza a(z) {Custom Formats} átnevezési formátumot",
     "IncludeCustomFormatWhenRenaming": "Átnevezéskor adja meg az Egyéni formátumot",
     "InCinemas": "Mozikban",

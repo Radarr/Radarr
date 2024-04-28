@@ -240,7 +240,6 @@
     "ExcludeTitle": "Εξαίρεση {0}; Αυτό θα αποτρέψει την αυτόματη προσθήκη του {appName} μέσω συγχρονισμού λίστας.",
     "FileNameTokens": "Διακριτικά ονόματος αρχείου",
     "ImportMechanismHealthCheckMessage": "Ενεργοποίηση ολοκληρωμένου χειρισμού λήψεων",
-    "IncludeHealthWarningsHelpText": "Συμπεριλάβετε προειδοποιήσεις για την υγεία",
     "InvalidFormat": "Ακυρη μορφή",
     "LastDuration": "Τελευταία Διάρκεια",
     "LastExecution": "Τελευταία εκτέλεση",

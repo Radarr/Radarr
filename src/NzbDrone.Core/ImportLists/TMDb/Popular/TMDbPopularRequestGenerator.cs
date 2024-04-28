@@ -36,6 +36,8 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
             var certification = Settings.FilterCriteria.Certification;
             var includeGenreIds = Settings.FilterCriteria.IncludeGenreIds;
             var excludeGenreIds = Settings.FilterCriteria.ExcludeGenreIds;
+            var includeCompanyIds = Settings.FilterCriteria.IncludeCompanyIds;
+            var excludeCompanyIds = Settings.FilterCriteria.ExcludeCompanyIds;
             var languageCode = (TMDbLanguageCodes)Settings.FilterCriteria.LanguageCode;
 
             var todaysDate = DateTime.Now.ToString("yyyy-MM-dd");
@@ -90,6 +92,16 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
             if (excludeGenreIds.IsNotNullOrWhiteSpace())
             {
                 requestBuilder.AddQueryParam("without_genres", excludeGenreIds);
+            }
+
+            if (includeCompanyIds.IsNotNullOrWhiteSpace())
+            {
+                requestBuilder.AddQueryParam("with_companies", includeCompanyIds);
+            }
+
+            if (excludeCompanyIds.IsNotNullOrWhiteSpace())
+            {
+                requestBuilder.AddQueryParam("without_companies", excludeCompanyIds);
             }
 
             requestBuilder

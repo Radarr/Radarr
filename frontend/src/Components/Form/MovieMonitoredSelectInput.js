@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import monitorOptions from 'Utilities/Movie/monitorOptions';
 import translate from 'Utilities/String/translate';
-import SelectInput from './SelectInput';
+import EnhancedSelectInput from './EnhancedSelectInput';
 
 function MovieMonitoredSelectInput(props) {
   const values = [...monitorOptions];
@@ -16,7 +16,7 @@ function MovieMonitoredSelectInput(props) {
     values.unshift({
       key: 'noChange',
       value: translate('NoChange'),
-      disabled: true
+      isDisabled: true
     });
   }
 
@@ -24,12 +24,12 @@ function MovieMonitoredSelectInput(props) {
     values.unshift({
       key: 'mixed',
       value: '(Mixed)',
-      disabled: true
+      isDisabled: true
     });
   }
 
   return (
-    <SelectInput
+    <EnhancedSelectInput
       {...props}
       values={values}
     />

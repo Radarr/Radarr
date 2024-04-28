@@ -289,7 +289,6 @@
     "ChownGroupHelpTextWarning": "สิ่งนี้ใช้ได้เฉพาะเมื่อผู้ใช้ที่เรียกใช้ {appName} เป็นเจ้าของไฟล์ เป็นการดีกว่าที่จะตรวจสอบให้แน่ใจว่าไคลเอนต์ดาวน์โหลดใช้กลุ่มเดียวกับ {appName}",
     "Clear": "ชัดเจน",
     "CertificationCountry": "ประเทศที่รับรอง",
-    "IncludeHealthWarningsHelpText": "รวมคำเตือนด้านสุขภาพ",
     "CertificationCountryHelpText": "เลือกประเทศสำหรับการรับรองภาพยนตร์",
     "Component": "ส่วนประกอบ",
     "ImportErrors": "นำเข้าข้อผิดพลาด",

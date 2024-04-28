@@ -14,6 +14,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes, kinds } from 'Helpers/Props';
+import AdvancedSettingsButton from 'Settings/AdvancedSettingsButton';
 import formatShortTimeSpan from 'Utilities/Date/formatShortTimeSpan';
 import translate from 'Utilities/String/translate';
 import styles from './EditImportListModalContent.css';
@@ -33,6 +34,7 @@ function EditImportListModalContent(props) {
     onModalClose,
     onSavePress,
     onTestPress,
+    onAdvancedSettingsPress,
     onDeleteImportListPress,
     ...otherProps
   } = props;
@@ -234,6 +236,12 @@ function EditImportListModalContent(props) {
             </Button>
         }
 
+        <AdvancedSettingsButton
+          advancedSettings={advancedSettings}
+          onAdvancedSettingsPress={onAdvancedSettingsPress}
+          showLabel={false}
+        />
+
         <SpinnerErrorButton
           isSpinning={isTesting}
           error={saveError}
@@ -274,6 +282,7 @@ EditImportListModalContent.propTypes = {
   onModalClose: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onTestPress: PropTypes.func.isRequired,
+  onAdvancedSettingsPress: PropTypes.func.isRequired,
   onDeleteImportListPress: PropTypes.func
 };
 

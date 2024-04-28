@@ -44,6 +44,7 @@ import MovieIndexViewMenu from './Menus/MovieIndexViewMenu';
 import MovieIndexFooter from './MovieIndexFooter';
 import MovieIndexRefreshMovieButton from './MovieIndexRefreshMovieButton';
 import MovieIndexSearchButton from './MovieIndexSearchButton';
+import MovieIndexSearchMenuItem from './MovieIndexSearchMenuItem';
 import MovieIndexOverviews from './Overview/MovieIndexOverviews';
 import MovieIndexOverviewOptionsModal from './Overview/Options/MovieIndexOverviewOptionsModal';
 import MovieIndexPosters from './Posters/MovieIndexPosters';
@@ -247,6 +248,7 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
             <MovieIndexSearchButton
               isSelectMode={isSelectMode}
               selectedFilterKey={selectedFilterKey}
+              overflowComponent={MovieIndexSearchMenuItem}
             />
 
             <PageToolbarButton

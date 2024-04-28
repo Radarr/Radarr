@@ -216,7 +216,6 @@
     "ImportFailed": "Innflutningur mistókst: {0}",
     "AddIndexer": "Bættu við Indexer",
     "ImportHeader": "Flyttu inn skipulagt bókasafn sem fyrir er til að bæta kvikmyndum við {appName}",
-    "IncludeHealthWarningsHelpText": "Láttu heilsuviðvaranir fylgja með",
     "CouldNotConnectSignalR": "Gat ekki tengst SignalR, HÍ mun ekki uppfæra",
     "RestoreBackup": "Endurheimtu öryggisafrit",
     "DeletedMsg": "Kvikmynd var eytt úr TMDb",
