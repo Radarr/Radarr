@@ -10,6 +10,9 @@
 'Area: Import Lists':
   - src/NzbDrone.Core/ImportLists/**/*
 
+'Area: Metadata':
+  - src/NzbDrone.Core/Extras/Metadata/*
+
 'Area: Indexer':
   - src/NzbDrone.Core/Indexers/**/*
 
