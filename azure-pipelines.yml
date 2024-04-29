@@ -166,10 +166,10 @@ stages:
       pool:
         vmImage: $(imageName)
       steps:
-      - task: NodeTool@0
+      - task: UseNode@1
         displayName: Set Node.js version
         inputs:
-          versionSpec: $(nodeVersion)
+          version: $(nodeVersion)
       - checkout: self
         submodules: true
         fetchDepth: 1
@@ -1089,10 +1089,10 @@ stages:
       pool:
         vmImage: $(imageName)
       steps:
-      - task: NodeTool@0
+      - task: UseNode@1
         displayName: Set Node.js version
         inputs:
-          versionSpec: $(nodeVersion)
+          version: $(nodeVersion)
       - checkout: self
         submodules: true
         fetchDepth: 1
