@@ -481,6 +481,7 @@ stages:
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(testName) Unit Tests'
           failTaskOnFailedTests: true
+          failTaskOnMissingResultsFile: true
 
     - job: Unit_Docker
       displayName: Unit Docker
@@ -540,7 +541,8 @@ stages:
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(testName) Unit Tests'
           failTaskOnFailedTests: true
-          
+          failTaskOnMissingResultsFile: true
+
     - job: Unit_LinuxCore_Postgres14
       displayName: Unit Native LinuxCore with Postgres14 Database
       dependsOn: Prepare
@@ -596,6 +598,7 @@ stages:
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: 'LinuxCore Postgres14 Unit Tests'
           failTaskOnFailedTests: true
+          failTaskOnMissingResultsFile: true
 
     - job: Unit_LinuxCore_Postgres15
       displayName: Unit Native LinuxCore with Postgres15 Database
@@ -652,6 +655,7 @@ stages:
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: 'LinuxCore Postgres15 Unit Tests'
           failTaskOnFailedTests: true
+          failTaskOnMissingResultsFile: true
 
   - stage: Integration
     displayName: Integration
@@ -734,6 +738,7 @@ stages:
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(testName) Integration Tests'
           failTaskOnFailedTests: true
+          failTaskOnMissingResultsFile: true
         displayName: Publish Test Results
 
     - job: Integration_LinuxCore_Postgres14
@@ -796,6 +801,7 @@ stages:
             testResultsFiles: '**/TestResult.xml'
             testRunTitle: 'Integration LinuxCore Postgres14 Database Integration Tests'
             failTaskOnFailedTests: true
+            failTaskOnMissingResultsFile: true
           displayName: Publish Test Results
 
 
@@ -859,6 +865,7 @@ stages:
             testResultsFiles: '**/TestResult.xml'
             testRunTitle: 'Integration LinuxCore Postgres15 Database Integration Tests'
             failTaskOnFailedTests: true
+            failTaskOnMissingResultsFile: true
           displayName: Publish Test Results
 
     - job: Integration_FreeBSD
@@ -905,6 +912,7 @@ stages:
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: 'FreeBSD Integration Tests'
           failTaskOnFailedTests: true
+          failTaskOnMissingResultsFile: true
         displayName: Publish Test Results
 
     - job: Integration_Docker
@@ -974,6 +982,7 @@ stages:
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(testName) Integration Tests'
           failTaskOnFailedTests: true
+          failTaskOnMissingResultsFile: true
         displayName: Publish Test Results
 
   - stage: Automation
@@ -1055,6 +1064,7 @@ stages:
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(osName) Automation Tests'
           failTaskOnFailedTests: $(failBuild)
+          failTaskOnMissingResultsFile: $(failBuild)
         displayName: Publish Test Results
 
   - stage: Analyze
