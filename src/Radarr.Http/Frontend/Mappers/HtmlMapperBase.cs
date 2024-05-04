@@ -39,7 +39,7 @@ namespace Radarr.Http.Frontend.Mappers
             return stream;
         }
 
-        protected string GetHtmlText()
+        protected virtual string GetHtmlText()
         {
             if (RuntimeInfo.IsProduction && _generatedContent != null)
             {
