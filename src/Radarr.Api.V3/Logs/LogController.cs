@@ -1,27 +1,33 @@
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Instrumentation;
 using Radarr.Http;
 using Radarr.Http.Extensions;
-using Radarr.Http.REST.Filters;
 
 namespace Radarr.Api.V3.Logs
 {
     [V3ApiController]
-    [LogDatabaseDisabledActionFilter]
     public class LogController : Controller
     {
         private readonly ILogService _logService;
+        private readonly IConfigFileProvider _configFileProvider;
 
-        public LogController(ILogService logService)
+        public LogController(ILogService logService, IConfigFileProvider configFileProvider)
         {
             _logService = logService;
+            _configFileProvider = configFileProvider;
         }
 
         [HttpGet]
         [Produces("application/json")]
         public PagingResource<LogResource> GetLogs([FromQuery] PagingRequestResource paging, string level)
         {
+            if (!_configFileProvider.LogDbEnabled)
+            {
+                return new PagingResource<LogResource>();
+            }
+
             var pagingResource = new PagingResource<LogResource>(paging);
             var pageSpec = pagingResource.MapToPagingSpec<LogResource, Log>();
 

@@ -2,24 +2,25 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Update;
 using NzbDrone.Core.Update.History;
 using Radarr.Http;
-using Radarr.Http.REST.Filters;
 
 namespace Radarr.Api.V3.Update
 {
     [V3ApiController]
-    [LogDatabaseDisabledActionFilter]
     public class UpdateController : Controller
     {
         private readonly IRecentUpdateProvider _recentUpdateProvider;
         private readonly IUpdateHistoryService _updateHistoryService;
+        private readonly IConfigFileProvider _configFileProvider;
 
-        public UpdateController(IRecentUpdateProvider recentUpdateProvider, IUpdateHistoryService updateHistoryService)
+        public UpdateController(IRecentUpdateProvider recentUpdateProvider, IUpdateHistoryService updateHistoryService, IConfigFileProvider configFileProvider)
         {
             _recentUpdateProvider = recentUpdateProvider;
             _updateHistoryService = updateHistoryService;
+            _configFileProvider = configFileProvider;
         }
 
         [HttpGet]
@@ -46,9 +47,15 @@ namespace Radarr.Api.V3.Update
                     installed.Installed = true;
                 }
 
-                var installDates = _updateHistoryService.InstalledSince(resources.Last().ReleaseDate)
-                                                        .DistinctBy(v => v.Version)
-                                                        .ToDictionary(v => v.Version);
+                if (!_configFileProvider.LogDbEnabled)
+                {
+                    return resources;
+                }
+
+                var updateHistory = _updateHistoryService.InstalledSince(resources.Last().ReleaseDate);
+                var installDates = updateHistory
+                                                                    .DistinctBy(v => v.Version)
+                                                                    .ToDictionary(v => v.Version);
 
                 foreach (var resource in resources)
                 {

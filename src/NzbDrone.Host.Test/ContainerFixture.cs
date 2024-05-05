@@ -42,7 +42,6 @@ namespace NzbDrone.App.Test
                 .AutoAddServices(Bootstrap.ASSEMBLIES)
                 .AddNzbDroneLogger()
                 .AddDummyDatabase()
-                .AddDummyLogDatabase()
                 .AddStartupContext(args);
 
             // dummy lifetime and broadcaster so tests resolve
