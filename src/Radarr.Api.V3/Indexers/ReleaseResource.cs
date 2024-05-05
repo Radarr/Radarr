@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
@@ -52,7 +53,7 @@ namespace Radarr.Api.V3.Indexers
         public int? Seeders { get; set; }
         public int? Leechers { get; set; }
         public DownloadProtocol Protocol { get; set; }
-        public IEnumerable<string> IndexerFlags { get; set; }
+        public dynamic IndexerFlags { get; set; }
 
         // Sent when queuing an unknown release
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
@@ -135,6 +136,11 @@ namespace Radarr.Api.V3.Indexers
                     Seeders = resource.Seeders,
                     Peers = (resource.Seeders.HasValue && resource.Leechers.HasValue) ? (resource.Seeders + resource.Leechers) : null
                 };
+
+                if (resource.IndexerFlags is JsonElement { ValueKind: JsonValueKind.Number } indexerFlags)
+                {
+                    model.IndexerFlags = (IndexerFlags)indexerFlags.GetInt32();
+                }
             }
             else
             {
