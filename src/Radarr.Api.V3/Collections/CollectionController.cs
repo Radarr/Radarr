@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore.Events;
+using NzbDrone.Core.ImportLists.ImportExclusions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
@@ -30,6 +31,7 @@ namespace Radarr.Api.V3.Collections
         private readonly IMovieService _movieService;
         private readonly IMovieMetadataService _movieMetadataService;
         private readonly IMovieTranslationService _movieTranslationService;
+        private readonly IImportExclusionsService _importExclusionService;
         private readonly IConfigService _configService;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly INamingConfigService _namingService;
@@ -40,6 +42,7 @@ namespace Radarr.Api.V3.Collections
                                     IMovieService movieService,
                                     IMovieMetadataService movieMetadataService,
                                     IMovieTranslationService movieTranslationService,
+                                    IImportExclusionsService importExclusionsService,
                                     IConfigService configService,
                                     IBuildFileNames fileNameBuilder,
                                     INamingConfigService namingService,
@@ -50,6 +53,7 @@ namespace Radarr.Api.V3.Collections
             _movieService = movieService;
             _movieMetadataService = movieMetadataService;
             _movieTranslationService = movieTranslationService;
+            _importExclusionService = importExclusionsService;
             _configService = configService;
             _fileNameBuilder = fileNameBuilder;
             _namingService = namingService;
@@ -150,8 +154,10 @@ namespace Radarr.Api.V3.Collections
         {
             // Avoid calling for naming spec on every movie in filenamebuilder
             var namingConfig = _namingService.GetConfig();
-            var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
             var configLanguage = (Language)_configService.MovieInfoLanguage;
+
+            var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
+            var listExclusions = _importExclusionService.GetAllExclusions();
 
             var allCollectionMovies = _movieMetadataService.GetMoviesWithCollections()
                 .GroupBy(x => x.CollectionTmdbId)
@@ -175,7 +181,9 @@ namespace Radarr.Api.V3.Collections
                         var movieResource = movie.ToResource(translation);
                         movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
-                        if (!existingMoviesTmdbIds.Contains(movie.TmdbId))
+                        var isExcluded = listExclusions.Any(e => e.TmdbId == movie.TmdbId);
+
+                        if (!existingMoviesTmdbIds.Contains(movie.TmdbId) && !isExcluded)
                         {
                             resource.MissingMovies++;
                         }
@@ -191,9 +199,12 @@ namespace Radarr.Api.V3.Collections
         private CollectionResource MapToResource(MovieCollection collection)
         {
             var resource = collection.ToResource();
-            var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
+
             var namingConfig = _namingService.GetConfig();
             var configLanguage = (Language)_configService.MovieInfoLanguage;
+
+            var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
+            var listExclusions = _importExclusionService.GetAllExclusions();
 
             foreach (var movie in _movieMetadataService.GetMoviesByCollectionTmdbId(collection.TmdbId))
             {
@@ -203,7 +214,9 @@ namespace Radarr.Api.V3.Collections
                 var movieResource = movie.ToResource(translation);
                 movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
-                if (!existingMoviesTmdbIds.Contains(movie.TmdbId))
+                var isExcluded = listExclusions.Any(e => e.TmdbId == movie.TmdbId);
+
+                if (!existingMoviesTmdbIds.Contains(movie.TmdbId) && !isExcluded)
                 {
                     resource.MissingMovies++;
                 }

@@ -20,6 +20,7 @@ namespace Radarr.Api.V3.Collections
         public Ratings Ratings { get; set; }
         public List<string> Genres { get; set; }
         public string Folder { get; set; }
+        public bool IsExcluded { get; set; }
     }
 
     public static class CollectionMovieResourceMapper
