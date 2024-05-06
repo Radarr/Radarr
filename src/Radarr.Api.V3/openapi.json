@@ -8568,6 +8568,9 @@
           "folder": {
             "type": "string",
             "nullable": true
+          },
+          "isExcluded": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
