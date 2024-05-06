@@ -93,6 +93,15 @@ namespace NzbDrone.Host
                                     .AddStartupContext(startupContext)
                                     .Resolve<UtilityModeRouter>()
                                     .Route(appMode);
+
+                                if (config.GetValue(nameof(ConfigFileProvider.LogDbEnabled), true))
+                                {
+                                    c.AddLogDatabase();
+                                }
+                                else
+                                {
+                                    c.AddDummyLogDatabase();
+                                }
                             })
                             .ConfigureServices(services =>
                             {
@@ -135,6 +144,7 @@ namespace NzbDrone.Host
             var enableSsl = config.GetValue<bool?>($"Radarr:Server:{nameof(ServerOptions.EnableSsl)}") ?? config.GetValue(nameof(ConfigFileProvider.EnableSsl), false);
             var sslCertPath = config.GetValue<string>($"Radarr:Server:{nameof(ServerOptions.SslCertPath)}") ?? config.GetValue<string>(nameof(ConfigFileProvider.SslCertPath));
             var sslCertPassword = config.GetValue<string>($"Radarr:Server:{nameof(ServerOptions.SslCertPassword)}") ?? config.GetValue<string>(nameof(ConfigFileProvider.SslCertPassword));
+            var logDbEnabled = config.GetValue<bool?>($"Radarr:Log:{nameof(LogOptions.DbEnabled)}") ?? config.GetValue(nameof(ConfigFileProvider.LogDbEnabled), true);
 
             var urls = new List<string> { BuildUrl("http", bindAddress, port) };
 
@@ -152,6 +162,15 @@ namespace NzbDrone.Host
                         .AddNzbDroneLogger()
                         .AddDatabase()
                         .AddStartupContext(context);
+
+                    if (logDbEnabled)
+                    {
+                        c.AddLogDatabase();
+                    }
+                    else
+                    {
+                        c.AddDummyLogDatabase();
+                    }
                 })
                 .ConfigureServices(services =>
                 {

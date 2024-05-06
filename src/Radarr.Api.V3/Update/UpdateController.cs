@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Update;
 using NzbDrone.Core.Update.History;
 using Radarr.Http;
@@ -13,11 +14,13 @@ namespace Radarr.Api.V3.Update
     {
         private readonly IRecentUpdateProvider _recentUpdateProvider;
         private readonly IUpdateHistoryService _updateHistoryService;
+        private readonly IConfigFileProvider _configFileProvider;
 
-        public UpdateController(IRecentUpdateProvider recentUpdateProvider, IUpdateHistoryService updateHistoryService)
+        public UpdateController(IRecentUpdateProvider recentUpdateProvider, IUpdateHistoryService updateHistoryService, IConfigFileProvider configFileProvider)
         {
             _recentUpdateProvider = recentUpdateProvider;
             _updateHistoryService = updateHistoryService;
+            _configFileProvider = configFileProvider;
         }
 
         [HttpGet]
@@ -42,6 +45,11 @@ namespace Radarr.Api.V3.Update
                 if (installed != null)
                 {
                     installed.Installed = true;
+                }
+
+                if (!_configFileProvider.LogDbEnabled)
+                {
+                    return resources;
                 }
 
                 var installDates = _updateHistoryService.InstalledSince(resources.Last().ReleaseDate)
