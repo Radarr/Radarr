@@ -52,10 +52,9 @@ namespace Radarr.Api.V3.Update
                     return resources;
                 }
 
-                var updateHistory = _updateHistoryService.InstalledSince(resources.Last().ReleaseDate);
-                var installDates = updateHistory
-                                                                    .DistinctBy(v => v.Version)
-                                                                    .ToDictionary(v => v.Version);
+                var installDates = _updateHistoryService.InstalledSince(resources.Last().ReleaseDate)
+                                                        .DistinctBy(v => v.Version)
+                                                        .ToDictionary(v => v.Version);
 
                 foreach (var resource in resources)
                 {
