@@ -182,6 +182,7 @@ namespace Radarr.Api.V3.Collections
                         movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
                         var isExcluded = listExclusions.Any(e => e.TmdbId == movie.TmdbId);
+                        movieResource.IsExcluded = isExcluded;
 
                         if (!existingMoviesTmdbIds.Contains(movie.TmdbId) && !isExcluded)
                         {
@@ -215,6 +216,7 @@ namespace Radarr.Api.V3.Collections
                 movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
                 var isExcluded = listExclusions.Any(e => e.TmdbId == movie.TmdbId);
+                movieResource.IsExcluded = isExcluded;
 
                 if (!existingMoviesTmdbIds.Contains(movie.TmdbId) && !isExcluded)
                 {

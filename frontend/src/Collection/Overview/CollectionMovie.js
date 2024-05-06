@@ -5,6 +5,7 @@ import MonitorToggleButton from 'Components/MonitorToggleButton';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MoviePoster from 'Movie/MoviePoster';
+import translate from 'Utilities/String/translate';
 import AddNewCollectionMovieModal from './../AddNewCollectionMovieModal';
 import styles from './CollectionMovie.css';
 
@@ -72,6 +73,7 @@ class CollectionMovie extends Component {
       isAvailable,
       movieFile,
       isExistingMovie,
+      isExcluded,
       posterWidth,
       posterHeight,
       detailedProgressBar,
@@ -105,6 +107,15 @@ class CollectionMovie extends Component {
                   onPress={onMonitorTogglePress}
                 />
               </div>
+          }
+
+          {
+            isExcluded ?
+              <div
+                className={styles.excluded}
+                title={translate('Excluded')}
+              /> :
+              null
           }
 
           <Link
@@ -189,6 +200,7 @@ CollectionMovie.propTypes = {
   posterHeight: PropTypes.number.isRequired,
   detailedProgressBar: PropTypes.bool.isRequired,
   isExistingMovie: PropTypes.bool,
+  isExcluded: PropTypes.bool,
   tmdbId: PropTypes.number.isRequired,
   imdbId: PropTypes.string,
   youTubeTrailerId: PropTypes.string,

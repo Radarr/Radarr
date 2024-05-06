@@ -6,6 +6,7 @@ interface CssExports {
   'content': string;
   'controls': string;
   'editorSelect': string;
+  'excluded': string;
   'externalLinks': string;
   'link': string;
   'monitorToggleButton': string;

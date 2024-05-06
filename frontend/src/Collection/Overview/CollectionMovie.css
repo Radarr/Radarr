@@ -115,3 +115,16 @@ $hoverScale: 1.05;
     color: var(--iconButtonHoverLightColor);
   }
 }
+
+.excluded {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 0;
+  height: 0;
+  border-width: 0 25px 25px 0;
+  border-style: solid;
+  border-color: transparent var(--dangerColor) transparent transparent;
+  color: var(--white);
+}
