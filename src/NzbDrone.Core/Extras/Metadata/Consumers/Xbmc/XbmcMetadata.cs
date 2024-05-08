@@ -294,7 +294,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                     if (movie.Tags.Any())
                     {
-                        var tags = _tagRepository.Get(movie.Tags);
+                        var tags = _tagRepository.GetTags(movie.Tags);
 
                         foreach (var tag in tags)
                         {
