@@ -12037,10 +12037,6 @@
             "$ref": "#/components/schemas/DownloadProtocol"
           },
           "indexerFlags": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
             "nullable": true
           },
           "movieId": {
