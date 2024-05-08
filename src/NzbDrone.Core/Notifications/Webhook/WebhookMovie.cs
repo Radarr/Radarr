@@ -16,13 +16,13 @@ namespace NzbDrone.Core.Notifications.Webhook
         public int TmdbId { get; set; }
         public string ImdbId { get; set; }
         public string Overview { get; set; }
-        public IEnumerable<string> Tags { get; set; }
+        public List<string> Tags { get; set; }
 
         public WebhookMovie()
         {
         }
 
-        public WebhookMovie(Movie movie)
+        public WebhookMovie(Movie movie, List<string> tags)
         {
             Id = movie.Id;
             Title = movie.Title;
@@ -32,10 +32,11 @@ namespace NzbDrone.Core.Notifications.Webhook
             TmdbId = movie.TmdbId;
             ImdbId = movie.ImdbId;
             Overview = movie.MovieMetadata.Value.Overview;
+            Tags = tags;
         }
 
-        public WebhookMovie(Movie movie, MovieFile movieFile)
-            : this(movie)
+        public WebhookMovie(Movie movie, MovieFile movieFile, List<string> tags)
+            : this(movie, tags)
         {
             FilePath = Path.Combine(movie.Path, movieFile.RelativePath);
         }
