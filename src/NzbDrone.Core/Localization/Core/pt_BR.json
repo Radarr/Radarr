@@ -81,7 +81,7 @@
     "Group": "Grupo",
     "GrabSelected": "Baixar Selecionado",
     "GrabReleaseMessageText": "O {appName} não conseguiu determinar para qual filme é este lançamento. O {appName} pode não conseguir importar automaticamente este lançamento. Deseja obter \"{0}\"?",
-    "GrabRelease": "Obter lançamento",
+    "GrabRelease": "Baixar Lançamento",
     "Grabbed": "Obtido",
     "Grab": "Obter",
     "GoToInterp": "Ir para {0}",
@@ -1199,14 +1199,14 @@
     "Default": "Padrão",
     "DownloadClientsLoadError": "Não foi possível carregar os clientes de download",
     "IMDbId": "Id do IMDb",
-    "ManualGrab": "Obter manualmente",
+    "ManualGrab": "Baixar Manualmente",
     "OverrideAndAddToDownloadQueue": "Substituir e adicionar à fila de download",
     "OverrideGrabModalTitle": "Substituir e Baixar - {title}",
     "OverrideGrabNoLanguage": "Pelo menos um idioma deve ser selecionado",
     "OverrideGrabNoMovie": "O filme deve ser selecionado",
     "OverrideGrabNoQuality": "A qualidade deve ser selecionada",
     "Rejections": "Rejeições",
-    "SelectDownloadClientModalTitle": "{modalTitle} - Selecione o Cliente de Download",
+    "SelectDownloadClientModalTitle": "{modalTitle} - Selecionar Cliente de Download",
     "DeleteSelectedMovieFilesHelpText": "Tem certeza de que deseja excluir os arquivos de filme selecionados?",
     "False": "Falso",
     "InteractiveImportLoadError": "Não foi possível carregar itens de importação manual",
@@ -1754,5 +1754,6 @@
     "IndexerSettingsMultiLanguageRelease": "Multi Idiomas",
     "EditionFootNote": "Opcionalmente, controle o truncamento para um número máximo de bytes, incluindo reticências (`...`). Truncar do final (por exemplo, `{Edition Tags:30}`) ou do início (por exemplo, `{Edition Tags:-30}`) é suportado.",
     "MovieFootNote": "Opcionalmente, controle o truncamento para um número máximo de bytes, incluindo reticências (`...`). Truncar do final (por exemplo, `{Movie Title:30}`) ou do início (por exemplo, `{Movie Title:-30}`) é suportado.",
-    "ReleaseGroupFootNote": "Opcionalmente, controle o truncamento para um número máximo de bytes, incluindo reticências (`...`). Truncar do final (por exemplo, `{Release Group:30}`) ou do início (por exemplo, `{Release Group:-30}`) é suportado.`)."
+    "ReleaseGroupFootNote": "Opcionalmente, controle o truncamento para um número máximo de bytes, incluindo reticências (`...`). Truncar do final (por exemplo, `{Release Group:30}`) ou do início (por exemplo, `{Release Group:-30}`) é suportado.`).",
+    "DownloadClientQbittorrentTorrentStateMissingFiles": "qBittorrent está relatando arquivos perdidos"
 }

@@ -1754,5 +1754,6 @@
     "WantMoreControlAddACustomFormat": "Hangi indirmelerin tercih edileceği konusunda daha fazla kontrole mi ihtiyacınız var? Bir [Özel Format](/settings/customformats) ekleyin",
     "ThemeHelpText": "Uygulama Kullanıcı Arayüzü Temasını Değiştirin, 'Otomatik' Teması, Açık veya Koyu modu ayarlamak için İşletim Sistemi Temanızı kullanacaktır. Theme.Park'tan ilham alındı",
     "Yes": "Evet",
-    "Repack": "Yeniden paketle"
+    "Repack": "Yeniden paketle",
+    "DownloadClientQbittorrentTorrentStateMissingFiles": "qBittorrent eksik dosya raporluyor"
 }
