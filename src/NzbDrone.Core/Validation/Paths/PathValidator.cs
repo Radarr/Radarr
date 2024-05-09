@@ -19,14 +19,9 @@ namespace NzbDrone.Core.Validation.Paths
 
         protected override bool IsValid(PropertyValidatorContext context)
         {
-            if (context.PropertyValue == null)
-            {
-                return false;
-            }
+            context.MessageFormatter.AppendArgument("path", context.PropertyValue?.ToString());
 
-            context.MessageFormatter.AppendArgument("path", context.PropertyValue.ToString());
-
-            return context.PropertyValue.ToString().IsPathValid(PathValidationType.CurrentOs);
+            return context.PropertyValue != null && context.PropertyValue.ToString().IsPathValid(PathValidationType.CurrentOs);
         }
     }
 }

@@ -12,13 +12,18 @@ namespace Radarr.Api.V3.ImportLists
         public static readonly ImportListResourceMapper ResourceMapper = new ();
         public static readonly ImportListBulkResourceMapper BulkResourceMapper = new ();
 
-        public ImportListController(IImportListFactory importListFactory, QualityProfileExistsValidator qualityProfileExistsValidator)
+        public ImportListController(IImportListFactory importListFactory, RootFolderExistsValidator rootFolderExistsValidator, QualityProfileExistsValidator qualityProfileExistsValidator)
             : base(importListFactory, "importlist", ResourceMapper, BulkResourceMapper)
         {
-            SharedValidator.RuleFor(c => c.RootFolderPath).IsValidPath();
             SharedValidator.RuleFor(c => c.MinimumAvailability).NotNull();
-            SharedValidator.RuleFor(c => c.QualityProfileId).ValidId();
-            SharedValidator.RuleFor(c => c.QualityProfileId).SetValidator(qualityProfileExistsValidator);
+
+            SharedValidator.RuleFor(c => c.RootFolderPath).Cascade(CascadeMode.Stop)
+                .IsValidPath()
+                .SetValidator(rootFolderExistsValidator);
+
+            SharedValidator.RuleFor(c => c.QualityProfileId).Cascade(CascadeMode.Stop)
+                .ValidId()
+                .SetValidator(qualityProfileExistsValidator);
         }
     }
 }

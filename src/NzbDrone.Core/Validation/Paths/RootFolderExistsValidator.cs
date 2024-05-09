@@ -4,27 +4,22 @@ using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.Validation.Paths
 {
-    public class RootFolderValidator : PropertyValidator
+    public class RootFolderExistsValidator : PropertyValidator
     {
         private readonly IRootFolderService _rootFolderService;
 
-        public RootFolderValidator(IRootFolderService rootFolderService)
+        public RootFolderExistsValidator(IRootFolderService rootFolderService)
         {
             _rootFolderService = rootFolderService;
         }
 
-        protected override string GetDefaultMessageTemplate() => "Path '{path}' is already configured as a root folder";
+        protected override string GetDefaultMessageTemplate() => "Root folder '{path}' does not exist";
 
         protected override bool IsValid(PropertyValidatorContext context)
         {
             context.MessageFormatter.AppendArgument("path", context.PropertyValue?.ToString());
 
-            if (context.PropertyValue == null)
-            {
-                return true;
-            }
-
-            return !_rootFolderService.All().Exists(r => r.Path.PathEquals(context.PropertyValue.ToString()));
+            return context.PropertyValue == null || _rootFolderService.All().Exists(r => r.Path.PathEquals(context.PropertyValue.ToString()));
         }
     }
 }
