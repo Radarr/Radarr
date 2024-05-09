@@ -1138,7 +1138,7 @@
     "AddImportListImplementation": "Añadir lista de importación - {implementationName}",
     "AddIndexerImplementation": "Agregar Indexador - {implementationName}",
     "DeleteQualityProfileMessageText": "¿Seguro que quieres eliminar el perfil de calidad {name}?",
-    "Default": "Por defecto",
+    "Default": "Predeterminado",
     "BlocklistLoadError": "No se ha podido cargar la lista de bloqueos",
     "BlocklistReleaseHelpText": "Bloquea este lanzamiento de volver a ser descargado por {appName} vía RSS o búsqueda automática",
     "CustomFormatJson": "Formato JSON personalizado",
@@ -1486,7 +1486,7 @@
     "RestartRequiredToApplyChanges": "{appName} requiere reiniciar para aplicar cambios. ¿Quieres reiniciar ahora?",
     "RestartLater": "Reiniciaré más tarde",
     "OptionalName": "Nombre opcional",
-    "OverrideGrabModalTitle": "Sobrescribe y captura - {title}",
+    "OverrideGrabModalTitle": "Sobrescribir y capturar - {title}",
     "Period": "Periodo",
     "PreferProtocol": "Preferir {preferredProtocol}",
     "NotificationsSlackSettingsChannelHelpText": "Sobrescribe el canal predeterminado para el webhook entrante (#otro-canal)",
@@ -1754,5 +1754,6 @@
     "RegularExpressionsTutorialLink": "Más detalles de las expresiones regulares pueden ser encontrados [aquí](https://www.regular-expressions.info/tutorial.html).",
     "ReleaseGroupFootNote": "Opcionalmente controla el truncamiento hasta un número máximo de bytes, incluyendo elipsis (`...`). Está soportado truncar tanto desde el final (p. ej. `{Grupo de lanzamiento:30}`) como desde el principio (p. ej. `{Grupo de lanzamiento:-30}`).",
     "EditionFootNote": "Opcionalmente controla el truncamiento hasta un número máximo de bytes, incluyendo elipsis (`...`). Está soportado truncar tanto desde el final (p. ej. `{Etiquetas de edición:30}`) como desde el principio (p. ej. `{Etiquetas de edición:-30}`).",
-    "MovieFootNote": "Opcionalmente controla el truncamiento hasta un número máximo de bytes, incluyendo elipsis (`...`). Está soportado truncar tanto desde el final (p. ej. `{Título de película:30}`) como desde el principio (p. ej. `{Título de película:-30}`)."
+    "MovieFootNote": "Opcionalmente controla el truncamiento hasta un número máximo de bytes, incluyendo elipsis (`...`). Está soportado truncar tanto desde el final (p. ej. `{Título de película:30}`) como desde el principio (p. ej. `{Título de película:-30}`).",
+    "DownloadClientQbittorrentTorrentStateMissingFiles": "qBittorrent está reportando archivos faltantes"
 }
