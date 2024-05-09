@@ -138,6 +138,7 @@
   "BlocklistAndSearch": "Blocklist and Search",
   "BlocklistAndSearchHint": "Start a search for a replacement after blocklisting",
   "BlocklistAndSearchMultipleHint": "Start searches for replacements after blocklisting",
+  "BlocklistFilterHasNoItems": "Selected blocklist filter contains no items",
   "BlocklistLoadError": "Unable to load blocklist",
   "BlocklistMultipleOnlyHint": "Blocklist without searching for replacements",
   "BlocklistOnly": "Blocklist Only",

@@ -48,14 +48,30 @@ namespace NzbDrone.Core.Blocklisting
             Delete(x => movieIds.Contains(x.MovieId));
         }
 
-        protected override SqlBuilder PagedBuilder() => new SqlBuilder(_database.DatabaseType)
-            .Join<Blocklist, Movie>((b, m) => b.MovieId == m.Id)
-            .LeftJoin<Movie, MovieMetadata>((m, mm) => m.MovieMetadataId == mm.Id);
+        public override PagingSpec<Blocklist> GetPaged(PagingSpec<Blocklist> pagingSpec)
+        {
+            pagingSpec.Records = GetPagedRecords(PagedBuilder(), pagingSpec, PagedQuery);
 
-        protected override IEnumerable<Blocklist> PagedQuery(SqlBuilder sql) => _database.QueryJoined<Blocklist, Movie>(sql, (bl, movie) =>
-                    {
-                        bl.Movie = movie;
-                        return bl;
-                    });
+            var countTemplate = $"SELECT COUNT(*) FROM (SELECT /**select**/ FROM \"{TableMapping.Mapper.TableNameMapping(typeof(Blocklist))}\" /**join**/ /**innerjoin**/ /**leftjoin**/ /**where**/ /**groupby**/ /**having**/) AS \"Inner\"";
+            pagingSpec.TotalRecords = GetPagedRecordCount(PagedBuilder().Select(typeof(Blocklist)), pagingSpec, countTemplate);
+
+            return pagingSpec;
+        }
+
+        protected override SqlBuilder PagedBuilder()
+        {
+            var builder = Builder()
+                .Join<Blocklist, Movie>((b, m) => b.MovieId == m.Id)
+                .LeftJoin<Movie, MovieMetadata>((m, mm) => m.MovieMetadataId == mm.Id);
+
+            return builder;
+        }
+
+        protected override IEnumerable<Blocklist> PagedQuery(SqlBuilder builder) =>
+            _database.QueryJoined<Blocklist, Movie>(builder, (blocklist, movie) =>
+            {
+                blocklist.Movie = movie;
+                return blocklist;
+            });
     }
 }
