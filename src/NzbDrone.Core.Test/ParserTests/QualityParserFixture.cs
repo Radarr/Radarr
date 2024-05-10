@@ -116,6 +116,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.S01E05.480p.BluRay.DD5.1.x264-HiSD", false)]
         [TestCase("Movie.Name.S03E01-06.DUAL.BDRip.AC3.-HELLYWOOD", false)]
         [TestCase("Movie.Name.2011.LIMITED.BluRay.360p.H264-20-40", false)]
+        [TestCase("Movie.Name.2011.BluRay.480i.DD.2.0.AVC.REMUX-FraMeSToR", false)]
+        [TestCase("Movie.Name.2011.480i.DD.2.0.AVC.REMUX-FraMeSToR", false)]
         public void should_parse_bluray480p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, QualitySource.BLURAY, proper, Resolution.R480p);
@@ -256,6 +258,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name2017.720p.MBluRay.x264-TREBLE.mkv", false)]
         [TestCase("Movie.Name.2.Parte.2.ITA-ENG.720p.BDMux.DD5.1.x264-DarkSideMux", false)]
         [TestCase("Movie.Hunter.2018.720p.Blu-ray.Remux.AVC.FLAC.2.0-SiCFoI", false)]
+        [TestCase("Movie.Name.2011.720p.DD.2.0.AVC.REMUX-FraMeSToR", false)]
         public void should_parse_bluray720p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, QualitySource.BLURAY, proper, Resolution.R720p);
@@ -324,6 +327,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Title 2022 (BDRemux 1080p HEVC FLAC) [Netaro]")]
         [TestCase("[Vodes] Movie Title - Other Title (2020) [BDRemux 1080p HEVC Dual-Audio]")]
         [TestCase("This.Wonderful.Movie.1991.German.ML.1080p.BluRay.AVC-GeRMaNSCeNEGRoUP")]
+        [TestCase("Movie.Name.2011.1080p.DD.2.0.AVC.REMUX-FraMeSToR")]
         public void should_parse_remux1080p_quality(string title)
         {
             ParseAndVerifyQuality(title, QualitySource.BLURAY, false, Resolution.R1080p, Modifier.REMUX);
@@ -337,6 +341,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.2020.German.UHDBD.2160p.HDR10.HEVC.EAC3.DL.Remux-pmHD.mkv")]
         [TestCase("Movie Name (2021) [Remux-2160p x265 HDR 10-BIT DTS-HD MA 7.1]-FraMeSToR.mkv")]
         [TestCase("This.Wonderful.Movie.1991.German.ML.2160p.BluRay.HEVC-GeRMaNSCeNEGRoUP")]
+        [TestCase("Movie.Name.2011.2160p.DD.2.0.AVC.REMUX-FraMeSToR")]
         public void should_parse_remux2160p_quality(string title)
         {
             ParseAndVerifyQuality(title, QualitySource.BLURAY, false, Resolution.R2160p, Modifier.REMUX);
