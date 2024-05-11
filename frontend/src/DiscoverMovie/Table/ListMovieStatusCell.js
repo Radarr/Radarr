@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from 'Components/Icon';
 import VirtualTableRowCell from 'Components/Table/Cells/TableRowCell';
-import { getMovieStatusDetails } from 'Movie/MovieStatus';
+import getMovieStatusDetails from 'Movie/getMovieStatusDetails';
 import styles from './ListMovieStatusCell.css';
 
 function ListMovieStatusCell(props) {

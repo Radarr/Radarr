@@ -4,7 +4,7 @@ import Icon from 'Components/Icon';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
 import VirtualTableRowCell from 'Components/Table/Cells/TableRowCell';
 import { icons } from 'Helpers/Props';
-import { getMovieStatusDetails } from 'Movie/MovieStatus';
+import getMovieStatusDetails from 'Movie/getMovieStatusDetails';
 import { toggleMovieMonitored } from 'Store/Actions/movieActions';
 import translate from 'Utilities/String/translate';
 import styles from './MovieStatusCell.css';
