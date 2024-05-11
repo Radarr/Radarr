@@ -15,17 +15,29 @@ class DiscoverMovieTableOptions extends Component {
     super(props, context);
 
     this.state = {
-      includeRecommendations: props.includeRecommendations
+      includeRecommendations: props.includeRecommendations,
+      includeTrending: props.includeTrending,
+      includePopular: props.includePopular
     };
   }
 
   componentDidUpdate(prevProps) {
-    const { includeRecommendations } = this.props;
+    const {
+      includeRecommendations,
+      includeTrending,
+      includePopular
+    } = this.props;
 
     if (includeRecommendations !== prevProps.includeRecommendations) {
-      this.setState({
-        includeRecommendations
-      });
+      this.setState({ includeRecommendations });
+    }
+
+    if (includeTrending !== prevProps.includeTrending) {
+      this.setState({ includeTrending });
+    }
+
+    if (includePopular !== prevProps.includePopular) {
+      this.setState({ includePopular });
     }
   }
 
@@ -47,27 +59,57 @@ class DiscoverMovieTableOptions extends Component {
 
   render() {
     const {
-      includeRecommendations
+      includeRecommendations,
+      includeTrending,
+      includePopular
     } = this.state;
 
     return (
-      <FormGroup>
-        <FormLabel>{translate('IncludeRadarrRecommendations')}</FormLabel>
+      <>
+        <FormGroup>
+          <FormLabel>{translate('IncludeRadarrRecommendations')}</FormLabel>
 
-        <FormInputGroup
-          type={inputTypes.CHECK}
-          name="includeRecommendations"
-          value={includeRecommendations}
-          helpText={translate('IncludeRecommendationsHelpText')}
-          onChange={this.onChangeOption}
-        />
-      </FormGroup>
+          <FormInputGroup
+            type={inputTypes.CHECK}
+            name="includeRecommendations"
+            value={includeRecommendations}
+            helpText={translate('IncludeRecommendationsHelpText')}
+            onChange={this.onChangeOption}
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <FormLabel>{translate('IncludeTrending')}</FormLabel>
+
+          <FormInputGroup
+            type={inputTypes.CHECK}
+            name="includeTrending"
+            value={includeTrending}
+            helpText={translate('IncludeTrendingMoviesHelpText')}
+            onChange={this.onChangeOption}
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <FormLabel>{translate('IncludePopular')}</FormLabel>
+
+          <FormInputGroup
+            type={inputTypes.CHECK}
+            name="includePopular"
+            value={includePopular}
+            helpText={translate('IncludePopularMoviesHelpText')}
+            onChange={this.onChangeOption}
+          />
+        </FormGroup>
+      </>
     );
   }
 }
 
 DiscoverMovieTableOptions.propTypes = {
   includeRecommendations: PropTypes.bool.isRequired,
+  includeTrending: PropTypes.bool.isRequired,
+  includePopular: PropTypes.bool.isRequired,
   onChangeOption: PropTypes.func.isRequired
 };
 

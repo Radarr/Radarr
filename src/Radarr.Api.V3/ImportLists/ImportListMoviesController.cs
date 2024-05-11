@@ -64,28 +64,31 @@ namespace Radarr.Api.V3.ImportLists
 
             if (includeRecommendations)
             {
-                var mapped = new List<Movie>();
+                var recommendedResults = _movieService.GetRecommendedTmdbIds();
 
-                var results = _movieService.GetRecommendedTmdbIds();
-
-                if (results.Count > 0)
+                if (recommendedResults.Count > 0)
                 {
-                    mapped = _movieInfo.GetBulkMovieInfo(results).Select(m => new Movie { MovieMetadata = m }).ToList();
-                }
+                    var mapped = _movieInfo.GetBulkMovieInfo(recommendedResults).Select(m => new Movie { MovieMetadata = m }).ToList();
 
-                realResults.AddRange(MapToResource(mapped.Where(x => x != null), movieLanguage));
-                realResults.ForEach(x => x.IsRecommendation = true);
+                    realResults.AddRange(MapToResource(mapped.Where(x => x != null), movieLanguage, isRecommendation: true));
+                }
             }
 
-            // Add TMDB Trending
-            var trendingResults = _movieInfo.GetTrendingMovies();
+            if (includeTrending)
+            {
+                // Add TMDB Trending
+                var trendingResults = _movieInfo.GetTrendingMovies();
 
-            realResults.AddRange(MapToResource(trendingResults.Select(m => new Movie { MovieMetadata = m }).Where(x => x != null), movieLanguage, true));
+                realResults.AddRange(MapToResource(trendingResults.Select(m => new Movie { MovieMetadata = m }).Where(x => x != null), movieLanguage, isTrending: true));
+            }
 
-            // Add TMDB Popular
-            var popularResults = _movieInfo.GetPopularMovies();
+            if (includePopular)
+            {
+                // Add TMDB Popular
+                var popularResults = _movieInfo.GetPopularMovies();
 
-            realResults.AddRange(MapToResource(popularResults.Select(m => new Movie { MovieMetadata = m }).Where(x => x != null), movieLanguage, false, true));
+                realResults.AddRange(MapToResource(popularResults.Select(m => new Movie { MovieMetadata = m }).Where(x => x != null), movieLanguage, isPopular: true));
+            }
 
             // Add List Movies
             var listMovies = MapToResource(_listMovieService.GetAllForLists(_importListFactory.Enabled().Select(x => x.Definition.Id).ToList()), movieLanguage).ToList();
@@ -120,7 +123,7 @@ namespace Radarr.Api.V3.ImportLists
             return _addMovieService.AddMovies(newMovies, true).ToResource(0);
         }
 
-        private IEnumerable<ImportListMoviesResource> MapToResource(IEnumerable<Movie> movies, Language language, bool isTrending = false, bool isPopular = false)
+        private IEnumerable<ImportListMoviesResource> MapToResource(IEnumerable<Movie> movies, Language language, bool isRecommendation = false, bool isTrending = false, bool isPopular = false)
         {
             // Avoid calling for naming spec on every movie in filenamebuilder
             var namingConfig = _namingService.GetConfig();
@@ -140,6 +143,7 @@ namespace Radarr.Api.V3.ImportLists
                 resource.Title = translation?.Title ?? resource.Title;
                 resource.Overview = translation?.Overview ?? resource.Overview;
                 resource.Folder = _fileNameBuilder.GetMovieFolder(currentMovie, namingConfig);
+                resource.IsRecommendation = isRecommendation;
                 resource.IsTrending = isTrending;
                 resource.IsPopular = isPopular;
 

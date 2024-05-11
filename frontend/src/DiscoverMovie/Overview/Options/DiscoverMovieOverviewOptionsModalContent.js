@@ -49,7 +49,9 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
       showRatings: props.showRatings,
       showYear: props.showYear,
       showGenres: props.showGenres,
-      includeRecommendations: props.includeRecommendations
+      includeRecommendations: props.includeRecommendations,
+      includeTrending: props.includeTrending,
+      includePopular: props.includePopular
     };
   }
 
@@ -61,7 +63,9 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
       showRatings,
       showCertification,
       showGenres,
-      includeRecommendations
+      includeRecommendations,
+      includeTrending,
+      includePopular
     } = this.props;
 
     const state = {};
@@ -92,6 +96,14 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
 
     if (includeRecommendations !== prevProps.includeRecommendations) {
       state.includeRecommendations = includeRecommendations;
+    }
+
+    if (includeTrending !== prevProps.includeTrending) {
+      state.includeTrending = includeTrending;
+    }
+
+    if (includePopular !== prevProps.includePopular) {
+      state.includePopular = includePopular;
     }
 
     if (!_.isEmpty(state)) {
@@ -135,24 +147,51 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
       showRatings,
       showYear,
       showGenres,
-      includeRecommendations
+      includeRecommendations,
+      includeTrending,
+      includePopular
     } = this.state;
 
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Overview Options
+          {translate('OverviewOptions')}
         </ModalHeader>
 
         <ModalBody>
           <Form>
             <FormGroup>
               <FormLabel>{translate('IncludeRadarrRecommendations')}</FormLabel>
+
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="includeRecommendations"
                 value={includeRecommendations}
                 helpText={translate('IncludeRecommendationsHelpText')}
+                onChange={this.onChangeOption}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>{translate('IncludeTrending')}</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="includeTrending"
+                value={includeTrending}
+                helpText={translate('IncludeTrendingMoviesHelpText')}
+                onChange={this.onChangeOption}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>{translate('IncludePopular')}</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="includePopular"
+                value={includePopular}
+                helpText={translate('IncludePopularMoviesHelpText')}
                 onChange={this.onChangeOption}
               />
             </FormGroup>
@@ -246,6 +285,8 @@ DiscoverMovieOverviewOptionsModalContent.propTypes = {
   showCertification: PropTypes.bool.isRequired,
   showGenres: PropTypes.bool.isRequired,
   includeRecommendations: PropTypes.bool.isRequired,
+  includeTrending: PropTypes.bool.isRequired,
+  includePopular: PropTypes.bool.isRequired,
   onChangeOverviewOption: PropTypes.func.isRequired,
   onChangeOption: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired

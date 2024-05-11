@@ -42,7 +42,9 @@ export const defaultState = {
   view: 'overview',
 
   options: {
-    includeRecommendations: true
+    includeRecommendations: true,
+    includeTrending: true,
+    includePopular: true
   },
 
   defaults: {
@@ -583,10 +585,14 @@ export const actionHandlers = handleThunks({
       ...otherPayload
     } = payload;
 
-    const includeRecommendations = getState().discoverMovie.options.includeRecommendations;
+    const {
+      includeRecommendations = false,
+      includeTrending = false,
+      includePopular = false
+    } = getState().discoverMovie.options;
 
     const promise = createAjaxRequest({
-      url: `/importlist/movie?includeRecommendations=${includeRecommendations}`,
+      url: `/importlist/movie?includeRecommendations=${includeRecommendations}&includeTrending=${includeTrending}&includePopular=${includePopular}`,
       data: otherPayload,
       traditional: true
     }).request;

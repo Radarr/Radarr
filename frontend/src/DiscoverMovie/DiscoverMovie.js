@@ -75,8 +75,18 @@ class DiscoverMovie extends Component {
     const {
       items,
       sortKey,
-      sortDirection
+      sortDirection,
+      includeRecommendations,
+      includeTrending,
+      includePopular
     } = this.props;
+
+    if (includeRecommendations !== prevProps.includeRecommendations ||
+      includeTrending !== prevProps.includeTrending ||
+      includePopular !== prevProps.includePopular
+    ) {
+      this.props.dispatchFetchListMovies();
+    }
 
     if (sortKey !== prevProps.sortKey ||
         sortDirection !== prevProps.sortDirection ||
@@ -443,6 +453,9 @@ DiscoverMovie.propTypes = {
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
   view: PropTypes.string.isRequired,
+  includeRecommendations: PropTypes.bool.isRequired,
+  includeTrending: PropTypes.bool.isRequired,
+  includePopular: PropTypes.bool.isRequired,
   isSyncingLists: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   onSortSelect: PropTypes.func.isRequired,
@@ -451,7 +464,8 @@ DiscoverMovie.propTypes = {
   onScroll: PropTypes.func.isRequired,
   onAddMoviesPress: PropTypes.func.isRequired,
   onExcludeMoviesPress: PropTypes.func.isRequired,
-  onImportListSyncPress: PropTypes.func.isRequired
+  onImportListSyncPress: PropTypes.func.isRequired,
+  dispatchFetchListMovies: PropTypes.func.isRequired
 };
 
 export default DiscoverMovie;

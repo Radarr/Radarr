@@ -17,15 +17,18 @@ import DiscoverMovie from './DiscoverMovie';
 
 function createMapStateToProps() {
   return createSelector(
+    (state) => state.discoverMovie,
     createDiscoverMovieClientSideCollectionItemsSelector('discoverMovie'),
     createCommandExecutingSelector(commandNames.IMPORT_LIST_SYNC),
     createDimensionsSelector(),
     (
+      discoverMovie,
       movies,
       isSyncingLists,
       dimensionsState
     ) => {
       return {
+        ...discoverMovie.options,
         ...movies,
         isSyncingLists,
         isSmallScreen: dimensionsState.isSmallScreen
