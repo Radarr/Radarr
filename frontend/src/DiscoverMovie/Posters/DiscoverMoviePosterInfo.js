@@ -3,7 +3,7 @@ import React from 'react';
 import Icon from 'Components/Icon';
 import TmdbRating from 'Components/TmdbRating';
 import { icons } from 'Helpers/Props';
-import { getMovieStatusDetails } from 'Movie/MovieStatus';
+import getMovieStatusDetails from 'Movie/getMovieStatusDetails';
 import formatRuntime from 'Utilities/Date/formatRuntime';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import translate from 'Utilities/String/translate';
