@@ -66,6 +66,7 @@ namespace Radarr.Api.V3.Collections
         }
 
         [HttpGet]
+        [Produces("application/json")]
         public List<CollectionResource> GetCollections(int? tmdbId)
         {
             var collectionResources = new List<CollectionResource>();
@@ -181,10 +182,13 @@ namespace Radarr.Api.V3.Collections
                         var movieResource = movie.ToResource(translation);
                         movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
+                        var isExisting = existingMoviesTmdbIds.Contains(movie.TmdbId);
+                        movieResource.IsExisting = isExisting;
+
                         var isExcluded = listExclusions.Any(e => e.TmdbId == movie.TmdbId);
                         movieResource.IsExcluded = isExcluded;
 
-                        if (!existingMoviesTmdbIds.Contains(movie.TmdbId) && !isExcluded)
+                        if (!isExisting && !isExcluded)
                         {
                             resource.MissingMovies++;
                         }
@@ -215,10 +219,13 @@ namespace Radarr.Api.V3.Collections
                 var movieResource = movie.ToResource(translation);
                 movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
+                var isExisting = existingMoviesTmdbIds.Contains(movie.TmdbId);
+                movieResource.IsExisting = isExisting;
+
                 var isExcluded = listExclusions.Any(e => e.TmdbId == movie.TmdbId);
                 movieResource.IsExcluded = isExcluded;
 
-                if (!existingMoviesTmdbIds.Contains(movie.TmdbId) && !isExcluded)
+                if (!isExisting && !isExcluded)
                 {
                     resource.MissingMovies++;
                 }
