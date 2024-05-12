@@ -828,23 +828,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CollectionResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CollectionResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -8597,6 +8581,9 @@
           "folder": {
             "type": "string",
             "nullable": true
+          },
+          "isExisting": {
+            "type": "boolean"
           },
           "isExcluded": {
             "type": "boolean"
