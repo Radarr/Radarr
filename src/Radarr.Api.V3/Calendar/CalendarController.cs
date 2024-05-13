@@ -37,7 +37,7 @@ namespace Radarr.Api.V3.Calendar
         }
 
         [NonAction]
-        protected override MovieResource GetResourceById(int id)
+        public override ActionResult<MovieResource> GetResourceByIdWithErrorHandler(int id)
         {
             throw new NotImplementedException();
         }
