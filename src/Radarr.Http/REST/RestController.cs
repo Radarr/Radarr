@@ -40,7 +40,7 @@ namespace Radarr.Http.REST
         }
 
         [RestGetById]
-        public ActionResult<TResource> GetResourceByIdWithErrorHandler(int id)
+        public virtual ActionResult<TResource> GetResourceByIdWithErrorHandler(int id)
         {
             try
             {

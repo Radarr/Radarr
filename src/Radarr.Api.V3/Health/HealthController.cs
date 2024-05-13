@@ -23,6 +23,11 @@ namespace Radarr.Api.V3.Health
         }
 
         [NonAction]
+        public override ActionResult<HealthResource> GetResourceByIdWithErrorHandler(int id)
+        {
+            return base.GetResourceByIdWithErrorHandler(id);
+        }
+
         protected override HealthResource GetResourceById(int id)
         {
             throw new NotImplementedException();

@@ -31,6 +31,11 @@ namespace Radarr.Api.V3.Queue
         }
 
         [NonAction]
+        public override ActionResult<QueueStatusResource> GetResourceByIdWithErrorHandler(int id)
+        {
+            return base.GetResourceByIdWithErrorHandler(id);
+        }
+
         protected override QueueStatusResource GetResourceById(int id)
         {
             throw new NotImplementedException();

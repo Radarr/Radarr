@@ -17,6 +17,11 @@ namespace Radarr.Api.V3.Indexers
         }
 
         [NonAction]
+        public override ActionResult<ReleaseResource> GetResourceByIdWithErrorHandler(int id)
+        {
+            return base.GetResourceByIdWithErrorHandler(id);
+        }
+
         protected override ReleaseResource GetResourceById(int id)
         {
             throw new NotImplementedException();
