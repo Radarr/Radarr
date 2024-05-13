@@ -593,6 +593,7 @@
   "ExistsInLibrary": "Exists in Library",
   "ExportCustomFormat": "Export Custom Format",
   "Extension": "Extension",
+  "External": "External",
   "ExternalUpdater": "{appName} is configured to use an external update mechanism",
   "ExtraFileExtensionsHelpText": "Comma separated list of extra files to import (.nfo will be imported as .nfo-orig)",
   "ExtraFileExtensionsHelpTextsExamples": "Examples: '.sub, .nfo' or 'sub,nfo'",
