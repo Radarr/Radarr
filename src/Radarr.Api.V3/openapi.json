@@ -721,46 +721,6 @@
         }
       }
     },
-    "/api/v3/calendar/{id}": {
-      "get": {
-        "tags": [
-          "Calendar"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieResource"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieResource"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieResource"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/feed/v3/calendar/radarr.ics": {
       "get": {
         "tags": [
@@ -1495,6 +1455,67 @@
         "responses": {
           "200": {
             "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v3/wanted/cutoff": {
+      "get": {
+        "tags": [
+          "Cutoff"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "sortKey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/SortDirection"
+            }
+          },
+          {
+            "name": "monitored",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieResourcePagingResource"
+                }
+              }
+            }
           }
         }
       }
@@ -2344,46 +2365,6 @@
                   "items": {
                     "$ref": "#/components/schemas/HealthResource"
                   }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v3/health/{id}": {
-      "get": {
-        "tags": [
-          "Health"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthResource"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthResource"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthResource"
                 }
               }
             }
@@ -4725,6 +4706,67 @@
         }
       }
     },
+    "/api/v3/wanted/missing": {
+      "get": {
+        "tags": [
+          "Missing"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "sortKey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/SortDirection"
+            }
+          },
+          {
+            "name": "monitored",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieResourcePagingResource"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v3/movie": {
       "get": {
         "tags": [
@@ -5251,46 +5293,6 @@
         }
       }
     },
-    "/api/v3/movie/import/{id}": {
-      "get": {
-        "tags": [
-          "MovieImport"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieResource"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieResource"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieResource"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v3/movie/lookup/tmdb": {
       "get": {
         "tags": [
@@ -5351,46 +5353,6 @@
         "responses": {
           "200": {
             "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/v3/movie/lookup/{id}": {
-      "get": {
-        "tags": [
-          "MovieLookup"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieResource"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieResource"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieResource"
-                }
-              }
-            }
           }
         }
       }
@@ -6354,44 +6316,6 @@
             "description": "Success"
           }
         }
-      },
-      "get": {
-        "tags": [
-          "Queue"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueueResource"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueueResource"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueueResource"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/api/v3/queue/bulk": {
@@ -6665,90 +6589,10 @@
         }
       }
     },
-    "/api/v3/queue/details/{id}": {
-      "get": {
-        "tags": [
-          "QueueDetails"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueueResource"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueueResource"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueueResource"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v3/queue/status": {
       "get": {
         "tags": [
           "QueueStatus"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueueStatusResource"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueueStatusResource"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueueStatusResource"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v3/queue/status/{id}": {
-      "get": {
-        "tags": [
-          "QueueStatus"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
         ],
         "responses": {
           "200": {
@@ -6818,46 +6662,6 @@
                   "items": {
                     "$ref": "#/components/schemas/ReleaseResource"
                   }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v3/release/{id}": {
-      "get": {
-        "tags": [
-          "Release"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseResource"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseResource"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseResource"
                 }
               }
             }
@@ -7106,46 +6910,6 @@
                   "items": {
                     "$ref": "#/components/schemas/ReleaseResource"
                   }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v3/release/push/{id}": {
-      "get": {
-        "tags": [
-          "ReleasePush"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseResource"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseResource"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseResource"
                 }
               }
             }
@@ -10964,6 +10728,10 @@
             "type": "boolean",
             "nullable": true
           },
+          "movieFileId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "monitored": {
             "type": "boolean"
           },
@@ -11047,6 +10815,41 @@
           },
           "statistics": {
             "$ref": "#/components/schemas/MovieStatisticsResource"
+          },
+          "grabbed": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MovieResourcePagingResource": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sortKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortDirection": {
+            "$ref": "#/components/schemas/SortDirection"
+          },
+          "totalRecords": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MovieResource"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
