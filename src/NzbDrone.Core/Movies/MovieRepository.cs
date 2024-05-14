@@ -250,7 +250,8 @@ namespace NzbDrone.Core.Movies
 
         public SqlBuilder MoviesWithoutFilesBuilder() => Builder()
             .Where<Movie>(x => x.MovieFileId == 0)
-            .GroupBy<Movie>(e => e.Id);
+            .GroupBy<Movie>(m => m.Id)
+            .GroupBy<MovieMetadata>(m => m.Id);
 
         public PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec)
         {
@@ -263,7 +264,8 @@ namespace NzbDrone.Core.Movies
         public SqlBuilder MoviesWhereCutoffUnmetBuilder(List<QualitiesBelowCutoff> qualitiesBelowCutoff) => Builder()
             .Where<Movie>(x => x.MovieFileId != 0)
             .Where(BuildQualityCutoffWhereClause(qualitiesBelowCutoff))
-            .GroupBy<Movie>(e => e.Id);
+            .GroupBy<Movie>(m => m.Id)
+            .GroupBy<MovieMetadata>(m => m.Id);
 
         public PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
         {
