@@ -57,6 +57,8 @@ namespace NzbDrone.Automation.Test.PageModel
 
         public IWebElement ActivityNavIcon => Find(By.LinkText("Activity"));
 
+        public IWebElement WantedNavIcon => Find(By.LinkText("Wanted"));
+
         public IWebElement SettingNavIcon => Find(By.LinkText("Settings"));
 
         public IWebElement SystemNavIcon => Find(By.PartialLinkText("System"));
