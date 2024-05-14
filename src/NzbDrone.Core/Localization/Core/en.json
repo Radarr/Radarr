@@ -266,7 +266,7 @@
   "CustomFormatsSpecificationRegularExpressionHelpText": "Custom Format RegEx is Case Insensitive",
   "Cutoff": "Cutoff",
   "CutoffNotMet": "Cutoff Not Met",
-  "CutoffUnmet": "Cut-off Unmet",
+  "CutoffUnmet": "Cutoff Unmet",
   "CutoffUnmetLoadError": "Error loading cutoff unmet items",
   "CutoffUnmetNoItems": "No cutoff unmet items",
   "Dash": "Dash",
