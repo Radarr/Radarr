@@ -13,12 +13,9 @@
   flex: 0 0 70px;
 }
 
-.addImportExclusion {
+.footerButtons {
   display: flex;
   justify-content: flex-end;
   padding-right: 10px;
-}
-
-.addButton {
-  text-align: center;
+  gap: 10px;
 }

@@ -15,6 +15,7 @@ namespace NzbDrone.Core.ImportLists.ImportExclusions
         void RemoveExclusion(ImportExclusion exclusion);
         ImportExclusion GetById(int id);
         ImportExclusion Update(ImportExclusion exclusion);
+        void Purge();
     }
 
     public class ImportExclusionsService : IImportExclusionsService, IHandleAsync<MoviesDeletedEvent>
@@ -90,6 +91,11 @@ namespace NzbDrone.Core.ImportLists.ImportExclusions
                 .DistinctBy(x => x.TmdbId)
                 .Where(x => !existingExclusions.Contains(x.TmdbId))
                 .ToList();
+        }
+
+        public void Purge()
+        {
+            _exclusionRepository.Purge();
         }
     }
 }

@@ -4,6 +4,7 @@ import createRemoveItemHandler from 'Store/Actions/Creators/createRemoveItemHand
 import createSaveProviderHandler from 'Store/Actions/Creators/createSaveProviderHandler';
 import createSetSettingValueReducer from 'Store/Actions/Creators/Reducers/createSetSettingValueReducer';
 import { createThunk } from 'Store/thunks';
+import createPurgeHandler from '../Creators/createPurgeHandler';
 
 //
 // Variables
@@ -17,6 +18,7 @@ export const FETCH_IMPORT_EXCLUSIONS = 'settings/importExclusions/fetchImportExc
 export const SAVE_IMPORT_EXCLUSION = 'settings/importExclusions/saveImportExclusion';
 export const DELETE_IMPORT_EXCLUSION = 'settings/importExclusions/deleteImportExclusion';
 export const SET_IMPORT_EXCLUSION_VALUE = 'settings/importExclusions/setImportExclusionValue';
+export const PURGE_IMPORT_EXCLUSIONS = 'settings/importExclusions/purge';
 
 //
 // Action Creators
@@ -25,6 +27,8 @@ export const fetchImportExclusions = createThunk(FETCH_IMPORT_EXCLUSIONS);
 
 export const saveImportExclusion = createThunk(SAVE_IMPORT_EXCLUSION);
 export const deleteImportExclusion = createThunk(DELETE_IMPORT_EXCLUSION);
+
+export const purgeImportExclusions = createThunk(PURGE_IMPORT_EXCLUSIONS);
 
 export const setImportExclusionValue = createAction(SET_IMPORT_EXCLUSION_VALUE, (payload) => {
   return {
@@ -58,7 +62,8 @@ export default {
     [FETCH_IMPORT_EXCLUSIONS]: createFetchHandler(section, '/exclusions'),
 
     [SAVE_IMPORT_EXCLUSION]: createSaveProviderHandler(section, '/exclusions'),
-    [DELETE_IMPORT_EXCLUSION]: createRemoveItemHandler(section, '/exclusions')
+    [DELETE_IMPORT_EXCLUSION]: createRemoveItemHandler(section, '/exclusions'),
+    [PURGE_IMPORT_EXCLUSIONS]: createPurgeHandler(section, '/exclusions')
   },
 
   //

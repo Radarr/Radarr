@@ -3,8 +3,9 @@ import React, { Component } from 'react';
 import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
+import ConfirmModal from 'Components/Modal/ConfirmModal';
 import PageSectionContent from 'Components/Page/PageSectionContent';
-import { icons } from 'Helpers/Props';
+import { icons, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import EditImportListExclusionModalConnector from './EditImportListExclusionModalConnector';
 import ImportListExclusion from './ImportListExclusion';
@@ -19,7 +20,8 @@ class ImportListExclusions extends Component {
     super(props, context);
 
     this.state = {
-      isAddImportExclusionModalOpen: false
+      isAddImportExclusionModalOpen: false,
+      isPurgeImportExclusionModalOpen: false
     };
   }
 
@@ -32,6 +34,19 @@ class ImportListExclusions extends Component {
 
   onModalClose = () => {
     this.setState({ isAddImportExclusionModalOpen: false });
+  };
+
+  onPurgeImportExclusionPress = () => {
+    this.setState({ isPurgeImportExclusionModalOpen: true });
+  };
+
+  onPurgeImportExclusionModalClose = () => {
+    this.setState({ isPurgeImportExclusionModalOpen: false });
+  };
+
+  onConfirmPurgeImportExclusions = () => {
+    this.props.onConfirmPurgeImportExclusions();
+    this.onPurgeImportExclusionModalClose();
   };
 
   //
@@ -78,7 +93,14 @@ class ImportListExclusions extends Component {
             }
           </div>
 
-          <div className={styles.addImportExclusion}>
+          <div className={styles.footerButtons}>
+            <Link
+              className={styles.purgeButton}
+              onPress={this.onPurgeImportExclusionPress}
+            >
+              <Icon name={icons.DELETE} />
+            </Link>
+
             <Link
               className={styles.addButton}
               onPress={this.onAddImportExclusionPress}
@@ -92,6 +114,15 @@ class ImportListExclusions extends Component {
             onModalClose={this.onModalClose}
           />
 
+          <ConfirmModal
+            isOpen={this.state.isPurgeImportExclusionModalOpen}
+            kind={kinds.DANGER}
+            title={translate('PurgeImportListExclusions')}
+            message={translate('PurgeImportListExclusionMessageText')}
+            confirmLabel={translate('Purge')}
+            onConfirm={this.onConfirmPurgeImportExclusions}
+            onCancel={this.onPurgeImportExclusionModalClose}
+          />
         </PageSectionContent>
       </FieldSet>
     );
@@ -102,7 +133,8 @@ ImportListExclusions.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onConfirmDeleteImportExclusion: PropTypes.func.isRequired
+  onConfirmDeleteImportExclusion: PropTypes.func.isRequired,
+  onConfirmPurgeImportExclusions: PropTypes.func.isRequired
 };
 
 export default ImportListExclusions;

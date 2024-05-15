@@ -2,7 +2,11 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { deleteImportExclusion, fetchImportExclusions } from 'Store/Actions/settingsActions';
+import {
+  deleteImportExclusion,
+  fetchImportExclusions,
+  purgeImportExclusions
+} from 'Store/Actions/settingsActions';
 import ImportListExclusions from './ImportListExclusions';
 
 function createMapStateToProps() {
@@ -18,11 +22,11 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   fetchImportExclusions,
-  deleteImportExclusion
+  deleteImportExclusion,
+  purgeImportExclusions
 };
 
 class ImportExclusionsConnector extends Component {
-
   //
   // Lifecycle
 
@@ -37,6 +41,10 @@ class ImportExclusionsConnector extends Component {
     this.props.deleteImportExclusion({ id });
   };
 
+  onConfirmPurgeImportExclusions = () => {
+    this.props.purgeImportExclusions();
+  };
+
   //
   // Render
 
@@ -46,6 +54,7 @@ class ImportExclusionsConnector extends Component {
         {...this.state}
         {...this.props}
         onConfirmDeleteImportExclusion={this.onConfirmDeleteImportExclusion}
+        onConfirmPurgeImportExclusions={this.onConfirmPurgeImportExclusions}
       />
     );
   }
@@ -53,7 +62,8 @@ class ImportExclusionsConnector extends Component {
 
 ImportExclusionsConnector.propTypes = {
   fetchImportExclusions: PropTypes.func.isRequired,
-  deleteImportExclusion: PropTypes.func.isRequired
+  deleteImportExclusion: PropTypes.func.isRequired,
+  purgeImportExclusions: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(ImportExclusionsConnector);

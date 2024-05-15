@@ -63,5 +63,11 @@ namespace Radarr.Api.V3.ImportLists
         {
             _exclusionService.RemoveExclusion(new ImportExclusion { Id = id });
         }
+
+        [HttpPost("purge")]
+        public void PurgeExclusions()
+        {
+            _exclusionService.Purge();
+        }
     }
 }
