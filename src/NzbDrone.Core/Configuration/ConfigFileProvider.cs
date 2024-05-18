@@ -241,7 +241,7 @@ namespace NzbDrone.Core.Configuration
         {
             get
             {
-                var urlBase = _serverOptions.UrlBase ?? GetValue("UrlBase", "").Trim('/');
+                var urlBase = (_serverOptions.UrlBase ?? GetValue("UrlBase", "")).Trim('/');
 
                 if (urlBase.IsNullOrWhiteSpace())
                 {
