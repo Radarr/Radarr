@@ -11003,6 +11003,9 @@
           "onHealthIssue": {
             "type": "boolean"
           },
+          "includeHealthWarnings": {
+            "type": "boolean"
+          },
           "onHealthRestored": {
             "type": "boolean"
           },
@@ -11046,9 +11049,6 @@
             "type": "boolean"
           },
           "supportsOnManualInteractionRequired": {
-            "type": "boolean"
-          },
-          "includeHealthWarnings": {
             "type": "boolean"
           },
           "testCommand": {
