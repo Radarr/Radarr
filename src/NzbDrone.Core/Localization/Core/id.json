@@ -158,5 +158,12 @@
     "AuthenticationRequiredUsernameHelpTextWarning": "Masukkan nama pengguna baru",
     "AutoRedownloadFailed": "Pengunduhan Ulang Gagal",
     "ConnectionLostToBackend": "Koneksi {appName} telah terputus dari backend dan perlu dimuat ulang untuk dipulihkan.",
-    "Links": "Tautan"
+    "Links": "Tautan",
+    "ChooseAnotherFolder": "Pilih folder lain",
+    "Minutes": "menit",
+    "CalendarLoadError": "Tidak dapat memuat kalender",
+    "Category": "Kategori",
+    "AnalyseVideoFilesHelpText": "Peroleh informasi terkait video mengenai resolusi, durasi dan codec dari file. Hal ini memerlukan {appName} untuk membaca file, yang mungkin menyebabkan penggunaan disk dan jaringan tinggi ketika pemindaian.",
+    "DelayMinutes": "{delay} Menit",
+    "No": "Tidak"
 }
