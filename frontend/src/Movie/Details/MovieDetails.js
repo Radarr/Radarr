@@ -285,8 +285,10 @@ class MovieDetails extends Component {
     const fanartUrl = getFanartUrl(images);
     const marqueeWidth = isSmallScreen ? titleWidth : (titleWidth - 150);
 
+    const pageTitle = `${title}${year > 0 ? ` (${year})` : ''}`;
+
     return (
-      <PageContent title={title}>
+      <PageContent title={pageTitle}>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
