@@ -39,6 +39,11 @@ namespace NzbDrone.Core.Tags
 
         public List<Tag> GetTags(HashSet<int> tagIds)
         {
+            if (tagIds == null)
+            {
+                return new List<Tag>();
+            }
+
             return Query(t => tagIds.Contains(t.Id));
         }
     }
