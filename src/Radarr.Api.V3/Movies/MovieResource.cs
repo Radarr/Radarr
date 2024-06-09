@@ -198,7 +198,7 @@ namespace Radarr.Api.V3.Movies
 
                 RootFolderPath = resource.RootFolderPath,
 
-                Tags = resource.Tags,
+                Tags = resource.Tags ?? new HashSet<int>(),
                 Added = resource.Added,
                 AddOptions = resource.AddOptions
             };
