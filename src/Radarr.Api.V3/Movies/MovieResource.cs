@@ -12,6 +12,7 @@ using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Parser;
 using Radarr.Api.V3.MovieFiles;
 using Radarr.Http.REST;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Radarr.Api.V3.Movies
 {
@@ -85,6 +86,7 @@ namespace Radarr.Api.V3.Movies
 
         // Hiding this so people don't think its usable (only used to set the initial state)
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        [SwaggerIgnore]
         public bool Grabbed { get; set; }
     }
 
