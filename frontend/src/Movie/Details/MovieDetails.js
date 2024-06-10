@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
@@ -51,7 +50,8 @@ const defaultFontSize = parseInt(fonts.defaultFontSize);
 const lineHeight = parseFloat(fonts.lineHeight);
 
 function getFanartUrl(images) {
-  return _.find(images, { coverType: 'fanart' })?.url;
+  const image = images.find((img) => img.coverType === 'fanart');
+  return image?.url ?? image?.remoteUrl;
 }
 
 class MovieDetails extends Component {
