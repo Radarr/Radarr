@@ -7,6 +7,7 @@ using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
@@ -28,6 +29,7 @@ namespace Radarr.Api.V3.Movies
         protected readonly IUpgradableSpecification _upgradableSpecification;
         protected readonly ICustomFormatCalculationService _formatCalculator;
         protected readonly IConfigService _configService;
+        protected readonly IMapCoversToLocal _coverMapper;
 
         protected MovieControllerWithSignalR(IMovieService movieService,
                                            IMovieTranslationService movieTranslationService,
@@ -35,6 +37,7 @@ namespace Radarr.Api.V3.Movies
                                            IUpgradableSpecification upgradableSpecification,
                                            ICustomFormatCalculationService formatCalculator,
                                            IConfigService configService,
+                                           IMapCoversToLocal coverMapper,
                                            IBroadcastSignalRMessage signalRBroadcaster)
             : base(signalRBroadcaster)
         {
@@ -44,6 +47,7 @@ namespace Radarr.Api.V3.Movies
             _upgradableSpecification = upgradableSpecification;
             _formatCalculator = formatCalculator;
             _configService = configService;
+            _coverMapper = coverMapper;
         }
 
         protected MovieControllerWithSignalR(IMovieService movieService,
@@ -80,6 +84,8 @@ namespace Radarr.Api.V3.Movies
 
             var resource = movie.ToResource(availDelay, translation, _upgradableSpecification, _formatCalculator);
             FetchAndLinkMovieStatistics(resource);
+
+            _coverMapper.ConvertToLocalUrls(resource.Id, resource.Images);
 
             return resource;
         }
@@ -138,7 +144,7 @@ namespace Radarr.Api.V3.Movies
         [NonAction]
         public void Handle(MovieGrabbedEvent message)
         {
-            var resource = message.Movie.Movie.ToResource(0, null, _upgradableSpecification, _formatCalculator);
+            var resource = MapToResource(message.Movie.Movie);
             resource.Grabbed = true;
 
             BroadcastResourceChange(ModelAction.Updated, resource);

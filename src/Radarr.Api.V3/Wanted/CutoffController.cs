@@ -4,6 +4,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.MovieStats;
@@ -26,8 +27,9 @@ namespace Radarr.Api.V3.Wanted
                             IUpgradableSpecification upgradableSpecification,
                             ICustomFormatCalculationService formatCalculator,
                             IConfigService configService,
+                            IMapCoversToLocal coverMapper,
                             IBroadcastSignalRMessage signalRBroadcaster)
-            : base(movieService, movieTranslationService, movieStatisticsService, upgradableSpecification, formatCalculator, configService, signalRBroadcaster)
+            : base(movieService, movieTranslationService, movieStatisticsService, upgradableSpecification, formatCalculator, configService, coverMapper, signalRBroadcaster)
         {
             _movieCutoffService = movieCutoffService;
         }
