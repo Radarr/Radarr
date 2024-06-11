@@ -37,6 +37,12 @@ namespace NzbDrone.Core.Movies
 
         private void MoveSingleMovie(Movie movie, string sourcePath, string destinationPath, int? index = null, int? total = null)
         {
+            if (!sourcePath.IsPathValid(PathValidationType.CurrentOs))
+            {
+                _logger.Warn("Folder '{0}' for '{1}' is invalid, unable to move movie. Try moving files manually", sourcePath, movie.Title);
+                return;
+            }
+
             if (!_diskProvider.FolderExists(sourcePath))
             {
                 _logger.Debug("Folder '{0}' for '{1}' does not exist, not moving.", sourcePath, movie.Title);
