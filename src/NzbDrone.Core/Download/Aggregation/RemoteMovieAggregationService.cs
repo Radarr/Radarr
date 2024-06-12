@@ -25,6 +25,11 @@ namespace NzbDrone.Core.Download.Aggregation
 
         public RemoteMovie Augment(RemoteMovie remoteMovie)
         {
+            if (remoteMovie == null)
+            {
+                return null;
+            }
+
             foreach (var augmenter in _augmenters)
             {
                 try

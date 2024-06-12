@@ -30,19 +30,21 @@ namespace NzbDrone.Core.Movies
 
         private void HandleScanEvents(Movie movie)
         {
-            if (movie.AddOptions == null)
+            var addOptions = movie.AddOptions;
+
+            if (addOptions == null)
             {
                 return;
             }
 
             _logger.Info("[{0}] was recently added, performing post-add actions", movie.Title);
 
-            if (movie.AddOptions.SearchForMovie)
+            if (addOptions.SearchForMovie)
             {
                 _commandQueueManager.Push(new MoviesSearchCommand { MovieIds = new List<int> { movie.Id } });
             }
 
-            if (movie.AddOptions.Monitor == MonitorTypes.MovieAndCollection && movie.MovieMetadata.Value.CollectionTmdbId > 0)
+            if (addOptions.Monitor == MonitorTypes.MovieAndCollection && movie.MovieMetadata.Value.CollectionTmdbId > 0)
             {
                 var collection = _collectionService.FindByTmdbId(movie.MovieMetadata.Value.CollectionTmdbId);
                 collection.Monitored = true;
