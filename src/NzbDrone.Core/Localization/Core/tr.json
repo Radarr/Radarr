@@ -959,7 +959,6 @@
     "More": "Daha",
     "Download": "İndir",
     "DownloadClientCheckDownloadingToRoot": "İndirme istemcisi {downloadClientName}, indirmeleri kök klasöre yerleştirir {path}. Bir kök klasöre indirmemelisiniz.",
-    "DeleteFileLabel": "{0} Film Dosyasını Sil",
     "Blocklist": "Kara liste",
     "BlocklistRelease": "Kara Liste Sürümü",
     "RemoveFromBlocklist": "Kara listeden kaldır",

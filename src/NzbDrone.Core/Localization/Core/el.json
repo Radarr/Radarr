@@ -959,7 +959,6 @@
     "More": "Περισσότερο",
     "Download": "Κατεβάστε",
     "DownloadClientCheckDownloadingToRoot": "Λήψη προγράμματος-πελάτη {downloadClientName} τοποθετεί λήψεις στον ριζικό φάκελο {path}. Δεν πρέπει να κάνετε λήψη σε έναν ριζικό φάκελο.",
-    "DeleteFileLabel": "Διαγραφή {0} Αρχείων ταινιών",
     "Blocklist": "Αποριφθέντα",
     "BlocklistRelease": "Έκδοση μαύρης λίστας",
     "RemoveFromBlocklist": "Κατάργηση από μαύρη λίστα",

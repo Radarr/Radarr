@@ -959,7 +959,6 @@
     "More": "अधिक",
     "Download": "डाउनलोड",
     "DownloadClientCheckDownloadingToRoot": "डाउनलोड क्लाइंट {downloadClientName} रूट फ़ोल्डर में डाउनलोड करता है {path}। आपको रूट फ़ोल्डर में डाउनलोड नहीं करना चाहिए।",
-    "DeleteFileLabel": "{0} मूवी फ़ाइलें हटाएं",
     "Blocklist": "काला सूची में डालना",
     "BlocklistRelease": "ब्लैकलिस्ट रिलीज़",
     "RemoveFromBlocklist": "ब्लैकलिस्ट से निकालें",
@@ -1059,5 +1058,9 @@
     "MovieSearchResultsLoadError": "इस मूवी खोज के लिए परिणाम लोड करने में असमर्थ। बाद में पुन: प्रयास करें",
     "SearchOnAddCollectionHelpText": "इस सूची में फिल्मों के लिए खोजें जब रेडर को जोड़ा गया",
     "IMDbId": "TMDb Id",
-    "AddDelayProfileError": "नई गुणवत्ता प्रोफ़ाइल जोड़ने में असमर्थ, कृपया पुनः प्रयास करें।"
+    "AddDelayProfileError": "नई गुणवत्ता प्रोफ़ाइल जोड़ने में असमर्थ, कृपया पुनः प्रयास करें।",
+    "MovieFileDeletedTooltip": "मूवी फ़ाइल डिलीट पर",
+    "DeleteMovieFolders": "मूवी फ़ोल्डर हटाएँ",
+    "DeleteMovieFoldersHelpText": "फिल्म फ़ोल्डर और उसकी सामग्री को हटा दें",
+    "DeleteSelectedMovies": "चयनित मूवी फ़ाइलें हटाएं"
 }

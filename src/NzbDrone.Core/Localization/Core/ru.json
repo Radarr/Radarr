@@ -959,7 +959,6 @@
     "More": "Более",
     "Download": "Скачать",
     "DownloadClientCheckDownloadingToRoot": "Клиент загрузки {downloadClientName} помещает загрузки в корневую папку {path}. Вы не должны загружать в корневую папку.",
-    "DeleteFileLabel": "Удалить {0} файл фильма",
     "RemotePathMappingCheckWrongOSPath": "Удалённый клиент загрузки {downloadClientName} загружает файлы в {path}, но это не действительный путь {osName}.  Проверьте соответствие удаленных путей и настройки клиента загрузки.",
     "RemotePathMappingCheckRemoteDownloadClient": "Удалённый клиент загрузки {downloadClientName} сообщил о файлах в {path}, но эта директория, похоже, не существует.  Вероятно, отсутствует сопоставление удаленных путей.",
     "RemotePathMappingCheckLocalWrongOSPath": "Локальный клиент загрузки {downloadClientName} загружает файлы в {path}, но это не правильный путь {osName}.  Проверьте настройки клиента загрузки.",
@@ -1281,5 +1280,10 @@
     "AddRootFolderError": "Невозможно загрузить корневые папки",
     "IndexerSettingsMultiLanguageRelease": "Многоязычный",
     "DeleteSpecification": "Удалить уведомление",
-    "DeleteSpecificationHelpText": "Вы уверены, что хотите удалить уведомление '{name}'?"
+    "DeleteSpecificationHelpText": "Вы уверены, что хотите удалить уведомление '{name}'?",
+    "MovieFileDeletedTooltip": "При удалении файла фильма",
+    "DeleteMovieFolderCountConfirmation": "Вы уверены, что хотите удалить {count} выбранных индексатора?",
+    "DeleteMovieFolders": "Удалить папку фильма",
+    "DeleteMovieFoldersHelpText": "Удалить папку и её содержимое",
+    "DeleteSelectedMovies": "Удалить выбранные файлы фильма"
 }

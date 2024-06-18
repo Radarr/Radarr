@@ -959,7 +959,6 @@
     "More": "Mere",
     "Download": "Hent",
     "DownloadClientCheckDownloadingToRoot": "Download klient {downloadClientName} placerer downloads i rodmappen {path}. Du skal ikke downloade til en rodmappe.",
-    "DeleteFileLabel": "Slet {0} filmfiler",
     "Blocklist": "Blacklist",
     "BlocklistRelease": "Udgivelse af sortliste",
     "RemoveFromBlocklist": "Fjern fra sortlisten",

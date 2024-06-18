@@ -958,7 +958,6 @@
     "More": "Jeszcze",
     "Download": "Ściągnij",
     "DownloadClientCheckDownloadingToRoot": "Klient pobierania {downloadClientName} umieszcza pliki do pobrania w folderze głównym {path}. Nie należy pobierać do folderu głównego.",
-    "DeleteFileLabel": "Usuń {0} pliki filmowe",
     "Blocklist": "Czarna lista",
     "BlocklistRelease": "Dodaj wersję do czarnej listy",
     "RemoveFromBlocklist": "Usuń z czarnej listy",

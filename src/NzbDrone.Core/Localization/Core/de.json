@@ -949,7 +949,6 @@
     "More": "Mehr",
     "Download": "Herunterladen",
     "DownloadClientCheckDownloadingToRoot": "Download-Client {downloadClientName} legt Downloads im Stammordner {path} ab. Sie sollten nicht in einen Stammordner herunterladen.",
-    "DeleteFileLabel": "Lösche {0} Filmdateien",
     "UpdateAvailable": "Neue Version verfügbar",
     "RemotePathMappingCheckFilesLocalWrongOSPath": "Downloader {downloadClientName} meldet Dateien in {path}, aber dies ist kein valider {osName} Pfad. Überprüfe die Downloader Einstellungen.",
     "RemotePathMappingCheckFilesBadDockerPath": "Docker erkannt; Downloader {downloadClientName} meldet Dateien in {path}, aber dies ist kein valider {osName} Pfad. Überprüfe deine Remote-Pfadzuordnungen und die Downloader Einstellungen.",
