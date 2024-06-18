@@ -958,7 +958,6 @@
     "More": "Lisää",
     "Download": "Lataa",
     "DownloadClientCheckDownloadingToRoot": "Lataustyökalu \"{downloadClientName}\" tallentaa lataukset juurikansioon \"{path}\", mutta ne tulisi tallentaa muualle.",
-    "DeleteFileLabel": "Poista {0} elokuvatiedosto",
     "Blocklist": "Estolista",
     "BlocklistRelease": "Lisää julkaisu estolistalle",
     "RemoveFromBlocklist": "Poista estolistalta",

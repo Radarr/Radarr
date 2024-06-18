@@ -959,7 +959,6 @@
     "More": "Mer",
     "Download": "Ladda ner",
     "DownloadClientCheckDownloadingToRoot": "Ladda ner klient {downloadClientName} placerar nedladdningar i rotmappen {path}. Du bör inte ladda ner till en rotmapp.",
-    "DeleteFileLabel": "Ta bort {0} filmfiler",
     "Blocklist": "Svartlista",
     "BlocklistRelease": "Svartlista utgåva",
     "RemoveFromBlocklist": "Ta bort från svartlistan",

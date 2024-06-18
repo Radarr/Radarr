@@ -958,7 +958,6 @@
     "More": "Di più",
     "Download": "Scarica",
     "DownloadClientCheckDownloadingToRoot": "Il client di download {downloadClientName} colloca i download nella cartella radice {path}. Non dovresti scaricare in una cartella radice.",
-    "DeleteFileLabel": "Elimina {0} file di film",
     "Blocklist": "Lista dei Blocchi",
     "BlocklistRelease": "Release in Lista dei Blocchi",
     "RemoveFromBlocklist": "Rimuovi della blacklist",

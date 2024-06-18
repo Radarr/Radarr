@@ -958,7 +958,6 @@
     "More": "更多",
     "Download": "下载",
     "DownloadClientCheckDownloadingToRoot": "下载客户端{downloadClientName}将下载内容放在根文件夹{path}中。您不应该下载到根文件夹。",
-    "DeleteFileLabel": "删除 {0} 电影文件",
     "ImportListMultipleMissingRoots": "导入列表中缺失多个根目录文件夹",
     "ImportListMissingRoot": "在导入列表中缺少根目录文件夹: {rootFolderInfo}",
     "BypassDelayIfHighestQuality": "如果达到最高质量，则跳过",

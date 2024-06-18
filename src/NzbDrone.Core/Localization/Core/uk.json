@@ -565,7 +565,6 @@
     "System": "Система",
     "CountCollectionsSelected": "Вибрано колекцій: {0}",
     "DeleteNotification": "Видалити сповіщення",
-    "DeleteFileLabel": "Видалити файл фільму {0}",
     "DeleteMovieFilesHelpText": "Видалити файли фільмів і папку фільмів",
     "DeleteMovieFiles": "Видалити файли фільмів {0}",
     "DeleteQualityProfile": "Видалити профіль якості",
