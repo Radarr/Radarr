@@ -6,7 +6,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 {
     public static class NewznabCategoryFieldOptionsConverter
     {
-        public static List<FieldSelectOption> GetFieldSelectOptions(List<NewznabCategory> categories)
+        public static List<FieldSelectOption<int>> GetFieldSelectOptions(List<NewznabCategory> categories)
         {
             // Categories not relevant for Radarr
             var ignoreCategories = new[] { 1000, 3000, 4000, 6000, 7000 };
@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             // And maybe relevant for specific users
             var unimportantCategories = new[] { 0, 5000 };
 
-            var result = new List<FieldSelectOption>();
+            var result = new List<FieldSelectOption<int>>();
 
             if (categories == null)
             {
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             foreach (var category in categories.Where(cat => !ignoreCategories.Contains(cat.Id)).OrderBy(cat => unimportantCategories.Contains(cat.Id)).ThenBy(cat => cat.Id))
             {
-                result.Add(new FieldSelectOption
+                result.Add(new FieldSelectOption<int>
                 {
                     Value = category.Id,
                     Name = category.Name,
@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Indexers.Newznab
                 {
                     foreach (var subcat in category.Subcategories.OrderBy(cat => cat.Id))
                     {
-                        result.Add(new FieldSelectOption
+                        result.Add(new FieldSelectOption<int>
                         {
                             Value = subcat.Id,
                             Name = subcat.Name,
