@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import TableRow from 'Components/Table/TableRow';
@@ -16,6 +17,9 @@ function MissingRow(props) {
     year,
     title,
     titleSlug,
+    inCinemas,
+    digitalRelease,
+    physicalRelease,
     isSelected,
     columns,
     onSelectedChange
@@ -63,6 +67,36 @@ function MissingRow(props) {
             );
           }
 
+          if (name === 'movieMetadata.inCinemas') {
+            return (
+              <RelativeDateCellConnector
+                key={name}
+                className={styles[name]}
+                date={inCinemas}
+              />
+            );
+          }
+
+          if (name === 'movieMetadata.digitalRelease') {
+            return (
+              <RelativeDateCellConnector
+                key={name}
+                className={styles[name]}
+                date={digitalRelease}
+              />
+            );
+          }
+
+          if (name === 'movieMetadata.physicalRelease') {
+            return (
+              <RelativeDateCellConnector
+                key={name}
+                className={styles[name]}
+                date={physicalRelease}
+              />
+            );
+          }
+
           if (name === 'status') {
             return (
               <TableRowCell
@@ -102,6 +136,9 @@ MissingRow.propTypes = {
   title: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
   titleSlug: PropTypes.string.isRequired,
+  inCinemas: PropTypes.string,
+  digitalRelease: PropTypes.string,
+  physicalRelease: PropTypes.string,
   isSelected: PropTypes.bool,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   onSelectedChange: PropTypes.func.isRequired

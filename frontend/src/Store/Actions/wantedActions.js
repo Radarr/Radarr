@@ -41,6 +41,24 @@ export const defaultState = {
         isVisible: true
       },
       {
+        name: 'movieMetadata.inCinemas',
+        label: () => translate('InCinemas'),
+        isSortable: true,
+        isVisible: false
+      },
+      {
+        name: 'movieMetadata.digitalRelease',
+        label: () => translate('DigitalRelease'),
+        isSortable: true,
+        isVisible: false
+      },
+      {
+        name: 'movieMetadata.physicalRelease',
+        label: () => translate('PhysicalRelease'),
+        isSortable: true,
+        isVisible: false
+      },
+      {
         name: 'status',
         label: () => translate('Status'),
         isVisible: true
@@ -101,6 +119,24 @@ export const defaultState = {
         label: () => translate('Year'),
         isSortable: true,
         isVisible: true
+      },
+      {
+        name: 'movieMetadata.inCinemas',
+        label: () => translate('InCinemas'),
+        isSortable: true,
+        isVisible: false
+      },
+      {
+        name: 'movieMetadata.digitalRelease',
+        label: () => translate('DigitalRelease'),
+        isSortable: true,
+        isVisible: false
+      },
+      {
+        name: 'movieMetadata.physicalRelease',
+        label: () => translate('PhysicalRelease'),
+        isSortable: true,
+        isVisible: false
       },
       {
         name: 'languages',
