@@ -309,5 +309,6 @@
     "Released": "verzija",
     "DeleteImportListExclusion": "Dodaj na Listu Isključenja",
     "ImportListExclusions": "Dodaj na Listu Isključenja",
-    "DownloadClientSettingsRecentPriority": "Prioritet Klijenata"
+    "DownloadClientSettingsRecentPriority": "Prioritet Klijenata",
+    "DeleteRootFolderMessageText": "Jeste li sigurni da želite obrisati ovaj profil odgode?"
 }

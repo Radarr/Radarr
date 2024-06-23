@@ -1060,5 +1060,9 @@
     "SearchOnAddCollectionHelpText": "Търсете филми в този списък, когато ги добавите към {appName}",
     "MovieFileDeleted": "В Изтриване на файл с филм",
     "ShowUnknownMovieItemsHelpText": "Показване на елементи без филм в опашката. Това може да включва премахнати филми или нещо друго от категорията на Lidarr",
-    "AddDelayProfileError": "Не може да се добави нов качествен профил, моля, опитайте отново."
+    "AddDelayProfileError": "Не може да се добави нов качествен профил, моля, опитайте отново.",
+    "MovieFileDeletedTooltip": "В Изтриване на файл с филм",
+    "DeleteMovieFolders": "Изтриване на папка за филми",
+    "DeleteMovieFoldersHelpText": "Изтрийте папката с филма и съдържанието му",
+    "DeleteSelectedMovies": "Изтриване на избрани филмови файлове"
 }

@@ -1450,5 +1450,12 @@
     "DeletedReasonMissingFromDisk": "{appName} konnte die Datei auf der Festplatte nicht finden, daher wurde die Verknüpfung der Datei mit der Episode in der Datenbank aufgehoben",
     "ReleaseProfileTagMovieHelpText": "Veröffentlichungsprofile gelten für Künstler mit mindestens einem passenden Tag. Leer lassen, damit es für alle Künstler gilt",
     "SearchForAllMissingMoviesConfirmationCount": "Bist du dir sicher, dass du nach allen '{0}' fehlenden Alben suchen willst?",
-    "SearchForCutoffUnmetMovies": "Suche nach allen abgeschnittenen unerfüllten Büchern"
+    "SearchForCutoffUnmetMovies": "Suche nach allen abgeschnittenen unerfüllten Büchern",
+    "SearchForCutoffUnmetMoviesConfirmationCount": "Bist du dir sicher, dass du nach allen '{0}' fehlenden Alben suchen willst?",
+    "MovieFileDeletedTooltip": "Bei Filmdatei löschen",
+    "DeleteMovieFolderCountConfirmation": "Sind Sie sicher, dass Sie {count} ausgewählte Serien löschen möchten?",
+    "DeleteMovieFolderCountWithFilesConfirmation": "Sind Sie sicher, dass Sie {count} ausgewählte Serien und alle Inhalte löschen möchten?",
+    "DeleteMovieFolders": "Filmordner löschen",
+    "DeleteMovieFoldersHelpText": "Löschen Sie die Serienordner und ihren gesamten Inhalt",
+    "DeleteSelectedMovies": "Ausgewählte Serie löschen"
 }

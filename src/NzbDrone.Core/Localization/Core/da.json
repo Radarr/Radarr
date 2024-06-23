@@ -1081,5 +1081,9 @@
     "ReleaseGroups": "Slip gruppe",
     "IMDbId": "TMDb Id",
     "AddDelayProfileError": "Kan ikke tilføje en ny forsinkelsesprofil. Prøv venligst igen.",
-    "ShowUnknownMovieItemsHelpText": "Vis emner uden en film i køen. Dette kan omfatte fjernede film eller andet i {appName}s kategori"
+    "ShowUnknownMovieItemsHelpText": "Vis emner uden en film i køen. Dette kan omfatte fjernede film eller andet i {appName}s kategori",
+    "MovieFileDeletedTooltip": "Slet på filmfil",
+    "DeleteMovieFolders": "Slet filmmappe",
+    "DeleteMovieFoldersHelpText": "Slet filmmappen og dens indhold",
+    "DeleteSelectedMovies": "Slet valgte filmfiler"
 }

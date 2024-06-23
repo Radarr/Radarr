@@ -1063,5 +1063,9 @@
     "SearchOnAddCollectionHelpText": "ابحث عن الأفلام في هذه القائمة عند إضافتها إلى {appName}",
     "ShowUnknownMovieItemsHelpText": "إظهار العناصر بدون فيلم في قائمة الانتظار. يمكن أن يشمل ذلك الأفلام التي تمت إزالتها أو أي شيء آخر في فئة Lidarr",
     "MovieSearchResultsLoadError": "تعذر تحميل نتائج بحث هذا الفيلم. حاول مرة أخرى في وقت لاحق",
-    "AddDelayProfileError": "غير قادر على إضافة ملف تعريف جودة جديد ، يرجى المحاولة مرة أخرى."
+    "AddDelayProfileError": "غير قادر على إضافة ملف تعريف جودة جديد ، يرجى المحاولة مرة أخرى.",
+    "DeleteMovieFolders": "حذف مجلد الفيلم",
+    "DeleteMovieFoldersHelpText": "احذف مجلد الفيلم ومحتوياته",
+    "DeleteSelectedMovies": "حذف ملفات الأفلام المحددة",
+    "MovieFileDeletedTooltip": "عند حذف ملف الفيلم"
 }

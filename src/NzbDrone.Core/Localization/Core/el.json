@@ -1219,5 +1219,10 @@
     "ReleaseGroups": "Ομάδα απελευθέρωσης",
     "AddDelayProfileError": "Δεν είναι δυνατή η προσθήκη ενός νέου προφίλ ποιότητας. Δοκιμάστε ξανά.",
     "SearchForCutoffUnmetMovies": "Αναζήτηση για όλα τα βιβλία Cutoff Unmet",
-    "DeleteReleaseProfileMessageText": "Είστε βέβαιοι ότι θέλετε να διαγράψετε το προφίλ ποιότητας '{0}'?"
+    "DeleteReleaseProfileMessageText": "Είστε βέβαιοι ότι θέλετε να διαγράψετε το προφίλ ποιότητας '{0}'?",
+    "AutoTaggingNegateHelpText": "Εάν επιλεγεί, η προσαρμοσμένη μορφή δεν θα εφαρμοστεί εάν αντιστοιχεί σε αυτήν την {0} συνθήκη.",
+    "MovieFileDeletedTooltip": "Διαγραφή αρχείου ταινίας",
+    "DeleteMovieFolders": "Διαγραφή φακέλου ταινίας",
+    "DeleteMovieFoldersHelpText": "Διαγράψτε το φάκελο της ταινίας και τα περιεχόμενά του",
+    "DeleteSelectedMovies": "Διαγραφή επιλεγμένων αρχείων ταινιών"
 }

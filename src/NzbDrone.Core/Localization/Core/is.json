@@ -1060,5 +1060,9 @@
     "AutoRedownloadFailed": "Niðurhal mistókst",
     "DeletedReasonMissingFromDisk": "Whisparr gat ekki fundið skrána á disknum svo hún var fjarlægð",
     "DownloadClientSettingsRecentPriority": "Forgangur viðskiptavinar",
-    "AddDelayProfileError": "Ekki er hægt að bæta við nýjum gæðaprófíl, reyndu aftur."
+    "AddDelayProfileError": "Ekki er hægt að bæta við nýjum gæðaprófíl, reyndu aftur.",
+    "MovieFileDeletedTooltip": "Á Eyða kvikmyndaskrá",
+    "DeleteMovieFolders": "Eyða kvikmyndamöppu",
+    "DeleteMovieFoldersHelpText": "Eyddu kvikmyndamöppunni og innihaldi hennar",
+    "DeleteSelectedMovies": "Eyða völdum kvikmyndaskrám"
 }

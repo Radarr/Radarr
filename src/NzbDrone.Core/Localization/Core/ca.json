@@ -1372,5 +1372,9 @@
     "MovieIsNotMonitored": "La pel·lícula està monitorada",
     "DownloadClientDownloadStationValidationFolderMissing": "El fitxer no existeix",
     "IndexerSettingsMultiLanguageRelease": "Multi-idioma",
-    "ReleaseGroups": "Grup de llançament"
+    "ReleaseGroups": "Grup de llançament",
+    "DeleteMovieFolderCountConfirmation": "Esteu segur que voleu suprimir {count} sèries seleccionades?",
+    "DeleteMovieFolders": "Suprimeix la carpeta de pel·lícules",
+    "DeleteMovieFoldersHelpText": "Suprimeix la carpeta de pel·lícules i el seu contingut",
+    "DeleteSelectedMovies": "Suprimeix les sèries seleccionades"
 }

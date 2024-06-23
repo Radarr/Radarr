@@ -1157,5 +1157,9 @@
     "DeletedReasonMissingFromDisk": "Whisparr nie mógł znaleźć pliku na dysku, więc został usunięty",
     "DeleteSelectedMovieFilesHelpText": "Czy na pewno chcesz usunąć wybrane pliki filmowe?",
     "IMDbId": "Identyfikator TMDb",
-    "AddDelayProfileError": "Nie można dodać nowego profilu jakości, spróbuj ponownie."
+    "AddDelayProfileError": "Nie można dodać nowego profilu jakości, spróbuj ponownie.",
+    "MovieFileDeletedTooltip": "Usuń plik filmowy",
+    "DeleteMovieFolders": "Usuń folder filmu",
+    "DeleteMovieFoldersHelpText": "Usuń folder z filmami i jego zawartość",
+    "DeleteSelectedMovies": "Usuń wybrane pliki filmowe"
 }
