@@ -1087,5 +1087,9 @@
     "ApplyTagsHelpTextHowToApplyMovies": "Så här applicerar du taggar på de valda författarna",
     "CustomFilter": "Anpassade Filter",
     "IMDbId": "TMDb-id",
-    "AddDelayProfileError": "Det gick inte att lägga till en ny kvalitetsprofil. Försök igen."
+    "AddDelayProfileError": "Det gick inte att lägga till en ny kvalitetsprofil. Försök igen.",
+    "MovieFileDeletedTooltip": "På filmfil Ta bort",
+    "DeleteMovieFolders": "Ta bort filmmapp",
+    "DeleteMovieFoldersHelpText": "Ta bort filmmappen och dess innehåll",
+    "DeleteSelectedMovies": "Radera markerade filmfiler"
 }

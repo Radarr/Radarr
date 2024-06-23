@@ -1059,5 +1059,9 @@
     "DeleteCustomFormatMessageText": "タグ「{0}」を削除してもよろしいですか？",
     "DeleteFormatMessageText": "タグ「{0}」を削除してもよろしいですか？",
     "DownloadClientSettingsRecentPriority": "クライアントの優先順位",
-    "ShowUnknownMovieItemsHelpText": "キューに映画がないアイテムを表示します。これには、削除された映画や、ラダーのカテゴリに含まれるその他のものが含まれる可能性があります"
+    "ShowUnknownMovieItemsHelpText": "キューに映画がないアイテムを表示します。これには、削除された映画や、ラダーのカテゴリに含まれるその他のものが含まれる可能性があります",
+    "MovieFileDeletedTooltip": "ムービーファイルの削除について",
+    "DeleteMovieFolders": "ムービーフォルダを削除する",
+    "DeleteMovieFoldersHelpText": "ムービーフォルダとその内容を削除します",
+    "DeleteSelectedMovies": "選択したムービーファイルを削除する"
 }

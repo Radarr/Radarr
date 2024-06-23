@@ -1200,5 +1200,9 @@
     "IndexerSettingsMultiLanguageRelease": "Meertalig",
     "ShowUnknownMovieItemsHelpText": "Toon items zonder een film in de wachtrij, dit kan verwijderde films, TV series of iets anders in {appName} zijn categorie omvatten",
     "CustomFilter": "Aangepaste Filters",
-    "MovieFileDeleted": "Op filmbestand verwijderen"
+    "MovieFileDeleted": "Op filmbestand verwijderen",
+    "MovieFileDeletedTooltip": "Op filmbestand verwijderen",
+    "DeleteMovieFolders": "Verwijder Film Map",
+    "DeleteMovieFoldersHelpText": "Verwijder de film map en zijn inhoud",
+    "DeleteSelectedMovies": "Verwijder Geselecteerde Filmbestanden"
 }

@@ -845,7 +845,7 @@
     "DeleteMovieFilesHelpText": "Eliminar los archivos de película y la carpeta de películas",
     "DeleteHeader": "Eliminar: {0}",
     "DeleteMovieFolderHelpText": "Eliminar la carpeta de películas y su contenido",
-    "DeleteSelectedMovie": "Eliminar película (s) seleccionada (s)",
+    "DeleteSelectedMovie": "Eliminar película seleccionada",
     "DeleteMovieFolderConfirmation": "Se eliminará la carpeta de películas '{path}' y todo su contenido.",
     "Discord": "Discord",
     "Donations": "Donaciones",
@@ -1781,5 +1781,11 @@
     "SearchForAllMissingMoviesConfirmationCount": "¿Estás seguro que quieres buscar las {totalRecords} películas faltantes?",
     "SearchForCutoffUnmetMovies": "Buscar todas las películas con límites no alcanzados",
     "SearchForCutoffUnmetMoviesConfirmationCount": "¿Estás seguro que quieres buscar las {totalRecords} películas con límites no alcanzados?",
-    "UnmonitorSelected": "No monitorizar seleccionados"
+    "UnmonitorSelected": "No monitorizar seleccionados",
+    "DeleteMovieFolderMovieCount": "{movieFileCount} archivos de películas en un total de {size}",
+    "DeleteMovieFolders": "Eliminar carpeta de películas",
+    "DeleteMovieFolderCountConfirmation": "Esta seguro que desea eliminar '{count}' series seleccionadas?",
+    "DeleteMovieFolderCountWithFilesConfirmation": "Esta seguro que desea eliminar '{count}' seleccionadas y sus contenidos?",
+    "DeleteMovieFoldersHelpText": "Eliminar los directorios de series y sus contenidos",
+    "DeleteSelectedMovies": "Eliminar serie seleccionada"
 }

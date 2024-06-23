@@ -1049,5 +1049,8 @@
     "MovieSearchResultsLoadError": "이 영화 검색 결과를 불러올 수 없습니다. 나중에 다시 시도",
     "NotificationsSimplepushSettingsEvent": "이벤트",
     "SearchOnAddCollectionHelpText": "{appName}에 추가되면이 목록에서 영화 검색",
-    "AddDelayProfileError": "새 품질 프로필을 추가 할 수 없습니다. 다시 시도하십시오."
+    "AddDelayProfileError": "새 품질 프로필을 추가 할 수 없습니다. 다시 시도하십시오.",
+    "DeleteMovieFolders": "영화 폴더 삭제",
+    "DeleteMovieFoldersHelpText": "동영상 폴더 및 내용 삭제",
+    "DeleteSelectedMovies": "선택한 동영상 파일 삭제"
 }

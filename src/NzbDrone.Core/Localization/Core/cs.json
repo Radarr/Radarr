@@ -1172,5 +1172,10 @@
     "ReleaseGroups": "Uvolňovací skupina",
     "IndexerTagMovieHelpText": "Tohoto klienta pro stahování používat pouze pro filmy s alespoň jednou odpovídající značkou. Pro použití se všemi filmy ponechte prázdné pole.",
     "DelayProfileProtocol": "Protokol: {preferredProtocol}",
-    "AddReleaseProfile": "Přidat profil vydání"
+    "AddReleaseProfile": "Přidat profil vydání",
+    "MovieFileDeletedTooltip": "Při mazání filmových souborů",
+    "DeleteMovieFolderCountConfirmation": "Opravdu chcete smazat {count} vybraný(ch) indexer(ů)?",
+    "DeleteMovieFolders": "Odstranit složku filmu",
+    "DeleteMovieFoldersHelpText": "Odstraňte složku filmu a její obsah",
+    "DeleteSelectedMovies": "Odstranit vybrané filmové soubory"
 }

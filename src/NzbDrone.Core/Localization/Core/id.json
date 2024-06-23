@@ -165,5 +165,10 @@
     "Category": "Kategori",
     "AnalyseVideoFilesHelpText": "Peroleh informasi terkait video mengenai resolusi, durasi dan codec dari file. Hal ini memerlukan {appName} untuk membaca file, yang mungkin menyebabkan penggunaan disk dan jaringan tinggi ketika pemindaian.",
     "DelayMinutes": "{delay} Menit",
-    "No": "Tidak"
+    "No": "Tidak",
+    "FormatAgeMinute": "menit",
+    "DownloadFailed": "Pengunduhan Ulang Gagal",
+    "Months": "Bulan",
+    "File": "File",
+    "Weeks": "Minggu"
 }

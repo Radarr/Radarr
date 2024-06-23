@@ -1424,5 +1424,11 @@
     "SearchForCutoffUnmetMoviesConfirmationCount": "Biztosan megkeresi az összes {totalRecords} hiányzó epizódot?",
     "MovieGrabbedHistoryTooltip": "Az epizódot letöltötte a(z) {indexer} és elküldte a(z) {downloadClient} számára",
     "DownloadClientDelugeSettingsDirectoryCompletedHelpText": "Választható hely a letöltések elhelyezéséhez, hagyja üresen az alapértelmezett Aria2 hely használatához",
-    "DownloadClientDelugeSettingsDirectoryHelpText": "Választható hely a letöltések elhelyezéséhez, hagyja üresen az alapértelmezett Aria2 hely használatához"
+    "DownloadClientDelugeSettingsDirectoryHelpText": "Választható hely a letöltések elhelyezéséhez, hagyja üresen az alapértelmezett Aria2 hely használatához",
+    "MovieFileDeletedTooltip": "A filmfájl törléséhez",
+    "DeleteMovieFolderCountConfirmation": "Biztosan törölni szeretne {count} kiválasztott sorozatot?",
+    "DeleteMovieFolderCountWithFilesConfirmation": "Biztos benne, hogy törölni szeretne {count} kiválasztott sorozatot és az összes tartalmat?",
+    "DeleteMovieFolders": "Film mappájának törlése",
+    "DeleteMovieFoldersHelpText": "Törölje a film mappáját és annak tartalmát",
+    "DeleteSelectedMovies": "A kiválasztott sorozat törlése"
 }

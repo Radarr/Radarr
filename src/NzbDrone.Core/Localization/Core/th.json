@@ -1058,5 +1058,9 @@
     "DeletedReasonMissingFromDisk": "Whisparr ไม่พบไฟล์บนดิสก์ดังนั้นจึงถูกลบออก",
     "DownloadClientSettingsRecentPriority": "ลำดับความสำคัญของลูกค้า",
     "DeleteSelectedMovieFilesHelpText": "แน่ใจไหมว่าต้องการลบไฟล์ภาพยนตร์ที่เลือก",
-    "ShowUnknownMovieItemsHelpText": "แสดงรายการที่ไม่มีภาพยนตร์อยู่ในคิว ซึ่งอาจรวมถึงภาพยนตร์ที่ถูกนำออกหรือสิ่งอื่นใดในหมวดหมู่ของ Lidarr"
+    "ShowUnknownMovieItemsHelpText": "แสดงรายการที่ไม่มีภาพยนตร์อยู่ในคิว ซึ่งอาจรวมถึงภาพยนตร์ที่ถูกนำออกหรือสิ่งอื่นใดในหมวดหมู่ของ Lidarr",
+    "MovieFileDeletedTooltip": "บน Movie File Delete",
+    "DeleteMovieFolders": "ลบโฟลเดอร์ภาพยนตร์",
+    "DeleteMovieFoldersHelpText": "ลบโฟลเดอร์ภาพยนตร์และเนื้อหา",
+    "DeleteSelectedMovies": "ลบไฟล์ภาพยนตร์ที่เลือก"
 }

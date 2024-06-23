@@ -1250,5 +1250,10 @@
     "CustomFilter": "Користувацькі фільтри",
     "EditReleaseProfile": "Додати профіль релізу",
     "DownloadClientUTorrentTorrentStateError": "qBittorrent повідомляє про помилку",
-    "DownloadClientRTorrentSettingsDirectoryHelpText": "Додаткове розташування для розміщення завантажень. Залиште поле порожнім, щоб використовувати стандартне розташування Aria2"
+    "DownloadClientRTorrentSettingsDirectoryHelpText": "Додаткове розташування для розміщення завантажень. Залиште поле порожнім, щоб використовувати стандартне розташування Aria2",
+    "DeleteMovieFolderCountConfirmation": "Ви впевнені, що хочете видалити {count} вибраних серіалів?",
+    "DeleteMovieFolderCountWithFilesConfirmation": "Ви впевнені, що хочете видалити {count} вибраних серіалів і весь вміст?",
+    "DeleteMovieFolders": "Видалити папку з фільмами",
+    "DeleteMovieFoldersHelpText": "Видалити папку з фільмами та її вміст",
+    "DeleteSelectedMovies": "Видалити вибраний серіал"
 }

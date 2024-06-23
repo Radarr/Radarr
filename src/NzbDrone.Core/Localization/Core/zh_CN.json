@@ -1660,5 +1660,10 @@
     "NotificationsPushoverSettingsDevicesHelpText": "设备 ID 列表，留空发给所有设备",
     "NotificationsPlexValidationNoMovieLibraryFound": "需要至少一个电视资源库",
     "SearchForCutoffUnmetMovies": "搜索所有Cutoff Unmet书籍",
-    "SearchForCutoffUnmetMoviesConfirmationCount": "您确定要搜索所有{totalRecords}Cutoff Unmet的剧集吗？"
+    "SearchForCutoffUnmetMoviesConfirmationCount": "您确定要搜索所有{totalRecords}Cutoff Unmet的剧集吗？",
+    "DeleteMovieFolderCountConfirmation": "你确定要删除选中的 {count} 个剧集吗？",
+    "DeleteMovieFolderCountWithFilesConfirmation": "你确定要删除选中的 {count} 个剧集及其所含的所有文件吗？",
+    "DeleteMovieFolders": "删除电影目录",
+    "DeleteMovieFoldersHelpText": "删除剧集文件夹及其所含文件",
+    "DeleteSelectedMovies": "删除选中的剧集"
 }

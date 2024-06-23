@@ -1128,5 +1128,15 @@
     "DeleteReleaseProfile": "Ștergeți profilul de întârziere",
     "DeleteAutoTagHelpText": "Sigur doriți să ștergeți eticheta '{label}'?",
     "OrganizeNothingToRename": "Succes! Mi-am terminat treaba, niciun fișier de redenumit.",
-    "ReleaseGroups": "Grup de apariție"
+    "ReleaseGroups": "Grup de apariție",
+    "AddDelayProfileError": "Imposibil de adăugat un nou profil de calitate, încercați din nou.",
+    "EditConnectionImplementation": "Adăugați aplicație - {implementareName}",
+    "SearchOnAddCollectionHelpText": "Căutați filme pe această listă atunci când sunt adăugate la {appName}",
+    "IMDbId": "Cod TMDb",
+    "DeleteMovieFolderCountConfirmation": "Sigur doriți să ștergeți {count} indexatori selectați?",
+    "DeleteMovieFolders": "Ștergeți dosarul filmului",
+    "DeleteMovieFoldersHelpText": "Ștergeți folderul filmului și conținutul acestuia",
+    "DeleteSelectedMovies": "Ștergeți fișierele film selectate",
+    "DownloadClientSettingsRecentPriority": "Prioritate client",
+    "MovieIsNotMonitored": "Filmul nu este monitorizat"
 }

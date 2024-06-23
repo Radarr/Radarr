@@ -1245,5 +1245,11 @@
     "AddRootFolderError": "Não foi possível carregar as pastas raiz",
     "DownloadClientSettingsRecentPriority": "Prioridade do cliente",
     "AddDelayProfileError": "Não foi possível adicionar um novo perfil de qualidade, tenta novamente.",
-    "DeleteReleaseProfileMessageText": "Tem a certeza que quer eliminar o perfil de qualidade \"{0}\"?"
+    "DeleteReleaseProfileMessageText": "Tem a certeza que quer eliminar o perfil de qualidade \"{0}\"?",
+    "MovieFileDeletedTooltip": "Ao eliminar o ficheiro do filme",
+    "DeleteMovieFolderCountConfirmation": "Tem a certeza de que pretende eliminar {count} indexador(es) selecionado(s)?",
+    "DeleteMovieFolderCountWithFilesConfirmation": "Tem a certeza de que deseja eliminar {count} artistas selecionados e todo o conteúdo?",
+    "DeleteMovieFolders": "Eliminar pasta do filme",
+    "DeleteMovieFoldersHelpText": "Elimine a pasta do filme e seu conteúdo",
+    "DeleteSelectedMovies": "Eliminar ficheiros do filme selecionado"
 }

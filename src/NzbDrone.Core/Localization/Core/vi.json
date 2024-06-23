@@ -1064,5 +1064,9 @@
     "IMDbId": "Id TMDb",
     "DeleteImportListMessageText": "Bạn có chắc chắn muốn xóa cấu hình chất lượng không {0}",
     "DeleteReleaseProfileMessageText": "Bạn có chắc chắn muốn xóa cấu hình chất lượng không {0}",
-    "AddDelayProfileError": "Không thể thêm hồ sơ chất lượng mới, vui lòng thử lại."
+    "AddDelayProfileError": "Không thể thêm hồ sơ chất lượng mới, vui lòng thử lại.",
+    "MovieFileDeletedTooltip": "Trên phim xóa tệp",
+    "DeleteMovieFolders": "Xóa thư mục phim",
+    "DeleteMovieFoldersHelpText": "Xóa thư mục phim và nội dung của nó",
+    "DeleteSelectedMovies": "Xóa các tệp phim đã chọn"
 }

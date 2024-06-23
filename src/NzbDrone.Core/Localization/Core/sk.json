@@ -288,5 +288,7 @@
     "AddNotificationError": "Nie je možné pridať novú podmienku, skúste to znova.",
     "AddCustomFormatError": "Nie je možné pridať novú automatickú značku, skúste to znova.",
     "AddDownloadClientError": "Nie je možné pridať novú podmienku, skúste to znova.",
-    "EditDownloadClientImplementation": "Pridať klienta pre sťahovanie - {implementationName}"
+    "EditDownloadClientImplementation": "Pridať klienta pre sťahovanie - {implementationName}",
+    "EditConnectionImplementation": "Pridať podmienku - {implementationName}",
+    "AddDelayProfileError": "Nie je možné pridať novú podmienku, skúste to znova."
 }

@@ -1169,5 +1169,10 @@
     "DeleteReleaseProfileMessageText": "Sicuro di voler cancellare il profilo di qualità {0}",
     "DeletedReasonMissingFromDisk": "Whisparr non è riuscito a trovare il file sul disco, quindi è stato rimosso",
     "DeleteQualityProfileMessageText": "Sicuro di voler cancellare il profilo di qualità {0}",
-    "RemotePathMappingCheckFilesLocalWrongOSPath": "Stai utilizzando docker; Il client di download {downloadClientName} riporta files in {path} ma questo non è un percorso valido {osName}. Controlla la mappa dei percorsi remoti e le impostazioni del client di download."
+    "RemotePathMappingCheckFilesLocalWrongOSPath": "Stai utilizzando docker; Il client di download {downloadClientName} riporta files in {path} ma questo non è un percorso valido {osName}. Controlla la mappa dei percorsi remoti e le impostazioni del client di download.",
+    "AutoTaggingNegateHelpText": "Se selezionato, il formato personalizzato non verrà applicato a questa {0} condizione.",
+    "MovieFileDeletedTooltip": "Su Elimina file filmato",
+    "DeleteMovieFolders": "Elimina la Cartella del Film",
+    "DeleteSelectedMovies": "Cancellare i File dei Film Selezionati",
+    "DeleteMovieFoldersHelpText": "Elimina la cartella del film e il suo contenuto"
 }

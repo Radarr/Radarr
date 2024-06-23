@@ -1781,5 +1781,10 @@
     "EditionFootNote": "Modifier l'indexeur - {implementationName}",
     "SearchForCutoffUnmetMovies": "Rechercher tous les albums de Cutoff Unmet",
     "SearchForCutoffUnmetMoviesConfirmationCount": "Êtes-vous sûr de vouloir rechercher tous les épisodes {totalRecords} Cutoff Unmet ?",
-    "MovieFootNote": "Contrôlez éventuellement la troncature à un nombre maximum d'octets, y compris les points de suspension (`...`). La troncature de la fin (par exemple `{Series Title:30}`) ou du début (par exemple `{Series Title:-30}`) sont toutes deux prises en charge."
+    "MovieFootNote": "Contrôlez éventuellement la troncature à un nombre maximum d'octets, y compris les points de suspension (`...`). La troncature de la fin (par exemple `{Series Title:30}`) ou du début (par exemple `{Series Title:-30}`) sont toutes deux prises en charge.",
+    "DeleteMovieFolderCountConfirmation": "Voulez-vous vraiment supprimer {count} séries sélectionnées ?",
+    "DeleteMovieFolderCountWithFilesConfirmation": "Voulez-vous vraiment supprimer {count} séries sélectionnées et tous les contenus ?",
+    "DeleteMovieFolders": "Supprimer le dossier du film",
+    "DeleteSelectedMovies": "Supprimer la série sélectionnée",
+    "DeleteMovieFoldersHelpText": "Supprimez les dossiers de séries et tout leur contenu"
 }
