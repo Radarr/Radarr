@@ -219,6 +219,7 @@ class Queue extends Component {
           >
             <TableOptionsModalWrapper
               columns={columns}
+              maxPageSize={200}
               {...otherProps}
               optionsComponent={QueueOptionsConnector}
             >
