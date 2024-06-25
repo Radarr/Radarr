@@ -63,8 +63,8 @@ namespace NzbDrone.Core.Download
 
             SetImportItem(trackedDownload);
 
-            // Only process tracked downloads that are still downloading
-            if (trackedDownload.State != TrackedDownloadState.Downloading)
+            // Only process tracked downloads that are still downloading or have been blocked for importing due to an issue with matching
+            if (trackedDownload.State != TrackedDownloadState.Downloading && trackedDownload.State != TrackedDownloadState.ImportBlocked)
             {
                 return;
             }
@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Download
                 if (movie == null)
                 {
                     trackedDownload.Warn("Movie title mismatch, automatic import is not possible. Manual Import required.");
-                    SendManualInteractionRequiredNotification(trackedDownload);
+                    SetStateToImportBlocked(trackedDownload);
 
                     return;
                 }
@@ -107,7 +107,7 @@ namespace NzbDrone.Core.Download
                 if (movieMatchType == MovieMatchType.Id && releaseSource != ReleaseSourceType.InteractiveSearch)
                 {
                     trackedDownload.Warn("Found matching movie via grab history, but release was matched to movie by ID. Manual Import required.");
-                    SendManualInteractionRequiredNotification(trackedDownload);
+                    SetStateToImportBlocked(trackedDownload);
 
                     return;
                 }
@@ -128,7 +128,7 @@ namespace NzbDrone.Core.Download
             if (trackedDownload.RemoteMovie?.Movie == null)
             {
                 trackedDownload.Warn("Unable to parse download, automatic import is not possible.");
-                SendManualInteractionRequiredNotification(trackedDownload);
+                SetStateToImportBlocked(trackedDownload);
 
                 return;
             }
@@ -186,7 +186,7 @@ namespace NzbDrone.Core.Download
             if (statusMessages.Any())
             {
                 trackedDownload.Warn(statusMessages.ToArray());
-                SendManualInteractionRequiredNotification(trackedDownload);
+                SetStateToImportBlocked(trackedDownload);
             }
         }
 
@@ -245,8 +245,10 @@ namespace NzbDrone.Core.Download
             return false;
         }
 
-        private void SendManualInteractionRequiredNotification(TrackedDownload trackedDownload)
+        private void SetStateToImportBlocked(TrackedDownload trackedDownload)
         {
+            trackedDownload.State = TrackedDownloadState.ImportBlocked;
+
             if (!trackedDownload.HasNotifiedManualInteractionRequired)
             {
                 var grabbedHistories = _historyService.FindByDownloadId(trackedDownload.DownloadItem.DownloadId).Where(h => h.EventType == MovieHistoryEventType.Grabbed).ToList();
