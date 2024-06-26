@@ -20,7 +20,7 @@ variables:
   innoVersion: '6.2.2'
   windowsImage: 'windows-2022'
   linuxImage: 'ubuntu-20.04'
-  macImage: 'macOS-11'
+  macImage: 'macOS-12'
 
 trigger:
   branches:
