@@ -27,10 +27,10 @@ namespace NzbDrone.Core.ImportLists.TMDb.User
         private IEnumerable<ImportListRequest> GetMoviesRequests()
         {
             var requestBuilder = RequestBuilder.Create()
-                                               .SetHeader("Authorization", $"Bearer {Settings.AccessToken}")
-                                               .SetSegment("api", "4")
-                                               .SetSegment("route", "account")
-                                               .SetSegment("id", Settings.AccountId);
+                .SetHeader("Authorization", $"Bearer {Settings.AccessToken}")
+                .SetSegment("api", "4")
+                .SetSegment("route", "account")
+                .SetSegment("id", Settings.AccountId);
 
             switch (Settings.ListType)
             {
@@ -62,7 +62,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.User
 
                 var request = requestBuilder.Build();
 
-                Logger.Debug($"Importing TMDb movies from: {request.Url}");
+                Logger.Debug("Importing TMDb movies from: {0}", request.Url);
 
                 yield return new ImportListRequest(request);
             }

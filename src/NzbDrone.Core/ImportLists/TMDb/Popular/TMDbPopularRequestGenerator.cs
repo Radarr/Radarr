@@ -45,10 +45,10 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
             var threeMonthsFromNow = DateTime.Parse(todaysDate).AddMonths(3).ToString("yyyy-MM-dd");
 
             var requestBuilder = RequestBuilder.Create()
-                                               .SetSegment("api", "3")
-                                               .SetSegment("route", "discover")
-                                               .SetSegment("id", "")
-                                               .SetSegment("secondaryRoute", "movie");
+                .SetSegment("api", "3")
+                .SetSegment("route", "discover")
+                .SetSegment("id", "")
+                .SetSegment("secondaryRoute", "movie");
 
             switch (Settings.TMDbListType)
             {
@@ -110,11 +110,13 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
 
             for (var pageNumber = 1; pageNumber <= MaxPages; pageNumber++)
             {
-                Logger.Info($"Importing TMDb movies from: {requestBuilder.BaseUrl}&page={pageNumber}");
-
                 requestBuilder.AddQueryParam("page", pageNumber, true);
 
-                yield return new ImportListRequest(requestBuilder.Build());
+                var request = requestBuilder.Build();
+
+                Logger.Debug("Importing TMDb movies from: {0}", request.Url);
+
+                yield return new ImportListRequest(request);
             }
         }
     }

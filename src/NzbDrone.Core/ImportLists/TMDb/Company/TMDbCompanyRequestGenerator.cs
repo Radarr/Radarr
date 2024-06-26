@@ -24,13 +24,13 @@ namespace NzbDrone.Core.ImportLists.TMDb.Company
 
         private IEnumerable<ImportListRequest> GetMoviesRequest()
         {
-            Logger.Info($"Importing TMDb movies from company: {Settings.CompanyId}");
+            Logger.Info("Importing TMDb movies from company: {0}", Settings.CompanyId);
 
             var requestBuilder = RequestBuilder.Create()
-                                               .SetSegment("api", "3")
-                                               .SetSegment("route", "discover")
-                                               .SetSegment("id", $"movie")
-                                               .SetSegment("secondaryRoute", "");
+                .SetSegment("api", "3")
+                .SetSegment("route", "discover")
+                .SetSegment("id", "movie")
+                .SetSegment("secondaryRoute", "");
 
             requestBuilder.AddQueryParam("with_companies", Settings.CompanyId);
 
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.Company
 
                 var request = requestBuilder.Build();
 
-                Logger.Debug($"Importing TMDb movies from: {request.Url}");
+                Logger.Debug("Importing TMDb movies from: {0}", request.Url);
 
                 yield return new ImportListRequest(request);
             }
