@@ -155,9 +155,9 @@ namespace NzbDrone.Core.Parser
         // groups whose releases end with RlsGroup) or RlsGroup]
         private static readonly Regex ExceptionReleaseGroupRegex = new Regex(@"(?<=[._ \[])(?<releasegroup>(Silence|afm72|Panda|Ghost|MONOLITH|Tigole|Joy|ImE|UTR|t3nzin|Anime Time|Project Angel|Hakata Ramen|HONE|Vyndros|SEV|Garshasp|Kappa|Natty|RCVR|SAMPA|YOGI|r00t|EDGE2020|RZeroX|FreetheFish|Anna|Bandi|Qman|theincognito|HDO|DusIctv|DHD|CtrlHD|-ZR-|ADC|XZVN|RH|Kametsu|Garshasp)(?=\]|\)))", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-       // Handle Exception Release Groups that don't follow -RlsGrp; Manual List
-       // name only...BE VERY CAREFUL WITH THIS, HIGH CHANCE OF FALSE POSITIVES
-        private static readonly Regex ExceptionReleaseGroupRegexExact = new Regex(@"(?<releasegroup>KRaLiMaRKo|E\.N\.D|D\-Z0N3|Koten_Gars|BluDragon|ZØNEHD|Tigole|HQMUX|VARYG|YIFY|YTS(.(MX|LT|AG))?)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        // Handle Exception Release Groups that don't follow -RlsGrp; Manual List
+        // name only...BE VERY CAREFUL WITH THIS, HIGH CHANCE OF FALSE POSITIVES
+        private static readonly Regex ExceptionReleaseGroupRegexExact = new Regex(@"(?<releasegroup>KRaLiMaRKo|E\.N\.D|D\-Z0N3|Koten_Gars|BluDragon|ZØNEHD|Tigole|HQMUX|VARYG|YIFY|YTS(.(MX|LT|AG))?|TMd|Eml HDTeam|LMain)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex WordDelimiterRegex = new Regex(@"(\s|\.|,|_|-|=|'|\|)+", RegexOptions.Compiled);
         private static readonly Regex SpecialCharRegex = new Regex(@"(\&|\:|\\|\/)+", RegexOptions.Compiled);
@@ -569,15 +569,15 @@ namespace NzbDrone.Core.Parser
         public static string RemoveFileExtension(string title)
         {
             title = FileExtensionRegex.Replace(title, m =>
+            {
+                var extension = m.Value.ToLower();
+                if (MediaFiles.MediaFileExtensions.Extensions.Contains(extension) || new[] { ".par2", ".nzb" }.Contains(extension))
                 {
-                    var extension = m.Value.ToLower();
-                    if (MediaFiles.MediaFileExtensions.Extensions.Contains(extension) || new[] { ".par2", ".nzb" }.Contains(extension))
-                    {
-                        return string.Empty;
-                    }
+                    return string.Empty;
+                }
 
-                    return m.Value;
-                });
+                return m.Value;
+            });
 
             return title;
         }
