@@ -38,6 +38,7 @@ namespace NzbDrone.Core.Test.QueueTests
 
             _trackedDownloads = Builder<TrackedDownload>.CreateListOfSize(1)
                 .All()
+                .With(v => v.IsTrackable = true)
                 .With(v => v.DownloadItem = downloadItem)
                 .With(v => v.RemoteMovie = remoteEpisode)
                 .Build()
