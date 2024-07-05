@@ -88,8 +88,7 @@ function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
 
   const { totalMovieFileCount, totalSizeOnDisk } = useMemo(() => {
     return movies.reduce(
-      (acc, m) => {
-        const { statistics = { movieFileCount: 0, sizeOnDisk: 0 } } = m;
+      (acc, { statistics = {} }) => {
         const { movieFileCount = 0, sizeOnDisk = 0 } = statistics;
 
         acc.totalMovieFileCount += movieFileCount;
@@ -159,17 +158,17 @@ function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
         </div>
 
         <ul>
-          {movies.map((m) => {
-            const { movieFileCount = 0, sizeOnDisk = 0 } = m.statistics;
+          {movies.map(({ title, path, statistics = {} }) => {
+            const { movieFileCount = 0, sizeOnDisk = 0 } = statistics;
 
             return (
-              <li key={m.title}>
-                <span>{m.title}</span>
+              <li key={title}>
+                <span>{title}</span>
 
                 {deleteFiles && (
                   <span>
                     <span className={styles.pathContainer}>
-                      -<span className={styles.path}>{m.path}</span>
+                      -<span className={styles.path}>{path}</span>
                     </span>
 
                     {!!movieFileCount && (
