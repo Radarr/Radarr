@@ -18,23 +18,15 @@ namespace NzbDrone.Core.Notifications.Plex.Server
     {
         private readonly IPlexServerService _plexServerService;
         private readonly IPlexTvService _plexTvService;
+        private readonly MediaServerUpdateQueue<PlexServer, bool> _updateQueue;
         private readonly Logger _logger;
-
-        private class PlexUpdateQueue
-        {
-            public Dictionary<int, Movie> Pending { get; } = new Dictionary<int, Movie>();
-            public bool Refreshing { get; set; }
-        }
-
-        private readonly ICached<PlexUpdateQueue> _pendingMoviesCache;
 
         public PlexServer(IPlexServerService plexServerService, IPlexTvService plexTvService, ICacheManager cacheManager, Logger logger)
         {
             _plexServerService = plexServerService;
             _plexTvService = plexTvService;
+            _updateQueue = new MediaServerUpdateQueue<PlexServer, bool>(cacheManager);
             _logger = logger;
-
-            _pendingMoviesCache = cacheManager.GetRollingCache<PlexUpdateQueue>(GetType(), "pendingSeries", TimeSpan.FromDays(1));
         }
 
         public override string Link => "https://www.plex.tv/";
@@ -70,66 +62,20 @@ namespace NzbDrone.Core.Notifications.Plex.Server
             if (Settings.UpdateLibrary)
             {
                 _logger.Debug("Scheduling library update for movie {0} {1}", movie.Id, movie.Title);
-                var queue = _pendingMoviesCache.Get(Settings.Host, () => new PlexUpdateQueue());
-                lock (queue)
-                {
-                    queue.Pending[movie.Id] = movie;
-                }
+                _updateQueue.Add(Settings.Host, movie, false);
             }
         }
 
         public override void ProcessQueue()
         {
-            var queue = _pendingMoviesCache.Find(Settings.Host);
-
-            if (queue == null)
+            _updateQueue.ProcessQueue(Settings.Host, (items) =>
             {
-                return;
-            }
-
-            lock (queue)
-            {
-                if (queue.Refreshing)
+                if (Settings.UpdateLibrary)
                 {
-                    return;
+                    _logger.Debug("Performing library update for {0} movies", items.Count);
+                    _plexServerService.UpdateLibrary(items.Select(i => i.Movie), Settings);
                 }
-
-                queue.Refreshing = true;
-            }
-
-            try
-            {
-                while (true)
-                {
-                    List<Movie> refreshingMovies;
-                    lock (queue)
-                    {
-                        if (queue.Pending.Empty())
-                        {
-                            queue.Refreshing = false;
-                            return;
-                        }
-
-                        refreshingMovies = queue.Pending.Values.ToList();
-                        queue.Pending.Clear();
-                    }
-
-                    if (Settings.UpdateLibrary)
-                    {
-                        _logger.Debug("Performing library update for {0} movies", refreshingMovies.Count);
-                        _plexServerService.UpdateLibrary(refreshingMovies, Settings);
-                    }
-                }
-            }
-            catch
-            {
-                lock (queue)
-                {
-                    queue.Refreshing = false;
-                }
-
-                throw;
-            }
+            });
         }
 
         public override ValidationResult Test()
@@ -202,13 +148,6 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                 var options = servers.SelectMany(s =>
                 {
                     var result = new List<FieldSelectStringOption>();
-
-                    // result.Add(new FieldSelectStringOption
-                    // {
-                    //     Value = s.Name,
-                    //     Name = s.Name,
-                    //     IsDisabled = true
-                    // });
 
                     s.Connections.ForEach(c =>
                     {

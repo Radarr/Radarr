@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
                                       .With(s => s.ImdbId = IMDB_ID)
                                       .Build();
 
-            Subject.UpdateMovie(_settings, movie);
+            Subject.Update(_settings, movie);
 
             Mocker.GetMock<IXbmcJsonApiProxy>()
                   .Verify(v => v.UpdateLibrary(_settings, It.IsAny<string>()), Times.Once());
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
                                           .With(s => s.Title = "Not A Real Movie")
                                           .Build();
 
-            Subject.UpdateMovie(_settings, fakeMovie);
+            Subject.Update(_settings, fakeMovie);
 
             Mocker.GetMock<IXbmcJsonApiProxy>()
                   .Verify(v => v.UpdateLibrary(_settings, null), Times.Once());

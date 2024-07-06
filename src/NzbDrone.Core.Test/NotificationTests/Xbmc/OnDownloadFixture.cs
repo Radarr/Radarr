@@ -33,9 +33,10 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 
             Subject.Definition = new NotificationDefinition();
             Subject.Definition.Settings = new XbmcSettings
-            {
-                UpdateLibrary = true
-            };
+                                          {
+                                              Host = "localhost",
+                                              UpdateLibrary = true
+                                          };
         }
 
         private void GivenOldFiles()
@@ -48,16 +49,18 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
                 .ToList();
 
             Subject.Definition.Settings = new XbmcSettings
-            {
-                UpdateLibrary = true,
-                CleanLibrary = true
-            };
+                                          {
+                                              Host = "localhost",
+                                              UpdateLibrary = true,
+                                              CleanLibrary = true
+                                          };
         }
 
         [Test]
         public void should_not_clean_if_no_movie_was_replaced()
         {
             Subject.OnDownload(_downloadMessage);
+            Subject.ProcessQueue();
 
             Mocker.GetMock<IXbmcService>().Verify(v => v.Clean(It.IsAny<XbmcSettings>()), Times.Never());
         }
@@ -67,6 +70,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
         {
             GivenOldFiles();
             Subject.OnDownload(_downloadMessage);
+            Subject.ProcessQueue();
 
             Mocker.GetMock<IXbmcService>().Verify(v => v.Clean(It.IsAny<XbmcSettings>()), Times.Once());
         }
