@@ -370,7 +370,7 @@ class MovieDetails extends Component {
               <MoviePoster
                 className={styles.poster}
                 images={images}
-                size={250}
+                size={500}
                 lazy={false}
               />
 
