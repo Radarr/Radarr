@@ -1341,7 +1341,7 @@
     "InteractiveImportNoQuality": "Seçilen her dosya için kalite seçilmelidir",
     "InvalidUILanguage": "Kullanıcı arayüzünüz geçersiz bir dile ayarlanmış, düzeltin ve ayarlarınızı kaydedin",
     "ManualGrab": "Manuel Yakalama",
-    "IndexerDownloadClientHealthCheckMessage": "Geçersiz indirme istemcilerine sahip dizinleyiciler: {0}.",
+    "IndexerDownloadClientHealthCheckMessage": "Geçersiz indirme istemcilerine sahip dizinleyiciler: {indexerNames}.",
     "MovieCollectionMissingRoot": "Film koleksiyonu için eksik kök klasör: {0}",
     "NoHistoryBlocklist": "Geçmiş engellenenler listesi yok",
     "NoImportListsFound": "İçe aktarma listesi bulunamadı",

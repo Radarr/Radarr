@@ -1126,7 +1126,7 @@
     "CloneAutoTag": "Автоматическое клонирование метки",
     "ManageIndexers": "Управление индексаторами",
     "Loading": "Загрузка",
-    "IndexerDownloadClientHealthCheckMessage": "Индексаторы с недопустимыми клиентами загрузки: {0}.",
+    "IndexerDownloadClientHealthCheckMessage": "Индексаторы с недопустимыми клиентами загрузки: {indexerNames}.",
     "ManageLists": "Управление листами",
     "CountDownloadClientsSelected": "{count} выбранных клиентов загрузки",
     "CountImportListsSelected": "{count} выбранных списков импорта",

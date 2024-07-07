@@ -1156,7 +1156,7 @@
     "AddImportListImplementation": "Lisätään tuontilistaa - {implementationName}",
     "AllTitles": "Kaikki nimikkeet",
     "EditDownloadClientImplementation": "Muokataan lataustyökalua - {implementationName}",
-    "IndexerDownloadClientHealthCheckMessage": "Tietolähteet virheellisillä lataustyökaluilla: {0}.",
+    "IndexerDownloadClientHealthCheckMessage": "Tietolähteet virheellisillä lataustyökaluilla: {indexerNames}.",
     "RemoveQueueItem": "Poistetaan - {sourceTitle}",
     "TablePageSizeMaximum": "Sivukohtainen kohdemäärä ei voi olla suurempi kuin {maximumValue}.",
     "TablePageSizeMinimum": "Sivukohtaisen kohdemäärän on oltava vähintään {minimumValue}.",

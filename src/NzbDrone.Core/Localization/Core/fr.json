@@ -1198,7 +1198,7 @@
     "OrganizeNothingToRename": "C'est fait ! Mon travail est terminé, plus aucun fichier à renommer.",
     "False": "Faux",
     "DefaultNameCopiedProfile": "{name} - Copier",
-    "IndexerDownloadClientHealthCheckMessage": "Indexeurs avec des clients de téléchargement invalides : {0}.",
+    "IndexerDownloadClientHealthCheckMessage": "Indexeurs avec des clients de téléchargement invalides : {indexerNames}.",
     "DeleteRootFolder": "Supprimer le dossier racine",
     "SelectDownloadClientModalTitle": "{modalTitle} – Sélectionnez le client de téléchargement",
     "HistoryLoadError": "Impossible de charger l'historique",

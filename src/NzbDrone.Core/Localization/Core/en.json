@@ -747,7 +747,7 @@
   "IncludeTrendingMoviesHelpText": "Include trending movies on TMDb",
   "IncludeUnmonitored": "Include Unmonitored",
   "Indexer": "Indexer",
-  "IndexerDownloadClientHealthCheckMessage": "Indexers with invalid download clients: {0}.",
+  "IndexerDownloadClientHealthCheckMessage": "Indexers with invalid download clients: {indexerNames}.",
   "IndexerDownloadClientHelpText": "Specify which download client is used for grabs from this indexer",
   "IndexerFlags": "Indexer Flags",
   "IndexerJackettAll": "Indexers using the unsupported Jackett 'all' endpoint: {indexerNames}",

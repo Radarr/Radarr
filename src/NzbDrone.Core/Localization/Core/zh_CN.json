@@ -1230,7 +1230,7 @@
     "InteractiveImportNoMovie": "必须为每个选定的文件选择影片",
     "MovieFileDeletedTooltip": "删除电影文件",
     "MovieGrabbedHistoryTooltip": "从{indexer}获取电影并发送到{downloadClient}",
-    "IndexerDownloadClientHealthCheckMessage": "有无效下载客户端的索引器：{0}。",
+    "IndexerDownloadClientHealthCheckMessage": "有无效下载客户端的索引器：{indexerNames}。",
     "FullColorEvents": "全彩事件",
     "InteractiveImportNoFilesFound": "在所选文件夹中找不到视频文件",
     "InteractiveImportNoImportMode": "必须选择导入模式",

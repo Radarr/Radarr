@@ -1221,7 +1221,7 @@
     "EditSelectedDownloadClients": "Editeu els clients de descàrrega seleccionats",
     "ManageLists": "Gestiona les llistes",
     "Loading": "Carregant",
-    "IndexerDownloadClientHealthCheckMessage": "Indexadors amb clients de baixada no vàlids: {0}.",
+    "IndexerDownloadClientHealthCheckMessage": "Indexadors amb clients de baixada no vàlids: {indexerNames}.",
     "ImportScriptPath": "Importa la ruta de l'script",
     "ListRefreshInterval": "Interval d'actualització de la llista",
     "ManualGrab": "Captura manual",

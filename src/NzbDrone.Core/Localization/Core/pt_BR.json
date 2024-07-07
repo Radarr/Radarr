@@ -1155,7 +1155,7 @@
     "DeleteRootFolder": "Excluir pasta raiz",
     "DeleteRootFolderMessageText": "Tem certeza de que deseja excluir a pasta raiz '{path}'?",
     "RootFolderPath": "Caminho da Pasta Raiz",
-    "IndexerDownloadClientHealthCheckMessage": "Indexadores com clientes de download inválidos: {0}.",
+    "IndexerDownloadClientHealthCheckMessage": "Indexadores com clientes de download inválidos: {indexerNames}.",
     "DeleteImportList": "Excluir lista de importação",
     "DeleteImportListMessageText": "Tem certeza de que deseja excluir a lista '{name}'?",
     "RemoveQueueItem": "Remover - {sourceTitle}",

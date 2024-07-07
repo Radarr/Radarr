@@ -1392,7 +1392,7 @@
     "DownloadClientValidationApiKeyRequired": "API-Key benötigt",
     "DownloadClientValidationAuthenticationFailure": "Authentifizierung fehlgeschlagen",
     "DownloadClientValidationErrorVersion": "{clientName} Version sollte mindestens {requiredVersion} sein. Die gemeldete Version ist {reportedVersion}",
-    "IndexerDownloadClientHealthCheckMessage": "Indexer mit ungültigen Downloader: {0}.",
+    "IndexerDownloadClientHealthCheckMessage": "Indexer mit ungültigen Downloader: {indexerNames}.",
     "CustomFormatsSpecificationFlag": "Markierung",
     "CustomFormatsSpecificationRegularExpressionHelpText": "Benutzerdefiniertes Format RegEx ist nicht groß-/kleinschreibungssensitiv",
     "DownloadClientSabnzbdValidationUnknownVersion": "Unbekannte Version: {rawVersion}",

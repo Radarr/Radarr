@@ -1317,7 +1317,7 @@
     "DownloadClientValidationTestTorrents": "Nem sikerült lekérni a torrentek listáját: {exceptionMessage}",
     "ThereWasAnErrorLoadingThisItem": "Hiba történt az elem betöltésekor",
     "ResetQualityDefinitionsMessageText": "Biztosan vissza szeretné állítani a minőségi definíciókat?",
-    "IndexerDownloadClientHealthCheckMessage": "Indexelők érvénytelen letöltési kliensekkel: {0}.",
+    "IndexerDownloadClientHealthCheckMessage": "Indexelők érvénytelen letöltési kliensekkel: {indexerNames}.",
     "RemoveQueueItem": "Eltávolítás – {sourceTitle}",
     "DownloadClientVuzeValidationErrorVersion": "A protokoll verziója nem támogatott, használja a Vuze 5.0.0.0 vagy újabb verzióját a Vuze Web Remote bővítménnyel.",
     "EnableProfileHelpText": "Jelölje be a kiadási profil engedélyezéséhez",

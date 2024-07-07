@@ -1111,7 +1111,7 @@
     "EditSelectedImportLists": "Editar Listas de Importación Seleccionadas",
     "ManageIndexers": "Gestionar Indexadores",
     "Loading": "Cargando",
-    "IndexerDownloadClientHealthCheckMessage": "Indexadores con clientes de descarga inválidos: {0}.",
+    "IndexerDownloadClientHealthCheckMessage": "Indexadores con clientes de descarga inválidos: {indexerNames}.",
     "CountImportListsSelected": "{count} lista(s) de importación seleccionada(s)",
     "CountDownloadClientsSelected": "{count} cliente(s) de descarga seleccionado(s)",
     "DeleteRootFolder": "Eliminar Carpeta Raíz",
