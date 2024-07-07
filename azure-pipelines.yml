@@ -1205,7 +1205,7 @@ stages:
         submodules: true
       - powershell: Set-Service SCardSvr -StartupType Manual
         displayName: Enable Windows Test Service
-      - task: SonarCloudPrepare@1
+      - task: SonarCloudPrepare@2
         condition: eq(variables['System.PullRequest.IsFork'], 'False')
         inputs:
           SonarCloud: 'SonarCloud'
@@ -1223,21 +1223,16 @@ stages:
           ./build.sh --backend -f net6.0 -r win-x64
           TEST_DIR=_tests/net6.0/win-x64/publish/ ./test.sh Windows Unit Coverage
         displayName: Coverage Unit Tests
-      - task: SonarCloudAnalyze@1
+      - task: SonarCloudAnalyze@2
         condition: eq(variables['System.PullRequest.IsFork'], 'False')
         displayName: Publish SonarCloud Results
-      - task: reportgenerator@4
+      - task: reportgenerator@5
         displayName: Generate Coverage Report
         inputs:
           reports: '$(Build.SourcesDirectory)/CoverageResults/**/coverage.opencover.xml'
           targetdir: '$(Build.SourcesDirectory)/CoverageResults/combined'
           reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
-      - task: PublishCodeCoverageResults@1
-        displayName: Publish Coverage Report
-        inputs:
-          codeCoverageTool: 'cobertura'
-          summaryFileLocation: './CoverageResults/combined/Cobertura.xml'
-          reportDirectory: './CoverageResults/combined/'
+          publishCodeCoverageResults: true
 
   - stage: Report_Out
     dependsOn:
