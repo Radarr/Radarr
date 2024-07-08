@@ -77,7 +77,7 @@ namespace Radarr.Api.V3.Queue
 
             if (pendingRelease != null)
             {
-                Remove(pendingRelease);
+                Remove(pendingRelease, blocklist);
 
                 return;
             }
@@ -120,7 +120,7 @@ namespace Radarr.Api.V3.Queue
 
             foreach (var pendingRelease in pendingToRemove.DistinctBy(p => p.Id))
             {
-                Remove(pendingRelease);
+                Remove(pendingRelease, blocklist);
             }
 
             foreach (var trackedDownload in trackedToRemove.DistinctBy(t => t.DownloadItem.DownloadId))
@@ -279,9 +279,13 @@ namespace Radarr.Api.V3.Queue
             }
         }
 
-        private void Remove(NzbDrone.Core.Queue.Queue pendingRelease)
+        private void Remove(NzbDrone.Core.Queue.Queue pendingRelease, bool blocklist)
         {
-            _blocklistService.Block(pendingRelease.RemoteMovie, "Pending release manually blocklisted");
+            if (blocklist)
+            {
+                _blocklistService.Block(pendingRelease.RemoteMovie, "Pending release manually blocklisted");
+            }
+
             _pendingReleaseService.RemovePendingQueueItems(pendingRelease.Id);
         }
 
