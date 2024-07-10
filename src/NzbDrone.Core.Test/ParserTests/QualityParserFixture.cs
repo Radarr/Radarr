@@ -206,6 +206,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The.Movie.2022.NORDiC.1080p.DV.HDR.WEB.H 265-NiDHUG", false)]
         [TestCase("Movie Title 2018 [WEB 1080p HEVC Opus] [Netaro]", false)]
         [TestCase("Movie Title 2018 (WEB 1080p HEVC Opus) [Netaro]", false)]
+        [TestCase("Movie.Title.2024.German.Dubbed.DL.AAC.1080p.WEB.AVC-GROUP", false)]
         public void should_parse_webdl1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, QualitySource.WEBDL, proper, Resolution.R1080p);
@@ -226,6 +227,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[HorribleSubs] Movie Title! 2018 [Web][MKV][h264][2160p][AAC 2.0][Softsubs (HorribleSubs)]", false)]
         [TestCase("Movie Name 2020 WEB-DL 4K H265 10bit HDR DDP5.1 Atmos-PTerWEB", false)]
         [TestCase("The.Movie.2022.NORDiC.2160p.DV.HDR.WEB.H.265-NiDHUG", false)]
+        [TestCase("Movie.Name.2024.German.Dubbed.DL.AAC.2160p.DV.HDR.WEB.HEVC-GROUP", false)]
         public void should_parse_webdl2160p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, QualitySource.WEBDL, proper, Resolution.R2160p);
