@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.AutoTagging;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
@@ -40,11 +41,12 @@ namespace NzbDrone.Core.Movies
         List<Movie> GetAllMovies();
         Dictionary<int, List<int>> AllMovieTags();
         Movie UpdateMovie(Movie movie);
-        List<Movie> UpdateMovie(List<Movie> movie, bool useExistingRelativeFolder);
+        List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder);
         void UpdateLastSearchTime(Movie movie);
         List<int> GetRecommendedTmdbIds();
         bool MoviePathExists(string folder);
         void RemoveAddOptions(Movie movie);
+        bool UpdateTags(Movie movie);
         bool ExistsByMetadataId(int metadataId);
         HashSet<int> AllMovieWithCollectionsTmdbIds();
     }
@@ -56,18 +58,21 @@ namespace NzbDrone.Core.Movies
         private readonly IConfigService _configService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IBuildMoviePaths _moviePathBuilder;
+        private readonly IAutoTaggingService _autoTaggingService;
         private readonly Logger _logger;
 
         public MovieService(IMovieRepository movieRepository,
                             IEventAggregator eventAggregator,
                             IConfigService configService,
                             IBuildMoviePaths moviePathBuilder,
+                            IAutoTaggingService autoTaggingService,
                             Logger logger)
         {
             _movieRepository = movieRepository;
             _eventAggregator = eventAggregator;
             _configService = configService;
             _moviePathBuilder = moviePathBuilder;
+            _autoTaggingService = autoTaggingService;
             _logger = logger;
         }
 
@@ -242,16 +247,19 @@ namespace NzbDrone.Core.Movies
         {
             var storedMovie = GetMovie(movie.Id);
 
+            UpdateTags(movie);
+
             var updatedMovie = _movieRepository.Update(movie);
             _eventAggregator.PublishEvent(new MovieEditedEvent(updatedMovie, storedMovie));
 
             return updatedMovie;
         }
 
-        public List<Movie> UpdateMovie(List<Movie> movie, bool useExistingRelativeFolder)
+        public List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder)
         {
-            _logger.Debug("Updating {0} movie", movie.Count);
-            foreach (var m in movie)
+            _logger.Debug("Updating {0} movies", movies.Count);
+
+            foreach (var m in movies)
             {
                 _logger.Trace("Updating: {0}", m.Title);
 
@@ -265,12 +273,14 @@ namespace NzbDrone.Core.Movies
                 {
                     _logger.Trace("Not changing path for: {0}", m.Title);
                 }
+
+                UpdateTags(m);
             }
 
-            _movieRepository.UpdateMany(movie);
-            _logger.Debug("{0} movie updated", movie.Count);
+            _movieRepository.UpdateMany(movies);
+            _logger.Debug("{0} movies updated", movies.Count);
 
-            return movie;
+            return movies;
         }
 
         public void UpdateLastSearchTime(Movie movie)
@@ -286,6 +296,42 @@ namespace NzbDrone.Core.Movies
         public void RemoveAddOptions(Movie movie)
         {
             _movieRepository.SetFields(movie, s => s.AddOptions);
+        }
+
+        public bool UpdateTags(Movie movie)
+        {
+            _logger.Trace("Updating tags for {0}", movie);
+
+            var tagsAdded = new HashSet<int>();
+            var tagsRemoved = new HashSet<int>();
+            var changes = _autoTaggingService.GetTagChanges(movie);
+
+            foreach (var tag in changes.TagsToRemove)
+            {
+                if (movie.Tags.Contains(tag))
+                {
+                    movie.Tags.Remove(tag);
+                    tagsRemoved.Add(tag);
+                }
+            }
+
+            foreach (var tag in changes.TagsToAdd)
+            {
+                if (!movie.Tags.Contains(tag))
+                {
+                    movie.Tags.Add(tag);
+                    tagsAdded.Add(tag);
+                }
+            }
+
+            if (tagsAdded.Any() || tagsRemoved.Any())
+            {
+                _logger.Debug("Updated tags for '{0}'. Added: {1}, Removed: {2}", movie.Title, tagsAdded.Count, tagsRemoved.Count);
+
+                return true;
+            }
+
+            return false;
         }
 
         public List<Movie> GetMoviesByFileId(int fileId)

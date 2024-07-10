@@ -5,6 +5,7 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.AutoTagging;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
@@ -27,6 +28,10 @@ namespace NzbDrone.Core.Test.MovieTests.MovieServiceTests
                 .With(s => s.Path = @"C:\Test\name".AsOsAgnostic())
                 .With(s => s.RootFolderPath = "")
                 .Build().ToList();
+
+            Mocker.GetMock<IAutoTaggingService>()
+                .Setup(s => s.GetTagChanges(It.IsAny<Movie>()))
+                .Returns(new AutoTaggingChanges());
         }
 
         [Test]
@@ -77,6 +82,24 @@ namespace NzbDrone.Core.Test.MovieTests.MovieServiceTests
                   .Returns<Movie, NamingConfig>((s, n) => s.Title);
 
             Subject.UpdateMovie(movies, false);
+        }
+
+        [Test]
+        public void should_add_and_remove_tags()
+        {
+            _movies[0].Tags = new HashSet<int> { 1, 2 };
+
+            Mocker.GetMock<IAutoTaggingService>()
+                .Setup(s => s.GetTagChanges(_movies[0]))
+                .Returns(new AutoTaggingChanges
+                {
+                    TagsToAdd = new HashSet<int> { 3 },
+                    TagsToRemove = new HashSet<int> { 1 }
+                });
+
+            var result = Subject.UpdateMovie(_movies, false);
+
+            result[0].Tags.Should().BeEquivalentTo(new[] { 2, 3 });
         }
     }
 }

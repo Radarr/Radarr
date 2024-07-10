@@ -210,34 +210,11 @@ namespace NzbDrone.Core.Movies
 
         private void UpdateTags(Movie movie)
         {
-            _logger.Trace("Updating tags for {0}", movie);
+            var tagsUpdated = _movieService.UpdateTags(movie);
 
-            var tagsAdded = new HashSet<int>();
-            var tagsRemoved = new HashSet<int>();
-            var changes = _autoTaggingService.GetTagChanges(movie);
-
-            foreach (var tag in changes.TagsToRemove)
-            {
-                if (movie.Tags.Contains(tag))
-                {
-                    movie.Tags.Remove(tag);
-                    tagsRemoved.Add(tag);
-                }
-            }
-
-            foreach (var tag in changes.TagsToAdd)
-            {
-                if (!movie.Tags.Contains(tag))
-                {
-                    movie.Tags.Add(tag);
-                    tagsAdded.Add(tag);
-                }
-            }
-
-            if (tagsAdded.Any() || tagsRemoved.Any())
+            if (tagsUpdated)
             {
                 _movieService.UpdateMovie(movie);
-                _logger.Debug("Updated tags for '{0}'. Added: {1}, Removed: {2}", movie.Title, tagsAdded.Count, tagsRemoved.Count);
             }
         }
 
