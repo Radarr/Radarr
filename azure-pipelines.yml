@@ -1116,7 +1116,7 @@ stages:
         vmImage: ${{ variables.windowsImage }}
       steps:
       - checkout: self # Need history for Sonar analysis
-      - task: SonarCloudPrepare@1
+      - task: SonarCloudPrepare@2
         env:
           SONAR_SCANNER_OPTS: ''
         inputs:
@@ -1128,7 +1128,7 @@ stages:
           cliProjectName: 'RadarrUI'
           cliProjectVersion: '$(radarrVersion)'
           cliSources: './frontend'
-      - task: SonarCloudAnalyze@1
+      - task: SonarCloudAnalyze@2
       
     - job: Api_Docs
       displayName: API Docs
