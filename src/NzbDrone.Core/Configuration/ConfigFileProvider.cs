@@ -255,7 +255,7 @@ namespace NzbDrone.Core.Configuration
         public string UiFolder => BuildInfo.IsDebug ? Path.Combine("..", "UI") : "UI";
         public string InstanceName => _appOptions.InstanceName ?? GetValue("InstanceName", BuildInfo.AppName);
 
-        public bool UpdateAutomatically => _updateOptions.Automatically ?? GetValueBoolean("UpdateAutomatically", false, false);
+        public bool UpdateAutomatically => _updateOptions.Automatically ?? GetValueBoolean("UpdateAutomatically", OsInfo.IsWindows, false);
 
         public UpdateMechanism UpdateMechanism =>
             Enum.TryParse<UpdateMechanism>(_updateOptions.Mechanism, out var enumValue)
