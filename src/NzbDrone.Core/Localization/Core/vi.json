@@ -912,7 +912,7 @@
     "QualityProfilesLoadError": "Không thể tải Hồ sơ chất lượng",
     "RemotePathMappingsLoadError": "Không thể tải Ánh xạ đường dẫn từ xa",
     "UnableToLoadRootFolders": "Không thể tải các thư mục gốc",
-    "UpdateRadarrDirectlyLoadError": "Không thể cập nhật {appName} trực tiếp,",
+    "UpdateAppDirectlyLoadError": "Không thể cập nhật {appName} trực tiếp,",
     "Ungroup": "Bỏ nhóm",
     "Unlimited": "Vô hạn",
     "UnmappedFilesOnly": "Chỉ các tệp chưa được ánh xạ",

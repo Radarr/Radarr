@@ -926,7 +926,7 @@
     "Trigger": "Desencadenar",
     "Unlimited": "Ilimitado",
     "UnableToLoadManualImportItems": "No se pueden cargar elementos de importación manual",
-    "UpdateRadarrDirectlyLoadError": "No se puede actualizar {appName} directamente,",
+    "UpdateAppDirectlyLoadError": "No se puede actualizar {appName} directamente,",
     "UnmappedFilesOnly": "Solo archivos sin mapear",
     "UpgradeUntilCustomFormatScore": "Actualizar hasta la puntuación de formato personalizado",
     "UpgradeUntil": "Actualizar hasta",

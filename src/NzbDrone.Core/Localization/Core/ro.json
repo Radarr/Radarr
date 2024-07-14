@@ -912,7 +912,7 @@
     "UnableToLoadRootFolders": "Imposibil de încărcat folderele rădăcină",
     "TagsLoadError": "Nu se pot încărca etichete",
     "CalendarLoadError": "Calendarul nu poate fi încărcat",
-    "UpdateRadarrDirectlyLoadError": "Imposibil de actualizat direct {appName},",
+    "UpdateAppDirectlyLoadError": "Imposibil de actualizat direct {appName},",
     "Ungroup": "Dezgrupează",
     "Unlimited": "Nelimitat",
     "UnmappedFilesOnly": "Numai fișiere nemapate",

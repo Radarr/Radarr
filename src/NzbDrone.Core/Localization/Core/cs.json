@@ -901,7 +901,7 @@
     "QualityProfilesLoadError": "Nelze načíst profily kvality",
     "UnableToLoadRootFolders": "Nelze načíst kořenové složky",
     "CalendarLoadError": "Kalendář nelze načíst",
-    "UpdateRadarrDirectlyLoadError": "{appName} nelze aktualizovat přímo,",
+    "UpdateAppDirectlyLoadError": "{appName} nelze aktualizovat přímo,",
     "UnmappedFilesOnly": "Pouze nezmapované soubory",
     "UnmappedFolders": "Nezmapované složky",
     "Unmonitored": "Nemonitorováno",

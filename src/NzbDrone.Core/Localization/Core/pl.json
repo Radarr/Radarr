@@ -901,7 +901,7 @@
     "UnableToLoadRootFolders": "Nie można załadować folderów głównych",
     "TagsLoadError": "Nie można załadować tagów",
     "CalendarLoadError": "Nie można załadować kalendarza",
-    "UpdateRadarrDirectlyLoadError": "Nie można bezpośrednio zaktualizować {appName},",
+    "UpdateAppDirectlyLoadError": "Nie można bezpośrednio zaktualizować {appName},",
     "Ungroup": "Rozgrupuj",
     "Unlimited": "Nieograniczony",
     "Unmonitored": "Niemonitorowane",

@@ -774,7 +774,7 @@
     "UpgradesAllowed": "Upgrades erlaubt",
     "UnmappedFilesOnly": "Nur nicht zugeordnete Dateien",
     "Unlimited": "Unlimitiert",
-    "UpdateRadarrDirectlyLoadError": "{appName} konnte nicht direkt aktualisiert werden,",
+    "UpdateAppDirectlyLoadError": "{appName} konnte nicht direkt aktualisiert werden,",
     "UnableToLoadManualImportItems": "Einträge für manuelles importieren konnten nicht geladen werden",
     "AlternativeTitlesLoadError": "Alternative Titel konnten nicht geladen werden.",
     "Trigger": "Auslöser",

@@ -934,7 +934,7 @@
     "Trakt": "Trakt",
     "Trigger": "Acionador",
     "UnableToLoadManualImportItems": "Não foi possível carregar os itens de importação manual",
-    "UpdateRadarrDirectlyLoadError": "Não foi possível atualizar o {appName} diretamente,",
+    "UpdateAppDirectlyLoadError": "Não foi possível atualizar o {appName} diretamente,",
     "Unlimited": "Ilimitado",
     "UnmappedFilesOnly": "Somente ficheiros não mapeados",
     "UpgradeUntilCustomFormatScore": "Atualizar até a pontuação do formato personalizado",

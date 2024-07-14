@@ -899,7 +899,7 @@
     "UnableToLoadRootFolders": "Ekki er hægt að hlaða rótarmöppum",
     "TagsLoadError": "Ekki er hægt að hlaða merkin",
     "CalendarLoadError": "Ekki er hægt að hlaða dagatalið",
-    "UpdateRadarrDirectlyLoadError": "Ekki er hægt að uppfæra {appName} beint,",
+    "UpdateAppDirectlyLoadError": "Ekki er hægt að uppfæra {appName} beint,",
     "Ungroup": "Aftengja hópinn",
     "Unlimited": "Ótakmarkað",
     "UnmappedFilesOnly": "Aðeins ókortlagðar skrár",

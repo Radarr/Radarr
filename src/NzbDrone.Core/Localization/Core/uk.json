@@ -892,7 +892,7 @@
     "QualityDefinitionsLoadError": "Не вдалося завантажити визначення якості",
     "RemotePathMappingsLoadError": "Неможливо завантажити віддалені відображення шляхів",
     "UnableToLoadRootFolders": "Не вдалося завантажити кореневі папки",
-    "UpdateRadarrDirectlyLoadError": "Неможливо оновити {appName} безпосередньо,",
+    "UpdateAppDirectlyLoadError": "Неможливо оновити {appName} безпосередньо,",
     "Unavailable": "Недоступний",
     "Unlimited": "Необмежений",
     "UnmappedFilesOnly": "Лише незіставлені файли",

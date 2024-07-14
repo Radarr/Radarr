@@ -898,7 +898,7 @@
     "UnableToLoadRootFolders": "לא ניתן לטעון תיקיות שורש",
     "CalendarLoadError": "לא ניתן לטעון את היומן",
     "Unlimited": "ללא הגבלה",
-    "UpdateRadarrDirectlyLoadError": "לא ניתן לעדכן את {appName} ישירות,",
+    "UpdateAppDirectlyLoadError": "לא ניתן לעדכן את {appName} ישירות,",
     "Ungroup": "בטל קבוצה",
     "UnmappedFilesOnly": "קבצים שלא ממופים בלבד",
     "UnmappedFolders": "תיקיות לא ממופות",

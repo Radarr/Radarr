@@ -127,7 +127,7 @@
     "Unmonitored": "未追踪项",
     "Unlimited": "无限制",
     "Unavailable": "不可用",
-    "UpdateRadarrDirectlyLoadError": "无法直接更新{appName}",
+    "UpdateAppDirectlyLoadError": "无法直接更新{appName}",
     "UiSettingsLoadError": "无法加载UI设置",
     "CalendarLoadError": "无法加载日历",
     "TagsLoadError": "无法加载标签",

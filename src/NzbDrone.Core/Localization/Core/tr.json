@@ -338,7 +338,7 @@
     "UnableToLoadRestrictions": "Kısıtlamalar yüklenemiyor",
     "UnableToLoadRootFolders": "Kök klasörler yüklenemiyor",
     "TagsLoadError": "Etiketler yüklenemiyor",
-    "UpdateRadarrDirectlyLoadError": "{appName} doğrudan güncellenemiyor,",
+    "UpdateAppDirectlyLoadError": "{appName} doğrudan güncellenemiyor,",
     "Ungroup": "Grubu çöz",
     "Unlimited": "Sınırsız",
     "UnmappedFilesOnly": "Yalnızca Eşlenmemiş Dosyalar",

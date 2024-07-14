@@ -846,7 +846,7 @@
     "UpgradesAllowed": "Frissítések Engedélyezve",
     "UnmappedFilesOnly": "Kizárólag fel nem térképezett fájlokat",
     "Unlimited": "korlátlan",
-    "UpdateRadarrDirectlyLoadError": "Nem lehetséges közvetlenül frissíteni a {appName}-t",
+    "UpdateAppDirectlyLoadError": "Nem lehetséges közvetlenül frissíteni a {appName}-t",
     "UnableToLoadManualImportItems": "Nem lehetséges betölteni a manuálisan importált elemeket",
     "AlternativeTitlesLoadError": "Nem lehetséges betölteni az alternatív címeket.",
     "Trigger": "Trigger",

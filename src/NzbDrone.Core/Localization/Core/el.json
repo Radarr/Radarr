@@ -893,7 +893,7 @@
     "UnableToLoadRootFolders": "Δεν είναι δυνατή η φόρτωση ριζικών φακέλων",
     "TagsLoadError": "Δεν είναι δυνατή η φόρτωση ετικετών",
     "CalendarLoadError": "Δεν είναι δυνατή η φόρτωση του ημερολογίου",
-    "UpdateRadarrDirectlyLoadError": "Δεν είναι δυνατή η απευθείας ενημέρωση του {appName},",
+    "UpdateAppDirectlyLoadError": "Δεν είναι δυνατή η απευθείας ενημέρωση του {appName},",
     "Ungroup": "Κατάργηση ομάδας",
     "Unlimited": "Απεριόριστος",
     "UnmappedFilesOnly": "Μόνο μη αντιστοιχισμένα αρχεία",

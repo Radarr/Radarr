@@ -906,7 +906,7 @@
     "Unlimited": "Ilimitado",
     "Ungroup": "Desagrupar",
     "Unavailable": "Indisponível",
-    "UpdateRadarrDirectlyLoadError": "Não foi possível carregar o {appName} diretamente,",
+    "UpdateAppDirectlyLoadError": "Não foi possível carregar o {appName} diretamente,",
     "UiSettingsLoadError": "Não foi possível carregar as configurações da interface",
     "CalendarLoadError": "Não foi possível carregar o calendário",
     "TagsLoadError": "Não foi possível carregar as tags",
