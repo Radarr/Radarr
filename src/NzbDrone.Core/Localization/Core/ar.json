@@ -56,7 +56,7 @@
     "Unlimited": "غير محدود",
     "Ungroup": "فك التجميع",
     "Unavailable": "غير متوفره",
-    "UpdateRadarrDirectlyLoadError": "تعذر تحديث {appName} مباشرة ،",
+    "UpdateAppDirectlyLoadError": "تعذر تحديث {appName} مباشرة ،",
     "UiSettingsLoadError": "تعذر تحميل إعدادات واجهة المستخدم",
     "CalendarLoadError": "تعذر تحميل التقويم",
     "TagsLoadError": "تعذر تحميل العلامات",

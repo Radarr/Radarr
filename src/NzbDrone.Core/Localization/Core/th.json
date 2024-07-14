@@ -907,7 +907,7 @@
     "UnableToLoadRestrictions": "ไม่สามารถโหลดข้อ จำกัด",
     "UnableToLoadRootFolders": "ไม่สามารถโหลดโฟลเดอร์รูท",
     "CalendarLoadError": "ไม่สามารถโหลดปฏิทิน",
-    "UpdateRadarrDirectlyLoadError": "ไม่สามารถอัปเดต {appName} ได้โดยตรง",
+    "UpdateAppDirectlyLoadError": "ไม่สามารถอัปเดต {appName} ได้โดยตรง",
     "Ungroup": "ยกเลิกการจัดกลุ่ม",
     "Unlimited": "ไม่ จำกัด",
     "UnmappedFilesOnly": "ไฟล์ที่ไม่ได้แมปเท่านั้น",

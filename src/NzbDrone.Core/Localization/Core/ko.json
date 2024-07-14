@@ -899,7 +899,7 @@
     "UnableToLoadRestrictions": "제한을 불러올 수 없습니다.",
     "UnableToLoadRootFolders": "루트 폴더를 불러올 수 없습니다.",
     "CalendarLoadError": "달력을 불러올 수 없습니다.",
-    "UpdateRadarrDirectlyLoadError": "{appName}를 직접 업데이트 할 수 없습니다.",
+    "UpdateAppDirectlyLoadError": "{appName}를 직접 업데이트 할 수 없습니다.",
     "Ungroup": "그룹 해제",
     "UnmappedFilesOnly": "매핑되지 않은 파일 만",
     "UnmappedFolders": "매핑되지 않은 폴더",

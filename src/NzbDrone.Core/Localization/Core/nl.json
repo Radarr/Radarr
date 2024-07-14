@@ -934,7 +934,7 @@
     "Trakt": "Trakt",
     "Trigger": "In gang zetten",
     "UnableToLoadManualImportItems": "Kan items voor handmatig importeren niet laden",
-    "UpdateRadarrDirectlyLoadError": "Kan {appName} niet rechtstreeks updaten,",
+    "UpdateAppDirectlyLoadError": "Kan {appName} niet rechtstreeks updaten,",
     "Unlimited": "Onbeperkt",
     "UnmappedFilesOnly": "Alleen niet-toegewezen bestanden",
     "UpgradeUntilCustomFormatScore": "Upgraden tot Score aangepast formaat",

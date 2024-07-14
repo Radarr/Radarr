@@ -621,7 +621,7 @@
     "UnableToLoadRootFolders": "Не може да се заредят коренови папки",
     "TagsLoadError": "Не може да се заредят маркери",
     "CalendarLoadError": "Календарът не може да се зареди",
-    "UpdateRadarrDirectlyLoadError": "Не може да се актуализира {appName} директно,",
+    "UpdateAppDirectlyLoadError": "Не може да се актуализира {appName} директно,",
     "Ungroup": "Разгрупиране",
     "Unlimited": "Неограничен",
     "UnmappedFilesOnly": "Само немапирани файлове",

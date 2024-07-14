@@ -896,7 +896,7 @@
     "UnableToLoadRootFolders": "ルートフォルダを読み込めません",
     "TagsLoadError": "タグを読み込めません",
     "CalendarLoadError": "カレンダーを読み込めません",
-    "UpdateRadarrDirectlyLoadError": "{appName}を直接更新できません。",
+    "UpdateAppDirectlyLoadError": "{appName}を直接更新できません。",
     "Ungroup": "グループ化を解除",
     "UnmappedFilesOnly": "マップされていないファイルのみ",
     "UnmappedFolders": "マップされていないフォルダ",

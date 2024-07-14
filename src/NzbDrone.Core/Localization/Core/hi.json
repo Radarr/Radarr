@@ -241,7 +241,7 @@
     "QualityProfilesLoadError": "गुणवत्ता प्रोफ़ाइल लोड करने में असमर्थ",
     "RemotePathMappingsLoadError": "दूरस्थ पथ मैपिंग लोड करने में असमर्थ",
     "CalendarLoadError": "कैलेंडर लोड करने में असमर्थ",
-    "UpdateRadarrDirectlyLoadError": "सीधे {appName} अद्यतन करने में असमर्थ,",
+    "UpdateAppDirectlyLoadError": "सीधे {appName} अद्यतन करने में असमर्थ,",
     "UnmappedFolders": "बिना मोड़े हुए फोल्डर",
     "ICalIncludeUnmonitoredMoviesHelpText": "ICal फीड में अनऑमिटर की गई फिल्में शामिल करें",
     "UnselectAll": "सभी का चयन रद्द",

@@ -932,7 +932,7 @@
     "Trigger": "Trigger",
     "UnableToLoadManualImportItems": "Impossibile caricare gli elementi di importazione manuale",
     "Unlimited": "Illimitato",
-    "UpdateRadarrDirectlyLoadError": "Impossibile aggiornare {appName} direttamente,",
+    "UpdateAppDirectlyLoadError": "Impossibile aggiornare {appName} direttamente,",
     "UnmappedFilesOnly": "Solo file non mappati",
     "UpgradeUntilCustomFormatScore": "Aggiorna fino al punteggio formato personalizzato",
     "UpgradeUntil": "Upgrade fino alla qualità",

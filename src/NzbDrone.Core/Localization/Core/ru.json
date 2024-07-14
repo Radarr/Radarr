@@ -720,7 +720,7 @@
     "Unlimited": "Неограниченно",
     "Ungroup": "Разгруппировать",
     "Unavailable": "Недоступно",
-    "UpdateRadarrDirectlyLoadError": "Невозможно обновить {appName} напрямую,",
+    "UpdateAppDirectlyLoadError": "Невозможно обновить {appName} напрямую,",
     "UiSettingsLoadError": "Не удалось загрузить настройки пользовательского интерфейса",
     "CalendarLoadError": "Не удалось загрузить календарь",
     "TagsLoadError": "Невозможно загрузить теги",

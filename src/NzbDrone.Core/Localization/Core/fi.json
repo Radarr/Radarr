@@ -896,7 +896,7 @@
     "UnableToLoadRootFolders": "Juurikansioiden lataus epäonnistui.",
     "TagsLoadError": "Tunnisteiden lataus ei onnistu",
     "CalendarLoadError": "Kalenterin lataus epäonnistui.",
-    "UpdateRadarrDirectlyLoadError": "{appName}ia ei voida päivittää suoraan,",
+    "UpdateAppDirectlyLoadError": "{appName}ia ei voida päivittää suoraan,",
     "Ungroup": "Pura ryhmä",
     "UnmappedFilesOnly": "Vain kohdistamattomat tiedostot",
     "UnmappedFolders": "Kohdistamattomat kansiot",

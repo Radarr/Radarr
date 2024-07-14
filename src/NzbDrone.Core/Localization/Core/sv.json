@@ -935,7 +935,7 @@
     "UnableToLoadRestrictions": "Det gick inte att ladda begränsningar",
     "UnableToLoadRootFolders": "Det gick inte att ladda rotmappar",
     "CalendarLoadError": "Det gick inte att ladda kalendern",
-    "UpdateRadarrDirectlyLoadError": "Det går inte att uppdatera {appName} direkt,",
+    "UpdateAppDirectlyLoadError": "Det går inte att uppdatera {appName} direkt,",
     "UpgradeUntilCustomFormatScore": "Uppgradera tills anpassat formatpoäng",
     "UpgradeUntil": "Uppgradera tills kvalitet",
     "UpgradeUntilThisQualityIsMetOrExceeded": "Uppgradera tills den här kvaliteten uppfylls eller överskrids",

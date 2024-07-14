@@ -909,7 +909,7 @@
     "TagsLoadError": "No es poden carregar les etiquetes",
     "CalendarLoadError": "No es pot carregar el calendari",
     "UiSettingsLoadError": "No es pot carregar la configuració de la IU",
-    "UpdateRadarrDirectlyLoadError": "No es pot actualitzar {appName} directament,",
+    "UpdateAppDirectlyLoadError": "No es pot actualitzar {appName} directament,",
     "Unreleased": "No disponible",
     "UnselectAll": "Desseleccioneu-ho tot",
     "UpdateCheckStartupNotWritableMessage": "L'actualització no es pot instal·lar perquè la carpeta d'inici '{startupFolder}' no té permisos d'escriptura per a l'usuari '{userName}'.",

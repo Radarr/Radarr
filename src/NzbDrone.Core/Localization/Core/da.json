@@ -159,7 +159,7 @@
     "TagsSettingsSummary": "Se alle tags og hvordan de bruges. Ubrugte tags kan fjernes",
     "Time": "Tid",
     "MediaManagementSettingsLoadError": "Kan ikke indlæse indstillinger for mediestyring",
-    "UpdateRadarrDirectlyLoadError": "Kan ikke opdatere {appName} direkte,",
+    "UpdateAppDirectlyLoadError": "Kan ikke opdatere {appName} direkte,",
     "BindAddressHelpText": "Gyldig IP4-adresse, 'localhost' eller '*' for alle grænseflader",
     "CreateEmptyMovieFoldersHelpText": "Opret manglende filmmapper under diskscanning",
     "CouldNotConnectSignalR": "Kunne ikke oprette forbindelse til SignalR, UI opdateres ikke",
