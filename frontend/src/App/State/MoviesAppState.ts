@@ -25,6 +25,7 @@ export interface MovieIndexAppState {
     showTmdbRating: boolean;
     showImdbRating: boolean;
     showRottenTomatoesRating: boolean;
+    showTags: boolean;
     showSearchAction: boolean;
   };
 
@@ -37,6 +38,7 @@ export interface MovieIndexAppState {
     showAdded: boolean;
     showPath: boolean;
     showSizeOnDisk: boolean;
+    showTags: boolean;
     showSearchAction: boolean;
   };
 

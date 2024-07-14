@@ -1579,6 +1579,8 @@
   "ShowSearchHelpText": "Show search button on hover",
   "ShowSizeOnDisk": "Show Size on Disk",
   "ShowStudio": "Show Studio",
+  "ShowTags": "Show Tags",
+  "ShowTagsHelpText": "Show tags under poster",
   "ShowTitle": "Show Title",
   "ShowTitleHelpText": "Show movie title under poster",
   "ShowTmdbRating": "Show TMDb Rating",

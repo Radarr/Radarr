@@ -6,6 +6,7 @@ import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import TagListConnector from 'Components/TagListConnector';
 import Popover from 'Components/Tooltip/Popover';
 import { icons } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
@@ -69,6 +70,7 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
     overview,
     statistics = {} as Statistics,
     images,
+    tags,
     hasFile,
     isAvailable,
     tmdbId,
@@ -212,15 +214,22 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
           </div>
 
           <div className={styles.details}>
-            <Link className={styles.overview} to={link}>
-              <TextTruncate
-                line={Math.floor(
-                  overviewHeight / (defaultFontSize * lineHeight)
-                )}
-                text={overview}
-              />
-            </Link>
+            <div className={styles.overviewContainer}>
+              <Link className={styles.overview} to={link}>
+                <TextTruncate
+                  line={Math.floor(
+                    overviewHeight / (defaultFontSize * lineHeight)
+                  )}
+                  text={overview}
+                />
+              </Link>
 
+              {overviewOptions.showTags ? (
+                <div className={styles.tags}>
+                  <TagListConnector tags={tags} />
+                </div>
+              ) : null}
+            </div>
             <MovieIndexOverviewInfo
               height={overviewHeight}
               monitored={monitored}

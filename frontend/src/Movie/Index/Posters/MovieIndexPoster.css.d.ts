@@ -13,6 +13,8 @@ interface CssExports {
   'overlayTitle': string;
   'poster': string;
   'posterContainer': string;
+  'tags': string;
+  'tagsList': string;
   'title': string;
 }
 export const cssExports: CssExports;

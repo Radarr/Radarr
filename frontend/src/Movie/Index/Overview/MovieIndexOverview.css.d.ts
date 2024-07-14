@@ -10,9 +10,11 @@ interface CssExports {
   'info': string;
   'link': string;
   'overview': string;
+  'overviewContainer': string;
   'poster': string;
   'posterContainer': string;
   'queue': string;
+  'tags': string;
   'title': string;
   'titleRow': string;
 }

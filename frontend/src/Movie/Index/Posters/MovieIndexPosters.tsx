@@ -148,6 +148,7 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
       showTmdbRating,
       showImdbRating,
       showRottenTomatoesRating,
+      showTags,
     } = posterOptions;
 
     const nextAiringHeight = 19;
@@ -189,6 +190,10 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
 
     if (showRottenTomatoesRating) {
       heights.push(19);
+    }
+
+    if (showTags) {
+      heights.push(21);
     }
 
     switch (sortKey) {

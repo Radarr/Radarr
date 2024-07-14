@@ -53,6 +53,7 @@ function MovieIndexOverviewOptionsModalContent(
     showAdded,
     showPath,
     showSizeOnDisk,
+    showTags,
     showSearchAction,
   } = useSelector(selectOverviewOptions);
 
@@ -157,6 +158,17 @@ function MovieIndexOverviewOptionsModalContent(
               type={inputTypes.CHECK}
               name="showSizeOnDisk"
               value={showSizeOnDisk}
+              onChange={onOverviewOptionChange}
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <FormLabel>{translate('ShowTags')}</FormLabel>
+
+            <FormInputGroup
+              type={inputTypes.CHECK}
+              name="showTags"
+              value={showTags}
               onChange={onOverviewOptionChange}
             />
           </FormGroup>
