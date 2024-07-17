@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
 import { filterBuilderTypes, filterBuilderValueTypes, sortDirections } from 'Helpers/Props';
-import sortByName from 'Utilities/Array/sortByName';
+import sortByProp from 'Utilities/Array/sortByProp';
 import translate from 'Utilities/String/translate';
 import createHandleActions from './Creators/createHandleActions';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
@@ -327,7 +327,7 @@ export const defaultState = {
           return acc;
         }, []);
 
-        return collectionList.sort(sortByName);
+        return collectionList.sort(sortByProp('name'));
       }
     },
     {
@@ -349,7 +349,7 @@ export const defaultState = {
           return acc;
         }, []);
 
-        return groupList.sort(sortByName);
+        return groupList.sort(sortByProp('name'));
       }
     },
     {
@@ -374,7 +374,7 @@ export const defaultState = {
           return acc;
         }, []);
 
-        return tagList.sort(sortByName);
+        return tagList.sort(sortByProp('name'));
       }
     },
     {
@@ -393,7 +393,7 @@ export const defaultState = {
           return acc;
         }, []);
 
-        return collectionList.sort(sortByName);
+        return collectionList.sort(sortByProp('name'));
       }
     },
     {
@@ -463,7 +463,7 @@ export const defaultState = {
           return acc;
         }, []);
 
-        return genreList.sort(sortByName);
+        return genreList.sort(sortByProp('name'));
       }
     },
     {
@@ -512,7 +512,7 @@ export const defaultState = {
           return acc;
         }, []);
 
-        return certificationList.sort(sortByName);
+        return certificationList.sort(sortByProp('name'));
       }
     },
     {

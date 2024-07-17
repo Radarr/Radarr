@@ -3,7 +3,7 @@ import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import { filterBuilderTypes, filterBuilderValueTypes, filterTypePredicates, filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
-import sortByName from 'Utilities/Array/sortByName';
+import sortByProp from 'Utilities/Array/sortByProp';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import getNewMovie from 'Utilities/Movie/getNewMovie';
 import translate from 'Utilities/String/translate';
@@ -155,7 +155,7 @@ export const defaultState = {
           return acc;
         }, []);
 
-        return genreList.sort(sortByName);
+        return genreList.sort(sortByProp('name'));
       }
     },
     {

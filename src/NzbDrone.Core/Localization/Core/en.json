@@ -71,6 +71,7 @@
   "AnalyticsEnabledHelpText": "Send anonymous usage and error information to {appName}'s servers. This includes information on your browser, which {appName} WebUI pages you use, error reporting as well as OS and runtime version. We will use this information to prioritize features and bug fixes.",
   "Announced": "Announced",
   "AnnouncedMsg": "Movie is announced",
+  "Any": "Any",
   "ApiKey": "API Key",
   "ApiKeyValidationHealthCheckMessage": "Please update your API key to be at least {length} characters long. You can do this via settings or the config file",
   "AppDataDirectory": "AppData Directory",

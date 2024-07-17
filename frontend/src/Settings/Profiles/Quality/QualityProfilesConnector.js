@@ -5,12 +5,12 @@ import { createSelector } from 'reselect';
 import { fetchMovieCollections } from 'Store/Actions/movieCollectionActions';
 import { cloneQualityProfile, deleteQualityProfile, fetchQualityProfiles } from 'Store/Actions/settingsActions';
 import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
-import sortByName from 'Utilities/Array/sortByName';
+import sortByProp from 'Utilities/Array/sortByProp';
 import QualityProfiles from './QualityProfiles';
 
 function createMapStateToProps() {
   return createSelector(
-    createSortedSectionSelector('settings.qualityProfiles', sortByName),
+    createSortedSectionSelector('settings.qualityProfiles', sortByProp('name')),
     (qualityProfiles) => qualityProfiles
   );
 }

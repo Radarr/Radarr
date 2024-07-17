@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { CommandBody } from 'Commands/Command';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import createMultiMoviesSelector from 'Store/Selectors/createMultiMoviesSelector';
+import sortByProp from 'Utilities/Array/sortByProp';
 import translate from 'Utilities/String/translate';
 import styles from './QueuedTaskRowNameCell.css';
 
@@ -39,9 +40,7 @@ export default function QueuedTaskRowNameCell(
   }
 
   const movies = useSelector(createMultiMoviesSelector(movieIds));
-  const sortedMovies = movies.sort((a, b) =>
-    a.sortTitle.localeCompare(b.sortTitle)
-  );
+  const sortedMovies = movies.sort(sortByProp('sortTitle'));
 
   return (
     <TableRowCell>

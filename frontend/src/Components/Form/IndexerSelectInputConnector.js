@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { fetchIndexers } from 'Store/Actions/settingsActions';
-import sortByName from 'Utilities/Array/sortByName';
+import sortByProp from 'Utilities/Array/sortByProp';
 import EnhancedSelectInput from './EnhancedSelectInput';
 
 function createMapStateToProps() {
@@ -18,7 +18,7 @@ function createMapStateToProps() {
         items
       } = indexers;
 
-      const values = items.sort(sortByName).map((indexer) => ({
+      const values = items.sort(sortByProp('name')).map((indexer) => ({
         key: indexer.id,
         value: indexer.name
       }));
