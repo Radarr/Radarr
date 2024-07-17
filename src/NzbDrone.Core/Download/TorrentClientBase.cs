@@ -145,7 +145,9 @@ namespace NzbDrone.Core.Download
 
                 if (response.StatusCode == HttpStatusCode.MovedPermanently ||
                     response.StatusCode == HttpStatusCode.Found ||
-                    response.StatusCode == HttpStatusCode.SeeOther)
+                    response.StatusCode == HttpStatusCode.SeeOther ||
+                    response.StatusCode == HttpStatusCode.PermanentRedirect ||
+                    response.StatusCode == HttpStatusCode.TemporaryRedirect)
                 {
                     var locationHeader = response.Headers.GetSingleValue("Location");
 
