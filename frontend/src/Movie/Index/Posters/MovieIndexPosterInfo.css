@@ -9,3 +9,11 @@
 
   composes: info;
 }
+
+.tags {
+  composes: tags from '~./MovieIndexPoster.css';
+}
+
+.tagsList {
+  composes: tagsList from '~./MovieIndexPoster.css';
+}
