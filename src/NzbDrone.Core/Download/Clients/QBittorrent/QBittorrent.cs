@@ -381,7 +381,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
                     if (savePath.StartsWith("//"))
                     {
-                        _logger.Trace("Replacing double forward slashes in path '{0}'. If this is not meant to be a Windows UNC path fix the 'Save Path' in qBittorrent's {1} category", savePath, Settings.TvCategory);
+                        _logger.Trace("Replacing double forward slashes in path '{0}'. If this is not meant to be a Windows UNC path fix the 'Save Path' in qBittorrent's {1} category", savePath, Settings.MovieCategory);
                         savePath = savePath.Replace('/', '\\');
                     }
 
