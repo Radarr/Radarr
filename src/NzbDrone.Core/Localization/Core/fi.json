@@ -410,7 +410,7 @@
     "Unavailable": "Ei käytettävissä",
     "VideoCodec": "Videokoodekki",
     "View": "Näkymä",
-    "Importing": "Tuonti",
+    "Importing": "Tuodaan",
     "NoChanges": "Muutoksia ei ole",
     "NoLeaveIt": "Ei, anna olla",
     "NoLimitForAnyRuntime": "Ei toistoajan rajoitusta",
@@ -1746,5 +1746,7 @@
     "DeleteMovieFolderCountWithFilesConfirmation": "Haluatko varmasti poistaa {count} valitun elokuvan/valittua elokuvaa sisältöineen?",
     "DeleteMovieFolders": "Poista elokuvakansiot",
     "DeleteMovieFoldersHelpText": "Poista elokuvakansiot sisältöineen",
-    "DeleteSelectedMovies": "Poista valitut elokuvat"
+    "DeleteSelectedMovies": "Poista valitut elokuvat",
+    "NotificationsPlexSettingsServer": "Palvelin",
+    "Any": "Mikä vain"
 }

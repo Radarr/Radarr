@@ -306,5 +306,11 @@
     "AddListError": "Ikke mulig å legge til ny automatisk tagg, vennligst prøv igjen",
     "AddNotificationError": "Ikke mulig å legge til ny betingelse, vennligst prøv igjen",
     "AddCustomFormatError": "Ikke mulig å legge til ny automatisk tagg, vennligst prøv igjen",
-    "AddDownloadClientError": "Ikke mulig å legge til ny betingelse, vennligst prøv igjen"
+    "AddDownloadClientError": "Ikke mulig å legge til ny betingelse, vennligst prøv igjen",
+    "EditConnectionImplementation": "Legg til betingelse - {implementationName}",
+    "EditIndexerImplementation": "Legg til betingelse - {implementationName}",
+    "AddImportListExclusionError": "Ikke mulig å legge til ny betingelse, vennligst prøv igjen",
+    "AddQualityProfileError": "Ikke mulig å legge til ny betingelse, vennligst prøv igjen",
+    "AddDelayProfileError": "Ikke mulig å legge til ny betingelse, vennligst prøv igjen",
+    "DeleteMovieFolderCountConfirmation": "Er du sikker på at du vil slette formattaggen {0}?"
 }

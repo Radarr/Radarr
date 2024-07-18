@@ -1457,5 +1457,6 @@
     "DeleteMovieFolderCountWithFilesConfirmation": "Sind Sie sicher, dass Sie {count} ausgewählte Serien und alle Inhalte löschen möchten?",
     "DeleteMovieFolders": "Filmordner löschen",
     "DeleteMovieFoldersHelpText": "Löschen Sie die Serienordner und ihren gesamten Inhalt",
-    "DeleteSelectedMovies": "Ausgewählte Serie löschen"
+    "DeleteSelectedMovies": "Ausgewählte Serie löschen",
+    "Any": "Beliebig"
 }

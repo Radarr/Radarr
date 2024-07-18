@@ -1251,5 +1251,6 @@
     "DeleteMovieFolderCountWithFilesConfirmation": "Tem a certeza de que deseja eliminar {count} artistas selecionados e todo o conteúdo?",
     "DeleteMovieFolders": "Eliminar pasta do filme",
     "DeleteMovieFoldersHelpText": "Elimine a pasta do filme e seu conteúdo",
-    "DeleteSelectedMovies": "Eliminar ficheiros do filme selecionado"
+    "DeleteSelectedMovies": "Eliminar ficheiros do filme selecionado",
+    "Any": "Quaisquer"
 }

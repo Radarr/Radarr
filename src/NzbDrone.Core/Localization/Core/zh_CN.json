@@ -1665,5 +1665,7 @@
     "DeleteMovieFolderCountWithFilesConfirmation": "你确定要删除选中的 {count} 个剧集及其所含的所有文件吗？",
     "DeleteMovieFolders": "删除电影目录",
     "DeleteMovieFoldersHelpText": "删除剧集文件夹及其所含文件",
-    "DeleteSelectedMovies": "删除选中的剧集"
+    "DeleteSelectedMovies": "删除选中的剧集",
+    "NotificationsPlexSettingsServer": "服务器",
+    "Any": "任何"
 }
