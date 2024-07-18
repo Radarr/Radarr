@@ -1085,5 +1085,6 @@
     "MovieFileDeletedTooltip": "Slet på filmfil",
     "DeleteMovieFolders": "Slet filmmappe",
     "DeleteMovieFoldersHelpText": "Slet filmmappen og dens indhold",
-    "DeleteSelectedMovies": "Slet valgte filmfiler"
+    "DeleteSelectedMovies": "Slet valgte filmfiler",
+    "AutoTaggingNegateHelpText": "Hvis dette er markeret, gælder det tilpassede format ikke, hvis denne {0} betingelse stemmer overens."
 }

@@ -1376,5 +1376,7 @@
     "DeleteMovieFolderCountConfirmation": "Esteu segur que voleu suprimir {count} sèries seleccionades?",
     "DeleteMovieFolders": "Suprimeix la carpeta de pel·lícules",
     "DeleteMovieFoldersHelpText": "Suprimeix la carpeta de pel·lícules i el seu contingut",
-    "DeleteSelectedMovies": "Suprimeix les sèries seleccionades"
+    "DeleteSelectedMovies": "Suprimeix les sèries seleccionades",
+    "NotificationsPlexSettingsServer": "Servidor",
+    "Any": "Qualsevol"
 }

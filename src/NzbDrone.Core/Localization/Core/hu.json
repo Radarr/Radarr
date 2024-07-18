@@ -1430,5 +1430,7 @@
     "DeleteMovieFolderCountWithFilesConfirmation": "Biztos benne, hogy törölni szeretne {count} kiválasztott sorozatot és az összes tartalmat?",
     "DeleteMovieFolders": "Film mappájának törlése",
     "DeleteMovieFoldersHelpText": "Törölje a film mappáját és annak tartalmát",
-    "DeleteSelectedMovies": "A kiválasztott sorozat törlése"
+    "DeleteSelectedMovies": "A kiválasztott sorozat törlése",
+    "NotificationsPlexSettingsServer": "Szerver",
+    "Any": "Bármi"
 }

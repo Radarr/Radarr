@@ -290,5 +290,6 @@
     "AddDownloadClientError": "Nie je možné pridať novú podmienku, skúste to znova.",
     "EditDownloadClientImplementation": "Pridať klienta pre sťahovanie - {implementationName}",
     "EditConnectionImplementation": "Pridať podmienku - {implementationName}",
-    "AddDelayProfileError": "Nie je možné pridať novú podmienku, skúste to znova."
+    "AddDelayProfileError": "Nie je možné pridať novú podmienku, skúste to znova.",
+    "AddQualityProfileError": "Nie je možné pridať novú podmienku, skúste to znova."
 }

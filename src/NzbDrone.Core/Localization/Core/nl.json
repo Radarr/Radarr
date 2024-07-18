@@ -1204,5 +1204,6 @@
     "MovieFileDeletedTooltip": "Op filmbestand verwijderen",
     "DeleteMovieFolders": "Verwijder Film Map",
     "DeleteMovieFoldersHelpText": "Verwijder de film map en zijn inhoud",
-    "DeleteSelectedMovies": "Verwijder Geselecteerde Filmbestanden"
+    "DeleteSelectedMovies": "Verwijder Geselecteerde Filmbestanden",
+    "Any": "Elke"
 }

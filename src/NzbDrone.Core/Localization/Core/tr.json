@@ -1787,5 +1787,8 @@
     "DeleteMovieFoldersHelpText": "Film klasörlerini ve tüm içeriklerini silin",
     "DeleteSelectedMovies": "Seçili Filmleri Sil",
     "DeleteMovieFolderCountWithFilesConfirmation": "Seçili {count} filmi ve tüm içeriklerini silmek istediğinizden emin misiniz?",
-    "DeleteMovieFolderMovieCount": "{size} boyutunda {movieFileCount} film dosyası"
+    "DeleteMovieFolderMovieCount": "{size} boyutunda {movieFileCount} film dosyası",
+    "NotificationsPlexSettingsServer": "Sunucu",
+    "NotificationsPlexSettingsServerHelpText": "Kimlik doğrulamasından sonra plex.tv hesabından sunucuyu seçin",
+    "UnableToImportAutomatically": "Otomatikman İçe Aktarılamıyor"
 }
