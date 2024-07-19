@@ -3,7 +3,7 @@
 interface CssExports {
   'actions': string;
   'indexer': string;
-  'language': string;
+  'languages': string;
   'quality': string;
 }
 export const cssExports: CssExports;
