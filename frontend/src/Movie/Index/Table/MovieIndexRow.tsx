@@ -7,7 +7,7 @@ import ImdbRating from 'Components/ImdbRating';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import RottenTomatoRating from 'Components/RottenTomatoRating';
-import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
+import RelativeDateCell from 'Components/Table/Cells/RelativeDateCell';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
 import Column from 'Components/Table/Column';
@@ -223,7 +223,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
           return (
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore ts(2739)
-            <RelativeDateCellConnector
+            <RelativeDateCell
               key={name}
               className={styles[name]}
               date={added}
@@ -244,7 +244,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
           return (
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore ts(2739)
-            <RelativeDateCellConnector
+            <RelativeDateCell
               key={name}
               className={styles[name]}
               date={inCinemas}
@@ -257,7 +257,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
           return (
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore ts(2739)
-            <RelativeDateCellConnector
+            <RelativeDateCell
               key={name}
               className={styles[name]}
               date={digitalRelease}
@@ -270,7 +270,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
           return (
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore ts(2739)
-            <RelativeDateCellConnector
+            <RelativeDateCell
               key={name}
               className={styles[name]}
               date={physicalRelease}
@@ -283,7 +283,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
           return (
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore ts(2739)
-            <RelativeDateCellConnector
+            <RelativeDateCell
               key={name}
               className={styles[name]}
               date={releaseDate}

@@ -4,7 +4,7 @@ import HistoryDetailsModal from 'Activity/History/Details/HistoryDetailsModal';
 import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
-import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
+import RelativeDateCell from 'Components/Table/Cells/RelativeDateCell';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRow from 'Components/Table/TableRow';
 import { icons, kinds } from 'Helpers/Props';
@@ -109,7 +109,7 @@ class MovieHistoryRow extends Component {
           {formatCustomFormatScore(customFormatScore, customFormats.length)}
         </TableRowCell>
 
-        <RelativeDateCellConnector
+        <RelativeDateCell
           date={date}
           includeSeconds={true}
           includeTime={true}

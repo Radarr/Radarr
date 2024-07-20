@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
+import RelativeDateCell from 'Components/Table/Cells/RelativeDateCell';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import TableRow from 'Components/Table/TableRow';
@@ -69,7 +69,7 @@ function MissingRow(props) {
 
           if (name === 'movieMetadata.inCinemas') {
             return (
-              <RelativeDateCellConnector
+              <RelativeDateCell
                 key={name}
                 className={styles[name]}
                 date={inCinemas}
@@ -79,7 +79,7 @@ function MissingRow(props) {
 
           if (name === 'movieMetadata.digitalRelease') {
             return (
-              <RelativeDateCellConnector
+              <RelativeDateCell
                 key={name}
                 className={styles[name]}
                 date={digitalRelease}
@@ -89,7 +89,7 @@ function MissingRow(props) {
 
           if (name === 'movieMetadata.physicalRelease') {
             return (
-              <RelativeDateCellConnector
+              <RelativeDateCell
                 key={name}
                 className={styles[name]}
                 date={physicalRelease}
