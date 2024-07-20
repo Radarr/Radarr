@@ -1069,7 +1069,7 @@
     "ConditionUsingRegularExpressions": "Detta villkor matchar användningen av reguljära uttryck. Observera att tecknen {0} har speciella betydelser och behöver fly med ett {1}",
     "MovieFileDeleted": "På filmfil Ta bort",
     "DeleteCustomFormatMessageText": "Är du säker på att du vill radera taggen '{0}'?",
-    "DeletedReasonMissingFromDisk": "Whisparr kunde inte hitta filen på disken så den togs bort",
+    "DeletedReasonMovieMissingFromDisk": "{appName} kunde inte hitta filen på disken så den togs bort",
     "DeleteSelectedMovieFilesHelpText": "Är du säker på att du vill radera de markerade filmfilerna?",
     "MovieIsNotMonitored": "FIlmen är bevakad",
     "SearchForAllMissingMovies": "Sök efter alla saknade böcker",

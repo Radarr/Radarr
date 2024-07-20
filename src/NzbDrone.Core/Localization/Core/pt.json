@@ -1135,7 +1135,7 @@
     "DeleteSelectedImportListsMessageText": "Tem a certeza de que pretende eliminar a(s) lista(s) de {count} importação selecionada(s)?",
     "DeleteSelectedMovieFilesHelpText": "Tem a certeza de que pretende apagar os ficheiros de filmes seleccionados?",
     "DeletedReasonManual": "O ficheiro foi eliminado através da IU",
-    "DeletedReasonMissingFromDisk": "O {appName} não conseguiu encontrar o ficheiro no disco, pelo que o ficheiro foi desvinculado do filme na base de dados",
+    "DeletedReasonMovieMissingFromDisk": "O {appName} não conseguiu encontrar o ficheiro no disco, pelo que o ficheiro foi desvinculado do filme na base de dados",
     "DeletedReasonUpgrade": "O ficheiro foi eliminado para importar uma atualização",
     "DisabledForLocalAddresses": "Desativado para Endereços Locais",
     "DownloadClientsLoadError": "Não foi possível carregar os clientes de transferências",

@@ -1046,7 +1046,7 @@
     "RemoveSelectedItemsQueueMessageText": "Наистина ли искате да премахнете {0} елемент {1} от опашката?",
     "ApplyTagsHelpTextHowToApplyMovies": "Как да приложите тагове към избраните филми",
     "MovieSearchResultsLoadError": "Не могат да се заредят резултати за това търсене на филм. Опитайте отново по-късно",
-    "DeletedReasonMissingFromDisk": "Whisparr не можа да намери файла на диска, така че той беше премахнат",
+    "DeletedReasonMovieMissingFromDisk": "{appName} не можа да намери файла на диска, така че той беше премахнат",
     "IMDbId": "Идентификатор на TMDb",
     "NotificationsSimplepushSettingsEvent": "Събития",
     "MovieIsNotMonitored": "Филмът не се следи",

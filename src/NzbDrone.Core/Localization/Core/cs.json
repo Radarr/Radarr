@@ -1090,7 +1090,7 @@
     "BlocklistReleaseHelpText": "Zabránit {appName} v opětovném sebrání tohoto vydání pomocí RSS nebo automatického vyhledávání",
     "CustomFormatJson": "Vlastní JSON formát",
     "DeleteQualityProfileMessageText": "Opravdu chcete smazat profil kvality '{name}'?",
-    "DeletedReasonMissingFromDisk": "{appName}u se nepodařilo najít soubor na disku, proto byl soubor odpojen od filmu v databázi",
+    "DeletedReasonMovieMissingFromDisk": "{appName}u se nepodařilo najít soubor na disku, proto byl soubor odpojen od filmu v databázi",
     "DeletedReasonUpgrade": "Soubor byl odstraněn pro import lepší verze",
     "DeleteSelectedMovieFilesHelpText": "Opravdu chcete smazat vybrané soubory filmů?",
     "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "Klient stahování {downloadClientName} je nastaven na odstranění dokončených stahování. To může vést k tomu, že stahování budou z klienta odstraněna dříve, než je bude moci importovat {appName}.",

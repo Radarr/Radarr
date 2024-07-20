@@ -1,12 +1,17 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from 'Components/Icon';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import { icons, kinds } from 'Helpers/Props';
+import {
+  GrabbedHistoryData,
+  HistoryData,
+  HistoryEventType,
+  MovieFileDeletedHistory,
+} from 'typings/History';
 import translate from 'Utilities/String/translate';
 import styles from './HistoryEventTypeCell.css';
 
-function getIconName(eventType, data) {
+function getIconName(eventType: HistoryEventType, data: HistoryData) {
   switch (eventType) {
     case 'grabbed':
       return icons.DOWNLOADING;
@@ -17,7 +22,9 @@ function getIconName(eventType, data) {
     case 'downloadFailed':
       return icons.DOWNLOADING;
     case 'movieFileDeleted':
-      return data.reason === 'MissingFromDisk' ? icons.FILE_MISSING : icons.DELETE;
+      return (data as MovieFileDeletedHistory).reason === 'MissingFromDisk'
+        ? icons.FILE_MISSING
+        : icons.DELETE;
     case 'movieFileRenamed':
       return icons.ORGANIZE;
     case 'downloadIgnored':
@@ -27,7 +34,7 @@ function getIconName(eventType, data) {
   }
 }
 
-function getIconKind(eventType) {
+function getIconKind(eventType: HistoryEventType) {
   switch (eventType) {
     case 'downloadFailed':
       return kinds.DANGER;
@@ -36,52 +43,47 @@ function getIconKind(eventType) {
   }
 }
 
-function getTooltip(eventType, data) {
+function getTooltip(eventType: HistoryEventType, data: HistoryData) {
   switch (eventType) {
     case 'grabbed':
-      return translate('MovieGrabbedHistoryTooltip', { indexer: data.indexer, downloadClient: data.downloadClient });
+      return translate('MovieGrabbedTooltip', {
+        indexer: (data as GrabbedHistoryData).indexer,
+        downloadClient: (data as GrabbedHistoryData).downloadClient,
+      });
     case 'movieFolderImported':
       return translate('MovieFolderImportedTooltip');
     case 'downloadFolderImported':
       return translate('MovieImportedTooltip');
     case 'downloadFailed':
-      return translate('MovieDownloadFailedTooltip');
+      return translate('DownloadFailedMovieTooltip');
     case 'movieFileDeleted':
-      return data.reason === 'MissingFromDisk' ? translate('MovieFileMissingTooltip') : translate('MovieFileDeletedTooltip');
+      return (data as MovieFileDeletedHistory).reason === 'MissingFromDisk'
+        ? translate('MovieFileMissingTooltip')
+        : translate('MovieFileDeletedTooltip');
     case 'movieFileRenamed':
       return translate('MovieFileRenamedTooltip');
     case 'downloadIgnored':
-      return translate('MovieDownloadIgnoredTooltip');
+      return translate('DownloadIgnoredMovieTooltip');
     default:
       return translate('UnknownEventTooltip');
   }
 }
 
-function HistoryEventTypeCell({ eventType, data }) {
+interface HistoryEventTypeCellProps {
+  eventType: HistoryEventType;
+  data: HistoryData;
+}
+
+function HistoryEventTypeCell({ eventType, data }: HistoryEventTypeCellProps) {
   const iconName = getIconName(eventType, data);
   const iconKind = getIconKind(eventType);
   const tooltip = getTooltip(eventType, data);
 
   return (
-    <TableRowCell
-      className={styles.cell}
-      title={tooltip}
-    >
-      <Icon
-        name={iconName}
-        kind={iconKind}
-      />
+    <TableRowCell className={styles.cell} title={tooltip}>
+      <Icon name={iconName} kind={iconKind} />
     </TableRowCell>
   );
 }
-
-HistoryEventTypeCell.propTypes = {
-  eventType: PropTypes.string.isRequired,
-  data: PropTypes.object
-};
-
-HistoryEventTypeCell.defaultProps = {
-  data: {}
-};
 
 export default HistoryEventTypeCell;

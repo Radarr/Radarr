@@ -1048,7 +1048,7 @@
     "DeleteConditionMessageText": "هل أنت متأكد من أنك تريد حذف ملف تعريف الجودة {0}",
     "AddAutoTagError": "غير قادر على إضافة قائمة جديدة ، يرجى المحاولة مرة أخرى.",
     "ConditionUsingRegularExpressions": "يتطابق هذا الشرط مع استخدام التعبيرات العادية. لاحظ أن الأحرف {0} لها معاني خاصة وتحتاج إلى الهروب بعلامة {1}",
-    "DeletedReasonMissingFromDisk": "لم يتمكن Whisparr من العثور على الملف على القرص لذا تمت إزالته",
+    "DeletedReasonMovieMissingFromDisk": "لم يتمكن {appName} من العثور على الملف على القرص لذا تمت إزالته",
     "MovieFileDeleted": "عند حذف ملف الفيلم",
     "DeleteCustomFormatMessageText": "هل أنت متأكد أنك تريد حذف العلامة \"{0}\"؟",
     "DeleteFormatMessageText": "هل أنت متأكد أنك تريد حذف العلامة \"{0}\"؟",

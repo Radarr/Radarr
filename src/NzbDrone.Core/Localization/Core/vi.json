@@ -1046,7 +1046,7 @@
     "DeleteSelectedMovieFilesHelpText": "Bạn có chắc chắn muốn xóa các tệp phim đã chọn không?",
     "DeleteCustomFormatMessageText": "Bạn có chắc chắn muốn xóa thẻ '{0}' không?",
     "DeleteQualityProfileMessageText": "Bạn có chắc chắn muốn xóa cấu hình chất lượng không {0}",
-    "DeletedReasonMissingFromDisk": "Whisparr không thể tìm thấy tệp trên đĩa nên nó đã bị xóa",
+    "DeletedReasonMovieMissingFromDisk": "{appName} không thể tìm thấy tệp trên đĩa nên nó đã bị xóa",
     "MovieIsNotMonitored": "Phim không được giám sát",
     "SearchOnAddCollectionHelpText": "Tìm kiếm phim trong danh sách này khi được thêm vào {appName}",
     "DeleteFormatMessageText": "Bạn có chắc chắn muốn xóa thẻ '{0}' không?",

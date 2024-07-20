@@ -1100,7 +1100,7 @@
     "NotificationsSimplepushSettingsEvent": "אירועים",
     "RemotePathMappingCheckFilesLocalWrongOSPath": "אתה משתמש בדוקר; קליינט ההורדות {downloadClientName} שם הורדות ב-{path} אבל הנתיב לא תקין {osName}. בחן מחדש את ניתוב התיקיות והגדרות קליינט ההורדות.",
     "RemotePathMappingCheckLocalWrongOSPath": "אתה משתמש בדוקר; קליינט ההורדות {downloadClientName} שם הורדות ב-{path} אבל הנתיב לא תקין {osName}. בחן מחדש את ניתוב התיקיות והגדרות קליינט ההורדות.",
-    "DeletedReasonMissingFromDisk": "Whisparr לא הצליח למצוא את הקובץ בדיסק ולכן הוא הוסר",
+    "DeletedReasonMovieMissingFromDisk": "{appName} לא הצליח למצוא את הקובץ בדיסק ולכן הוא הוסר",
     "AddDelayProfileError": "לא ניתן להוסיף פרופיל איכות חדש, נסה שוב.",
     "MovieFileDeletedTooltip": "במחיקת קובץ הסרט",
     "DeleteMovieFolders": "מחק את תיקיית הסרטים",

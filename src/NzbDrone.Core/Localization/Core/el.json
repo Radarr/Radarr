@@ -1192,7 +1192,7 @@
     "ConditionUsingRegularExpressions": "Αυτή η συνθήκη ταιριάζει με τη χρήση τυπικών εκφράσεων. Λάβετε υπόψη ότι οι χαρακτήρες {0} έχουν ειδικές έννοιες και χρειάζονται διαφυγή με {1}",
     "DeleteSpecificationHelpText": "Είστε σίγουροι πως θέλετε να διαγράψετε τη συνθήκη '{name}';",
     "ApplyTagsHelpTextHowToApplyMovies": "Πώς να εφαρμόσετε ετικέτες στις επιλεγμένες ταινίες",
-    "DeletedReasonMissingFromDisk": "Ο Whisparr δεν μπόρεσε να βρει το αρχείο στο δίσκο και έτσι καταργήθηκε",
+    "DeletedReasonMovieMissingFromDisk": "Ο {appName} δεν μπόρεσε να βρει το αρχείο στο δίσκο και έτσι καταργήθηκε",
     "ReleaseProfileTagMovieHelpText": "Τα προφίλ κυκλοφορίας θα ισχύουν για καλλιτέχνες με τουλάχιστον μία αντίστοιχη ετικέτα. Αφήστε το κενό για να εφαρμοστεί σε όλους τους καλλιτέχνες",
     "DownloadClientSettingsRecentPriority": "Προτεραιότητα πελάτη",
     "MovieIsNotMonitored": "Η ταινία παρακολουθείται",

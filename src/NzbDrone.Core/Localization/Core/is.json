@@ -1055,7 +1055,7 @@
     "NotificationsSimplepushSettingsEvent": "Viðburðir",
     "DeleteSelectedMovieFilesHelpText": "Ertu viss um að þú viljir eyða völdum kvikmyndaskrám?",
     "AutoRedownloadFailed": "Niðurhal mistókst",
-    "DeletedReasonMissingFromDisk": "Whisparr gat ekki fundið skrána á disknum svo hún var fjarlægð",
+    "DeletedReasonMovieMissingFromDisk": "{appName} gat ekki fundið skrána á disknum svo hún var fjarlægð",
     "DownloadClientSettingsRecentPriority": "Forgangur viðskiptavinar",
     "AddDelayProfileError": "Ekki er hægt að bæta við nýjum gæðaprófíl, reyndu aftur.",
     "MovieFileDeletedTooltip": "Á Eyða kvikmyndaskrá",

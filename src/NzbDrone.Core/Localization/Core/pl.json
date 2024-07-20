@@ -1151,7 +1151,7 @@
     "MovieSearchResultsLoadError": "Nie można załadować wyników dla tego wyszukiwania filmów. Spróbuj ponownie później",
     "ShowUnknownMovieItemsHelpText": "Pokaż elementy bez filmu w kolejce. Może to obejmować usunięte filmy lub cokolwiek innego w kategorii Lidarr",
     "EditConnectionImplementation": "Dodaj Connection - {implementationName}",
-    "DeletedReasonMissingFromDisk": "Whisparr nie mógł znaleźć pliku na dysku, więc został usunięty",
+    "DeletedReasonMovieMissingFromDisk": "{appName} nie mógł znaleźć pliku na dysku, więc został usunięty",
     "DeleteSelectedMovieFilesHelpText": "Czy na pewno chcesz usunąć wybrane pliki filmowe?",
     "IMDbId": "Identyfikator TMDb",
     "AddDelayProfileError": "Nie można dodać nowego profilu opóźnienia, spróbuj później.",

@@ -1047,7 +1047,7 @@
     "MovieIsNotMonitored": "मूवी अनमनी है",
     "DownloadClientSettingsRecentPriority": "ग्राहक प्राथमिकता",
     "DeleteSelectedMovieFilesHelpText": "क्या आप वाकई चयनित मूवी फ़ाइलों को हटाना चाहते हैं?",
-    "DeletedReasonMissingFromDisk": "Whisparr डिस्क पर फ़ाइल खोजने में असमर्थ था इसलिए इसे हटा दिया गया था",
+    "DeletedReasonMovieMissingFromDisk": "{appName} डिस्क पर फ़ाइल खोजने में असमर्थ था इसलिए इसे हटा दिया गया था",
     "MovieFileDeleted": "मूवी फ़ाइल डिलीट पर",
     "DeleteCustomFormatMessageText": "क्या आप वाकई '{0}' टैग हटाना चाहते हैं?",
     "DeleteFormatMessageText": "क्या आप वाकई '{0}' टैग हटाना चाहते हैं?",

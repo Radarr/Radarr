@@ -1067,7 +1067,7 @@
     "MovieIsNotMonitored": "Film overvåges",
     "DeleteReleaseProfile": "Slet forsinkelsesprofil",
     "DeleteReleaseProfileMessageText": "Er du sikker på, at du vil slette kvalitetsprofilen {0}",
-    "DeletedReasonMissingFromDisk": "Whisparr kunne ikke finde filen på disken, så den blev fjernet",
+    "DeletedReasonMovieMissingFromDisk": "{appName} kunne ikke finde filen på disken, så den blev fjernet",
     "ReleaseProfilesLoadError": "Kunne ikke indlæse forsinkelsesprofiler",
     "SearchOnAddCollectionHelpText": "Søg efter film på denne liste, når du føjes til {appName}",
     "EditConnectionImplementation": "Tilføj forbindelse - {implementationName}",

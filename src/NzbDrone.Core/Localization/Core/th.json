@@ -1052,7 +1052,7 @@
     "IMDbId": "รหัส TMDb",
     "MovieFileDeleted": "บน Movie File Delete",
     "AddDelayProfileError": "ไม่สามารถเพิ่มโปรไฟล์คุณภาพใหม่ได้โปรดลองอีกครั้ง",
-    "DeletedReasonMissingFromDisk": "Whisparr ไม่พบไฟล์บนดิสก์ดังนั้นจึงถูกลบออก",
+    "DeletedReasonMovieMissingFromDisk": "{appName} ไม่พบไฟล์บนดิสก์ดังนั้นจึงถูกลบออก",
     "DownloadClientSettingsRecentPriority": "ลำดับความสำคัญของลูกค้า",
     "DeleteSelectedMovieFilesHelpText": "แน่ใจไหมว่าต้องการลบไฟล์ภาพยนตร์ที่เลือก",
     "ShowUnknownMovieItemsHelpText": "แสดงรายการที่ไม่มีภาพยนตร์อยู่ในคิว ซึ่งอาจรวมถึงภาพยนตร์ที่ถูกนำออกหรือสิ่งอื่นใดในหมวดหมู่ของ Lidarr",

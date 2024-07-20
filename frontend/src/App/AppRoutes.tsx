@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import Blocklist from 'Activity/Blocklist/Blocklist';
-import HistoryConnector from 'Activity/History/HistoryConnector';
+import History from 'Activity/History/History';
 import Queue from 'Activity/Queue/Queue';
 import AddNewMovieConnector from 'AddMovie/AddNewMovie/AddNewMovieConnector';
 import ImportMovies from 'AddMovie/ImportMovie/ImportMovies';
@@ -79,7 +79,7 @@ function AppRoutes() {
         Activity
       */}
 
-      <Route path="/activity/history" component={HistoryConnector} />
+      <Route path="/activity/history" component={History} />
 
       <Route path="/activity/queue" component={Queue} />
 

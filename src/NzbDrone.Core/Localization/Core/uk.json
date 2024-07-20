@@ -1103,7 +1103,7 @@
     "AddConnection": "Додати Підключення",
     "TablePageSizeHelpText": "Кількість елементів для показу на кожній сторінці",
     "ConnectionLostToBackend": "{appName} втратив з’єднання з серверною частиною, і його потрібно перезавантажити, щоб відновити роботу.",
-    "DeletedReasonMissingFromDisk": "{appName} не зміг знайти файл на диску, тому файл було від’єднано від фільму в базі даних",
+    "DeletedReasonMovieMissingFromDisk": "{appName} не зміг знайти файл на диску, тому файл було від’єднано від фільму в базі даних",
     "FormatAgeHours": "Години",
     "FormatAgeMinute": "Хвилин",
     "FormatAgeMinutes": "Хвилин",

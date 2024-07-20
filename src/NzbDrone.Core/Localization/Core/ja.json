@@ -1049,7 +1049,7 @@
     "MovieFileDeleted": "ムービーファイルの削除について",
     "SearchOnAddCollectionHelpText": "{appName}に追加されたら、このリストで映画を検索します",
     "MovieIsNotMonitored": "映画は監視されていません",
-    "DeletedReasonMissingFromDisk": "Whisparrはディスク上でファイルを見つけることができなかったため、削除されました",
+    "DeletedReasonMovieMissingFromDisk": "{appName}はディスク上でファイルを見つけることができなかったため、削除されました",
     "IMDbId": "TMDbID",
     "DeleteSelectedMovieFilesHelpText": "選択したムービーファイルを削除してもよろしいですか？",
     "NotificationsSimplepushSettingsEvent": "イベント",
