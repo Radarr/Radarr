@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            if (!Schema.Schema("dbo").Table("ImportExclusions").Exists())
+            if (!Schema.Table("ImportExclusions").Exists())
             {
                 Create.TableForModel("ImportExclusions")
                     .WithColumn("TmdbId").AsInt64().NotNullable().Unique().PrimaryKey()
