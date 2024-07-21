@@ -73,6 +73,12 @@ export const defaultState = {
         isVisible: true
       },
       {
+        name: 'year',
+        label: () => translate('Year'),
+        isSortable: true,
+        isVisible: true
+      },
+      {
         name: 'languages',
         label: () => translate('Languages'),
         isSortable: true,
@@ -128,12 +134,6 @@ export const defaultState = {
         label: () => translate('ReleaseTitle'),
         isSortable: true,
         isVisible: false
-      },
-      {
-        name: 'year',
-        label: () => translate('Year'),
-        isSortable: true,
-        isVisible: true
       },
       {
         name: 'outputPath',

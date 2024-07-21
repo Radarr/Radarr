@@ -117,14 +117,13 @@ function getInfoRowProps(
     return {
       title: `Added: ${formatDateTime(added, longDateFormat, timeFormat)}`,
       iconName: icons.ADD,
-      label:
-        getRelativeDate({
-          date: added,
-          shortDateFormat,
-          showRelativeDates,
-          timeFormat,
-          timeForToday: true,
-        }) ?? '',
+      label: getRelativeDate({
+        date: added,
+        shortDateFormat,
+        showRelativeDates,
+        timeFormat,
+        timeForToday: true,
+      }),
     };
   }
 

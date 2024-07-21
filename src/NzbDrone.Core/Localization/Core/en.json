@@ -853,6 +853,7 @@
   "LogSizeLimit": "Log Size Limit",
   "LogSizeLimitHelpText": "Maximum log file size in MB before archiving. Default is 1MB.",
   "Logging": "Logging",
+  "Logout": "Logout",
   "Logs": "Logs",
   "LongDateFormat": "Long Date Format",
   "LookingForReleaseProfiles1": "Looking for Release Profiles? Try",
