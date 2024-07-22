@@ -14,6 +14,8 @@ namespace Radarr.Api.V3.ExtraFiles
         public int? MovieFileId { get; set; }
         public string RelativePath { get; set; }
         public string Extension { get; set; }
+        public List<string> LanguageTags { get; set; }
+        public string Title { get; set; }
         public ExtraFileType Type { get; set; }
     }
 
@@ -51,6 +53,8 @@ namespace Radarr.Api.V3.ExtraFiles
                 MovieFileId = model.MovieFileId,
                 RelativePath = model.RelativePath,
                 Extension = model.Extension,
+                LanguageTags = model.LanguageTags,
+                Title = model.Title,
                 Type = ExtraFileType.Subtitle
             };
         }
