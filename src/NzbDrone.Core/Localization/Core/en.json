@@ -376,6 +376,7 @@
   "DiscordUrlInSlackNotification": "You have a Discord notification setup as a Slack notification. Set this up as a Discord notification for better functionality. The effected notifications are: {0}",
   "Discover": "Discover",
   "DiskSpace": "Disk Space",
+  "Disposition": "Disposition",
   "DoNotBlocklist": "Do not Blocklist",
   "DoNotBlocklistHint": "Remove without blocklisting",
   "DoNotPrefer": "Do Not Prefer",
