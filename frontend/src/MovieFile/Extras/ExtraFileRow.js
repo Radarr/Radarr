@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import IconButton from 'Components/Link/IconButton';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRow from 'Components/Table/TableRow';
-import { icons } from 'Helpers/Props';
 import titleCase from 'Utilities/String/titleCase';
+import ExtraFileDetailsPopover from './ExtraFileDetailsPopover';
 import styles from './ExtraFileRow.css';
 
 class ExtraFileRow extends Component {
@@ -16,7 +15,9 @@ class ExtraFileRow extends Component {
     const {
       relativePath,
       extension,
-      type
+      type,
+      title,
+      languageTags
     } = this.props;
 
     return (
@@ -43,8 +44,10 @@ class ExtraFileRow extends Component {
         </TableRowCell>
 
         <TableRowCell className={styles.actions}>
-          <IconButton
-            name={icons.INFO}
+          <ExtraFileDetailsPopover
+            type={type}
+            title={title}
+            languageTags={languageTags}
           />
         </TableRowCell>
       </TableRow>
@@ -57,7 +60,9 @@ ExtraFileRow.propTypes = {
   id: PropTypes.number.isRequired,
   extension: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  relativePath: PropTypes.string.isRequired
+  relativePath: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  languageTags: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default ExtraFileRow;
