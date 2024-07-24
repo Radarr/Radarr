@@ -162,16 +162,21 @@ function SelectMovieModalContent(props: SelectMovieModalContentProps) {
     [allMovies, onMovieSelect]
   );
 
-  const items = useMemo(() => {
-    const sorted = [...allMovies].sort(sortByProp('sortTitle'));
+  const sortedMovies = useMemo(
+    () => [...allMovies].sort(sortByProp('sortTitle')),
+    [allMovies]
+  );
 
-    return sorted.filter(
-      (item) =>
-        item.title.toLowerCase().includes(filter.toLowerCase()) ||
-        item.tmdbId.toString().includes(filter) ||
-        item.imdbId?.includes(filter)
-    );
-  }, [allMovies, filter]);
+  const items = useMemo(
+    () =>
+      sortedMovies.filter(
+        (item) =>
+          item.title.toLowerCase().includes(filter.toLowerCase()) ||
+          item.tmdbId.toString().includes(filter) ||
+          item.imdbId?.includes(filter)
+      ),
+    [sortedMovies, filter]
+  );
 
   return (
     <ModalContent onModalClose={onModalClose}>
