@@ -50,6 +50,7 @@ export interface AppSectionState {
   isConnected: boolean;
   isReconnecting: boolean;
   version: string;
+  prevVersion?: string;
   dimensions: {
     isSmallScreen: boolean;
     width: number;
