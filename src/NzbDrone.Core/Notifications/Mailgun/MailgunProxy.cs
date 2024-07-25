@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Notifications.Mailgun
             {
                 if (ex.Response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    _logger.Error("Unathorized - ApiKey is invalid");
+                    _logger.Error("Unauthorized - ApiKey is invalid");
                     throw new MailgunException("Unauthorized - ApiKey is invalid");
                 }
 

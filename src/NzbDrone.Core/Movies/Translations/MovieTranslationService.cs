@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Movies.Translations
 
         public void HandleAsync(MoviesDeletedEvent message)
         {
-            // TODO hanlde metadata delete instead of movie delete
+            // TODO handle metadata delete instead of movie delete
             _translationRepo.DeleteForMovies(message.Movies.Select(m => m.MovieMetadataId).ToList());
         }
     }
