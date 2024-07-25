@@ -62,6 +62,7 @@ class AddNewMovieSearchResult extends Component {
       titleSlug,
       year,
       studio,
+      originalLanguage,
       genres,
       status,
       overview,
@@ -213,17 +214,31 @@ class AddNewMovieSearchResult extends Component {
               }
 
               {
-                !!studio &&
+                originalLanguage?.name ?
+                  <Label size={sizes.LARGE}>
+                    <Icon
+                      name={icons.LANGUAGE}
+                      size={13}
+                    />
+                    <span className={styles.originalLanguage}>
+                      {originalLanguage.name}
+                    </span>
+                  </Label> :
+                  null
+              }
+
+              {
+                studio ?
                   <Label size={sizes.LARGE}>
                     <Icon
                       name={icons.STUDIO}
                       size={13}
                     />
-
                     <span className={styles.studio}>
                       {studio}
                     </span>
-                  </Label>
+                  </Label> :
+                  null
               }
 
               {
@@ -233,7 +248,6 @@ class AddNewMovieSearchResult extends Component {
                       name={icons.GENRE}
                       size={13}
                     />
-
                     <span className={styles.genres}>
                       {genres.slice(0, 3).join(', ')}
                     </span>
@@ -311,6 +325,7 @@ AddNewMovieSearchResult.propTypes = {
   titleSlug: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
   studio: PropTypes.string,
+  originalLanguage: PropTypes.object,
   genres: PropTypes.arrayOf(PropTypes.string),
   status: PropTypes.string.isRequired,
   overview: PropTypes.string,

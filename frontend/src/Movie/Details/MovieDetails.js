@@ -242,6 +242,7 @@ class MovieDetails extends Component {
       qualityProfileId,
       monitored,
       studio,
+      originalLanguage,
       genres,
       collection,
       overview,
@@ -574,7 +575,7 @@ class MovieDetails extends Component {
                   </InfoLabel>
 
                   {
-                    !!collection &&
+                    collection ?
                       <InfoLabel
                         className={styles.detailsInfoLabel}
                         title={translate('Collection')}
@@ -585,11 +586,26 @@ class MovieDetails extends Component {
                             tmdbId={collection.tmdbId}
                           />
                         </div>
-                      </InfoLabel>
+                      </InfoLabel> :
+                      null
                   }
 
                   {
-                    !!studio && !isSmallScreen &&
+                    originalLanguage?.name && !isSmallScreen ?
+                      <InfoLabel
+                        className={styles.detailsInfoLabel}
+                        title={translate('OriginalLanguage')}
+                        size={sizes.LARGE}
+                      >
+                        <span className={styles.originalLanguage}>
+                          {originalLanguage.name}
+                        </span>
+                      </InfoLabel> :
+                      null
+                  }
+
+                  {
+                    studio && !isSmallScreen ?
                       <InfoLabel
                         className={styles.detailsInfoLabel}
                         title={translate('Studio')}
@@ -598,11 +614,12 @@ class MovieDetails extends Component {
                         <span className={styles.studio}>
                           {studio}
                         </span>
-                      </InfoLabel>
+                      </InfoLabel> :
+                      null
                   }
 
                   {
-                    !!genres.length && !isSmallScreen &&
+                    genres.length && !isSmallScreen ?
                       <InfoLabel
                         className={styles.detailsInfoLabel}
                         title={translate('Genres')}
@@ -611,7 +628,8 @@ class MovieDetails extends Component {
                         <span className={styles.genres}>
                           {genres.join(', ')}
                         </span>
-                      </InfoLabel>
+                      </InfoLabel> :
+                      null
                   }
                 </div>
 
@@ -745,6 +763,7 @@ MovieDetails.propTypes = {
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   studio: PropTypes.string,
+  originalLanguage: PropTypes.object,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   collection: PropTypes.object,
   youTubeTrailerId: PropTypes.string,

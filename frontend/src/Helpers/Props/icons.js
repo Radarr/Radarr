@@ -179,6 +179,7 @@ export const IN_CINEMAS = fasTicketAlt;
 export const INFO = fasInfoCircle;
 export const INTERACTIVE = fasUser;
 export const KEYBOARD = farKeyboard;
+export const LANGUAGE = fasLanguage;
 export const LOGOUT = fasSignOutAlt;
 export const MANAGE = fasListCheck;
 export const MEDIA_INFO = farFileInvoice;
