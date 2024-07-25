@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The Danish Movie 2015")]
         [TestCase("Movie.Title.2018.2160p.WEBRip.x265.10bit.HDR.DD5.1-GASMASK")]
         [TestCase("Movie.Title.2010.720p.BluRay.x264.-[YTS.LT]")]
+        [TestCase("Movie.Title.2010.SUBFRENCH.1080p.WEB.x264-GROUP")]
         public void should_parse_language_unknown(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
