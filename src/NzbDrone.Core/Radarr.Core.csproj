@@ -20,7 +20,7 @@
     <PackageReference Include="Servarr.FluentMigrator.Runner.SQLite" Version="3.3.2.9" />
     <PackageReference Include="Servarr.FluentMigrator.Runner.Postgres" Version="3.3.2.9" />
     <PackageReference Include="FluentValidation" Version="9.5.4" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NLog" Version="5.2.3" />
     <PackageReference Include="System.Data.SQLite.Core.Servarr" Version="1.0.115.5-18" />
