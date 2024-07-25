@@ -60,7 +60,6 @@ namespace NzbDrone.Core.ImportLists.TMDb
         {
             MinVoteAverage = "5";
             MinVotes = "1";
-            LanguageCode = (int)TMDbLanguageCodes.en;
             IncludeGenreIds = "";
             ExcludeGenreIds = "";
             IncludeCompanyIds = "";
@@ -89,6 +88,6 @@ namespace NzbDrone.Core.ImportLists.TMDb
         public string ExcludeCompanyIds { get; set; }
 
         [FieldDefinition(8, Label = "Original Language", Type = FieldType.Select, SelectOptions = typeof(TMDbLanguageCodes), HelpText = "Filter by Language")]
-        public int LanguageCode { get; set; }
+        public int? LanguageCode { get; set; }
     }
 }

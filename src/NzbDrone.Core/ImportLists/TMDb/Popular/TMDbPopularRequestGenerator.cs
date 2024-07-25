@@ -38,7 +38,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
             var excludeGenreIds = Settings.FilterCriteria.ExcludeGenreIds;
             var includeCompanyIds = Settings.FilterCriteria.IncludeCompanyIds;
             var excludeCompanyIds = Settings.FilterCriteria.ExcludeCompanyIds;
-            var languageCode = (TMDbLanguageCodes)Settings.FilterCriteria.LanguageCode;
+            var languageCode = Settings.FilterCriteria.LanguageCode;
 
             var todaysDate = DateTime.Now.ToString("yyyy-MM-dd");
             var threeMonthsAgo = DateTime.Parse(todaysDate).AddMonths(-3).ToString("yyyy-MM-dd");
@@ -48,7 +48,8 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
                 .SetSegment("api", "3")
                 .SetSegment("route", "discover")
                 .SetSegment("id", "")
-                .SetSegment("secondaryRoute", "movie");
+                .SetSegment("secondaryRoute", "movie")
+                .Accept(HttpAccept.Json);
 
             switch (Settings.TMDbListType)
             {
@@ -104,9 +105,10 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
                 requestBuilder.AddQueryParam("without_companies", excludeCompanyIds);
             }
 
-            requestBuilder
-                .AddQueryParam("with_original_language", languageCode)
-                .Accept(HttpAccept.Json);
+            if (languageCode.HasValue)
+            {
+                requestBuilder.AddQueryParam("with_original_language", (TMDbLanguageCodes)languageCode);
+            }
 
             for (var pageNumber = 1; pageNumber <= MaxPages; pageNumber++)
             {
