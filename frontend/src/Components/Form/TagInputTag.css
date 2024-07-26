@@ -36,5 +36,6 @@
 .label {
   composes: label from '~Components/Label.css';
 
+  display: flex;
   max-width: 100%;
 }
