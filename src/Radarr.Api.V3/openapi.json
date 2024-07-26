@@ -9150,7 +9150,10 @@
         "enum": [
           "none",
           "cinemas",
-          "release"
+          "release",
+          "cinemasOrRelease",
+          "oldest",
+          "latest"
         ],
         "type": "string"
       },
