@@ -1059,7 +1059,7 @@
     "TaskUserAgentTooltip": "User-Agent που παρέχεται από την εφαρμογή που κάλεσε το API",
     "TotalMovies": "Σύνολο ταινιών",
     "Waiting": "Αναμονή",
-    "UpdateAvailable": "Νέα ενημέρωση είναι διαθέσιμη",
+    "UpdateAvailableHealthCheckMessage": "Νέα ενημέρωση είναι διαθέσιμη",
     "SizeLimit": "Όριο μεγέθους",
     "File": "Αρχεία",
     "EditMovies": "Επεξεργασία ταινίας",

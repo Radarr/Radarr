@@ -960,7 +960,7 @@
     "More": "Mais",
     "Download": "Download",
     "DownloadClientCheckDownloadingToRoot": "O cliente de download {downloadClientName} coloca os downloads na pasta raiz {path}. Você não deve baixar para uma pasta raiz.",
-    "UpdateAvailable": "Nova atualização está disponível",
+    "UpdateAvailableHealthCheckMessage": "Nova atualização está disponível",
     "RemotePathMappingCheckFilesGenericPermissions": "O cliente de download {downloadClientName} relatou arquivos em {path}, mas o {appName} não pode ver esse diretório. Pode ser necessário ajustar as permissões da pasta.",
     "RemotePathMappingCheckRemoteDownloadClient": "O cliente de download remoto {downloadClientName} relatou arquivos em {path}, mas este diretório parece não existir. Provavelmente faltando mapeamento de caminho remoto.",
     "RemotePathMappingCheckFolderPermissions": "O {appName} pode ver, mas não pode acessar o diretório de download {path}. Provável erro de permissões.",

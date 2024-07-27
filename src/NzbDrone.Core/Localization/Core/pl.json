@@ -1037,7 +1037,7 @@
     "RemotePathMappingCheckImportFailed": "{appName} nie mógł zaimportować filmu. Szczegóły znajdziesz w dzienniku.",
     "RemotePathMappingCheckLocalFolderMissing": "Zdalny klient pobierania {downloadClientName} umieszcza pobrane pliki w {path}, lecz ten folder nie istnieje. Prawdopodobnie wynika to z brakującego lub nieprawidłowego zdalnego mapowania ścieżki.",
     "RemotePathMappingCheckWrongOSPath": "Zdalny klient pobierania {downloadClientName} umieszcza pobrane pliki w {path}, lecz nie jest to poprawna ścieżka {osName}. Zmień ustawienia zdalnego mapowania ścieżek i klienta pobierania.",
-    "UpdateAvailable": "Dostępna jest aktualizacja",
+    "UpdateAvailableHealthCheckMessage": "Dostępna jest aktualizacja",
     "TaskUserAgentTooltip": "User-Agent podawany przez aplikację wywołującą API",
     "SetReleaseGroup": "Ustaw grupę wydającą",
     "SearchOnAddCollectionHelpText": "Po dodaniu do biblioteki wyszukaj filmy z tej kolekcji",

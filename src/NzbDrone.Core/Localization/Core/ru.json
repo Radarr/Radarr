@@ -970,7 +970,7 @@
     "RemotePathMappingCheckFilesWrongOSPath": "Удалённый клиент загрузки {downloadClientName} сообщил о файлах в {path}, но это не правильный путь {osName}.  Проверьте правильность указанных удалённых путей и настройки клиента загрузки.",
     "RemotePathMappingCheckFilesLocalWrongOSPath": "Локальный клиент загрузки {downloadClientName} сообщил о файлах в {path}, но это не правильный путь {osName}.  Проверьте настройки клиента загрузки.",
     "RemotePathMappingCheckFilesGenericPermissions": "Клиент загрузки {downloadClientName} сообщил о файлах в {path}, но {appName} не может найти эту директорию.  Возможно, вам нужно настроить права доступа к этой директории.",
-    "UpdateAvailable": "Доступно новое обновление",
+    "UpdateAvailableHealthCheckMessage": "Доступно новое обновление",
     "RemotePathMappingCheckDownloadPermissions": "{appName} видит загруженный фильм {path}, но не может получить доступ к нему.  Возможно, ошибка в правах доступа.",
     "Letterboxd": "Letterboxd",
     "RemotePathMappingCheckBadDockerPath": "Вы используете docker; клиент загрузки {downloadClientName} сообщил о файлах в {path}, но это не корректный путь {osName}.  Проверьте правильность указанного пути и настройки клиента загрузки.",

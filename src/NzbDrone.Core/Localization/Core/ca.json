@@ -311,7 +311,7 @@
     "ICalIncludeUnmonitoredMoviesHelpText": "Inclou pel·lícules no monitorades al canal iCal",
     "UpdateAll": "Actualitzar-ho tot",
     "UpdateAutomaticallyHelpText": "Baixeu i instal·leu les actualitzacions automàticament. Encara podreu instal·lar des de Sistema: Actualitzacions",
-    "UpdateAvailable": "Nova actualització disponible",
+    "UpdateAvailableHealthCheckMessage": "Nova actualització disponible",
     "Week": "Setmana",
     "WeekColumnHeader": "Capçalera de la columna de la setmana",
     "Weeks": "Setmanes",

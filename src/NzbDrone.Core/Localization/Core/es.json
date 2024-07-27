@@ -988,7 +988,7 @@
     "BypassDelayIfHighestQualityHelpText": "Evitar el retardo cuando el lanzamiento tiene habilitada la máxima calidad en el perfil de calidad con el protocolo preferido",
     "DiscordUrlInSlackNotification": "Tienes una notificación de Discord configurada como una notificación de Slack. Configure esto como una notificación de Discord para una mejor funcionalidad. Las notificaciones afectadas son: {0}",
     "IndexerJackettAll": "Indexadores que utilizan el endpoint no soportado de Jackett 'all': {indexerNames}",
-    "UpdateAvailable": "La nueva actualización está disponible",
+    "UpdateAvailableHealthCheckMessage": "La nueva actualización está disponible",
     "RemotePathMappingCheckImportFailed": "{appName} no pudo importar una película.  Comprueba los detalles en tus registros.",
     "RemotePathMappingCheckLocalFolderMissing": "El cliente de descarga remota {downloadClientName} coloca las descargas en {path} pero este directorio no parece existir. Probablemente falta o el mapeo de la ruta remota es incorrecto.",
     "RemotePathMappingCheckWrongOSPath": "El cliente de descarga remota {downloadClientName} coloca las descargas en {path} pero esta no es una ruta válida {osName}.  Revise los mapeos de las rutas remotas y la configuración del cliente de descarga.",

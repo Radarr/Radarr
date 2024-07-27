@@ -962,7 +962,7 @@
     "DownloadClientCheckDownloadingToRoot": "Le client de téléchargement {downloadClientName} place les téléchargements dans le dossier racine {path}. Vous ne devez pas télécharger dans un dossier racine.",
     "NotificationTriggersHelpText": "Sélectionnez les événements qui doivent déclencher cette notification",
     "From": "de",
-    "UpdateAvailable": "Une nouvelle mise à jour est disponible",
+    "UpdateAvailableHealthCheckMessage": "Une nouvelle mise à jour est disponible",
     "RemotePathMappingCheckImportFailed": "{appName} a échoué en important un Film. Vérifier vos logs pour plus de détails.",
     "RemotePathMappingCheckDownloadPermissions": "{appName} peut voir mais ne peut accéder au film téléchargé {path}. Il s'agit probablement d'une erreur de permissions.",
     "ImportListMultipleMissingRoots": "Plusieurs dossiers racines sont manquants pour importer les listes : {rootFoldersInfo}",

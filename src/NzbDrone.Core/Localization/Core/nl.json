@@ -960,7 +960,7 @@
     "More": "Meer",
     "Download": "Downloaden",
     "DownloadClientCheckDownloadingToRoot": "Downloadclient {downloadClientName} plaatst downloads in de hoofdmap {path}. U mag niet naar een hoofdmap downloaden.",
-    "UpdateAvailable": "Nieuwe update is beschikbaar",
+    "UpdateAvailableHealthCheckMessage": "Nieuwe update is beschikbaar",
     "From": "van",
     "RemotePathMappingCheckDownloadPermissions": "{appName} kan gedownloade film {path} zien, maar niet openen.  Waarschijnlijk fout met machtigingen.",
     "RemotePathMappingCheckFileRemoved": "Bestand {path} is halverwege de verwerking verwijderd.",

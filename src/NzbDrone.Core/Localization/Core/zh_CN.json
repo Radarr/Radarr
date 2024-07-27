@@ -984,7 +984,7 @@
     "RemotePathMappingCheckFileRemoved": "文件{path} 在处理的过程中被部分删除。",
     "RemotePathMappingCheckFilesGenericPermissions": "下载{1}中客户端{0}报告的文件，但{appName}无法看到此目录。您可能需要调整文件夹的权限。",
     "RemotePathMappingCheckGenericPermissions": "下载客户端{downloadClientName}将下载放置在{path}中，但 {appName} 无法看到此目录。您可能需要调整文件夹的权限。",
-    "UpdateAvailable": "有新的更新可用",
+    "UpdateAvailableHealthCheckMessage": "有新的更新可用",
     "Letterboxd": "Letterboxd",
     "RemoveSelectedItem": "删除所选项目",
     "RemoveSelectedItems": "删除所选项目",

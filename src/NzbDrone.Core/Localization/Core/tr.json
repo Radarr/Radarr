@@ -1682,7 +1682,7 @@
     "TaskUserAgentTooltip": "API'yi çağıran uygulama tarafından sağlanan Kullanıcı Aracısı",
     "TmdbVotes": "TMDb Oyları",
     "SizeLimit": "Boyut Limiti",
-    "UpdateAvailable": "Yeni güncelleme mevcut",
+    "UpdateAvailableHealthCheckMessage": "Yeni güncelleme mevcut",
     "RemoveCompletedDownloads": "Tamamlanan İndirmeleri Kaldır",
     "RemoveSelectedItemQueueMessageText": "1 öğeyi kuyruktan kaldırmak istediğinizden emin misiniz?",
     "ResetQualityDefinitions": "Kalite Tanımlarını Sıfırla",

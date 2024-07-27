@@ -960,7 +960,7 @@
     "More": "Mais",
     "Download": "Transferência",
     "DownloadClientCheckDownloadingToRoot": "O cliente {downloadClientName} coloca as transferências na pasta raiz {path}. Não transfira para a pasta raiz.",
-    "UpdateAvailable": "Nova atualização disponível",
+    "UpdateAvailableHealthCheckMessage": "Nova atualização disponível",
     "TaskUserAgentTooltip": "Par Utilizador-Agente fornecido pela aplicação que chamou a API",
     "RemotePathMappingCheckWrongOSPath": "O cliente remoto {downloadClientName} coloca as transferências em {path}, mas esse não é um caminho {osName} válido. Revise os mapeamentos de caminho remoto e as definições do cliente de transferências.",
     "RemotePathMappingCheckRemoteDownloadClient": "O cliente de transferências remoto {downloadClientName} relatou ficheiros em {path}, mas esse diretório parece não existir. O mapeamento de caminho remoto provavelmente está ausente.",

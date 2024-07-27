@@ -988,7 +988,7 @@
     "RemoveSelectedItems": "Poista valitut kohteet",
     "RemotePathMappingCheckLocalWrongOSPath": "Paikallinen lataustyökalu \"{downloadClientName}\" tallentaa lataukset kohteeseen \"{path}\", mutta se ei ole kelvollinen {osName}-sijainti. Tarkista lataustyökalun asetukset.",
     "TaskUserAgentTooltip": "User-Agent-tiedon ilmoitti rajapinnan kanssa viestinyt sovellus.",
-    "UpdateAvailable": "Uusi päivitys on saatavilla",
+    "UpdateAvailableHealthCheckMessage": "Uusi päivitys on saatavilla",
     "BypassDelayIfHighestQuality": "Ohita, jos korkein laatu",
     "RemoveFailed": "Poisto epäonnistui",
     "RemoveCompleted": "Poisto on suoritettu",

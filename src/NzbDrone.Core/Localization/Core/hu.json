@@ -959,7 +959,7 @@
     "More": "Több",
     "Download": "Letöltés",
     "DownloadClientCheckDownloadingToRoot": "A Letöltőkliens {downloadClientName} a letöltéseket a gyökérmappába helyezi {path}. Nem szabad letölteni egy gyökérmappába.",
-    "UpdateAvailable": "Új frissítés elérhető",
+    "UpdateAvailableHealthCheckMessage": "Új frissítés elérhető",
     "RemotePathMappingCheckFilesGenericPermissions": "A letöltőkliens {downloadClientName} jelentett fájljait a(z) {path} fájlba, de a {appName} nem látja ezt a könyvtárat. Lehet, hogy módosítania kell a mappa engedélyeit.",
     "RemotePathMappingCheckRemoteDownloadClient": "A távoli letöltőkliens {downloadClientName} fájlokat jelentett a(z) {path} fájlban, de úgy tűnik, hogy ez a könyvtár nem létezik. Valószínűleg hiányzik a távoli útvonal-hozzárendelés.",
     "RemotePathMappingCheckFolderPermissions": "A {appName} láthatja, de nem fér hozzá a (z) {path} letöltési könyvtárhoz. Valószínűleg engedélyezési hiba.",

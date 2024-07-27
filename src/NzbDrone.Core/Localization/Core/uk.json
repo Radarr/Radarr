@@ -1009,7 +1009,7 @@
     "RemoveSelectedItem": "Видалити вибраний елемент",
     "RemotePathMappingHostHelpText": "Той самий хост, який ви вказали для віддаленого клієнта завантаження",
     "ShowGenres": "Показати жанри",
-    "UpdateAvailable": "Доступне нове оновлення",
+    "UpdateAvailableHealthCheckMessage": "Доступне нове оновлення",
     "Updates": "Оновлення",
     "Monitor": "Контрольований",
     "MonitorCollection": "Контрольовані Колекції",
