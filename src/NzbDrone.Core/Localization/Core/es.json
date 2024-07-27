@@ -503,7 +503,7 @@
     "NoLimitForAnyRuntime": "No hay límites para ningún tiempo de ejecución",
     "NoLeaveIt": "No, déjalo",
     "New": "Nuevo",
-    "NetCore": ".NET",
+    "DotNetVersion": ".NET",
     "NamingSettings": "Opciones de nombrado",
     "MustNotContain": "No debe contener",
     "MustContain": "Debe contener",

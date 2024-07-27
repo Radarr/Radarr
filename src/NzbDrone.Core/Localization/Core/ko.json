@@ -341,7 +341,7 @@
     "MustContain": "포함해야 함",
     "MustNotContain": "포함해서는 안 됨",
     "NamingSettings": "이름 지정 설정",
-    "NetCore": ".NET Core",
+    "DotNetVersion": ".NET",
     "NoBackupsAreAvailable": "사용 가능한 백업이 없습니다.",
     "NoChange": "변경 없음",
     "RelativePath": "상대 경로",

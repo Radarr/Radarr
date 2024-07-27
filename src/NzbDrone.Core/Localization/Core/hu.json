@@ -476,7 +476,7 @@
     "NoChange": "Nincs változás",
     "NoBackupsAreAvailable": "Nincsenek biztonsági mentések",
     "New": "Új",
-    "NetCore": ".NET",
+    "DotNetVersion": ".NET",
     "NegateHelpText": "Ha be van jelölve, az egyéni formátum nem lesz érvényes, ha ez a(z) {0} feltétel megegyezik.",
     "NamingSettings": "Elnevezési beállítások",
     "Name": "Név",

@@ -344,7 +344,7 @@
     "Posters": "Locandine",
     "Password": "Password",
     "NotificationTriggers": "Attivatori di Notifica",
-    "NetCore": ".NET",
+    "DotNetVersion": ".NET",
     "MinimumAgeHelpText": "Solo Usenet: Età minima in minuti di NZB prima di essere prelevati. Usalo per dare tempo alle nuove release di propagarsi al vostro provider usenet.",
     "Logs": "Logs",
     "Links": "Collegamenti",

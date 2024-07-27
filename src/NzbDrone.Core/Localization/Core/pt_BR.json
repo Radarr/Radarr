@@ -532,7 +532,7 @@
     "NoAltTitle": "Nenhum título alternativo.",
     "NextExecution": "Próxima Execução",
     "New": "Novo",
-    "NetCore": ".NET",
+    "DotNetVersion": ".NET",
     "ICalShowAsAllDayEvents": "Mostrar como eventos de dia inteiro",
     "WeekColumnHeaderHelpText": "Mostrado acima de cada coluna quando a semana é a exibição ativa",
     "Script": "Script",

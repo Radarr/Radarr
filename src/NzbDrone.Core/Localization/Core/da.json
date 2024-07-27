@@ -373,7 +373,7 @@
     "MovieIsMonitored": "Film overvåges",
     "MovieIsUnmonitored": "Filmen overvåges ikke",
     "Movies": "Film",
-    "NetCore": ".NET",
+    "DotNetVersion": ".NET",
     "OpenBrowserOnStart": "Åbn browser ved start",
     "NoChange": "Ingen ændring",
     "NoHistory": "Ingen historie",

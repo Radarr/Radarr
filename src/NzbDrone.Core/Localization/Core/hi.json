@@ -522,7 +522,7 @@
     "MustContain": "शामिल होना चाहिए",
     "MustNotContain": "कंटेनर नहीं होना चाहिए",
     "NamingSettings": "नामकरण सेटिंग्स",
-    "NetCore": ".NET कोर",
+    "DotNetVersion": ".NET कोर",
     "NoBackupsAreAvailable": "कोई बैकअप उपलब्ध नहीं हैं",
     "NoChange": "कोई परिवर्तन नहीं होता है",
     "NoHistory": "कोई इतिहास नहीं",

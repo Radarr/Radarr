@@ -378,7 +378,7 @@
     "MustContain": "Πρέπει να περιέχει",
     "MustNotContain": "Δεν πρέπει να περιέχει",
     "NamingSettings": "Ρυθμίσεις ονομάτων",
-    "NetCore": ".NET",
+    "DotNetVersion": ".NET",
     "NoBackupsAreAvailable": "Δεν υπάρχουν διαθέσιμα αντίγραφα ασφαλείας",
     "NoChange": "Καμία αλλαγή",
     "NoHistory": "Χωρίς ιστορία",

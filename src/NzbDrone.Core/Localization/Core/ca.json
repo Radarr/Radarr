@@ -287,7 +287,7 @@
     "MovieDetailsNextMovie": "Detalls de la pel·lícula: propera pel·lícula",
     "MovieInvalidFormat": "Pel·lícula: Format no vàlid",
     "NegateHelpText": "Si està marcat, el format personalitzat no s'aplicarà si la condició {implementationName} coincideix.",
-    "NetCore": ".NET",
+    "DotNetVersion": ".NET",
     "NoLeaveIt": "No, deixa-ho",
     "TotalMovies": "Total de pel·lícules",
     "TotalSpace": "Espai total",

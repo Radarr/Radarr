@@ -331,7 +331,7 @@
     "DatabaseMigration": "הגירת DB",
     "MustNotContain": "אסור להכיל",
     "NamingSettings": "הגדרת שמות",
-    "NetCore": ".NET Core",
+    "DotNetVersion": ".NET",
     "AddRemotePathMapping": "הוסף מיפוי נתיבים מרוחק",
     "Age": "גיל",
     "NoBackupsAreAvailable": "אין גיבויים",

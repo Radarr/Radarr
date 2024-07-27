@@ -489,7 +489,7 @@
     "OpenBrowserOnStart": "Open de browser bij het starten",
     "NoLimitForAnyRuntime": "Geen limiet voor eender welke speelduur",
     "NoMinimumForAnyRuntime": "Geen minimum voor een speelduur",
-    "NetCore": ".NET",
+    "DotNetVersion": ".NET",
     "PreferredSize": "Gewenste Grootte",
     "ProxyPasswordHelpText": "Je moet alleen een gebruikersnaam en wachtwoord ingeven als dit vereist is, laat ze anders leeg.",
     "ProxyUsernameHelpText": "Je moet alleen een gebruikersnaam en wachtwoord ingeven als dit vereist is, laat ze anders leeg.",

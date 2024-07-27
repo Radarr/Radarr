@@ -335,7 +335,7 @@
     "IndexersSettingsSummary": "インデクサーとリリース制限",
     "MovieYearToExcludeHelpText": "除外する映画の年",
     "Age": "年齢",
-    "NetCore": ".NET Core",
+    "DotNetVersion": ".NET",
     "NoBackupsAreAvailable": "バックアップは利用できません",
     "MoveFiles": "ファイルの移動",
     "NoChange": "変化なし",

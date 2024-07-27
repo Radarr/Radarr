@@ -419,7 +419,7 @@
     "MustContain": "Muss beinhalten",
     "MustNotContain": "Darf nicht beinhalten",
     "NamingSettings": "Bennenungs Einstellungen",
-    "NetCore": ".NET",
+    "DotNetVersion": ".NET",
     "New": "Neu",
     "NoLeaveIt": "Nein, nicht ändern",
     "NoLimitForAnyRuntime": "Keine Begrenzung der Laufzeiten",

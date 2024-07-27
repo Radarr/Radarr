@@ -528,7 +528,7 @@
     "MustContain": "Trebuie sa contina",
     "MustNotContain": "Nu trebuie să conțină",
     "NamingSettings": "Setări de denumire",
-    "NetCore": ".NET Core",
+    "DotNetVersion": ".NET",
     "ApiKey": "Cheie API",
     "NoBackupsAreAvailable": "Nu sunt disponibile copii de rezervă",
     "NoHistory": "Fără istorie",

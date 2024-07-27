@@ -478,7 +478,7 @@
     "MustNotContain": "Không được chứa",
     "IndexerFlags": "Cờ chỉ mục",
     "NamingSettings": "Cài đặt đặt tên",
-    "NetCore": ".NET Core",
+    "DotNetVersion": ".NET",
     "MoveFiles": "Di chuyển tệp",
     "NoBackupsAreAvailable": "Không có bản sao lưu nào",
     "AnalyseVideoFiles": "Phân tích tệp video",

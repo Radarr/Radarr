@@ -448,7 +448,7 @@
     "MustContain": "ต้องมี",
     "MustNotContain": "ต้องไม่มี",
     "NamingSettings": "การตั้งชื่อการตั้งค่า",
-    "NetCore": ".NET Core",
+    "DotNetVersion": ".NET",
     "NoBackupsAreAvailable": "ไม่มีการสำรองข้อมูล",
     "NoChange": "ไม่มีการเปลี่ยนแปลง",
     "NoHistory": "ไม่มีประวัติ",

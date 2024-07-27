@@ -265,7 +265,7 @@
     "NoChanges": "无修改",
     "NoChange": "无修改",
     "NoBackupsAreAvailable": "无备份可用",
-    "NetCore": ".NET",
+    "DotNetVersion": ".NET",
     "MustNotContain": "不得包含",
     "MustContain": "必须包含",
     "MultiLanguage": "多语言",

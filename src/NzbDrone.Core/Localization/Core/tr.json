@@ -410,7 +410,7 @@
     "CalendarFeed": "{appName} Takvim Beslemesi",
     "DownloadPropersAndRepacksHelpTextCustomFormat": "Propers / Repacks üzerinden özel format puanına göre sıralamak için \"Tercih Etme\" seçeneğini kullanın",
     "Tomorrow": "Yarın",
-    "NetCore": ".NET",
+    "DotNetVersion": ".NET",
     "NoHistory": "Geçmiş yok",
     "AddQualityProfile": "Kalite Profili Ekle",
     "NoBackupsAreAvailable": "Kullanılabilir yedek yok",

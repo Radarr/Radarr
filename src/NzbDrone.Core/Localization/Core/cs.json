@@ -382,7 +382,7 @@
     "MustContain": "Musí obsahovat",
     "MustNotContain": "Nesmí obsahovat",
     "NamingSettings": "Nastavení pojmenování",
-    "NetCore": ".NET Core",
+    "DotNetVersion": ".NET",
     "NoBackupsAreAvailable": "Nejsou k dispozici žádné zálohy",
     "NoChange": "Žádná změna",
     "NoHistory": "Žádná historie",

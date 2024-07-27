@@ -715,7 +715,7 @@
     "NoHistory": "Aucun historique",
     "NoBackupsAreAvailable": "Aucune sauvegarde n'est disponible",
     "New": "Nouveau",
-    "NetCore": ".NET",
+    "DotNetVersion": ".NET",
     "NamingSettings": "Paramètres de dénomination",
     "MustNotContain": "Ne doit pas contenir",
     "MovieYearToExcludeHelpText": "L'année de film à exclure",

@@ -335,7 +335,7 @@
     "NamingSettings": "Nimeämisasetukset",
     "PendingChangesMessage": "Olet tehnyt muutoksia, joita ei ole vielä tallennettu. Haluatko varmasti poistua sivulta?",
     "PendingChangesStayReview": "Älä poistu ja tarkista muutokset",
-    "NetCore": ".NET",
+    "DotNetVersion": ".NET",
     "NoBackupsAreAvailable": "Varmuuskopioita ei ole käytettävissä",
     "NoChange": "Ei muutosta",
     "NoHistory": "Historiaa ei ole",

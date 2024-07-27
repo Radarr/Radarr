@@ -889,7 +889,7 @@
     "MustContain": "Трябва да съдържа",
     "MustNotContain": "Не трябва да съдържа",
     "NamingSettings": "Настройки за именуване",
-    "NetCore": ".NET Core",
+    "DotNetVersion": ".NET",
     "NoBackupsAreAvailable": "Няма налични резервни копия",
     "NoChange": "Няма промяна",
     "NoHistory": "Няма история",

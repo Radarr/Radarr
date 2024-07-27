@@ -342,7 +342,7 @@
     "MustContain": "Musi zawierać",
     "MustNotContain": "Nie może zawierać",
     "NamingSettings": "Ustawienia nazewnictwa",
-    "NetCore": ".NET",
+    "DotNetVersion": ".NET",
     "NoBackupsAreAvailable": "Brak dostępnych kopii zapasowych",
     "NoChange": "Bez zmiany",
     "NoHistory": "Żadnej historii",
