@@ -9,6 +9,11 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
 {
     public class TMDbListImport : TMDbImportListBase<TMDbListSettings>
     {
+        public override string Name => "TMDb List";
+        public override bool Enabled => true;
+        public override bool EnableAuto => false;
+        public override int PageSize => 1;
+
         public TMDbListImport(IRadarrCloudRequestBuilder requestBuilder,
                                  IHttpClient httpClient,
                                  IImportListStatusService importListStatusService,
@@ -20,10 +25,6 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
         {
         }
 
-        public override string Name => "TMDb List";
-        public override bool Enabled => true;
-        public override bool EnableAuto => false;
-
         public override IParseImportListResponse GetParser()
         {
             return new TMDbListParser();
@@ -31,7 +32,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
 
         public override IImportListRequestGenerator GetRequestGenerator()
         {
-            return new TMDbListRequestGenerator()
+            return new TMDbListRequestGenerator
             {
                 RequestBuilder = _requestBuilder,
                 Settings = Settings,
