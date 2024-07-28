@@ -7,12 +7,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 {
     public class AvailabilitySpecification : IDecisionEngineSpecification
     {
-        private readonly IConfigService _settingsService;
+        private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        public AvailabilitySpecification(IConfigService settingsService, Logger logger)
+        public AvailabilitySpecification(IConfigService configService, Logger logger)
         {
-            _settingsService = settingsService;
+            _configService = configService;
             _logger = logger;
         }
 
@@ -21,18 +21,17 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
         public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
-            if (searchCriteria != null)
+            if (searchCriteria is { UserInvokedSearch: true })
             {
-                if (searchCriteria.UserInvokedSearch)
-                {
-                    _logger.Debug("Skipping availability check during search");
-                    return Decision.Accept();
-                }
+                _logger.Debug("Skipping availability check during search");
+                return Decision.Accept();
             }
 
-            if (!subject.Movie.IsAvailable(_settingsService.AvailabilityDelay))
+            var availabilityDelay = _configService.AvailabilityDelay;
+
+            if (!subject.Movie.IsAvailable(availabilityDelay))
             {
-                return Decision.Reject("Movie {0} will only be considered available {1} days after {2}", subject.Movie, _settingsService.AvailabilityDelay, subject.Movie.MinimumAvailability.ToString());
+                return Decision.Reject("Movie {0} will only be considered available {1} days after {2}", subject.Movie, availabilityDelay, subject.Movie.MinimumAvailability.ToString());
             }
 
             return Decision.Accept();
