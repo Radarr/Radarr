@@ -37,6 +37,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
             var jsonResponse = JsonConvert.DeserializeObject<MovieSearchResource>(HttpClient.Execute(requestBuilder.Build()).Content);
 
             MaxPages = jsonResponse.TotalPages;
+            Logger.Debug("Found {0} pages for TMDb List: {1}", MaxPages, Settings.ListId);
 
             for (var pageNumber = 1; pageNumber <= MaxPages; pageNumber++)
             {
