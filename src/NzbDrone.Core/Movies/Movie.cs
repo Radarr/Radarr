@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Movies
             // This more complex sequence handles the delay
             DateTime minimumAvailabilityDate;
 
-            if ((MinimumAvailability == MovieStatusType.TBA) || (MinimumAvailability == MovieStatusType.Announced))
+            if (MinimumAvailability is MovieStatusType.TBA or MovieStatusType.Announced)
             {
                 minimumAvailabilityDate = DateTime.MinValue;
             }
@@ -105,16 +105,16 @@ namespace NzbDrone.Core.Movies
                 }
                 else
                 {
-                    minimumAvailabilityDate = MovieMetadata.Value.InCinemas.HasValue ? MovieMetadata.Value.InCinemas.Value.AddDays(90) : DateTime.MaxValue;
+                    minimumAvailabilityDate = MovieMetadata.Value.InCinemas?.AddDays(90) ?? DateTime.MaxValue;
                 }
             }
 
             if (minimumAvailabilityDate == DateTime.MinValue || minimumAvailabilityDate == DateTime.MaxValue)
             {
-                return DateTime.Now >= minimumAvailabilityDate;
+                return DateTime.UtcNow >= minimumAvailabilityDate;
             }
 
-            return DateTime.Now >= minimumAvailabilityDate.AddDays((double)delay);
+            return DateTime.UtcNow >= minimumAvailabilityDate.AddDays(delay);
         }
 
         public override string ToString()
