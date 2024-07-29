@@ -1,16 +1,19 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import PageContent from 'Components/Page/PageContent';
 import translate from 'Utilities/String/translate';
 import styles from './NotFound.css';
 
-function NotFound({ message }) {
+interface NotFoundProps {
+  message?: string;
+}
+
+function NotFound(props: NotFoundProps) {
+  const { message = translate('DefaultNotFoundMessage') } = props;
+
   return (
     <PageContent title={translate('MIA')}>
       <div className={styles.container}>
-        <div className={styles.message}>
-          {message}
-        </div>
+        <div className={styles.message}>{message}</div>
 
         <img
           className={styles.image}
@@ -20,13 +23,5 @@ function NotFound({ message }) {
     </PageContent>
   );
 }
-
-NotFound.propTypes = {
-  message: PropTypes.string.isRequired
-};
-
-NotFound.defaultProps = {
-  message: 'You must be lost, nothing to see here.'
-};
 
 export default NotFound;
