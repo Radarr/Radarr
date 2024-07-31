@@ -63,7 +63,7 @@ function ErrorBoundaryError(props: ErrorBoundaryErrorProps) {
           <div>{info.componentStack}</div>
         )}
 
-        {<div className={styles.version}>Version: {window.Radarr.version}</div>}
+        <div className={styles.version}>Version: {window.Radarr.version}</div>
       </details>
     </div>
   );

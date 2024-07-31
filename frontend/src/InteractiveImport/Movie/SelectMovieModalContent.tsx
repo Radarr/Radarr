@@ -64,18 +64,19 @@ interface RowItemData {
   onMovieSelect(movieId: number): void;
 }
 
-const Row: React.FC<ListChildComponentProps<RowItemData>> = ({
-  index,
-  style,
-  data,
-}) => {
+function Row({ index, style, data }: ListChildComponentProps<RowItemData>) {
   const { items, columns, onMovieSelect } = data;
+  const movie = index >= items.length ? null : items[index];
 
-  if (index >= items.length) {
+  const handlePress = useCallback(() => {
+    if (movie?.id) {
+      onMovieSelect(movie.id);
+    }
+  }, [movie?.id, onMovieSelect]);
+
+  if (movie == null) {
     return null;
   }
-
-  const movie = items[index];
 
   return (
     <VirtualTableRowButton
@@ -84,7 +85,7 @@ const Row: React.FC<ListChildComponentProps<RowItemData>> = ({
         justifyContent: 'space-between',
         ...style,
       }}
-      onPress={() => onMovieSelect(movie.id)}
+      onPress={handlePress}
     >
       <SelectMovieRow
         id={movie.id}
@@ -97,7 +98,7 @@ const Row: React.FC<ListChildComponentProps<RowItemData>> = ({
       />
     </VirtualTableRowButton>
   );
-};
+}
 
 function SelectMovieModalContent(props: SelectMovieModalContentProps) {
   const { modalTitle, onMovieSelect, onModalClose } = props;
@@ -196,9 +197,9 @@ function SelectMovieModalContent(props: SelectMovieModalContentProps) {
         />
 
         <Scroller
+          ref={scrollerRef}
           className={styles.scroller}
           autoFocus={false}
-          ref={scrollerRef}
         >
           <SelectMovieModalTableHeader columns={columns} />
           <List<RowItemData>
