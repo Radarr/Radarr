@@ -118,7 +118,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     {
                         default:
                         case ImportMode.Auto:
-                            copyOnly = downloadClientItem != null && !downloadClientItem.CanMoveFiles;
+                            copyOnly = downloadClientItem is { CanMoveFiles: false };
                             break;
                         case ImportMode.Move:
                             copyOnly = false;
