@@ -7,9 +7,9 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.MovieImport
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         private readonly IAggregationService _aggregationService;
         private readonly IDiskProvider _diskProvider;
         private readonly IDetectSample _detectSample;
-        private readonly IParsingService _parsingService;
+        private readonly ITrackedDownloadService _trackedDownloadService;
         private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly Logger _logger;
 
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                                    IAggregationService aggregationService,
                                    IDiskProvider diskProvider,
                                    IDetectSample detectSample,
-                                   IParsingService parsingService,
+                                   ITrackedDownloadService trackedDownloadService,
                                    ICustomFormatCalculationService formatCalculator,
                                    Logger logger)
         {
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             _aggregationService = aggregationService;
             _diskProvider = diskProvider;
             _detectSample = detectSample;
-            _parsingService = parsingService;
+            _trackedDownloadService = trackedDownloadService;
             _formatCalculator = formatCalculator;
             _logger = logger;
         }
@@ -132,6 +132,16 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                 }
                 else
                 {
+                    if (downloadClientItem?.DownloadId.IsNotNullOrWhiteSpace() == true)
+                    {
+                        var trackedDownload = _trackedDownloadService.Find(downloadClientItem.DownloadId);
+
+                        if (trackedDownload?.RemoteMovie?.Release?.IndexerFlags != null)
+                        {
+                            localMovie.IndexerFlags = trackedDownload.RemoteMovie.Release.IndexerFlags;
+                        }
+                    }
+
                     localMovie.CustomFormats = _formatCalculator.ParseCustomFormat(localMovie);
                     localMovie.CustomFormatScore = localMovie.Movie.QualityProfile?.CalculateCustomFormatScore(localMovie.CustomFormats) ?? 0;
 
