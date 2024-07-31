@@ -27,8 +27,9 @@ namespace NzbDrone.Core.Notifications.Telegram
         {
             var title = Settings.IncludeAppNameInTitle ? MOVIE_GRABBED_TITLE_BRANDED : MOVIE_GRABBED_TITLE;
             title = Settings.IncludeInstanceNameInTitle ? $"{title} - {InstanceName}" : title;
+            var links = GetLinks(grabMessage.Movie);
 
-            _proxy.SendNotification(title, grabMessage.Message, Settings);
+            _proxy.SendNotification(title, grabMessage.Message, links, Settings);
         }
 
         public override void OnDownload(DownloadMessage message)
@@ -44,32 +45,36 @@ namespace NzbDrone.Core.Notifications.Telegram
             }
 
             title = Settings.IncludeInstanceNameInTitle ? $"{title} - {InstanceName}" : title;
+            var links = GetLinks(message.Movie);
 
-            _proxy.SendNotification(title, message.Message, Settings);
+            _proxy.SendNotification(title, message.Message, links, Settings);
         }
 
         public override void OnMovieAdded(Movie movie)
         {
             var title = Settings.IncludeAppNameInTitle ? MOVIE_ADDED_TITLE_BRANDED : MOVIE_ADDED_TITLE;
             title = Settings.IncludeInstanceNameInTitle ? $"{title} - {InstanceName}" : title;
+            var links = GetLinks(movie);
 
-            _proxy.SendNotification(title, $"{movie.Title} added to library", Settings);
+            _proxy.SendNotification(title, $"{movie.Title} added to library", links, Settings);
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
         {
             var title = Settings.IncludeAppNameInTitle ? MOVIE_FILE_DELETED_TITLE_BRANDED : MOVIE_FILE_DELETED_TITLE;
             title = Settings.IncludeInstanceNameInTitle ? $"{title} - {InstanceName}" : title;
+            var links = GetLinks(deleteMessage.Movie);
 
-            _proxy.SendNotification(title, deleteMessage.Message, Settings);
+            _proxy.SendNotification(title, deleteMessage.Message, links, Settings);
         }
 
         public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
         {
             var title = Settings.IncludeAppNameInTitle ? MOVIE_DELETED_TITLE_BRANDED : MOVIE_DELETED_TITLE;
             title = Settings.IncludeInstanceNameInTitle ? $"{title} - {InstanceName}" : title;
+            var links = GetLinks(deleteMessage.Movie);
 
-            _proxy.SendNotification(title, deleteMessage.Message, Settings);
+            _proxy.SendNotification(title, deleteMessage.Message, links, Settings);
         }
 
         public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
@@ -77,7 +82,7 @@ namespace NzbDrone.Core.Notifications.Telegram
             var title = Settings.IncludeAppNameInTitle ? HEALTH_ISSUE_TITLE_BRANDED : HEALTH_ISSUE_TITLE;
             title = Settings.IncludeInstanceNameInTitle ? $"{title} - {InstanceName}" : title;
 
-            _proxy.SendNotification(title, healthCheck.Message, Settings);
+            _proxy.SendNotification(title, healthCheck.Message, new List<TelegramLink>(), Settings);
         }
 
         public override void OnHealthRestored(HealthCheck.HealthCheck previousCheck)
@@ -85,7 +90,7 @@ namespace NzbDrone.Core.Notifications.Telegram
             var title = Settings.IncludeAppNameInTitle ? HEALTH_RESTORED_TITLE_BRANDED : HEALTH_RESTORED_TITLE;
             title = Settings.IncludeInstanceNameInTitle ? $"{title} - {InstanceName}" : title;
 
-            _proxy.SendNotification(title, $"The following issue is now resolved: {previousCheck.Message}", Settings);
+            _proxy.SendNotification(title, $"The following issue is now resolved: {previousCheck.Message}", new List<TelegramLink>(), Settings);
         }
 
         public override void OnApplicationUpdate(ApplicationUpdateMessage updateMessage)
@@ -93,7 +98,7 @@ namespace NzbDrone.Core.Notifications.Telegram
             var title = Settings.IncludeAppNameInTitle ? APPLICATION_UPDATE_TITLE_BRANDED : APPLICATION_UPDATE_TITLE;
             title = Settings.IncludeInstanceNameInTitle ? $"{title} - {InstanceName}" : title;
 
-            _proxy.SendNotification(title, updateMessage.Message, Settings);
+            _proxy.SendNotification(title, updateMessage.Message, new List<TelegramLink>(), Settings);
         }
 
         public override void OnManualInteractionRequired(ManualInteractionRequiredMessage message)
@@ -101,7 +106,7 @@ namespace NzbDrone.Core.Notifications.Telegram
             var title = Settings.IncludeAppNameInTitle ? MANUAL_INTERACTION_REQUIRED_TITLE_BRANDED : MANUAL_INTERACTION_REQUIRED_TITLE;
             title = Settings.IncludeInstanceNameInTitle ? $"{title} - {InstanceName}" : title;
 
-            _proxy.SendNotification(title, message.Message, Settings);
+            _proxy.SendNotification(title, message.Message, new List<TelegramLink>(), Settings);
         }
 
         public override ValidationResult Test()
@@ -111,6 +116,38 @@ namespace NzbDrone.Core.Notifications.Telegram
             failures.AddIfNotNull(_proxy.Test(Settings));
 
             return new ValidationResult(failures);
+        }
+
+        private List<TelegramLink> GetLinks(Movie movie)
+        {
+            var links = new List<TelegramLink>();
+
+            if (movie == null)
+            {
+                return links;
+            }
+
+            foreach (var link in Settings.MetadataLinks)
+            {
+                var linkType = (MetadataLinkType)link;
+
+                if (linkType == MetadataLinkType.Tmdb && movie.TmdbId > 0)
+                {
+                    links.Add(new TelegramLink("TMDb", $"https://www.themoviedb.org/movie/{movie.TmdbId}"));
+                }
+
+                if (linkType == MetadataLinkType.Imdb && movie.ImdbId.IsNotNullOrWhiteSpace())
+                {
+                    links.Add(new TelegramLink("IMDb", $"https://www.imdb.com/title/{movie.ImdbId}"));
+                }
+
+                if (linkType == MetadataLinkType.Trakt && movie.TmdbId > 0)
+                {
+                    links.Add(new TelegramLink("Trakt", $"https://trakt.tv/search/tmdb/{movie.TmdbId}?id_type=movie"));
+                }
+            }
+
+            return links;
         }
     }
 }

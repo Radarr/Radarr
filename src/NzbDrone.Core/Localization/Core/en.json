@@ -1236,6 +1236,8 @@
   "NotificationsTelegramSettingsIncludeAppNameHelpText": "Optionally prefix message title with {appName} to differentiate notifications from different applications",
   "NotificationsTelegramSettingsIncludeInstanceName": "Include Instance Name in Title",
   "NotificationsTelegramSettingsIncludeInstanceNameHelpText": "Optionally include Instance name in notification",
+  "NotificationsTelegramSettingsMetadataLinks": "Metadata Links",
+  "NotificationsTelegramSettingsMetadataLinksMovieHelpText": "Add links to movie metadata when sending notifications",
   "NotificationsTelegramSettingsSendSilently": "Send Silently",
   "NotificationsTelegramSettingsSendSilentlyHelpText": "Sends the message silently. Users will receive a notification with no sound",
   "NotificationsTelegramSettingsTopicId": "Topic ID",
