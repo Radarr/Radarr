@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using NLog;
 using NLog.Config;
+using NLog.Layouts.ClefJsonLayout;
 using NLog.Targets;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
@@ -13,6 +14,8 @@ namespace NzbDrone.Common.Instrumentation
     public static class NzbDroneLogger
     {
         private const string FILE_LOG_LAYOUT = @"${date:format=yyyy-MM-dd HH\:mm\:ss.f}|${level}|${logger}|${message}${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}${exception:format=Data}${newline}}";
+        public const string ConsoleLogLayout = "[${level}] ${logger}: ${message} ${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}${exception:format=Data}${newline}}";
+        public static CompactJsonLayout ClefLogLayout = new CompactJsonLayout();
 
         private static bool _isConfigured;
 
@@ -111,7 +114,16 @@ namespace NzbDrone.Common.Instrumentation
             var coloredConsoleTarget = new ColoredConsoleTarget();
 
             coloredConsoleTarget.Name = "consoleLogger";
-            coloredConsoleTarget.Layout = "[${level}] ${logger}: ${message} ${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}${exception:format=Data}${newline}}";
+
+            var logFormat = Enum.TryParse<ConsoleLogFormat>(Environment.GetEnvironmentVariable("RADARR__LOG__CONSOLEFORMAT"), out var formatEnumValue)
+                ? formatEnumValue
+                : ConsoleLogFormat.Standard;
+
+            coloredConsoleTarget.Layout = logFormat switch
+            {
+                ConsoleLogFormat.Clef => ClefLogLayout,
+                _ => ConsoleLogLayout
+            };
 
             var loggingRule = new LoggingRule("*", level, coloredConsoleTarget);
 
@@ -205,5 +217,11 @@ namespace NzbDrone.Common.Instrumentation
         {
             return GetLogger(obj.GetType());
         }
+    }
+
+    public enum ConsoleLogFormat
+    {
+        Standard,
+        Clef
     }
 }
