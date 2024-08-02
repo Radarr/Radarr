@@ -84,7 +84,7 @@ namespace Radarr.Api.V3.MovieFiles
                 Edition = model.Edition,
                 ReleaseGroup = model.ReleaseGroup,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
-                QualityCutoffNotMet = upgradableSpecification?.QualityCutoffNotMet(movie.QualityProfile, model.Quality) ?? false,
+                QualityCutoffNotMet = movie.QualityProfile != null && (upgradableSpecification?.QualityCutoffNotMet(movie.QualityProfile, model.Quality) ?? false),
                 OriginalFilePath = model.OriginalFilePath,
                 IndexerFlags = (int)model.IndexerFlags
             };
