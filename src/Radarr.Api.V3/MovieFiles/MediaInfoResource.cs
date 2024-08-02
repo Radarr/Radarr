@@ -57,7 +57,8 @@ namespace Radarr.Api.V3.MovieFiles
         {
             if (runTime.Hours > 0)
             {
-                return $"{runTime.Hours}:{runTime.Minutes:00}:{runTime.Seconds:00}";
+                var totalHours = (runTime.Days * 24) + runTime.Hours;
+                return $"{totalHours}:{runTime.Minutes:00}:{runTime.Seconds:00}";
             }
 
             return $"{runTime.Minutes}:{runTime.Seconds:00}";
