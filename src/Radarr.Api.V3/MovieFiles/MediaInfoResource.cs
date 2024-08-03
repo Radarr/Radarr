@@ -55,9 +55,9 @@ namespace Radarr.Api.V3.MovieFiles
 
         private static string FormatRuntime(TimeSpan runTime)
         {
-            if (runTime.Hours > 0)
+            if (runTime.TotalHours > 0)
             {
-                return $"{runTime.Hours}:{runTime.Minutes:00}:{runTime.Seconds:00}";
+                return $"{runTime.TotalHours}:{runTime.Minutes:00}:{runTime.Seconds:00}";
             }
 
             return $"{runTime.Minutes}:{runTime.Seconds:00}";
