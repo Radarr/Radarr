@@ -105,6 +105,8 @@ namespace NzbDrone.Core.Parser
         // Regex to unbracket alternative titles.
         private static readonly Regex BracketedAlternativeTitleRegex = new Regex(@"(.*) \([ ]*AKA[ ]+(.*)\)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        private static readonly Regex NormalizeAlternativeTitleRegex = new Regex(@"[ ]+(?:A\.K\.A\.)[ ]+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private static readonly Regex NormalizeRegex = new Regex(@"((?:\b|_)(?<!^|[^a-zA-Z0-9_']\w[^a-zA-Z0-9_'])(a(?!$|[^a-zA-Z0-9_']\w[^a-zA-Z0-9_'])|an|the|and|or|of)(?!$)(?:\b|_))|\W|_",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -590,6 +592,7 @@ namespace NzbDrone.Core.Parser
             }
 
             var movieName = matchCollection[0].Groups["title"].Value.Replace('_', ' ');
+            movieName = NormalizeAlternativeTitleRegex.Replace(movieName, " AKA ");
             movieName = RequestInfoRegex.Replace(movieName, "").Trim(' ');
 
             var parts = movieName.Split('.');
