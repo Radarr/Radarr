@@ -58,6 +58,7 @@ interface Movie extends ModelBase {
   movieFile: MovieFile;
   hasFile: boolean;
   isAvailable: boolean;
+  isReleased: boolean;
   isSaving?: boolean;
 }
 

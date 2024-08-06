@@ -436,6 +436,12 @@ export const defaultState = {
       valueType: filterBuilderValueTypes.BOOL
     },
     {
+      name: 'isReleased',
+      label: () => translate('ConsideredReleased'),
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.BOOL
+    },
+    {
       name: 'minimumAvailability',
       label: () => translate('MinimumAvailability'),
       type: filterBuilderTypes.EXACT,
