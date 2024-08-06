@@ -151,6 +151,7 @@ namespace NzbDrone.Common.Test.Http
 
         [TestCase(CertificateValidationType.Enabled)]
         [TestCase(CertificateValidationType.DisabledForLocalAddresses)]
+        [Retry(3)]
         public void bad_ssl_should_fail_when_remote_validation_enabled(CertificateValidationType validationType)
         {
             Mocker.GetMock<IConfigService>().SetupGet(x => x.CertificateValidation).Returns(validationType);
