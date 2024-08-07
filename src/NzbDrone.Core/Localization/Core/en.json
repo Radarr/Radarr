@@ -706,7 +706,7 @@
   "ImportErrors": "Import Errors",
   "ImportExistingMovies": "Import Existing Movies",
   "ImportExtraFiles": "Import Extra Files",
-  "ImportExtraFilesMovieHelpText": "Import matching extra files (subtitles, nfo, etc) after importing an movie file",
+  "ImportExtraFilesMovieHelpText": "Import matching extra files (subtitles, nfo, etc) after importing a movie file",
   "ImportFailed": "Import failed: {sourceTitle}",
   "ImportHeader": "Import an existing organized library to add movies to {appName}",
   "ImportIncludeQuality": "Make sure that your files include the quality in their filenames. e.g. {0}",
