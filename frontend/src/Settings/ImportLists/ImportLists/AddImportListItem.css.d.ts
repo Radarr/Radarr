@@ -2,7 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'actions': string;
-  'importList': string;
+  'list': string;
   'name': string;
   'overlay': string;
   'presetsMenu': string;

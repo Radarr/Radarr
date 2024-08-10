@@ -27,7 +27,7 @@ function EditImportListExclusionModalContent(props) {
     onInputChange,
     onSavePress,
     onModalClose,
-    onDeleteImportExclusionPress,
+    onDeleteImportListExclusionPress,
     ...otherProps
   } = props;
 
@@ -107,7 +107,7 @@ function EditImportListExclusionModalContent(props) {
             <Button
               className={styles.deleteButton}
               kind={kinds.DANGER}
-              onPress={onDeleteImportExclusionPress}
+              onPress={onDeleteImportListExclusionPress}
             >
               {translate('Delete')}
             </Button>
@@ -141,7 +141,7 @@ EditImportListExclusionModalContent.propTypes = {
   onInputChange: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  onDeleteImportExclusionPress: PropTypes.func
+  onDeleteImportListExclusionPress: PropTypes.func
 };
 
 export default EditImportListExclusionModalContent;

@@ -60,7 +60,7 @@ class ImportListSettings extends Component {
   render() {
     const {
       isTestingAll,
-      dispatchTestAllImportList
+      dispatchTestAllImportLists
     } = this.props;
 
     const {
@@ -82,7 +82,7 @@ class ImportListSettings extends Component {
                 label={translate('TestAllLists')}
                 iconName={icons.TEST}
                 isSpinning={isTestingAll}
-                onPress={dispatchTestAllImportList}
+                onPress={dispatchTestAllImportLists}
               />
 
               <PageToolbarButton
@@ -118,7 +118,7 @@ class ImportListSettings extends Component {
 
 ImportListSettings.propTypes = {
   isTestingAll: PropTypes.bool.isRequired,
-  dispatchTestAllImportList: PropTypes.func.isRequired
+  dispatchTestAllImportLists: PropTypes.func.isRequired
 };
 
 export default ImportListSettings;

@@ -6,7 +6,7 @@ import { clearAddMovie, lookupMovie } from 'Store/Actions/addMovieActions';
 import { clearMovieFiles, fetchMovieFiles } from 'Store/Actions/movieFileActions';
 import { clearQueueDetails, fetchQueueDetails } from 'Store/Actions/queueActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
-import { fetchImportExclusions } from 'Store/Actions/Settings/importExclusions';
+import { fetchImportListExclusions } from 'Store/Actions/Settings/importListExclusions';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
@@ -36,7 +36,7 @@ const mapDispatchToProps = {
   lookupMovie,
   clearAddMovie,
   fetchRootFolders,
-  fetchImportExclusions,
+  fetchImportListExclusions,
   fetchQueueDetails,
   clearQueueDetails,
   fetchMovieFiles,
@@ -56,7 +56,7 @@ class AddNewMovieConnector extends Component {
 
   componentDidMount() {
     this.props.fetchRootFolders();
-    this.props.fetchImportExclusions();
+    this.props.fetchImportListExclusions();
     this.props.fetchQueueDetails();
   }
 
@@ -131,7 +131,7 @@ AddNewMovieConnector.propTypes = {
   lookupMovie: PropTypes.func.isRequired,
   clearAddMovie: PropTypes.func.isRequired,
   fetchRootFolders: PropTypes.func.isRequired,
-  fetchImportExclusions: PropTypes.func.isRequired,
+  fetchImportListExclusions: PropTypes.func.isRequired,
   fetchQueueDetails: PropTypes.func.isRequired,
   clearQueueDetails: PropTypes.func.isRequired,
   fetchMovieFiles: PropTypes.func.isRequired,

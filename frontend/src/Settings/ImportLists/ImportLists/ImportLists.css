@@ -1,10 +1,10 @@
-.importLists {
+.lists {
   display: flex;
   flex-wrap: wrap;
 }
 
-.addImportList {
-  composes: importList from '~./ImportList.css';
+.addList {
+  composes: list from '~./ImportList.css';
 
   background-color: var(--cardAlternateBackgroundColor);
   color: var(--gray);

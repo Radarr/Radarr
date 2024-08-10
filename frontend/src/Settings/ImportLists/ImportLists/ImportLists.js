@@ -32,10 +32,10 @@ class ImportLists extends Component {
     this.setState({ isAddImportListModalOpen: true });
   };
 
-  onAddImportListModalClose = ({ importListSelected = false } = {}) => {
+  onAddImportListModalClose = ({ listSelected = false } = {}) => {
     this.setState({
       isAddImportListModalOpen: false,
-      isEditImportListModalOpen: importListSelected
+      isEditImportListModalOpen: listSelected
     });
   };
 
@@ -64,7 +64,7 @@ class ImportLists extends Component {
           errorMessage={translate('ImportListsLoadError')}
           {...otherProps}
         >
-          <div className={styles.importLists}>
+          <div className={styles.lists}>
             {
               items.map((item) => {
                 return (
@@ -78,7 +78,7 @@ class ImportLists extends Component {
             }
 
             <Card
-              className={styles.addImportList}
+              className={styles.addList}
               onPress={this.onAddImportListPress}
             >
               <div className={styles.center}>

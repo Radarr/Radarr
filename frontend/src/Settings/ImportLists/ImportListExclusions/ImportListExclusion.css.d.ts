@@ -2,7 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'actions': string;
-  'importExclusion': string;
+  'importListExclusion': string;
   'movieTitle': string;
   'movieYear': string;
   'tmdbId': string;

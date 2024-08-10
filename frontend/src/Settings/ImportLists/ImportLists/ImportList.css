@@ -1,4 +1,4 @@
-.importList {
+.list {
   composes: card from '~Components/Card.css';
 
   width: 290px;

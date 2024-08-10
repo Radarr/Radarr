@@ -63,7 +63,7 @@ class ImportList extends Component {
 
     return (
       <Card
-        className={styles.importList}
+        className={styles.list}
         overlayContent={true}
         onPress={this.onEditImportListPress}
       >
