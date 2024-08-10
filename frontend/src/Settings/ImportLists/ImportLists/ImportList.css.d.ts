@@ -2,7 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'enabled': string;
-  'importList': string;
+  'list': string;
   'name': string;
 }
 export const cssExports: CssExports;

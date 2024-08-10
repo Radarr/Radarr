@@ -4,9 +4,9 @@ import { createSelector } from 'reselect';
 function createExclusionMovieSelector() {
   return createSelector(
     (state, { tmdbId }) => tmdbId,
-    (state) => state.settings.importExclusions,
-    (tmdbId, importExclusions) => {
-      return _.some(importExclusions.items, { tmdbId });
+    (state) => state.settings.importListExclusions,
+    (tmdbId, importListExclusions) => {
+      return _.some(importListExclusions.items, { tmdbId });
     }
   );
 }

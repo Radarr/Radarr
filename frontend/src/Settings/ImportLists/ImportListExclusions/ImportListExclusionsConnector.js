@@ -2,39 +2,39 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { deleteImportExclusion, fetchImportExclusions } from 'Store/Actions/settingsActions';
+import { deleteImportListExclusion, fetchImportListExclusions } from 'Store/Actions/settingsActions';
 import ImportListExclusions from './ImportListExclusions';
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.settings.importExclusions,
-    (importExclusions) => {
+    (state) => state.settings.importListExclusions,
+    (importListExclusions) => {
       return {
-        ...importExclusions
+        ...importListExclusions
       };
     }
   );
 }
 
 const mapDispatchToProps = {
-  fetchImportExclusions,
-  deleteImportExclusion
+  fetchImportListExclusions,
+  deleteImportListExclusion
 };
 
-class ImportExclusionsConnector extends Component {
+class ImportListExclusionsConnector extends Component {
 
   //
   // Lifecycle
 
   componentDidMount() {
-    this.props.fetchImportExclusions();
+    this.props.fetchImportListExclusions();
   }
 
   //
   // Listeners
 
-  onConfirmDeleteImportExclusion = (id) => {
-    this.props.deleteImportExclusion({ id });
+  onConfirmDeleteImportListExclusion = (id) => {
+    this.props.deleteImportListExclusion({ id });
   };
 
   //
@@ -45,15 +45,15 @@ class ImportExclusionsConnector extends Component {
       <ImportListExclusions
         {...this.state}
         {...this.props}
-        onConfirmDeleteImportExclusion={this.onConfirmDeleteImportExclusion}
+        onConfirmDeleteImportListExclusion={this.onConfirmDeleteImportListExclusion}
       />
     );
   }
 }
 
-ImportExclusionsConnector.propTypes = {
-  fetchImportExclusions: PropTypes.func.isRequired,
-  deleteImportExclusion: PropTypes.func.isRequired
+ImportListExclusionsConnector.propTypes = {
+  fetchImportListExclusions: PropTypes.func.isRequired,
+  deleteImportListExclusion: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(ImportExclusionsConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(ImportListExclusionsConnector);

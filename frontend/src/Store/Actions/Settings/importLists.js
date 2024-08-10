@@ -30,10 +30,10 @@ export const CANCEL_SAVE_IMPORT_LIST = 'settings/importLists/cancelSaveImportLis
 export const DELETE_IMPORT_LIST = 'settings/importLists/deleteImportList';
 export const TEST_IMPORT_LIST = 'settings/importLists/testImportList';
 export const CANCEL_TEST_IMPORT_LIST = 'settings/importLists/cancelTestImportList';
-export const TEST_ALL_IMPORT_LIST = 'settings/importLists/testAllImportList';
+export const TEST_ALL_IMPORT_LISTS = 'settings/importLists/testAllImportLists';
 
-export const BULK_DELETE_IMPORT_LISTS = 'settings/importlists/bulkDeleteImportLists';
-export const BULK_EDIT_IMPORT_LISTS = 'settings/importlists/bulkEditImportLists';
+export const BULK_DELETE_IMPORT_LISTS = 'settings/importLists/bulkDeleteImportLists';
+export const BULK_EDIT_IMPORT_LISTS = 'settings/importLists/bulkEditImportLists';
 
 //
 // Action Creators
@@ -47,7 +47,7 @@ export const cancelSaveImportList = createThunk(CANCEL_SAVE_IMPORT_LIST);
 export const deleteImportList = createThunk(DELETE_IMPORT_LIST);
 export const testImportList = createThunk(TEST_IMPORT_LIST);
 export const cancelTestImportList = createThunk(CANCEL_TEST_IMPORT_LIST);
-export const testAllImportList = createThunk(TEST_ALL_IMPORT_LIST);
+export const testAllImportLists = createThunk(TEST_ALL_IMPORT_LISTS);
 
 export const bulkDeleteImportLists = createThunk(BULK_DELETE_IMPORT_LISTS);
 export const bulkEditImportLists = createThunk(BULK_EDIT_IMPORT_LISTS);
@@ -105,7 +105,7 @@ export default {
     [DELETE_IMPORT_LIST]: createRemoveItemHandler(section, '/importlist'),
     [TEST_IMPORT_LIST]: createTestProviderHandler(section, '/importlist'),
     [CANCEL_TEST_IMPORT_LIST]: createCancelTestProviderHandler(section),
-    [TEST_ALL_IMPORT_LIST]: createTestAllProvidersHandler(section, '/importlist'),
+    [TEST_ALL_IMPORT_LISTS]: createTestAllProvidersHandler(section, '/importlist'),
 
     [BULK_DELETE_IMPORT_LISTS]: createBulkRemoveItemHandler(section, '/importlist/bulk'),
     [BULK_EDIT_IMPORT_LISTS]: createBulkEditItemHandler(section, '/importlist/bulk')

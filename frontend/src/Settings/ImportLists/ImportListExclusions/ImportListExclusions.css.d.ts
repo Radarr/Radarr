@@ -2,7 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'addButton': string;
-  'addImportExclusion': string;
+  'addImportListExclusion': string;
   'importListExclusionsHeader': string;
   'movieYear': string;
   'title': string;

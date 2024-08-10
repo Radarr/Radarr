@@ -51,7 +51,7 @@ class AddImportListModalContentConnector extends Component {
 
   onImportListSelect = ({ implementation, implementationName, name, minRefreshInterval }) => {
     this.props.selectImportListSchema({ implementation, implementationName, presetName: name, minRefreshInterval });
-    this.props.onModalClose({ importListSelected: true });
+    this.props.onModalClose({ listSelected: true });
   };
 
   //

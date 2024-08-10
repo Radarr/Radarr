@@ -41,7 +41,7 @@ class AddImportListItem extends Component {
 
     return (
       <div
-        className={styles.importList}
+        className={styles.list}
       >
         <Link
           className={styles.underlay}

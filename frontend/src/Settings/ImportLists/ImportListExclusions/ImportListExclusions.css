@@ -13,7 +13,7 @@
   flex: 0 0 70px;
 }
 
-.addImportExclusion {
+.addImportListExclusion {
   display: flex;
   justify-content: flex-end;
   padding-right: 10px;
