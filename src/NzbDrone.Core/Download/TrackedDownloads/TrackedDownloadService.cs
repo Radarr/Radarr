@@ -124,8 +124,6 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 if (parsedMovieInfo != null)
                 {
                     trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", 0, null);
-
-                    _aggregationService.Augment(trackedDownload.RemoteMovie);
                 }
 
                 var downloadHistory = _downloadHistoryService.GetLatestDownloadHistoryItem(downloadItem.DownloadId);
@@ -156,17 +154,24 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                         }
                     }
 
-                    if (trackedDownload.RemoteMovie != null &&
-                        Enum.TryParse(grabbedEvent?.Data?.GetValueOrDefault("indexerFlags"), true, out IndexerFlags flags))
+                    if (trackedDownload.RemoteMovie != null)
                     {
                         trackedDownload.RemoteMovie.Release ??= new ReleaseInfo();
-                        trackedDownload.RemoteMovie.Release.IndexerFlags = flags;
+                        trackedDownload.RemoteMovie.Release.Indexer = trackedDownload.Indexer;
+                        trackedDownload.RemoteMovie.Release.Title = trackedDownload.RemoteMovie.ParsedMovieInfo?.ReleaseTitle;
+
+                        if (Enum.TryParse(grabbedEvent?.Data?.GetValueOrDefault("indexerFlags"), true, out IndexerFlags flags))
+                        {
+                            trackedDownload.RemoteMovie.Release.IndexerFlags = flags;
+                        }
                     }
                 }
 
-                // Calculate custom formats
                 if (trackedDownload.RemoteMovie != null)
                 {
+                    _aggregationService.Augment(trackedDownload.RemoteMovie);
+
+                    // Calculate custom formats
                     trackedDownload.RemoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(trackedDownload.RemoteMovie, downloadItem.TotalSize);
                 }
 
