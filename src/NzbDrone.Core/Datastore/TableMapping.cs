@@ -134,7 +134,7 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<Credit>("Credits").RegisterModel();
 
-            Mapper.Entity<ImportExclusion>("ImportExclusions").RegisterModel();
+            Mapper.Entity<ImportListExclusion>("ImportExclusions").RegisterModel();
 
             Mapper.Entity<QualityDefinition>("QualityDefinitions").RegisterModel()
                   .Ignore(d => d.GroupName)

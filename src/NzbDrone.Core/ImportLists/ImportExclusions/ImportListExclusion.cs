@@ -2,7 +2,7 @@
 
 namespace NzbDrone.Core.ImportLists.ImportExclusions
 {
-    public class ImportExclusion : ModelBase
+    public class ImportListExclusion : ModelBase
     {
         public int TmdbId { get; set; }
         public string MovieTitle { get; set; }

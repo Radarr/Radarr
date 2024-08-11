@@ -25,7 +25,7 @@ namespace Radarr.Api.V3.ImportLists
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly IImportListMovieService _listMovieService;
         private readonly IImportListFactory _importListFactory;
-        private readonly IImportExclusionsService _importExclusionService;
+        private readonly IImportListExclusionService _importListExclusionService;
         private readonly INamingConfigService _namingService;
         private readonly IMovieTranslationService _movieTranslationService;
         private readonly IConfigService _configService;
@@ -36,7 +36,7 @@ namespace Radarr.Api.V3.ImportLists
                                     IBuildFileNames fileNameBuilder,
                                     IImportListMovieService listMovieService,
                                     IImportListFactory importListFactory,
-                                    IImportExclusionsService importExclusionsService,
+                                    IImportListExclusionService importListExclusionService,
                                     INamingConfigService namingService,
                                     IMovieTranslationService movieTranslationService,
                                     IConfigService configService)
@@ -47,7 +47,7 @@ namespace Radarr.Api.V3.ImportLists
             _fileNameBuilder = fileNameBuilder;
             _listMovieService = listMovieService;
             _importListFactory = importListFactory;
-            _importExclusionService = importExclusionsService;
+            _importListExclusionService = importListExclusionService;
             _namingService = namingService;
             _movieTranslationService = movieTranslationService;
             _configService = configService;
@@ -59,7 +59,7 @@ namespace Radarr.Api.V3.ImportLists
             var movieLanguage = (Language)_configService.MovieInfoLanguage;
 
             var realResults = new List<ImportListMoviesResource>();
-            var listExclusions = _importExclusionService.GetAllExclusions();
+            var listExclusions = _importListExclusionService.All();
             var existingTmdbIds = _movieService.AllMovieTmdbIds();
 
             if (includeRecommendations)

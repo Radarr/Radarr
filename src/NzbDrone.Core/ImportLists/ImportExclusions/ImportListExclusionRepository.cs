@@ -6,16 +6,16 @@ using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.ImportLists.ImportExclusions
 {
-    public interface IImportExclusionsRepository : IBasicRepository<ImportExclusion>
+    public interface IImportListExclusionRepository : IBasicRepository<ImportListExclusion>
     {
         bool IsMovieExcluded(int tmdbid);
-        ImportExclusion GetByTmdbid(int tmdbid);
+        ImportListExclusion FindByTmdbid(int tmdbid);
         List<int> AllExcludedTmdbIds();
     }
 
-    public class ImportExclusionsRepository : BasicRepository<ImportExclusion>, IImportExclusionsRepository
+    public class ImportListListExclusionRepository : BasicRepository<ImportListExclusion>, IImportListExclusionRepository
     {
-        public ImportExclusionsRepository(IMainDatabase database, IEventAggregator eventAggregator)
+        public ImportListListExclusionRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
         }
@@ -25,9 +25,9 @@ namespace NzbDrone.Core.ImportLists.ImportExclusions
             return Query(x => x.TmdbId == tmdbid).Any();
         }
 
-        public ImportExclusion GetByTmdbid(int tmdbid)
+        public ImportListExclusion FindByTmdbid(int tmdbid)
         {
-            return Query(x => x.TmdbId == tmdbid).First();
+            return Query(x => x.TmdbId == tmdbid).SingleOrDefault();
         }
 
         public List<int> AllExcludedTmdbIds()

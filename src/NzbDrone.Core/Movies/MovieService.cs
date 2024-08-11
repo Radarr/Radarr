@@ -36,8 +36,8 @@ namespace NzbDrone.Core.Movies
         List<Movie> GetMoviesByCollectionTmdbId(int collectionId);
         List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
-        void DeleteMovie(int movieId, bool deleteFiles, bool addExclusion = false);
-        void DeleteMovies(List<int> movieIds, bool deleteFiles, bool addExclusion = false);
+        void DeleteMovie(int movieId, bool deleteFiles, bool addImportListExclusion = false);
+        void DeleteMovies(List<int> movieIds, bool deleteFiles, bool addImportListExclusion = false);
         List<Movie> GetAllMovies();
         Dictionary<int, List<int>> AllMovieTags();
         Movie UpdateMovie(Movie movie);
@@ -210,22 +210,22 @@ namespace NzbDrone.Core.Movies
             return _movieRepository.AllMovieTmdbIds();
         }
 
-        public void DeleteMovie(int movieId, bool deleteFiles, bool addExclusion = false)
+        public void DeleteMovie(int movieId, bool deleteFiles, bool addImportListExclusion = false)
         {
             var movie = _movieRepository.Get(movieId);
 
             _movieRepository.Delete(movieId);
-            _eventAggregator.PublishEvent(new MoviesDeletedEvent(new List<Movie> { movie }, deleteFiles, addExclusion));
+            _eventAggregator.PublishEvent(new MoviesDeletedEvent(new List<Movie> { movie }, deleteFiles, addImportListExclusion));
             _logger.Info("Deleted movie {0}", movie);
         }
 
-        public void DeleteMovies(List<int> movieIds, bool deleteFiles, bool addExclusion = false)
+        public void DeleteMovies(List<int> movieIds, bool deleteFiles, bool addImportListExclusion = false)
         {
             var moviesToDelete = _movieRepository.Get(movieIds).ToList();
 
             _movieRepository.DeleteMany(movieIds);
 
-            _eventAggregator.PublishEvent(new MoviesDeletedEvent(moviesToDelete, deleteFiles, addExclusion));
+            _eventAggregator.PublishEvent(new MoviesDeletedEvent(moviesToDelete, deleteFiles, addImportListExclusion));
 
             foreach (var movie in moviesToDelete)
             {
