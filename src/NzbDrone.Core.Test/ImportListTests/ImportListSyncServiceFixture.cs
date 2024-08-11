@@ -76,9 +76,9 @@ namespace NzbDrone.Core.Test.ImportList
                   .Setup(v => v.Enabled(It.IsAny<bool>()))
                   .Returns(_importLists);
 
-            Mocker.GetMock<IImportExclusionsService>()
-                  .Setup(v => v.GetAllExclusions())
-                  .Returns(new List<ImportExclusion>());
+            Mocker.GetMock<IImportListExclusionService>()
+                  .Setup(v => v.All())
+                  .Returns(new List<ImportListExclusion>());
 
             Mocker.GetMock<IMovieService>()
                   .Setup(v => v.MovieExists(It.IsAny<Movie>()))
@@ -167,8 +167,8 @@ namespace NzbDrone.Core.Test.ImportList
             Mocker.GetMock<IMovieService>()
                   .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Never());
 
-            Mocker.GetMock<IImportExclusionsService>()
-                  .Verify(v => v.GetAllExclusions(), Times.Never);
+            Mocker.GetMock<IImportListExclusionService>()
+                  .Verify(v => v.All(), Times.Never);
         }
 
         [Test]
@@ -427,9 +427,9 @@ namespace NzbDrone.Core.Test.ImportList
 
             GivenCleanLevel("disabled");
 
-            Mocker.GetMock<IImportExclusionsService>()
-                  .Setup(v => v.GetAllExclusions())
-                  .Returns(new List<ImportExclusion> { new ImportExclusion { TmdbId = _existingMovies[0].TmdbId } });
+            Mocker.GetMock<IImportListExclusionService>()
+                  .Setup(v => v.All())
+                  .Returns(new List<ImportListExclusion> { new ImportListExclusion { TmdbId = _existingMovies[0].TmdbId } });
 
             Subject.Execute(_commandAll);
 

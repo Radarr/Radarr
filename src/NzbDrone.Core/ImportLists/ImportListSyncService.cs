@@ -19,7 +19,7 @@ namespace NzbDrone.Core.ImportLists
         private readonly IMovieService _movieService;
         private readonly IAddMovieService _addMovieService;
         private readonly IConfigService _configService;
-        private readonly IImportExclusionsService _exclusionService;
+        private readonly IImportListExclusionService _listExclusionService;
         private readonly IImportListMovieService _listMovieService;
 
         public ImportListSyncService(IImportListFactory importListFactory,
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.ImportLists
                                       IMovieService movieService,
                                       IAddMovieService addMovieService,
                                       IConfigService configService,
-                                      IImportExclusionsService exclusionService,
+                                      IImportListExclusionService listExclusionService,
                                       IImportListMovieService listMovieService,
                                       Logger logger)
         {
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.ImportLists
             _listFetcherAndParser = listFetcherAndParser;
             _movieService = movieService;
             _addMovieService = addMovieService;
-            _exclusionService = exclusionService;
+            _listExclusionService = listExclusionService;
             _listMovieService = listMovieService;
             _logger = logger;
             _configService = configService;
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.ImportLists
             ProcessListItems(listItemsResult);
         }
 
-        private void ProcessMovieReport(ImportListDefinition importList, ImportListMovie report, List<ImportExclusion> listExclusions, List<int> dbMovies, List<Movie> moviesToAdd)
+        private void ProcessMovieReport(ImportListDefinition importList, ImportListMovie report, List<ImportListExclusion> listExclusions, List<int> dbMovies, List<Movie> moviesToAdd)
         {
             if (report.TmdbId == 0 || !importList.EnableAuto)
             {
@@ -142,7 +142,7 @@ namespace NzbDrone.Core.ImportLists
 
             var listedMovies = listFetchResult.Movies.ToList();
 
-            var importExclusions = _exclusionService.GetAllExclusions();
+            var importExclusions = _listExclusionService.All();
             var dbMovies = _movieService.AllMovieTmdbIds();
             var moviesToAdd = new List<Movie>();
 
