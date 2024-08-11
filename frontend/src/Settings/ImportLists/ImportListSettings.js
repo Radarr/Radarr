@@ -10,7 +10,7 @@ import translate from 'Utilities/String/translate';
 import ImportListExclusionsConnector from './ImportListExclusions/ImportListExclusionsConnector';
 import ImportListsConnector from './ImportLists/ImportListsConnector';
 import ManageImportListsModal from './ImportLists/Manage/ManageImportListsModal';
-import ImportListOptionsConnector from './Options/ImportListOptionsConnector';
+import ImportListOptions from './Options/ImportListOptions';
 
 class ImportListSettings extends Component {
 
@@ -32,7 +32,7 @@ class ImportListSettings extends Component {
   //
   // Listeners
 
-  onChildMounted = (saveCallback) => {
+  setChildSave = (saveCallback) => {
     this._saveCallback = saveCallback;
   };
 
@@ -54,8 +54,8 @@ class ImportListSettings extends Component {
     }
   };
 
-  // Render
   //
+  // Render
 
   render() {
     const {
@@ -98,8 +98,8 @@ class ImportListSettings extends Component {
         <PageContentBody>
           <ImportListsConnector />
 
-          <ImportListOptionsConnector
-            onChildMounted={this.onChildMounted}
+          <ImportListOptions
+            setChildSave={this.setChildSave}
             onChildStateChange={this.onChildStateChange}
           />
 
@@ -109,7 +109,6 @@ class ImportListSettings extends Component {
             isOpen={isManageImportListsOpen}
             onModalClose={this.onManageImportListsModalClose}
           />
-
         </PageContentBody>
       </PageContent>
     );
