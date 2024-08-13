@@ -306,7 +306,12 @@ export const actionHandlers = handleThunks({
 export const reducers = createHandleActions({
 
   [CLEAR_RELEASES]: (state) => {
-    return Object.assign({}, state, defaultState);
+    const {
+      selectedFilterKey,
+      ...otherDefaultState
+    } = defaultState;
+
+    return Object.assign({}, state, otherDefaultState);
   },
 
   [UPDATE_RELEASE]: (state, { payload }) => {
