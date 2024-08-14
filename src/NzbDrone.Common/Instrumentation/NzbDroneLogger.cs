@@ -104,17 +104,6 @@ namespace NzbDrone.Common.Instrumentation
             LogManager.Configuration.LoggingRules.Add(loggingRule);
         }
 
-        private static void RegisterGlobalFilters()
-        {
-            LogManager.Setup().LoadConfiguration(c =>
-            {
-                c.ForLogger("System.*").WriteToNil(LogLevel.Warn);
-                c.ForLogger("Microsoft.*").WriteToNil(LogLevel.Warn);
-                c.ForLogger("Microsoft.Hosting.Lifetime*").WriteToNil(LogLevel.Info);
-                c.ForLogger("Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware").WriteToNil(LogLevel.Fatal);
-            });
-        }
-
         private static void RegisterConsole()
         {
             var level = LogLevel.Trace;
@@ -194,6 +183,17 @@ namespace NzbDrone.Common.Instrumentation
             }
 
             LogManager.Configuration.LoggingRules.Insert(0, rule);
+        }
+
+        private static void RegisterGlobalFilters()
+        {
+            LogManager.Setup().LoadConfiguration(c =>
+            {
+                c.ForLogger("System.*").WriteToNil(LogLevel.Warn);
+                c.ForLogger("Microsoft.*").WriteToNil(LogLevel.Warn);
+                c.ForLogger("Microsoft.Hosting.Lifetime*").WriteToNil(LogLevel.Info);
+                c.ForLogger("Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware").WriteToNil(LogLevel.Fatal);
+            });
         }
 
         public static Logger GetLogger(Type obj)
