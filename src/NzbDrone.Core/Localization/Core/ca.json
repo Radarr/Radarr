@@ -1378,5 +1378,6 @@
     "DeleteMovieFoldersHelpText": "Suprimeix la carpeta de pel·lícules i el seu contingut",
     "DeleteSelectedMovies": "Suprimeix les sèries seleccionades",
     "NotificationsPlexSettingsServer": "Servidor",
-    "Any": "Qualsevol"
+    "Any": "Qualsevol",
+    "DeleteSelectedImportListExclusionsMessageText": "Esteu segur que voleu suprimir aquesta exclusió de la llista d'importació?"
 }

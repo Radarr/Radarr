@@ -1458,5 +1458,7 @@
     "DeleteMovieFolders": "Filmordner löschen",
     "DeleteMovieFoldersHelpText": "Löschen Sie die Serienordner und ihren gesamten Inhalt",
     "DeleteSelectedMovies": "Ausgewählte Serie löschen",
-    "Any": "Beliebig"
+    "Any": "Beliebig",
+    "DeleteSelected": "Markierte löschen",
+    "DeleteSelectedImportListExclusionsMessageText": "Bist du sicher, dass du diesen Importlisten Ausschluss löschen willst?"
 }

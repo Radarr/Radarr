@@ -990,7 +990,7 @@
     "FormatAgeHours": "ساعات",
     "FormatAgeMinute": "الدقائق",
     "BypassDelayIfAboveCustomFormatScoreMinimumScore": "الحد الأدنى من نقاط التنسيق المخصص",
-    "ConnectionLostReconnect": "سيحاول Radarr الاتصال تلقائيًا ، أو يمكنك النقر فوق إعادة التحميل أدناه.",
+    "ConnectionLostReconnect": "سيحاول {appName} الاتصال تلقائيًا ، أو يمكنك النقر فوق إعادة التحميل أدناه.",
     "DeleteDelayProfileMessageText": "هل أنت متأكد أنك تريد حذف ملف تعريف التأخير هذا؟",
     "FormatAgeMinutes": "الدقائق",
     "InteractiveImportLoadError": "تعذر تحميل عناصر الاستيراد اليدوي",
@@ -1016,7 +1016,7 @@
     "ApplyTagsHelpTextHowToApplyImportLists": "كيفية تطبيق العلامات على الأفلام المختارة",
     "ApplyTagsHelpTextHowToApplyIndexers": "كيفية تطبيق العلامات على الأفلام المختارة",
     "ApplyTagsHelpTextRemove": "إزالة: قم بإزالة العلامات التي تم إدخالها",
-    "AutoTaggingNegateHelpText": "إذا تم تحديده ، فلن يتم تطبيق التنسيق المخصص إذا تطابق شرط {0} هذا.",
+    "AutoTaggingNegateHelpText": "إذا تم تحديده ، فلن يتم تطبيق التنسيق المخصص إذا تطابق شرط {implementationName} هذا.",
     "DeleteImportListExclusionMessageText": "هل أنت متأكد أنك تريد حذف استثناء قائمة الاستيراد؟",
     "DeleteSelectedIndexers": "حذف المفهرس",
     "DownloadClientsLoadError": "تعذر تحميل عملاء التنزيل",
@@ -1067,5 +1067,6 @@
     "DeleteMovieFolders": "حذف مجلد الفيلم",
     "DeleteMovieFoldersHelpText": "احذف مجلد الفيلم ومحتوياته",
     "DeleteSelectedMovies": "حذف ملفات الأفلام المحددة",
-    "MovieFileDeletedTooltip": "عند حذف ملف الفيلم"
+    "MovieFileDeletedTooltip": "عند حذف ملف الفيلم",
+    "DeleteSelectedImportListExclusionsMessageText": "هل أنت متأكد أنك تريد حذف استثناء قائمة الاستيراد؟"
 }

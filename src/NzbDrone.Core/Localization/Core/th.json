@@ -1062,5 +1062,6 @@
     "MovieFileDeletedTooltip": "บน Movie File Delete",
     "DeleteMovieFolders": "ลบโฟลเดอร์ภาพยนตร์",
     "DeleteMovieFoldersHelpText": "ลบโฟลเดอร์ภาพยนตร์และเนื้อหา",
-    "DeleteSelectedMovies": "ลบไฟล์ภาพยนตร์ที่เลือก"
+    "DeleteSelectedMovies": "ลบไฟล์ภาพยนตร์ที่เลือก",
+    "DeleteSelectedImportListExclusionsMessageText": "แน่ใจไหมว่าต้องการลบการยกเว้นรายการนำเข้านี้"
 }

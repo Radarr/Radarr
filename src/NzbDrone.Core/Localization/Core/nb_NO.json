@@ -312,5 +312,6 @@
     "AddImportListExclusionError": "Ikke mulig å legge til ny betingelse, vennligst prøv igjen",
     "AddQualityProfileError": "Ikke mulig å legge til ny betingelse, vennligst prøv igjen",
     "AddDelayProfileError": "Ikke mulig å legge til ny betingelse, vennligst prøv igjen",
-    "DeleteMovieFolderCountConfirmation": "Er du sikker på at du vil slette formattaggen {0}?"
+    "DeleteMovieFolderCountConfirmation": "Er du sikker på at du vil slette formattaggen {0}?",
+    "DeleteSelectedImportListExclusionsMessageText": "Er du sikker på at du vil slette denne ekskluderingen av importlister?"
 }

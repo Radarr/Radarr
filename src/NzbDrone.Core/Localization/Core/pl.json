@@ -1161,5 +1161,6 @@
     "MovieFileDeletedTooltip": "Usuń plik filmowy",
     "DeleteMovieFolders": "Usuń folder filmu",
     "DeleteMovieFoldersHelpText": "Usuń folder z filmami i jego zawartość",
-    "DeleteSelectedMovies": "Usuń wybrane pliki filmowe"
+    "DeleteSelectedMovies": "Usuń wybrane pliki filmowe",
+    "DeleteSelectedImportListExclusionsMessageText": "Czy na pewno chcesz usunąć to wykluczenie listy importu?"
 }

@@ -1064,5 +1064,6 @@
     "MovieFileDeletedTooltip": "В Изтриване на файл с филм",
     "DeleteMovieFolders": "Изтриване на папка за филми",
     "DeleteMovieFoldersHelpText": "Изтрийте папката с филма и съдържанието му",
-    "DeleteSelectedMovies": "Изтриване на избрани филмови файлове"
+    "DeleteSelectedMovies": "Изтриване на избрани филмови файлове",
+    "DeleteSelectedImportListExclusionsMessageText": "Наистина ли искате да изтриете това изключване от списъка за импортиране?"
 }

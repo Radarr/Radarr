@@ -1138,5 +1138,6 @@
     "DeleteMovieFoldersHelpText": "Ștergeți folderul filmului și conținutul acestuia",
     "DeleteSelectedMovies": "Ștergeți fișierele film selectate",
     "DownloadClientSettingsRecentPriority": "Prioritate client",
-    "MovieIsNotMonitored": "Filmul nu este monitorizat"
+    "MovieIsNotMonitored": "Filmul nu este monitorizat",
+    "DeleteSelectedImportListExclusionsMessageText": "Sigur doriți să ștergeți această excludere din lista de importuri?"
 }
