@@ -237,6 +237,11 @@ namespace NzbDrone.Core.Notifications.Webhook
 
         private WebhookMovie GetMovie(Movie movie)
         {
+            if (movie == null)
+            {
+                return null;
+            }
+
             _mediaCoverService.ConvertToLocalUrls(movie.Id, movie.MovieMetadata.Value.Images);
 
             return new WebhookMovie(movie, GetTagLabels(movie));
@@ -244,6 +249,11 @@ namespace NzbDrone.Core.Notifications.Webhook
 
         private List<string> GetTagLabels(Movie movie)
         {
+            if (movie == null)
+            {
+                return null;
+            }
+
             return _tagRepository.GetTags(movie.Tags)
                 .Select(t => t.Label)
                 .Where(l => l.IsNotNullOrWhiteSpace())
