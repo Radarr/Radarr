@@ -12,7 +12,7 @@ import Tooltip from 'Components/Tooltip/Tooltip';
 import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import MovieFormats from 'Movie/MovieFormats';
-import MovieLanguage from 'Movie/MovieLanguage';
+import MovieLanguages from 'Movie/MovieLanguages';
 import MovieQuality from 'Movie/MovieQuality';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import formatBytes from 'Utilities/Number/formatBytes';
@@ -175,7 +175,7 @@ class QueueRow extends Component {
             if (name === 'languages') {
               return (
                 <TableRowCell key={name}>
-                  <MovieLanguage
+                  <MovieLanguages
                     languages={languages}
                   />
                 </TableRowCell>

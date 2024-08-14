@@ -12,7 +12,7 @@ import type DownloadProtocol from 'DownloadClient/DownloadProtocol';
 import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import Language from 'Language/Language';
 import MovieFormats from 'Movie/MovieFormats';
-import MovieLanguage from 'Movie/MovieLanguage';
+import MovieLanguages from 'Movie/MovieLanguages';
 import MovieQuality from 'Movie/MovieQuality';
 import { QualityModel } from 'Quality/Quality';
 import CustomFormat from 'typings/CustomFormat';
@@ -262,7 +262,7 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
       </TableRowCell>
 
       <TableRowCell className={styles.languages}>
-        <MovieLanguage languages={languages} />
+        <MovieLanguages languages={languages} />
       </TableRowCell>
 
       <TableRowCell className={styles.quality}>

@@ -11,7 +11,7 @@ import Tooltip from 'Components/Tooltip/Tooltip';
 import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import IndexerFlags from 'Movie/IndexerFlags';
 import MovieFormats from 'Movie/MovieFormats';
-import MovieLanguage from 'Movie/MovieLanguage';
+import MovieLanguages from 'Movie/MovieLanguages';
 import MovieQuality from 'Movie/MovieQuality';
 import FileEditModal from 'MovieFile/Edit/FileEditModal';
 import MediaInfoConnector from 'MovieFile/MediaInfoConnector';
@@ -185,7 +185,7 @@ class MovieFileEditorRow extends Component {
 
                   {
                     !showLanguagePlaceholder && !!languages &&
-                      <MovieLanguage
+                      <MovieLanguages
                         className={styles.label}
                         languages={languages}
                       />
