@@ -568,9 +568,7 @@ class MovieDetails extends Component {
                     size={sizes.LARGE}
                   >
                     <span className={styles.sizeOnDisk}>
-                      {
-                        formatBytes(sizeOnDisk || 0)
-                      }
+                      {formatBytes(sizeOnDisk)}
                     </span>
                   </InfoLabel>
 
