@@ -1667,5 +1667,7 @@
     "DeleteMovieFoldersHelpText": "删除剧集文件夹及其所含文件",
     "DeleteSelectedMovies": "删除选中的剧集",
     "NotificationsPlexSettingsServer": "服务器",
-    "Any": "任何"
+    "Any": "任何",
+    "DeleteSelected": "删除所选项",
+    "DeleteSelectedImportListExclusionsMessageText": "你确定要删除这个导入排除列表吗？"
 }

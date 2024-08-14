@@ -1793,5 +1793,7 @@
     "NotificationsPlexSettingsServerHelpText": "Selecciona el servidor desde una cuenta de plex.tv después de autenticarse",
     "ShowTagsHelpText": "Muestra etiquetas debajo del póster",
     "Any": "Cualquiera",
-    "ShowTags": "Mostrar etiquetas"
+    "ShowTags": "Mostrar etiquetas",
+    "DeleteSelected": "Eliminar seleccionados",
+    "DeleteSelectedImportListExclusionsMessageText": "¿Está seguro de que desea eliminar esta exclusión de la lista de importación?"
 }

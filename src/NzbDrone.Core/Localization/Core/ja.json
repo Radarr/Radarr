@@ -996,7 +996,7 @@
     "BypassDelayIfAboveCustomFormatScoreMinimumScore": "最小カスタムフォーマットスコア",
     "ConditionUsingRegularExpressions": "この条件は、正規表現を使用して一致します。文字{0}には特別な意味があり、{1}でエスケープする必要があることに注意してください",
     "DelayProfileMovieTagsHelpText": "一致するタグが少なくとも1つある映画に適用されます",
-    "DeleteAutoTagHelpText": "品質プロファイル{0}を削除してもよろしいですか",
+    "DeleteAutoTagHelpText": "オートタグ'{name}'を削除してもよろしいですか？",
     "DeleteConditionMessageText": "品質プロファイル{0}を削除してもよろしいですか",
     "DeleteReleaseProfileMessageText": "品質プロファイル{0}を削除してもよろしいですか",
     "DeleteSelectedDownloadClients": "ダウンロードクライアントを削除する",
@@ -1063,5 +1063,7 @@
     "MovieFileDeletedTooltip": "ムービーファイルの削除について",
     "DeleteMovieFolders": "ムービーフォルダを削除する",
     "DeleteMovieFoldersHelpText": "ムービーフォルダとその内容を削除します",
-    "DeleteSelectedMovies": "選択したムービーファイルを削除する"
+    "DeleteSelectedMovies": "選択したムービーファイルを削除する",
+    "AddCondition": "条件の追加",
+    "DeleteSelectedImportListExclusionsMessageText": "このインポートリストの除外を削除してもよろしいですか？"
 }

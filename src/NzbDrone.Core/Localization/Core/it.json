@@ -1452,5 +1452,7 @@
     "SearchForCutoffUnmetMoviesConfirmationCount": "Sei sicuro di volere cercare tutti i {totalRecords} film mancanti?",
     "Release": "release",
     "IndexerDownloadClientHealthCheckMessage": "Indicizzatori con client di download non validi: {indexerNames}.",
-    "Any": "Qualunque"
+    "Any": "Qualunque",
+    "DeleteSelected": "Elimina Selezionati",
+    "DeleteSelectedImportListExclusionsMessageText": "Sei sicuro di voler cancellare questa lista di esclusioni delle importazioni?"
 }

@@ -1252,5 +1252,6 @@
     "DeleteMovieFolders": "Eliminar pasta do filme",
     "DeleteMovieFoldersHelpText": "Elimine a pasta do filme e seu conteúdo",
     "DeleteSelectedMovies": "Eliminar ficheiros do filme selecionado",
-    "Any": "Quaisquer"
+    "Any": "Quaisquer",
+    "DeleteSelectedImportListExclusionsMessageText": "Tem a certeza que quer eliminar esta exclusão da lista de importação?"
 }

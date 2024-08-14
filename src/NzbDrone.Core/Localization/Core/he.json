@@ -1108,5 +1108,6 @@
     "MovieFileDeletedTooltip": "במחיקת קובץ הסרט",
     "DeleteMovieFolders": "מחק את תיקיית הסרטים",
     "DeleteMovieFoldersHelpText": "מחק את תיקיית הסרט ואת תוכנו",
-    "DeleteSelectedMovies": "מחק קבצי סרטים שנבחרו"
+    "DeleteSelectedMovies": "מחק קבצי סרטים שנבחרו",
+    "DeleteSelectedImportListExclusionsMessageText": "האם אתה בטוח שברצונך למחוק אי הכללה זו של רשימת הייבוא?"
 }

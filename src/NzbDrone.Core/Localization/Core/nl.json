@@ -1205,5 +1205,6 @@
     "DeleteMovieFolders": "Verwijder Film Map",
     "DeleteMovieFoldersHelpText": "Verwijder de film map en zijn inhoud",
     "DeleteSelectedMovies": "Verwijder Geselecteerde Filmbestanden",
-    "Any": "Elke"
+    "Any": "Elke",
+    "DeleteSelectedImportListExclusionsMessageText": "Bent u zeker dat u dit van de uitzonderingenlijst wilt verwijderen?"
 }

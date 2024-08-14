@@ -1224,5 +1224,7 @@
     "MovieFileDeletedTooltip": "Διαγραφή αρχείου ταινίας",
     "DeleteMovieFolders": "Διαγραφή φακέλου ταινίας",
     "DeleteMovieFoldersHelpText": "Διαγράψτε το φάκελο της ταινίας και τα περιεχόμενά του",
-    "DeleteSelectedMovies": "Διαγραφή επιλεγμένων αρχείων ταινιών"
+    "DeleteSelectedMovies": "Διαγραφή επιλεγμένων αρχείων ταινιών",
+    "DeleteSelected": "Διαγραφή επιλεγμένων",
+    "DeleteSelectedImportListExclusionsMessageText": "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτήν την εξαίρεση λίστας εισαγωγής;"
 }

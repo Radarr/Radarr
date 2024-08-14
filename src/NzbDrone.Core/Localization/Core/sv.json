@@ -1091,5 +1091,6 @@
     "MovieFileDeletedTooltip": "På filmfil Ta bort",
     "DeleteMovieFolders": "Ta bort filmmapp",
     "DeleteMovieFoldersHelpText": "Ta bort filmmappen och dess innehåll",
-    "DeleteSelectedMovies": "Radera markerade filmfiler"
+    "DeleteSelectedMovies": "Radera markerade filmfiler",
+    "DeleteSelectedImportListExclusionsMessageText": "Är du säker på att du vill ta bort detta undantag från importlistan?"
 }

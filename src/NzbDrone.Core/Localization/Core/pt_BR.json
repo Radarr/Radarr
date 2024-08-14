@@ -1793,5 +1793,7 @@
     "UnableToImportAutomatically": "Não foi possível importar automaticamente",
     "Any": "Quaisquer",
     "ShowTags": "Mostrar Etiquetas",
-    "ShowTagsHelpText": "Mostrar etiquetas abaixo do pôster"
+    "ShowTagsHelpText": "Mostrar etiquetas abaixo do pôster",
+    "DeleteSelected": "Excluir Selecionado",
+    "DeleteSelectedImportListExclusionsMessageText": "Tem certeza de que deseja excluir esta exclusão da lista de importação?"
 }

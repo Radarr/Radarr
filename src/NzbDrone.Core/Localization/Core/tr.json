@@ -1790,5 +1790,9 @@
     "DeleteMovieFolderMovieCount": "{size} boyutunda {movieFileCount} film dosyası",
     "NotificationsPlexSettingsServer": "Sunucu",
     "NotificationsPlexSettingsServerHelpText": "Kimlik doğrulamasından sonra plex.tv hesabından sunucuyu seçin",
-    "UnableToImportAutomatically": "Otomatikman İçe Aktarılamıyor"
+    "UnableToImportAutomatically": "Otomatikman İçe Aktarılamıyor",
+    "ShowTags": "Etiketleri göster",
+    "ShowTagsHelpText": "Etiketleri posterin altında göster",
+    "Any": "Herhangi",
+    "DeleteSelectedImportListExclusionsMessageText": "Bu içe aktarma listesi hariç tutma işlemini silmek istediğinizden emin misiniz?"
 }

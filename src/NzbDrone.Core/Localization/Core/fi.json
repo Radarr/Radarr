@@ -1748,5 +1748,7 @@
     "DeleteMovieFoldersHelpText": "Poista elokuvakansiot sisältöineen",
     "DeleteSelectedMovies": "Poista valitut elokuvat",
     "NotificationsPlexSettingsServer": "Palvelin",
-    "Any": "Mikä vain"
+    "Any": "Mikä vain",
+    "DeleteSelected": "Poista valitut",
+    "DeleteSelectedImportListExclusionsMessageText": "Haluatko varmasti poistaa tuontilistapoikkeuksen?"
 }

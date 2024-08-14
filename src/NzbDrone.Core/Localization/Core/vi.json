@@ -1068,5 +1068,6 @@
     "MovieFileDeletedTooltip": "Trên phim xóa tệp",
     "DeleteMovieFolders": "Xóa thư mục phim",
     "DeleteMovieFoldersHelpText": "Xóa thư mục phim và nội dung của nó",
-    "DeleteSelectedMovies": "Xóa các tệp phim đã chọn"
+    "DeleteSelectedMovies": "Xóa các tệp phim đã chọn",
+    "DeleteSelectedImportListExclusionsMessageText": "Bạn có chắc chắn muốn xóa loại trừ danh sách nhập này không?"
 }
