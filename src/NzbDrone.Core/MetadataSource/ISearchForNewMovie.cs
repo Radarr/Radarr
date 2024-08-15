@@ -8,5 +8,7 @@ namespace NzbDrone.Core.MetadataSource
         List<Movie> SearchForNewMovie(string title);
 
         MovieMetadata MapMovieToTmdbMovie(MovieMetadata movie);
+
+        MovieMetadata GetMovieByImdbId(string imdbId);
     }
 }
