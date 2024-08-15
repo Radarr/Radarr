@@ -71,7 +71,7 @@ class AddNewMovieSearchResult extends Component {
       images,
       existingMovieId,
       isExistingMovie,
-      isExclusionMovie,
+      isExcluded,
       isSmallScreen,
       colorImpairedMode,
       id,
@@ -167,7 +167,7 @@ class AddNewMovieSearchResult extends Component {
                 }
 
                 {
-                  isExclusionMovie &&
+                  isExcluded &&
                     <Icon
                       className={styles.exclusionIcon}
                       name={icons.DANGER}
@@ -335,7 +335,7 @@ AddNewMovieSearchResult.propTypes = {
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   existingMovieId: PropTypes.number,
   isExistingMovie: PropTypes.bool.isRequired,
-  isExclusionMovie: PropTypes.bool.isRequired,
+  isExcluded: PropTypes.bool,
   isSmallScreen: PropTypes.bool.isRequired,
   id: PropTypes.number,
   monitored: PropTypes.bool.isRequired,
@@ -349,7 +349,8 @@ AddNewMovieSearchResult.propTypes = {
 };
 
 AddNewMovieSearchResult.defaultProps = {
-  genres: []
+  genres: [],
+  isExcluded: false
 };
 
 export default AddNewMovieSearchResult;

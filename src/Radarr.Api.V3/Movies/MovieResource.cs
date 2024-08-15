@@ -88,6 +88,11 @@ namespace Radarr.Api.V3.Movies
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [SwaggerIgnore]
         public bool Grabbed { get; set; }
+
+        // Hiding this so people don't think its usable (only used for searches)
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        [SwaggerIgnore]
+        public bool IsExcluded { get; set; }
     }
 
     public static class MovieResourceMapper

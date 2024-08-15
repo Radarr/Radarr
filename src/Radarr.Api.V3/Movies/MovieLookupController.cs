@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.ImportLists.ImportExclusions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
@@ -22,13 +23,15 @@ namespace Radarr.Api.V3.Movies
         private readonly INamingConfigService _namingService;
         private readonly IMapCoversToLocal _coverMapper;
         private readonly IConfigService _configService;
+        private readonly IImportListExclusionService _importListExclusionService;
 
         public MovieLookupController(ISearchForNewMovie searchProxy,
                                  IProvideMovieInfo movieInfo,
                                  IBuildFileNames fileNameBuilder,
                                  INamingConfigService namingService,
                                  IMapCoversToLocal coverMapper,
-                                 IConfigService configService)
+                                 IConfigService configService,
+                                 IImportListExclusionService importListExclusionService)
         {
             _movieInfo = movieInfo;
             _searchProxy = searchProxy;
@@ -36,6 +39,7 @@ namespace Radarr.Api.V3.Movies
             _namingService = namingService;
             _coverMapper = coverMapper;
             _configService = configService;
+            _importListExclusionService = importListExclusionService;
         }
 
         [NonAction]
@@ -82,6 +86,8 @@ namespace Radarr.Api.V3.Movies
             var availDelay = _configService.AvailabilityDelay;
             var namingConfig = _namingService.GetConfig();
 
+            var listExclusions = _importListExclusionService.All();
+
             foreach (var currentMovie in movies)
             {
                 var translation = currentMovie.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == movieInfoLanguage);
@@ -96,6 +102,8 @@ namespace Radarr.Api.V3.Movies
                 }
 
                 resource.Folder = _fileNameBuilder.GetMovieFolder(currentMovie, namingConfig);
+
+                resource.IsExcluded = listExclusions.Any(e => e.TmdbId == resource.TmdbId);
 
                 yield return resource;
             }
