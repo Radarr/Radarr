@@ -183,7 +183,7 @@
     "AnalyseVideoFiles": "Analiziraj video datoteke",
     "AnalyticsEnabledHelpText": "Pošalji anonimnu informaciju o uporabi i pogreškama {appName} serverima. Ovo uključuje informacije o Vašem pregledniku, koje {appName} WebUI stranice koristite, prijave o greškama kao i o OS i runtime verziji. Ove podatke koristimo kako bismo dali prioritet značajkama i popravili greške.",
     "Announced": "Najavljeno",
-    "AnnouncedMsg": "Film je najavljen",
+    "AnnouncedMovieDescription": "Film je najavljen",
     "AppDataDirectory": "AppData direktorij",
     "ApplicationURL": "URL Aplikacije",
     "BypassProxyForLocalAddresses": "Zaobiđi Proxy za Lokalne Adrese",

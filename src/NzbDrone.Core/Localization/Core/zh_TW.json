@@ -33,7 +33,7 @@
     "Auto": "自動",
     "BypassDelayIfHighestQualityHelpText": "當發行版本具有在品質設定檔中啟用的最高品質以及首選通訊協定時繞過延遲",
     "ProfilesSettingsSummary": "品質，語言與延遲設定檔",
-    "AnnouncedMsg": "電影已被公布",
+    "AnnouncedMovieDescription": "電影已被公布",
     "AudioInfo": "聲音資訊",
     "ImportIncludeQuality": "請確保您的文件名中包含品質信息，例如：{0}",
     "AuthBasic": "基礎（瀏覽器彈出視窗）",

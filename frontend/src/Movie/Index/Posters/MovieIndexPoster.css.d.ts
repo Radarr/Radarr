@@ -5,8 +5,8 @@ interface CssExports {
   'container': string;
   'content': string;
   'controls': string;
+  'deleted': string;
   'editorSelect': string;
-  'ended': string;
   'externalLinks': string;
   'link': string;
   'nextAiring': string;

@@ -3,9 +3,9 @@
 interface CssExports {
   'actions': string;
   'content': string;
+  'deleted': string;
   'details': string;
   'editorSelect': string;
-  'ended': string;
   'externalLinks': string;
   'info': string;
   'link': string;
