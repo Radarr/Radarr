@@ -24,6 +24,7 @@ import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
+import getMovieStatusDetails from 'Movie/getMovieStatusDetails';
 import MovieHistoryModal from 'Movie/History/MovieHistoryModal';
 import MoviePoster from 'Movie/MoviePoster';
 import MovieInteractiveSearchModalConnector from 'Movie/Search/MovieInteractiveSearchModalConnector';
@@ -246,6 +247,7 @@ class MovieDetails extends Component {
       genres,
       collection,
       overview,
+      status,
       youTubeTrailerId,
       isAvailable,
       images,
@@ -282,6 +284,8 @@ class MovieDetails extends Component {
       overviewHeight,
       titleWidth
     } = this.state;
+
+    const statusDetails = getMovieStatusDetails(status);
 
     const fanartUrl = getFanartUrl(images);
     const marqueeWidth = isSmallScreen ? titleWidth : (titleWidth - 150);
@@ -524,7 +528,7 @@ class MovieDetails extends Component {
                 <div className={styles.detailsLabels}>
                   <InfoLabel
                     className={styles.detailsInfoLabel}
-                    title={translate('Path')}
+                    name={translate('Path')}
                     size={sizes.LARGE}
                   >
                     <span className={styles.path}>
@@ -534,12 +538,14 @@ class MovieDetails extends Component {
 
                   <InfoLabel
                     className={styles.detailsInfoLabel}
-                    title={translate('Status')}
+                    name={translate('Status')}
+                    title={statusDetails.message}
                     kind={kinds.DELETE}
                     size={sizes.LARGE}
                   >
                     <span className={styles.statusName}>
                       <MovieStatusLabel
+                        status={status}
                         hasMovieFiles={hasMovieFiles}
                         monitored={monitored}
                         isAvailable={isAvailable}
@@ -550,7 +556,7 @@ class MovieDetails extends Component {
 
                   <InfoLabel
                     className={styles.detailsInfoLabel}
-                    title={translate('QualityProfile')}
+                    name={translate('QualityProfile')}
                     size={sizes.LARGE}
                   >
                     <span className={styles.qualityProfileName}>
@@ -564,7 +570,7 @@ class MovieDetails extends Component {
 
                   <InfoLabel
                     className={styles.detailsInfoLabel}
-                    title={translate('Size')}
+                    name={translate('Size')}
                     size={sizes.LARGE}
                   >
                     <span className={styles.sizeOnDisk}>
@@ -576,7 +582,7 @@ class MovieDetails extends Component {
                     collection ?
                       <InfoLabel
                         className={styles.detailsInfoLabel}
-                        title={translate('Collection')}
+                        name={translate('Collection')}
                         size={sizes.LARGE}
                       >
                         <div className={styles.collection}>
@@ -592,7 +598,7 @@ class MovieDetails extends Component {
                     originalLanguage?.name && !isSmallScreen ?
                       <InfoLabel
                         className={styles.detailsInfoLabel}
-                        title={translate('OriginalLanguage')}
+                        name={translate('OriginalLanguage')}
                         size={sizes.LARGE}
                       >
                         <span className={styles.originalLanguage}>
@@ -606,7 +612,7 @@ class MovieDetails extends Component {
                     studio && !isSmallScreen ?
                       <InfoLabel
                         className={styles.detailsInfoLabel}
-                        title={translate('Studio')}
+                        name={translate('Studio')}
                         size={sizes.LARGE}
                       >
                         <span className={styles.studio}>
@@ -620,7 +626,7 @@ class MovieDetails extends Component {
                     genres.length && !isSmallScreen ?
                       <InfoLabel
                         className={styles.detailsInfoLabel}
-                        title={translate('Genres')}
+                        name={translate('Genres')}
                         size={sizes.LARGE}
                       >
                         <span className={styles.genres}>

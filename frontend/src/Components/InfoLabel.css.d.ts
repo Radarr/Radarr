@@ -4,9 +4,9 @@ interface CssExports {
   'label': string;
   'large': string;
   'medium': string;
+  'name': string;
   'outline': string;
   'small': string;
-  'title': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

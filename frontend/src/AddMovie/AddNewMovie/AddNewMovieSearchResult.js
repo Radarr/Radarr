@@ -285,6 +285,7 @@ class AddNewMovieSearchResult extends Component {
               {
                 isExistingMovie && isSmallScreen &&
                   <MovieStatusLabel
+                    status={status}
                     hasMovieFiles={hasMovieFile}
                     monitored={monitored}
                     isAvailable={isAvailable}

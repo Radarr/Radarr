@@ -1306,6 +1306,7 @@
   "Profiles": "Profiles",
   "ProfilesSettingsSummary": "Quality, Language, Delay and Release profiles",
   "Progress": "Progress",
+  "ProgressBarProgress": "Progress Bar at {progress}%",
   "Proper": "Proper",
   "Protocol": "Protocol",
   "ProtocolHelpText": "Choose which protocol(s) to use and which one is preferred when choosing between otherwise equal releases",

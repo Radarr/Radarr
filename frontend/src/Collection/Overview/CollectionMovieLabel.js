@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
-import getStatusStyle from 'Utilities/Movie/getStatusStyle';
+import getProgressBarKind from 'Utilities/Movie/getProgressBarKind';
 import translate from 'Utilities/String/translate';
 import styles from './CollectionMovieLabel.css';
 
@@ -45,7 +45,7 @@ class CollectionMovieLabel extends Component {
             <div
               className={classNames(
                 styles.movieStatus,
-                styles[getStatusStyle(status, monitored, hasFile, isAvailable, 'kinds')]
+                styles[getProgressBarKind(status, monitored, hasFile, isAvailable)]
               )}
             >
               {

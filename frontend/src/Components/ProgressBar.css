@@ -21,6 +21,10 @@
     background-color: var(--darkGray);
   }
 
+  &.inverse {
+    background-color: var(--inverseLabelColor);
+  }
+
   &.primary {
     background-color: var(--primaryColor);
   }
@@ -61,10 +65,18 @@
 .frontTextContainer {
   z-index: 1;
   color: var(--progressBarFrontTextColor);
+
+  &.inverse {
+    color: var(--inverseLabelTextColor);
+  }
 }
 
 .backTextContainer {
   color: var(--progressBarBackTextColor);
+
+  &.inverse {
+    color: var(--inverseLabelTextColor);
+  }
 }
 
 .backTextContainer,

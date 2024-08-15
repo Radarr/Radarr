@@ -3,6 +3,7 @@
 interface CssExports {
   'availNotMonitored': string;
   'continuing': string;
+  'deleted': string;
   'ended': string;
   'missingMonitored': string;
   'missingUnmonitored': string;
