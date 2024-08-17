@@ -797,6 +797,7 @@
   "InteractiveSearchResultsFailedErrorMessage": "Search failed because its {message}. Try refreshing the movie info and verify the necessary information is present before searching again.",
   "Interval": "Interval",
   "InvalidFormat": "Invalid Format",
+  "InvalidMovieInfoLanguageLanguage": "Your Movie Info Language is set to an invalid value, correct it and save your settings",
   "InvalidUILanguage": "Your UI is set to an invalid language, correct it and save your settings",
   "KeepAndUnmonitorMovie": "Keep and Unmonitor Movie",
   "KeyboardShortcuts": "Keyboard Shortcuts",

@@ -241,6 +241,13 @@ class UISettings extends Component {
                       helpTextWarning={translate('MovieInfoLanguageHelpTextWarning')}
                       onChange={onInputChange}
                       {...settings.movieInfoLanguage}
+                      errors={
+                        languages.some((language) => language.key === settings.movieInfoLanguage.value) ?
+                          settings.movieInfoLanguage.errors :
+                          [
+                            ...settings.movieInfoLanguage.errors,
+                            { message: translate('InvalidMovieInfoLanguageLanguage') }
+                          ]}
                     />
                   </FormGroup>
 

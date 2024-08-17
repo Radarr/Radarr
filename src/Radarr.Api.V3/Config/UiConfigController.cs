@@ -19,17 +19,21 @@ namespace Radarr.Api.V3.Config
         {
             _configFileProvider = configFileProvider;
 
-            SharedValidator.RuleFor(c => c.UILanguage).Custom((value, context) =>
-            {
-                if (!Language.All.Any(o => o.Id == value))
-                {
-                    context.AddFailure("Invalid UI Language ID");
-                }
-            });
+            SharedValidator.RuleFor(c => c.MovieInfoLanguage)
+                .GreaterThanOrEqualTo(1)
+                .WithMessage("The Movie Info Language value cannot be less than 1");
+
+            SharedValidator.RuleFor(c => c.MovieInfoLanguage)
+                .Must(value => Language.All.Any(o => o.Id == value))
+                .WithMessage("Invalid Movie Info Language ID");
 
             SharedValidator.RuleFor(c => c.UILanguage)
-                           .GreaterThanOrEqualTo(1)
-                           .WithMessage("The UI Language value cannot be less than 1");
+                .GreaterThanOrEqualTo(1)
+                .WithMessage("The UI Language value cannot be less than 1");
+
+            SharedValidator.RuleFor(c => c.UILanguage)
+                .Must(value => Language.All.Any(o => o.Id == value))
+                .WithMessage("Invalid UI Language ID");
         }
 
         [RestPutById]

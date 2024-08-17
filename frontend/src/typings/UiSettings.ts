@@ -5,4 +5,6 @@ export interface UiSettings {
   longDateFormat: string;
   timeFormat: string;
   movieRuntimeFormat: string;
+  movieInfoLanguage: number;
+  uiLanguage: number;
 }

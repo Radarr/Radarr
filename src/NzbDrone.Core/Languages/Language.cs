@@ -177,6 +177,8 @@ namespace NzbDrone.Core.Languages
             }
         }
 
+        private static readonly Dictionary<int, Language> Lookup = All.ToDictionary(v => v.Id);
+
         public static Language FindById(int id)
         {
             if (id == 0)
@@ -184,9 +186,7 @@ namespace NzbDrone.Core.Languages
                 return Unknown;
             }
 
-            var language = All.FirstOrDefault(v => v.Id == id);
-
-            if (language == null)
+            if (!Lookup.TryGetValue(id, out var language))
             {
                 throw new ArgumentException("ID does not match a known language", nameof(id));
             }
