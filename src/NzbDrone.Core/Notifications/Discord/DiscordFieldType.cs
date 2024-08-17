@@ -33,7 +33,9 @@ namespace NzbDrone.Core.Notifications.Discord
         Release,
         Poster,
         Fanart,
-        Tags
+        Tags,
+        CustomFormats,
+        CustomFormatScore
     }
 
     public enum DiscordManualInteractionFieldType

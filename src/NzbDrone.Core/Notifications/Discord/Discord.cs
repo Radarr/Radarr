@@ -229,6 +229,14 @@ namespace NzbDrone.Core.Notifications.Discord
                         discordField.Name = "Tags";
                         discordField.Value = GetTagLabels(message.Movie)?.Join(", ") ?? string.Empty;
                         break;
+                    case DiscordImportFieldType.CustomFormats:
+                        discordField.Name = "Custom Formats";
+                        discordField.Value = string.Join("|", message.MovieInfo.CustomFormats);
+                        break;
+                    case DiscordImportFieldType.CustomFormatScore:
+                        discordField.Name = "Custom Format Score";
+                        discordField.Value = message.MovieInfo.CustomFormatScore.ToString();
+                        break;
                 }
 
                 if (discordField.Name.IsNotNullOrWhiteSpace() && discordField.Value.IsNotNullOrWhiteSpace())
