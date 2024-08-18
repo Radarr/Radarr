@@ -1460,5 +1460,6 @@
     "DeleteSelectedMovies": "Ausgewählte Serie löschen",
     "Any": "Beliebig",
     "DeleteSelected": "Markierte löschen",
-    "DeleteSelectedImportListExclusionsMessageText": "Bist du sicher, dass du diesen Importlisten Ausschluss löschen willst?"
+    "DeleteSelectedImportListExclusionsMessageText": "Bist du sicher, dass du diesen Importlisten Ausschluss löschen willst?",
+    "ProgressBarProgress": "Fortschrittsbalken bei {progress}%"
 }

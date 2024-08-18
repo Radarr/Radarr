@@ -1434,5 +1434,6 @@
     "NotificationsPlexSettingsServer": "Szerver",
     "Any": "Bármi",
     "DeleteSelected": "Kijelöltek eltávolítása",
-    "DeleteSelectedImportListExclusionsMessageText": "Biztosan törli ezt az importlista-kizárást?"
+    "DeleteSelectedImportListExclusionsMessageText": "Biztosan törli ezt az importlista-kizárást?",
+    "ProgressBarProgress": "Haladásjelző sáv: {progress}%"
 }

@@ -1669,5 +1669,6 @@
     "NotificationsPlexSettingsServer": "服务器",
     "Any": "任何",
     "DeleteSelected": "删除所选项",
-    "DeleteSelectedImportListExclusionsMessageText": "你确定要删除这个导入排除列表吗？"
+    "DeleteSelectedImportListExclusionsMessageText": "你确定要删除这个导入排除列表吗？",
+    "ProgressBarProgress": "进度栏位于{progress}%"
 }

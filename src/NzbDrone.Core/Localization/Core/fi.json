@@ -1750,5 +1750,6 @@
     "NotificationsPlexSettingsServer": "Palvelin",
     "Any": "Mikä vain",
     "DeleteSelected": "Poista valitut",
-    "DeleteSelectedImportListExclusionsMessageText": "Haluatko varmasti poistaa tuontilistapoikkeuksen?"
+    "DeleteSelectedImportListExclusionsMessageText": "Haluatko varmasti poistaa tuontilistapoikkeuksen?",
+    "ProgressBarProgress": "Tilapalkissa {progress} %"
 }
