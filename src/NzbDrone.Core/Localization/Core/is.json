@@ -1064,5 +1064,6 @@
     "MovieFileDeletedTooltip": "Á Eyða kvikmyndaskrá",
     "DeleteMovieFolders": "Eyða kvikmyndamöppu",
     "DeleteMovieFoldersHelpText": "Eyddu kvikmyndamöppunni og innihaldi hennar",
-    "DeleteSelectedMovies": "Eyða völdum kvikmyndaskrám"
+    "DeleteSelectedMovies": "Eyða völdum kvikmyndaskrám",
+    "DeleteSelectedImportListExclusionsMessageText": "Ertu viss um að þú viljir eyða þessari útilokun innflutningslista?"
 }

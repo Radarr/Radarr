@@ -1192,5 +1192,6 @@
     "ConnectionSettingsUrlBaseHelpText": "Přidá předponu do {connectionName} url, jako např. {url}",
     "DownloadClientSettingsUrlBaseHelpText": "Přidá předponu do {connectionName} url, jako např. {url}",
     "Any": "Jakákoliv",
-    "BlocklistOnlyHint": "Blokovat a nehledat náhradu"
+    "BlocklistOnlyHint": "Blokovat a nehledat náhradu",
+    "DeleteSelectedImportListExclusionsMessageText": "Opravdu chcete toto vyloučení importního seznamu smazat?"
 }

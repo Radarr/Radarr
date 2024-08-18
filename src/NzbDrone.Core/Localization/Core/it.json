@@ -1454,5 +1454,6 @@
     "IndexerDownloadClientHealthCheckMessage": "Indicizzatori con client di download non validi: {indexerNames}.",
     "Any": "Qualunque",
     "DeleteSelected": "Elimina Selezionati",
-    "DeleteSelectedImportListExclusionsMessageText": "Sei sicuro di voler cancellare questa lista di esclusioni delle importazioni?"
+    "DeleteSelectedImportListExclusionsMessageText": "Sei sicuro di voler cancellare questa lista di esclusioni delle importazioni?",
+    "ProgressBarProgress": "Barra Progressi al {progress}%"
 }

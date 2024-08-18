@@ -46,7 +46,7 @@
     "ImportIncludeQuality": "Certifique-se de que seus arquivos incluam a qualidade em seus nomes. Por exemplo: {0}",
     "ImportHeader": "Importar uma biblioteca organizada existente para adicionar filmes ao {appName}",
     "ImportFailed": "Falha na importação: {sourceTitle}",
-    "ImportExtraFilesMovieHelpText": "Importar arquivos adicionais correspondentes (legendas, nfo, etc.) após importar um arquivo de filme",
+    "ImportExtraFilesMovieHelpText": "Importe arquivos extras correspondentes (legendas, nfo, etc.) após importar um arquivo de filme",
     "ImportExtraFiles": "Importar arquivos adicionais",
     "ImportExistingMovies": "Importar filmes existentes",
     "ImportErrors": "Erros de importação",
@@ -960,7 +960,7 @@
     "More": "Mais",
     "Download": "Download",
     "DownloadClientCheckDownloadingToRoot": "O cliente de download {downloadClientName} coloca os downloads na pasta raiz {path}. Você não deve baixar para uma pasta raiz.",
-    "UpdateAvailableHealthCheckMessage": "Nova atualização está disponível",
+    "UpdateAvailableHealthCheckMessage": "Nova atualização está disponível: {version}",
     "RemotePathMappingCheckFilesGenericPermissions": "O cliente de download {downloadClientName} relatou arquivos em {path}, mas o {appName} não pode ver esse diretório. Pode ser necessário ajustar as permissões da pasta.",
     "RemotePathMappingCheckRemoteDownloadClient": "O cliente de download remoto {downloadClientName} relatou arquivos em {path}, mas este diretório parece não existir. Provavelmente faltando mapeamento de caminho remoto.",
     "RemotePathMappingCheckFolderPermissions": "O {appName} pode ver, mas não pode acessar o diretório de download {path}. Provável erro de permissões.",
@@ -1357,7 +1357,7 @@
     "NotificationsEmailSettingsServer": "Servidor",
     "NotificationsEmailSettingsServerHelpText": "Nome do host ou IP do servidor de e-mail",
     "NotificationsEmbySettingsSendNotifications": "Enviar Notificações",
-    "NotificationsEmbySettingsUpdateLibraryHelpText": "Atualizar Biblioteca ao Importar, Renomear ou Excluir?",
+    "NotificationsEmbySettingsUpdateLibraryHelpText": "Atualizar Biblioteca ao Importar, Renomear ou Excluir",
     "NotificationsGotifySettingIncludeMoviePoster": "Incluir Pôster do Filme",
     "NotificationsGotifySettingIncludeMoviePosterHelpText": "Incluir pôster do filme na mensagem",
     "NotificationsGotifySettingsAppToken": "Token do Aplicativo",
@@ -1469,7 +1469,7 @@
     "NotificationsAppriseSettingsStatelessUrlsHelpText": "Uma ou mais URLs separadas por vírgulas identificando para onde a notificação deve ser enviada. Deixe em branco se o armazenamento persistente for usado.",
     "NotificationsDiscordSettingsOnGrabFieldsHelpText": "Altere os campos passados para esta notificação 'ao capturar'",
     "NotificationsEmailSettingsRecipientAddress": "Endereço(s) do Destinatário",
-    "NotificationsEmbySettingsSendNotificationsHelpText": "Faça com que o MediaBrowser envie notificações para provedores configurados",
+    "NotificationsEmbySettingsSendNotificationsHelpText": "Faça com que Emby envie notificações para provedores configurados. Não compatível com Jellyfin.",
     "NotificationsGotifySettingsServer": "Servidor Gotify",
     "NotificationsGotifySettingsServerHelpText": "URL do servidor Gotify, incluindo http(s):// e porta, se necessário",
     "NotificationsJoinSettingsDeviceIdsHelpText": "Obsoleto, use nomes de dispositivos. Lista separada por vírgulas de IDs de dispositivos para os quais você gostaria de enviar notificações. Se não for definido, todos os dispositivos receberão notificações.",
@@ -1795,5 +1795,6 @@
     "ShowTags": "Mostrar Etiquetas",
     "ShowTagsHelpText": "Mostrar etiquetas abaixo do pôster",
     "DeleteSelected": "Excluir Selecionado",
-    "DeleteSelectedImportListExclusionsMessageText": "Tem certeza de que deseja excluir esta exclusão da lista de importação?"
+    "DeleteSelectedImportListExclusionsMessageText": "Tem certeza de que deseja excluir as listas de importação selecionadas das exclusões?",
+    "ProgressBarProgress": "Barra de progresso em {progress}%"
 }

@@ -1758,5 +1758,6 @@
     "ReleaseProfileTagMovieHelpText": "Профили релиза будут применяться к сериалам, имеющим хотя бы один соответствующий тег. Оставьте поле пустым, чтобы применить ко всем",
     "NotificationsGotifySettingIncludeMoviePoster": "Включая постер сериала",
     "NotificationsGotifySettingIncludeMoviePosterHelpText": "Включить постер сериала в сообщение",
-    "DeleteSelectedImportListExclusionsMessageText": "Вы уверены, что хотите удалить это исключение из списка импорта?"
+    "DeleteSelectedImportListExclusionsMessageText": "Вы уверены, что хотите удалить это исключение из списка импорта?",
+    "ProgressBarProgress": "Индикатор выполнения: {progress}%"
 }

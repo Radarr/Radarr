@@ -988,7 +988,7 @@
     "BypassDelayIfHighestQualityHelpText": "Evitar el retardo cuando el lanzamiento tiene habilitada la máxima calidad en el perfil de calidad con el protocolo preferido",
     "DiscordUrlInSlackNotification": "Tienes una notificación de Discord configurada como una notificación de Slack. Configure esto como una notificación de Discord para una mejor funcionalidad. Las notificaciones afectadas son: {0}",
     "IndexerJackettAll": "Indexadores que utilizan el endpoint no soportado de Jackett 'all': {indexerNames}",
-    "UpdateAvailableHealthCheckMessage": "La nueva actualización está disponible",
+    "UpdateAvailableHealthCheckMessage": "Una nueva actualización está disponible: {version}",
     "RemotePathMappingCheckImportFailed": "{appName} no pudo importar una película.  Comprueba los detalles en tus registros.",
     "RemotePathMappingCheckLocalFolderMissing": "El cliente de descarga remota {downloadClientName} coloca las descargas en {path} pero este directorio no parece existir. Probablemente falta o el mapeo de la ruta remota es incorrecto.",
     "RemotePathMappingCheckWrongOSPath": "El cliente de descarga remota {downloadClientName} coloca las descargas en {path} pero esta no es una ruta válida {osName}.  Revise los mapeos de las rutas remotas y la configuración del cliente de descarga.",
@@ -1356,7 +1356,7 @@
     "NotificationsEmailSettingsFromAddress": "De dirección",
     "NotificationsEmailSettingsCcAddressHelpText": "Lista separada por coma de destinatarios de e-mail cc",
     "NotificationsJoinSettingsDeviceIds": "IDs de dispositivo",
-    "NotificationsEmbySettingsSendNotificationsHelpText": "Hacer que MediaBrowser envíe notificaciones a los proveedores configurados",
+    "NotificationsEmbySettingsSendNotificationsHelpText": "Hacer que Emby envíe notificaciones a los proveedores configurados. No soportado en Jellyfin.",
     "NotificationsPushoverSettingsSound": "Sonido",
     "NotificationsSendGridSettingsApiKeyHelpText": "La clave API generada por SendGrid",
     "NotificationsSettingsUpdateMapPathsFromHelpText": "Ruta de {appName}, usado para modificar rutas de series cuando {serviceName} ve la ubicación de ruta de biblioteca de forma distinta a {appName} (Requiere 'Actualizar biblioteca')",
@@ -1442,7 +1442,7 @@
     "RootFolderPath": "Ruta de carpeta raíz",
     "QueueFilterHasNoItems": "Seleccionado filtro de cola que no tiene elementos",
     "OnManualInteractionRequired": "Cuando se requiera interacción manual",
-    "NotificationsEmbySettingsUpdateLibraryHelpText": "¿Actualiza biblioteca en importar, renombrar o borrar?",
+    "NotificationsEmbySettingsUpdateLibraryHelpText": "Actualiza la biblioteca al importar, renombrar o borrar",
     "NotificationsKodiSettingAlwaysUpdateHelpText": "¿Actualiza la biblioteca incluso cuando un video se esté reproduciendo?",
     "NotificationsSynologyValidationTestFailed": "No es Synology o synoindex no está disponible",
     "NotificationsTelegramSettingsBotToken": "Token de bot",
@@ -1794,6 +1794,7 @@
     "ShowTagsHelpText": "Muestra etiquetas debajo del póster",
     "Any": "Cualquiera",
     "ShowTags": "Mostrar etiquetas",
-    "DeleteSelected": "Eliminar seleccionados",
-    "DeleteSelectedImportListExclusionsMessageText": "¿Está seguro de que desea eliminar esta exclusión de la lista de importación?"
+    "DeleteSelected": "Borrar seleccionados",
+    "DeleteSelectedImportListExclusionsMessageText": "¿Estás seguro que quieres borrar las exclusiones de listas de importación seleccionadas?",
+    "ProgressBarProgress": "Barra de progreso al {progress}%"
 }

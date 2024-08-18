@@ -1795,5 +1795,6 @@
     "ShowTags": "Afficher les labels",
     "ShowTagsHelpText": "Afficher les labels sous l'affiche",
     "DeleteSelected": "Supprimer sélectionnée",
-    "DeleteSelectedImportListExclusionsMessageText": "Êtes-vous sûr de vouloir supprimer cette exclusion de la liste d'importation ?"
+    "DeleteSelectedImportListExclusionsMessageText": "Êtes-vous sûr de vouloir supprimer cette exclusion de la liste d'importation ?",
+    "ProgressBarProgress": "Barre de progression à {progress} %"
 }
