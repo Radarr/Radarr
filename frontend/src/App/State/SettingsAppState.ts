@@ -6,6 +6,7 @@ import AppSectionState, {
   PagedAppSectionState,
 } from 'App/State/AppSectionState';
 import Language from 'Language/Language';
+import CustomFormat from 'typings/CustomFormat';
 import DownloadClient from 'typings/DownloadClient';
 import ImportList from 'typings/ImportList';
 import ImportListExclusion from 'typings/ImportListExclusion';
@@ -39,6 +40,11 @@ export interface QualityProfilesAppState
   extends AppSectionState<QualityProfile>,
     AppSectionSchemaState<QualityProfile> {}
 
+export interface CustomFormatAppState
+  extends AppSectionState<CustomFormat>,
+    AppSectionDeleteState,
+    AppSectionSaveState {}
+
 export interface ImportListOptionsSettingsAppState
   extends AppSectionItemState<ImportListOptionsSettings>,
     AppSectionSaveState {}
@@ -57,6 +63,7 @@ export type UiSettingsAppState = AppSectionItemState<UiSettings>;
 
 interface SettingsAppState {
   advancedSettings: boolean;
+  customFormats: CustomFormatAppState;
   downloadClients: DownloadClientAppState;
   importListExclusions: ImportListExclusionsSettingsAppState;
   importListOptions: ImportListOptionsSettingsAppState;
