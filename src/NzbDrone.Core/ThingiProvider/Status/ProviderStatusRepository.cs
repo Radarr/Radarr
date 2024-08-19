@@ -28,5 +28,10 @@ namespace NzbDrone.Core.ThingiProvider.Status
         {
             Delete(c => c.ProviderId == providerId);
         }
+
+        public void DeleteByProviderId(int providerId)
+        {
+            Delete(c => c.ProviderId == providerId);
+        }
     }
 }
