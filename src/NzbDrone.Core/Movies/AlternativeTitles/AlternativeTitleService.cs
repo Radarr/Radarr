@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
 
         public void HandleAsync(MoviesDeletedEvent message)
         {
-            // TODO hanlde metadata delete instead of movie delete
+            // TODO handle metadata delete instead of movie delete
             _titleRepo.DeleteForMovies(message.Movies.Select(m => m.MovieMetadataId).ToList());
         }
     }
