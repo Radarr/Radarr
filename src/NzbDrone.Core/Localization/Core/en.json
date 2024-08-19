@@ -841,6 +841,8 @@
   "LogLevel": "Log Level",
   "LogLevelTraceHelpTextWarning": "Trace logging should only be enabled temporarily",
   "LogOnly": "Log Only",
+  "LogSizeLimit": "Log Size Limit",
+  "LogSizeLimitHelpText": "Maximum log file size in MB before archiving. Default is 1MB.",
   "Logging": "Logging",
   "Logs": "Logs",
   "LongDateFormat": "Long Date Format",
