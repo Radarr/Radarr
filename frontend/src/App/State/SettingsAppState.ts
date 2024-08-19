@@ -15,11 +15,16 @@ import Indexer from 'typings/Indexer';
 import IndexerFlag from 'typings/IndexerFlag';
 import Notification from 'typings/Notification';
 import QualityProfile from 'typings/QualityProfile';
-import { UiSettings } from 'typings/UiSettings';
+import General from 'typings/Settings/General';
+import UiSettings from 'typings/Settings/UiSettings';
 
 export interface DownloadClientAppState
   extends AppSectionState<DownloadClient>,
     AppSectionDeleteState,
+    AppSectionSaveState {}
+
+export interface GeneralAppState
+  extends AppSectionItemState<General>,
     AppSectionSaveState {}
 
 export interface ImportListAppState
@@ -65,6 +70,7 @@ interface SettingsAppState {
   advancedSettings: boolean;
   customFormats: CustomFormatAppState;
   downloadClients: DownloadClientAppState;
+  general: GeneralAppState;
   importListExclusions: ImportListExclusionsSettingsAppState;
   importListOptions: ImportListOptionsSettingsAppState;
   importLists: ImportListAppState;
