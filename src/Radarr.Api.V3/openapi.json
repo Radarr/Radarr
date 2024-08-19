@@ -9400,6 +9400,10 @@
             "type": "string",
             "nullable": true
           },
+          "logSizeLimit": {
+            "type": "integer",
+            "format": "int32"
+          },
           "consoleLogLevel": {
             "type": "string",
             "nullable": true
