@@ -1796,5 +1796,6 @@
     "ShowTags": "Mostrar etiquetas",
     "DeleteSelected": "Borrar seleccionados",
     "DeleteSelectedImportListExclusionsMessageText": "¿Estás seguro que quieres borrar las exclusiones de listas de importación seleccionadas?",
-    "ProgressBarProgress": "Barra de progreso al {progress}%"
+    "ProgressBarProgress": "Barra de progreso al {progress}%",
+    "InvalidMovieInfoLanguageLanguage": "Tu idioma de información de película tiene un valor inválido, corrígelo y guarda tus opciones"
 }
