@@ -23,5 +23,5 @@ export const all = [
   PURPLE,
   SUCCESS,
   WARNING,
-  QUEUE
-];
+  QUEUE,
+] as const;
