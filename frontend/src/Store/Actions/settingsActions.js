@@ -9,7 +9,7 @@ import delayProfiles from './Settings/delayProfiles';
 import downloadClientOptions from './Settings/downloadClientOptions';
 import downloadClients from './Settings/downloadClients';
 import general from './Settings/general';
-import importExclusions from './Settings/importExclusions';
+import importListExclusions from './Settings/importListExclusions';
 import importListOptions from './Settings/importListOptions';
 import importLists from './Settings/importLists';
 import indexerFlags from './Settings/indexerFlags';
@@ -36,13 +36,13 @@ export * from './Settings/delayProfiles';
 export * from './Settings/downloadClients';
 export * from './Settings/downloadClientOptions';
 export * from './Settings/general';
+export * from './Settings/importListOptions';
+export * from './Settings/importLists';
+export * from './Settings/importListExclusions';
 export * from './Settings/indexerFlags';
 export * from './Settings/indexerOptions';
 export * from './Settings/indexers';
 export * from './Settings/languages';
-export * from './Settings/importExclusions';
-export * from './Settings/importListOptions';
-export * from './Settings/importLists';
 export * from './Settings/mediaManagement';
 export * from './Settings/metadata';
 export * from './Settings/metadataOptions';
@@ -51,8 +51,8 @@ export * from './Settings/namingExamples';
 export * from './Settings/notifications';
 export * from './Settings/qualityDefinitions';
 export * from './Settings/qualityProfiles';
-export * from './Settings/remotePathMappings';
 export * from './Settings/releaseProfiles';
+export * from './Settings/remotePathMappings';
 export * from './Settings/ui';
 
 //
@@ -73,13 +73,13 @@ export const defaultState = {
   downloadClients: downloadClients.defaultState,
   downloadClientOptions: downloadClientOptions.defaultState,
   general: general.defaultState,
+  importLists: importLists.defaultState,
+  importListExclusions: importListExclusions.defaultState,
+  importListOptions: importListOptions.defaultState,
   indexerFlags: indexerFlags.defaultState,
   indexerOptions: indexerOptions.defaultState,
   indexers: indexers.defaultState,
   languages: languages.defaultState,
-  importExclusions: importExclusions.defaultState,
-  importListOptions: importListOptions.defaultState,
-  importLists: importLists.defaultState,
   mediaManagement: mediaManagement.defaultState,
   metadata: metadata.defaultState,
   metadataOptions: metadataOptions.defaultState,
@@ -88,13 +88,14 @@ export const defaultState = {
   notifications: notifications.defaultState,
   qualityDefinitions: qualityDefinitions.defaultState,
   qualityProfiles: qualityProfiles.defaultState,
-  remotePathMappings: remotePathMappings.defaultState,
   releaseProfiles: releaseProfiles.defaultState,
+  remotePathMappings: remotePathMappings.defaultState,
   ui: ui.defaultState
 };
 
 export const persistState = [
-  'settings.advancedSettings'
+  'settings.advancedSettings',
+  'settings.importListExclusions.pageSize'
 ];
 
 //
@@ -119,13 +120,13 @@ export const actionHandlers = handleThunks({
   ...downloadClients.actionHandlers,
   ...downloadClientOptions.actionHandlers,
   ...general.actionHandlers,
+  ...importLists.actionHandlers,
+  ...importListExclusions.actionHandlers,
+  ...importListOptions.actionHandlers,
   ...indexerFlags.actionHandlers,
   ...indexerOptions.actionHandlers,
   ...indexers.actionHandlers,
   ...languages.actionHandlers,
-  ...importExclusions.actionHandlers,
-  ...importListOptions.actionHandlers,
-  ...importLists.actionHandlers,
   ...mediaManagement.actionHandlers,
   ...metadata.actionHandlers,
   ...metadataOptions.actionHandlers,
@@ -134,8 +135,8 @@ export const actionHandlers = handleThunks({
   ...notifications.actionHandlers,
   ...qualityDefinitions.actionHandlers,
   ...qualityProfiles.actionHandlers,
-  ...remotePathMappings.actionHandlers,
   ...releaseProfiles.actionHandlers,
+  ...remotePathMappings.actionHandlers,
   ...ui.actionHandlers
 });
 
@@ -156,13 +157,13 @@ export const reducers = createHandleActions({
   ...downloadClients.reducers,
   ...downloadClientOptions.reducers,
   ...general.reducers,
+  ...importLists.reducers,
+  ...importListExclusions.reducers,
+  ...importListOptions.reducers,
   ...indexerFlags.reducers,
   ...indexerOptions.reducers,
   ...indexers.reducers,
   ...languages.reducers,
-  ...importExclusions.reducers,
-  ...importListOptions.reducers,
-  ...importLists.reducers,
   ...mediaManagement.reducers,
   ...metadata.reducers,
   ...metadataOptions.reducers,
@@ -171,8 +172,8 @@ export const reducers = createHandleActions({
   ...notifications.reducers,
   ...qualityDefinitions.reducers,
   ...qualityProfiles.reducers,
-  ...remotePathMappings.reducers,
   ...releaseProfiles.reducers,
+  ...remotePathMappings.reducers,
   ...ui.reducers
 
 }, defaultState, section);

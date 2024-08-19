@@ -69,7 +69,7 @@ class AddImportListModalContent extends Component {
                         typeOfList: titleCase(key)
                       })}
                       >
-                        <div className={styles.importLists}>
+                        <div className={styles.lists}>
                           {
                             listGroups[key].map((list) => {
                               return (

@@ -200,6 +200,10 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
           </span>
         </Label>
 
+        {status === 'deleted' ? (
+          <div className={styles.deleted} title={translate('Deleted')} />
+        ) : null}
+
         <Link className={styles.link} style={elementStyle} to={link}>
           <MoviePoster
             style={elementStyle}

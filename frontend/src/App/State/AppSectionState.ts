@@ -18,7 +18,10 @@ export interface AppSectionSaveState {
 }
 
 export interface PagedAppSectionState {
+  page: number;
   pageSize: number;
+  totalPages: number;
+  totalRecords?: number;
 }
 
 export interface AppSectionFilterState<T> {
@@ -38,6 +41,7 @@ export interface AppSectionItemState<T> {
   isFetching: boolean;
   isPopulated: boolean;
   error: Error;
+  pendingChanges: Partial<T>;
   item: T;
 }
 

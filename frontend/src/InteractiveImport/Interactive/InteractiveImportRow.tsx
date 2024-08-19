@@ -17,7 +17,7 @@ import Language from 'Language/Language';
 import IndexerFlags from 'Movie/IndexerFlags';
 import Movie from 'Movie/Movie';
 import MovieFormats from 'Movie/MovieFormats';
-import MovieLanguage from 'Movie/MovieLanguage';
+import MovieLanguages from 'Movie/MovieLanguages';
 import MovieQuality from 'Movie/MovieQuality';
 import { QualityModel } from 'Quality/Quality';
 import {
@@ -322,7 +322,7 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
         {showLanguagePlaceholder && <InteractiveImportRowCellPlaceholder />}
 
         {!showLanguagePlaceholder && !!languages && (
-          <MovieLanguage className={styles.label} languages={languages} />
+          <MovieLanguages className={styles.label} languages={languages} />
         )}
       </TableRowCellButton>
 

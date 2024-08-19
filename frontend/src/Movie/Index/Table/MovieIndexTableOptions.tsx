@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
@@ -32,19 +32,17 @@ function MovieIndexTableOptions(props: MovieIndexTableOptionsProps) {
   );
 
   return (
-    <Fragment>
-      <FormGroup>
-        <FormLabel>{translate('ShowSearch')}</FormLabel>
+    <FormGroup>
+      <FormLabel>{translate('ShowSearch')}</FormLabel>
 
-        <FormInputGroup
-          type={inputTypes.CHECK}
-          name="showSearchAction"
-          value={showSearchAction}
-          helpText={translate('ShowSearchHelpText')}
-          onChange={onTableOptionChangeWrapper}
-        />
-      </FormGroup>
-    </Fragment>
+      <FormInputGroup
+        type={inputTypes.CHECK}
+        name="showSearchAction"
+        value={showSearchAction}
+        helpText={translate('ShowSearchHelpText')}
+        onChange={onTableOptionChangeWrapper}
+      />
+    </FormGroup>
   );
 }
 

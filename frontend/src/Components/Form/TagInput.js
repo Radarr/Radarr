@@ -225,6 +225,8 @@ class TagInput extends Component {
     const {
       className,
       inputContainerClassName,
+      hasError,
+      hasWarning,
       ...otherProps
     } = this.props;
 
@@ -241,7 +243,9 @@ class TagInput extends Component {
         className={className}
         inputContainerClassName={classNames(
           inputContainerClassName,
-          isFocused && styles.isFocused
+          isFocused && styles.isFocused,
+          hasError && styles.hasError,
+          hasWarning && styles.hasWarning
         )}
         value={value}
         suggestions={suggestions}

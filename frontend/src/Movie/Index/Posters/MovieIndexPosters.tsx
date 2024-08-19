@@ -60,12 +60,12 @@ const movieIndexSelector = createSelector(
   }
 );
 
-const Cell: React.FC<GridChildComponentProps<CellItemData>> = ({
+function Cell({
   columnIndex,
   rowIndex,
   style,
   data,
-}) => {
+}: GridChildComponentProps<CellItemData>) {
   const { layout, items, sortKey, isSelectMode } = data;
 
   const { columnCount, padding, posterWidth, posterHeight } = layout;
@@ -94,7 +94,7 @@ const Cell: React.FC<GridChildComponentProps<CellItemData>> = ({
       />
     </div>
   );
-};
+}
 
 function getWindowScrollTopPosition() {
   return document.documentElement.scrollTop || document.body.scrollTop || 0;

@@ -24,6 +24,7 @@ import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
+import getMovieStatusDetails from 'Movie/getMovieStatusDetails';
 import MovieHistoryModal from 'Movie/History/MovieHistoryModal';
 import MoviePoster from 'Movie/MoviePoster';
 import MovieInteractiveSearchModalConnector from 'Movie/Search/MovieInteractiveSearchModalConnector';
@@ -242,9 +243,11 @@ class MovieDetails extends Component {
       qualityProfileId,
       monitored,
       studio,
+      originalLanguage,
       genres,
       collection,
       overview,
+      status,
       youTubeTrailerId,
       isAvailable,
       images,
@@ -282,13 +285,15 @@ class MovieDetails extends Component {
       titleWidth
     } = this.state;
 
+    const statusDetails = getMovieStatusDetails(status);
+
     const fanartUrl = getFanartUrl(images);
     const marqueeWidth = isSmallScreen ? titleWidth : (titleWidth - 150);
 
-    const pageTitle = `${title}${year > 0 ? ` (${year})` : ''}`;
+    const titleWithYear = `${title}${year > 0 ? ` (${year})` : ''}`;
 
     return (
-      <PageContent title={pageTitle}>
+      <PageContent title={titleWithYear}>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
@@ -523,7 +528,7 @@ class MovieDetails extends Component {
                 <div className={styles.detailsLabels}>
                   <InfoLabel
                     className={styles.detailsInfoLabel}
-                    title={translate('Path')}
+                    name={translate('Path')}
                     size={sizes.LARGE}
                   >
                     <span className={styles.path}>
@@ -533,12 +538,14 @@ class MovieDetails extends Component {
 
                   <InfoLabel
                     className={styles.detailsInfoLabel}
-                    title={translate('Status')}
+                    name={translate('Status')}
+                    title={statusDetails.message}
                     kind={kinds.DELETE}
                     size={sizes.LARGE}
                   >
                     <span className={styles.statusName}>
                       <MovieStatusLabel
+                        status={status}
                         hasMovieFiles={hasMovieFiles}
                         monitored={monitored}
                         isAvailable={isAvailable}
@@ -549,7 +556,7 @@ class MovieDetails extends Component {
 
                   <InfoLabel
                     className={styles.detailsInfoLabel}
-                    title={translate('QualityProfile')}
+                    name={translate('QualityProfile')}
                     size={sizes.LARGE}
                   >
                     <span className={styles.qualityProfileName}>
@@ -563,21 +570,19 @@ class MovieDetails extends Component {
 
                   <InfoLabel
                     className={styles.detailsInfoLabel}
-                    title={translate('Size')}
+                    name={translate('Size')}
                     size={sizes.LARGE}
                   >
                     <span className={styles.sizeOnDisk}>
-                      {
-                        formatBytes(sizeOnDisk || 0)
-                      }
+                      {formatBytes(sizeOnDisk)}
                     </span>
                   </InfoLabel>
 
                   {
-                    !!collection &&
+                    collection ?
                       <InfoLabel
                         className={styles.detailsInfoLabel}
-                        title={translate('Collection')}
+                        name={translate('Collection')}
                         size={sizes.LARGE}
                       >
                         <div className={styles.collection}>
@@ -585,33 +590,50 @@ class MovieDetails extends Component {
                             tmdbId={collection.tmdbId}
                           />
                         </div>
-                      </InfoLabel>
+                      </InfoLabel> :
+                      null
                   }
 
                   {
-                    !!studio && !isSmallScreen &&
+                    originalLanguage?.name && !isSmallScreen ?
                       <InfoLabel
                         className={styles.detailsInfoLabel}
-                        title={translate('Studio')}
+                        name={translate('OriginalLanguage')}
+                        size={sizes.LARGE}
+                      >
+                        <span className={styles.originalLanguage}>
+                          {originalLanguage.name}
+                        </span>
+                      </InfoLabel> :
+                      null
+                  }
+
+                  {
+                    studio && !isSmallScreen ?
+                      <InfoLabel
+                        className={styles.detailsInfoLabel}
+                        name={translate('Studio')}
                         size={sizes.LARGE}
                       >
                         <span className={styles.studio}>
                           {studio}
                         </span>
-                      </InfoLabel>
+                      </InfoLabel> :
+                      null
                   }
 
                   {
-                    !!genres.length && !isSmallScreen &&
+                    genres.length && !isSmallScreen ?
                       <InfoLabel
                         className={styles.detailsInfoLabel}
-                        title={translate('Genres')}
+                        name={translate('Genres')}
                         size={sizes.LARGE}
                       >
                         <span className={styles.genres}>
                           {genres.join(', ')}
                         </span>
-                      </InfoLabel>
+                      </InfoLabel> :
+                      null
                   }
                 </div>
 
@@ -721,6 +743,7 @@ class MovieDetails extends Component {
           <MovieInteractiveSearchModalConnector
             isOpen={isInteractiveSearchModalOpen}
             movieId={id}
+            movieTitle={title}
             onModalClose={this.onInteractiveSearchModalClose}
           />
         </PageContentBody>
@@ -745,6 +768,7 @@ MovieDetails.propTypes = {
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   studio: PropTypes.string,
+  originalLanguage: PropTypes.object,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   collection: PropTypes.object,
   youTubeTrailerId: PropTypes.string,

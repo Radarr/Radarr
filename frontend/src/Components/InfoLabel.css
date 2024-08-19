@@ -8,7 +8,7 @@
   cursor: default;
 }
 
-.title {
+.name {
   margin-bottom: 2px;
   color: var(--helpTextColor);
   font-size: 10px;

@@ -90,7 +90,7 @@ namespace NzbDrone.Core.IndexerSearch
                 queryTranslations.Add(translation.Title);
             }
 
-            spec.SceneTitles = queryTranslations.Distinct().Where(t => t.IsNotNullOrWhiteSpace()).ToList();
+            spec.SceneTitles = queryTranslations.Where(t => t.IsNotNullOrWhiteSpace()).Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
 
             return spec;
         }

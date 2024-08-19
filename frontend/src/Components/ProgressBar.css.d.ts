@@ -9,6 +9,7 @@ interface CssExports {
   'frontText': string;
   'frontTextContainer': string;
   'info': string;
+  'inverse': string;
   'large': string;
   'medium': string;
   'primary': string;

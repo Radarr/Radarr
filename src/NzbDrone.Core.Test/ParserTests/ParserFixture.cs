@@ -201,6 +201,20 @@ namespace NzbDrone.Core.Test.ParserTests
                 "Енола Голмс",
                 "Enola Holmes"
             })]
+        [TestCase("Mon cousin a.k.a. My Cousin 2020 1080p Blu-ray DD 5.1 x264.mkv",
+            new string[]
+            {
+                "Mon cousin AKA My Cousin",
+                "Mon cousin",
+                "My Cousin"
+            })]
+        [TestCase("Sydney A.K.A. Hard Eight 1996 1080p AMZN WEB-DL DD+ 2.0 H.264.mkv",
+            new string[]
+            {
+                "Sydney AKA Hard Eight",
+                "Sydney",
+                "Hard Eight"
+            })]
         public void should_parse_movie_alternative_titles(string postTitle, string[] parsedTitles)
         {
             var movieInfo = Parser.Parser.ParseMovieTitle(postTitle, true);

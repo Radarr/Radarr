@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<romanian>rodubbed)|
                                                                             (?<brazilian>dublado)|
                                                                             (?<greek>greek)|
-                                                                            (?<french>\b(?:FR|VO|VF|VFF|VFQ|VFI|VF2|TRUEFRENCH|FRE|FRA)\b)|
+                                                                            (?<french>\b(?:FR|VO|VF|VFF|VFQ|VFI|VF2|TRUEFRENCH|FRENCH|FRE|FRA)\b)|
                                                                             (?<russian>\b(?:rus|ru)\b)|
                                                                             (?<english>\beng\b)|
                                                                             (?<hungarian>\b(?:HUNDUB|HUN)\b)|
@@ -55,11 +55,6 @@ namespace NzbDrone.Core.Parser
             if (lowerTitle.Contains("english"))
             {
                 languages.Add(Language.English);
-            }
-
-            if (lowerTitle.Contains("french"))
-            {
-                languages.Add(Language.French);
             }
 
             if (lowerTitle.Contains("spanish"))

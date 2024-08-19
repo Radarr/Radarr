@@ -5,9 +5,8 @@ import { createSelector } from 'reselect';
 import * as commandNames from 'Commands/commandNames';
 import withScrollPosition from 'Components/withScrollPosition';
 import { executeCommand } from 'Store/Actions/commandActions';
-import { addImportExclusions, addMovies, clearAddMovie, fetchDiscoverMovies, setListMovieFilter, setListMovieSort, setListMovieTableOption, setListMovieView } from 'Store/Actions/discoverMovieActions';
+import { addImportListExclusions, addMovies, clearAddMovie, fetchDiscoverMovies, setListMovieFilter, setListMovieSort, setListMovieTableOption, setListMovieView } from 'Store/Actions/discoverMovieActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
-import { fetchImportExclusions } from 'Store/Actions/Settings/importExclusions';
 import scrollPositions from 'Store/scrollPositions';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
@@ -43,10 +42,6 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(fetchRootFolders());
     },
 
-    dispatchFetchImportExclusions() {
-      dispatch(fetchImportExclusions());
-    },
-
     dispatchClearListMovie() {
       dispatch(clearAddMovie());
     },
@@ -75,8 +70,8 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(addMovies({ ids, addOptions }));
     },
 
-    dispatchAddImportExclusions(exclusions) {
-      dispatch(addImportExclusions(exclusions));
+    dispatchAddImportListExclusions(exclusions) {
+      dispatch(addImportListExclusions(exclusions));
     },
 
     onImportListSyncPress() {
@@ -96,7 +91,6 @@ class DiscoverMovieConnector extends Component {
   componentDidMount() {
     registerPagePopulator(this.repopulate);
     this.props.dispatchFetchRootFolders();
-    this.props.dispatchFetchImportExclusions();
     this.props.dispatchFetchListMovies();
   }
 
@@ -121,7 +115,7 @@ class DiscoverMovieConnector extends Component {
   };
 
   onExcludeMoviesPress =({ ids }) => {
-    this.props.dispatchAddImportExclusions({ ids });
+    this.props.dispatchAddImportListExclusions({ ids });
   };
 
   //
@@ -144,13 +138,12 @@ class DiscoverMovieConnector extends Component {
 DiscoverMovieConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   view: PropTypes.string.isRequired,
-  dispatchFetchImportExclusions: PropTypes.func.isRequired,
   dispatchFetchRootFolders: PropTypes.func.isRequired,
   dispatchFetchListMovies: PropTypes.func.isRequired,
   dispatchClearListMovie: PropTypes.func.isRequired,
   dispatchSetListMovieView: PropTypes.func.isRequired,
   dispatchAddMovies: PropTypes.func.isRequired,
-  dispatchAddImportExclusions: PropTypes.func.isRequired
+  dispatchAddImportListExclusions: PropTypes.func.isRequired
 };
 
 export default withScrollPosition(

@@ -142,6 +142,11 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
         <div className={styles.poster}>
           <div className={styles.posterContainer}>
             {isSelectMode ? <MovieIndexPosterSelect movieId={movieId} /> : null}
+
+            {status === 'deleted' ? (
+              <div className={styles.deleted} title={translate('Deleted')} />
+            ) : null}
+
             <Link className={styles.link} style={elementStyle} to={link}>
               <MoviePoster
                 className={styles.poster}

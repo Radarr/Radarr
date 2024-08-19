@@ -3,6 +3,7 @@ using System.IO;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Test.Common;
@@ -34,7 +35,7 @@ namespace NzbDrone.Common.Test
         [TestCase(@"\\Testserver\\Test\", @"\\Testserver\Test")]
         [TestCase(@"\\Testserver\Test\file.ext", @"\\Testserver\Test\file.ext")]
         [TestCase(@"\\Testserver\Test\file.ext\\", @"\\Testserver\Test\file.ext")]
-        [TestCase(@"\\Testserver\Test\file.ext   \\", @"\\Testserver\Test\file.ext")]
+        [TestCase(@"\\Testserver\Test\file.ext   ", @"\\Testserver\Test\file.ext")]
         [TestCase(@"//CAPITAL//lower// ", @"\\CAPITAL\lower")]
         public void Clean_Path_Windows(string dirty, string clean)
         {
@@ -132,11 +133,16 @@ namespace NzbDrone.Common.Test
 
         [TestCase(@"C:\test\", @"C:\Test\mydir")]
         [TestCase(@"C:\test", @"C:\Test\mydir\")]
-        public void path_should_be_parent_on_windows_only(string parentPath, string childPath)
+        public void windows_path_should_be_parent(string parentPath, string childPath)
         {
-            var expectedResult = OsInfo.IsWindows;
+            parentPath.IsParentPath(childPath).Should().Be(true);
+        }
 
-            parentPath.IsParentPath(childPath).Should().Be(expectedResult);
+        [TestCase("/test", "/test/mydir/")]
+        [TestCase("/test/", "/test/mydir")]
+        public void posix_path_should_be_parent(string parentPath, string childPath)
+        {
+            parentPath.IsParentPath(childPath).Should().Be(true);
         }
 
         [TestCase(@"C:\Test\mydir", @"C:\Test")]
@@ -144,37 +150,55 @@ namespace NzbDrone.Common.Test
         [TestCase(@"C:\", null)]
         [TestCase(@"\\server\share", null)]
         [TestCase(@"\\server\share\test", @"\\server\share")]
-        public void path_should_return_parent_windows(string path, string parentPath)
+        public void windows_path_should_return_parent(string path, string parentPath)
         {
-            WindowsOnly();
             path.GetParentPath().Should().Be(parentPath);
         }
 
         [TestCase(@"/", null)]
         [TestCase(@"/test", "/")]
-        public void path_should_return_parent_mono(string path, string parentPath)
+        [TestCase(@"/test/tv", "/test")]
+        public void unix_path_should_return_parent(string path, string parentPath)
         {
-            PosixOnly();
             path.GetParentPath().Should().Be(parentPath);
         }
 
         [TestCase(@"C:\Test\mydir", "Test")]
         [TestCase(@"C:\Test\", @"C:\")]
+        [TestCase(@"C:\Test", @"C:\")]
         [TestCase(@"C:\", null)]
         [TestCase(@"\\server\share", null)]
         [TestCase(@"\\server\share\test", @"\\server\share")]
         public void path_should_return_parent_name_windows(string path, string parentPath)
         {
-            WindowsOnly();
             path.GetParentName().Should().Be(parentPath);
         }
 
         [TestCase(@"/", null)]
         [TestCase(@"/test", "/")]
+        [TestCase(@"/test/tv", "test")]
         public void path_should_return_parent_name_mono(string path, string parentPath)
         {
-            PosixOnly();
             path.GetParentName().Should().Be(parentPath);
+        }
+
+        [TestCase(@"C:\Test\mydir", "mydir")]
+        [TestCase(@"C:\Test\", "Test")]
+        [TestCase(@"C:\Test", "Test")]
+        [TestCase(@"C:\", "C:\\")]
+        [TestCase(@"\\server\share", @"\\server\share")]
+        [TestCase(@"\\server\share\test", "test")]
+        public void path_should_return_directory_name_windows(string path, string parentPath)
+        {
+            path.GetDirectoryName().Should().Be(parentPath);
+        }
+
+        [TestCase(@"/", "/")]
+        [TestCase(@"/test", "test")]
+        [TestCase(@"/test/tv", "tv")]
+        public void path_should_return_directory_name_mono(string path, string parentPath)
+        {
+            path.GetDirectoryName().Should().Be(parentPath);
         }
 
         [Test]
@@ -333,6 +357,40 @@ namespace NzbDrone.Common.Test
             result[1].Should().Be(@"Test");
             result[2].Should().Be(@"TV");
             result[3].Should().Be(@"Series Title");
+        }
+
+        [TestCase(@"C:\Test\")]
+        [TestCase(@"C:\Test")]
+        [TestCase(@"C:\Test\TV\")]
+        [TestCase(@"C:\Test\TV")]
+        public void IsPathValid_should_be_true(string path)
+        {
+            path.AsOsAgnostic().IsPathValid(PathValidationType.CurrentOs).Should().BeTrue();
+        }
+
+        [TestCase(@"C:\Test \")]
+        [TestCase(@"C:\Test ")]
+        [TestCase(@"C:\ Test\")]
+        [TestCase(@"C:\ Test")]
+        [TestCase(@"C:\Test \TV")]
+        [TestCase(@"C:\ Test\TV")]
+        [TestCase(@"C:\Test \TV\")]
+        [TestCase(@"C:\ Test\TV\")]
+        [TestCase(@" C:\Test\TV\")]
+        [TestCase(@" C:\Test\TV")]
+
+        public void IsPathValid_should_be_false_on_windows(string path)
+        {
+            WindowsOnly();
+            path.IsPathValid(PathValidationType.CurrentOs).Should().BeFalse();
+        }
+
+        [TestCase(@"")]
+        [TestCase(@"relative/path")]
+        public void IsPathValid_should_be_false_on_unix(string path)
+        {
+            PosixOnly();
+            path.AsOsAgnostic().IsPathValid(PathValidationType.CurrentOs).Should().BeFalse();
         }
     }
 }

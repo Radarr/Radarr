@@ -7,7 +7,7 @@ import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import TableRow from 'Components/Table/TableRow';
 import { icons, kinds } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
-import MovieLanguage from 'Movie/MovieLanguage';
+import MovieLanguages from 'Movie/MovieLanguages';
 import MovieQuality from 'Movie/MovieQuality';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import translate from 'Utilities/String/translate';
@@ -104,7 +104,7 @@ class BlocklistRow extends Component {
             if (name === 'languages') {
               return (
                 <TableRowCell key={name}>
-                  <MovieLanguage
+                  <MovieLanguages
                     languages={languages}
                   />
                 </TableRowCell>

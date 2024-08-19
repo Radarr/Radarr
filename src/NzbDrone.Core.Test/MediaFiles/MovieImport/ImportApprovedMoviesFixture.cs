@@ -6,6 +6,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
@@ -67,8 +68,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
                 .Returns(new List<MovieHistory>());
 
             _downloadClientItem = Builder<DownloadClientItem>.CreateNew()
-                                                             .With(d => d.OutputPath = new OsPath(outputPath))
-                                                             .Build();
+                .With(d => d.OutputPath = new OsPath(outputPath))
+                .Build();
         }
 
         private void GivenNewDownload()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.RootFolders;
@@ -15,11 +16,13 @@ namespace NzbDrone.Core.Movies
     {
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly IRootFolderService _rootFolderService;
+        private readonly Logger _logger;
 
-        public MoviePathBuilder(IBuildFileNames fileNameBuilder, IRootFolderService rootFolderService)
+        public MoviePathBuilder(IBuildFileNames fileNameBuilder, IRootFolderService rootFolderService, Logger logger)
         {
             _fileNameBuilder = fileNameBuilder;
             _rootFolderService = rootFolderService;
+            _logger = logger;
         }
 
         public string BuildPath(Movie movie, bool useExistingRelativeFolder)
@@ -42,7 +45,16 @@ namespace NzbDrone.Core.Movies
         {
             var rootFolderPath = _rootFolderService.GetBestRootFolderPath(movie.Path);
 
-            return rootFolderPath.GetRelativePath(movie.Path);
+            if (rootFolderPath.IsParentPath(movie.Path))
+            {
+                return rootFolderPath.GetRelativePath(movie.Path);
+            }
+
+            var directoryName = movie.Path.GetDirectoryName();
+
+            _logger.Warn("Unable to get relative path for movie path {0}, using movie folder name {1}", movie.Path, directoryName);
+
+            return directoryName;
         }
     }
 }

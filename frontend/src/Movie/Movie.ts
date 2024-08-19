@@ -2,6 +2,13 @@ import ModelBase from 'App/ModelBase';
 import Language from 'Language/Language';
 import { MovieFile } from 'MovieFile/MovieFile';
 
+export type MovieStatus =
+  | 'tba'
+  | 'announced'
+  | 'inCinemas'
+  | 'released'
+  | 'deleted';
+
 export interface Image {
   coverType: string;
   url: string;
@@ -32,7 +39,7 @@ interface Movie extends ModelBase {
   overview: string;
   youTubeTrailerId: string;
   monitored: boolean;
-  status: string;
+  status: MovieStatus;
   title: string;
   titleSlug: string;
   collection: Collection;

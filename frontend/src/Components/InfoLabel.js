@@ -7,7 +7,7 @@ import styles from './InfoLabel.css';
 function InfoLabel(props) {
   const {
     className,
-    title,
+    name,
     kind,
     size,
     outline,
@@ -25,8 +25,8 @@ function InfoLabel(props) {
       )}
       {...otherProps}
     >
-      <div className={styles.title}>
-        {title}
+      <div className={styles.name}>
+        {name}
       </div>
       <div>
         {children}
@@ -37,7 +37,7 @@ function InfoLabel(props) {
 
 InfoLabel.propTypes = {
   className: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   kind: PropTypes.oneOf(kinds.all).isRequired,
   size: PropTypes.oneOf(sizes.all).isRequired,
   outline: PropTypes.bool.isRequired,

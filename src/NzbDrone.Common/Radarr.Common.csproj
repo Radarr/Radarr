@@ -8,8 +8,9 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="NLog" Version="5.2.3" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="5.3.3" />
+    <PackageReference Include="NLog" Version="5.3.3" />
+    <PackageReference Include="NLog.Layouts.ClefJsonLayout" Version="1.0.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.3.12" />
     <PackageReference Include="Npgsql" Version="7.0.7" />
     <PackageReference Include="Sentry" Version="4.0.2" />
     <PackageReference Include="NLog.Targets.Syslog" Version="7.0.0" />

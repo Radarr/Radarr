@@ -129,7 +129,7 @@
     "CompletedDownloadHandling": "Fullført nedlastingshåndtering",
     "Component": "Komponent",
     "Auto": "Auto",
-    "AnnouncedMsg": "Film er annonsert",
+    "AnnouncedMovieDescription": "Film er annonsert",
     "ClickToChangeLanguage": "Klikk for å endre språk",
     "ClickToChangeQuality": "Klikk for å endre kvalitet",
     "ClientPriority": "Klientprioritet",
@@ -312,5 +312,6 @@
     "AddImportListExclusionError": "Ikke mulig å legge til ny betingelse, vennligst prøv igjen",
     "AddQualityProfileError": "Ikke mulig å legge til ny betingelse, vennligst prøv igjen",
     "AddDelayProfileError": "Ikke mulig å legge til ny betingelse, vennligst prøv igjen",
-    "DeleteMovieFolderCountConfirmation": "Er du sikker på at du vil slette formattaggen {0}?"
+    "DeleteMovieFolderCountConfirmation": "Er du sikker på at du vil slette formattaggen {0}?",
+    "DeleteSelectedImportListExclusionsMessageText": "Er du sikker på at du vil slette denne ekskluderingen av importlister?"
 }

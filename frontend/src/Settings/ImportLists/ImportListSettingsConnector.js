@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { testAllImportList } from 'Store/Actions/settingsActions';
+import { testAllImportLists } from 'Store/Actions/settingsActions';
 import ImportListSettings from './ImportListSettings';
 
 function createMapStateToProps() {
@@ -15,7 +15,7 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  dispatchTestAllImportList: testAllImportList
+  dispatchTestAllImportLists: testAllImportLists
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(ImportListSettings);

@@ -543,7 +543,7 @@ export const SET_LIST_MOVIE_TABLE_OPTION = 'discoverMovie/setListMovieTableOptio
 export const SET_LIST_MOVIE_POSTER_OPTION = 'discoverMovie/setListMoviePosterOption';
 export const SET_LIST_MOVIE_OVERVIEW_OPTION = 'discoverMovie/setListMovieOverviewOption';
 
-export const ADD_IMPORT_EXCLUSIONS = 'discoverMovie/addImportExclusions';
+export const ADD_IMPORT_LIST_EXCLUSIONS = 'discoverMovie/addImportListExclusions';
 
 //
 // Action Creators
@@ -563,7 +563,7 @@ export const setListMovieTableOption = createAction(SET_LIST_MOVIE_TABLE_OPTION)
 export const setListMoviePosterOption = createAction(SET_LIST_MOVIE_POSTER_OPTION);
 export const setListMovieOverviewOption = createAction(SET_LIST_MOVIE_OVERVIEW_OPTION);
 
-export const addImportExclusions = createThunk(ADD_IMPORT_EXCLUSIONS);
+export const addImportListExclusions = createThunk(ADD_IMPORT_LIST_EXCLUSIONS);
 
 export const setAddMovieValue = createAction(SET_ADD_MOVIE_VALUE, (payload) => {
   return {
@@ -726,7 +726,7 @@ export const actionHandlers = handleThunks({
     });
   },
 
-  [ADD_IMPORT_EXCLUSIONS]: function(getState, payload, dispatch) {
+  [ADD_IMPORT_LIST_EXCLUSIONS]: function(getState, payload, dispatch) {
 
     const ids = payload.ids;
     const items = getState().discoverMovie.items;
@@ -754,7 +754,7 @@ export const actionHandlers = handleThunks({
 
     promise.done((data) => {
       dispatch(batchActions([
-        ...data.map((item) => updateItem({ section: 'settings.importExclusions', ...item })),
+        ...data.map((item) => updateItem({ section: 'settings.importListExclusions', ...item })),
 
         ...data.map((item) => updateItem({ section, id: item.tmdbId, isExcluded: true })),
 

@@ -2,10 +2,6 @@
 // Please do not change this file!
 interface CssExports {
   'actions': string;
-  'importExclusion': string;
-  'movieTitle': string;
-  'movieYear': string;
-  'tmdbId': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

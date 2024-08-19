@@ -8,6 +8,7 @@ interface CssExports {
   'genres': string;
   'icons': string;
   'links': string;
+  'originalLanguage': string;
   'overlay': string;
   'overview': string;
   'poster': string;

@@ -273,9 +273,9 @@ function ManageImportListsModalContent(
 
       <ManageImportListsEditModal
         isOpen={isEditModalOpen}
+        importListIds={selectedIds}
         onModalClose={onEditModalClose}
         onSavePress={onSavePress}
-        importListIds={selectedIds}
       />
 
       <TagsModal

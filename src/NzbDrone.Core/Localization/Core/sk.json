@@ -125,7 +125,7 @@
     "CheckDownloadClientForDetails": "ďalšie podrobnosti nájdete v klientovi na sťahovanie",
     "Collections": "Kolekcie",
     "CountCollectionsSelected": "{count} Označených kolekcií",
-    "AnnouncedMsg": "Film je ohlásený",
+    "AnnouncedMovieDescription": "Film je ohlásený",
     "ChooseImportMode": "Zvoliť Import mód",
     "ApplicationURL": "URL aplikácie",
     "Auto": "Automaticky",
@@ -291,5 +291,6 @@
     "EditDownloadClientImplementation": "Pridať klienta pre sťahovanie - {implementationName}",
     "EditConnectionImplementation": "Pridať podmienku - {implementationName}",
     "AddDelayProfileError": "Nie je možné pridať novú podmienku, skúste to znova.",
-    "AddQualityProfileError": "Nie je možné pridať novú podmienku, skúste to znova."
+    "AddQualityProfileError": "Nie je možné pridať novú podmienku, skúste to znova.",
+    "DeleteSelectedImportListExclusionsMessageText": "Naozaj chcete toto vylúčenie importného zoznamu zmazať?"
 }

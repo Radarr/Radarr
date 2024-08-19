@@ -105,6 +105,8 @@ namespace NzbDrone.Core.Parser
         // Regex to unbracket alternative titles.
         private static readonly Regex BracketedAlternativeTitleRegex = new Regex(@"(.*) \([ ]*AKA[ ]+(.*)\)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        private static readonly Regex NormalizeAlternativeTitleRegex = new Regex(@"[ ]+(?:A\.K\.A\.)[ ]+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private static readonly Regex NormalizeRegex = new Regex(@"((?:\b|_)(?<!^|[^a-zA-Z0-9_']\w[^a-zA-Z0-9_'])(a(?!$|[^a-zA-Z0-9_']\w[^a-zA-Z0-9_'])|an|the|and|or|of)(?!$)(?:\b|_))|\W|_",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -157,7 +159,7 @@ namespace NzbDrone.Core.Parser
 
         // Handle Exception Release Groups that don't follow -RlsGrp; Manual List
         // name only...BE VERY CAREFUL WITH THIS, HIGH CHANCE OF FALSE POSITIVES
-        private static readonly Regex ExceptionReleaseGroupRegexExact = new Regex(@"\b(?<releasegroup>KRaLiMaRKo|E\.N\.D|D\-Z0N3|Koten_Gars|BluDragon|ZØNEHD|Tigole|HQMUX|VARYG|YIFY|YTS(.(MX|LT|AG))?|TMd|Eml HDTeam|LMain)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex ExceptionReleaseGroupRegexExact = new Regex(@"\b(?<releasegroup>KRaLiMaRKo|E\.N\.D|D\-Z0N3|Koten_Gars|BluDragon|ZØNEHD|Tigole|HQMUX|VARYG|YIFY|YTS(.(MX|LT|AG))?|TMd|Eml HDTeam|LMain|DarQ)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex WordDelimiterRegex = new Regex(@"(\s|\.|,|_|-|=|'|\|)+", RegexOptions.Compiled);
         private static readonly Regex SpecialCharRegex = new Regex(@"(\&|\:|\\|\/)+", RegexOptions.Compiled);
@@ -590,6 +592,7 @@ namespace NzbDrone.Core.Parser
             }
 
             var movieName = matchCollection[0].Groups["title"].Value.Replace('_', ' ');
+            movieName = NormalizeAlternativeTitleRegex.Replace(movieName, " AKA ");
             movieName = RequestInfoRegex.Replace(movieName, "").Trim(' ');
 
             var parts = movieName.Split('.');

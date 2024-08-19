@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { useSelect } from 'App/SelectContext';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import { icons } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 interface MovieIndexSelectAllButtonProps {
   label: string;
@@ -30,7 +31,7 @@ function MovieIndexSelectAllButton(props: MovieIndexSelectAllButtonProps) {
 
   return isSelectMode ? (
     <PageToolbarButton
-      label={allSelected ? 'Unselect All' : 'Select All'}
+      label={allSelected ? translate('UnselectAll') : translate('SelectAll')}
       iconName={icon}
       onPress={onPress}
     />

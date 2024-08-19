@@ -52,6 +52,7 @@ class SelectInput extends Component {
             const {
               key,
               value: optionValue,
+              isDisabled: optionIsDisabled = false,
               ...otherOptionProps
             } = option;
 
@@ -59,6 +60,7 @@ class SelectInput extends Component {
               <option
                 key={key}
                 value={key}
+                disabled={optionIsDisabled}
                 {...otherOptionProps}
               >
                 {typeof optionValue === 'function' ? optionValue() : optionValue}

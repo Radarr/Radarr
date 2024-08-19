@@ -7,7 +7,7 @@ import firstCharToUpper from 'Utilities/String/firstCharToUpper';
 import translate from 'Utilities/String/translate';
 import styles from './MovieStatusLabel.css';
 
-function getMovieStatus(hasFile, isMonitored, isAvailable, queueItem = false) {
+function getMovieStatus(status, hasFile, isMonitored, isAvailable, queueItem = false) {
   if (queueItem) {
     const queueStatus = queueItem.status;
     const queueState = queueItem.trackedDownloadStatus;
@@ -26,6 +26,10 @@ function getMovieStatus(hasFile, isMonitored, isAvailable, queueItem = false) {
     return 'ended';
   }
 
+  if (status === 'deleted') {
+    return 'deleted';
+  }
+
   if (isAvailable && !isMonitored && !hasFile) {
     return 'missingUnmonitored';
   }
@@ -39,6 +43,7 @@ function getMovieStatus(hasFile, isMonitored, isAvailable, queueItem = false) {
 
 function MovieStatusLabel(props) {
   const {
+    status,
     hasMovieFiles,
     monitored,
     isAvailable,
@@ -47,17 +52,15 @@ function MovieStatusLabel(props) {
     colorImpairedMode
   } = props;
 
-  let status = getMovieStatus(hasMovieFiles, monitored, isAvailable, queueItem);
-  let statusClass = status;
+  let movieStatus = getMovieStatus(status, hasMovieFiles, monitored, isAvailable, queueItem);
+  let statusClass = movieStatus;
 
-  if (status === 'availNotMonitored' || status === 'ended') {
-    status = 'downloaded';
-  }
-  if (status === 'missingMonitored' || status === 'missingUnmonitored') {
-    status = 'missing';
-  }
-  if (status === 'continuing') {
-    status = 'notAvailable';
+  if (movieStatus === 'availNotMonitored' || movieStatus === 'ended') {
+    movieStatus = 'downloaded';
+  } else if (movieStatus === 'missingMonitored' || movieStatus === 'missingUnmonitored') {
+    movieStatus = 'missing';
+  } else if (movieStatus === 'continuing') {
+    movieStatus = 'notAvailable';
   }
 
   if (queueItem) {
@@ -83,6 +86,9 @@ function MovieStatusLabel(props) {
       case 'missingUnmonitored':
         kind = kinds.WARNING;
         break;
+      case 'deleted':
+        kind = kinds.INVERSE;
+        break;
       default:
     }
 
@@ -92,7 +98,7 @@ function MovieStatusLabel(props) {
         size={sizes.LARGE}
         colorImpairedMode={colorImpairedMode}
       >
-        {translate(firstCharToUpper(status))}
+        {translate(firstCharToUpper(movieStatus))}
       </Label>
     );
   }
@@ -101,18 +107,24 @@ function MovieStatusLabel(props) {
     <span
       className={styles[statusClass]}
     >
-      {translate(firstCharToUpper(status))}
+      {translate(firstCharToUpper(movieStatus))}
     </span>
   );
 }
 
 MovieStatusLabel.propTypes = {
+  status: PropTypes.string.isRequired,
   hasMovieFiles: PropTypes.bool.isRequired,
   monitored: PropTypes.bool.isRequired,
   isAvailable: PropTypes.bool.isRequired,
   queueItem: PropTypes.object,
   useLabel: PropTypes.bool,
   colorImpairedMode: PropTypes.bool
+};
+
+MovieStatusLabel.defaultProps = {
+  useLabel: false,
+  colorImpairedMode: false
 };
 
 export default MovieStatusLabel;

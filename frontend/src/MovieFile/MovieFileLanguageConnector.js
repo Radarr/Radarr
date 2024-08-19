@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import MovieLanguage from 'Movie/MovieLanguage';
+import MovieLanguages from 'Movie/MovieLanguages';
 import createMovieFileSelector from 'Store/Selectors/createMovieFileSelector';
 
 function createMapStateToProps() {
@@ -14,4 +14,4 @@ function createMapStateToProps() {
   );
 }
 
-export default connect(createMapStateToProps)(MovieLanguage);
+export default connect(createMapStateToProps)(MovieLanguages);

@@ -250,6 +250,7 @@ namespace NzbDrone.Core.Movies
 
         public SqlBuilder MoviesWithoutFilesBuilder() => Builder()
             .Where<Movie>(x => x.MovieFileId == 0)
+            .Where<Movie>(m => m.MovieMetadata.Value.Year > 0)
             .GroupBy<Movie>(m => m.Id)
             .GroupBy<MovieMetadata>(m => m.Id);
 

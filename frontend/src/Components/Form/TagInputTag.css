@@ -7,17 +7,11 @@
 }
 
 .link {
-  composes: link from '~Components/Link/Link.css';
-
   max-width: 100%;
-  line-height: 1px;
 }
 
 .linkWithEdit {
-  composes: link from '~Components/Link/Link.css';
-
   max-width: calc(100% - 9px - 4px - 2px);
-  line-height: 1px;
 }
 
 .editContainer {
@@ -36,5 +30,6 @@
 .label {
   composes: label from '~Components/Label.css';
 
+  display: flex;
   max-width: 100%;
 }

@@ -7,6 +7,7 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.DiskSpace
 {
@@ -18,14 +19,16 @@ namespace NzbDrone.Core.DiskSpace
     public class DiskSpaceService : IDiskSpaceService
     {
         private readonly IMovieService _movieService;
+        private readonly IRootFolderService _rootFolderService;
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
         private static readonly Regex _regexSpecialDrive = new Regex("^/var/lib/(docker|rancher|kubelet)(/|$)|^/(boot|etc)(/|$)|/docker(/var)?/aufs(/|$)", RegexOptions.Compiled);
 
-        public DiskSpaceService(IMovieService movieService, IDiskProvider diskProvider, Logger logger)
+        public DiskSpaceService(IMovieService movieService, IRootFolderService rootFolderService, IDiskProvider diskProvider, Logger logger)
         {
             _movieService = movieService;
+            _rootFolderService = rootFolderService;
             _diskProvider = diskProvider;
             _logger = logger;
         }
@@ -43,9 +46,15 @@ namespace NzbDrone.Core.DiskSpace
 
         private IEnumerable<string> GetMoviesRootPaths()
         {
+            // Get all movie paths and find the correct root folder for each. For each unique root folder path,
+            // ensure the path exists and get its path root and return all unique path roots.
+
             return _movieService.AllMoviePaths()
-                .Where(s => s.Value.IsPathValid(PathValidationType.CurrentOs) && _diskProvider.FolderExists(s.Value))
-                .Select(s => _diskProvider.GetPathRoot(s.Value))
+                .Where(s => s.Value.IsPathValid(PathValidationType.CurrentOs))
+                .Select(s => _rootFolderService.GetBestRootFolderPath(s.Value))
+                .Distinct()
+                .Where(r => _diskProvider.FolderExists(r))
+                .Select(r => _diskProvider.GetPathRoot(r))
                 .Distinct();
         }
 

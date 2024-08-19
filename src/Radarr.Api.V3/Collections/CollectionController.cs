@@ -31,7 +31,7 @@ namespace Radarr.Api.V3.Collections
         private readonly IMovieService _movieService;
         private readonly IMovieMetadataService _movieMetadataService;
         private readonly IMovieTranslationService _movieTranslationService;
-        private readonly IImportExclusionsService _importExclusionService;
+        private readonly IImportListExclusionService _importListExclusionService;
         private readonly IConfigService _configService;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly INamingConfigService _namingService;
@@ -42,7 +42,7 @@ namespace Radarr.Api.V3.Collections
                                     IMovieService movieService,
                                     IMovieMetadataService movieMetadataService,
                                     IMovieTranslationService movieTranslationService,
-                                    IImportExclusionsService importExclusionsService,
+                                    IImportListExclusionService importListExclusionService,
                                     IConfigService configService,
                                     IBuildFileNames fileNameBuilder,
                                     INamingConfigService namingService,
@@ -53,7 +53,7 @@ namespace Radarr.Api.V3.Collections
             _movieService = movieService;
             _movieMetadataService = movieMetadataService;
             _movieTranslationService = movieTranslationService;
-            _importExclusionService = importExclusionsService;
+            _importListExclusionService = importListExclusionService;
             _configService = configService;
             _fileNameBuilder = fileNameBuilder;
             _namingService = namingService;
@@ -158,7 +158,7 @@ namespace Radarr.Api.V3.Collections
             var configLanguage = (Language)_configService.MovieInfoLanguage;
 
             var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
-            var listExclusions = _importExclusionService.GetAllExclusions();
+            var listExclusions = _importListExclusionService.All();
 
             var allCollectionMovies = _movieMetadataService.GetMoviesWithCollections()
                 .GroupBy(x => x.CollectionTmdbId)
@@ -209,7 +209,7 @@ namespace Radarr.Api.V3.Collections
             var configLanguage = (Language)_configService.MovieInfoLanguage;
 
             var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
-            var listExclusions = _importExclusionService.GetAllExclusions();
+            var listExclusions = _importListExclusionService.All();
 
             foreach (var movie in _movieMetadataService.GetMoviesByCollectionTmdbId(collection.TmdbId))
             {

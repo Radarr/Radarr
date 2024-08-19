@@ -21,6 +21,7 @@ interface CssExports {
   'monitorToggleButton': string;
   'movieNavigationButton': string;
   'movieNavigationButtons': string;
+  'originalLanguage': string;
   'overview': string;
   'path': string;
   'poster': string;

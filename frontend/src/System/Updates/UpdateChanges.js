@@ -18,12 +18,14 @@ class UpdateChanges extends Component {
       return null;
     }
 
+    const uniqueChanges = [...new Set(changes)];
+
     return (
       <div>
         <div className={styles.title}>{title}</div>
         <ul>
           {
-            changes.map((change, index) => {
+            uniqueChanges.map((change, index) => {
               const checkChange = change.replace(/#\d{4,5}\b/g, (match, contents) => {
                 return `[${match}](https://github.com/Radarr/Radarr/issues/${match.substring(1)})`;
               });

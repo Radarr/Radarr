@@ -8,7 +8,7 @@ import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRow from 'Components/Table/TableRow';
 import { icons, kinds } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
-import MovieLanguage from 'Movie/MovieLanguage';
+import MovieLanguages from 'Movie/MovieLanguages';
 import MovieQuality from 'Movie/MovieQuality';
 import formatDateTime from 'Utilities/Date/formatDateTime';
 import formatCustomFormatScore from 'Utilities/Number/formatCustomFormatScore';
@@ -89,7 +89,7 @@ class MovieHistoryRow extends Component {
         </TableRowCell>
 
         <TableRowCell>
-          <MovieLanguage
+          <MovieLanguages
             languages={languages}
           />
         </TableRowCell>

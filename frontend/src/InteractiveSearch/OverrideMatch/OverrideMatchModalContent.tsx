@@ -15,7 +15,7 @@ import SelectMovieModal from 'InteractiveImport/Movie/SelectMovieModal';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
 import Language from 'Language/Language';
 import Movie from 'Movie/Movie';
-import MovieLanguage from 'Movie/MovieLanguage';
+import MovieLanguages from 'Movie/MovieLanguages';
 import MovieQuality from 'Movie/MovieQuality';
 import { QualityModel } from 'Quality/Quality';
 import { grabRelease } from 'Store/Actions/releaseActions';
@@ -215,7 +215,7 @@ function OverrideMatchModalContent(props: OverrideMatchModalContentProps) {
             data={
               <OverrideMatchData
                 value={
-                  <MovieLanguage
+                  <MovieLanguages
                     className={styles.label}
                     languages={languages}
                   />

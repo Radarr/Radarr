@@ -134,10 +134,12 @@ function getInfoRowProps(
   }
 
   if (name === 'sizeOnDisk') {
+    const { sizeOnDisk = 0 } = props;
+
     return {
       title: 'Size on Disk',
       iconName: icons.DRIVE,
-      label: formatBytes(props.sizeOnDisk),
+      label: formatBytes(sizeOnDisk),
     };
   }
 

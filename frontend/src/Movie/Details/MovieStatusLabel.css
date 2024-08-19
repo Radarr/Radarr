@@ -27,3 +27,9 @@
   padding-left: 2px;
   border-left: 4px solid var(--warningColor);
 }
+
+.deleted {
+  padding-left: 2px;
+  border-left: 4px solid var(--inverseLabelColor);
+  color: var(--dangerColor);
+}

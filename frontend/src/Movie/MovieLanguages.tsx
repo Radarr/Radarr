@@ -1,18 +1,21 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import Label from 'Components/Label';
 import Popover from 'Components/Tooltip/Popover';
 import { kinds, tooltipPositions } from 'Helpers/Props';
+import Language from 'Language/Language';
 import translate from 'Utilities/String/translate';
 
-function MovieLanguage(props) {
-  const {
-    className,
-    languages,
-    isCutoffNotMet
-  } = props;
+interface MovieLanguagesProps {
+  className?: string;
+  languages: Language[];
+  isCutoffNotMet?: boolean;
+}
 
-  if (!languages) {
+function MovieLanguages(props: MovieLanguagesProps) {
+  const { className, languages, isCutoffNotMet = true } = props;
+
+  // TODO: Typescript - Remove once everything is converted
+  if (!languages || languages.length === 0) {
     return null;
   }
 
@@ -41,15 +44,9 @@ function MovieLanguage(props) {
       title={translate('Languages')}
       body={
         <ul>
-          {
-            languages.map((language) => {
-              return (
-                <li key={language.id}>
-                  {language.name}
-                </li>
-              );
-            })
-          }
+          {languages.map((language) => (
+            <li key={language.id}>{language.name}</li>
+          ))}
         </ul>
       }
       position={tooltipPositions.LEFT}
@@ -57,14 +54,4 @@ function MovieLanguage(props) {
   );
 }
 
-MovieLanguage.propTypes = {
-  className: PropTypes.string,
-  languages: PropTypes.arrayOf(PropTypes.object),
-  isCutoffNotMet: PropTypes.bool
-};
-
-MovieLanguage.defaultProps = {
-  isCutoffNotMet: true
-};
-
-export default MovieLanguage;
+export default MovieLanguages;

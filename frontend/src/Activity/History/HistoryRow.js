@@ -7,7 +7,7 @@ import TableRow from 'Components/Table/TableRow';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import { icons, tooltipPositions } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
-import MovieLanguage from 'Movie/MovieLanguage';
+import MovieLanguages from 'Movie/MovieLanguages';
 import MovieQuality from 'Movie/MovieQuality';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import formatCustomFormatScore from 'Utilities/Number/formatCustomFormatScore';
@@ -113,7 +113,7 @@ class HistoryRow extends Component {
             if (name === 'languages') {
               return (
                 <TableRowCell key={name}>
-                  <MovieLanguage
+                  <MovieLanguages
                     languages={languages}
                   />
                 </TableRowCell>

@@ -5,6 +5,7 @@ import MonitorToggleButton from 'Components/MonitorToggleButton';
 import VirtualTableRowCell from 'Components/Table/Cells/TableRowCell';
 import { icons } from 'Helpers/Props';
 import getMovieStatusDetails from 'Movie/getMovieStatusDetails';
+import { MovieStatus } from 'Movie/Movie';
 import { toggleMovieMonitored } from 'Store/Actions/movieActions';
 import translate from 'Utilities/String/translate';
 import styles from './MovieStatusCell.css';
@@ -13,7 +14,7 @@ interface MovieStatusCellProps {
   className: string;
   movieId: number;
   monitored: boolean;
-  status: string;
+  status: MovieStatus;
   isSelectMode: boolean;
   isSaving: boolean;
   component?: React.ElementType;

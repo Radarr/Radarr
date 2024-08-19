@@ -1,24 +1,6 @@
-.importListExclusionsHeader {
-  display: flex;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
+.actions {
+  composes: headerCell from '~Components/Table/TableHeaderCell.css';
 
-.title {
-  flex: 0 1 600px;
-}
-
-.tmdbId,
-.movieYear {
-  flex: 0 0 70px;
-}
-
-.addImportExclusion {
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 10px;
-}
-
-.addButton {
-  text-align: center;
+  width: 35px;
+  white-space: nowrap;
 }

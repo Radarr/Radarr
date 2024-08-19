@@ -62,6 +62,7 @@ class AddNewMovieSearchResult extends Component {
       titleSlug,
       year,
       studio,
+      originalLanguage,
       genres,
       status,
       overview,
@@ -70,7 +71,7 @@ class AddNewMovieSearchResult extends Component {
       images,
       existingMovieId,
       isExistingMovie,
-      isExclusionMovie,
+      isExcluded,
       isSmallScreen,
       colorImpairedMode,
       id,
@@ -166,7 +167,7 @@ class AddNewMovieSearchResult extends Component {
                 }
 
                 {
-                  isExclusionMovie &&
+                  isExcluded &&
                     <Icon
                       className={styles.exclusionIcon}
                       name={icons.DANGER}
@@ -213,17 +214,31 @@ class AddNewMovieSearchResult extends Component {
               }
 
               {
-                !!studio &&
+                originalLanguage?.name ?
+                  <Label size={sizes.LARGE}>
+                    <Icon
+                      name={icons.LANGUAGE}
+                      size={13}
+                    />
+                    <span className={styles.originalLanguage}>
+                      {originalLanguage.name}
+                    </span>
+                  </Label> :
+                  null
+              }
+
+              {
+                studio ?
                   <Label size={sizes.LARGE}>
                     <Icon
                       name={icons.STUDIO}
                       size={13}
                     />
-
                     <span className={styles.studio}>
                       {studio}
                     </span>
-                  </Label>
+                  </Label> :
+                  null
               }
 
               {
@@ -233,7 +248,6 @@ class AddNewMovieSearchResult extends Component {
                       name={icons.GENRE}
                       size={13}
                     />
-
                     <span className={styles.genres}>
                       {genres.slice(0, 3).join(', ')}
                     </span>
@@ -271,6 +285,7 @@ class AddNewMovieSearchResult extends Component {
               {
                 isExistingMovie && isSmallScreen &&
                   <MovieStatusLabel
+                    status={status}
                     hasMovieFiles={hasMovieFile}
                     monitored={monitored}
                     isAvailable={isAvailable}
@@ -311,6 +326,7 @@ AddNewMovieSearchResult.propTypes = {
   titleSlug: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
   studio: PropTypes.string,
+  originalLanguage: PropTypes.object,
   genres: PropTypes.arrayOf(PropTypes.string),
   status: PropTypes.string.isRequired,
   overview: PropTypes.string,
@@ -319,7 +335,7 @@ AddNewMovieSearchResult.propTypes = {
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   existingMovieId: PropTypes.number,
   isExistingMovie: PropTypes.bool.isRequired,
-  isExclusionMovie: PropTypes.bool.isRequired,
+  isExcluded: PropTypes.bool,
   isSmallScreen: PropTypes.bool.isRequired,
   id: PropTypes.number,
   monitored: PropTypes.bool.isRequired,
@@ -333,7 +349,8 @@ AddNewMovieSearchResult.propTypes = {
 };
 
 AddNewMovieSearchResult.defaultProps = {
-  genres: []
+  genres: [],
+  isExcluded: false
 };
 
 export default AddNewMovieSearchResult;
