@@ -10848,6 +10848,11 @@
             "format": "date-time",
             "nullable": true
           },
+          "releaseDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "physicalReleaseNote": {
             "type": "string",
             "nullable": true
