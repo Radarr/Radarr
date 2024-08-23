@@ -5,7 +5,7 @@ import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import TableRow from 'Components/Table/TableRow';
 import movieEntities from 'Movie/movieEntities';
-import MovieSearchCellConnector from 'Movie/MovieSearchCellConnector';
+import MovieSearchCell from 'Movie/MovieSearchCell';
 import MovieStatusConnector from 'Movie/MovieStatusConnector';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import MovieFileLanguageConnector from 'MovieFile/MovieFileLanguageConnector';
@@ -124,7 +124,7 @@ function CutoffUnmetRow(props) {
 
           if (name === 'actions') {
             return (
-              <MovieSearchCellConnector
+              <MovieSearchCell
                 key={name}
                 movieId={id}
                 movieTitle={title}

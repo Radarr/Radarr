@@ -27,7 +27,7 @@ import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import getMovieStatusDetails from 'Movie/getMovieStatusDetails';
 import MovieHistoryModal from 'Movie/History/MovieHistoryModal';
 import MoviePoster from 'Movie/MoviePoster';
-import MovieInteractiveSearchModalConnector from 'Movie/Search/MovieInteractiveSearchModalConnector';
+import MovieInteractiveSearchModal from 'Movie/Search/MovieInteractiveSearchModal';
 import MovieFileEditorTable from 'MovieFile/Editor/MovieFileEditorTable';
 import ExtraFileTable from 'MovieFile/Extras/ExtraFileTable';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
@@ -740,7 +740,7 @@ class MovieDetails extends Component {
             onModalClose={this.onInteractiveImportModalClose}
           />
 
-          <MovieInteractiveSearchModalConnector
+          <MovieInteractiveSearchModal
             isOpen={isInteractiveSearchModalOpen}
             movieId={id}
             movieTitle={title}
