@@ -35,6 +35,7 @@
 .inCinemas,
 .physicalRelease,
 .digitalRelease,
+.releaseDate,
 .genres {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 

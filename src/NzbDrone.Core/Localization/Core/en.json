@@ -1380,6 +1380,7 @@
   "RelativePath": "Relative Path",
   "Release": "Release",
   "ReleaseBranchCheckOfficialBranchMessage": "Branch {0} is not a valid {appName} release branch, you will not receive updates",
+  "ReleaseDate": "Release Date",
   "ReleaseDates": "Release Dates",
   "ReleaseGroup": "Release Group",
   "ReleaseGroupFootNote": "Optionally control truncation to a maximum number of bytes including ellipsis (`...`). Truncating from the end (e.g. `{Release Group:30}`) or the beginning (e.g. `{Release Group:-30}`) are both supported.`).",

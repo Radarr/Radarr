@@ -75,6 +75,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     inCinemas,
     physicalRelease,
     digitalRelease,
+    releaseDate,
     path,
     movieFile,
     ratings,
@@ -141,20 +142,6 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     width: `${posterWidth}px`,
     height: `${posterHeight}px`,
   };
-
-  let releaseDate = '';
-  let releaseDateType = '';
-  if (physicalRelease && digitalRelease) {
-    releaseDate =
-      physicalRelease < digitalRelease ? physicalRelease : digitalRelease;
-    releaseDateType = physicalRelease < digitalRelease ? 'Released' : 'Digital';
-  } else if (physicalRelease && !digitalRelease) {
-    releaseDate = physicalRelease;
-    releaseDateType = 'Released';
-  } else if (digitalRelease && !physicalRelease) {
-    releaseDate = digitalRelease;
-    releaseDateType = 'Digital';
-  }
 
   return (
     <div className={styles.content}>
@@ -262,10 +249,8 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
       ) : null}
 
       {showReleaseDate && releaseDate ? (
-        <div className={styles.title}>
-          <Icon
-            name={releaseDateType === 'Digital' ? icons.MOVIE_FILE : icons.DISC}
-          />{' '}
+        <div className={styles.title} title={translate('ReleaseDate')}>
+          <Icon name={icons.CALENDAR} />{' '}
           {getRelativeDate(releaseDate, shortDateFormat, showRelativeDates, {
             timeFormat,
             timeForToday: false,
@@ -314,6 +299,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         inCinemas={inCinemas}
         physicalRelease={physicalRelease}
         digitalRelease={digitalRelease}
+        releaseDate={releaseDate}
         ratings={ratings}
         sizeOnDisk={sizeOnDisk}
         sortKey={sortKey}

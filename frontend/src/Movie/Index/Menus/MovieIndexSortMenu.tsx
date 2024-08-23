@@ -106,7 +106,7 @@ function MovieIndexSortMenu(props: MovieIndexSortMenuProps) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          {translate('ReleaseDates')}
+          {translate('ReleaseDate')}
         </SortMenuItem>
 
         <SortMenuItem

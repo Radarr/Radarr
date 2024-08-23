@@ -218,6 +218,7 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
         break;
       case 'digitalRelease':
       case 'physicalRelease':
+      case 'releaseDate':
         if (!showReleaseDate) {
           heights.push(19);
         }

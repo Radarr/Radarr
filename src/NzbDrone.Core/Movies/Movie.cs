@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
@@ -115,6 +116,30 @@ namespace NzbDrone.Core.Movies
             }
 
             return DateTime.UtcNow >= minimumAvailabilityDate.AddDays(delay);
+        }
+
+        public DateTime? GetReleaseDate()
+        {
+            if (MinimumAvailability is MovieStatusType.TBA or MovieStatusType.Announced)
+            {
+                return new[] { MovieMetadata.Value.InCinemas, MovieMetadata.Value.DigitalRelease, MovieMetadata.Value.PhysicalRelease }
+                    .Where(x => x.HasValue)
+                    .Min();
+            }
+
+            if (MinimumAvailability == MovieStatusType.InCinemas && MovieMetadata.Value.InCinemas.HasValue)
+            {
+                return MovieMetadata.Value.InCinemas.Value;
+            }
+
+            if (MovieMetadata.Value.DigitalRelease.HasValue || MovieMetadata.Value.PhysicalRelease.HasValue)
+            {
+                return new[] { MovieMetadata.Value.DigitalRelease, MovieMetadata.Value.PhysicalRelease }
+                    .Where(x => x.HasValue)
+                    .Min();
+            }
+
+            return MovieMetadata.Value.InCinemas?.AddDays(90);
         }
 
         public override string ToString()
