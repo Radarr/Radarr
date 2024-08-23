@@ -1379,5 +1379,8 @@
     "DeleteSelectedMovies": "Suprimeix les sèries seleccionades",
     "NotificationsPlexSettingsServer": "Servidor",
     "Any": "Qualsevol",
-    "DeleteSelectedImportListExclusionsMessageText": "Esteu segur que voleu suprimir aquesta exclusió de la llista d'importació?"
+    "DeleteSelectedImportListExclusionsMessageText": "Esteu segur que voleu suprimir aquesta exclusió de la llista d'importació?",
+    "DeleteSelectedCustomFormats": "Suprimeix el format personalitzat",
+    "DeleteSelectedCustomFormatsMessageText": "Esteu segur que voleu suprimir {count} llista(es) d'importació seleccionada(es)?",
+    "ReleaseDate": "Dates de llançament"
 }

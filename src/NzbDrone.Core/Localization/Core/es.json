@@ -1797,5 +1797,14 @@
     "DeleteSelected": "Borrar seleccionados",
     "DeleteSelectedImportListExclusionsMessageText": "¿Estás seguro que quieres borrar las exclusiones de listas de importación seleccionadas?",
     "ProgressBarProgress": "Barra de progreso al {progress}%",
-    "InvalidMovieInfoLanguageLanguage": "Tu idioma de información de película tiene un valor inválido, corrígelo y guarda tus opciones"
+    "InvalidMovieInfoLanguageLanguage": "Tu idioma de información de película tiene un valor inválido, corrígelo y guarda tus opciones",
+    "LogSizeLimit": "Límite de tamaño de registro",
+    "LogSizeLimitHelpText": "Máximo tamaño de archivo de registro en MB antes de archivarlo. Predeterminado es 1MB.",
+    "EditSelectedCustomFormats": "Editar formatos personalizados seleccionados",
+    "CountCustomFormatsSelected": "{count} formato(s) personalizado(s) seleccionado(s)",
+    "ManageCustomFormats": "Administrar formatos personalizados",
+    "NoCustomFormatsFound": "Ningún formato personalizado encontrado",
+    "DeleteSelectedCustomFormats": "Eliminar formato personalizado",
+    "DeleteSelectedCustomFormatsMessageText": "¿Estás seguro que quieres eliminar {count} lista(s) de importación seleccionada(s)?",
+    "ReleaseDate": "Fechas de Estreno"
 }

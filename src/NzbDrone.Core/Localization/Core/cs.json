@@ -1193,5 +1193,8 @@
     "DownloadClientSettingsUrlBaseHelpText": "Přidá předponu do {connectionName} url, jako např. {url}",
     "Any": "Jakákoliv",
     "BlocklistOnlyHint": "Blokovat a nehledat náhradu",
-    "DeleteSelectedImportListExclusionsMessageText": "Opravdu chcete toto vyloučení importního seznamu smazat?"
+    "DeleteSelectedImportListExclusionsMessageText": "Opravdu chcete toto vyloučení importního seznamu smazat?",
+    "DeleteSelectedCustomFormats": "Odstranění vlastního formátu",
+    "DeleteSelectedCustomFormatsMessageText": "Opravdu chcete smazat {count} vybraných seznamů k importu?",
+    "ReleaseDate": "Datum vydání"
 }

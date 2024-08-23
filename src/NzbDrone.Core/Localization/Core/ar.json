@@ -1068,5 +1068,7 @@
     "DeleteMovieFoldersHelpText": "احذف مجلد الفيلم ومحتوياته",
     "DeleteSelectedMovies": "حذف ملفات الأفلام المحددة",
     "MovieFileDeletedTooltip": "عند حذف ملف الفيلم",
-    "DeleteSelectedImportListExclusionsMessageText": "هل أنت متأكد أنك تريد حذف استثناء قائمة الاستيراد؟"
+    "DeleteSelectedImportListExclusionsMessageText": "هل أنت متأكد أنك تريد حذف استثناء قائمة الاستيراد؟",
+    "DeleteSelectedCustomFormats": "حذف التنسيق المخصص",
+    "ReleaseDate": "يوم الاصدار"
 }

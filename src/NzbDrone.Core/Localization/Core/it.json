@@ -1455,5 +1455,8 @@
     "Any": "Qualunque",
     "DeleteSelected": "Elimina Selezionati",
     "DeleteSelectedImportListExclusionsMessageText": "Sei sicuro di voler cancellare questa lista di esclusioni delle importazioni?",
-    "ProgressBarProgress": "Barra Progressi al {progress}%"
+    "ProgressBarProgress": "Barra Progressi al {progress}%",
+    "DeleteSelectedCustomFormatsMessageText": "Sei sicuro di voler eliminare {count} applicazione(i) selezionata(e)?",
+    "DeleteSelectedCustomFormats": "Cancella Formato Personalizzato",
+    "ReleaseDate": "Date di rilascio"
 }

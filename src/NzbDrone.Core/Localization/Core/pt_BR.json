@@ -16,7 +16,7 @@
     "IndexerStatusCheckAllClientMessage": "Todos os indexadores estão indisponíveis devido a falhas",
     "IndexersSettingsSummary": "Indexadores e restrições de lançamento",
     "IndexerSettings": "Configurações do indexador",
-    "IndexerSearchCheckNoInteractiveMessage": "Nenhum indexador disponível com a Pesquisa Interativa habilitada, {appName} não fornecerá resultados de pesquisa interativas",
+    "IndexerSearchCheckNoInteractiveMessage": "Nenhum indexador disponível com a Pesquisa Interativa habilitada, {appName} não fornecerá resultados para pesquisas interativas",
     "IndexerSearchCheckNoAvailableIndexersMessage": "Todos os indexadores com capacidade de pesquisa estão temporariamente indisponíveis devido a erros recentes do indexador",
     "IndexerSearchCheckNoAutomaticMessage": "Nenhum indexador disponível com a Pesquisa Automática habilitada, {appName} não fornecerá nenhum resultado de pesquisa automática",
     "Indexers": "Indexadores",
@@ -1796,5 +1796,15 @@
     "ShowTagsHelpText": "Mostrar etiquetas abaixo do pôster",
     "DeleteSelected": "Excluir Selecionado",
     "DeleteSelectedImportListExclusionsMessageText": "Tem certeza de que deseja excluir as listas de importação selecionadas das exclusões?",
-    "ProgressBarProgress": "Barra de progresso em {progress}%"
+    "ProgressBarProgress": "Barra de progresso em {progress}%",
+    "InvalidMovieInfoLanguageLanguage": "O Idioma das Informações do Filme está definido com um valor inválido, corrija-o e salve suas configurações",
+    "LogSizeLimitHelpText": "Tamanho máximo do arquivo de registro em MB antes do arquivamento. O padrão é 1 MB.",
+    "LogSizeLimit": "Limite de Tamanho do Registro",
+    "DeleteSelectedCustomFormats": "Excluir formato personalizado",
+    "DeleteSelectedCustomFormatsMessageText": "Tem certeza de que deseja excluir {count} lista(s) de importação selecionada(s)?",
+    "EditSelectedCustomFormats": "Editar Formatos Personalizados Selecionados",
+    "ManageCustomFormats": "Gerenciar Formatos Personalizados",
+    "NoCustomFormatsFound": "Nenhum formato personalizado encontrado",
+    "CountCustomFormatsSelected": "{count} formatos personalizados selecionados",
+    "ReleaseDate": "Data de lançamento"
 }

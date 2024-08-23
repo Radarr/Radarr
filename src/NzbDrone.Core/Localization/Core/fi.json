@@ -1751,5 +1751,8 @@
     "Any": "Mikä vain",
     "DeleteSelected": "Poista valitut",
     "DeleteSelectedImportListExclusionsMessageText": "Haluatko varmasti poistaa tuontilistapoikkeuksen?",
-    "ProgressBarProgress": "Tilapalkissa {progress} %"
+    "ProgressBarProgress": "Tilapalkissa {progress} %",
+    "DeleteSelectedCustomFormatsMessageText": "Haluatko varmasti poistaa valitut {count} tuontilistaa?",
+    "DeleteSelectedCustomFormats": "Poista mukautettu muoto",
+    "ReleaseDate": "Julkaisupäivät"
 }

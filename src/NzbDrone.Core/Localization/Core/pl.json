@@ -1172,5 +1172,15 @@
     "AuthenticationMethod": "Metoda Autoryzacji",
     "AppUpdatedVersion": "{appName} został zaktualizowany do wersji `{version}`, by uzyskać nowe zmiany należy przeładować {appName}",
     "AddReleaseProfile": "Dodaj Profil Wydania",
-    "AppUpdated": "{appName} Zaktualizowany"
+    "AppUpdated": "{appName} Zaktualizowany",
+    "Theme": "Motyw",
+    "AutoTaggingSpecificationTag": "Etykieta",
+    "EditReleaseProfile": "Dodaj Profil Wydania",
+    "EditImportListImplementation": "Dodaj Listę Importu - {implementationName}",
+    "PreferredProtocol": "Preferowany protokół",
+    "ReleaseProfiles": "profil wydania",
+    "Label": "Etykieta",
+    "AutoTaggingRequiredHelpText": "Warunek {implementationName} musi być zgodny, aby format niestandardowy został zastosowany. W przeciwnym razie wystarczy jedno dopasowanie {implementationName}.",
+    "DeleteSelectedCustomFormats": "Usuń format niestandardowy",
+    "ReleaseDate": "Daty wydania"
 }

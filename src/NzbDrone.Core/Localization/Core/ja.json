@@ -1065,5 +1065,7 @@
     "DeleteMovieFoldersHelpText": "ムービーフォルダとその内容を削除します",
     "DeleteSelectedMovies": "選択したムービーファイルを削除する",
     "AddCondition": "条件の追加",
-    "DeleteSelectedImportListExclusionsMessageText": "このインポートリストの除外を削除してもよろしいですか？"
+    "DeleteSelectedImportListExclusionsMessageText": "このインポートリストの除外を削除してもよろしいですか？",
+    "DeleteSelectedCustomFormats": "カスタムフォーマットを削除する",
+    "ReleaseDate": "リリース日"
 }

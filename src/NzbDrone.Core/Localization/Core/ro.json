@@ -1140,5 +1140,8 @@
     "DownloadClientSettingsRecentPriority": "Prioritate client",
     "MovieIsNotMonitored": "Filmul nu este monitorizat",
     "DeleteSelectedImportListExclusionsMessageText": "Sigur doriți să ștergeți această excludere din lista de importuri?",
-    "UpdateAvailableHealthCheckMessage": "O nouă versiune este disponibilă: {version}"
+    "UpdateAvailableHealthCheckMessage": "O nouă versiune este disponibilă: {version}",
+    "DeleteSelectedCustomFormatsMessageText": "Sigur doriți să ștergeți {count} clienți de descărcare selectați?",
+    "DeleteSelectedCustomFormats": "Ștergeți formatul personalizat",
+    "ReleaseDate": "Date de lansare"
 }

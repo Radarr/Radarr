@@ -1226,5 +1226,7 @@
     "DeleteMovieFoldersHelpText": "Διαγράψτε το φάκελο της ταινίας και τα περιεχόμενά του",
     "DeleteSelectedMovies": "Διαγραφή επιλεγμένων αρχείων ταινιών",
     "DeleteSelected": "Διαγραφή επιλεγμένων",
-    "DeleteSelectedImportListExclusionsMessageText": "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτήν την εξαίρεση λίστας εισαγωγής;"
+    "DeleteSelectedImportListExclusionsMessageText": "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτήν την εξαίρεση λίστας εισαγωγής;",
+    "DeleteSelectedCustomFormats": "Διαγραφή προσαρμοσμένης μορφής",
+    "ReleaseDate": "Ημερομηνίες κυκλοφορίας"
 }

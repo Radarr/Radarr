@@ -1281,5 +1281,8 @@
     "ChangeCategoryHint": "Змінює завантаження на «Категорію після імпорту» з клієнта завантажувача",
     "ReleaseProfiles": "профіль релізу",
     "Any": "Будь-який",
-    "DeleteSelectedImportListExclusionsMessageText": "Ви впевнені, що хочете видалити це виключення зі списку імпорту?"
+    "DeleteSelectedImportListExclusionsMessageText": "Ви впевнені, що хочете видалити це виключення зі списку імпорту?",
+    "DeleteSelectedCustomFormatsMessageText": "Ви впевнені, що хочете видалити тег {0} ?",
+    "DeleteSelectedCustomFormats": "Видалити спеціальний формат",
+    "ReleaseDate": "Дати випуску"
 }

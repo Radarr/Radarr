@@ -1087,5 +1087,7 @@
     "DeleteMovieFoldersHelpText": "Slet filmmappen og dens indhold",
     "DeleteSelectedMovies": "Slet valgte filmfiler",
     "AutoTaggingNegateHelpText": "Hvis dette er markeret, gælder det tilpassede format ikke, hvis denne {0} betingelse stemmer overens.",
-    "DeleteSelectedImportListExclusionsMessageText": "Er du sikker på, at du vil slette denne undtagelse fra importlisten?"
+    "DeleteSelectedImportListExclusionsMessageText": "Er du sikker på, at du vil slette denne undtagelse fra importlisten?",
+    "DeleteSelectedCustomFormats": "Slet brugerdefineret format",
+    "ReleaseDate": "Slip datoer"
 }

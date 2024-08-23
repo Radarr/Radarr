@@ -1670,5 +1670,8 @@
     "Any": "任何",
     "DeleteSelected": "删除所选项",
     "DeleteSelectedImportListExclusionsMessageText": "你确定要删除这个导入排除列表吗？",
-    "ProgressBarProgress": "进度栏位于{progress}%"
+    "ProgressBarProgress": "进度栏位于{progress}%",
+    "DeleteSelectedCustomFormats": "删除自定义命名格式",
+    "DeleteSelectedCustomFormatsMessageText": "您确定要删除选定的{count}导入列表吗?",
+    "ReleaseDate": "发布日期"
 }

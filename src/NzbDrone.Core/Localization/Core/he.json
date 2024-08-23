@@ -1109,5 +1109,7 @@
     "DeleteMovieFolders": "מחק את תיקיית הסרטים",
     "DeleteMovieFoldersHelpText": "מחק את תיקיית הסרט ואת תוכנו",
     "DeleteSelectedMovies": "מחק קבצי סרטים שנבחרו",
-    "DeleteSelectedImportListExclusionsMessageText": "האם אתה בטוח שברצונך למחוק אי הכללה זו של רשימת הייבוא?"
+    "DeleteSelectedImportListExclusionsMessageText": "האם אתה בטוח שברצונך למחוק אי הכללה זו של רשימת הייבוא?",
+    "DeleteSelectedCustomFormats": "מחק פורמט מותאם אישית",
+    "ReleaseDate": "תאריכי שחרור"
 }
