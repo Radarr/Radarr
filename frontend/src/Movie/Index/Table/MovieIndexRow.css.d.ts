@@ -20,6 +20,7 @@ interface CssExports {
   'physicalRelease': string;
   'popularity': string;
   'qualityProfileId': string;
+  'releaseDate': string;
   'releaseGroups': string;
   'rottenTomatoesRating': string;
   'runtime': string;

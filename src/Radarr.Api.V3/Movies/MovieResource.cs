@@ -42,6 +42,7 @@ namespace Radarr.Api.V3.Movies
         public DateTime? InCinemas { get; set; }
         public DateTime? PhysicalRelease { get; set; }
         public DateTime? DigitalRelease { get; set; }
+        public DateTime? ReleaseDate { get; set; }
         public string PhysicalReleaseNote { get; set; }
         public List<MediaCover> Images { get; set; }
         public string Website { get; set; }
@@ -122,6 +123,7 @@ namespace Radarr.Api.V3.Movies
                 InCinemas = model.MovieMetadata.Value.InCinemas,
                 PhysicalRelease = model.MovieMetadata.Value.PhysicalRelease,
                 DigitalRelease = model.MovieMetadata.Value.DigitalRelease,
+                ReleaseDate = model.GetReleaseDate(),
 
                 Status = model.MovieMetadata.Value.Status,
                 Overview = translatedOverview,

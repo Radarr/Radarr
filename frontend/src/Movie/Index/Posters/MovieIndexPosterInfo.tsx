@@ -23,6 +23,7 @@ interface MovieIndexPosterInfoProps {
   inCinemas?: string;
   digitalRelease?: string;
   physicalRelease?: string;
+  releaseDate?: string;
   path: string;
   ratings: Ratings;
   certification: string;
@@ -53,6 +54,7 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     inCinemas,
     digitalRelease,
     physicalRelease,
+    releaseDate,
     path,
     ratings,
     certification,
@@ -152,7 +154,7 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     );
 
     return (
-      <div className={styles.info}>
+      <div className={styles.info} title={translate('DigitalRelease')}>
         <Icon name={icons.MOVIE_FILE} /> {digitalReleaseDate}
       </div>
     );
@@ -170,8 +172,20 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     );
 
     return (
-      <div className={styles.info}>
+      <div className={styles.info} title={translate('PhysicalRelease')}>
         <Icon name={icons.DISC} /> {physicalReleaseDate}
+      </div>
+    );
+  }
+
+  if (sortKey === 'releaseDate' && releaseDate && !showReleaseDate) {
+    return (
+      <div className={styles.info} title={translate('ReleaseDate')}>
+        <Icon name={icons.CALENDAR} />{' '}
+        {getRelativeDate(releaseDate, shortDateFormat, showRelativeDates, {
+          timeFormat,
+          timeForToday: false,
+        })}
       </div>
     );
   }

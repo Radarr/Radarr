@@ -66,6 +66,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     inCinemas,
     digitalRelease,
     physicalRelease,
+    releaseDate,
     runtime,
     minimumAvailability,
     path,
@@ -273,6 +274,19 @@ function MovieIndexRow(props: MovieIndexRowProps) {
               key={name}
               className={styles[name]}
               date={physicalRelease}
+              component={VirtualTableRowCell}
+            />
+          );
+        }
+
+        if (name === 'releaseDate') {
+          return (
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore ts(2739)
+            <RelativeDateCellConnector
+              key={name}
+              className={styles[name]}
+              date={releaseDate}
               component={VirtualTableRowCell}
             />
           );

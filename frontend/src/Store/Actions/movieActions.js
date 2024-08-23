@@ -258,8 +258,10 @@ export const sortPredicates = {
   },
 
   inCinemas: function(item, direction) {
-    if (item.inCinemas) {
-      return moment(item.inCinemas).unix();
+    const { inCinemas } = item;
+
+    if (inCinemas) {
+      return moment(inCinemas).unix();
     }
 
     if (direction === sortDirections.DESCENDING) {
@@ -270,8 +272,10 @@ export const sortPredicates = {
   },
 
   physicalRelease: function(item, direction) {
-    if (item.physicalRelease) {
-      return moment(item.physicalRelease).unix();
+    const { physicalRelease } = item;
+
+    if (physicalRelease) {
+      return moment(physicalRelease).unix();
     }
 
     if (direction === sortDirections.DESCENDING) {
@@ -282,8 +286,10 @@ export const sortPredicates = {
   },
 
   digitalRelease: function(item, direction) {
-    if (item.digitalRelease) {
-      return moment(item.digitalRelease).unix();
+    const { digitalRelease } = item;
+
+    if (digitalRelease) {
+      return moment(digitalRelease).unix();
     }
 
     if (direction === sortDirections.DESCENDING) {
@@ -294,8 +300,7 @@ export const sortPredicates = {
   },
 
   releaseDate: function(item, direction) {
-    const { inCinemas, digitalRelease, physicalRelease } = item;
-    const releaseDate = digitalRelease || physicalRelease || inCinemas;
+    const { releaseDate } = item;
 
     if (releaseDate) {
       return moment(releaseDate).unix();
