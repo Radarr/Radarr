@@ -1435,5 +1435,8 @@
     "Any": "Bármi",
     "DeleteSelected": "Kijelöltek eltávolítása",
     "DeleteSelectedImportListExclusionsMessageText": "Biztosan törli ezt az importlista-kizárást?",
-    "ProgressBarProgress": "Haladásjelző sáv: {progress}%"
+    "ProgressBarProgress": "Haladásjelző sáv: {progress}%",
+    "DeleteSelectedCustomFormats": "Egyéni formátum törlése",
+    "DeleteSelectedCustomFormatsMessageText": "Biztosan törölni szeretne {count} kiválasztott importlistát?",
+    "ReleaseDate": "Megjelenés Dátuma"
 }

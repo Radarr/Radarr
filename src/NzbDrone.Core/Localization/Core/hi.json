@@ -1063,5 +1063,7 @@
     "DeleteMovieFolders": "मूवी फ़ोल्डर हटाएँ",
     "DeleteMovieFoldersHelpText": "फिल्म फ़ोल्डर और उसकी सामग्री को हटा दें",
     "DeleteSelectedMovies": "चयनित मूवी फ़ाइलें हटाएं",
-    "DeleteSelectedImportListExclusionsMessageText": "क्या आप वाकई इस आयात सूची बहिष्करण को हटाना चाहते हैं?"
+    "DeleteSelectedImportListExclusionsMessageText": "क्या आप वाकई इस आयात सूची बहिष्करण को हटाना चाहते हैं?",
+    "DeleteSelectedCustomFormats": "कस्टम प्रारूप हटाएं",
+    "ReleaseDate": "रिलीज़ करने की तिथि"
 }

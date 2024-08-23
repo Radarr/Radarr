@@ -1069,5 +1069,7 @@
     "DeleteMovieFolders": "Xóa thư mục phim",
     "DeleteMovieFoldersHelpText": "Xóa thư mục phim và nội dung của nó",
     "DeleteSelectedMovies": "Xóa các tệp phim đã chọn",
-    "DeleteSelectedImportListExclusionsMessageText": "Bạn có chắc chắn muốn xóa loại trừ danh sách nhập này không?"
+    "DeleteSelectedImportListExclusionsMessageText": "Bạn có chắc chắn muốn xóa loại trừ danh sách nhập này không?",
+    "DeleteSelectedCustomFormats": "Xóa định dạng tùy chỉnh",
+    "ReleaseDate": "Ngày phát hành"
 }

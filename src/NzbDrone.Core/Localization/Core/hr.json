@@ -311,5 +311,6 @@
     "ImportListExclusions": "Dodaj na Listu Isključenja",
     "DownloadClientSettingsRecentPriority": "Prioritet Klijenata",
     "DeleteRootFolderMessageText": "Jeste li sigurni da želite obrisati ovaj profil odgode?",
-    "DeleteSelectedImportListExclusionsMessageText": "Jeste li sigurni da želite izbrisati ovu uvoznu listu isključenja?"
+    "DeleteSelectedImportListExclusionsMessageText": "Jeste li sigurni da želite izbrisati ovu uvoznu listu isključenja?",
+    "DeleteSelectedCustomFormats": "Kloniraj Prilagođeni Format"
 }

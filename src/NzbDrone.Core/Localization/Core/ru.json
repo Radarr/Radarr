@@ -1759,5 +1759,7 @@
     "NotificationsGotifySettingIncludeMoviePoster": "Включая постер сериала",
     "NotificationsGotifySettingIncludeMoviePosterHelpText": "Включить постер сериала в сообщение",
     "DeleteSelectedImportListExclusionsMessageText": "Вы уверены, что хотите удалить это исключение из списка импорта?",
-    "ProgressBarProgress": "Индикатор выполнения: {progress}%"
+    "ProgressBarProgress": "Индикатор выполнения: {progress}%",
+    "DeleteSelectedCustomFormatsMessageText": "Вы уверены, что хотите удалить {count} выбранных списков импорта?",
+    "DeleteSelectedCustomFormats": "Удалить пользовательский формат"
 }

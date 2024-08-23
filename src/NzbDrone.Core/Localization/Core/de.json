@@ -1461,5 +1461,7 @@
     "Any": "Beliebig",
     "DeleteSelected": "Markierte löschen",
     "DeleteSelectedImportListExclusionsMessageText": "Bist du sicher, dass du diesen Importlisten Ausschluss löschen willst?",
-    "ProgressBarProgress": "Fortschrittsbalken bei {progress}%"
+    "ProgressBarProgress": "Fortschrittsbalken bei {progress}%",
+    "DeleteSelectedCustomFormats": "Benutzerdefiniertes Format löschen",
+    "DeleteSelectedCustomFormatsMessageText": "Sind Sie sicher, dass Sie {count} ausgewählte Importliste(n) löschen möchten?"
 }

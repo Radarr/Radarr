@@ -1063,5 +1063,7 @@
     "DeleteMovieFolders": "ลบโฟลเดอร์ภาพยนตร์",
     "DeleteMovieFoldersHelpText": "ลบโฟลเดอร์ภาพยนตร์และเนื้อหา",
     "DeleteSelectedMovies": "ลบไฟล์ภาพยนตร์ที่เลือก",
-    "DeleteSelectedImportListExclusionsMessageText": "แน่ใจไหมว่าต้องการลบการยกเว้นรายการนำเข้านี้"
+    "DeleteSelectedImportListExclusionsMessageText": "แน่ใจไหมว่าต้องการลบการยกเว้นรายการนำเข้านี้",
+    "DeleteSelectedCustomFormats": "ลบรูปแบบที่กำหนดเอง",
+    "ReleaseDate": "วันที่วางจำหน่าย"
 }

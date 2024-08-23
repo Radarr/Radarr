@@ -1053,5 +1053,7 @@
     "DeleteMovieFolders": "영화 폴더 삭제",
     "DeleteMovieFoldersHelpText": "동영상 폴더 및 내용 삭제",
     "DeleteSelectedMovies": "선택한 동영상 파일 삭제",
-    "DeleteSelectedImportListExclusionsMessageText": "이 가져오기 목록 제외를 삭제하시겠습니까?"
+    "DeleteSelectedImportListExclusionsMessageText": "이 가져오기 목록 제외를 삭제하시겠습니까?",
+    "DeleteSelectedCustomFormats": "사용자 지정 형식 삭제",
+    "ReleaseDate": "출시일"
 }
