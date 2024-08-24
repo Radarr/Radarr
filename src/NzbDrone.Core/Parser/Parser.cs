@@ -171,6 +171,9 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex RequestInfoRegex = new Regex(@"^(?:\[.+?\])+", RegexOptions.Compiled);
 
         private static readonly string[] Numbers = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+
+        private static readonly Regex MultiRegex = new (@"[_. ](?<multi>multi)[_. ]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         private static Dictionary<string, string> _umlautMappings = new Dictionary<string, string>
         {
             { "ö", "oe" },
@@ -582,6 +585,11 @@ namespace NzbDrone.Core.Parser
             });
 
             return title;
+        }
+
+        public static bool HasMultipleLanguages(string title)
+        {
+            return MultiRegex.IsMatch(title);
         }
 
         private static ParsedMovieInfo ParseMovieMatchCollection(MatchCollection matchCollection)
