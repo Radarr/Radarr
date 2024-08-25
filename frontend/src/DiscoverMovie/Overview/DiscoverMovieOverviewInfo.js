@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { icons } from 'Helpers/Props';
@@ -15,24 +16,29 @@ const rows = [
     valueProp: 'year'
   },
   {
+    name: 'studio',
+    showProp: 'showStudio',
+    valueProp: 'studio'
+  },
+  {
     name: 'genres',
     showProp: 'showGenres',
     valueProp: 'genres'
   },
   {
-    name: 'ratings',
-    showProp: 'showRatings',
-    valueProp: 'ratings'
+    name: 'tmdbRating',
+    showProp: 'showTmdbRating',
+    valueProp: 'ratings.tmdb.value'
+  },
+  {
+    name: 'imdbRating',
+    showProp: 'showImdbRating',
+    valueProp: 'ratings.imdb.value'
   },
   {
     name: 'certification',
     showProp: 'showCertification',
     valueProp: 'certification'
-  },
-  {
-    name: 'studio',
-    showProp: 'showStudio',
-    valueProp: 'studio'
   }
 ];
 
@@ -43,11 +49,7 @@ function isVisible(row, props) {
     valueProp
   } = row;
 
-  if (props[valueProp] == null) {
-    return false;
-  }
-
-  return props[showProp] || props.sortKey === name;
+  return _.has(props, valueProp) && (_.get(props, showProp) || props.sortKey === name);
 }
 
 function getInfoRowProps(row, props) {
@@ -61,6 +63,14 @@ function getInfoRowProps(row, props) {
     };
   }
 
+  if (name === 'studio') {
+    return {
+      title: translate('Studio'),
+      iconName: icons.STUDIO,
+      label: props.studio
+    };
+  }
+
   if (name === 'genres') {
     return {
       title: translate('Genres'),
@@ -69,11 +79,19 @@ function getInfoRowProps(row, props) {
     };
   }
 
-  if (name === 'ratings') {
+  if (name === 'tmdbRating' && !!props.ratings.tmdb) {
     return {
-      title: translate('Ratings'),
+      title: translate('TmdbRating'),
       iconName: icons.HEART,
       label: `${(props.ratings.tmdb.value * 10).toFixed()}%`
+    };
+  }
+
+  if (name === 'imdbRating' && !!props.ratings.imdb) {
+    return {
+      title: translate('ImdbRating'),
+      iconName: icons.IMDB,
+      label: `${(props.ratings.imdb.value).toFixed(1)}`
     };
   }
 
@@ -82,14 +100,6 @@ function getInfoRowProps(row, props) {
       title: translate('Certification'),
       iconName: icons.FILM,
       label: props.certification
-    };
-  }
-
-  if (name === 'studio') {
-    return {
-      title: translate('Studio'),
-      iconName: icons.STUDIO,
-      label: props.studio
     };
   }
 }
@@ -132,11 +142,12 @@ function DiscoverMovieOverviewInfo(props) {
 
 DiscoverMovieOverviewInfo.propTypes = {
   height: PropTypes.number.isRequired,
-  showStudio: PropTypes.bool.isRequired,
   showYear: PropTypes.bool.isRequired,
-  showRatings: PropTypes.bool.isRequired,
-  showCertification: PropTypes.bool.isRequired,
+  showStudio: PropTypes.bool.isRequired,
   showGenres: PropTypes.bool.isRequired,
+  showTmdbRating: PropTypes.bool.isRequired,
+  showImdbRating: PropTypes.bool.isRequired,
+  showCertification: PropTypes.bool.isRequired,
   studio: PropTypes.string,
   year: PropTypes.number,
   certification: PropTypes.string,

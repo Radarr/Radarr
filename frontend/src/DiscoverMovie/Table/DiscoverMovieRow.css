@@ -57,7 +57,9 @@
   flex: 1 0 125px;
 }
 
-.ratings,
+.tmdbRating,
+.imdbRating,
+.rottenTomatoesRating,
 .runtime {
   composes: cell;
 

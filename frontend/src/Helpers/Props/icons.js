@@ -1,6 +1,10 @@
 //
+// Brands
+import {
+  faImdb as fabImdb
+} from '@fortawesome/free-brands-svg-icons';
+//
 // Regular
-
 import {
   faBookmark as farBookmark,
   faCalendar as farCalendar,
@@ -175,6 +179,7 @@ export const HEART = fasHeart;
 export const HISTORY = fasHistory;
 export const HOUSEKEEPING = fasHome;
 export const IGNORE = fasTimesCircle;
+export const IMDB = fabImdb;
 export const IN_CINEMAS = fasTicketAlt;
 export const INFO = fasInfoCircle;
 export const INTERACTIVE = fasUser;

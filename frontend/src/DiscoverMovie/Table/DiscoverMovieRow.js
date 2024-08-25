@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Icon from 'Components/Icon';
+import ImdbRating from 'Components/ImdbRating';
 import ImportListListConnector from 'Components/ImportListListConnector';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
+import RottenTomatoRating from 'Components/RottenTomatoRating';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
@@ -253,15 +255,35 @@ class DiscoverMovieRow extends Component {
               );
             }
 
-            if (name === 'ratings') {
+            if (name === 'tmdbRating') {
               return (
                 <VirtualTableRowCell
                   key={name}
                   className={styles[name]}
                 >
-                  <TmdbRating
-                    ratings={ratings}
-                  />
+                  {ratings.tmdb ? <TmdbRating ratings={ratings} /> : null}
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'imdbRating') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {ratings.imdb ? <ImdbRating ratings={ratings} /> : null}
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'rottenTomatoesRating') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {ratings.rottenTomatoes ? <RottenTomatoRating ratings={ratings} /> : null}
                 </VirtualTableRowCell>
               );
             }

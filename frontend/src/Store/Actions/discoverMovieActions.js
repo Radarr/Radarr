@@ -58,17 +58,20 @@ export const defaultState = {
 
   posterOptions: {
     size: 'large',
-    showTitle: false
+    showTitle: false,
+    showTmdbRating: false,
+    showImdbRating: false,
+    showRottenTomatoesRating: false
   },
 
   overviewOptions: {
-    detailedProgressBar: false,
     size: 'medium',
-    showStudio: true,
-    showRatings: true,
     showYear: true,
-    showCertification: true,
-    showGenres: true
+    showStudio: true,
+    showGenres: true,
+    showTmdbRating: false,
+    showImdbRating: false,
+    showCertification: true
   },
 
   tableOptions: {
@@ -136,14 +139,14 @@ export const defaultState = {
       isVisible: true
     },
     {
-      name: 'physicalRelease',
-      label: () => translate('PhysicalRelease'),
+      name: 'digitalRelease',
+      label: () => translate('DigitalRelease'),
       isSortable: true,
       isVisible: false
     },
     {
-      name: 'digitalRelease',
-      label: () => translate('DigitalRelease'),
+      name: 'physicalRelease',
+      label: () => translate('PhysicalRelease'),
       isSortable: true,
       isVisible: false
     },
@@ -160,8 +163,20 @@ export const defaultState = {
       isVisible: false
     },
     {
-      name: 'ratings',
-      label: () => translate('Ratings'),
+      name: 'tmdbRating',
+      label: () => translate('TmdbRating'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
+      name: 'imdbRating',
+      label: () => translate('ImdbRating'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
+      name: 'rottenTomatoesRating',
+      label: () => translate('RottenTomatoesRating'),
       isSortable: true,
       isVisible: false
     },
@@ -232,12 +247,6 @@ export const defaultState = {
       return studio ? studio.toLowerCase() : '';
     },
 
-    ratings: function(item) {
-      const { ratings = {} } = item;
-
-      return ratings.tmdb? ratings.tmdb.value : 0;
-    },
-
     inCinemas: function(item, direction) {
       if (item.inCinemas) {
         return moment(item.inCinemas).unix();
@@ -272,6 +281,18 @@ export const defaultState = {
       }
 
       return Number.MAX_VALUE;
+    },
+
+    tmdbRating: function({ ratings = {} }) {
+      return ratings.tmdb ? ratings.tmdb.value : 0;
+    },
+
+    imdbRating: function({ ratings = {} }) {
+      return ratings.imdb ? ratings.imdb.value : 0;
+    },
+
+    rottenTomatoesRating: function({ ratings = {} }) {
+      return ratings.rottenTomatoes ? ratings.rottenTomatoes.value : -1;
     }
   },
 

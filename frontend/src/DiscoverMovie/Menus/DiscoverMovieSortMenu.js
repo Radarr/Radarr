@@ -57,21 +57,21 @@ function DiscoverMovieSortMenu(props) {
         </SortMenuItem>
 
         <SortMenuItem
-          name="physicalRelease"
-          sortKey={sortKey}
-          sortDirection={sortDirection}
-          onPress={onSortSelect}
-        >
-          {translate('PhysicalRelease')}
-        </SortMenuItem>
-
-        <SortMenuItem
           name="digitalRelease"
           sortKey={sortKey}
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
           {translate('DigitalRelease')}
+        </SortMenuItem>
+
+        <SortMenuItem
+          name="physicalRelease"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          {translate('PhysicalRelease')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -84,12 +84,30 @@ function DiscoverMovieSortMenu(props) {
         </SortMenuItem>
 
         <SortMenuItem
-          name="ratings"
+          name="tmdbRating"
           sortKey={sortKey}
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          {translate('Rating')}
+          {translate('TmdbRating')}
+        </SortMenuItem>
+
+        <SortMenuItem
+          name="imdbRating"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          {translate('ImdbRating')}
+        </SortMenuItem>
+
+        <SortMenuItem
+          name="rottenTomatoesRating"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          {translate('RottenTomatoesRating')}
         </SortMenuItem>
 
         <SortMenuItem

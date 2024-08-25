@@ -2,9 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import CheckInput from 'Components/Form/CheckInput';
 import Icon from 'Components/Icon';
+import ImdbRating from 'Components/ImdbRating';
 import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
+import RottenTomatoRating from 'Components/RottenTomatoRating';
+import TmdbRating from 'Components/TmdbRating';
 import Popover from 'Components/Tooltip/Popover';
 import AddNewDiscoverMovieModal from 'DiscoverMovie/AddNewDiscoverMovieModal';
 import ExcludeMovieModal from 'DiscoverMovie/Exclusion/ExcludeMovieModal';
@@ -86,6 +89,10 @@ class DiscoverMoviePoster extends Component {
       posterWidth,
       posterHeight,
       showTitle,
+      showTmdbRating,
+      showImdbRating,
+      showRottenTomatoesRating,
+      ratings,
       isExisting,
       isExcluded,
       isSelected,
@@ -192,18 +199,39 @@ class DiscoverMoviePoster extends Component {
           </Link>
         </div>
 
-        {
-          showTitle &&
-            <div className={styles.title} title={title}>
-              {title}
-            </div>
-        }
+        {showTitle ?
+          <div className={styles.title} title={title}>
+            {title}
+          </div> :
+          null}
+
+        {showTmdbRating && !!ratings.tmdb ? (
+          <div className={styles.title}>
+            <TmdbRating ratings={ratings} iconSize={12} />
+          </div>
+        ) : null}
+
+        {showImdbRating && !!ratings.imdb ? (
+          <div className={styles.title}>
+            <ImdbRating ratings={ratings} iconSize={12} />
+          </div>
+        ) : null}
+
+        {showRottenTomatoesRating && !!ratings.rottenTomatoes ? (
+          <div className={styles.title}>
+            <RottenTomatoRating ratings={ratings} iconSize={12} />
+          </div>
+        ) : null}
 
         <DiscoverMoviePosterInfo
           showRelativeDates={showRelativeDates}
           shortDateFormat={shortDateFormat}
           timeFormat={timeFormat}
           movieRuntimeFormat={movieRuntimeFormat}
+          ratings={ratings}
+          showTmdbRating={showTmdbRating}
+          showImdbRating={showImdbRating}
+          showRottenTomatoesRating={showRottenTomatoesRating}
           {...otherProps}
         />
 
@@ -243,6 +271,10 @@ DiscoverMoviePoster.propTypes = {
   posterWidth: PropTypes.number.isRequired,
   posterHeight: PropTypes.number.isRequired,
   showTitle: PropTypes.bool.isRequired,
+  showTmdbRating: PropTypes.bool.isRequired,
+  showImdbRating: PropTypes.bool.isRequired,
+  showRottenTomatoesRating: PropTypes.bool.isRequired,
+  ratings: PropTypes.object.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,

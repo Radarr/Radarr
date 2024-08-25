@@ -44,11 +44,12 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
 
     this.state = {
       size: props.size,
-      showStudio: props.showStudio,
-      showCertification: props.showCertification,
-      showRatings: props.showRatings,
       showYear: props.showYear,
+      showStudio: props.showStudio,
       showGenres: props.showGenres,
+      showTmdbRating: props.showTmdbRating,
+      showImdbRating: props.showImdbRating,
+      showCertification: props.showCertification,
       includeRecommendations: props.includeRecommendations,
       includeTrending: props.includeTrending,
       includePopular: props.includePopular
@@ -58,11 +59,12 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
   componentDidUpdate(prevProps) {
     const {
       size,
-      showStudio,
       showYear,
-      showRatings,
-      showCertification,
+      showStudio,
       showGenres,
+      showTmdbRating,
+      showImdbRating,
+      showCertification,
       includeRecommendations,
       includeTrending,
       includePopular
@@ -74,24 +76,28 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
       state.size = size;
     }
 
-    if (showStudio !== prevProps.showStudio) {
-      state.showStudio = showStudio;
-    }
-
     if (showYear !== prevProps.showYear) {
       state.showYear = showYear;
     }
 
-    if (showRatings !== prevProps.showRatings) {
-      state.showRatings = showRatings;
-    }
-
-    if (showCertification !== prevProps.showCertification) {
-      state.showCertification = showCertification;
+    if (showStudio !== prevProps.showStudio) {
+      state.showStudio = showStudio;
     }
 
     if (showGenres !== prevProps.showGenres) {
       state.showGenres = showGenres;
+    }
+
+    if (showTmdbRating !== prevProps.showTmdbRating) {
+      state.showTmdbRating = showTmdbRating;
+    }
+
+    if (showImdbRating !== prevProps.showImdbRating) {
+      state.showImdbRating = showImdbRating;
+    }
+
+    if (showCertification !== prevProps.showCertification) {
+      state.showCertification = showCertification;
     }
 
     if (includeRecommendations !== prevProps.includeRecommendations) {
@@ -142,11 +148,12 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
 
     const {
       size,
-      showStudio,
-      showCertification,
-      showRatings,
       showYear,
+      showStudio,
       showGenres,
+      showTmdbRating,
+      showImdbRating,
+      showCertification,
       includeRecommendations,
       includeTrending,
       includePopular
@@ -209,12 +216,12 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>{translate('ShowGenres')}</FormLabel>
+              <FormLabel>{translate('ShowYear')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
-                name="showGenres"
-                value={showGenres}
+                name="showYear"
+                value={showYear}
                 onChange={this.onChangeOverviewOption}
               />
             </FormGroup>
@@ -231,23 +238,34 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>{translate('ShowYear')}</FormLabel>
+              <FormLabel>{translate('ShowGenres')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
-                name="showYear"
-                value={showYear}
+                name="showGenres"
+                value={showGenres}
                 onChange={this.onChangeOverviewOption}
               />
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>{translate('ShowRatings')}</FormLabel>
+              <FormLabel>{translate('ShowTmdbRating')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
-                name="showRatings"
-                value={showRatings}
+                name="showTmdbRating"
+                value={showTmdbRating}
+                onChange={this.onChangeOverviewOption}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>{translate('ShowImdbRating')}</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="showImdbRating"
+                value={showImdbRating}
                 onChange={this.onChangeOverviewOption}
               />
             </FormGroup>
@@ -279,11 +297,12 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
 
 DiscoverMovieOverviewOptionsModalContent.propTypes = {
   size: PropTypes.string.isRequired,
-  showStudio: PropTypes.bool.isRequired,
   showYear: PropTypes.bool.isRequired,
-  showRatings: PropTypes.bool.isRequired,
-  showCertification: PropTypes.bool.isRequired,
+  showStudio: PropTypes.bool.isRequired,
   showGenres: PropTypes.bool.isRequired,
+  showTmdbRating: PropTypes.bool.isRequired,
+  showImdbRating: PropTypes.bool.isRequired,
+  showCertification: PropTypes.bool.isRequired,
   includeRecommendations: PropTypes.bool.isRequired,
   includeTrending: PropTypes.bool.isRequired,
   includePopular: PropTypes.bool.isRequired,

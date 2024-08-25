@@ -65,7 +65,8 @@ class DiscoverMovieOverviews extends Component {
       items,
       sortKey,
       overviewOptions,
-      jumpToCharacter
+      jumpToCharacter,
+      isSmallScreen
     } = this.props;
 
     const {
@@ -75,13 +76,17 @@ class DiscoverMovieOverviews extends Component {
 
     if (prevProps.sortKey !== sortKey ||
         prevProps.overviewOptions !== overviewOptions) {
-      this.calculateGrid();
+      this.calculateGrid(this.state.width, isSmallScreen);
     }
 
-    if (this._grid &&
+    if (
+      this._grid &&
         (prevState.width !== width ||
             prevState.rowHeight !== rowHeight ||
-            hasDifferentItemsOrOrder(prevProps.items, items, 'tmdbId'))) {
+            hasDifferentItemsOrOrder(prevProps.items, items, 'tmdbId') ||
+            prevProps.overviewOptions !== overviewOptions
+        )
+    ) {
       // recomputeGridSize also forces Grid to discard its cache of rendered cells
       this._grid.recomputeGridSize();
     }

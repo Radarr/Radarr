@@ -6,6 +6,7 @@ interface CssExports {
   'collection': string;
   'digitalRelease': string;
   'genres': string;
+  'imdbRating': string;
   'inCinemas': string;
   'isPopular': string;
   'isRecommendation': string;
@@ -14,11 +15,12 @@ interface CssExports {
   'originalLanguage': string;
   'physicalRelease': string;
   'popularity': string;
-  'ratings': string;
+  'rottenTomatoesRating': string;
   'runtime': string;
   'sortTitle': string;
   'status': string;
   'studio': string;
+  'tmdbRating': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
