@@ -258,6 +258,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.2000.1080p.BlueRay.x264.DTS.RoSubbed-playHD", null)]
         [TestCase("Movie Title! 2018 [Web][MKV][h264][480p][AAC 2.0][Softsubs]", null)]
         [TestCase("Movie Title! 2019 [HorribleSubs][Web][MKV][h264][848x480][AAC 2.0][Softsubs(HorribleSubs)]", null)]
+        [TestCase("Movie Title! The 2024 [MultiSubs][Web][x265][1080p][EAC3][Softsubs(MultiSubs)]", null)]
         public void should_parse_hardcoded_subs(string postTitle, string sub)
         {
             Parser.Parser.ParseMovieTitle(postTitle).HardcodedSubs.Should().Be(sub);
