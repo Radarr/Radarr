@@ -191,14 +191,14 @@ export const defaultState = {
       isVisible: false
     },
     {
-      name: 'rottenTomatoesRating',
-      label: () => translate('RottenTomatoesRating'),
+      name: 'imdbRating',
+      label: () => translate('ImdbRating'),
       isSortable: true,
       isVisible: false
     },
     {
-      name: 'imdbRating',
-      label: () => translate('ImdbRating'),
+      name: 'rottenTomatoesRating',
+      label: () => translate('RottenTomatoesRating'),
       isSortable: true,
       isVisible: false
     },
@@ -266,21 +266,15 @@ export const defaultState = {
         undefined;
     },
 
-    imdbRating: function(item) {
-      const { ratings = {} } = item;
-
-      return ratings.imdb ? ratings.imdb.value : 0;
-    },
-
-    tmdbRating: function(item) {
-      const { ratings = {} } = item;
-
+    tmdbRating: function({ ratings = {} }) {
       return ratings.tmdb ? ratings.tmdb.value : 0;
     },
 
-    rottenTomatoesRating: function(item) {
-      const { ratings = {} } = item;
+    imdbRating: function({ ratings = {} }) {
+      return ratings.imdb ? ratings.imdb.value : 0;
+    },
 
+    rottenTomatoesRating: function({ ratings = {} }) {
       return ratings.rottenTomatoes ? ratings.rottenTomatoes.value : -1;
     }
   },

@@ -360,15 +360,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
         if (name === 'tmdbRating') {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
-              <TmdbRating ratings={ratings} />
-            </VirtualTableRowCell>
-          );
-        }
-
-        if (name === 'rottenTomatoesRating') {
-          return (
-            <VirtualTableRowCell key={name} className={styles[name]}>
-              <RottenTomatoRating ratings={ratings} />
+              {ratings.tmdb ? <TmdbRating ratings={ratings} /> : null}
             </VirtualTableRowCell>
           );
         }
@@ -376,7 +368,17 @@ function MovieIndexRow(props: MovieIndexRowProps) {
         if (name === 'imdbRating') {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
-              <ImdbRating ratings={ratings} />
+              {ratings.imdb ? <ImdbRating ratings={ratings} /> : null}
+            </VirtualTableRowCell>
+          );
+        }
+
+        if (name === 'rottenTomatoesRating') {
+          return (
+            <VirtualTableRowCell key={name} className={styles[name]}>
+              {ratings.rottenTomatoes ? (
+                <RottenTomatoRating ratings={ratings} />
+              ) : null}
             </VirtualTableRowCell>
           );
         }
