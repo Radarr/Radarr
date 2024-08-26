@@ -357,7 +357,7 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
             <>
               {indexerFlags ? (
                 <Popover
-                  anchor={<Icon name={icons.FLAG} kind={kinds.PRIMARY} />}
+                  anchor={<Icon name={icons.FLAG} />}
                   title={translate('IndexerFlags')}
                   body={<IndexerFlags indexerFlags={indexerFlags} />}
                   position={tooltipPositions.LEFT}

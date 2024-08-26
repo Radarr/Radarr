@@ -1,10 +1,10 @@
 import React from 'react';
-import Icon from 'Components/Icon';
+import Icon, { IconProps } from 'Components/Icon';
 import styles from './MovieIndexOverviewInfoRow.css';
 
 interface MovieIndexOverviewInfoRowProps {
   title?: string;
-  iconName: object;
+  iconName: IconProps['name'];
   label: string;
 }
 

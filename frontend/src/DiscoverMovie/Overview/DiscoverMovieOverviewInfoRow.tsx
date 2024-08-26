@@ -1,11 +1,10 @@
-import { IconDefinition } from '@fortawesome/free-regular-svg-icons';
 import React from 'react';
-import Icon from 'Components/Icon';
+import Icon, { IconProps } from 'Components/Icon';
 import styles from './DiscoverMovieOverviewInfoRow.css';
 
 interface DiscoverMovieOverviewInfoRowProps {
   title?: string;
-  iconName?: IconDefinition;
+  iconName: IconProps['name'];
   label: string | null;
 }
 
