@@ -210,9 +210,9 @@ function ManageImportListsModalContent(
 
         {error ? <div>{errorMessage}</div> : null}
 
-        {isPopulated && !error && !items.length && (
+        {isPopulated && !error && !items.length ? (
           <Alert kind={kinds.INFO}>{translate('NoImportListsFound')}</Alert>
-        )}
+        ) : null}
 
         {isPopulated && !!items.length && !isFetching && !isFetching ? (
           <Table
