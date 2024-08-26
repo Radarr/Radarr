@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Notifications.Webhook
         {
             Id = movieFile.Id;
             RelativePath = movieFile.RelativePath;
-            Path = movieFile.Path;
+            Path = System.IO.Path.Combine(movieFile.Movie.Path, movieFile.RelativePath);
             Quality = movieFile.Quality.Quality.Name;
             QualityVersion = movieFile.Quality.Revision.Version;
             ReleaseGroup = movieFile.ReleaseGroup;
