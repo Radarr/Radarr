@@ -1,11 +1,16 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import Label from 'Components/Label';
 import { kinds } from 'Helpers/Props';
+import { QualityModel } from 'Quality/Quality';
 import formatBytes from 'Utilities/Number/formatBytes';
 import translate from 'Utilities/String/translate';
 
-function getTooltip(title, quality, size, isMonitored, isCutoffNotMet) {
+function getTooltip(
+  title: string,
+  quality: QualityModel,
+  size: number | undefined,
+  isCutoffNotMet: boolean
+) {
   const revision = quality.revision;
 
   if (revision.real && revision.real > 0) {
@@ -20,16 +25,18 @@ function getTooltip(title, quality, size, isMonitored, isCutoffNotMet) {
     title += ` - ${formatBytes(size)}`;
   }
 
-  if (!isMonitored) {
-    title += ' [Not Monitored]';
-  } else if (isCutoffNotMet) {
-    title += ' [Cutoff Not Met]';
+  if (isCutoffNotMet) {
+    title += ` [${translate('CutoffNotMet')}]`;
   }
 
   return title;
 }
 
-function revisionLabel(className, quality, showRevision) {
+function revisionLabel(
+  className: string | undefined,
+  quality: QualityModel,
+  showRevision: boolean
+) {
   if (!showRevision) {
     return;
   }
@@ -57,25 +64,28 @@ function revisionLabel(className, quality, showRevision) {
       </Label>
     );
   }
+
+  return null;
 }
 
-function MovieQuality(props) {
+interface MovieQualityProps {
+  className?: string;
+  title?: string;
+  quality: QualityModel;
+  size?: number;
+  isCutoffNotMet?: boolean;
+  showRevision?: boolean;
+}
+
+function MovieQuality(props: MovieQualityProps) {
   const {
     className,
-    title,
+    title = '',
     quality,
     size,
-    isMonitored,
-    isCutoffNotMet,
-    showRevision
+    isCutoffNotMet = false,
+    showRevision = false,
   } = props;
-
-  let kind = kinds.DEFAULT;
-  if (!isMonitored) {
-    kind = kinds.DISABLED;
-  } else if (isCutoffNotMet) {
-    kind = kinds.INVERSE;
-  }
 
   if (!quality) {
     return null;
@@ -85,29 +95,14 @@ function MovieQuality(props) {
     <span>
       <Label
         className={className}
-        kind={kind}
-        title={getTooltip(title, quality, size, isMonitored, isCutoffNotMet)}
+        kind={isCutoffNotMet ? kinds.INVERSE : kinds.DEFAULT}
+        title={getTooltip(title, quality, size, isCutoffNotMet)}
       >
         {quality.quality.name}
-      </Label>{revisionLabel(className, quality, showRevision)}
+      </Label>
+      {revisionLabel(className, quality, showRevision)}
     </span>
   );
 }
-
-MovieQuality.propTypes = {
-  className: PropTypes.string,
-  title: PropTypes.string,
-  quality: PropTypes.object.isRequired,
-  size: PropTypes.number,
-  isMonitored: PropTypes.bool,
-  isCutoffNotMet: PropTypes.bool,
-  showRevision: PropTypes.bool
-};
-
-MovieQuality.defaultProps = {
-  title: '',
-  isMonitored: true,
-  showRevision: false
-};
 
 export default MovieQuality;
