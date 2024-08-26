@@ -9,7 +9,7 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
-import { inputTypes } from 'Helpers/Props';
+import { inputTypes, sizes } from 'Helpers/Props';
 import { setMoviePosterOption } from 'Store/Actions/movieIndexActions';
 import translate from 'Utilities/String/translate';
 import selectPosterOptions from '../selectPosterOptions';
@@ -53,6 +53,8 @@ function MovieIndexPosterOptionsModalContent(
     showMonitored,
     showQualityProfile,
     showCinemaRelease,
+    showDigitalRelease,
+    showPhysicalRelease,
     showReleaseDate,
     showTmdbRating,
     showImdbRating,
@@ -76,7 +78,7 @@ function MovieIndexPosterOptionsModalContent(
 
       <ModalBody>
         <Form>
-          <FormGroup>
+          <FormGroup size={sizes.MEDIUM}>
             <FormLabel>{translate('PosterSize')}</FormLabel>
 
             <FormInputGroup
@@ -88,7 +90,7 @@ function MovieIndexPosterOptionsModalContent(
             />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup size={sizes.MEDIUM}>
             <FormLabel>{translate('DetailedProgressBar')}</FormLabel>
 
             <FormInputGroup
@@ -100,7 +102,7 @@ function MovieIndexPosterOptionsModalContent(
             />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup size={sizes.MEDIUM}>
             <FormLabel>{translate('ShowTitle')}</FormLabel>
 
             <FormInputGroup
@@ -112,7 +114,7 @@ function MovieIndexPosterOptionsModalContent(
             />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup size={sizes.MEDIUM}>
             <FormLabel>{translate('ShowMonitored')}</FormLabel>
 
             <FormInputGroup
@@ -124,7 +126,7 @@ function MovieIndexPosterOptionsModalContent(
             />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup size={sizes.MEDIUM}>
             <FormLabel>{translate('ShowQualityProfile')}</FormLabel>
 
             <FormInputGroup
@@ -136,7 +138,7 @@ function MovieIndexPosterOptionsModalContent(
             />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup size={sizes.MEDIUM}>
             <FormLabel>{translate('ShowCinemaRelease')}</FormLabel>
 
             <FormInputGroup
@@ -148,7 +150,31 @@ function MovieIndexPosterOptionsModalContent(
             />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup size={sizes.MEDIUM}>
+            <FormLabel>{translate('ShowDigitalRelease')}</FormLabel>
+
+            <FormInputGroup
+              type={inputTypes.CHECK}
+              name="showDigitalRelease"
+              value={showDigitalRelease}
+              helpText={translate('ShowDigitalReleaseHelpText')}
+              onChange={onPosterOptionChange}
+            />
+          </FormGroup>
+
+          <FormGroup size={sizes.MEDIUM}>
+            <FormLabel>{translate('ShowPhysicalRelease')}</FormLabel>
+
+            <FormInputGroup
+              type={inputTypes.CHECK}
+              name="showPhysicalRelease"
+              value={showPhysicalRelease}
+              helpText={translate('ShowPhysicalReleaseHelpText')}
+              onChange={onPosterOptionChange}
+            />
+          </FormGroup>
+
+          <FormGroup size={sizes.MEDIUM}>
             <FormLabel>{translate('ShowReleaseDate')}</FormLabel>
 
             <FormInputGroup
@@ -160,7 +186,7 @@ function MovieIndexPosterOptionsModalContent(
             />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup size={sizes.MEDIUM}>
             <FormLabel>{translate('ShowTmdbRating')}</FormLabel>
 
             <FormInputGroup
@@ -172,7 +198,7 @@ function MovieIndexPosterOptionsModalContent(
             />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup size={sizes.MEDIUM}>
             <FormLabel>{translate('ShowImdbRating')}</FormLabel>
 
             <FormInputGroup
@@ -184,7 +210,7 @@ function MovieIndexPosterOptionsModalContent(
             />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup size={sizes.MEDIUM}>
             <FormLabel>{translate('ShowRottenTomatoesRating')}</FormLabel>
 
             <FormInputGroup
@@ -196,7 +222,7 @@ function MovieIndexPosterOptionsModalContent(
             />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup size={sizes.MEDIUM}>
             <FormLabel>{translate('ShowTags')}</FormLabel>
 
             <FormInputGroup
@@ -208,7 +234,7 @@ function MovieIndexPosterOptionsModalContent(
             />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup size={sizes.MEDIUM}>
             <FormLabel>{translate('ShowSearch')}</FormLabel>
 
             <FormInputGroup

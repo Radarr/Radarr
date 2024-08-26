@@ -34,6 +34,8 @@ interface MovieIndexPosterInfoProps {
   sortKey: string;
   showRelativeDates: boolean;
   showCinemaRelease: boolean;
+  showDigitalRelease: boolean;
+  showPhysicalRelease: boolean;
   showReleaseDate: boolean;
   shortDateFormat: string;
   longDateFormat: string;
@@ -65,6 +67,8 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     sortKey,
     showRelativeDates,
     showCinemaRelease,
+    showDigitalRelease,
+    showPhysicalRelease,
     showReleaseDate,
     shortDateFormat,
     longDateFormat,
@@ -142,7 +146,7 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     );
   }
 
-  if (sortKey === 'digitalRelease' && digitalRelease && !showReleaseDate) {
+  if (sortKey === 'digitalRelease' && digitalRelease && !showDigitalRelease) {
     const digitalReleaseDate = getRelativeDate(
       digitalRelease,
       shortDateFormat,
@@ -160,7 +164,11 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     );
   }
 
-  if (sortKey === 'physicalRelease' && physicalRelease && !showReleaseDate) {
+  if (
+    sortKey === 'physicalRelease' &&
+    physicalRelease &&
+    !showPhysicalRelease
+  ) {
     const physicalReleaseDate = getRelativeDate(
       physicalRelease,
       shortDateFormat,

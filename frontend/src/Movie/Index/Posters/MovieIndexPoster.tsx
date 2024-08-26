@@ -48,6 +48,8 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     showMonitored,
     showQualityProfile,
     showCinemaRelease,
+    showDigitalRelease,
+    showPhysicalRelease,
     showReleaseDate,
     showTmdbRating,
     showImdbRating,
@@ -248,6 +250,31 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         </div>
       ) : null}
 
+      {showDigitalRelease && digitalRelease ? (
+        <div className={styles.title} title={translate('DigitalRelease')}>
+          <Icon name={icons.MOVIE_FILE} />{' '}
+          {getRelativeDate(digitalRelease, shortDateFormat, showRelativeDates, {
+            timeFormat,
+            timeForToday: false,
+          })}
+        </div>
+      ) : null}
+
+      {showPhysicalRelease && physicalRelease ? (
+        <div className={styles.title} title={translate('PhysicalRelease')}>
+          <Icon name={icons.DISC} />{' '}
+          {getRelativeDate(
+            physicalRelease,
+            shortDateFormat,
+            showRelativeDates,
+            {
+              timeFormat,
+              timeForToday: false,
+            }
+          )}
+        </div>
+      ) : null}
+
       {showReleaseDate && releaseDate ? (
         <div className={styles.title} title={translate('ReleaseDate')}>
           <Icon name={icons.CALENDAR} />{' '}
@@ -291,6 +318,8 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         year={year}
         showQualityProfile={showQualityProfile}
         showCinemaRelease={showCinemaRelease}
+        showDigitalRelease={showDigitalRelease}
+        showPhysicalRelease={showPhysicalRelease}
         showReleaseDate={showReleaseDate}
         showRelativeDates={showRelativeDates}
         shortDateFormat={shortDateFormat}

@@ -438,8 +438,8 @@ class MovieDetails extends Component {
                             body={
                               <MovieReleaseDates
                                 inCinemas={inCinemas}
-                                physicalRelease={physicalRelease}
                                 digitalRelease={digitalRelease}
+                                physicalRelease={physicalRelease}
                               />
                             }
                             position={tooltipPositions.BOTTOM}

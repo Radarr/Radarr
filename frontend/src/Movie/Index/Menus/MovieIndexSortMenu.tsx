@@ -83,21 +83,21 @@ function MovieIndexSortMenu(props: MovieIndexSortMenuProps) {
         </SortMenuItem>
 
         <SortMenuItem
-          name="physicalRelease"
-          sortKey={sortKey}
-          sortDirection={sortDirection}
-          onPress={onSortSelect}
-        >
-          {translate('PhysicalRelease')}
-        </SortMenuItem>
-
-        <SortMenuItem
           name="digitalRelease"
           sortKey={sortKey}
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
           {translate('DigitalRelease')}
+        </SortMenuItem>
+
+        <SortMenuItem
+          name="physicalRelease"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          {translate('PhysicalRelease')}
         </SortMenuItem>
 
         <SortMenuItem

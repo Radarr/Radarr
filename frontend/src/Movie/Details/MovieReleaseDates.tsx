@@ -32,7 +32,7 @@ function MovieReleaseDates(props: MovieReleaseDatesProps) {
   }
 
   return (
-    <div>
+    <>
       {inCinemas ? (
         <div title={translate('InCinemas')}>
           <div className={styles.dateIcon}>
@@ -44,6 +44,7 @@ function MovieReleaseDates(props: MovieReleaseDatesProps) {
           })}
         </div>
       ) : null}
+
       {digitalRelease ? (
         <div title={translate('DigitalRelease')}>
           <div className={styles.dateIcon}>
@@ -55,6 +56,7 @@ function MovieReleaseDates(props: MovieReleaseDatesProps) {
           })}
         </div>
       ) : null}
+
       {physicalRelease ? (
         <div title={translate('PhysicalRelease')}>
           <div className={styles.dateIcon}>
@@ -68,7 +70,7 @@ function MovieReleaseDates(props: MovieReleaseDatesProps) {
           )}
         </div>
       ) : null}
-    </div>
+    </>
   );
 }
 

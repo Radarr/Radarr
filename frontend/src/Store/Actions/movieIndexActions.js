@@ -34,6 +34,8 @@ export const defaultState = {
     showMonitored: true,
     showQualityProfile: true,
     showCinemaRelease: false,
+    showDigitalRelease: false,
+    showPhysicalRelease: false,
     showReleaseDate: false,
     showTmdbRating: false,
     showImdbRating: false,
