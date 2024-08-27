@@ -20,7 +20,7 @@ import {
   faKeyboard as farKeyboard,
   faObjectGroup as farObjectGroup,
   faObjectUngroup as farObjectUngroup,
-  faSquare as farSquare
+  faSquare as farSquare,
 } from '@fortawesome/free-regular-svg-icons';
 //
 // Solid
@@ -118,7 +118,7 @@ import {
   faUser as fasUser,
   faUserPlus as fasUserPlus,
   faVial as fasVial,
-  faWrench as fasWrench
+  faWrench as fasWrench,
 } from '@fortawesome/free-solid-svg-icons';
 
 //
