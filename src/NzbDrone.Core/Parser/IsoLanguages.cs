@@ -54,7 +54,9 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("et", "", "est", "Estonian", Language.Estonian),
                                                                new IsoLanguage("ta", "", "tam", "Tamil", Language.Tamil),
                                                                new IsoLanguage("id", "", "ind", "Indonesian", Language.Indonesian),
-                                                               new IsoLanguage("te", "", "tel", "Telugu", Language.Telugu)
+                                                               new IsoLanguage("te", "", "tel", "Telugu", Language.Telugu),
+                                                               new IsoLanguage("mk", "", "mkd", "Macedonian", Language.Macedonian),
+                                                               new IsoLanguage("sl", "", "slv", "Slovenian", Language.Slovenian),
                                                            };
 
         private static readonly Dictionary<string, Language> AlternateIsoCodeMappings = new ()

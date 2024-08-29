@@ -116,6 +116,8 @@ namespace NzbDrone.Core.Languages
         public static Language Tamil => new Language(43, "Tamil");
         public static Language Indonesian => new Language(44, "Indonesian");
         public static Language Telugu => new Language(45, "Telugu");
+        public static Language Macedonian => new Language(46, "Macedonian");
+        public static Language Slovenian => new Language(47, "Slovenian");
         public static Language Any => new Language(-1, "Any");
         public static Language Original => new Language(-2, "Original");
 
@@ -171,6 +173,8 @@ namespace NzbDrone.Core.Languages
                     Tamil,
                     Indonesian,
                     Telugu,
+                    Macedonian,
+                    Slovenian,
                     Any,
                     Original
                 };
