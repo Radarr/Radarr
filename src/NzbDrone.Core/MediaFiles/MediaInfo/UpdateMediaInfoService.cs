@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
@@ -68,7 +69,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
         public bool UpdateMediaInfo(MovieFile movieFile, Movie movie)
         {
-            var path = Path.Combine(movie.Path, movieFile.RelativePath);
+            var path = movieFile.Path.IsNotNullOrWhiteSpace() ? movieFile.Path : Path.Combine(movie.Path, movieFile.RelativePath);
 
             if (!_diskProvider.FileExists(path))
             {
