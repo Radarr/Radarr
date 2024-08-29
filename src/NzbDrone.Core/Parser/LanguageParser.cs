@@ -217,6 +217,16 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Telugu);
             }
 
+            if (lowerTitle.Contains("malayalam"))
+            {
+                languages.Add(Language.Malayalam);
+            }
+
+            if (lowerTitle.Contains("kannada"))
+            {
+                languages.Add(Language.Kannada);
+            }
+
             // Case sensitive
             var caseSensitiveMatches = CaseSensitiveLanguageRegex.Matches(title);
 
