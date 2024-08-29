@@ -155,26 +155,27 @@ class AddNewMovieSearchResult extends Component {
               </div>
 
               <div className={styles.icons}>
+                <div>
+                  {
+                    isExistingMovie &&
+                      <Icon
+                        className={styles.alreadyExistsIcon}
+                        name={icons.CHECK_CIRCLE}
+                        size={36}
+                        title={translate('AlreadyInYourLibrary')}
+                      />
+                  }
 
-                {
-                  isExistingMovie &&
-                    <Icon
-                      className={styles.alreadyExistsIcon}
-                      name={icons.CHECK_CIRCLE}
-                      size={36}
-                      title={translate('AlreadyInYourLibrary')}
-                    />
-                }
-
-                {
-                  isExcluded &&
-                    <Icon
-                      className={styles.exclusionIcon}
-                      name={icons.DANGER}
-                      size={36}
-                      title={translate('MovieIsOnImportExclusionList')}
-                    />
-                }
+                  {
+                    isExcluded &&
+                      <Icon
+                        className={styles.exclusionIcon}
+                        name={icons.DANGER}
+                        size={36}
+                        title={translate('MovieIsOnImportExclusionList')}
+                      />
+                  }
+                </div>
               </div>
             </div>
 
