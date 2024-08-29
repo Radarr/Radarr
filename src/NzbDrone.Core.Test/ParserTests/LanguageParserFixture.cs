@@ -419,6 +419,23 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().Contain(Language.Catalan);
         }
 
+        [TestCase("Movie Title (2024) Malayalam BRRip 1080p x264 DTS 5.1 E-subs-MBRHDRG")]
+        [TestCase("Movie.Title.2024.Malayalam.1080p.AMZN.WEB-DL.DD+5.1.H.264-Shadow.BonsaiHD")]
+        [TestCase("Movie.Title.2024.2160p.Malayalam.WEB-DL.H.265.SDR.DDP5.1-NbT")]
+        public void should_parse_language_malayalam(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Malayalam);
+        }
+
+        [TestCase("Movie Title (2024) Kannada 1080p HD AVC MP4 x264 .9.8GB TEAMTR")]
+        [TestCase("Movie.Title.2024.Kannada.1080p.AMZN.WEB-DL.DD+2.0.x264-Telly")]
+        public void should_parse_language_kannada(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Kannada);
+        }
+
         [TestCase("Movie.Title.en.sub")]
         [TestCase("Movie Title.eng.sub")]
         [TestCase("Movie.Title.eng.forced.sub")]
