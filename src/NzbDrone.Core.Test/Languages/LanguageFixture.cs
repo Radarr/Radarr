@@ -57,7 +57,9 @@ namespace NzbDrone.Core.Test.Languages
                 new object[] { 42, Language.Estonian },
                 new object[] { 43, Language.Tamil },
                 new object[] { 44, Language.Indonesian },
-                new object[] { 45, Language.Telugu }
+                new object[] { 45, Language.Telugu },
+                new object[] { 46, Language.Macedonian },
+                new object[] { 47, Language.Slovenian }
             };
 
         public static object[] ToIntCases =
@@ -109,7 +111,9 @@ namespace NzbDrone.Core.Test.Languages
                 new object[] { Language.Estonian, 42 },
                 new object[] { Language.Tamil, 43 },
                 new object[] { Language.Indonesian, 44 },
-                new object[] { Language.Telugu, 45 }
+                new object[] { Language.Telugu, 45 },
+                new object[] { Language.Macedonian, 46 },
+                new object[] { Language.Slovenian, 47 }
             };
 
         [Test]
