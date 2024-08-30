@@ -88,8 +88,6 @@ function MovieIndexProgressBar(props: MovieIndexProgressBarProps) {
         monitored,
         hasFile,
         isAvailable,
-        isAvailableDate,
-        'kinds',
         queueDetails.count > 0
       )}
       size={detailedProgressBar ? sizes.MEDIUM : sizes.SMALL}
