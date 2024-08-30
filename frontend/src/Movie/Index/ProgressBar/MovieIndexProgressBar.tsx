@@ -10,6 +10,8 @@ import { MovieFile } from 'MovieFile/MovieFile';
 import getProgressBarKind from 'Utilities/Movie/getProgressBarKind';
 import translate from 'Utilities/String/translate';
 import styles from './MovieIndexProgressBar.css';
+import getRelativeDate from 'Utilities/Date/getRelativeDate';
+import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 
 interface MovieIndexProgressBarProps {
   movieId: number;
@@ -18,6 +20,7 @@ interface MovieIndexProgressBarProps {
   status: MovieStatus;
   hasFile: boolean;
   isAvailable: boolean;
+  isAvailableDate: string;
   width: number;
   detailedProgressBar: boolean;
   bottomRadius?: boolean;
@@ -32,6 +35,7 @@ function MovieIndexProgressBar(props: MovieIndexProgressBarProps) {
     status,
     hasFile,
     isAvailable,
+    isAvailableDate,
     width,
     detailedProgressBar,
     bottomRadius,
@@ -60,6 +64,20 @@ function MovieIndexProgressBar(props: MovieIndexProgressBarProps) {
     : styles.progress;
   const containerClassName = isStandAlone ? undefined : attachedClassName;
 
+
+  const uiSettings = useSelector(createUISettingsSelector());
+  const { showRelativeDates, shortDateFormat, timeFormat } =
+      uiSettings;
+  const DateConsideredAvailable = getRelativeDate(
+    isAvailableDate,
+    shortDateFormat,
+    showRelativeDates,
+    {
+      timeFormat,
+      timeForToday: false
+    }
+  );
+  
   return (
     <ProgressBar
       className={styles.progressBar}
@@ -70,12 +88,15 @@ function MovieIndexProgressBar(props: MovieIndexProgressBarProps) {
         monitored,
         hasFile,
         isAvailable,
+        isAvailableDate,
+        'kinds',
         queueDetails.count > 0
       )}
       size={detailedProgressBar ? sizes.MEDIUM : sizes.SMALL}
       showText={detailedProgressBar}
       width={width}
       text={queueStatusText ? queueStatusText : movieStatus}
+      title={movieStatus=='NotAvailable' ? DateConsideredAvailable : ''}
     />
   );
 }
