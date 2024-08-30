@@ -117,10 +117,17 @@ namespace NzbDrone.Core.Movies
 
             if (minimumAvailabilityDate == DateTime.MinValue || minimumAvailabilityDate == DateTime.MaxValue)
             {
-                return DateTime.UtcNow >= minimumAvailabilityDate;
+                return minimumAvailabilityDate;
             }
 
-            return DateTime.UtcNow >= minimumAvailabilityDate.AddDays(delay);
+            return minimumAvailabilityDate.AddDays(delay);
+        }
+
+        public bool IsAvailable(int delay = 0)
+        {
+            // the below line is what was used before delay was implemented, could still be used for cases when delay==0
+            // return (Status >= MinimumAvailability || (MinimumAvailability == MovieStatusType.PreDB && Status >= MovieStatusType.Released));
+            return DateTime.Now >= IsAvailableDate(delay);
         }
 
         public DateTime? GetReleaseDate()
@@ -144,7 +151,7 @@ namespace NzbDrone.Core.Movies
                     .Min();
             }
 
-            return MovieMetadata.Value.InCinemas?.AddDays((double)delay));
+            return MovieMetadata.Value.InCinemas?.AddDays(90);
         }
 
         public override string ToString()
