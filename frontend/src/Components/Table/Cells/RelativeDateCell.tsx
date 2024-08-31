@@ -11,6 +11,7 @@ interface RelativeDateCellProps {
   date?: string;
   includeSeconds?: boolean;
   includeTime?: boolean;
+  timeForToday?: boolean;
   component?: React.ElementType;
 }
 
@@ -20,6 +21,7 @@ function RelativeDateCell(props: RelativeDateCellProps) {
     date,
     includeSeconds = false,
     includeTime = false,
+    timeForToday = true,
 
     component: Component = TableRowCell,
     ...otherProps
@@ -48,7 +50,7 @@ function RelativeDateCell(props: RelativeDateCellProps) {
         timeFormat,
         includeSeconds,
         includeTime,
-        timeForToday: true,
+        timeForToday,
       })}
     </Component>
   );

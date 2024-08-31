@@ -70,6 +70,7 @@ function CutoffUnmetRow(props) {
                 key={name}
                 className={styles[name]}
                 date={inCinemas}
+                timeForToday={false}
               />
             );
           }
@@ -80,6 +81,7 @@ function CutoffUnmetRow(props) {
                 key={name}
                 className={styles[name]}
                 date={digitalRelease}
+                timeForToday={false}
               />
             );
           }
@@ -90,6 +92,7 @@ function CutoffUnmetRow(props) {
                 key={name}
                 className={styles[name]}
                 date={physicalRelease}
+                timeForToday={false}
               />
             );
           }

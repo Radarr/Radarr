@@ -202,6 +202,7 @@ class DiscoverMovieRow extends Component {
                   key={name}
                   className={styles[name]}
                   date={inCinemas}
+                  timeForToday={false}
                   component={VirtualTableRowCell}
                 />
               );
@@ -213,6 +214,7 @@ class DiscoverMovieRow extends Component {
                   key={name}
                   className={styles[name]}
                   date={physicalRelease}
+                  timeForToday={false}
                   component={VirtualTableRowCell}
                 />
               );
@@ -224,6 +226,7 @@ class DiscoverMovieRow extends Component {
                   key={name}
                   className={styles[name]}
                   date={digitalRelease}
+                  timeForToday={false}
                   component={VirtualTableRowCell}
                 />
               );

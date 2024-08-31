@@ -248,6 +248,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
               key={name}
               className={styles[name]}
               date={inCinemas}
+              timeForToday={false}
               component={VirtualTableRowCell}
             />
           );
@@ -261,6 +262,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
               key={name}
               className={styles[name]}
               date={digitalRelease}
+              timeForToday={false}
               component={VirtualTableRowCell}
             />
           );
@@ -274,6 +276,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
               key={name}
               className={styles[name]}
               date={physicalRelease}
+              timeForToday={false}
               component={VirtualTableRowCell}
             />
           );
@@ -287,6 +290,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
               key={name}
               className={styles[name]}
               date={releaseDate}
+              timeForToday={false}
               component={VirtualTableRowCell}
             />
           );
