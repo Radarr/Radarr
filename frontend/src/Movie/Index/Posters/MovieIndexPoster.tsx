@@ -243,7 +243,10 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
       {showCinemaRelease && inCinemas ? (
         <div className={styles.title} title={translate('InCinemas')}>
           <Icon name={icons.IN_CINEMAS} />{' '}
-          {getRelativeDate(inCinemas, shortDateFormat, showRelativeDates, {
+          {getRelativeDate({
+            date: inCinemas,
+            shortDateFormat,
+            showRelativeDates,
             timeFormat,
             timeForToday: false,
           })}
@@ -253,7 +256,10 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
       {showDigitalRelease && digitalRelease ? (
         <div className={styles.title} title={translate('DigitalRelease')}>
           <Icon name={icons.MOVIE_FILE} />{' '}
-          {getRelativeDate(digitalRelease, shortDateFormat, showRelativeDates, {
+          {getRelativeDate({
+            date: digitalRelease,
+            shortDateFormat,
+            showRelativeDates,
             timeFormat,
             timeForToday: false,
           })}
@@ -263,22 +269,23 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
       {showPhysicalRelease && physicalRelease ? (
         <div className={styles.title} title={translate('PhysicalRelease')}>
           <Icon name={icons.DISC} />{' '}
-          {getRelativeDate(
-            physicalRelease,
+          {getRelativeDate({
+            date: physicalRelease,
             shortDateFormat,
             showRelativeDates,
-            {
-              timeFormat,
-              timeForToday: false,
-            }
-          )}
+            timeFormat,
+            timeForToday: false,
+          })}
         </div>
       ) : null}
 
       {showReleaseDate && releaseDate ? (
         <div className={styles.title} title={translate('ReleaseDate')}>
           <Icon name={icons.CALENDAR} />{' '}
-          {getRelativeDate(releaseDate, shortDateFormat, showRelativeDates, {
+          {getRelativeDate({
+            date: releaseDate,
+            shortDateFormat,
+            showRelativeDates,
             timeFormat,
             timeForToday: false,
           })}

@@ -100,15 +100,13 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
   }
 
   if (sortKey === 'added' && added) {
-    const addedDate = getRelativeDate(
-      added,
+    const addedDate = getRelativeDate({
+      date: added,
       shortDateFormat,
       showRelativeDates,
-      {
-        timeFormat,
-        timeForToday: false,
-      }
-    );
+      timeFormat,
+      timeForToday: false,
+    });
 
     return (
       <div
@@ -129,15 +127,13 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
   }
 
   if (sortKey === 'inCinemas' && inCinemas && !showCinemaRelease) {
-    const inCinemasDate = getRelativeDate(
-      inCinemas,
+    const inCinemasDate = getRelativeDate({
+      date: inCinemas,
       shortDateFormat,
       showRelativeDates,
-      {
-        timeFormat,
-        timeForToday: false,
-      }
-    );
+      timeFormat,
+      timeForToday: false,
+    });
 
     return (
       <div className={styles.info} title={translate('InCinemas')}>
@@ -147,15 +143,13 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
   }
 
   if (sortKey === 'digitalRelease' && digitalRelease && !showDigitalRelease) {
-    const digitalReleaseDate = getRelativeDate(
-      digitalRelease,
+    const digitalReleaseDate = getRelativeDate({
+      date: digitalRelease,
       shortDateFormat,
       showRelativeDates,
-      {
-        timeFormat,
-        timeForToday: false,
-      }
-    );
+      timeFormat,
+      timeForToday: false,
+    });
 
     return (
       <div className={styles.info} title={translate('DigitalRelease')}>
@@ -169,15 +163,13 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     physicalRelease &&
     !showPhysicalRelease
   ) {
-    const physicalReleaseDate = getRelativeDate(
-      physicalRelease,
+    const physicalReleaseDate = getRelativeDate({
+      date: physicalRelease,
       shortDateFormat,
       showRelativeDates,
-      {
-        timeFormat,
-        timeForToday: false,
-      }
-    );
+      timeFormat,
+      timeForToday: false,
+    });
 
     return (
       <div className={styles.info} title={translate('PhysicalRelease')}>
@@ -190,7 +182,10 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     return (
       <div className={styles.info} title={translate('ReleaseDate')}>
         <Icon name={icons.CALENDAR} />{' '}
-        {getRelativeDate(releaseDate, shortDateFormat, showRelativeDates, {
+        {getRelativeDate({
+          date: releaseDate,
+          shortDateFormat,
+          showRelativeDates,
           timeFormat,
           timeForToday: false,
         })}
