@@ -117,13 +117,13 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         {
             ImportDecision decision = null;
 
-            var fileMovieInfo = Parser.Parser.ParseMoviePath(localMovie.Path);
-
-            localMovie.FileMovieInfo = fileMovieInfo;
-            localMovie.Size = _diskProvider.GetFileSize(localMovie.Path);
-
             try
             {
+                var fileMovieInfo = Parser.Parser.ParseMoviePath(localMovie.Path);
+
+                localMovie.FileMovieInfo = fileMovieInfo;
+                localMovie.Size = _diskProvider.GetFileSize(localMovie.Path);
+
                 _aggregationService.Augment(localMovie, downloadClientItem);
 
                 if (localMovie.Movie == null)
