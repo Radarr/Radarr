@@ -9,8 +9,10 @@ export type MovieStatus =
   | 'released'
   | 'deleted';
 
+export type CoverType = 'poster' | 'fanart';
+
 export interface Image {
-  coverType: string;
+  coverType: CoverType;
   url: string;
   remoteUrl: string;
 }
