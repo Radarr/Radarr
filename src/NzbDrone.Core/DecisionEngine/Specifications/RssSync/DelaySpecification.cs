@@ -58,13 +58,13 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             if (isPreferredProtocol && (subject.Movie.MovieFileId != 0 && file != null))
             {
                 var customFormats = _formatService.ParseCustomFormat(file);
-                var upgradable = _qualityUpgradableSpecification.IsUpgradable(profile,
-                                                                              file.Quality,
-                                                                              customFormats,
-                                                                              subject.ParsedMovieInfo.Quality,
-                                                                              subject.CustomFormats);
+                var upgradeableRejectReason = _qualityUpgradableSpecification.IsUpgradable(profile,
+                    file.Quality,
+                    customFormats,
+                    subject.ParsedMovieInfo.Quality,
+                    subject.CustomFormats);
 
-                if (upgradable)
+                if (upgradeableRejectReason == UpgradeableRejectReason.None)
                 {
                     var revisionUpgrade = _qualityUpgradableSpecification.IsRevisionUpgrade(subject.Movie.MovieFile.Quality, subject.ParsedMovieInfo.Quality);
 
