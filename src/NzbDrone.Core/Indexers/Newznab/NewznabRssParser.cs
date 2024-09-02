@@ -92,6 +92,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             releaseInfo = base.ProcessItem(item, releaseInfo);
             releaseInfo.ImdbId = GetImdbId(item);
+            releaseInfo.IndexerFlags = GetFlags(item);
 
             return releaseInfo;
         }
@@ -207,6 +208,23 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
 
             return 1900;
+        }
+
+        protected IndexerFlags GetFlags(XElement item)
+        {
+            IndexerFlags flags = 0;
+
+            if (TryGetNewznabAttribute(item, "prematch") == "1" || TryGetNewznabAttribute(item, "haspretime") == "1")
+            {
+                flags |= IndexerFlags.G_Scene;
+            }
+
+            if (TryGetNewznabAttribute(item, "nuked") == "1")
+            {
+                flags |= IndexerFlags.Nuked;
+            }
+
+            return flags;
         }
 
         protected string TryGetNewznabAttribute(XElement item, string key, string defaultValue = "")
