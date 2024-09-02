@@ -264,6 +264,8 @@
   "CustomFormatsSettings": "Custom Formats Settings",
   "CustomFormatsSettingsSummary": "Custom Formats and Settings",
   "CustomFormatsSettingsTriggerInfo": "A Custom Format will be applied to a release or file when it matches at least one of each of the different condition types chosen.",
+  "CustomFormatsSpecificationExceptLanguage": "Except Language",
+  "CustomFormatsSpecificationExceptLanguageHelpText": "Matches if any language other than the selected language is present",
   "CustomFormatsSpecificationFlag": "Flag",
   "CustomFormatsSpecificationRegularExpression": "Regular Expression",
   "CustomFormatsSpecificationRegularExpressionHelpText": "Custom Format RegEx is Case Insensitive",

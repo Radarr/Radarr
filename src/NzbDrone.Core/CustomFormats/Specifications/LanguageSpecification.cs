@@ -30,6 +30,9 @@ namespace NzbDrone.Core.CustomFormats
         [FieldDefinition(1, Label = "Language", Type = FieldType.Select, SelectOptions = typeof(LanguageFieldConverter))]
         public int Value { get; set; }
 
+        [FieldDefinition(1, Label = "CustomFormatsSpecificationExceptLanguage", HelpText = "CustomFormatsSpecificationExceptLanguageHelpText", Type = FieldType.Checkbox)]
+        public bool ExceptLanguage { get; set; }
+
         public override bool IsSatisfiedBy(CustomFormatInput input)
         {
             if (Negate)
@@ -46,7 +49,12 @@ namespace NzbDrone.Core.CustomFormats
                 ? input.Movie.MovieMetadata.Value.OriginalLanguage
                 : (Language)Value;
 
-            return input?.Languages?.Contains(comparedLanguage) ?? false;
+            if (ExceptLanguage)
+            {
+                return input.Languages?.Any(l => l != comparedLanguage) ?? false;
+            }
+
+            return input.Languages?.Contains(comparedLanguage) ?? false;
         }
 
         private bool IsSatisfiedByWithNegate(CustomFormatInput input)
@@ -54,6 +62,11 @@ namespace NzbDrone.Core.CustomFormats
             var comparedLanguage = input.MovieInfo != null && input.Movie != null && Value == Language.Original.Id && input.Movie.MovieMetadata.Value.OriginalLanguage != Language.Unknown
                 ? input.Movie.MovieMetadata.Value.OriginalLanguage
                 : (Language)Value;
+
+            if (ExceptLanguage)
+            {
+                return !input.Languages?.Any(l => l != comparedLanguage) ?? false;
+            }
 
             return !input.Languages?.Contains(comparedLanguage) ?? false;
         }
