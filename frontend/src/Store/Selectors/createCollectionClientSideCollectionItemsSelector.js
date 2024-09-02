@@ -9,11 +9,13 @@ function createUnoptimizedSelector(uiSection) {
       const items = movies.items.map((s) => {
         const {
           id,
+          tmdbId,
           sortTitle
         } = s;
 
         return {
           id,
+          tmdbId,
           sortTitle
         };
       });

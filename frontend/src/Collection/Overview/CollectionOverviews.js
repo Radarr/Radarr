@@ -53,7 +53,8 @@ class CollectionOverviews extends Component {
       columnCount: 1,
       posterWidth: 162,
       posterHeight: 238,
-      rowHeight: calculateRowHeight(238, null, props.isSmallScreen, {})
+      rowHeight: calculateRowHeight(238, null, props.isSmallScreen, {}),
+      navigateToId: props.location.state?.navigateToId ?? 0
     };
 
     this._grid = null;
@@ -72,7 +73,8 @@ class CollectionOverviews extends Component {
     const {
       width,
       rowHeight,
-      scrollRestored
+      scrollRestored,
+      navigateToId
     } = this.state;
 
     if (prevProps.sortKey !== sortKey ||
@@ -105,6 +107,10 @@ class CollectionOverviews extends Component {
           columnIndex: 0
         });
       }
+    }
+
+    if (navigateToId) {
+      this.scrollToItem(navigateToId);
     }
   }
 
@@ -186,6 +192,25 @@ class CollectionOverviews extends Component {
     );
   };
 
+  scrollToItem = (itemId) => {
+    const index = this.props.items.findIndex((item) => item.tmdbId === itemId);
+
+    if (index !== -1 && this._grid) {
+      this._grid.scrollToCell({
+        columnIndex: 0,
+        rowIndex: index,
+        align: 'start'
+      });
+    }
+
+    // Replacing the history to prevent navigating back to this item on re-renders
+    window.history.replaceState({}, '');
+
+    this.setState({
+      navigateToId: 0
+    });
+  };
+
   //
   // Listeners
 
@@ -265,7 +290,8 @@ CollectionOverviews.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired,
   selectedState: PropTypes.object.isRequired,
-  onSelectedChange: PropTypes.func.isRequired
+  onSelectedChange: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired
 };
 
 export default CollectionOverviews;
