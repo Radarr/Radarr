@@ -5,6 +5,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.Download.Pending;
@@ -75,7 +76,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         {
             Mocker.GetMock<IUpgradableSpecification>()
                   .Setup(s => s.IsUpgradable(It.IsAny<QualityProfile>(), It.IsAny<QualityModel>(), It.IsAny<List<CustomFormat>>(), It.IsAny<QualityModel>(), It.IsAny<List<CustomFormat>>()))
-                  .Returns(true);
+                  .Returns(UpgradeableRejectReason.None);
         }
 
         [Test]

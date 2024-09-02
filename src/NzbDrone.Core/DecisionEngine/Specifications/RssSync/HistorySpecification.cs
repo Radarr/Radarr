@@ -42,31 +42,36 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             }
 
             var cdhEnabled = _configService.EnableCompletedDownloadHandling;
+            var qualityProfile = subject.Movie.QualityProfile;
 
             _logger.Debug("Performing history status check on report");
+
             _logger.Debug("Checking current status of movie [{0}] in history", subject.Movie.Id);
             var mostRecent = _historyService.MostRecentForMovie(subject.Movie.Id);
 
             if (mostRecent != null && mostRecent.EventType == MovieHistoryEventType.Grabbed)
             {
-                var customFormats = _formatService.ParseCustomFormat(mostRecent, subject.Movie);
-
-                var cutoffUnmet = _upgradableSpecification.CutoffNotMet(subject.Movie.QualityProfile,
-                                                                        mostRecent.Quality,
-                                                                        customFormats,
-                                                                        subject.ParsedMovieInfo.Quality);
-
-                var upgradeable = _upgradableSpecification.IsUpgradable(subject.Movie.QualityProfile,
-                                                                        mostRecent.Quality,
-                                                                        customFormats,
-                                                                        subject.ParsedMovieInfo.Quality,
-                                                                        subject.CustomFormats);
-
                 var recent = mostRecent.Date.After(DateTime.UtcNow.AddHours(-12));
+
                 if (!recent && cdhEnabled)
                 {
                     return Decision.Accept();
                 }
+
+                var customFormats = _formatService.ParseCustomFormat(mostRecent, subject.Movie);
+
+                var cutoffUnmet = _upgradableSpecification.CutoffNotMet(
+                    subject.Movie.QualityProfile,
+                    mostRecent.Quality,
+                    customFormats,
+                    subject.ParsedMovieInfo.Quality);
+
+                var upgradeableRejectReason = _upgradableSpecification.IsUpgradable(
+                    subject.Movie.QualityProfile,
+                    mostRecent.Quality,
+                    customFormats,
+                    subject.ParsedMovieInfo.Quality,
+                    subject.CustomFormats);
 
                 if (!cutoffUnmet)
                 {
@@ -78,14 +83,26 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                     return Decision.Reject("CDH is disabled and grab event in history already meets cutoff: {0}", mostRecent.Quality);
                 }
 
-                if (!upgradeable)
-                {
-                    if (recent)
-                    {
-                        return Decision.Reject("Recent grab event in history is of equal or higher quality: {0}", mostRecent.Quality);
-                    }
+                var rejectionSubject = recent ? "Recent" : "CDH is disabled and";
 
-                    return Decision.Reject("CDH is disabled and grab event in history is of equal or higher quality: {0}", mostRecent.Quality);
+                switch (upgradeableRejectReason)
+                {
+                    case UpgradeableRejectReason.None:
+                        return Decision.Accept();
+                    case UpgradeableRejectReason.BetterQuality:
+                        return Decision.Reject("{0} grab event in history is of equal or higher preference: {1}", rejectionSubject, mostRecent.Quality);
+
+                    case UpgradeableRejectReason.BetterRevision:
+                        return Decision.Reject("{0} grab event in history is of equal or higher revision: {1}", rejectionSubject, mostRecent.Quality.Revision);
+
+                    case UpgradeableRejectReason.QualityCutoff:
+                        return Decision.Reject("{0} grab event in history meets quality cutoff: {1}", rejectionSubject, qualityProfile.Items[qualityProfile.GetIndex(qualityProfile.Cutoff).Index]);
+
+                    case UpgradeableRejectReason.CustomFormatCutoff:
+                        return Decision.Reject("{0} grab event in history meets Custom Format cutoff: {1}", rejectionSubject, qualityProfile.CutoffFormatScore);
+
+                    case UpgradeableRejectReason.CustomFormatScore:
+                        return Decision.Reject("{0} grab event in history has an equal or higher custom format score: {1}", rejectionSubject, qualityProfile.CalculateCustomFormatScore(customFormats));
                 }
             }
 
