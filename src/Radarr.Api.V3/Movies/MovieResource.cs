@@ -50,6 +50,7 @@ namespace Radarr.Api.V3.Movies
         // public bool Downloaded { get; set; }
         public string RemotePoster { get; set; }
         public int Year { get; set; }
+        public DateTime? LastSearchTime { get; set; }
         public string YouTubeTrailerId { get; set; }
         public string Studio { get; set; }
 
@@ -161,7 +162,8 @@ namespace Radarr.Api.V3.Movies
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
                 Studio = model.MovieMetadata.Value.Studio,
                 Collection = collection,
-                Popularity = model.MovieMetadata.Value.Popularity
+                Popularity = model.MovieMetadata.Value.Popularity,
+                LastSearchTime = model.LastSearchTime,
             };
         }
 

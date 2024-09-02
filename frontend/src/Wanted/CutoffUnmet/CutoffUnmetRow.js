@@ -16,6 +16,7 @@ function CutoffUnmetRow(props) {
     id,
     movieFileId,
     year,
+    lastSearchTime,
     title,
     titleSlug,
     inCinemas,
@@ -61,6 +62,16 @@ function CutoffUnmetRow(props) {
               <TableRowCell key={name}>
                 {year}
               </TableRowCell>
+            );
+          }
+
+          if (name === 'lastSearchTime') {
+            return (
+              <RelativeDateCell
+                key={name}
+                date={lastSearchTime}
+                includeSeconds={true}
+              />
             );
           }
 
@@ -148,6 +159,7 @@ CutoffUnmetRow.propTypes = {
   movieFileId: PropTypes.number,
   title: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
+  lastSearchTime: PropTypes.string,
   titleSlug: PropTypes.string.isRequired,
   inCinemas: PropTypes.string,
   digitalRelease: PropTypes.string,

@@ -15,6 +15,7 @@ function MissingRow(props) {
     id,
     movieFileId,
     year,
+    lastSearchTime,
     title,
     titleSlug,
     inCinemas,
@@ -64,6 +65,16 @@ function MissingRow(props) {
               <TableRowCell key={name}>
                 {year}
               </TableRowCell>
+            );
+          }
+
+          if (name === 'lastSearchTime') {
+            return (
+              <RelativeDateCell
+                key={name}
+                date={lastSearchTime}
+                includeSeconds={true}
+              />
             );
           }
 
@@ -138,6 +149,7 @@ MissingRow.propTypes = {
   movieFileId: PropTypes.number,
   title: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
+  lastSearchTime: PropTypes.string,
   titleSlug: PropTypes.string.isRequired,
   inCinemas: PropTypes.string,
   digitalRelease: PropTypes.string,

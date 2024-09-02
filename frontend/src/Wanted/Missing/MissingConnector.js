@@ -117,14 +117,16 @@ class MissingConnector extends Component {
   onSearchSelectedPress = (selected) => {
     this.props.executeCommand({
       name: commandNames.MOVIE_SEARCH,
-      movieIds: selected
+      movieIds: selected,
+      commandFinished: this.repopulate
     });
   };
 
   onSearchAllMissingPress = (monitored) => {
     this.props.executeCommand({
       name: commandNames.MISSING_MOVIES_SEARCH,
-      monitored
+      monitored,
+      commandFinished: this.repopulate
     });
   };
 

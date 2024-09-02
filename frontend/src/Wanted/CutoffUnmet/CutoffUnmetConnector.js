@@ -126,14 +126,16 @@ class CutoffUnmetConnector extends Component {
   onSearchSelectedPress = (selected) => {
     this.props.executeCommand({
       name: commandNames.MOVIE_SEARCH,
-      movieIds: selected
+      movieIds: selected,
+      commandFinished: this.repopulate
     });
   };
 
   onSearchAllCutoffUnmetPress = (monitored) => {
     this.props.executeCommand({
       name: commandNames.CUTOFF_UNMET_MOVIES_SEARCH,
-      monitored
+      monitored,
+      commandFinished: this.repopulate
     });
   };
 

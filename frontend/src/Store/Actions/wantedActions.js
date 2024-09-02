@@ -41,6 +41,12 @@ export const defaultState = {
         isVisible: true
       },
       {
+        name: 'lastSearchTime',
+        label: () => translate('LastSearched'),
+        isSortable: true,
+        isVisible: false
+      },
+      {
         name: 'movieMetadata.inCinemas',
         label: () => translate('InCinemas'),
         isSortable: true,
@@ -119,6 +125,12 @@ export const defaultState = {
         label: () => translate('Year'),
         isSortable: true,
         isVisible: true
+      },
+      {
+        name: 'lastSearchTime',
+        label: () => translate('LastSearched'),
+        isSortable: true,
+        isVisible: false
       },
       {
         name: 'movieMetadata.inCinemas',
