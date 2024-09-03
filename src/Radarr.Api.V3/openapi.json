@@ -9172,6 +9172,17 @@
             "type": "string",
             "nullable": true
           },
+          "languageTags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
           "type": {
             "$ref": "#/components/schemas/ExtraFileType"
           }
