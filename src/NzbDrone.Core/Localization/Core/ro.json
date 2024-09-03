@@ -1143,5 +1143,9 @@
     "UpdateAvailableHealthCheckMessage": "O nouă versiune este disponibilă: {version}",
     "DeleteSelectedCustomFormatsMessageText": "Sigur doriți să ștergeți {count} clienți de descărcare selectați?",
     "DeleteSelectedCustomFormats": "Ștergeți formatul personalizat",
-    "ReleaseDate": "Date de lansare"
+    "ReleaseDate": "Date de lansare",
+    "ShowDigitalRelease": "Data lansării Show Cinema",
+    "ShowDigitalReleaseHelpText": "Afișați data lansării sub afiș",
+    "ShowPhysicalRelease": "Data de lansare fizică",
+    "ShowPhysicalReleaseHelpText": "Afișați data lansării sub afiș"
 }

@@ -1067,5 +1067,9 @@
     "DeleteSelectedMovies": "Eyða völdum kvikmyndaskrám",
     "DeleteSelectedImportListExclusionsMessageText": "Ertu viss um að þú viljir eyða þessari útilokun innflutningslista?",
     "DeleteSelectedCustomFormats": "Eyða sérsniðnu sniði",
-    "ReleaseDate": "Slepptu dagsetningum"
+    "ReleaseDate": "Slepptu dagsetningum",
+    "ShowDigitalRelease": "Sýna útgáfudag kvikmyndahússins",
+    "ShowDigitalReleaseHelpText": "Sýnið útgáfudagsetningu undir veggspjaldi",
+    "ShowPhysicalRelease": "Líkamlegur útgáfudagur",
+    "ShowPhysicalReleaseHelpText": "Sýnið útgáfudagsetningu undir veggspjaldi"
 }

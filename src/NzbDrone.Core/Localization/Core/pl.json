@@ -1182,5 +1182,10 @@
     "Label": "Etykieta",
     "AutoTaggingRequiredHelpText": "Warunek {implementationName} musi być zgodny, aby format niestandardowy został zastosowany. W przeciwnym razie wystarczy jedno dopasowanie {implementationName}.",
     "DeleteSelectedCustomFormats": "Usuń format niestandardowy",
-    "ReleaseDate": "Daty wydania"
+    "ReleaseDate": "Daty wydania",
+    "ShowDigitalRelease": "Pokaż datę premiery w kinie",
+    "ShowDigitalReleaseHelpText": "Pokaż datę premiery pod plakatem",
+    "ShowPhysicalRelease": "Fizyczna data wydania",
+    "ShowPhysicalReleaseHelpText": "Pokaż datę premiery pod plakatem",
+    "YesterdayAt": "Wczoraj o {time}"
 }

@@ -1225,7 +1225,6 @@
     "ImportScriptPath": "Importa la ruta de l'script",
     "ListRefreshInterval": "Interval d'actualització de la llista",
     "ManualGrab": "Captura manual",
-    "NoHistoryBlocklist": "Sense historial de llistes de bloqueig",
     "MatchedToMovie": "Coincidència amb la pel·lícula",
     "NoImportListsFound": "No s'han trobat llistes d'importació",
     "FormatDateTime": "{formattedDate} {formattedTime}",
@@ -1382,5 +1381,10 @@
     "DeleteSelectedImportListExclusionsMessageText": "Esteu segur que voleu suprimir aquesta exclusió de la llista d'importació?",
     "DeleteSelectedCustomFormats": "Suprimeix el format personalitzat",
     "DeleteSelectedCustomFormatsMessageText": "Esteu segur que voleu suprimir {count} llista(es) d'importació seleccionada(es)?",
-    "ReleaseDate": "Dates de llançament"
+    "ReleaseDate": "Dates de llançament",
+    "ShowPhysicalRelease": "Data de llançament físic",
+    "ShowPhysicalReleaseHelpText": "Mostra la data de llançament sota el cartell",
+    "ShowDigitalRelease": "Mostra la data d'estrena",
+    "ShowDigitalReleaseHelpText": "Mostra la data de llançament sota el cartell",
+    "Logout": "Tanca la sessió"
 }

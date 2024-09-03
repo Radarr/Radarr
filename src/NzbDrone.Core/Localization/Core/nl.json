@@ -1234,5 +1234,9 @@
     "ConnectionSettingsUrlBaseHelpText": "Voegt een voorvoegsel toe aan de {connectionName} url, zoals {url}",
     "DeleteSelectedCustomFormats": "Verwijder Eigen Formaat",
     "DownloadClientSettingsUrlBaseHelpText": "Voegt een voorvoegsel toe aan de {connectionName} url, zoals {url}",
-    "ReleaseDate": "Uitgave Datums"
+    "ReleaseDate": "Uitgave Datums",
+    "ShowDigitalRelease": "Show Cinema-releasedatum",
+    "ShowDigitalReleaseHelpText": "Laat releasedatum zien onder poster",
+    "ShowPhysicalRelease": "Fysieke Release Datum",
+    "ShowPhysicalReleaseHelpText": "Laat releasedatum zien onder poster"
 }

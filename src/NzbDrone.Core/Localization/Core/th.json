@@ -1065,5 +1065,9 @@
     "DeleteSelectedMovies": "ลบไฟล์ภาพยนตร์ที่เลือก",
     "DeleteSelectedImportListExclusionsMessageText": "แน่ใจไหมว่าต้องการลบการยกเว้นรายการนำเข้านี้",
     "DeleteSelectedCustomFormats": "ลบรูปแบบที่กำหนดเอง",
-    "ReleaseDate": "วันที่วางจำหน่าย"
+    "ReleaseDate": "วันที่วางจำหน่าย",
+    "ShowDigitalRelease": "วันฉายภาพยนตร์",
+    "ShowDigitalReleaseHelpText": "แสดงวันที่วางจำหน่ายใต้โปสเตอร์",
+    "ShowPhysicalRelease": "วันที่วางจำหน่ายจริง",
+    "ShowPhysicalReleaseHelpText": "แสดงวันที่วางจำหน่ายใต้โปสเตอร์"
 }

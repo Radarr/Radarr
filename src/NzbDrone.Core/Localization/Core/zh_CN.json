@@ -1098,7 +1098,6 @@
     "NoImportListsFound": "未找到导入列表",
     "OnManualInteractionRequiredHelpText": "需要手动交互",
     "OnManualInteractionRequired": "需要手动交互",
-    "NoHistoryBlocklist": "没有历史黑名单",
     "RemoveSelectedItemQueueMessageText": "您确定要从队列中删除 1 项吗？",
     "RemoveSelectedItemsQueueMessageText": "您确定要从队列中删除{selectedCount}项吗?",
     "ResetDefinitionTitlesHelpText": "重置定义标题和值",
@@ -1374,8 +1373,8 @@
     "NotificationsEmailSettingsServer": "服务器",
     "NotificationsEmailSettingsServerHelpText": "邮件服务器的主机名或 IP",
     "NotificationsEmbySettingsSendNotifications": "发送通知",
-    "NotificationsEmbySettingsSendNotificationsHelpText": "由 MediaBrowser 向配置的提供方发送通知",
-    "NotificationsEmbySettingsUpdateLibraryHelpText": "在导入、重命名、删除时更新库？",
+    "NotificationsEmbySettingsSendNotificationsHelpText": "让 Emby 向配置的提供者发送通知。不支持 Jellyfin。",
+    "NotificationsEmbySettingsUpdateLibraryHelpText": "在导入、重命名、删除时更新库",
     "NotificationsGotifySettingsAppTokenHelpText": "Gotify 生成的应用凭据",
     "NotificationsGotifySettingsPriorityHelpText": "消息优先级",
     "NotificationsGotifySettingsServer": "Gotify 服务器",
@@ -1673,5 +1672,9 @@
     "ProgressBarProgress": "进度栏位于{progress}%",
     "DeleteSelectedCustomFormats": "删除自定义命名格式",
     "DeleteSelectedCustomFormatsMessageText": "您确定要删除选定的{count}导入列表吗?",
-    "ReleaseDate": "发布日期"
+    "ReleaseDate": "发布日期",
+    "ShowDigitalRelease": "电影院上映日期",
+    "ShowDigitalReleaseHelpText": "在海报下显示影院上映日期",
+    "ShowPhysicalRelease": "碟片版发布日期",
+    "ShowPhysicalReleaseHelpText": "在海报下显示影院上映日期"
 }
