@@ -991,7 +991,6 @@
     "DeleteSpecification": "Radera avisering",
     "NotificationsSimplepushSettingsEvent": "Händelse",
     "DeleteRootFolder": "Radera Rotmapp",
-    "NoHistoryBlocklist": "Ingen blocklista-historik",
     "DeleteSelectedDownloadClients": "Radera nedladdningsklient",
     "InteractiveSearchModalHeader": "Interaktiv sökning",
     "ReleaseProfilesLoadError": "Det går inte att ladda fördröjningsprofiler",
@@ -1094,5 +1093,9 @@
     "DeleteSelectedMovies": "Radera markerade filmfiler",
     "DeleteSelectedImportListExclusionsMessageText": "Är du säker på att du vill ta bort detta undantag från importlistan?",
     "DeleteSelectedCustomFormats": "Ta bort anpassat format",
-    "ReleaseDate": "Lanseringsdatum"
+    "ReleaseDate": "Lanseringsdatum",
+    "ShowDigitalRelease": "Visa utgivningsdatum för bio",
+    "ShowDigitalReleaseHelpText": "Visa släppdatum under affischen",
+    "ShowPhysicalRelease": "Fysiskt utgivningsdatum",
+    "ShowPhysicalReleaseHelpText": "Visa släppdatum under affischen"
 }

@@ -1132,7 +1132,6 @@
     "ManageDownloadClients": "Hallitse lataustyökaluja",
     "ManageIndexers": "Hallitse tietolähteitä",
     "MovieImportedTooltip": "Elokuva on ladattu ja poimittu lataustyökalulta",
-    "NoHistoryBlocklist": "Estohistoriaa ei ole.",
     "NoIndexersFound": "Tietolähteitä ei löytynyt",
     "NotificationStatusSingleClientHealthCheckMessage": "Ilmoitukset eivät ole ongelmien vuoksi käytettävissä: {notificationNames}",
     "OrganizeNothingToRename": "Valmis! Tuöni on tehty, eikä nimettäviä tiedostoja ole.",
@@ -1754,5 +1753,9 @@
     "ProgressBarProgress": "Tilapalkissa {progress} %",
     "DeleteSelectedCustomFormatsMessageText": "Haluatko varmasti poistaa valitut {count} tuontilistaa?",
     "DeleteSelectedCustomFormats": "Poista mukautettu muoto",
-    "ReleaseDate": "Julkaisupäivät"
+    "ReleaseDate": "Julkaisupäivät",
+    "ShowDigitalRelease": "Näytä teatterijulkaisu",
+    "ShowDigitalReleaseHelpText": "Näytä teatterijulkaisun päiväys julisteen alla.",
+    "ShowPhysicalRelease": "Fyysinen julkaisu",
+    "ShowPhysicalReleaseHelpText": "Näytä teatterijulkaisun päiväys julisteen alla."
 }

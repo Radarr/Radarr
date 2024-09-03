@@ -1065,5 +1065,9 @@
     "DeleteSelectedMovies": "चयनित मूवी फ़ाइलें हटाएं",
     "DeleteSelectedImportListExclusionsMessageText": "क्या आप वाकई इस आयात सूची बहिष्करण को हटाना चाहते हैं?",
     "DeleteSelectedCustomFormats": "कस्टम प्रारूप हटाएं",
-    "ReleaseDate": "रिलीज़ करने की तिथि"
+    "ReleaseDate": "रिलीज़ करने की तिथि",
+    "ShowDigitalReleaseHelpText": "पोस्टर के तहत रिलीज की तारीख दिखाएं",
+    "ShowPhysicalRelease": "शारीरिक रिलीज की तारीख",
+    "ShowPhysicalReleaseHelpText": "पोस्टर के तहत रिलीज की तारीख दिखाएं",
+    "ShowDigitalRelease": "सिनेमा रिलीज की तारीख दिखाएँ"
 }

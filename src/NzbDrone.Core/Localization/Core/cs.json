@@ -1196,5 +1196,9 @@
     "DeleteSelectedImportListExclusionsMessageText": "Opravdu chcete toto vyloučení importního seznamu smazat?",
     "DeleteSelectedCustomFormats": "Odstranění vlastního formátu",
     "DeleteSelectedCustomFormatsMessageText": "Opravdu chcete smazat {count} vybraných seznamů k importu?",
-    "ReleaseDate": "Datum vydání"
+    "ReleaseDate": "Datum vydání",
+    "ShowDigitalReleaseHelpText": "Zobrazit datum vydání pod plakátem",
+    "ShowPhysicalRelease": "Datum fyzického vydání",
+    "ShowPhysicalReleaseHelpText": "Zobrazit datum vydání pod plakátem",
+    "ShowDigitalRelease": "Zobrazit datum vydání kina"
 }

@@ -1071,5 +1071,9 @@
     "DeleteSelectedMovies": "Xóa các tệp phim đã chọn",
     "DeleteSelectedImportListExclusionsMessageText": "Bạn có chắc chắn muốn xóa loại trừ danh sách nhập này không?",
     "DeleteSelectedCustomFormats": "Xóa định dạng tùy chỉnh",
-    "ReleaseDate": "Ngày phát hành"
+    "ReleaseDate": "Ngày phát hành",
+    "ShowPhysicalReleaseHelpText": "Hiển thị ngày phát hành dưới áp phích",
+    "ShowDigitalRelease": "Ngày phát hành rạp chiếu phim",
+    "ShowDigitalReleaseHelpText": "Hiển thị ngày phát hành dưới áp phích",
+    "ShowPhysicalRelease": "Ngày phát hành vật lý"
 }

@@ -1089,5 +1089,9 @@
     "AutoTaggingNegateHelpText": "Hvis dette er markeret, gælder det tilpassede format ikke, hvis denne {0} betingelse stemmer overens.",
     "DeleteSelectedImportListExclusionsMessageText": "Er du sikker på, at du vil slette denne undtagelse fra importlisten?",
     "DeleteSelectedCustomFormats": "Slet brugerdefineret format",
-    "ReleaseDate": "Slip datoer"
+    "ReleaseDate": "Slip datoer",
+    "ShowPhysicalReleaseHelpText": "Vis udgivelsesdato under plakat",
+    "ShowDigitalRelease": "Vis biografens udgivelsesdato",
+    "ShowDigitalReleaseHelpText": "Vis udgivelsesdato under plakat",
+    "ShowPhysicalRelease": "Fysisk udgivelsesdato"
 }

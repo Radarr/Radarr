@@ -1070,5 +1070,9 @@
     "MovieFileDeletedTooltip": "عند حذف ملف الفيلم",
     "DeleteSelectedImportListExclusionsMessageText": "هل أنت متأكد أنك تريد حذف استثناء قائمة الاستيراد؟",
     "DeleteSelectedCustomFormats": "حذف التنسيق المخصص",
-    "ReleaseDate": "يوم الاصدار"
+    "ReleaseDate": "يوم الاصدار",
+    "ShowDigitalRelease": "عرض تاريخ الإصدار السينمائي",
+    "ShowDigitalReleaseHelpText": "عرض تاريخ الإصدار تحت الملصق",
+    "ShowPhysicalRelease": "تاريخ الإصدار المادي",
+    "ShowPhysicalReleaseHelpText": "عرض تاريخ الإصدار تحت الملصق"
 }

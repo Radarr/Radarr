@@ -1284,5 +1284,9 @@
     "DeleteSelectedImportListExclusionsMessageText": "Ви впевнені, що хочете видалити це виключення зі списку імпорту?",
     "DeleteSelectedCustomFormatsMessageText": "Ви впевнені, що хочете видалити тег {0} ?",
     "DeleteSelectedCustomFormats": "Видалити спеціальний формат",
-    "ReleaseDate": "Дати випуску"
+    "ReleaseDate": "Дати випуску",
+    "ShowDigitalRelease": "Показати дату виходу в кіно",
+    "ShowDigitalReleaseHelpText": "Показати дату випуску під плакатом",
+    "ShowPhysicalRelease": "Дата фізичного випуску",
+    "ShowPhysicalReleaseHelpText": "Показати дату випуску під плакатом"
 }

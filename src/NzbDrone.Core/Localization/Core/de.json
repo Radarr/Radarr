@@ -1073,7 +1073,6 @@
     "ThereWasAnErrorLoadingThisItem": "Beim Laden des Eintrags ist ein Fehler aufgetreten",
     "ThereWasAnErrorLoadingThisPage": "Beim Laden der Seite ist ein Fehler aufgetreten",
     "DeleteRemotePathMapping": "Remote-Pfad-Zuordnung löschen",
-    "NoHistoryBlocklist": "Keine Verlauf-Sperrliste",
     "RemoveSelectedItemQueueMessageText": "Bist du sicher, dass du ein Eintrag aus der Warteschlange entfernen willst?",
     "RemoveSelectedItemsQueueMessageText": "Bist du sicher, dass du {selectedCount} Einträge aus der Warteschlange entfernen willst?",
     "ResetDefinitionTitlesHelpText": "Definitionstitel und -werte zurücksetzen",
@@ -1463,5 +1462,10 @@
     "DeleteSelectedImportListExclusionsMessageText": "Bist du sicher, dass du diesen Importlisten Ausschluss löschen willst?",
     "ProgressBarProgress": "Fortschrittsbalken bei {progress}%",
     "DeleteSelectedCustomFormats": "Benutzerdefiniertes Format löschen",
-    "DeleteSelectedCustomFormatsMessageText": "Sind Sie sicher, dass Sie {count} ausgewählte Importliste(n) löschen möchten?"
+    "DeleteSelectedCustomFormatsMessageText": "Sind Sie sicher, dass Sie {count} ausgewählte Importliste(n) löschen möchten?",
+    "ReleaseDate": "VÖ Termine",
+    "ShowDigitalRelease": "Erscheinungsdatum des Kinos anzeigen",
+    "ShowDigitalReleaseHelpText": "Kino-Erscheinungsdatum unter Poster anzeigen",
+    "ShowPhysicalRelease": "Disc Veröffentlichungsdatum",
+    "ShowPhysicalReleaseHelpText": "Kino-Erscheinungsdatum unter Poster anzeigen"
 }

@@ -1066,5 +1066,10 @@
     "DeleteMovieFoldersHelpText": "Изтрийте папката с филма и съдържанието му",
     "DeleteSelectedMovies": "Изтриване на избрани филмови файлове",
     "DeleteSelectedImportListExclusionsMessageText": "Наистина ли искате да изтриете това изключване от списъка за импортиране?",
-    "DeleteSelectedCustomFormats": "Изтриване на потребителски формат"
+    "DeleteSelectedCustomFormats": "Изтриване на потребителски формат",
+    "ReleaseDate": "Дати на издаване",
+    "ShowPhysicalReleaseHelpText": "Показване на датата на пускане под постер",
+    "ShowDigitalRelease": "Показване на датата на излизане на киното",
+    "ShowDigitalReleaseHelpText": "Показване на датата на пускане под постер",
+    "ShowPhysicalRelease": "Дата на физическото издаване"
 }

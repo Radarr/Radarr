@@ -1093,7 +1093,6 @@
     "DeleteCustomFormatMessageText": "Είστε σίγουροι πως θέλετε να διαγράψετε τη προσαρμοσμένη μορφή '{name}';",
     "DeleteDelayProfileMessageText": "Είστε σίγουροι πως θέλετε να διαγράψετε αυτό το Προφίλ χρονοκαθυστέρησης;",
     "DeleteImportListExclusionMessageText": "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτήν την εξαίρεση λίστας εισαγωγής;",
-    "NoHistoryBlocklist": "Δεν υπάρχει λίστα αποκλεισμού ιστορικού",
     "RemoveSelectedItemQueueMessageText": "Είστε σίγουροι πως θέλετε να διαγράψετε 1 αντικείμενο από την ουρά;",
     "RemoveSelectedItemsQueueMessageText": "Είστε σίγουροι πως θέλετε να διαγράψετε {0} αντικείμενα από την ουρά;",
     "ResetDefinitionTitlesHelpText": "Επαναφορά τίτλων ορισμού και των τιμών τους",
@@ -1228,5 +1227,9 @@
     "DeleteSelected": "Διαγραφή επιλεγμένων",
     "DeleteSelectedImportListExclusionsMessageText": "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτήν την εξαίρεση λίστας εισαγωγής;",
     "DeleteSelectedCustomFormats": "Διαγραφή προσαρμοσμένης μορφής",
-    "ReleaseDate": "Ημερομηνίες κυκλοφορίας"
+    "ReleaseDate": "Ημερομηνίες κυκλοφορίας",
+    "ShowDigitalReleaseHelpText": "Εμφάνιση ημερομηνίας κυκλοφορίας στην αφίσα",
+    "ShowPhysicalRelease": "Ημερομηνία φυσικής κυκλοφορίας",
+    "ShowPhysicalReleaseHelpText": "Εμφάνιση ημερομηνίας κυκλοφορίας στην αφίσα",
+    "ShowDigitalRelease": "Εμφάνιση ημερομηνίας κυκλοφορίας κινηματογράφου"
 }

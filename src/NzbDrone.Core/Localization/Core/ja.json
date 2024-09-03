@@ -1067,5 +1067,9 @@
     "AddCondition": "条件の追加",
     "DeleteSelectedImportListExclusionsMessageText": "このインポートリストの除外を削除してもよろしいですか？",
     "DeleteSelectedCustomFormats": "カスタムフォーマットを削除する",
-    "ReleaseDate": "リリース日"
+    "ReleaseDate": "リリース日",
+    "ShowDigitalRelease": "シネマのリリース日を表示",
+    "ShowPhysicalRelease": "物理的なリリース日",
+    "ShowPhysicalReleaseHelpText": "ポスターの下にリリース日を表示する",
+    "ShowDigitalReleaseHelpText": "ポスターの下にリリース日を表示する"
 }

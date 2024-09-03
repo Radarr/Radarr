@@ -1256,5 +1256,9 @@
     "DeleteSelectedImportListExclusionsMessageText": "Tem a certeza que quer eliminar esta exclusão da lista de importação?",
     "DeleteSelectedCustomFormats": "Eliminar formato personalizado",
     "DeleteSelectedCustomFormatsMessageText": "Tem a certeza de que pretende eliminar a(s) lista(s) de {count} importação selecionada(s)?",
-    "ReleaseDate": "Data de lançamento"
+    "ReleaseDate": "Data de lançamento",
+    "ShowDigitalRelease": "Mostrar data de lançamento no cinema",
+    "ShowDigitalReleaseHelpText": "Mostrar data de lançamento abaixo do cartaz",
+    "ShowPhysicalRelease": "Data da versão física",
+    "ShowPhysicalReleaseHelpText": "Mostrar data de lançamento abaixo do cartaz"
 }

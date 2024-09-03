@@ -1111,5 +1111,9 @@
     "DeleteSelectedMovies": "מחק קבצי סרטים שנבחרו",
     "DeleteSelectedImportListExclusionsMessageText": "האם אתה בטוח שברצונך למחוק אי הכללה זו של רשימת הייבוא?",
     "DeleteSelectedCustomFormats": "מחק פורמט מותאם אישית",
-    "ReleaseDate": "תאריכי שחרור"
+    "ReleaseDate": "תאריכי שחרור",
+    "ShowDigitalRelease": "הצג תאריך יציאה לקולנוע",
+    "ShowDigitalReleaseHelpText": "הצג תאריך יציאה תחת הכרזה",
+    "ShowPhysicalRelease": "תאריך שחרור פיזי",
+    "ShowPhysicalReleaseHelpText": "הצג תאריך יציאה תחת הכרזה"
 }
