@@ -118,6 +118,7 @@ src/UI/.idea/*
 node_modules/
 _output*
 _artifacts
+_temp*
 _rawPackage/
 _dotTrace*
 _tests/
