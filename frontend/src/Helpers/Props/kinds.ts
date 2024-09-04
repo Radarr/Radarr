@@ -25,3 +25,15 @@ export const all = [
   WARNING,
   QUEUE,
 ] as const;
+
+export type Kind =
+  | 'danger'
+  | 'default'
+  | 'disabled'
+  | 'info'
+  | 'inverse'
+  | 'pink'
+  | 'primary'
+  | 'purple'
+  | 'success'
+  | 'warning';
