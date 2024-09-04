@@ -11,6 +11,8 @@ using NzbDrone.Core.RootFolders;
 namespace NzbDrone.Core.HealthCheck.Checks
 {
     [CheckOn(typeof(CollectionRefreshCompleteEvent))]
+    [CheckOn(typeof(CollectionEditedEvent))]
+    [CheckOn(typeof(CollectionDeletedEvent))]
     [CheckOn(typeof(ModelEvent<RootFolder>))]
     public class MovieCollectionRootFolderCheck : HealthCheckBase
     {
@@ -40,7 +42,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     continue;
                 }
 
-                if (rootFolderPath.IsNullOrWhiteSpace() || !_diskProvider.FolderExists(rootFolderPath))
+                if (rootFolderPath.IsNullOrWhiteSpace() || !rootFolderPath.IsPathValid(PathValidationType.CurrentOs) || !_diskProvider.FolderExists(rootFolderPath))
                 {
                     missingRootFolders.Add(rootFolderPath, new List<MovieCollection> { collection });
                 }
@@ -51,11 +53,23 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 if (missingRootFolders.Count == 1)
                 {
                     var missingRootFolder = missingRootFolders.First();
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("MovieCollectionMissingRoot"), FormatRootFolder(missingRootFolder.Key, missingRootFolder.Value)), "#movie-collection-missing-root-folder");
+
+                    return new HealthCheck(GetType(),
+                        HealthCheckResult.Error,
+                        _localizationService.GetLocalizedString("MovieCollectionRootFolderMissingRootHealthCheckMessage", new Dictionary<string, object>
+                        {
+                            { "rootFolderInfo", FormatRootFolder(missingRootFolder.Key, missingRootFolder.Value) }
+                        }),
+                        "#movie-collection-missing-root-folder");
                 }
 
-                var message = string.Format(_localizationService.GetLocalizedString("MovieCollectionMultipleMissingRoots"), string.Join(" | ", missingRootFolders.Select(m => FormatRootFolder(m.Key, m.Value))));
-                return new HealthCheck(GetType(), HealthCheckResult.Error, message, "#movie-collection-missing-root-folder");
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Error,
+                    _localizationService.GetLocalizedString("MovieCollectionFolderMultipleMissingRootsHealthCheckMessage", new Dictionary<string, object>
+                    {
+                        { "rootFoldersInfo", string.Join(" | ", missingRootFolders.Select(m => FormatRootFolder(m.Key, m.Value))) }
+                    }),
+                    "#movie-collection-missing-root-folder");
             }
 
             return new HealthCheck(GetType());
@@ -63,7 +77,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         private string FormatRootFolder(string rootFolderPath, List<MovieCollection> collections)
         {
-            return $"{rootFolderPath} ({string.Join(", ", collections.Select(l => l.Title))})";
+            return $"{rootFolderPath} ({string.Join(", ", collections.Select(c => c.Title))})";
         }
     }
 }

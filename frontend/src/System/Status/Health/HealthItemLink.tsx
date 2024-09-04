@@ -41,9 +41,21 @@ function HealthItemLink(props: HealthItemLinkProps) {
           to="/settings/connect"
         />
       );
+    case 'MovieCollectionRootFolderCheck':
+      return (
+        <IconButton
+          name={icons.MOVIE_CONTINUING}
+          title={translate('Collections')}
+          to="/collections"
+        />
+      );
     case 'RootFolderCheck':
       return (
-        <IconButton name={icons.PLAY} title={translate('MovieEditor')} to="/" />
+        <IconButton
+          name={icons.MOVIE_CONTINUING}
+          title={translate('MovieEditor')}
+          to="/"
+        />
       );
     case 'UpdateCheck':
       return (
