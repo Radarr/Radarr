@@ -41,10 +41,10 @@ export interface Ratings {
 
 interface Movie extends ModelBase {
   tmdbId: number;
-  imdbId: string;
+  imdbId?: string;
   sortTitle: string;
   overview: string;
-  youTubeTrailerId: string;
+  youTubeTrailerId?: string;
   monitored: boolean;
   status: MovieStatus;
   title: string;

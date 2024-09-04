@@ -2,14 +2,14 @@ import React from 'react';
 import Label from 'Components/Label';
 import Link from 'Components/Link/Link';
 import { kinds, sizes } from 'Helpers/Props';
+import Movie from 'Movie/Movie';
 import translate from 'Utilities/String/translate';
 import styles from './MovieDetailsLinks.css';
 
-interface MovieDetailsLinksProps {
-  tmdbId: number;
-  imdbId?: string;
-  youTubeTrailerId?: string;
-}
+type MovieDetailsLinksProps = Pick<
+  Movie,
+  'tmdbId' | 'imdbId' | 'youTubeTrailerId'
+>;
 
 function MovieDetailsLinks(props: MovieDetailsLinksProps) {
   const { tmdbId, imdbId, youTubeTrailerId } = props;
@@ -56,27 +56,43 @@ function MovieDetailsLinks(props: MovieDetailsLinksProps) {
       </Link>
 
       {imdbId ? (
-        <Link className={styles.link} to={`https://imdb.com/title/${imdbId}/`}>
-          <Label
-            className={styles.linkLabel}
-            kind={kinds.INFO}
-            size={sizes.LARGE}
+        <>
+          <Link
+            className={styles.link}
+            to={`https://imdb.com/title/${imdbId}/`}
           >
-            {translate('IMDb')}
-          </Label>
-        </Link>
-      ) : null}
+            <Label
+              className={styles.linkLabel}
+              kind={kinds.INFO}
+              size={sizes.LARGE}
+            >
+              {translate('IMDb')}
+            </Label>
+          </Link>
 
-      {imdbId ? (
-        <Link className={styles.link} to={`https://moviechat.org/${imdbId}/`}>
-          <Label
-            className={styles.linkLabel}
-            kind={kinds.INFO}
-            size={sizes.LARGE}
+          <Link className={styles.link} to={`https://moviechat.org/${imdbId}/`}>
+            <Label
+              className={styles.linkLabel}
+              kind={kinds.INFO}
+              size={sizes.LARGE}
+            >
+              {translate('MovieChat')}
+            </Label>
+          </Link>
+
+          <Link
+            className={styles.link}
+            to={`https://mdblist.com/movie/${imdbId}`}
           >
-            {translate('MovieChat')}
-          </Label>
-        </Link>
+            <Label
+              className={styles.linkLabel}
+              kind={kinds.INFO}
+              size={sizes.LARGE}
+            >
+              MDBList
+            </Label>
+          </Link>
+        </>
       ) : null}
 
       {youTubeTrailerId ? (
