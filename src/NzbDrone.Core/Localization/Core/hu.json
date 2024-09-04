@@ -1441,5 +1441,6 @@
     "ShowDigitalRelease": "A mozi megjelenésének dátuma",
     "ShowDigitalReleaseHelpText": "Mutasd a megjelenés dátumát a poszter alatt",
     "ShowPhysicalRelease": "Fizikai megjelenés dátuma",
-    "ShowPhysicalReleaseHelpText": "Mutasd a megjelenés dátumát a poszter alatt"
+    "ShowPhysicalReleaseHelpText": "Mutasd a megjelenés dátumát a poszter alatt",
+    "Logout": "Kijelentkezés"
 }

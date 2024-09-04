@@ -1817,5 +1817,7 @@
     "YesterdayAt": "Ontem às {time}",
     "Disposition": "Disposição",
     "CustomFormatsSpecificationExceptLanguage": "Exceto Idioma",
-    "CustomFormatsSpecificationExceptLanguageHelpText": "Corresponde se qualquer idioma diferente do idioma selecionado estiver presente"
+    "CustomFormatsSpecificationExceptLanguageHelpText": "Corresponde se qualquer idioma diferente do idioma selecionado estiver presente",
+    "Logout": "Sair",
+    "NoBlocklistItems": "Sem itens na lista de bloqueio"
 }
