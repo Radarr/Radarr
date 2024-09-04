@@ -25,7 +25,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
             var path = localMovie.Path;
             var isSubtitleFile = SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(path));
 
-            if (!isSubtitleFile)
+            if (!isSubtitleFile || localMovie.Movie == null)
             {
                 return localMovie;
             }
