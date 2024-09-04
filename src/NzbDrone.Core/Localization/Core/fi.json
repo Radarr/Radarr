@@ -1757,5 +1757,6 @@
     "ShowDigitalRelease": "Näytä teatterijulkaisu",
     "ShowDigitalReleaseHelpText": "Näytä teatterijulkaisun päiväys julisteen alla.",
     "ShowPhysicalRelease": "Fyysinen julkaisu",
-    "ShowPhysicalReleaseHelpText": "Näytä teatterijulkaisun päiväys julisteen alla."
+    "ShowPhysicalReleaseHelpText": "Näytä teatterijulkaisun päiväys julisteen alla.",
+    "Logout": "Kirjaudu ulos"
 }

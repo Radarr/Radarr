@@ -1815,5 +1815,9 @@
     "TomorrowAt": "Mañana a las {time}",
     "YesterdayAt": "Ayer a las {time}",
     "DayOfWeekAt": "{day} a las {time}",
-    "Disposition": "Disposición"
+    "Disposition": "Disposición",
+    "CustomFormatsSpecificationExceptLanguage": "Excepto idioma",
+    "CustomFormatsSpecificationExceptLanguageHelpText": "Coincide si cualquier idioma distinto del seleccionado está presente",
+    "Logout": "Cerrar Sesión",
+    "NoBlocklistItems": "Ningún elemento en la lista de bloqueo"
 }

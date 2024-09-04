@@ -1814,5 +1814,7 @@
     "DayOfWeekAt": "{day} à {time}",
     "TodayAt": "Aujourd'hui à {time}",
     "TomorrowAt": "Demain à {time}",
-    "YesterdayAt": "Hier à {time}"
+    "YesterdayAt": "Hier à {time}",
+    "Logout": "Se déconnecter",
+    "NoBlocklistItems": "Aucun élément de la liste de blocage"
 }
