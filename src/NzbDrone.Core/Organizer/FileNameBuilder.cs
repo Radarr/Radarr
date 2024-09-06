@@ -621,10 +621,10 @@ namespace NzbDrone.Core.Organizer
         {
             if (movieFile.SceneName.IsNullOrWhiteSpace())
             {
-                return GetOriginalFileName(movieFile, multipleTokens);
+                return CleanFileName(GetOriginalFileName(movieFile, multipleTokens));
             }
 
-            return movieFile.SceneName;
+            return CleanFileName(movieFile.SceneName);
         }
 
         private string GetOriginalFileName(MovieFile movieFile, bool multipleTokens)
