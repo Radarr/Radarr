@@ -1469,5 +1469,6 @@
     "DayOfWeekAt": "{day} alle {time}",
     "TodayAt": "Oggi alle {time}",
     "TomorrowAt": "Domani alle {time}",
-    "YesterdayAt": "Ieri alle {time}"
+    "YesterdayAt": "Ieri alle {time}",
+    "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "Diverse cartelle principale sono perse per l’importazione: {rootFoldersInfo}"
 }
