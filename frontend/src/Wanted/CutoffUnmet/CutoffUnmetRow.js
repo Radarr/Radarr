@@ -21,6 +21,7 @@ function CutoffUnmetRow(props) {
     inCinemas,
     digitalRelease,
     physicalRelease,
+    lastSearchTime,
     isSelected,
     columns,
     onSelectedChange
@@ -110,6 +111,16 @@ function CutoffUnmetRow(props) {
             );
           }
 
+          if (name === 'movies.lastSearchTime') {
+            return (
+              <RelativeDateCell
+                key={name}
+                date={lastSearchTime}
+                includeSeconds={true}
+              />
+            );
+          }
+
           if (name === 'status') {
             return (
               <TableRowCell
@@ -148,6 +159,7 @@ CutoffUnmetRow.propTypes = {
   movieFileId: PropTypes.number,
   title: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
+  lastSearchTime: PropTypes.string,
   titleSlug: PropTypes.string.isRequired,
   inCinemas: PropTypes.string,
   digitalRelease: PropTypes.string,

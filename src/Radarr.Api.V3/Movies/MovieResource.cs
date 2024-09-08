@@ -83,6 +83,7 @@ namespace Radarr.Api.V3.Movies
         public MovieFileResource MovieFile { get; set; }
         public MovieCollectionResource Collection { get; set; }
         public float Popularity { get; set; }
+        public DateTime? LastSearchTime { get; set; }
         public MovieStatisticsResource Statistics { get; set; }
 
         // Hiding this so people don't think its usable (only used to set the initial state)
@@ -161,7 +162,8 @@ namespace Radarr.Api.V3.Movies
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
                 Studio = model.MovieMetadata.Value.Studio,
                 Collection = collection,
-                Popularity = model.MovieMetadata.Value.Popularity
+                Popularity = model.MovieMetadata.Value.Popularity,
+                LastSearchTime = model.LastSearchTime,
             };
         }
 
