@@ -1,7 +1,7 @@
 # Radarr
 
 [![Build Status](https://dev.azure.com/Radarr/Radarr/_apis/build/status/Radarr.Radarr?branchName=develop)](https://dev.azure.com/Radarr/Radarr/_build/latest?definitionId=1&branchName=develop)
-[![Translated](https://translate.servarr.com/widgets/servarr/-/radarr/svg-badge.svg)](https://translate.servarr.com/engage/radarr/?utm_source=widget)
+[![Translation status](https://translate.servarr.com/widget/servarr/radarr/svg-badge.svg)](https://translate.servarr.com/engage/servarr/?utm_source=widget)
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/radarr.svg)](https://wiki.servarr.com/radarr/installation/docker)
 ![Github Downloads](https://img.shields.io/github/downloads/Radarr/Radarr/total.svg)
 [![Backers on Open Collective](https://opencollective.com/Radarr/backers/badge.svg)](#backers)
