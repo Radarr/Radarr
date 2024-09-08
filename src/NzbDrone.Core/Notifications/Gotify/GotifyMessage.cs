@@ -14,27 +14,25 @@ namespace NzbDrone.Core.Notifications.Gotify
             Extras = new GotifyExtras();
         }
 
-        public void SetContentType(bool isMarkdown)
+        public void SetBigImageUrl(string bigImageUrl)
         {
-            var contentType = isMarkdown ? "text/markdown" : "text/plain";
-
-            Extras.ClientDisplay = new GotifyClientDisplay(contentType);
+            Extras.ClientNotification = new GotifyClientNotification(bigImageUrl);
         }
     }
 
     public class GotifyExtras
     {
-        [JsonProperty("client::display")]
-        public GotifyClientDisplay ClientDisplay { get; set; }
+        [JsonProperty("client::notification")]
+        public GotifyClientNotification ClientNotification { get; set; }
     }
 
-    public class GotifyClientDisplay
+    public class GotifyClientNotification
     {
-        public string ContentType { get; set; }
+        public string BigImageUrl { get; set; }
 
-        public GotifyClientDisplay(string contentType)
+        public GotifyClientNotification(string bigImageUrl)
         {
-            ContentType = contentType;
+            BigImageUrl = bigImageUrl;
         }
     }
 }
