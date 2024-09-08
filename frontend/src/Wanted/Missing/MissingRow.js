@@ -15,12 +15,12 @@ function MissingRow(props) {
     id,
     movieFileId,
     year,
-    lastSearchTime,
     title,
     titleSlug,
     inCinemas,
     digitalRelease,
     physicalRelease,
+    lastSearchTime,
     isSelected,
     columns,
     onSelectedChange
@@ -68,16 +68,6 @@ function MissingRow(props) {
             );
           }
 
-          if (name === 'lastSearchTime') {
-            return (
-              <RelativeDateCell
-                key={name}
-                date={lastSearchTime}
-                includeSeconds={true}
-              />
-            );
-          }
-
           if (name === 'movieMetadata.inCinemas') {
             return (
               <RelativeDateCell
@@ -107,6 +97,16 @@ function MissingRow(props) {
                 className={styles[name]}
                 date={physicalRelease}
                 timeForToday={false}
+              />
+            );
+          }
+
+          if (name === 'movies.lastSearchTime') {
+            return (
+              <RelativeDateCell
+                key={name}
+                date={lastSearchTime}
+                includeSeconds={true}
               />
             );
           }

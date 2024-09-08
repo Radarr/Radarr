@@ -60,7 +60,6 @@ interface Movie extends ModelBase {
   physicalRelease?: string;
   digitalRelease?: string;
   releaseDate?: string;
-  lastSearchTime?: string;
   runtime: number;
   minimumAvailability: string;
   path: string;
@@ -73,6 +72,7 @@ interface Movie extends ModelBase {
   images: Image[];
   movieFile: MovieFile;
   hasFile: boolean;
+  lastSearchTime?: string;
   isAvailable: boolean;
   isSaving?: boolean;
 }

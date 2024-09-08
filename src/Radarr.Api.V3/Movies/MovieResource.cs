@@ -50,7 +50,6 @@ namespace Radarr.Api.V3.Movies
         // public bool Downloaded { get; set; }
         public string RemotePoster { get; set; }
         public int Year { get; set; }
-        public DateTime? LastSearchTime { get; set; }
         public string YouTubeTrailerId { get; set; }
         public string Studio { get; set; }
 
@@ -84,6 +83,7 @@ namespace Radarr.Api.V3.Movies
         public MovieFileResource MovieFile { get; set; }
         public MovieCollectionResource Collection { get; set; }
         public float Popularity { get; set; }
+        public DateTime? LastSearchTime { get; set; }
         public MovieStatisticsResource Statistics { get; set; }
 
         // Hiding this so people don't think its usable (only used to set the initial state)

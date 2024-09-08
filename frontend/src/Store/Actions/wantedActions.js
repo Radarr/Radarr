@@ -41,12 +41,6 @@ export const defaultState = {
         isVisible: true
       },
       {
-        name: 'lastSearchTime',
-        label: () => translate('LastSearched'),
-        isSortable: true,
-        isVisible: false
-      },
-      {
         name: 'movieMetadata.inCinemas',
         label: () => translate('InCinemas'),
         isSortable: true,
@@ -61,6 +55,12 @@ export const defaultState = {
       {
         name: 'movieMetadata.physicalRelease',
         label: () => translate('PhysicalRelease'),
+        isSortable: true,
+        isVisible: false
+      },
+      {
+        name: 'movies.lastSearchTime',
+        label: () => translate('LastSearched'),
         isSortable: true,
         isVisible: false
       },
@@ -127,12 +127,6 @@ export const defaultState = {
         isVisible: true
       },
       {
-        name: 'lastSearchTime',
-        label: () => translate('LastSearched'),
-        isSortable: true,
-        isVisible: false
-      },
-      {
         name: 'movieMetadata.inCinemas',
         label: () => translate('InCinemas'),
         isSortable: true,
@@ -153,6 +147,12 @@ export const defaultState = {
       {
         name: 'languages',
         label: () => translate('Languages'),
+        isVisible: false
+      },
+      {
+        name: 'movies.lastSearchTime',
+        label: () => translate('LastSearched'),
+        isSortable: true,
         isVisible: false
       },
       {
