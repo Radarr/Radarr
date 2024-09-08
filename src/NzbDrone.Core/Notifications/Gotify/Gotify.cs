@@ -77,18 +77,10 @@ namespace NzbDrone.Core.Notifications.Gotify
 
             try
             {
-                var isMarkdown = false;
                 const string title = "Test Notification";
 
                 var sb = new StringBuilder();
                 sb.AppendLine("This is a test message from Radarr");
-
-                if (Settings.IncludeMoviePoster)
-                {
-                    isMarkdown = true;
-
-                    sb.AppendLine("\r![](https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/128.png)");
-                }
 
                 var payload = new GotifyMessage
                 {
@@ -97,7 +89,10 @@ namespace NzbDrone.Core.Notifications.Gotify
                     Priority = Settings.Priority
                 };
 
-                payload.SetContentType(isMarkdown);
+                if (Settings.IncludeMoviePoster)
+                {
+                    payload.SetBigImageUrl("https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/128.png");
+                }
 
                 _proxy.SendNotification(payload, Settings);
             }
@@ -112,21 +107,9 @@ namespace NzbDrone.Core.Notifications.Gotify
 
         private void SendNotification(string title, string message, Movie movie)
         {
-            var isMarkdown = false;
             var sb = new StringBuilder();
 
             sb.AppendLine(message);
-
-            if (Settings.IncludeMoviePoster && movie != null)
-            {
-                var poster = movie.MovieMetadata.Value.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Poster)?.RemoteUrl;
-
-                if (poster != null)
-                {
-                    isMarkdown = true;
-                    sb.AppendLine($"\r![]({poster})");
-                }
-            }
 
             var payload = new GotifyMessage
             {
@@ -135,7 +118,15 @@ namespace NzbDrone.Core.Notifications.Gotify
                 Priority = Settings.Priority
             };
 
-            payload.SetContentType(isMarkdown);
+            if (Settings.IncludeMoviePoster && movie != null)
+            {
+                var poster = movie.MovieMetadata.Value.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Poster)?.RemoteUrl;
+
+                if (poster != null)
+                {
+                    payload.SetBigImageUrl(poster);
+                }
+            }
 
             _proxy.SendNotification(payload, Settings);
         }
