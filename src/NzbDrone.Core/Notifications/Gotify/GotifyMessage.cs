@@ -28,6 +28,7 @@ namespace NzbDrone.Core.Notifications.Gotify
 
     public class GotifyClientNotification
     {
+        [JsonProperty("bigImageUrl")]
         public string BigImageUrl { get; set; }
 
         public GotifyClientNotification(string bigImageUrl)
