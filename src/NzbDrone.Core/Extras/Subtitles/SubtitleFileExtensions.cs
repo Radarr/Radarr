@@ -5,30 +5,24 @@ namespace NzbDrone.Core.Extras.Subtitles
 {
     public static class SubtitleFileExtensions
     {
-        private static HashSet<string> _fileExtensions;
-
-        static SubtitleFileExtensions()
+        public static HashSet<string> Extensions => new (StringComparer.OrdinalIgnoreCase)
         {
-            _fileExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-                              {
-                                  ".aqt",
-                                  ".ass",
-                                  ".idx",
-                                  ".jss",
-                                  ".psb",
-                                  ".rt",
-                                  ".smi",
-                                  ".srt",
-                                  ".ssa",
-                                  ".sub",
-                                  ".txt",
-                                  ".utf",
-                                  ".utf8",
-                                  ".utf-8",
-                                  ".vtt"
-                              };
-        }
-
-        public static HashSet<string> Extensions => _fileExtensions;
+            ".aqt",
+            ".ass",
+            ".idx",
+            ".jss",
+            ".psb",
+            ".rt",
+            ".smi",
+            ".srt",
+            ".ssa",
+            ".sub",
+            ".sup",
+            ".txt",
+            ".utf",
+            ".utf8",
+            ".utf-8",
+            ".vtt"
+        };
     }
 }
