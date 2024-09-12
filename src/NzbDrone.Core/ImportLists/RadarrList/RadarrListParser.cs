@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
@@ -28,7 +29,9 @@ namespace NzbDrone.Core.ImportLists.RadarrList
                 return movies;
             }
 
-            return jsonResponse.SelectList(m => new ImportListMovie { TmdbId = m.Id });
+            return jsonResponse
+                .Where(m => m.Id > 0)
+                .SelectList(m => new ImportListMovie { TmdbId = m.Id });
         }
 
         protected virtual bool PreProcess(ImportListResponse importListResponse)
