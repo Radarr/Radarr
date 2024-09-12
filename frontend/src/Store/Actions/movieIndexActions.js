@@ -489,7 +489,8 @@ export const defaultState = {
     {
       name: 'imdbRating',
       label: () => translate('ImdbRating'),
-      type: filterBuilderTypes.NUMBER
+      type: filterBuilderTypes.NUMBER,
+      numberFractionDigits: 1
     },
     {
       name: 'rottenTomatoesRating',

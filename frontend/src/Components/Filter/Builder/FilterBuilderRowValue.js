@@ -56,7 +56,9 @@ function getValue(input, selectedFilterBuilderProp) {
   }
 
   if (selectedFilterBuilderProp.type === filterBuilderTypes.NUMBER) {
-    return parseInt(input);
+    const { numberFractionDigits = 0 } = selectedFilterBuilderProp;
+
+    return Number(input).toFixed(numberFractionDigits);
   }
 
   return input;
