@@ -38,8 +38,8 @@ import formatRuntime from 'Utilities/Date/formatRuntime';
 import formatBytes from 'Utilities/Number/formatBytes';
 import translate from 'Utilities/String/translate';
 import MovieCollectionLabelConnector from './../MovieCollectionLabelConnector';
-import MovieCastPostersConnector from './Credits/Cast/MovieCastPostersConnector';
-import MovieCrewPostersConnector from './Credits/Crew/MovieCrewPostersConnector';
+import MovieCastPosters from './Credits/Cast/MovieCastPosters';
+import MovieCrewPosters from './Credits/Crew/MovieCrewPosters';
 import MovieDetailsLinks from './MovieDetailsLinks';
 import MovieReleaseDates from './MovieReleaseDates';
 import MovieStatusLabel from './MovieStatusLabel';
@@ -685,13 +685,13 @@ class MovieDetails extends Component {
             </FieldSet>
 
             <FieldSet legend={translate('Cast')}>
-              <MovieCastPostersConnector
+              <MovieCastPosters
                 isSmallScreen={isSmallScreen}
               />
             </FieldSet>
 
             <FieldSet legend={translate('Crew')}>
-              <MovieCrewPostersConnector
+              <MovieCrewPosters
                 isSmallScreen={isSmallScreen}
               />
             </FieldSet>

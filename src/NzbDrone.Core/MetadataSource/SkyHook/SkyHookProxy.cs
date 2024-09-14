@@ -586,6 +586,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 Name = arg.Name,
                 Department = arg.Department,
                 Job = arg.Job,
+                Order = arg.Order,
                 CreditTmdbId = arg.CreditId,
                 PersonTmdbId = arg.TmdbId,
                 Type = CreditType.Crew,
