@@ -9,7 +9,7 @@ export type MovieStatus =
   | 'released'
   | 'deleted';
 
-export type CoverType = 'poster' | 'fanart';
+export type CoverType = 'poster' | 'fanart' | 'headshot';
 
 export interface Image {
   coverType: CoverType;
