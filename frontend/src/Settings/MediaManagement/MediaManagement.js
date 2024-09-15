@@ -174,24 +174,21 @@ class MediaManagement extends Component {
                     <FieldSet
                       legend={translate('Importing')}
                     >
-                      {
-                        !isWindows &&
-                          <FormGroup
-                            advancedSettings={advancedSettings}
-                            isAdvanced={true}
-                            size={sizes.MEDIUM}
-                          >
-                            <FormLabel>{translate('SkipFreeSpaceCheck')}</FormLabel>
+                      <FormGroup
+                        advancedSettings={advancedSettings}
+                        isAdvanced={true}
+                        size={sizes.MEDIUM}
+                      >
+                        <FormLabel>{translate('SkipFreeSpaceCheck')}</FormLabel>
 
-                            <FormInputGroup
-                              type={inputTypes.CHECK}
-                              name="skipFreeSpaceCheckWhenImporting"
-                              helpText={translate('SkipFreeSpaceCheckWhenImportingHelpText')}
-                              onChange={onInputChange}
-                              {...settings.skipFreeSpaceCheckWhenImporting}
-                            />
-                          </FormGroup>
-                      }
+                        <FormInputGroup
+                          type={inputTypes.CHECK}
+                          name="skipFreeSpaceCheckWhenImporting"
+                          helpText={translate('SkipFreeSpaceCheckWhenImportingHelpText')}
+                          onChange={onInputChange}
+                          {...settings.skipFreeSpaceCheckWhenImporting}
+                        />
+                      </FormGroup>
 
                       <FormGroup
                         advancedSettings={advancedSettings}
