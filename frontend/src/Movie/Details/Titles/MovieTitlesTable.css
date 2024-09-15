@@ -1,3 +1,9 @@
+.blankpad {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 2em;
+}
+
 .container {
   border: 1px solid var(--borderColor);
   border-radius: 4px;
