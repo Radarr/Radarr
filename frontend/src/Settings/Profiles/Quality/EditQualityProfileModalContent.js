@@ -125,6 +125,7 @@ class EditQualityProfileModalContent extends Component {
       upgradeAllowed,
       cutoff,
       minFormatScore,
+      minUpgradeFormatScore,
       cutoffFormatScore,
       language,
       items,
@@ -247,6 +248,25 @@ class EditQualityProfileModalContent extends Component {
                                 onChange={onInputChange}
                               />
                             </FormGroup>
+                        }
+
+                        {
+                          upgradeAllowed.value && formatItems.value.length > 0 ?
+                            <FormGroup size={sizes.EXTRA_SMALL}>
+                              <FormLabel size={sizes.SMALL}>
+                                {translate('MinimumCustomFormatScoreIncrement')}
+                              </FormLabel>
+
+                              <FormInputGroup
+                                type={inputTypes.NUMBER}
+                                name="minUpgradeFormatScore"
+                                min={1}
+                                {...minUpgradeFormatScore}
+                                helpText={translate('MinimumCustomFormatScoreIncrementHelpText')}
+                                onChange={onInputChange}
+                              />
+                            </FormGroup> :
+                            null
                         }
 
                         <FormGroup size={sizes.EXTRA_SMALL}>

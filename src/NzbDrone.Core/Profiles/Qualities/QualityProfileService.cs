@@ -112,6 +112,7 @@ namespace NzbDrone.Core.Profiles.Qualities
                 {
                     profile.MinFormatScore = 0;
                     profile.CutoffFormatScore = 0;
+                    profile.MinUpgradeFormatScore = 1;
                 }
 
                 Update(profile);
@@ -262,6 +263,7 @@ namespace NzbDrone.Core.Profiles.Qualities
                 Language = Language.English,
                 MinFormatScore = 0,
                 CutoffFormatScore = 0,
+                MinUpgradeFormatScore = 1,
                 FormatItems = formatItems
             };
 
