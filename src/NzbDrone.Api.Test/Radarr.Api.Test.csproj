@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Core\Radarr.Core.csproj" />
     <ProjectReference Include="..\NzbDrone.Test.Common\Radarr.Test.Common.csproj" />
+    <ProjectReference Include="..\Radarr.Api.V3\Radarr.Api.V3.csproj" />
     <ProjectReference Include="..\Radarr.Http\Radarr.Http.csproj" />
   </ItemGroup>
 </Project>
