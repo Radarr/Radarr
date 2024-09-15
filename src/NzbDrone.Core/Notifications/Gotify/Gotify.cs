@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using FluentValidation.Results;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
@@ -12,6 +13,8 @@ namespace NzbDrone.Core.Notifications.Gotify
 {
     public class Gotify : NotificationBase<GotifySettings>
     {
+        private const string RadarrImageUrl = "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/128.png";
+
         private readonly IGotifyProxy _proxy;
         private readonly ILocalizationService _localizationService;
         private readonly Logger _logger;
@@ -83,20 +86,30 @@ namespace NzbDrone.Core.Notifications.Gotify
                 var sb = new StringBuilder();
                 sb.AppendLine("This is a test message from Radarr");
 
+                var payload = new GotifyMessage
+                {
+                    Title = title,
+                    Priority = Settings.Priority
+                };
+
                 if (Settings.IncludeMoviePoster)
                 {
                     isMarkdown = true;
 
-                    sb.AppendLine("\r![](https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/128.png)");
+                    sb.AppendLine($"\r![]({RadarrImageUrl})");
+                    payload.SetImage(RadarrImageUrl);
                 }
 
-                var payload = new GotifyMessage
+                if (Settings.MetadataLinks.Any())
                 {
-                    Title = title,
-                    Message = sb.ToString(),
-                    Priority = Settings.Priority
-                };
+                    isMarkdown = true;
 
+                    sb.AppendLine("");
+                    sb.AppendLine("[Radarr.video](https://radarr.video)");
+                    payload.SetClickUrl("https://radarr.video");
+                }
+
+                payload.Message = sb.ToString();
                 payload.SetContentType(isMarkdown);
 
                 _proxy.SendNotification(payload, Settings);
@@ -117,24 +130,66 @@ namespace NzbDrone.Core.Notifications.Gotify
 
             sb.AppendLine(message);
 
-            if (Settings.IncludeMoviePoster && movie != null)
-            {
-                var poster = movie.MovieMetadata.Value.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Poster)?.RemoteUrl;
-
-                if (poster != null)
-                {
-                    isMarkdown = true;
-                    sb.AppendLine($"\r![]({poster})");
-                }
-            }
-
             var payload = new GotifyMessage
             {
                 Title = title,
-                Message = sb.ToString(),
                 Priority = Settings.Priority
             };
 
+            if (movie != null)
+            {
+                if (Settings.IncludeMoviePoster)
+                {
+                    var poster = movie.MovieMetadata.Value.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Poster)?.RemoteUrl;
+
+                    if (poster != null)
+                    {
+                        isMarkdown = true;
+                        sb.AppendLine($"\r![]({poster})");
+                        payload.SetImage(poster);
+                    }
+                }
+
+                if (Settings.MetadataLinks.Any())
+                {
+                    isMarkdown = true;
+                    sb.AppendLine("");
+
+                    foreach (var link in Settings.MetadataLinks)
+                    {
+                        var linkType = (MetadataLinkType)link;
+                        var linkText = "";
+                        var linkUrl = "";
+
+                        if (linkType == MetadataLinkType.Tmdb && movie.TmdbId > 0)
+                        {
+                            linkText = "TMDb";
+                            linkUrl = $"https://www.themoviedb.org/movie/{movie.TmdbId}";
+                        }
+
+                        if (linkType == MetadataLinkType.Imdb && movie.ImdbId.IsNotNullOrWhiteSpace())
+                        {
+                            linkText = "IMDb";
+                            linkUrl = $"https://www.imdb.com/title/{movie.ImdbId}";
+                        }
+
+                        if (linkType == MetadataLinkType.Trakt && movie.TmdbId > 0)
+                        {
+                            linkText = "Trakt";
+                            linkUrl = $"https://trakt.tv/search/tmdb/{movie.TmdbId}?id_type=movie";
+                        }
+
+                        sb.AppendLine($"[{linkText}]({linkUrl})");
+
+                        if (link == Settings.PreferredMetadataLink)
+                        {
+                            payload.SetClickUrl(linkUrl);
+                        }
+                    }
+                }
+            }
+
+            payload.Message = sb.ToString();
             payload.SetContentType(isMarkdown);
 
             _proxy.SendNotification(payload, Settings);
