@@ -177,3 +177,6 @@ node_modules.nosync
 
 # API doc generation
 .config/
+
+# Ignore Jetbrains IntelliJ Workspace Directories
+.idea/
