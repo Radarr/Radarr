@@ -624,7 +624,6 @@
     "SomeResultsHiddenFilter": "Alguns resultados estão ocultos pelo filtro aplicado",
     "Socks5": "Socks5 (Suporte à TOR)",
     "Small": "Pequeno",
-    "SkipFreeSpaceCheckWhenImportingHelpText": "Use quando o {appName} não conseguir detectar espaço livre em sua pasta raiz durante a importação do arquivo",
     "SkipFreeSpaceCheck": "Ignorar verificação de espaço livre",
     "SizeOnDisk": "Tamanho em disco",
     "Size": "Tamanho",
@@ -1819,5 +1818,6 @@
     "CustomFormatsSpecificationExceptLanguage": "Exceto Idioma",
     "CustomFormatsSpecificationExceptLanguageHelpText": "Corresponde se qualquer idioma diferente do idioma selecionado estiver presente",
     "Logout": "Sair",
-    "NoBlocklistItems": "Sem itens na lista de bloqueio"
+    "NoBlocklistItems": "Sem itens na lista de bloqueio",
+    "LastSearched": "Última Pesquisa"
 }

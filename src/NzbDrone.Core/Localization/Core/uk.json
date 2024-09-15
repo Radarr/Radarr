@@ -475,7 +475,6 @@
     "ShowQualityProfileHelpText": "Покажіть якісний профіль під плакатом",
     "ShowTitleHelpText": "Показати назву фільму під постером",
     "SkipFreeSpaceCheck": "Пропустити перевірку вільного місця",
-    "SkipFreeSpaceCheckWhenImportingHelpText": "Використовуйте, коли {appName} не може виявити вільне місце в кореневій папці фільму",
     "SqliteVersionCheckUpgradeRequiredMessage": "Наразі встановлена версія SQLite {0} більше не підтримується. Оновіть SQLite принаймні до версії {1}.",
     "TheLogLevelDefault": "Рівень журналу за замовчуванням має значення «Інформація», і його можна змінити",
     "ThisCannotBeCancelled": "Це не можна скасувати після запуску без вимкнення всіх ваших індексаторів.",

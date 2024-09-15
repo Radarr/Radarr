@@ -805,7 +805,6 @@
     "Shutdown": "シャットダウン",
     "SizeOnDisk": "ディスク上のサイズ",
     "SkipFreeSpaceCheck": "フリースペースチェックをスキップする",
-    "SkipFreeSpaceCheckWhenImportingHelpText": "{appName}がムービールートフォルダから空き領域を検出できない場合に使用します",
     "Small": "小さい",
     "Socks4": "ソックス4",
     "Socks5": "Socks5（TORをサポート）",

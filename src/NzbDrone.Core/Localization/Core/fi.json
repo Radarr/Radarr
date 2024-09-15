@@ -809,7 +809,6 @@
     "Shutdown": "Sammuta",
     "SizeOnDisk": "Koko levyllä",
     "SkipFreeSpaceCheck": "Ohita vapaan tilan tarkastus",
-    "SkipFreeSpaceCheckWhenImportingHelpText": "Käytä kun juurikansion tallennusmedian vapaata tilaa ei tunnisteta tiedostotuonnin yhteydessä.",
     "Small": "Pieni",
     "Socks4": "SOCKS4",
     "Socks5": "SOCKS5 (TOR-tuki)",

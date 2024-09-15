@@ -680,7 +680,6 @@
     "AddNotificationError": "无法添加新通知，请稍后重试。",
     "UrlBase": "基本URL",
     "RemovedMovieCheckMultipleMessage": "电影 “{movies}” 已从 TMDb 移除",
-    "SkipFreeSpaceCheckWhenImportingHelpText": "当{appName}无法在文件导入期间检测到根文件夹的空闲空间时使用",
     "AddQualityProfileError": "无法添加新的质量配置，请稍后重试。",
     "ThisCannotBeCancelled": "在不禁用所有索引器的情况下，一旦启动便无法取消。",
     "SearchCutoffUnmet": "搜索未满足终止条件的",
@@ -1817,5 +1816,6 @@
     "NotificationsDiscordSettingsOnGrabFieldsHelpText": "更改用于“抓取”通知的字段",
     "NotificationsDiscordSettingsOnManualInteractionFields": "手动操作时字段",
     "NotificationsPushoverSettingsSoundHelpText": "通知声音，留空使用默认声音",
-    "ReleaseGroupFootNote": "可选参数，控制使用省略号（`...`）的最大截断字数。支持从末尾截断（例如：`{Movie Title:30}`）或从开头截断（例如：`{Movie Title:-30}`）。"
+    "ReleaseGroupFootNote": "可选参数，控制使用省略号（`...`）的最大截断字数。支持从末尾截断（例如：`{Movie Title:30}`）或从开头截断（例如：`{Movie Title:-30}`）。",
+    "Disposition": "Disposition"
 }

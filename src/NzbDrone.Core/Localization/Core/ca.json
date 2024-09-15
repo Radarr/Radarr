@@ -966,7 +966,6 @@
     "ListSearchOnAddMovieHelpText": "Cerca pel·lícules d'aquesta llista quan s'afegeixen a la biblioteca",
     "SelectLanguage": "Escolliu l'idioma",
     "SetPermissions": "Estableix permisos",
-    "SkipFreeSpaceCheckWhenImportingHelpText": "Utilitzeu-lo quan {appName} no pugui detectar espai lliure a la carpeta arrel de la pel·lícula",
     "Small": "Petita",
     "SomeResultsHiddenFilter": "Alguns resultats estan ocults pel filtre aplicat",
     "SorryThatMovieCannotBeFound": "Ho sentim, aquesta pel·lícula no s'ha trobat.",
