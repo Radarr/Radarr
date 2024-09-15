@@ -39,6 +39,11 @@ export interface Ratings {
   rottenTomatoes: RatingValues;
 }
 
+export interface AlternativeTitle extends ModelBase {
+  sourceType: string;
+  title: string;
+}
+
 interface Movie extends ModelBase {
   tmdbId: number;
   imdbId?: string;
@@ -52,6 +57,7 @@ interface Movie extends ModelBase {
   originalTitle: string;
   originalLanguage: Language;
   collection: Collection;
+  alternateTitles: AlternativeTitle[];
   studio: string;
   qualityProfileId: number;
   added: string;
