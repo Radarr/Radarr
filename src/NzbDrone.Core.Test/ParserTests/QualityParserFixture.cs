@@ -36,6 +36,7 @@ namespace NzbDrone.Core.Test.ParserTests
         };
 
         [TestCase("Movie.Title.3.2017.720p.TSRip.x264.AAC-Ozlem", false)]
+        [TestCase("Movie: Title (2024) TeleSynch 720p | HEVC-FILVOVAN", false)]
         public void should_parse_ts(string title, bool proper)
         {
             ParseAndVerifyQuality(title, QualitySource.TELESYNC, proper, Resolution.R720p);
