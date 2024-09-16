@@ -42,7 +42,7 @@ import styles from './ImportListExclusions.css';
 
 const COLUMNS: Column[] = [
   {
-    name: 'tmdbid',
+    name: 'tmdbId',
     label: () => translate('TMDBId'),
     isVisible: true,
     isSortable: true,

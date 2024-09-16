@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,18 @@ namespace Radarr.Api.V3.Blocklist
         public PagingResource<BlocklistResource> GetBlocklist([FromQuery] PagingRequestResource paging, [FromQuery] int[] movieIds = null, [FromQuery] DownloadProtocol[] protocols = null)
         {
             var pagingResource = new PagingResource<BlocklistResource>(paging);
-            var pagingSpec = pagingResource.MapToPagingSpec<BlocklistResource, NzbDrone.Core.Blocklisting.Blocklist>("date", SortDirection.Descending);
+            var pagingSpec = pagingResource.MapToPagingSpec<BlocklistResource, NzbDrone.Core.Blocklisting.Blocklist>(
+                "date",
+                SortDirection.Descending,
+                new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    "movieMetadata.sortTitle",
+                    "sourceTitle",
+                    "languages",
+                    "quality",
+                    "date",
+                    "indexer"
+                });
 
             if (movieIds?.Any() == true)
             {

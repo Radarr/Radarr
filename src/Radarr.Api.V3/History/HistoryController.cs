@@ -64,7 +64,16 @@ namespace Radarr.Api.V3.History
         public PagingResource<HistoryResource> GetHistory([FromQuery] PagingRequestResource paging, bool includeMovie, [FromQuery(Name = "eventType")] int[] eventTypes, string downloadId, [FromQuery] int[] movieIds = null, [FromQuery] int[] languages = null, [FromQuery] int[] quality = null)
         {
             var pagingResource = new PagingResource<HistoryResource>(paging);
-            var pagingSpec = pagingResource.MapToPagingSpec<HistoryResource, MovieHistory>("date", SortDirection.Descending);
+            var pagingSpec = pagingResource.MapToPagingSpec<HistoryResource, MovieHistory>(
+                "date",
+                SortDirection.Descending,
+                new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    "movieMetadata.sortTitle",
+                    "languages",
+                    "quality",
+                    "date"
+                });
 
             if (eventTypes != null && eventTypes.Any())
             {
