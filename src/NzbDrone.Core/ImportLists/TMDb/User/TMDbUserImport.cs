@@ -1,31 +1,31 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using NLog;
+using NzbDrone.Common.Cache;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.ImportLists.TMDb.User
 {
     public class TMDbUserImport : TMDbImportListBase<TMDbUserSettings>
     {
+        public override string Name => "TMDb User";
+        public override bool Enabled => true;
+        public override bool EnableAuto => false;
+
         public TMDbUserImport(IRadarrCloudRequestBuilder requestBuilder,
                                  IHttpClient httpClient,
                                  IImportListStatusService importListStatusService,
                                  IConfigService configService,
                                  IParsingService parsingService,
-                                 ISearchForNewMovie searchForNewMovie,
+                                 ICacheManager cacheManager,
                                  Logger logger)
-        : base(requestBuilder, httpClient, importListStatusService, configService, parsingService, searchForNewMovie, logger)
+        : base(requestBuilder, httpClient, importListStatusService, configService, parsingService, cacheManager, logger)
         {
         }
-
-        public override string Name => "TMDb User";
-        public override bool Enabled => true;
-        public override bool EnableAuto => false;
 
         public override IParseImportListResponse GetParser()
         {
@@ -34,7 +34,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.User
 
         public override IImportListRequestGenerator GetRequestGenerator()
         {
-            return new TMDbUserRequestGenerator()
+            return new TMDbUserRequestGenerator
             {
                 RequestBuilder = _requestBuilder,
                 Settings = Settings,

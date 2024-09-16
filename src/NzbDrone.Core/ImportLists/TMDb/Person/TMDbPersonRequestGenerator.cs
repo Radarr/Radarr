@@ -24,13 +24,15 @@ namespace NzbDrone.Core.ImportLists.TMDb.Person
         {
             Logger.Info("Importing TMDb movies from person: {0}", Settings.PersonId);
 
-            var requestBuilder = RequestBuilder.Create()
+            var request = RequestBuilder.Create()
                 .SetSegment("api", "3")
                 .SetSegment("route", "person")
                 .SetSegment("id", Settings.PersonId)
-                .SetSegment("secondaryRoute", "/movie_credits");
+                .SetSegment("secondaryRoute", "/movie_credits")
+                .Accept(HttpAccept.Json)
+                .Build();
 
-            yield return new ImportListRequest(requestBuilder.Accept(HttpAccept.Json).Build());
+            yield return new ImportListRequest(request);
         }
     }
 }
