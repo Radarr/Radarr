@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.ImportLists.ImportExclusions;
 using Radarr.Http;
 using Radarr.Http.Extensions;
@@ -47,7 +48,16 @@ namespace Radarr.Api.V3.ImportLists
         public PagingResource<ImportListExclusionResource> GetImportListExclusionsPaged([FromQuery] PagingRequestResource paging)
         {
             var pagingResource = new PagingResource<ImportListExclusionResource>(paging);
-            var pageSpec = pagingResource.MapToPagingSpec<ImportListExclusionResource, ImportListExclusion>();
+            var pageSpec = pagingResource.MapToPagingSpec<ImportListExclusionResource, ImportListExclusion>(
+                "id",
+                SortDirection.Descending,
+                new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    "id",
+                    "tmdbId",
+                    "movieTitle",
+                    "movieYear"
+                });
 
             return pageSpec.ApplyToPage(_importListExclusionService.Paged, ImportListExclusionResourceMapper.ToResource);
         }

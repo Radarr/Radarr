@@ -38,7 +38,11 @@ namespace Radarr.Http
 
     public static class PagingResourceMapper
     {
-        public static PagingSpec<TModel> MapToPagingSpec<TResource, TModel>(this PagingResource<TResource> pagingResource, string defaultSortKey = "Id", SortDirection defaultSortDirection = SortDirection.Ascending)
+        public static PagingSpec<TModel> MapToPagingSpec<TResource, TModel>(
+            this PagingResource<TResource> pagingResource,
+            string defaultSortKey = "Id",
+            SortDirection defaultSortDirection = SortDirection.Ascending,
+            HashSet<string> allowedSortKeys = null)
         {
             var pagingSpec = new PagingSpec<TModel>
             {
@@ -55,6 +59,13 @@ namespace Radarr.Http
                 {
                     pagingSpec.SortDirection = defaultSortDirection;
                 }
+            }
+
+            if (pagingResource.SortKey != null &&
+                allowedSortKeys is { Count: > 0 } &&
+                !allowedSortKeys.Contains(pagingResource.SortKey))
+            {
+                pagingSpec.SortKey = defaultSortKey;
             }
 
             return pagingSpec;
