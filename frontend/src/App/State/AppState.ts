@@ -1,9 +1,10 @@
-import InteractiveImportAppState from 'App/State/InteractiveImportAppState';
 import BlocklistAppState from './BlocklistAppState';
 import CalendarAppState from './CalendarAppState';
 import CommandAppState from './CommandAppState';
 import HistoryAppState from './HistoryAppState';
+import InteractiveImportAppState from './InteractiveImportAppState';
 import MovieCollectionAppState from './MovieCollectionAppState';
+import MovieCreditAppState from './MovieCreditAppState';
 import MovieFilesAppState from './MovieFilesAppState';
 import MoviesAppState, { MovieIndexAppState } from './MoviesAppState';
 import ParseAppState from './ParseAppState';
@@ -64,6 +65,7 @@ interface AppState {
   history: HistoryAppState;
   interactiveImport: InteractiveImportAppState;
   movieCollections: MovieCollectionAppState;
+  movieCredits: MovieCreditAppState;
   movieFiles: MovieFilesAppState;
   movieIndex: MovieIndexAppState;
   movies: MoviesAppState;

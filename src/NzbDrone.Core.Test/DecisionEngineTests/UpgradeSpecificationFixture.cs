@@ -6,6 +6,7 @@ using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.CustomFormats;
@@ -159,6 +160,96 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     new QualityModel(Quality.HDTV1080p, new Revision(version: 1)),
                     new List<CustomFormat>())
                 .Should().Be(UpgradeableRejectReason.QualityCutoff);
+        }
+
+        [Test]
+        public void should_return_false_if_minimum_custom_score_is_not_met()
+        {
+            var customFormatOne = new CustomFormat
+            {
+                Id = 1,
+                Name = "One"
+            };
+
+            var customFormatTwo = new CustomFormat
+            {
+                Id = 2,
+                Name = "Two"
+            };
+
+            var profile = new QualityProfile
+            {
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+                UpgradeAllowed = true,
+                MinUpgradeFormatScore = 11,
+                CutoffFormatScore = 100,
+                FormatItems = new List<ProfileFormatItem>
+                {
+                    new ProfileFormatItem
+                    {
+                        Format = customFormatOne,
+                        Score = 10
+                    },
+                    new ProfileFormatItem
+                    {
+                        Format = customFormatTwo,
+                        Score = 20
+                    }
+                }
+            };
+
+            Subject.IsUpgradable(
+                    profile,
+                    new QualityModel(Quality.DVD),
+                    new List<CustomFormat> { customFormatOne },
+                    new QualityModel(Quality.DVD),
+                    new List<CustomFormat> { customFormatTwo })
+                .Should().Be(UpgradeableRejectReason.MinCustomFormatScore);
+        }
+
+        [Test]
+        public void should_return_true_if_minimum_custom_score_is_met()
+        {
+            var customFormatOne = new CustomFormat
+            {
+                Id = 1,
+                Name = "One"
+            };
+
+            var customFormatTwo = new CustomFormat
+            {
+                Id = 2,
+                Name = "Two"
+            };
+
+            var profile = new QualityProfile
+            {
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+                UpgradeAllowed = true,
+                MinUpgradeFormatScore = 10,
+                CutoffFormatScore = 100,
+                FormatItems = new List<ProfileFormatItem>
+                {
+                    new ProfileFormatItem
+                    {
+                        Format = customFormatOne,
+                        Score = 10
+                    },
+                    new ProfileFormatItem
+                    {
+                        Format = customFormatTwo,
+                        Score = 20
+                    }
+                }
+            };
+
+            Subject.IsUpgradable(
+                    profile,
+                    new QualityModel(Quality.DVD),
+                    new List<CustomFormat> { customFormatOne },
+                    new QualityModel(Quality.DVD),
+                    new List<CustomFormat> { customFormatTwo })
+                .Should().Be(UpgradeableRejectReason.None);
         }
     }
 }

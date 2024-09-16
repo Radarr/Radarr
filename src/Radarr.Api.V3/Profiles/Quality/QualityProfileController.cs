@@ -15,22 +15,22 @@ namespace Radarr.Api.V3.Profiles.Quality
     public class QualityProfileController : RestController<QualityProfileResource>
     {
         private readonly IQualityProfileService _qualityProfileService;
-        private readonly ICustomFormatService _formatService;
 
         public QualityProfileController(IQualityProfileService qualityProfileService, ICustomFormatService formatService)
         {
             _qualityProfileService = qualityProfileService;
-            _formatService = formatService;
+
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
 
             // TODO: Need to validate the cutoff is allowed and the ID/quality ID exists
             // TODO: Need to validate the Items to ensure groups have names and at no item has no name, no items and no quality
+            SharedValidator.RuleFor(c => c.MinUpgradeFormatScore).GreaterThanOrEqualTo(1);
             SharedValidator.RuleFor(c => c.Cutoff).ValidCutoff();
             SharedValidator.RuleFor(c => c.Items).ValidItems();
 
             SharedValidator.RuleFor(c => c.FormatItems).Must(items =>
             {
-                var all = _formatService.All().Select(f => f.Id).ToList();
+                var all = formatService.All().Select(f => f.Id).ToList();
                 var ids = items.Select(i => i.Format);
 
                 return all.Except(ids).Empty();

@@ -19,6 +19,7 @@ namespace NzbDrone.Core.Profiles.Qualities
         public List<QualityProfileQualityItem> Items { get; set; }
         public int MinFormatScore { get; set; }
         public int CutoffFormatScore { get; set; }
+        public int MinUpgradeFormatScore { get; set; }
         public List<ProfileFormatItem> FormatItems { get; set; }
         public Language Language { get; set; }
         public bool UpgradeAllowed { get; set; }
