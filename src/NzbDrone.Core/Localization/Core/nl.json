@@ -464,7 +464,6 @@
     "SetPermissionsLinuxHelpText": "Moet chmod worden uitgevoerd wanneer bestanden worden geïmporteerd/hernoemd?",
     "IconForCutoffUnmetHelpText": "Toon icoon voor bestanden waarbij de drempel niet behaald werd",
     "ShowUnknownMovieItems": "Toon onbekende film items",
-    "SkipFreeSpaceCheckWhenImportingHelpText": "Gebruik dit wanneer {appName} geen vrije schijfruimte kan detecteren voor de hoofdmap van je films",
     "SorryThatMovieCannotBeFound": "Sorry, deze film kan niet worden gevonden.",
     "StandardMovieFormat": "Standaard Film Formaat",
     "TestAllIndexers": "Test Alle Indexeerders",

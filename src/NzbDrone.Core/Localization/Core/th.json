@@ -161,7 +161,6 @@
     "ShowQualityProfileHelpText": "แสดงโปรไฟล์คุณภาพใต้โปสเตอร์",
     "ShowStudio": "แสดงสตูดิโอ",
     "SkipFreeSpaceCheck": "ข้ามการตรวจสอบพื้นที่ว่าง",
-    "SkipFreeSpaceCheckWhenImportingHelpText": "ใช้เมื่อ {appName} ไม่สามารถตรวจจับพื้นที่ว่างจากโฟลเดอร์รากภาพยนตร์ของคุณ",
     "Sort": "จัดเรียง",
     "Source": "ที่มา",
     "Table": "ตาราง",

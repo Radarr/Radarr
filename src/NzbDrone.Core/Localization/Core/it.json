@@ -677,7 +677,6 @@
     "SourceRelativePath": "Percorso relativo origine",
     "SourcePath": "Percorso origine",
     "SorryThatMovieCannotBeFound": "Mi spiace, impossibile trovare il film.",
-    "SkipFreeSpaceCheckWhenImportingHelpText": "Usa quando {appName} non è in grado di determinare lo spazio libero della cartella di root dei film",
     "SkipFreeSpaceCheck": "Salta controllo spazio libero",
     "ShowYear": "Mostra anno",
     "ShowUnknownMovieItems": "Mostra film sconosciuti",
