@@ -102,8 +102,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             var rootFolder = Path.GetDirectoryName(path);
             var movie = _movieService.GetMovie(movieId);
 
-            var downloadClientItem = GetTrackedDownload(downloadId)?.DownloadItem;
-
             var languageParse = LanguageParser.ParseLanguages(path);
 
             if (languageParse.Count <= 1 && languageParse.First() == Language.Unknown && movie != null)
@@ -111,6 +109,16 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 languageParse = new List<Language> { movie.MovieMetadata.Value.OriginalLanguage };
                 _logger.Debug("Language couldn't be parsed from release, fallback to movie original language: {0}", movie.MovieMetadata.Value.OriginalLanguage.Name);
             }
+
+            var downloadClientItem = GetTrackedDownload(downloadId)?.DownloadItem;
+            var finalReleaseGroup = releaseGroup.IsNullOrWhiteSpace()
+                ? Parser.Parser.ParseReleaseGroup(path)
+                : releaseGroup;
+            var finalQuality = (quality?.Quality ?? Quality.Unknown) == Quality.Unknown ? QualityParser.ParseQuality(path) : quality;
+            var finalLanguages =
+                languages?.Count <= 1 && (languages?.SingleOrDefault() ?? Language.Unknown) == Language.Unknown
+                    ? languageParse
+                    : languages;
 
             var localMovie = new LocalMovie();
             localMovie.Movie = movie;
@@ -121,12 +129,23 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             localMovie.SceneSource = SceneSource(movie, rootFolder);
             localMovie.ExistingFile = movie.Path.IsParentPath(path);
             localMovie.Size = _diskProvider.GetFileSize(path);
-            localMovie.ReleaseGroup = releaseGroup.IsNullOrWhiteSpace() ? Parser.Parser.ParseReleaseGroup(path) : releaseGroup;
-            localMovie.Languages = languages?.Count <= 1 && (languages?.SingleOrDefault() ?? Language.Unknown) == Language.Unknown ? languageParse : languages;
-            localMovie.Quality = (quality?.Quality ?? Quality.Unknown) == Quality.Unknown ? QualityParser.ParseQuality(path) : quality;
+            localMovie.ReleaseGroup = finalReleaseGroup;
+            localMovie.Languages = finalLanguages;
+            localMovie.Quality = finalQuality;
             localMovie.IndexerFlags = (IndexerFlags)indexerFlags;
+
             localMovie.CustomFormats = _formatCalculator.ParseCustomFormat(localMovie);
             localMovie.CustomFormatScore = localMovie.Movie?.QualityProfile?.CalculateCustomFormatScore(localMovie.CustomFormats) ?? 0;
+
+            // Augment movie file so imported files have all additional information an automatic import would
+            localMovie = _aggregationService.Augment(localMovie, downloadClientItem);
+
+            // Reapply the user-chosen values.
+            localMovie.Movie = movie;
+            localMovie.ReleaseGroup = finalReleaseGroup;
+            localMovie.Quality = finalQuality;
+            localMovie.Languages = finalLanguages;
+            localMovie.IndexerFlags = (IndexerFlags)indexerFlags;
 
             return MapItem(_importDecisionMaker.GetDecision(localMovie, downloadClientItem), rootFolder, downloadId, null);
         }
