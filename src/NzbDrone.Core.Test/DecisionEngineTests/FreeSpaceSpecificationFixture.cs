@@ -14,12 +14,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     public class FreeSpaceSpecificationFixture : CoreTest<FreeSpaceSpecification>
     {
-        private RemoteMovie _remoteEpisode;
+        private RemoteMovie _remoteMovie;
 
         [SetUp]
         public void Setup()
         {
-            _remoteEpisode = new RemoteMovie() { Release = new ReleaseInfo(), Movie = new Movie { Path = @"C:\Test\Films\Movie".AsOsAgnostic() } };
+            _remoteMovie = new RemoteMovie() { Release = new ReleaseInfo(), Movie = new Movie { Path = @"C:\Test\Films\Movie".AsOsAgnostic() } };
         }
 
         private void WithMinimumFreeSpace(int size)
@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void WithSize(int size)
         {
-            _remoteEpisode.Release.Size = size.Megabytes();
+            _remoteMovie.Release.Size = size.Megabytes();
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             WithAvailableSpace(200);
             WithSize(100);
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             WithAvailableSpace(200);
             WithSize(100);
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             WithAvailableSpace(200);
             WithSize(1000);
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             WithAvailableSpace(200);
             WithSize(100);
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             WithAvailableSpace(200);
             WithSize(100);
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
     }
 }

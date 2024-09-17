@@ -184,7 +184,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.CHECK}
                           name="skipFreeSpaceCheckWhenImporting"
-                          helpText={translate('SkipFreeSpaceCheckWhenImportingHelpText')}
+                          helpText={translate('SkipFreeSpaceCheckHelpText')}
                           onChange={onInputChange}
                           {...settings.skipFreeSpaceCheckWhenImporting}
                         />
