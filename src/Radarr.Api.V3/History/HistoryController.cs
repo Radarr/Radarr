@@ -65,15 +65,15 @@ namespace Radarr.Api.V3.History
         {
             var pagingResource = new PagingResource<HistoryResource>(paging);
             var pagingSpec = pagingResource.MapToPagingSpec<HistoryResource, MovieHistory>(
-                "date",
-                SortDirection.Descending,
                 new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                 {
                     "movieMetadata.sortTitle",
                     "languages",
                     "quality",
                     "date"
-                });
+                },
+                "date",
+                SortDirection.Descending);
 
             if (eventTypes != null && eventTypes.Any())
             {

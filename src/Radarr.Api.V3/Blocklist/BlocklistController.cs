@@ -31,8 +31,6 @@ namespace Radarr.Api.V3.Blocklist
         {
             var pagingResource = new PagingResource<BlocklistResource>(paging);
             var pagingSpec = pagingResource.MapToPagingSpec<BlocklistResource, NzbDrone.Core.Blocklisting.Blocklist>(
-                "date",
-                SortDirection.Descending,
                 new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                 {
                     "movieMetadata.sortTitle",
@@ -41,7 +39,9 @@ namespace Radarr.Api.V3.Blocklist
                     "quality",
                     "date",
                     "indexer"
-                });
+                },
+                "date",
+                SortDirection.Descending);
 
             if (movieIds?.Any() == true)
             {

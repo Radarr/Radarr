@@ -43,8 +43,6 @@ namespace Radarr.Api.V3.Wanted
         {
             var pagingResource = new PagingResource<MovieResource>(paging);
             var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Movie>(
-                "movieMetadata.sortTitle",
-                SortDirection.Ascending,
                 new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                 {
                     "movieMetadata.sortTitle",
@@ -53,7 +51,9 @@ namespace Radarr.Api.V3.Wanted
                     "movieMetadata.digitalRelease",
                     "movieMetadata.physicalRelease",
                     "movies.lastSearchTime"
-                });
+                },
+                "movieMetadata.sortTitle",
+                SortDirection.Ascending);
 
             pagingSpec.FilterExpressions.Add(v => v.Monitored == monitored);
 
