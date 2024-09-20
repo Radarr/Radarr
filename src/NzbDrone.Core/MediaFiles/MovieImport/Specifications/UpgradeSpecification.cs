@@ -45,9 +45,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
 
                 if (qualityCompare < 0)
                 {
-                    _logger.Debug("This file isn't a quality upgrade for movie. New Quality is {0}. Skipping {1}", localMovie.Quality.Quality, localMovie.Path);
-
-                    return Decision.Reject("Not an upgrade for existing movie file. New Quality is {0}", localMovie.Quality.Quality);
+                    _logger.Debug("This file isn't a quality upgrade for movie. Existing quality: {0}. New Quality {1}. Skipping {2}", movieFile.Quality.Quality, localMovie.Quality.Quality, localMovie.Path);
+                    return Decision.Reject("Not an upgrade for existing movie file. Existing quality: {0}. New Quality {1}.", movieFile.Quality.Quality, localMovie.Quality.Quality);
                 }
 
                 // Same quality, propers/repacks are preferred and it is not a revision update. Reject revision downgrade.
