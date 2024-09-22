@@ -1,16 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import MovieMinimumAvailabilityPopoverContent from 'AddMovie/MovieMinimumAvailabilityPopoverContent';
 import CheckInput from 'Components/Form/CheckInput';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
+import Icon from 'Components/Icon';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
-import { inputTypes, kinds } from 'Helpers/Props';
+import Popover from 'Components/Tooltip/Popover';
+import { icons, inputTypes, kinds, tooltipPositions } from 'Helpers/Props';
 import MoviePoster from 'Movie/MoviePoster';
 import translate from 'Utilities/String/translate';
 import styles from './AddNewMovieModalContent.css';
@@ -115,13 +118,28 @@ class AddNewMovieModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>{translate('MinimumAvailability')}</FormLabel>
+                  <FormLabel>
+                    {translate('MinimumAvailability')}
+
+                    <Popover
+                      anchor={
+                        <Icon
+                          className={styles.labelIcon}
+                          name={icons.INFO}
+                        />
+                      }
+                      title={translate('MinimumAvailability')}
+                      body={<MovieMinimumAvailabilityPopoverContent />}
+                      position={tooltipPositions.RIGHT}
+                    />
+                  </FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.AVAILABILITY_SELECT}
                     name="minimumAvailability"
                     onChange={onInputChange}
                     {...minimumAvailability}
+                    helpLink="https://wiki.servarr.com/radarr/faq#what-is-minimum-availability"
                   />
                 </FormGroup>
 

@@ -4,8 +4,6 @@
   margin-right: auto;
 }
 
-.tagInternalInput {
-  composes: internalInput from '~Components/Form/TagInput.css';
-
-  flex: 0 0 100%;
+.labelIcon {
+  margin-left: 8px;
 }

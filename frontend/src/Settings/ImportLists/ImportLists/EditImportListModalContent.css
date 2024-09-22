@@ -4,6 +4,10 @@
   margin-right: auto;
 }
 
+.labelIcon {
+  margin-left: 8px;
+}
+
 .message {
   composes: alert from '~Components/Alert.css';
 
