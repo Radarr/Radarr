@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import MovieMinimumAvailabilityPopoverContent from 'AddMovie/MovieMinimumAvailabilityPopoverContent';
+import Icon from 'Components/Icon';
 import VirtualTableHeader from 'Components/Table/VirtualTableHeader';
 import VirtualTableHeaderCell from 'Components/Table/VirtualTableHeaderCell';
 import VirtualTableSelectAllHeaderCell from 'Components/Table/VirtualTableSelectAllHeaderCell';
+import Popover from 'Components/Tooltip/Popover';
+import { icons, tooltipPositions } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import styles from './ImportMovieHeader.css';
 
@@ -46,7 +50,19 @@ function ImportMovieHeader(props) {
         className={styles.minimumAvailability}
         name="minimumAvailability"
       >
-        {translate('MinAvailability')}
+        {translate('MinimumAvailability')}
+
+        <Popover
+          anchor={
+            <Icon
+              className={styles.detailsIcon}
+              name={icons.INFO}
+            />
+          }
+          title={translate('MinimumAvailability')}
+          body={<MovieMinimumAvailabilityPopoverContent />}
+          position={tooltipPositions.LEFT}
+        />
       </VirtualTableHeaderCell>
 
       <VirtualTableHeaderCell

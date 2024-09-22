@@ -1,16 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import MovieMinimumAvailabilityPopoverContent from 'AddMovie/MovieMinimumAvailabilityPopoverContent';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
+import Icon from 'Components/Icon';
 import Button from 'Components/Link/Button';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
-import { inputTypes, kinds } from 'Helpers/Props';
+import Popover from 'Components/Tooltip/Popover';
+import { icons, inputTypes, kinds, tooltipPositions } from 'Helpers/Props';
 import MoveMovieModal from 'Movie/MoveMovie/MoveMovieModal';
 import translate from 'Utilities/String/translate';
 import styles from './EditMovieModalContent.css';
@@ -103,7 +106,21 @@ class EditMovieModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>{translate('MinimumAvailability')}</FormLabel>
+              <FormLabel>
+                {translate('MinimumAvailability')}
+
+                <Popover
+                  anchor={
+                    <Icon
+                      className={styles.labelIcon}
+                      name={icons.INFO}
+                    />
+                  }
+                  title={translate('MinimumAvailability')}
+                  body={<MovieMinimumAvailabilityPopoverContent />}
+                  position={tooltipPositions.RIGHT}
+                />
+              </FormLabel>
 
               <FormInputGroup
                 type={inputTypes.AVAILABILITY_SELECT}
