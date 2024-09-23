@@ -156,42 +156,58 @@ export const filterPredicates = {
     return dateFilterPredicate(item.digitalRelease, filterValue, type);
   },
 
-  tmdbRating: function(item, filterValue, type) {
+  tmdbRating: function({ ratings = {} }, filterValue, type) {
     const predicate = filterTypePredicates[type];
 
-    const rating = item.ratings.tmdb ? item.ratings.tmdb.value : 0;
+    const rating = ratings.tmdb ? ratings.tmdb.value : 0;
 
     return predicate(rating * 10, filterValue);
   },
 
-  tmdbVotes: function(item, filterValue, type) {
+  tmdbVotes: function({ ratings = {} }, filterValue, type) {
     const predicate = filterTypePredicates[type];
 
-    const rating = item.ratings.tmdb ? item.ratings.tmdb.votes : 0;
+    const rating = ratings.tmdb ? ratings.tmdb.votes : 0;
 
     return predicate(rating, filterValue);
   },
 
-  imdbRating: function(item, filterValue, type) {
+  imdbRating: function({ ratings = {} }, filterValue, type) {
     const predicate = filterTypePredicates[type];
 
-    const rating = item.ratings.imdb ? item.ratings.imdb.value : 0;
+    const rating = ratings.imdb ? ratings.imdb.value : 0;
 
     return predicate(rating, filterValue);
   },
 
-  rottenTomatoesRating: function(item, filterValue, type) {
+  imdbVotes: function({ ratings = {} }, filterValue, type) {
     const predicate = filterTypePredicates[type];
 
-    const rating = item.ratings.rottenTomatoes ? item.ratings.rottenTomatoes.value : 0;
+    const rating = ratings.imdb ? ratings.imdb.votes : 0;
 
     return predicate(rating, filterValue);
   },
 
-  imdbVotes: function(item, filterValue, type) {
+  rottenTomatoesRating: function({ ratings = {} }, filterValue, type) {
     const predicate = filterTypePredicates[type];
 
-    const rating = item.ratings.imdb ? item.ratings.imdb.votes : 0;
+    const rating = ratings.rottenTomatoes ? ratings.rottenTomatoes.value : 0;
+
+    return predicate(rating, filterValue);
+  },
+
+  traktRating: function({ ratings = {} }, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+
+    const rating = ratings.trakt ? ratings.trakt.value : 0;
+
+    return predicate(rating * 10, filterValue);
+  },
+
+  traktVotes: function({ ratings = {} }, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+
+    const rating = ratings.trakt ? ratings.trakt.votes : 0;
 
     return predicate(rating, filterValue);
   },

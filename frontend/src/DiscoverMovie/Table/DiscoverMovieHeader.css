@@ -35,6 +35,7 @@
 .tmdbRating,
 .imdbRating,
 .rottenTomatoesRating,
+.traktRating,
 .runtime {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 

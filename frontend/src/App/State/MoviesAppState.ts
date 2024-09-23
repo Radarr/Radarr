@@ -27,6 +27,7 @@ export interface MovieIndexAppState {
     showTmdbRating: boolean;
     showImdbRating: boolean;
     showRottenTomatoesRating: boolean;
+    showTraktRating: boolean;
     showTags: boolean;
     showSearchAction: boolean;
   };

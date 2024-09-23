@@ -39,7 +39,8 @@ function calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions)
     showTitle,
     showTmdbRating,
     showImdbRating,
-    showRottenTomatoesRating
+    showRottenTomatoesRating,
+    showTraktRating
   } = posterOptions;
 
   const heights = [
@@ -64,6 +65,10 @@ function calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions)
     heights.push(19);
   }
 
+  if (showTraktRating) {
+    heights.push(19);
+  }
+
   switch (sortKey) {
     case 'studio':
     case 'inCinemas':
@@ -85,6 +90,11 @@ function calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions)
       break;
     case 'rottenTomatoesRating':
       if (!showRottenTomatoesRating) {
+        heights.push(19);
+      }
+      break;
+    case 'traktRating':
+      if (!showTraktRating) {
         heights.push(19);
       }
       break;
@@ -219,7 +229,8 @@ class DiscoverMoviePosters extends Component {
       showTitle,
       showTmdbRating,
       showImdbRating,
-      showRottenTomatoesRating
+      showRottenTomatoesRating,
+      showTraktRating
     } = posterOptions;
 
     const movieIdx = rowIndex * columnCount + columnIndex;
@@ -248,6 +259,7 @@ class DiscoverMoviePosters extends Component {
           showTmdbRating={showTmdbRating}
           showImdbRating={showImdbRating}
           showRottenTomatoesRating={showRottenTomatoesRating}
+          showTraktRating={showTraktRating}
           showRelativeDates={showRelativeDates}
           shortDateFormat={shortDateFormat}
           timeFormat={timeFormat}

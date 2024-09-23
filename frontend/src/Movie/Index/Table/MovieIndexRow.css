@@ -92,7 +92,8 @@
 
 .imdbRating,
 .tmdbRating,
-.rottenTomatoesRating {
+.rottenTomatoesRating,
+.traktRating {
   composes: cell;
 
   flex: 0 0 80px;

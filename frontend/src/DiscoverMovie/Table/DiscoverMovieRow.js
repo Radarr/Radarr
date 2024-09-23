@@ -11,6 +11,7 @@ import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
 import TmdbRating from 'Components/TmdbRating';
 import Popover from 'Components/Tooltip/Popover';
+import TraktRating from 'Components/TraktRating';
 import AddNewDiscoverMovieModal from 'DiscoverMovie/AddNewDiscoverMovieModal';
 import ExcludeMovieModal from 'DiscoverMovie/Exclusion/ExcludeMovieModal';
 import { icons } from 'Helpers/Props';
@@ -287,6 +288,17 @@ class DiscoverMovieRow extends Component {
                   className={styles[name]}
                 >
                   {ratings.rottenTomatoes ? <RottenTomatoRating ratings={ratings} /> : null}
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'traktRating') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {ratings.trakt ? <TraktRating ratings={ratings} /> : null}
                 </VirtualTableRowCell>
               );
             }

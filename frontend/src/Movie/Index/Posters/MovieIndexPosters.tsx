@@ -150,6 +150,7 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
       showTmdbRating,
       showImdbRating,
       showRottenTomatoesRating,
+      showTraktRating,
       showTags,
     } = posterOptions;
 
@@ -196,6 +197,10 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
     }
 
     if (showRottenTomatoesRating) {
+      heights.push(19);
+    }
+
+    if (showTraktRating) {
       heights.push(19);
     }
 
@@ -250,6 +255,11 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
         break;
       case 'rottenTomatoesRating':
         if (!showRottenTomatoesRating) {
+          heights.push(19);
+        }
+        break;
+      case 'traktRating':
+        if (!showTraktRating) {
           heights.push(19);
         }
         break;

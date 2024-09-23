@@ -59,6 +59,7 @@ function MovieIndexPosterOptionsModalContent(
     showTmdbRating,
     showImdbRating,
     showRottenTomatoesRating,
+    showTraktRating,
     showTags,
     showSearchAction,
   } = posterOptions;
@@ -218,6 +219,18 @@ function MovieIndexPosterOptionsModalContent(
               name="showRottenTomatoesRating"
               value={showRottenTomatoesRating}
               helpText={translate('ShowRottenTomatoesRatingHelpText')}
+              onChange={onPosterOptionChange}
+            />
+          </FormGroup>
+
+          <FormGroup size={sizes.MEDIUM}>
+            <FormLabel>{translate('ShowTraktRating')}</FormLabel>
+
+            <FormInputGroup
+              type={inputTypes.CHECK}
+              name="showTraktRating"
+              value={showTraktRating}
+              helpText={translate('ShowTraktRatingPosterHelpText')}
               onChange={onPosterOptionChange}
             />
           </FormGroup>

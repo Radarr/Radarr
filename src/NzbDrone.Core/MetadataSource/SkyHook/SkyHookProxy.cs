@@ -670,6 +670,16 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 };
             }
 
+            if (ratings.Trakt != null)
+            {
+                mappedRatings.Trakt = new RatingChild
+                {
+                    Type = (RatingType)Enum.Parse(typeof(RatingType), ratings.Trakt.Type),
+                    Value = ratings.Trakt.Value,
+                    Votes = ratings.Trakt.Count
+                };
+            }
+
             return mappedRatings;
         }
 
