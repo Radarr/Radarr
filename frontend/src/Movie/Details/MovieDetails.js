@@ -20,6 +20,7 @@ import RottenTomatoRating from 'Components/RottenTomatoRating';
 import TmdbRating from 'Components/TmdbRating';
 import Popover from 'Components/Tooltip/Popover';
 import Tooltip from 'Components/Tooltip/Tooltip';
+import TraktRating from 'Components/TraktRating';
 import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
@@ -497,31 +498,44 @@ class MovieDetails extends Component {
 
                 <div className={styles.details}>
                   {
-                    !!ratings.tmdb &&
+                    ratings.tmdb ?
                       <span className={styles.rating}>
                         <TmdbRating
                           ratings={ratings}
                           iconSize={20}
                         />
-                      </span>
+                      </span> :
+                      null
                   }
                   {
-                    !!ratings.imdb &&
+                    ratings.imdb ?
                       <span className={styles.rating}>
                         <ImdbRating
                           ratings={ratings}
                           iconSize={20}
                         />
-                      </span>
+                      </span> :
+                      null
                   }
                   {
-                    !!ratings.rottenTomatoes &&
+                    ratings.rottenTomatoes ?
                       <span className={styles.rating}>
                         <RottenTomatoRating
                           ratings={ratings}
                           iconSize={20}
                         />
-                      </span>
+                      </span> :
+                      null
+                  }
+                  {
+                    ratings.trakt ?
+                      <span className={styles.rating}>
+                        <TraktRating
+                          ratings={ratings}
+                          iconSize={20}
+                        />
+                      </span> :
+                      null
                   }
                 </div>
 

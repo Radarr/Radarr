@@ -60,6 +60,7 @@
 .tmdbRating,
 .imdbRating,
 .rottenTomatoesRating,
+.traktRating,
 .runtime {
   composes: cell;
 

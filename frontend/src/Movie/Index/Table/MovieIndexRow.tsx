@@ -14,6 +14,7 @@ import Column from 'Components/Table/Column';
 import TagListConnector from 'Components/TagListConnector';
 import TmdbRating from 'Components/TmdbRating';
 import Tooltip from 'Components/Tooltip/Tooltip';
+import TraktRating from 'Components/TraktRating';
 import { icons, kinds } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
@@ -383,6 +384,14 @@ function MovieIndexRow(props: MovieIndexRowProps) {
               {ratings.rottenTomatoes ? (
                 <RottenTomatoRating ratings={ratings} />
               ) : null}
+            </VirtualTableRowCell>
+          );
+        }
+
+        if (name === 'traktRating') {
+          return (
+            <VirtualTableRowCell key={name} className={styles[name]}>
+              {ratings.trakt ? <TraktRating ratings={ratings} /> : null}
             </VirtualTableRowCell>
           );
         }

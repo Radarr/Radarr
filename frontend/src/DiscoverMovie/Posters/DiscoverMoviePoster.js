@@ -9,6 +9,7 @@ import Link from 'Components/Link/Link';
 import RottenTomatoRating from 'Components/RottenTomatoRating';
 import TmdbRating from 'Components/TmdbRating';
 import Popover from 'Components/Tooltip/Popover';
+import TraktRating from 'Components/TraktRating';
 import AddNewDiscoverMovieModal from 'DiscoverMovie/AddNewDiscoverMovieModal';
 import ExcludeMovieModal from 'DiscoverMovie/Exclusion/ExcludeMovieModal';
 import { icons } from 'Helpers/Props';
@@ -92,6 +93,7 @@ class DiscoverMoviePoster extends Component {
       showTmdbRating,
       showImdbRating,
       showRottenTomatoesRating,
+      showTraktRating,
       ratings,
       isExisting,
       isExcluded,
@@ -223,6 +225,12 @@ class DiscoverMoviePoster extends Component {
           </div>
         ) : null}
 
+        {showTraktRating && !!ratings.trakt ? (
+          <div className={styles.title}>
+            <TraktRating ratings={ratings} iconSize={12} />
+          </div>
+        ) : null}
+
         <DiscoverMoviePosterInfo
           showRelativeDates={showRelativeDates}
           shortDateFormat={shortDateFormat}
@@ -232,6 +240,7 @@ class DiscoverMoviePoster extends Component {
           showTmdbRating={showTmdbRating}
           showImdbRating={showImdbRating}
           showRottenTomatoesRating={showRottenTomatoesRating}
+          showTraktRating={showTraktRating}
           {...otherProps}
         />
 
@@ -274,6 +283,7 @@ DiscoverMoviePoster.propTypes = {
   showTmdbRating: PropTypes.bool.isRequired,
   showImdbRating: PropTypes.bool.isRequired,
   showRottenTomatoesRating: PropTypes.bool.isRequired,
+  showTraktRating: PropTypes.bool.isRequired,
   ratings: PropTypes.object.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,

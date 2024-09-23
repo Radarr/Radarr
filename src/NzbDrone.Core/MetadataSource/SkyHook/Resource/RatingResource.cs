@@ -6,6 +6,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public RatingItem Imdb { get; set; }
         public RatingItem Metacritic { get; set; }
         public RatingItem RottenTomatoes { get; set; }
+        public RatingItem Trakt { get; set; }
     }
 
     public class RatingItem

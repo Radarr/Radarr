@@ -21,6 +21,7 @@ interface CssExports {
   'status': string;
   'studio': string;
   'tmdbRating': string;
+  'traktRating': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

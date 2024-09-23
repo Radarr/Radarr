@@ -4,6 +4,7 @@ import Icon from 'Components/Icon';
 import ImdbRating from 'Components/ImdbRating';
 import RottenTomatoRating from 'Components/RottenTomatoRating';
 import TmdbRating from 'Components/TmdbRating';
+import TraktRating from 'Components/TraktRating';
 import { icons } from 'Helpers/Props';
 import getMovieStatusDetails from 'Movie/getMovieStatusDetails';
 import formatRuntime from 'Utilities/Date/formatRuntime';
@@ -28,7 +29,8 @@ function DiscoverMoviePosterInfo(props) {
     movieRuntimeFormat,
     showTmdbRating,
     showImdbRating,
-    showRottenTomatoesRating
+    showRottenTomatoesRating,
+    showTraktRating
   } = props;
 
   if (sortKey === 'status' && status) {
@@ -141,6 +143,14 @@ function DiscoverMoviePosterInfo(props) {
     );
   }
 
+  if (!showTraktRating && sortKey === 'traktRating' && !!ratings.trakt) {
+    return (
+      <div className={styles.info}>
+        <TraktRating ratings={ratings} iconSize={12} />
+      </div>
+    );
+  }
+
   return null;
 }
 
@@ -160,7 +170,8 @@ DiscoverMoviePosterInfo.propTypes = {
   movieRuntimeFormat: PropTypes.string.isRequired,
   showTmdbRating: PropTypes.bool.isRequired,
   showImdbRating: PropTypes.bool.isRequired,
-  showRottenTomatoesRating: PropTypes.bool.isRequired
+  showRottenTomatoesRating: PropTypes.bool.isRequired,
+  showTraktRating: PropTypes.bool.isRequired
 };
 
 export default DiscoverMoviePosterInfo;

@@ -11,6 +11,7 @@ import RottenTomatoRating from 'Components/RottenTomatoRating';
 import TagListConnector from 'Components/TagListConnector';
 import TmdbRating from 'Components/TmdbRating';
 import Popover from 'Components/Tooltip/Popover';
+import TraktRating from 'Components/TraktRating';
 import { icons } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
@@ -54,6 +55,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     showTmdbRating,
     showImdbRating,
     showRottenTomatoesRating,
+    showTraktRating,
     showTags,
     showSearchAction,
   } = useSelector(selectPosterOptions);
@@ -310,6 +312,12 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         </div>
       ) : null}
 
+      {showTraktRating && !!ratings.trakt ? (
+        <div className={styles.title}>
+          <TraktRating ratings={ratings} iconSize={12} />
+        </div>
+      ) : null}
+
       {showTags && tags.length ? (
         <div className={styles.tags}>
           <div className={styles.tagsList}>
@@ -347,6 +355,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         showTmdbRating={showTmdbRating}
         showImdbRating={showImdbRating}
         showRottenTomatoesRating={showRottenTomatoesRating}
+        showTraktRating={showTraktRating}
         showTags={showTags}
       />
 

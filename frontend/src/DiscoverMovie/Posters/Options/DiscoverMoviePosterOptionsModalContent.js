@@ -48,6 +48,7 @@ class DiscoverMoviePosterOptionsModalContent extends Component {
       showTmdbRating: props.showTmdbRating,
       showImdbRating: props.showImdbRating,
       showRottenTomatoesRating: props.showRottenTomatoesRating,
+      showTraktRating: props.showTraktRating,
       includeRecommendations: props.includeRecommendations,
       includeTrending: props.includeTrending,
       includePopular: props.includePopular
@@ -61,6 +62,7 @@ class DiscoverMoviePosterOptionsModalContent extends Component {
       showTmdbRating,
       showImdbRating,
       showRottenTomatoesRating,
+      showTraktRating,
       includeRecommendations,
       includeTrending,
       includePopular
@@ -86,6 +88,10 @@ class DiscoverMoviePosterOptionsModalContent extends Component {
 
     if (showRottenTomatoesRating !== prevProps.showRottenTomatoesRating) {
       state.showRottenTomatoesRating = showRottenTomatoesRating;
+    }
+
+    if (showTraktRating !== prevProps.showTraktRating) {
+      state.showTraktRating = showTraktRating;
     }
 
     if (includeRecommendations !== prevProps.includeRecommendations) {
@@ -140,6 +146,7 @@ class DiscoverMoviePosterOptionsModalContent extends Component {
       showTmdbRating,
       showImdbRating,
       showRottenTomatoesRating,
+      showTraktRating,
       includeRecommendations,
       includeTrending,
       includePopular
@@ -248,6 +255,18 @@ class DiscoverMoviePosterOptionsModalContent extends Component {
                 onChange={this.onChangePosterOption}
               />
             </FormGroup>
+
+            <FormGroup>
+              <FormLabel>{translate('ShowTraktRating')}</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="showTraktRating"
+                value={showTraktRating}
+                helpText={translate('ShowTraktRatingPosterHelpText')}
+                onChange={this.onChangePosterOption}
+              />
+            </FormGroup>
           </Form>
         </ModalBody>
 
@@ -269,6 +288,7 @@ DiscoverMoviePosterOptionsModalContent.propTypes = {
   showTmdbRating: PropTypes.bool.isRequired,
   showImdbRating: PropTypes.bool.isRequired,
   showRottenTomatoesRating: PropTypes.bool.isRequired,
+  showTraktRating: PropTypes.bool.isRequired,
   includeRecommendations: PropTypes.bool.isRequired,
   includeTrending: PropTypes.bool.isRequired,
   includePopular: PropTypes.bool.isRequired,

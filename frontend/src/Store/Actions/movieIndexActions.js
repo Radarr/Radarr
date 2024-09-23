@@ -40,6 +40,7 @@ export const defaultState = {
     showTmdbRating: false,
     showImdbRating: false,
     showRottenTomatoesRating: false,
+    showTraktRating: false,
     showTags: false,
     showSearchAction: false
   },
@@ -158,7 +159,7 @@ export const defaultState = {
     },
     {
       name: 'minimumAvailability',
-      label: () => translate('MinAvailability'),
+      label: () => translate('MinimumAvailability'),
       isSortable: true,
       isVisible: false
     },
@@ -201,6 +202,12 @@ export const defaultState = {
     {
       name: 'rottenTomatoesRating',
       label: () => translate('RottenTomatoesRating'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
+      name: 'traktRating',
+      label: () => translate('TraktRating'),
       isSortable: true,
       isVisible: false
     },
@@ -278,6 +285,10 @@ export const defaultState = {
 
     rottenTomatoesRating: function({ ratings = {} }) {
       return ratings.rottenTomatoes ? ratings.rottenTomatoes.value : -1;
+    },
+
+    traktRating: function({ ratings = {} }) {
+      return ratings.trakt ? ratings.trakt.value : 0;
     }
   },
 
@@ -493,13 +504,23 @@ export const defaultState = {
       numberFractionDigits: 1
     },
     {
+      name: 'imdbVotes',
+      label: () => translate('ImdbVotes'),
+      type: filterBuilderTypes.NUMBER
+    },
+    {
       name: 'rottenTomatoesRating',
       label: () => translate('RottenTomatoesRating'),
       type: filterBuilderTypes.NUMBER
     },
     {
-      name: 'imdbVotes',
-      label: () => translate('ImdbVotes'),
+      name: 'traktRating',
+      label: () => translate('TraktRating'),
+      type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'traktVotes',
+      label: () => translate('TraktVotes'),
       type: filterBuilderTypes.NUMBER
     },
     {

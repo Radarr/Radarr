@@ -4,6 +4,7 @@ import ImdbRating from 'Components/ImdbRating';
 import RottenTomatoRating from 'Components/RottenTomatoRating';
 import TagListConnector from 'Components/TagListConnector';
 import TmdbRating from 'Components/TmdbRating';
+import TraktRating from 'Components/TraktRating';
 import { icons } from 'Helpers/Props';
 import Language from 'Language/Language';
 import { Ratings } from 'Movie/Movie';
@@ -43,6 +44,7 @@ interface MovieIndexPosterInfoProps {
   showTmdbRating: boolean;
   showImdbRating: boolean;
   showRottenTomatoesRating: boolean;
+  showTraktRating: boolean;
   showTags: boolean;
 }
 
@@ -76,6 +78,7 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     showTmdbRating,
     showImdbRating,
     showRottenTomatoesRating,
+    showTraktRating,
     showTags,
   } = props;
 
@@ -217,6 +220,14 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     return (
       <div className={styles.info}>
         <RottenTomatoRating ratings={ratings} iconSize={12} />
+      </div>
+    );
+  }
+
+  if (!showTraktRating && sortKey === 'traktRating' && !!ratings.trakt) {
+    return (
+      <div className={styles.info}>
+        <TraktRating ratings={ratings} iconSize={12} />
       </div>
     );
   }

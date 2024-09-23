@@ -111,6 +111,15 @@ function DiscoverMovieSortMenu(props) {
         </SortMenuItem>
 
         <SortMenuItem
+          name="traktRating"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          {translate('TraktRating')}
+        </SortMenuItem>
+
+        <SortMenuItem
           name="certification"
           sortKey={sortKey}
           sortDirection={sortDirection}

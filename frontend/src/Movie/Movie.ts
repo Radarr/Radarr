@@ -37,6 +37,7 @@ export interface Ratings {
   tmdb: RatingValues;
   metacritic: RatingValues;
   rottenTomatoes: RatingValues;
+  trakt: RatingValues;
 }
 
 export interface AlternativeTitle extends ModelBase {

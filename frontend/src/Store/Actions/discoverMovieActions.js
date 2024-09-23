@@ -61,7 +61,8 @@ export const defaultState = {
     showTitle: false,
     showTmdbRating: false,
     showImdbRating: false,
-    showRottenTomatoesRating: false
+    showRottenTomatoesRating: false,
+    showTraktRating: false
   },
 
   overviewOptions: {
@@ -181,6 +182,12 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'traktRating',
+      label: () => translate('TraktRating'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'popularity',
       label: () => translate('Popularity'),
       isSortable: true,
@@ -293,6 +300,10 @@ export const defaultState = {
 
     rottenTomatoesRating: function({ ratings = {} }) {
       return ratings.rottenTomatoes ? ratings.rottenTomatoes.value : -1;
+    },
+
+    traktRating: function({ ratings = {} }) {
+      return ratings.trakt ? ratings.trakt.value : 0;
     }
   },
 
@@ -480,6 +491,16 @@ export const defaultState = {
     {
       name: 'imdbVotes',
       label: () => translate('ImdbVotes'),
+      type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'traktRating',
+      label: () => translate('TraktRating'),
+      type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'traktVotes',
+      label: () => translate('TraktVotes'),
       type: filterBuilderTypes.NUMBER
     },
     {

@@ -30,6 +30,7 @@ interface CssExports {
   'studio': string;
   'tags': string;
   'tmdbRating': string;
+  'traktRating': string;
   'year': string;
 }
 export const cssExports: CssExports;
