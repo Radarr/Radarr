@@ -24,7 +24,7 @@ function RottenTomatoRating(props: RottenTomatoRatingProps) {
   const ratingImage = value > 50 ? rtFresh : rtRotten;
 
   return (
-    <span>
+    <span className={styles.wrapper}>
       {!hideIcon && (
         <img
           className={styles.image}

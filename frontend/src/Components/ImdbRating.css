@@ -1,3 +1,7 @@
+.wrapper {
+  display: inline-block;
+}
+
 .image {
   align-content: center;
   margin-right: 5px;
