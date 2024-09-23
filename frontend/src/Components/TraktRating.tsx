@@ -22,7 +22,7 @@ function TraktRating(props: TraktRatingProps) {
   return (
     <Tooltip
       anchor={
-        <span>
+        <span className={styles.wrapper}>
           {!hideIcon && (
             <img
               className={styles.image}
