@@ -288,7 +288,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 };
             }
 
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
 
             movie.Status = MovieStatusType.Announced;
 
