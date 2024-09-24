@@ -11819,6 +11819,9 @@
           },
           "rottenTomatoes": {
             "$ref": "#/components/schemas/RatingChild"
+          },
+          "trakt": {
+            "$ref": "#/components/schemas/RatingChild"
           }
         },
         "additionalProperties": false
