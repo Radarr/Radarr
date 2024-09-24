@@ -5,17 +5,20 @@ import translate from 'Utilities/String/translate';
 import EnhancedSelectInput from './EnhancedSelectInput';
 
 function MovieMonitoredSelectInput(props) {
-  const values = [...monitorOptions];
-
   const {
     includeNoChange,
-    includeMixed
+    includeMixed,
+    ...otherProps
   } = props;
+
+  const values = [...monitorOptions];
 
   if (includeNoChange) {
     values.unshift({
       key: 'noChange',
-      value: translate('NoChange'),
+      get value() {
+        return translate('NoChange');
+      },
       isDisabled: true
     });
   }
@@ -23,14 +26,16 @@ function MovieMonitoredSelectInput(props) {
   if (includeMixed) {
     values.unshift({
       key: 'mixed',
-      value: '(Mixed)',
+      get value() {
+        return `(${translate('Mixed')})`;
+      },
       isDisabled: true
     });
   }
 
   return (
     <EnhancedSelectInput
-      {...props}
+      {...otherProps}
       values={values}
     />
   );
