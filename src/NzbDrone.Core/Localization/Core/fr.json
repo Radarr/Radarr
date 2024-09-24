@@ -1815,5 +1815,8 @@
     "TomorrowAt": "Demain à {time}",
     "YesterdayAt": "Hier à {time}",
     "Logout": "Se déconnecter",
-    "NoBlocklistItems": "Aucun élément de la liste de blocage"
+    "NoBlocklistItems": "Aucun élément de la liste de blocage",
+    "NotificationsGotifySettingsMetadataLinksMovieHelpText": "Ajouter un lien vers les métadonnées de la série lors de l'envoi de notifications",
+    "NotificationsGotifySettingsMetadataLinks": "Liens de métadonnées",
+    "ShowTraktRatingPosterHelpText": "Affiche la note Tomate sous l'affiche"
 }

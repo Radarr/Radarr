@@ -1757,5 +1757,6 @@
     "ShowDigitalReleaseHelpText": "Näytä teatterijulkaisun päiväys julisteen alla.",
     "ShowPhysicalRelease": "Fyysinen julkaisu",
     "ShowPhysicalReleaseHelpText": "Näytä teatterijulkaisun päiväys julisteen alla.",
-    "Logout": "Kirjaudu ulos"
+    "Logout": "Kirjaudu ulos",
+    "ShowTraktRatingPosterHelpText": "Näytä Tomato-arvio julisteen alla."
 }

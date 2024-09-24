@@ -1819,5 +1819,16 @@
     "CustomFormatsSpecificationExceptLanguageHelpText": "Corresponde se qualquer idioma diferente do idioma selecionado estiver presente",
     "Logout": "Sair",
     "NoBlocklistItems": "Sem itens na lista de bloqueio",
-    "LastSearched": "Última Pesquisa"
+    "LastSearched": "Última Pesquisa",
+    "NotificationsGotifySettingsMetadataLinks": "Links de Metadados",
+    "NotificationsGotifySettingsMetadataLinksMovieHelpText": "Adicione links aos metadados da série ao enviar notificações",
+    "SkipFreeSpaceCheckHelpText": "Usar quando {appName} não consegue detectar espaço livre em sua pasta raiz",
+    "MinimumCustomFormatScoreIncrementHelpText": "Melhoria mínima necessária da pontuação do formato personalizado entre versões existentes e novas antes que {appName} considere isso uma atualização",
+    "MinimumCustomFormatScoreIncrement": "Incremento Mínimo da Pontuação de Formato Personalizado",
+    "NotificationsGotifySettingsPreferredMetadataLinkHelpText": "Link de metadados para clientes que suportam apenas um único link",
+    "NotificationsGotifySettingsPreferredMetadataLink": "Link de Metadados Preferido",
+    "ShowTraktRatingPosterHelpText": "Mostrar avaliação do Tomate sob o pôster",
+    "TraktRating": "Avaliação no Trakt",
+    "TraktVotes": "Votos no Trakt",
+    "ShowTraktRating": "Mostrar Avaliação no Trakt"
 }
