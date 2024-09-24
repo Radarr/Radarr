@@ -7,7 +7,6 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.ParserTests
 {
     [TestFixture]
-
     public class QualityParserFixture : CoreTest
     {
         [SetUp]
@@ -332,6 +331,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[Vodes] Movie Title - Other Title (2020) [BDRemux 1080p HEVC Dual-Audio]")]
         [TestCase("This.Wonderful.Movie.1991.German.ML.1080p.BluRay.AVC-GeRMaNSCeNEGRoUP")]
         [TestCase("Movie.Name.2011.1080p.DD.2.0.AVC.REMUX-FraMeSToR")]
+        [TestCase("Movie Name 2018 1080p BluRay Hybrid-REMUX AVC TRUEHD 5.1 Dual Audio-ZR-")]
+        [TestCase("Movie.Name.2018.1080p.BluRay.Hybrid-REMUX.AVC.TRUEHD.5.1.Dual.Audio-ZR-")]
         public void should_parse_remux1080p_quality(string title)
         {
             ParseAndVerifyQuality(title, QualitySource.BLURAY, false, Resolution.R1080p, Modifier.REMUX);
@@ -346,6 +347,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Name (2021) [Remux-2160p x265 HDR 10-BIT DTS-HD MA 7.1]-FraMeSToR.mkv")]
         [TestCase("This.Wonderful.Movie.1991.German.ML.2160p.BluRay.HEVC-GeRMaNSCeNEGRoUP")]
         [TestCase("Movie.Name.2011.2160p.DD.2.0.AVC.REMUX-FraMeSToR")]
+        [TestCase("Movie Name 2018 2160p BluRay Hybrid-REMUX AVC TRUEHD 5.1 Dual Audio-ZR-")]
+        [TestCase("Movie.Name.2018.2160p.BluRay.Hybrid-REMUX.AVC.TRUEHD.5.1.Dual.Audio-ZR-")]
         public void should_parse_remux2160p_quality(string title)
         {
             ParseAndVerifyQuality(title, QualitySource.BLURAY, false, Resolution.R2160p, Modifier.REMUX);
