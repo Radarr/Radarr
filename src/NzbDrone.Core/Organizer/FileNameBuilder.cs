@@ -107,7 +107,13 @@ namespace NzbDrone.Core.Organizer
                 return GetOriginalTitle(movieFile, false);
             }
 
+            if (namingConfig.StandardMovieFormat.IsNullOrWhiteSpace())
+            {
+                throw new NamingFormatException("Standard movie format cannot be empty");
+            }
+
             var pattern = namingConfig.StandardMovieFormat;
+
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
             var multipleTokens = TitleRegex.Matches(pattern).Count > 1;
 

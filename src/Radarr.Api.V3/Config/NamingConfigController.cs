@@ -17,17 +17,14 @@ namespace Radarr.Api.V3.Config
         private readonly INamingConfigService _namingConfigService;
         private readonly IFilenameSampleService _filenameSampleService;
         private readonly IFilenameValidationService _filenameValidationService;
-        private readonly IBuildFileNames _filenameBuilder;
 
         public NamingConfigController(INamingConfigService namingConfigService,
                                   IFilenameSampleService filenameSampleService,
-                                  IFilenameValidationService filenameValidationService,
-                                  IBuildFileNames filenameBuilder)
+                                  IFilenameValidationService filenameValidationService)
         {
             _namingConfigService = namingConfigService;
             _filenameSampleService = filenameSampleService;
             _filenameValidationService = filenameValidationService;
-            _filenameBuilder = filenameBuilder;
 
             SharedValidator.RuleFor(c => c.StandardMovieFormat).ValidMovieFormat();
             SharedValidator.RuleFor(c => c.MovieFolderFormat).ValidMovieFolderFormat();
@@ -72,11 +69,11 @@ namespace Radarr.Api.V3.Config
             var movieSampleResult = _filenameSampleService.GetMovieSample(nameSpec);
 
             sampleResource.MovieExample = nameSpec.StandardMovieFormat.IsNullOrWhiteSpace()
-                ? "Invalid Format"
+                ? null
                 : movieSampleResult.FileName;
 
             sampleResource.MovieFolderExample = nameSpec.MovieFolderFormat.IsNullOrWhiteSpace()
-                ? "Invalid format"
+                ? null
                 : _filenameSampleService.GetMovieFolderSample(nameSpec);
 
             return sampleResource;
@@ -89,6 +86,8 @@ namespace Radarr.Api.V3.Config
             var standardMovieValidationResult = _filenameValidationService.ValidateMovieFilename(movieSampleResult);
 
             var validationFailures = new List<ValidationFailure>();
+
+            validationFailures.AddIfNotNull(standardMovieValidationResult);
 
             if (validationFailures.Any())
             {

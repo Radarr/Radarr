@@ -90,6 +90,8 @@ namespace NzbDrone.Core.Organizer
             var result = new SampleResult
             {
                 FileName = BuildSample(_movie, _movieFile, nameSpec),
+                Movie = _movie,
+                MovieFile = _movieFile
             };
 
             return result;
