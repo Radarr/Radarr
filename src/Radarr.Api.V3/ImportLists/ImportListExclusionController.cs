@@ -52,9 +52,9 @@ namespace Radarr.Api.V3.ImportLists
                 new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                 {
                     "id",
-                    "tmdbId",
                     "movieTitle",
-                    "movieYear"
+                    "movieYear",
+                    "tmdbId"
                 },
                 "id",
                 SortDirection.Descending);

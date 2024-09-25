@@ -142,20 +142,20 @@ namespace Radarr.Api.V3.Queue
             var pagingSpec = pagingResource.MapToPagingSpec<QueueResource, NzbDrone.Core.Queue.Queue>(
                 new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                 {
-                    "timeleft",
-                    "status",
-                    "movies.sortTitle",
-                    "year",
-                    "languages",
-                    "quality",
-                    "protocol",
-                    "indexer",
-                    "downloadClient",
-                    "title",
-                    "size",
-                    "estimatedCompletionTime",
                     "added",
-                    "progress"
+                    "downloadClient",
+                    "estimatedCompletionTime",
+                    "indexer",
+                    "languages",
+                    "movies.sortTitle",
+                    "progress",
+                    "protocol",
+                    "quality",
+                    "size",
+                    "status",
+                    "timeleft",
+                    "title",
+                    "year"
                 },
                 "timeleft",
                 SortDirection.Ascending);

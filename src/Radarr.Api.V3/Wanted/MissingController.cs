@@ -45,11 +45,11 @@ namespace Radarr.Api.V3.Wanted
             var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Movie>(
                 new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                 {
+                    "movieMetadata.digitalRelease",
+                    "movieMetadata.inCinemas",
+                    "movieMetadata.physicalRelease",
                     "movieMetadata.sortTitle",
                     "movieMetadata.year",
-                    "movieMetadata.inCinemas",
-                    "movieMetadata.digitalRelease",
-                    "movieMetadata.physicalRelease",
                     "movies.lastSearchTime"
                 },
                 "movieMetadata.sortTitle",

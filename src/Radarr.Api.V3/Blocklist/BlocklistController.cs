@@ -33,12 +33,12 @@ namespace Radarr.Api.V3.Blocklist
             var pagingSpec = pagingResource.MapToPagingSpec<BlocklistResource, NzbDrone.Core.Blocklisting.Blocklist>(
                 new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                 {
-                    "movieMetadata.sortTitle",
-                    "sourceTitle",
-                    "languages",
-                    "quality",
                     "date",
-                    "indexer"
+                    "indexer",
+                    "languages",
+                    "movieMetadata.sortTitle",
+                    "quality",
+                    "sourceTitle"
                 },
                 "date",
                 SortDirection.Descending);
