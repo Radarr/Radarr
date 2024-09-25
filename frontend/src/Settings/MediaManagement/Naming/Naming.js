@@ -112,17 +112,13 @@ class Naming extends Component {
       if (examples.movieExample) {
         standardMovieFormatHelpTexts.push(`${translate('Movie')}: ${examples.movieExample}`);
       } else {
-        standardMovieFormatErrors.push({ get message() {
-          return translate('MovieInvalidFormat');
-        } });
+        standardMovieFormatErrors.push({ message: translate('MovieInvalidFormat') });
       }
 
       if (examples.movieFolderExample) {
         movieFolderFormatHelpTexts.push(`${translate('Example')}: ${examples.movieFolderExample}`);
       } else {
-        movieFolderFormatErrors.push({ get message() {
-          return translate('InvalidFormat');
-        } });
+        movieFolderFormatErrors.push({ message: translate('InvalidFormat') });
       }
     }
 
