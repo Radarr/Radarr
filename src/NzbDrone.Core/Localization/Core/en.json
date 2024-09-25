@@ -1634,6 +1634,8 @@
   "SkipRedownload": "Skip Redownload",
   "SkipRedownloadHelpText": "Prevents {appName} from trying to download an alternative release for this item",
   "Small": "Small",
+  "SmartReplace": "Smart Replace",
+  "SmartReplaceHint": "Dash or Space Dash depending on name",
   "Socks4": "Socks4",
   "Socks5": "Socks5 (Support TOR)",
   "SomeResultsHiddenFilter": "Some results are hidden by the applied filter",
