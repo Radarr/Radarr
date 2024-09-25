@@ -299,7 +299,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
             Subject.GetItems().Should().BeEmpty();
         }
 
-        [TestCase("[ TOWN ]-[ http://www.town.ag ]-[ ANIME ]-[Usenet Provider >> http://www.ssl- <<] - [Commie] Aldnoah Zero 18 [234C8FC7]", "[ TOWN ]-[ http++www.town.ag ]-[ ANIME ]-[Usenet Provider  http++www.ssl- ] - [Commie] Aldnoah Zero 18 [234C8FC7].nzb")]
+        [TestCase("[ TOWN ]-[ http://www.town.ag ]-[ ANIME ]-[Usenet Provider >> http://www.ssl- <<] - [Commie] Aldnoah Zero 18 [234C8FC7]", "[ TOWN ]-[ http-++www.town.ag ]-[ ANIME ]-[Usenet Provider  http-++www.ssl- ] - [Commie] Aldnoah Zero 18 [234C8FC7].nzb")]
         public async Task Download_should_use_clean_title(string title, string filename)
         {
             GivenSuccessfulDownload();
