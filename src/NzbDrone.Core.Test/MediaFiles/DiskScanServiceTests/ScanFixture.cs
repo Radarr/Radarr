@@ -8,7 +8,9 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.MediaFiles.MovieImport;
+using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
@@ -423,6 +425,28 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
 
             Mocker.GetMock<IMakeImportDecision>()
                   .Verify(v => v.GetImportDecisions(It.Is<List<string>>(l => l.Count == 1), _movie, false), Times.Once());
+        }
+
+        [Test]
+        public void should_not_scan_excluded_files()
+        {
+            GivenMovieFolder();
+
+            GivenFiles(new List<string>
+            {
+                Path.Combine(_movie.Path, ".DS_Store").AsOsAgnostic(),
+                Path.Combine(_movie.Path, ".unmanic").AsOsAgnostic(),
+                Path.Combine(_movie.Path, ".unmanic.part").AsOsAgnostic(),
+                Path.Combine(_movie.Path, "24 The Status Quo Combustion.mkv").AsOsAgnostic()
+            });
+
+            Subject.Scan(_movie);
+
+            Mocker.GetMock<IMakeImportDecision>()
+                .Verify(v => v.GetImportDecisions(It.Is<List<string>>(l => l.Count == 1), _movie, false), Times.Once());
+
+            Mocker.GetMock<IEventAggregator>()
+                .Verify(v => v.PublishEvent(It.Is<MovieScannedEvent>(c => c.Movie != null && c.PossibleExtraFiles.Count == 0)), Times.Once());
         }
     }
 }
