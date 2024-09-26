@@ -8562,7 +8562,8 @@
           "delete",
           "dash",
           "spaceDash",
-          "spaceDashSpace"
+          "spaceDashSpace",
+          "smart"
         ],
         "type": "string"
       },
