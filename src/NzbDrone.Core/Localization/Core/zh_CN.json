@@ -1826,5 +1826,7 @@
     "MinimumCustomFormatScoreIncrementHelpText": "{appName} 将新版本视为升级版本之前，新版本资源相较于现有版本在自定义格式分数上的最小提升",
     "Recommended": "已推荐",
     "LastSearched": "最近搜索",
-    "ShowTraktRatingPosterHelpText": "在海报下显示烂番茄评分"
+    "ShowTraktRatingPosterHelpText": "在海报下显示烂番茄评分",
+    "SmartReplace": "智能替换",
+    "SmartReplaceHint": "短划线或空格短划线取决于名称"
 }

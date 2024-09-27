@@ -1441,5 +1441,7 @@
     "ShowDigitalReleaseHelpText": "Mutasd a megjelenés dátumát a poszter alatt",
     "ShowPhysicalRelease": "Fizikai megjelenés dátuma",
     "ShowPhysicalReleaseHelpText": "Mutasd a megjelenés dátumát a poszter alatt",
-    "Logout": "Kijelentkezés"
+    "Logout": "Kijelentkezés",
+    "SmartReplace": "Intelligens csere",
+    "SmartReplaceHint": "Dash vagy Space Dash névtől függően"
 }

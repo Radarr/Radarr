@@ -1758,5 +1758,6 @@
     "ShowPhysicalRelease": "Fyysinen julkaisu",
     "ShowPhysicalReleaseHelpText": "Näytä teatterijulkaisun päiväys julisteen alla.",
     "Logout": "Kirjaudu ulos",
-    "ShowTraktRatingPosterHelpText": "Näytä Tomato-arvio julisteen alla."
+    "ShowTraktRatingPosterHelpText": "Näytä Tomato-arvio julisteen alla.",
+    "SmartReplaceHint": "Yhdysmerkki tai välilyönti nimen perusteella"
 }

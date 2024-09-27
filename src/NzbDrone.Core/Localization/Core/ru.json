@@ -1774,5 +1774,7 @@
     "Menu": "Меню",
     "LogSizeLimit": "Ограничение размера журнала",
     "LogSizeLimitHelpText": "Максимальный размер файла журнала в МБ перед архивированием. По умолчанию - 1 МБ.",
-    "ShowTraktRatingPosterHelpText": "Показать рейтинг Tomato под постером"
+    "ShowTraktRatingPosterHelpText": "Показать рейтинг Tomato под постером",
+    "SmartReplace": "Умная замена",
+    "SmartReplaceHint": "Тире или пробел в зависимости от имени"
 }

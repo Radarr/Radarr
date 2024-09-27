@@ -1830,5 +1830,10 @@
     "ShowTraktRatingPosterHelpText": "Mostrar valoraciones de Tomato debajo del póster",
     "ShowTraktRating": "Mostrar calificaciones de Trakt",
     "TraktRating": "Calificaciones de Trakt",
-    "TraktVotes": "Votos de Trakt"
+    "TraktVotes": "Votos de Trakt",
+    "AnnouncedMovieAvailabilityDescription": "Las películas se consideran disponibles tan pronto como son añadidas a {appName}.",
+    "InCinemasMovieAvailabilityDescription": "Las películas se consideran disponibles tan pronto como llegan a los cines.",
+    "ReleasedMovieAvailabilityDescription": "Las películas se consideran disponibles tan pronto como se lanzan la versión en Blu-Ray o en streaming.",
+    "SmartReplaceHint": "Raya o barra espaciadora según el nombre",
+    "SmartReplace": "Reemplazo inteligente"
 }

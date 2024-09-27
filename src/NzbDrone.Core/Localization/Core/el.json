@@ -1230,5 +1230,7 @@
     "ShowDigitalReleaseHelpText": "Εμφάνιση ημερομηνίας κυκλοφορίας στην αφίσα",
     "ShowPhysicalRelease": "Ημερομηνία φυσικής κυκλοφορίας",
     "ShowPhysicalReleaseHelpText": "Εμφάνιση ημερομηνίας κυκλοφορίας στην αφίσα",
-    "ShowDigitalRelease": "Εμφάνιση ημερομηνίας κυκλοφορίας κινηματογράφου"
+    "ShowDigitalRelease": "Εμφάνιση ημερομηνίας κυκλοφορίας κινηματογράφου",
+    "SmartReplace": "Έξυπνη Αντικατάσταση",
+    "SmartReplaceHint": "Παύλα ή Κενό-Παύλα ανάλογα με το όνομα"
 }
