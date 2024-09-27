@@ -1818,5 +1818,7 @@
     "NoBlocklistItems": "Aucun élément de la liste de blocage",
     "NotificationsGotifySettingsMetadataLinksMovieHelpText": "Ajouter un lien vers les métadonnées de la série lors de l'envoi de notifications",
     "NotificationsGotifySettingsMetadataLinks": "Liens de métadonnées",
-    "ShowTraktRatingPosterHelpText": "Affiche la note Tomate sous l'affiche"
+    "ShowTraktRatingPosterHelpText": "Affiche la note Tomate sous l'affiche",
+    "SmartReplace": "Remplacement intelligent",
+    "SmartReplaceHint": "Tiret ou espace puis tiret selon le nom"
 }

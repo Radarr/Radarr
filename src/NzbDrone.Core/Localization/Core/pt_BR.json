@@ -1138,7 +1138,7 @@
     "SkipRedownload": "Ignorar o Redownload",
     "SkipRedownloadHelpText": "Evita que o {appName} tente baixar uma versão alternativa para este item",
     "MoveAutomatically": "Mover automaticamente",
-    "AddAutoTag": "Adicionar Tag Automática",
+    "AddAutoTag": "Adicionar tag automática",
     "AddCondition": "Adicionar Condição",
     "AutoTaggingNegateHelpText": "se marcada, a regra de etiqueta automática não será aplicada se esta condição {implementationName} corresponder.",
     "RemoveTagsAutomatically": "Remover Tags Automaticamente",
@@ -1830,5 +1830,10 @@
     "ShowTraktRatingPosterHelpText": "Mostrar avaliação do Tomate sob o pôster",
     "TraktRating": "Avaliação no Trakt",
     "TraktVotes": "Votos no Trakt",
-    "ShowTraktRating": "Mostrar Avaliação no Trakt"
+    "ShowTraktRating": "Mostrar Avaliação no Trakt",
+    "AnnouncedMovieAvailabilityDescription": "Filmes são considerados como disponíveis assim que são adicionados ao {appName}.",
+    "InCinemasMovieAvailabilityDescription": "Filmes são considerados como disponíveis assim que entram em cartaz.",
+    "ReleasedMovieAvailabilityDescription": "Filmes são considerados como disponíveis assim que é lançado em Blu-Ray ou no streaming.",
+    "SmartReplace": "Substituição inteligente",
+    "SmartReplaceHint": "Traço ou Espaço e Traço, dependendo do nome"
 }
