@@ -159,7 +159,7 @@ namespace NzbDrone.Core.Parser
 
         // Handle Exception Release Groups that don't follow -RlsGrp; Manual List
         // name only...BE VERY CAREFUL WITH THIS, HIGH CHANCE OF FALSE POSITIVES
-        private static readonly Regex ExceptionReleaseGroupRegexExact = new Regex(@"\b(?<releasegroup>KRaLiMaRKo|E\.N\.D|D\-Z0N3|Koten_Gars|BluDragon|ZØNEHD|Tigole|HQMUX|VARYG|YIFY|YTS(.(MX|LT|AG))?|TMd|Eml HDTeam|LMain|DarQ)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex ExceptionReleaseGroupRegexExact = new Regex(@"\b(?<releasegroup>KRaLiMaRKo|E\.N\.D|D\-Z0N3|Koten_Gars|BluDragon|ZØNEHD|Tigole|HQMUX|VARYG|YIFY|YTS(.(MX|LT|AG))?|TMd|Eml HDTeam|LMain|DarQ|BEN THE MAN)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex WordDelimiterRegex = new Regex(@"(\s|\.|,|_|-|=|'|\|)+", RegexOptions.Compiled);
         private static readonly Regex SpecialCharRegex = new Regex(@"(\&|\:|\\|\/)+", RegexOptions.Compiled);
