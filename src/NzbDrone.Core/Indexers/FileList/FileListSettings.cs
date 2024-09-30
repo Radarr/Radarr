@@ -94,6 +94,8 @@ namespace NzbDrone.Core.Indexers.FileList
         Movie_BluRay4K = 26,
         [FieldOption("Movies 3D")]
         Movie_3D = 25,
+        [FieldOption("RO Dubbed")]
+        RoDubbed = 28,
         [FieldOption("XXX")]
         Xxx = 7
     }
