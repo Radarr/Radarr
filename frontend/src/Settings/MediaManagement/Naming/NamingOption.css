@@ -46,6 +46,10 @@
   }
 }
 
+.title {
+  text-transform: none;
+}
+
 .lower {
   text-transform: lowercase;
 }
