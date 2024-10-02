@@ -422,14 +422,15 @@ class MovieDetails extends Component {
                 <div className={styles.details}>
                   <div>
                     {
-                      !!certification &&
+                      certification ?
                         <span className={styles.certification}>
                           {certification}
-                        </span>
+                        </span> :
+                        null
                     }
 
                     {
-                      year > 0 &&
+                      year > 0 ?
                         <span className={styles.year}>
                           <Popover
                             anchor={
@@ -445,14 +446,16 @@ class MovieDetails extends Component {
                             }
                             position={tooltipPositions.BOTTOM}
                           />
-                        </span>
+                        </span> :
+                        null
                     }
 
                     {
-                      !!runtime &&
+                      runtime ?
                         <span className={styles.runtime}>
                           {formatRuntime(runtime, movieRuntimeFormat)}
-                        </span>
+                        </span> :
+                        null
                     }
 
                     {
