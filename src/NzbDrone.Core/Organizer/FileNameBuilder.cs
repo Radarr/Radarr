@@ -172,15 +172,16 @@ namespace NzbDrone.Core.Organizer
                 namingConfig = _namingConfigService.GetConfig();
             }
 
-            var movieFile = movie.MovieFile;
-
             var pattern = namingConfig.MovieFolderFormat;
-            var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
             var multipleTokens = TitleRegex.Matches(pattern).Count > 1;
+
+            var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
             AddMovieTokens(tokenHandlers, movie);
             AddReleaseDateTokens(tokenHandlers, movie.Year);
             AddIdTokens(tokenHandlers, movie);
+
+            var movieFile = movie.MovieFile;
 
             if (movie.MovieFile != null)
             {

@@ -19,14 +19,13 @@ namespace NzbDrone.Core.Organizer
 
         private static MovieFile _movieFile;
         private static Movie _movie;
-        private static MovieMetadata _movieMetadata;
         private static List<CustomFormat> _customFormats;
 
         public FileNameSampleService(IBuildFileNames buildFileNames)
         {
             _buildFileNames = buildFileNames;
 
-            var mediaInfo = new MediaInfoModel()
+            var mediaInfo = new MediaInfoModel
             {
                 VideoFormat = "AVC",
                 VideoBitDepth = 10,
@@ -50,23 +49,19 @@ namespace NzbDrone.Core.Organizer
                 Edition = "Ultimate extended edition",
             };
 
-            _movieMetadata = new MovieMetadata
-            {
-                Title = "The Movie: Title",
-                OriginalTitle = "The Original Movie Title",
-                CollectionTitle = "The Movie Collection",
-                CollectionTmdbId = 123654,
-                Certification = "R",
-                Year = 2010,
-                ImdbId = "tt0066921",
-                TmdbId = 345691
-            };
-
             _movie = new Movie
             {
-                MovieFile = _movieFile,
-                MovieFileId = 1,
-                MovieMetadata = _movieMetadata,
+                MovieMetadata = new MovieMetadata
+                {
+                    Title = "The Movie: Title",
+                    OriginalTitle = "The Original Movie Title",
+                    CollectionTitle = "The Movie Collection",
+                    CollectionTmdbId = 123654,
+                    Certification = "R",
+                    Year = 2010,
+                    ImdbId = "tt0066921",
+                    TmdbId = 345691
+                },
                 MovieMetadataId = 1
             };
 
