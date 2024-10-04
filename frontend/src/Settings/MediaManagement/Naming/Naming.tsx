@@ -258,7 +258,6 @@ function Naming() {
           {namingModalOptions ? (
             <NamingModal
               isOpen={isNamingModalOpen}
-              advancedSettings={advancedSettings}
               {...namingModalOptions}
               value={settings[namingModalOptions.name].value}
               onInputChange={handleInputChange}

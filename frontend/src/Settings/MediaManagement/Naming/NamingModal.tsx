@@ -68,8 +68,22 @@ const caseOptions: { key: TokenCase; value: string }[] = [
 
 const fileNameTokens = [
   {
-    token: '{Movie Title} - {Quality Full}',
-    example: 'Movie Title (2010) - HDTV-720p Proper',
+    token:
+      '{Movie Title} ({Release Year}) - {Edition Tags }{[Custom Formats]}{[Quality Full]}{-Release Group}',
+    example:
+      'The Movie - Title (2010) - Ultimate Extended Edition [Surround Sound x264][Bluray-1080p Proper]-EVOLVE',
+  },
+  {
+    token:
+      '{Movie CleanTitle} {Release Year} - {Edition Tags }{[Custom Formats]}{[Quality Full]}{-Release Group}',
+    example:
+      'The Movie Title 2010 - Ultimate Extended Edition [Surround Sound x264][Bluray-1080p Proper]-EVOLVE',
+  },
+  {
+    token:
+      '{Movie.CleanTitle}{.Release.Year}{.Edition.Tags}{.Custom.Formats}{.Quality.Full}{-Release Group}',
+    example:
+      'The.Movie.Title.2010.Ultimate.Extended.Edition.Surround.Sound.x264.Bluray-1080p.Proper-EVOLVE',
   },
 ];
 
@@ -153,7 +167,6 @@ interface NamingModalProps {
   isOpen: boolean;
   name: keyof Pick<NamingConfig, 'standardMovieFormat' | 'movieFolderFormat'>;
   value: string;
-  advancedSettings: boolean;
   movie?: boolean;
   additional?: boolean;
   onInputChange: ({ name, value }: { name: string; value: string }) => void;
@@ -165,7 +178,6 @@ function NamingModal(props: NamingModalProps) {
     isOpen,
     name,
     value,
-    advancedSettings,
     movie = false,
     additional = false,
     onInputChange,
@@ -254,7 +266,7 @@ function NamingModal(props: NamingModalProps) {
             />
           </div>
 
-          {advancedSettings ? null : (
+          {movie ? (
             <FieldSet legend={translate('FileNames')}>
               <div className={styles.groups}>
                 {fileNameTokens.map(({ token, example }) => (
@@ -271,7 +283,7 @@ function NamingModal(props: NamingModalProps) {
                 ))}
               </div>
             </FieldSet>
-          )}
+          ) : null}
 
           <FieldSet legend={translate('Movie')}>
             <div className={styles.groups}>
