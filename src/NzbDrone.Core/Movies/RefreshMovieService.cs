@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.AutoTagging;
 using NzbDrone.Core.Configuration;
@@ -145,7 +146,7 @@ namespace NzbDrone.Core.Movies
                     SearchOnAdd = movie.AddOptions?.SearchForMovie ?? false,
                     QualityProfileId = movie.QualityProfileId,
                     MinimumAvailability = movie.MinimumAvailability,
-                    RootFolderPath = _folderService.GetBestRootFolderPath(movie.Path).TrimEnd('/', '\\', ' '),
+                    RootFolderPath = _folderService.GetBestRootFolderPath(movie.Path).GetCleanPath(),
                     Tags = movie.Tags
                 });
 
