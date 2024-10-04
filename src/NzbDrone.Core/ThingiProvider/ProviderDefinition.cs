@@ -28,6 +28,7 @@ namespace NzbDrone.Core.ThingiProvider
         public ProviderMessage Message { get; set; }
 
         public HashSet<int> Tags { get; set; }
+        public bool RetroApplyTags { get; set; }
 
         [MemberwiseEqualityIgnore]
         public IProviderConfig Settings

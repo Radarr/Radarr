@@ -55,6 +55,7 @@ function EditImportListModalContent(props) {
     rootFolderPath,
     searchOnAdd,
     tags,
+    retroApplyTags,
     fields,
     message
   } = item;
@@ -221,6 +222,18 @@ function EditImportListModalContent(props) {
                   name="tags"
                   helpText={translate('ListTagsHelpText')}
                   {...tags}
+                  onChange={onInputChange}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>{translate('RadarrRetroactiveApply')}</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="retroApplyTags"
+                  helpText={translate('RetroApplyListTagsHelpText')}
+                  {...retroApplyTags}
                   onChange={onInputChange}
                 />
               </FormGroup>

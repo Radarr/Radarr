@@ -16,6 +16,7 @@ namespace Radarr.Api.V3
         public string InfoLink { get; set; }
         public ProviderMessage Message { get; set; }
         public HashSet<int> Tags { get; set; }
+        public bool RetroApplyTags { get; set; }
 
         public List<T> Presets { get; set; }
     }
@@ -36,6 +37,7 @@ namespace Radarr.Api.V3
                 ConfigContract = definition.ConfigContract,
                 Message = definition.Message,
                 Tags = definition.Tags,
+                RetroApplyTags = definition.RetroApplyTags,
                 Fields = SchemaBuilder.ToSchema(definition.Settings),
 
                 // radarr/supported is an disambiguation page. the # should be a header on the page with appropriate details/link
@@ -60,7 +62,8 @@ namespace Radarr.Api.V3
                 Implementation = resource.Implementation,
                 ConfigContract = resource.ConfigContract,
                 Message = resource.Message,
-                Tags = resource.Tags
+                Tags = resource.Tags,
+                RetroApplyTags = resource.RetroApplyTags,
             };
 
             var configContract = ReflectionExtensions.CoreAssembly.FindTypeByName(definition.ConfigContract);

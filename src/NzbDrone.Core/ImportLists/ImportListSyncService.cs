@@ -81,9 +81,10 @@ namespace NzbDrone.Core.ImportLists
                 return;
             }
 
-            // Check to see if movie in DB
+            // Check to see if movie in DB and maybe apply retro-tags
             if (dbMovies.Contains(report.TmdbId))
             {
+                RetroApplyTags(importList, report);
                 _logger.Debug("{0} [{1}] Rejected, Movie Exists in DB", report.TmdbId, report.Title);
                 return;
             }
@@ -120,6 +121,26 @@ namespace NzbDrone.Core.ImportLists
                         AddMethod = AddMovieMethod.List
                     }
                 });
+            }
+        }
+
+        private void RetroApplyTags(ImportListDefinition importList, ImportListMovie report)
+        {
+            if (importList.RetroApplyTags)
+            {
+                var movie = _movieService.FindByTmdbId(report.TmdbId);
+
+                var preCount = movie.Tags.Count;
+                foreach (var tag in importList.Tags)
+                {
+                    movie.Tags.Add(tag);
+                }
+
+                if (preCount != movie.Tags.Count)
+                {
+                    _movieService.UpdateMovie(movie);
+                    _logger.Debug("{0} [{1}] Retro-Actively added tags to movie", report.TmdbId, report.Title);
+                }
             }
         }
 
