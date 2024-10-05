@@ -63,11 +63,11 @@ interface EditReleaseProfileModalContentProps {
   onDeleteReleaseProfilePress?: () => void;
 }
 
-function EditReleaseProfileModalContent(
-  props: EditReleaseProfileModalContentProps
-) {
-  const { id, onModalClose, onDeleteReleaseProfilePress } = props;
-
+function EditReleaseProfileModalContent({
+  id,
+  onModalClose,
+  onDeleteReleaseProfilePress,
+}: EditReleaseProfileModalContentProps) {
   const { item, isFetching, isSaving, error, saveError, ...otherProps } =
     useSelector(createReleaseProfileSelector(id));
 
@@ -78,14 +78,9 @@ function EditReleaseProfileModalContent(
 
   useEffect(() => {
     if (!id) {
-      Object.keys(newReleaseProfile).forEach((name) => {
-        dispatch(
-          // @ts-expect-error 'setReleaseProfileValue' isn't typed yet
-          setReleaseProfileValue({
-            name,
-            value: newReleaseProfile[name as keyof typeof newReleaseProfile],
-          })
-        );
+      Object.entries(newReleaseProfile).forEach(([name, value]) => {
+        // @ts-expect-error 'setReleaseProfileValue' isn't typed yet
+        dispatch(setReleaseProfileValue({ name, value }));
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,7 +90,7 @@ function EditReleaseProfileModalContent(
     if (previousIsSaving && !isSaving && !saveError) {
       onModalClose();
     }
-  });
+  }, [previousIsSaving, isSaving, saveError, onModalClose]);
 
   const handleSavePress = useCallback(() => {
     dispatch(saveReleaseProfile({ id }));

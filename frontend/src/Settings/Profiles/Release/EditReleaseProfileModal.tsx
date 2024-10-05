@@ -19,7 +19,7 @@ function EditReleaseProfileModal({
 }: EditReleaseProfileModalProps) {
   const dispatch = useDispatch();
 
-  const onModalClosePress = useCallback(() => {
+  const handleModalClose = useCallback(() => {
     dispatch(
       clearPendingChanges({
         section: 'settings.releaseProfiles',
@@ -29,10 +29,10 @@ function EditReleaseProfileModal({
   }, [dispatch, onModalClose]);
 
   return (
-    <Modal size={sizes.MEDIUM} isOpen={isOpen} onModalClose={onModalClosePress}>
+    <Modal size={sizes.MEDIUM} isOpen={isOpen} onModalClose={handleModalClose}>
       <EditReleaseProfileModalContent
         {...otherProps}
-        onModalClose={onModalClosePress}
+        onModalClose={handleModalClose}
       />
     </Modal>
   );

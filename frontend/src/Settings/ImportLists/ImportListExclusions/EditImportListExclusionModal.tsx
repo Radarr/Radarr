@@ -19,7 +19,7 @@ function EditImportListExclusionModal(
 
   const dispatch = useDispatch();
 
-  const onModalClosePress = useCallback(() => {
+  const handleModalClose = useCallback(() => {
     dispatch(
       clearPendingChanges({
         section: 'settings.importListExclusions',
@@ -29,10 +29,10 @@ function EditImportListExclusionModal(
   }, [dispatch, onModalClose]);
 
   return (
-    <Modal size={sizes.MEDIUM} isOpen={isOpen} onModalClose={onModalClosePress}>
+    <Modal size={sizes.MEDIUM} isOpen={isOpen} onModalClose={handleModalClose}>
       <EditImportListExclusionModalContent
         {...otherProps}
-        onModalClose={onModalClosePress}
+        onModalClose={handleModalClose}
       />
     </Modal>
   );
