@@ -1,3 +1,4 @@
+using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
@@ -32,11 +33,21 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             }
 
             var size = subject.Release.Size;
-            var freeSpace = _diskProvider.GetAvailableSpace(subject.Movie.Path);
+            var path = subject.Movie.Path;
+            long? freeSpace = null;
+
+            try
+            {
+                freeSpace = _diskProvider.GetAvailableSpace(path);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                // Ignore so it'll be skipped in the following checks
+            }
 
             if (!freeSpace.HasValue)
             {
-                _logger.Debug("Unable to get available space for {0}. Skipping", subject.Movie.Path);
+                _logger.Debug("Unable to get available space for {0}. Skipping", path);
 
                 return Decision.Accept();
             }
