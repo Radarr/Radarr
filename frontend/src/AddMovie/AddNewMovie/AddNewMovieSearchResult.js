@@ -12,6 +12,7 @@ import MovieStatusLabel from 'Movie/Details/MovieStatusLabel';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MoviePoster from 'Movie/MoviePoster';
 import formatRuntime from 'Utilities/Date/formatRuntime';
+import equalsIgnoringCase from 'Utilities/String/equalsIgnoringCase';
 import translate from 'Utilities/String/translate';
 import AddNewMovieModal from './AddNewMovieModal';
 import styles from './AddNewMovieSearchResult.css';
@@ -63,6 +64,7 @@ class AddNewMovieSearchResult extends Component {
       year,
       studio,
       originalLanguage,
+      originalTitle,
       genres,
       status,
       overview,
@@ -229,6 +231,20 @@ class AddNewMovieSearchResult extends Component {
               }
 
               {
+                originalTitle && !equalsIgnoringCase(title, originalTitle) ?
+                  <Label size={sizes.LARGE}>
+                    <Icon
+                      name={icons.FILM}
+                      size={13}
+                    />
+                    <span className={styles.originalTitle}>
+                      {originalTitle}
+                    </span>
+                  </Label> :
+                  null
+              }
+
+              {
                 studio ?
                   <Label size={sizes.LARGE}>
                     <Icon
@@ -328,6 +344,7 @@ AddNewMovieSearchResult.propTypes = {
   year: PropTypes.number.isRequired,
   studio: PropTypes.string,
   originalLanguage: PropTypes.object,
+  originalTitle: PropTypes.string,
   genres: PropTypes.arrayOf(PropTypes.string),
   status: PropTypes.string.isRequired,
   overview: PropTypes.string,
