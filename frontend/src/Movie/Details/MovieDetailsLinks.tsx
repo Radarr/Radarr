@@ -41,6 +41,20 @@ function MovieDetailsLinks(props: MovieDetailsLinksProps) {
           {translate('Trakt')}
         </Label>
       </Link>
+      
+      <Link
+        className={styles.link}
+        to={`https://simkl.com/search/?type=movies&q=${tmdbId}`}
+      >
+        <Label
+          className={styles.linkLabel}
+          kind={kinds.INFO}
+          size={sizes.LARGE}
+        >
+          {translate('Simkl')}
+        </Label>
+      </Link>
+
 
       <Link
         className={styles.link}
