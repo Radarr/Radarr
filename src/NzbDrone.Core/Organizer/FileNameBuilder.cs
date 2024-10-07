@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Organizer
         private static readonly Regex TitleRegex = new Regex(@"(?<tag>\{(?:imdb-|edition-))?\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[ ,a-z0-9|+-]+(?<![- ])))?(?<suffix>[-} ._)\]]*)\}",
                                                              RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-        public static readonly Regex MovieTitleRegex = new Regex(@"(?<token>\{(?:(?:Movie)(?<separator>[- ._])(?:Clean)?(?:OriginalTitle|Title(?:The)?)(?::(?<customFormat>[a-z0-9|-]+))?|Original[- ._](?:Title|Filename))\})",
+        public static readonly Regex MovieTitleRegex = new Regex(@"(?<token>\{(?:Movie)(?<separator>[- ._])(?:Clean)?(?:OriginalTitle|Title(?:The)?)(?::(?<customFormat>[a-z0-9|-]+))?\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex FileNameCleanupRegex = new Regex(@"([- ._])(\1)+", RegexOptions.Compiled);
@@ -53,6 +53,9 @@ namespace NzbDrone.Core.Organizer
         private static readonly Regex TitlePrefixRegex = new Regex(@"^(The|An|A) (.*?)((?: *\([^)]+\))*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex ReservedDeviceNamesRegex = new Regex(@"^(?:aux|com[1-9]|con|lpt[1-9]|nul|prn)\.", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        public static readonly Regex DeprecatedMovieFolderTokensRegex = new Regex(@"(\{(?:Original[- ._](?:Title|Filename)|Release[- ._]Group|Edition[- ._]Tags|Quality[- ._](?:Full|Title|Proper|Real)|MediaInfo[- ._](?:Video|VideoCodec|VideoBitDepth|Audio|AudioCodec|AudioChannels|AudioLanguages|AudioLanguagesAll|SubtitleLanguages|SubtitleLanguagesAll|3D|Simple|Full|VideoDynamicRange|VideoDynamicRangeType))\})",
+                                                                            RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         // generated from https://www.loc.gov/standards/iso639-2/ISO-639-2_utf-8.txt
         public static readonly ImmutableDictionary<string, string> Iso639BTMap = new Dictionary<string, string>
@@ -169,15 +172,24 @@ namespace NzbDrone.Core.Organizer
                 namingConfig = _namingConfigService.GetConfig();
             }
 
-            var movieFile = movie.MovieFile;
-
             var pattern = namingConfig.MovieFolderFormat;
-            var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
+
+            var deprecatedTokensMatch = DeprecatedMovieFolderTokensRegex.Matches(pattern);
+
+            if (deprecatedTokensMatch.Any())
+            {
+                _logger.Warn("DEPRECATED: The use of tokens associated with movie file properties ({0}) in Movie Folder Format is deprecated and will no longer be supported in the next major version. Please update your Movie Folder Format: '{1}'.", string.Join(", ", deprecatedTokensMatch.Select(c => c.Value).ToArray()), pattern);
+            }
+
             var multipleTokens = TitleRegex.Matches(pattern).Count > 1;
+
+            var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
             AddMovieTokens(tokenHandlers, movie);
             AddReleaseDateTokens(tokenHandlers, movie.Year);
             AddIdTokens(tokenHandlers, movie);
+
+            var movieFile = movie.MovieFile;
 
             if (movie.MovieFile != null)
             {

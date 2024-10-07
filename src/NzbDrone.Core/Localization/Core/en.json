@@ -970,6 +970,7 @@
   "MovieFilesTotaling": "Movie Files Totaling",
   "MovieFolderFormat": "Movie Folder Format",
   "MovieFolderFormatHelpText": "Used when adding a new movie or moving movies via the movie editor",
+  "MovieFolderFormatHelpTextWarning": "Folder tokens associated with movie file properties have been deprecated and will no longer be supported in the next major version.",
   "MovieFolderImportedTooltip": "Movie imported from movie folder",
   "MovieFootNote": "Optionally control truncation to a maximum number of bytes including ellipsis (`...`). Truncating from the end (e.g. `{Movie Title:30}`) or the beginning (e.g. `{Movie Title:-30}`) are both supported.",
   "MovieGrabbedHistoryTooltip": "Movie grabbed from {indexer} and sent to {downloadClient}",

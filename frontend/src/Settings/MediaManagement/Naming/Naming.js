@@ -192,6 +192,7 @@ class Naming extends Component {
                   onChange={onInputChange}
                   {...settings.movieFolderFormat}
                   helpTexts={[translate('MovieFolderFormatHelpText'), ...movieFolderFormatHelpTexts]}
+                  helpTextWarning={translate('MovieFolderFormatHelpTextWarning')}
                   errors={[...movieFolderFormatErrors, ...settings.movieFolderFormat.errors]}
                 />
               </FormGroup>
