@@ -48,6 +48,11 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieFileMovingServiceTests
                   .Returns(@"C:\Test\Movies\Movie\File Name.avi".AsOsAgnostic());
 
             var rootFolder = @"C:\Test\Movies\".AsOsAgnostic();
+
+            Mocker.GetMock<IRootFolderService>()
+                .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>(), null))
+                .Returns(rootFolder);
+
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.FolderExists(rootFolder))
                   .Returns(true);
@@ -55,10 +60,6 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieFileMovingServiceTests
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.FileExists(It.IsAny<string>()))
                   .Returns(true);
-
-            Mocker.GetMock<IRootFolderService>()
-                  .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>(), null))
-                  .Returns(rootFolder);
         }
 
         [Test]

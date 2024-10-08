@@ -1146,5 +1146,6 @@
     "ShowDigitalRelease": "Data lansării Show Cinema",
     "ShowDigitalReleaseHelpText": "Afișați data lansării sub afiș",
     "ShowPhysicalRelease": "Data de lansare fizică",
-    "ShowPhysicalReleaseHelpText": "Afișați data lansării sub afiș"
+    "ShowPhysicalReleaseHelpText": "Afișați data lansării sub afiș",
+    "FolderNameTokens": "Jetoane cu nume de fișier"
 }

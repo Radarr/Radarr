@@ -1070,5 +1070,6 @@
     "ShowDigitalRelease": "シネマのリリース日を表示",
     "ShowPhysicalRelease": "物理的なリリース日",
     "ShowPhysicalReleaseHelpText": "ポスターの下にリリース日を表示する",
-    "ShowDigitalReleaseHelpText": "ポスターの下にリリース日を表示する"
+    "ShowDigitalReleaseHelpText": "ポスターの下にリリース日を表示する",
+    "FolderNameTokens": "ファイル名トークン"
 }

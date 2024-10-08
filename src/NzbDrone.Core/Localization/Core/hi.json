@@ -1068,5 +1068,6 @@
     "ShowDigitalReleaseHelpText": "पोस्टर के तहत रिलीज की तारीख दिखाएं",
     "ShowPhysicalRelease": "शारीरिक रिलीज की तारीख",
     "ShowPhysicalReleaseHelpText": "पोस्टर के तहत रिलीज की तारीख दिखाएं",
-    "ShowDigitalRelease": "सिनेमा रिलीज की तारीख दिखाएँ"
+    "ShowDigitalRelease": "सिनेमा रिलीज की तारीख दिखाएँ",
+    "FolderNameTokens": "फ़ाइल नाम टोकन"
 }

@@ -1237,5 +1237,6 @@
     "ShowDigitalRelease": "Show Cinema-releasedatum",
     "ShowDigitalReleaseHelpText": "Laat releasedatum zien onder poster",
     "ShowPhysicalRelease": "Fysieke Release Datum",
-    "ShowPhysicalReleaseHelpText": "Laat releasedatum zien onder poster"
+    "ShowPhysicalReleaseHelpText": "Laat releasedatum zien onder poster",
+    "FolderNameTokens": "Bestandsnaam Tokens"
 }

@@ -1074,5 +1074,6 @@
     "ShowPhysicalReleaseHelpText": "Hiển thị ngày phát hành dưới áp phích",
     "ShowDigitalRelease": "Ngày phát hành rạp chiếu phim",
     "ShowDigitalReleaseHelpText": "Hiển thị ngày phát hành dưới áp phích",
-    "ShowPhysicalRelease": "Ngày phát hành vật lý"
+    "ShowPhysicalRelease": "Ngày phát hành vật lý",
+    "FolderNameTokens": "Mã thông báo tên tệp"
 }

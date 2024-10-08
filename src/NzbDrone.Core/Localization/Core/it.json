@@ -1470,5 +1470,6 @@
     "TomorrowAt": "Domani alle {time}",
     "YesterdayAt": "Ieri alle {time}",
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "Diverse cartelle principale sono perse per l’importazione: {rootFoldersInfo}",
-    "ShowTraktRatingPosterHelpText": "Mostra valutazione Tomato sotta la locandina"
+    "ShowTraktRatingPosterHelpText": "Mostra valutazione Tomato sotta la locandina",
+    "FolderNameTokens": "Token nome file"
 }

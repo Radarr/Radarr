@@ -9,7 +9,7 @@ variables:
   testsFolder: './_tests'
   yarnCacheFolder: $(Pipeline.Workspace)/.yarn
   nugetCacheFolder: $(Pipeline.Workspace)/.nuget/packages
-  majorVersion: '5.12.1'
+  majorVersion: '5.12.2'
   minorVersion: $[counter('minorVersion', 2000)]
   radarrVersion: '$(majorVersion).$(minorVersion)'
   buildName: '$(Build.SourceBranchName).$(radarrVersion)'
@@ -20,7 +20,7 @@ variables:
   innoVersion: '6.2.2'
   windowsImage: 'windows-2022'
   linuxImage: 'ubuntu-20.04'
-  macImage: 'macOS-12'
+  macImage: 'macOS-13'
 
 trigger:
   branches:

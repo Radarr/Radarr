@@ -16,6 +16,9 @@ import IndexerFlag from 'typings/IndexerFlag';
 import Notification from 'typings/Notification';
 import QualityProfile from 'typings/QualityProfile';
 import General from 'typings/Settings/General';
+import NamingConfig from 'typings/Settings/NamingConfig';
+import NamingExample from 'typings/Settings/NamingExample';
+import ReleaseProfile from 'typings/Settings/ReleaseProfile';
 import UiSettings from 'typings/Settings/UiSettings';
 
 export interface DownloadClientAppState
@@ -28,6 +31,13 @@ export interface DownloadClientAppState
 export interface GeneralAppState
   extends AppSectionItemState<General>,
     AppSectionSaveState {}
+
+export interface NamingAppState
+  extends AppSectionItemState<NamingConfig>,
+    AppSectionSaveState {}
+
+export interface NamingExamplesAppState
+  extends AppSectionItemState<NamingExample> {}
 
 export interface ImportListAppState
   extends AppSectionState<ImportList>,
@@ -48,6 +58,12 @@ export interface NotificationAppState
 export interface QualityProfilesAppState
   extends AppSectionState<QualityProfile>,
     AppSectionSchemaState<QualityProfile> {}
+
+export interface ReleaseProfilesAppState
+  extends AppSectionState<ReleaseProfile>,
+    AppSectionSaveState {
+  pendingChanges: Partial<ReleaseProfile>;
+}
 
 export interface CustomFormatAppState
   extends AppSectionState<CustomFormat>,
@@ -81,8 +97,11 @@ interface SettingsAppState {
   indexerFlags: IndexerFlagSettingsAppState;
   indexers: IndexerAppState;
   languages: LanguageSettingsAppState;
+  naming: NamingAppState;
+  namingExamples: NamingExamplesAppState;
   notifications: NotificationAppState;
   qualityProfiles: QualityProfilesAppState;
+  releaseProfiles: ReleaseProfilesAppState;
   ui: UiSettingsAppState;
 }
 

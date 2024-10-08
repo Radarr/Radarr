@@ -9,6 +9,7 @@ import { icons } from 'Helpers/Props';
 import Language from 'Language/Language';
 import { Ratings } from 'Movie/Movie';
 import QualityProfile from 'typings/QualityProfile';
+import formatDate from 'Utilities/Date/formatDate';
 import formatDateTime from 'Utilities/Date/formatDateTime';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import formatBytes from 'Utilities/Number/formatBytes';
@@ -139,7 +140,13 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     });
 
     return (
-      <div className={styles.info} title={translate('InCinemas')}>
+      <div
+        className={styles.info}
+        title={`${translate('InCinemas')}: ${formatDate(
+          inCinemas,
+          longDateFormat
+        )}`}
+      >
         <Icon name={icons.IN_CINEMAS} /> {inCinemasDate}
       </div>
     );
@@ -155,7 +162,13 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     });
 
     return (
-      <div className={styles.info} title={translate('DigitalRelease')}>
+      <div
+        className={styles.info}
+        title={`${translate('DigitalRelease')}: ${formatDate(
+          digitalRelease,
+          longDateFormat
+        )}`}
+      >
         <Icon name={icons.MOVIE_FILE} /> {digitalReleaseDate}
       </div>
     );
@@ -175,7 +188,13 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     });
 
     return (
-      <div className={styles.info} title={translate('PhysicalRelease')}>
+      <div
+        className={styles.info}
+        title={`${translate('PhysicalRelease')}: ${formatDate(
+          physicalRelease,
+          longDateFormat
+        )}`}
+      >
         <Icon name={icons.DISC} /> {physicalReleaseDate}
       </div>
     );
@@ -183,7 +202,13 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
 
   if (sortKey === 'releaseDate' && releaseDate && !showReleaseDate) {
     return (
-      <div className={styles.info} title={translate('ReleaseDate')}>
+      <div
+        className={styles.info}
+        title={`${translate('ReleaseDate')}: ${formatDate(
+          releaseDate,
+          longDateFormat
+        )}`}
+      >
         <Icon name={icons.CALENDAR} />{' '}
         {getRelativeDate({
           date: releaseDate,

@@ -156,6 +156,10 @@ export const filterPredicates = {
     return dateFilterPredicate(item.digitalRelease, filterValue, type);
   },
 
+  releaseDate: function(item, filterValue, type) {
+    return dateFilterPredicate(item.releaseDate, filterValue, type);
+  },
+
   tmdbRating: function({ ratings = {} }, filterValue, type) {
     const predicate = filterTypePredicates[type];
 

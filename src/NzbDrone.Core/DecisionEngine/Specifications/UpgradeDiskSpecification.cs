@@ -37,6 +37,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             }
 
             file.Movie = subject.Movie;
+
             var customFormats = _formatService.ParseCustomFormat(file);
 
             _logger.Debug("Comparing file quality with report. Existing file is {0} [{1}].", file.Quality, customFormats.ConcatToString());
@@ -48,8 +49,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             {
                 _logger.Debug("Cutoff already met, rejecting.");
 
-                var qualityCutoffIndex = qualityProfile.GetIndex(qualityProfile.Cutoff);
-                var qualityCutoff = qualityProfile.Items[qualityCutoffIndex.Index];
+                var cutoff = qualityProfile.UpgradeAllowed ? qualityProfile.Cutoff : qualityProfile.FirststAllowedQuality().Id;
+                var qualityCutoff = qualityProfile.Items[qualityProfile.GetIndex(cutoff).Index];
 
                 return Decision.Reject("Existing file meets cutoff: {0} [{1}]", qualityCutoff, customFormats.ConcatToString());
             }

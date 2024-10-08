@@ -86,27 +86,35 @@ namespace Radarr.Api.V3.Movies
             _rootFolderService = rootFolderService;
             _logger = logger;
 
-            SharedValidator.RuleFor(s => s.QualityProfileId).ValidId();
+            SharedValidator.RuleFor(s => s.Path).Cascade(CascadeMode.Stop)
+                .IsValidPath()
+                .SetValidator(rootFolderValidator)
+                .SetValidator(mappedNetworkDriveValidator)
+                .SetValidator(moviesPathValidator)
+                .SetValidator(moviesAncestorValidator)
+                .SetValidator(recycleBinValidator)
+                .SetValidator(systemFolderValidator)
+                .When(s => s.Path.IsNotNullOrWhiteSpace());
 
-            SharedValidator.RuleFor(s => s.Path)
-                           .Cascade(CascadeMode.Stop)
-                           .IsValidPath()
-                           .SetValidator(rootFolderValidator)
-                           .SetValidator(mappedNetworkDriveValidator)
-                           .SetValidator(moviesPathValidator)
-                           .SetValidator(moviesAncestorValidator)
-                           .SetValidator(recycleBinValidator)
-                           .SetValidator(systemFolderValidator)
-                           .When(s => !s.Path.IsNullOrWhiteSpace());
+            PostValidator.RuleFor(s => s.Path).Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .IsValidPath()
+                .When(s => s.RootFolderPath.IsNullOrWhiteSpace());
+            PostValidator.RuleFor(s => s.RootFolderPath).Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .IsValidPath()
+                .SetValidator(rootFolderExistsValidator)
+                .SetValidator(movieFolderAsRootFolderValidator)
+                .When(s => s.Path.IsNullOrWhiteSpace());
 
-            SharedValidator.RuleFor(s => s.QualityProfileId).SetValidator(qualityProfileExistsValidator);
+            PutValidator.RuleFor(s => s.Path).Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .IsValidPath();
 
-            PostValidator.RuleFor(s => s.Path).IsValidPath().When(s => s.RootFolderPath.IsNullOrWhiteSpace());
-            PostValidator.RuleFor(s => s.RootFolderPath)
-                         .IsValidPath()
-                         .SetValidator(rootFolderExistsValidator)
-                         .SetValidator(movieFolderAsRootFolderValidator)
-                         .When(s => s.Path.IsNullOrWhiteSpace());
+            SharedValidator.RuleFor(s => s.QualityProfileId).Cascade(CascadeMode.Stop)
+                .ValidId()
+                .SetValidator(qualityProfileExistsValidator);
+
             PostValidator.RuleFor(s => s.Title).NotEmpty().When(s => s.TmdbId <= 0);
             PostValidator.RuleFor(s => s.TmdbId).NotNull().NotEmpty().SetValidator(moviesExistsValidator);
         }
