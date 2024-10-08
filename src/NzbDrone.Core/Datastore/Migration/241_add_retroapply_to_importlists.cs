@@ -9,5 +9,7 @@ public class add_retroapply_to_importlists : NzbDroneMigrationBase
     protected override void MainDbUpgrade()
     {
         Alter.Table("ImportLists").AddColumn("RetroApplyTags").AsInt32().WithDefaultValue(0);
+        Alter.Table("Notifications").AddColumn("RetroApplyTags").AsInt32().WithDefaultValue(0);
+        Alter.Table("Indexers").AddColumn("RetroApplyTags").AsInt32().WithDefaultValue(0);
     }
 }
