@@ -24,6 +24,7 @@ interface ImportList extends ModelBase {
   configContract: string;
   infoLink: string;
   tags: number[];
+  retroApplyTags: boolean;
 }
 
 export default ImportList;
