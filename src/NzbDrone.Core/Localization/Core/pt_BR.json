@@ -1835,5 +1835,6 @@
     "InCinemasMovieAvailabilityDescription": "Filmes são considerados como disponíveis assim que entram em cartaz.",
     "ReleasedMovieAvailabilityDescription": "Filmes são considerados como disponíveis assim que é lançado em Blu-Ray ou no streaming.",
     "SmartReplace": "Substituição inteligente",
-    "SmartReplaceHint": "Traço ou Espaço e Traço, dependendo do nome"
+    "SmartReplaceHint": "Traço ou Espaço e Traço, dependendo do nome",
+    "FolderNameTokens": "Tokens de nome de arquivo"
 }

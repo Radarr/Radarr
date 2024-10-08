@@ -1287,5 +1287,6 @@
     "ShowDigitalRelease": "Показати дату виходу в кіно",
     "ShowDigitalReleaseHelpText": "Показати дату випуску під плакатом",
     "ShowPhysicalRelease": "Дата фізичного випуску",
-    "ShowPhysicalReleaseHelpText": "Показати дату випуску під плакатом"
+    "ShowPhysicalReleaseHelpText": "Показати дату випуску під плакатом",
+    "FolderNameTokens": "Маркери імен файлів"
 }

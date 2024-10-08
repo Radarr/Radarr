@@ -1070,5 +1070,6 @@
     "ShowDigitalRelease": "Sýna útgáfudag kvikmyndahússins",
     "ShowDigitalReleaseHelpText": "Sýnið útgáfudagsetningu undir veggspjaldi",
     "ShowPhysicalRelease": "Líkamlegur útgáfudagur",
-    "ShowPhysicalReleaseHelpText": "Sýnið útgáfudagsetningu undir veggspjaldi"
+    "ShowPhysicalReleaseHelpText": "Sýnið útgáfudagsetningu undir veggspjaldi",
+    "FolderNameTokens": "Auðkenni skráarheita"
 }

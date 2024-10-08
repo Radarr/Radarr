@@ -1,6 +1,6 @@
 {
     "IndexerStatusCheckAllClientMessage": "Tous les indexeurs sont indisponibles en raison d'échecs",
-    "IndexerSearchCheckNoInteractiveMessage": "Aucun indexeur n'est disponible avec la recherche interactive activée, {appName} ne fournira aucun résultat de recherche interactive",
+    "IndexerSearchCheckNoInteractiveMessage": "Aucun indexeur n'est disponible avec la recherche interactive activée, {appName} ne fournira aucun résultats de recherche interactive",
     "IndexerSearchCheckNoAvailableIndexersMessage": "Tous les indexeurs compatibles avec la recherche sont temporairement indisponibles en raison d'erreurs d'indexation récentes",
     "IndexerSearchCheckNoAutomaticMessage": "Aucun indexeur disponible avec la recherche automatique activée, {appName} ne fournira aucun résultat de recherche automatique",
     "Indexers": "Indexeurs",
@@ -1820,5 +1820,9 @@
     "NotificationsGotifySettingsMetadataLinks": "Liens de métadonnées",
     "ShowTraktRatingPosterHelpText": "Affiche la note Tomate sous l'affiche",
     "SmartReplace": "Remplacement intelligent",
-    "SmartReplaceHint": "Tiret ou espace puis tiret selon le nom"
+    "SmartReplaceHint": "Tiret ou espace puis tiret selon le nom",
+    "AnnouncedMovieAvailabilityDescription": "Les films sont considérés disponibles dès qu'ils sont ajouté à {appName}.",
+    "CustomFormatsSpecificationExceptLanguage": "Excepté Langue",
+    "CustomFormatsSpecificationExceptLanguageHelpText": "Corresponf si l'autre langue que celle sélectionné est présente",
+    "FolderNameTokens": "Jetons de nom de fichier"
 }

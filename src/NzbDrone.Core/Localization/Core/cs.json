@@ -1200,5 +1200,6 @@
     "ShowPhysicalRelease": "Datum fyzického vydání",
     "ShowPhysicalReleaseHelpText": "Zobrazit datum vydání pod plakátem",
     "ShowDigitalRelease": "Zobrazit datum vydání kina",
-    "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "Několik kořenových adresářů chybí pro seznamy importu: {rootFoldersInfo}"
+    "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "Několik kořenových adresářů chybí pro seznamy importu: {rootFoldersInfo}",
+    "FolderNameTokens": "Tokeny názvů souborů"
 }

@@ -1073,5 +1073,6 @@
     "ShowDigitalRelease": "عرض تاريخ الإصدار السينمائي",
     "ShowDigitalReleaseHelpText": "عرض تاريخ الإصدار تحت الملصق",
     "ShowPhysicalRelease": "تاريخ الإصدار المادي",
-    "ShowPhysicalReleaseHelpText": "عرض تاريخ الإصدار تحت الملصق"
+    "ShowPhysicalReleaseHelpText": "عرض تاريخ الإصدار تحت الملصق",
+    "FolderNameTokens": "رموز اسم الملف"
 }

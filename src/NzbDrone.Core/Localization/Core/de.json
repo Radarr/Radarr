@@ -1466,5 +1466,6 @@
     "ShowDigitalRelease": "Erscheinungsdatum des Kinos anzeigen",
     "ShowDigitalReleaseHelpText": "Kino-Erscheinungsdatum unter Poster anzeigen",
     "ShowPhysicalRelease": "Disc Veröffentlichungsdatum",
-    "ShowPhysicalReleaseHelpText": "Kino-Erscheinungsdatum unter Poster anzeigen"
+    "ShowPhysicalReleaseHelpText": "Kino-Erscheinungsdatum unter Poster anzeigen",
+    "FolderNameTokens": "Dateinamen Teile"
 }

@@ -1068,5 +1068,6 @@
     "ShowDigitalRelease": "วันฉายภาพยนตร์",
     "ShowDigitalReleaseHelpText": "แสดงวันที่วางจำหน่ายใต้โปสเตอร์",
     "ShowPhysicalRelease": "วันที่วางจำหน่ายจริง",
-    "ShowPhysicalReleaseHelpText": "แสดงวันที่วางจำหน่ายใต้โปสเตอร์"
+    "ShowPhysicalReleaseHelpText": "แสดงวันที่วางจำหน่ายใต้โปสเตอร์",
+    "FolderNameTokens": "โทเค็นชื่อไฟล์"
 }
