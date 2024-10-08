@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using NLog;
 using NzbDrone.Common.Cloud;
@@ -405,6 +406,20 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             try
             {
+                var match = new Regex("^https://www.imdb.com/title/(tt[0-9]+).*?$").Match(title);
+                if (match.Success)
+                {
+                    title = "imdb:" + match.Groups[1].Value;
+                }
+                else
+                {
+                    match = new Regex("^https://www.themoviedb.org/movie/([0-9]+).*$").Match(title);
+                    if (match.Success)
+                    {
+                        title = "tmdb:" + match.Groups[1].Value;
+                    }
+                }
+
                 var lowerTitle = title.ToLower();
 
                 lowerTitle = lowerTitle.Replace(".", "");
