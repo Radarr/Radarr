@@ -1759,5 +1759,6 @@
     "ShowPhysicalReleaseHelpText": "Näytä teatterijulkaisun päiväys julisteen alla.",
     "Logout": "Kirjaudu ulos",
     "ShowTraktRatingPosterHelpText": "Näytä Tomato-arvio julisteen alla.",
-    "SmartReplaceHint": "Yhdysmerkki tai välilyönti nimen perusteella"
+    "SmartReplaceHint": "Yhdysmerkki tai välilyönti nimen perusteella",
+    "FolderNameTokens": "Tiedostonimen muuttujat"
 }

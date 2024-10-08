@@ -1443,5 +1443,6 @@
     "ShowPhysicalReleaseHelpText": "Mutasd a megjelenés dátumát a poszter alatt",
     "Logout": "Kijelentkezés",
     "SmartReplace": "Intelligens csere",
-    "SmartReplaceHint": "Dash vagy Space Dash névtől függően"
+    "SmartReplaceHint": "Dash vagy Space Dash névtől függően",
+    "FolderNameTokens": "Fájlnév-tokenek"
 }

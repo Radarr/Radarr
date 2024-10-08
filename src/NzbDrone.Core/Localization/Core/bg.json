@@ -1070,5 +1070,6 @@
     "ShowPhysicalReleaseHelpText": "Показване на датата на пускане под постер",
     "ShowDigitalRelease": "Показване на датата на излизане на киното",
     "ShowDigitalReleaseHelpText": "Показване на датата на пускане под постер",
-    "ShowPhysicalRelease": "Дата на физическото издаване"
+    "ShowPhysicalRelease": "Дата на физическото издаване",
+    "FolderNameTokens": "Токени за име на файл"
 }

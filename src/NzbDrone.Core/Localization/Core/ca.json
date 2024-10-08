@@ -1385,5 +1385,6 @@
     "ShowPhysicalReleaseHelpText": "Mostra la data de llançament sota el cartell",
     "ShowDigitalRelease": "Mostra la data d'estrena",
     "ShowDigitalReleaseHelpText": "Mostra la data de llançament sota el cartell",
-    "Logout": "Tanca la sessió"
+    "Logout": "Tanca la sessió",
+    "FolderNameTokens": "Testimonis de nom de fitxer"
 }

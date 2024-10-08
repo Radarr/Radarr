@@ -1218,7 +1218,7 @@
     "InteractiveImportNoMovie": "Debe elegirse una película para cada archivo seleccionado",
     "ManualGrab": "Captura manual",
     "MatchedToMovie": "Coincidencia con la película",
-    "HealthMessagesInfoBox": "Puede encontrar más información sobre la causa de estos mensajes de comprobación de salud haciendo clic en el enlace wiki (icono de libro) al final de la fila, o comprobando sus [logs]({link}). Si tienes dificultades para interpretar estos mensajes, puedes ponerte en contacto con nuestro servicio de asistencia en los enlaces que aparecen a continuación.",
+    "HealthMessagesInfoBox": "Puedes encontrar más información sobre la causa de estos mensajes de comprobación de salud haciendo clic en el enlace wiki (icono de libro) al final de la fila, o comprobando tus [registros]({link}). Si tienes dificultades para interpretar estos mensajes, puedes ponerte en contacto con nuestro soporte en los enlaces que aparecen a continuación.",
     "ManageFiles": "Gestionar archivos",
     "MovieFileDeleted": "Archivo de película eliminado",
     "MovieFileRenamedTooltip": "Archivo de película renombrado",
@@ -1650,7 +1650,7 @@
     "DelayMinutes": "{delay} minutos",
     "DelayProfileProtocol": "Protocolo: {preferredProtocol}",
     "DeleteReleaseProfile": "Eliminar perfil de lanzamiento",
-    "DeleteReleaseProfileMessageText": "¿Estás seguro que quieres eliminar este perfil de lanzamiento '{name}'?",
+    "DeleteReleaseProfileMessageText": "¿Estás seguro que quieres eliminar el perfil de lanzamiento '{name}'?",
     "DeleteSpecification": "Eliminar especificación",
     "DownloadClientDelugeValidationLabelPluginFailure": "La configuración de etiqueta falló",
     "DownloadClientDelugeValidationLabelPluginFailureDetail": "{appName} no pudo añadir la etiqueta a {clientName}.",
@@ -1835,5 +1835,6 @@
     "InCinemasMovieAvailabilityDescription": "Las películas se consideran disponibles tan pronto como llegan a los cines.",
     "ReleasedMovieAvailabilityDescription": "Las películas se consideran disponibles tan pronto como se lanzan la versión en Blu-Ray o en streaming.",
     "SmartReplaceHint": "Raya o barra espaciadora según el nombre",
-    "SmartReplace": "Reemplazo inteligente"
+    "SmartReplace": "Reemplazo inteligente",
+    "FolderNameTokens": "Tokens de nombre de carpeta"
 }

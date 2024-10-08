@@ -1115,5 +1115,6 @@
     "ShowDigitalReleaseHelpText": "הצג תאריך יציאה תחת הכרזה",
     "ShowPhysicalRelease": "תאריך שחרור פיזי",
     "ShowPhysicalReleaseHelpText": "הצג תאריך יציאה תחת הכרזה",
-    "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "מספר תיקיות אב חסרות לייבוא רשימות: {rootFoldersInfo}"
+    "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "מספר תיקיות אב חסרות לייבוא רשימות: {rootFoldersInfo}",
+    "FolderNameTokens": "אסימונים לשם קובץ"
 }

@@ -1827,5 +1827,6 @@
     "Logout": "Çıkış",
     "NoBlocklistItems": "Engellenenler listesi öğesi yok",
     "LastSearched": "Son Aranan",
-    "ShowTraktRatingPosterHelpText": "Posterin altında Tomato derecelendirmesini göster"
+    "ShowTraktRatingPosterHelpText": "Posterin altında Tomato derecelendirmesini göster",
+    "FolderNameTokens": "Dosya Adı Belirteçleri"
 }

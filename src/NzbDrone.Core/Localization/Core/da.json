@@ -1092,5 +1092,6 @@
     "ShowPhysicalReleaseHelpText": "Vis udgivelsesdato under plakat",
     "ShowDigitalRelease": "Vis biografens udgivelsesdato",
     "ShowDigitalReleaseHelpText": "Vis udgivelsesdato under plakat",
-    "ShowPhysicalRelease": "Fysisk udgivelsesdato"
+    "ShowPhysicalRelease": "Fysisk udgivelsesdato",
+    "FolderNameTokens": "Filnavn tokens"
 }
