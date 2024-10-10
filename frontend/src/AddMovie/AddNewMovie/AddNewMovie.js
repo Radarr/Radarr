@@ -131,7 +131,9 @@ class AddNewMovie extends Component {
                 <div className={styles.helpText}>
                   {translate('FailedLoadingSearchResults')}
                 </div>
-                <Alert kind={kinds.WARNING}>{getErrorMessage(error)}</Alert>
+
+                <Alert kind={kinds.DANGER}>{getErrorMessage(error)}</Alert>
+
                 <div>
                   <Link to="https://wiki.servarr.com/radarr/troubleshooting#invalid-response-received-from-tmdb">
                     {translate('WhySearchesCouldBeFailing')}
