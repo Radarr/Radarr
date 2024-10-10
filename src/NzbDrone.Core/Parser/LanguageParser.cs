@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?:(?i)(?<!SUB[\W|_|^]))(?:(?<lithuanian>\bLT\b)|
                                                                                                           (?<czech>\b(?:CZ|CZE|Cze)\b)|
-                                                                                                          (?<german>\b(?:DE|DEU|GER|Deu|Ger|)\b)|
+                                                                                                          (?<german>\b(?:DE|DEU|GER|Deu|Ger)\b)|
                                                                                                           (?<spain>\b(?:ES|SPA|Spa)\b)|
                                                                                                           (?<polish>\b(?:PL|POL|Pol)\b)|
                                                                                                           (?<bulgarian>\bBG\b))(?:(?i)(?![\W|_|^]SUB))|
