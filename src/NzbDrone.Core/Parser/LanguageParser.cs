@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?:(?i)(?<!SUB[\W|_|^]))(?:(?<lithuanian>\bLT\b)|
                                                                                                           (?<czech>\bCZ\b)|
-                                                                                                          (?<polish>\b(?:(PL|POL)\b)|
+                                                                                                          (?<polish>\b(?:PL|POL)\b)|
                                                                                                           (?<bulgarian>\bBG\b))(?:(?i)(?![\W|_|^]SUB))|
                                                                                                           (?<slovak>\bSK\b)",
                                                                 RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
