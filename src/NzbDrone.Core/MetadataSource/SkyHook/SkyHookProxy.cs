@@ -406,14 +406,16 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             try
             {
-                var match = new Regex("^https://www.imdb.com/title/(tt[0-9]+).*?$").Match(title);
+                var match = new Regex(@"\bimdb\.com/title/(tt\d{7,})\b", RegexOptions.IgnoreCase).Match(title);
+
                 if (match.Success)
                 {
                     title = "imdb:" + match.Groups[1].Value;
                 }
                 else
                 {
-                    match = new Regex("^https://www.themoviedb.org/movie/([0-9]+).*$").Match(title);
+                    match = new Regex(@"\bthemoviedb\.org/movie/(\d+)\b", RegexOptions.IgnoreCase).Match(title);
+
                     if (match.Success)
                     {
                         title = "tmdb:" + match.Groups[1].Value;
