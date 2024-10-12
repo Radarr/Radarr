@@ -39,8 +39,9 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?:(?i)(?<!SUB[\W|_|^]))(?:(?<lithuanian>\bLT\b)|
                                                                                                           (?<czech>\bCZ\b)|
                                                                                                           (?<polish>\bPL\b)|
-                                                                                                          (?<bulgarian>\bBG\b))(?:(?i)(?![\W|_|^]SUB))|
-                                                                                                          (?<slovak>\bSK\b)",
+                                                                                                          (?<bulgarian>\bBG\b)|
+                                                                                                          (?<slovak>\bSK\b)|
+                                                                                                          (?<spanish>\b(?<!DTS[._ -])ES\b))(?:(?i)(?![\W|_|^]SUB))",
                                                                 RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex GermanDualLanguageRegex = new (@"(?<!WEB[-_. ]?)\bDL\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -260,6 +261,11 @@ namespace NzbDrone.Core.Parser
                 if (match.Groups["slovak"].Captures.Any())
                 {
                     languages.Add(Language.Slovak);
+                }
+
+                if (match.Groups["spanish"].Captures.Any())
+                {
+                    languages.Add(Language.Spanish);
                 }
             }
 
