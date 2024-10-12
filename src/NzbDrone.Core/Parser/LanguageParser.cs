@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<greek>greek)|
                                                                             (?<french>\b(?:FR|VO|VF|VFF|VFQ|VFI|VF2|TRUEFRENCH|FRENCH|FRE|FRA)\b)|
                                                                             (?<russian>\b(?:rus|ru)\b)|
-                                                                            (?<english>\beng\b)|
+                                                                            (?<english>\b(?:eng|en)\b)|
                                                                             (?<hungarian>\b(?:HUNDUB|HUN)\b)|
                                                                             (?<hebrew>\b(?:HebDub|HebDubbed)\b)|
                                                                             (?<polish>\b(?:PL\W?DUB|DUB\W?PL|LEK\W?PL|PL\W?LEK)\b)|
@@ -37,9 +37,12 @@ namespace NzbDrone.Core.Parser
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?:(?i)(?<!SUB[\W|_|^]))(?:(?<lithuanian>\bLT\b)|
-                                                                                                          (?<czech>\bCZ\b)|
-                                                                                                          (?<polish>\bPL\b)|
+                                                                                                          (?<czech>\b(?:CZ|CZE|Cze)\b)|
+                                                                                                          (?<german>\b(?:DE|DEU|GER|Deu|Ger)\b)|
+                                                                                                          (?<spain>\b(?:ES|SPA|Spa)\b)|
+                                                                                                          (?<polish>\b(?:PL|POL|Pol)\b)|
                                                                                                           (?<bulgarian>\bBG\b))(?:(?i)(?![\W|_|^]SUB))|
+                                                                                                          (?<turkish>\b(?:TR|TUR|Tur)\b)|
                                                                                                           (?<slovak>\bSK\b)",
                                                                 RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
