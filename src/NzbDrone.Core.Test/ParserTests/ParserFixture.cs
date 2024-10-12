@@ -258,6 +258,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The.Good.German.2006.720p.HDTV.x264-TVP", Description = "The Good German is hardcoded not to match")]
         [TestCase("German.Lancers.2019.720p.BluRay.x264-UNiVERSUM", Description = "German at the beginning is never matched")]
         [TestCase("The.German.2019.720p.BluRay.x264-UNiVERSUM", Description = "The German is hardcoded not to match")]
+        [TestCase("Movie Name (2016) BluRay 1080p DTS-ES AC3 x264-3Li", Description = "DTS-ES should not match ES (Spanish)")]
         public void should_not_parse_wrong_language_in_title(string postTitle)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
