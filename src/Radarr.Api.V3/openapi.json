@@ -9818,6 +9818,9 @@
             },
             "nullable": true
           },
+          "retroApplyTags": {
+            "type": "boolean"
+          },
           "presets": {
             "type": "array",
             "items": {
