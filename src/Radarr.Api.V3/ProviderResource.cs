@@ -37,7 +37,6 @@ namespace Radarr.Api.V3
                 ConfigContract = definition.ConfigContract,
                 Message = definition.Message,
                 Tags = definition.Tags,
-                RetroApplyTags = definition.RetroApplyTags,
                 Fields = SchemaBuilder.ToSchema(definition.Settings),
 
                 // radarr/supported is an disambiguation page. the # should be a header on the page with appropriate details/link
@@ -62,8 +61,7 @@ namespace Radarr.Api.V3
                 Implementation = resource.Implementation,
                 ConfigContract = resource.ConfigContract,
                 Message = resource.Message,
-                Tags = resource.Tags,
-                RetroApplyTags = resource.RetroApplyTags,
+                Tags = resource.Tags
             };
 
             var configContract = ReflectionExtensions.CoreAssembly.FindTypeByName(definition.ConfigContract);

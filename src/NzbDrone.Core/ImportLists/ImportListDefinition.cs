@@ -16,6 +16,7 @@ namespace NzbDrone.Core.ImportLists
         public int QualityProfileId { get; set; }
         public string RootFolderPath { get; set; }
         public bool SearchOnAdd { get; set; }
+        public bool RetroApplyTags { get; set; }
 
         [MemberwiseEqualityIgnore]
         public override bool Enable => Enabled;
