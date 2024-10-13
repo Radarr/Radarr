@@ -16,7 +16,6 @@ namespace Radarr.Api.V3
         public string InfoLink { get; set; }
         public ProviderMessage Message { get; set; }
         public HashSet<int> Tags { get; set; }
-        public bool RetroApplyTags { get; set; }
 
         public List<T> Presets { get; set; }
     }
