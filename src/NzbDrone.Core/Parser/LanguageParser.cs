@@ -163,7 +163,7 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Portuguese);
             }
 
-            if (lowerTitle.Contains("brazilian") || lowerTitle.Contains("pt-br"))
+            if (lowerTitle.Contains("brazilian"))
             {
                 languages.Add(Language.PortugueseBR);
             }
