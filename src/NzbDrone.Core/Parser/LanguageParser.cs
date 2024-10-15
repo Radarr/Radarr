@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<flemish>flemish)|
                                                                             (?<bulgarian>bgaudio)|
                                                                             (?<romanian>rodubbed)|
-                                                                            (?<brazilian>dublado)|
+                                                                            (?<brazilian>\b(dublado|pt-BR)\b)|
                                                                             (?<greek>greek)|
                                                                             (?<french>\b(?:FR|VO|VF|VFF|VFQ|VFI|VF2|TRUEFRENCH|FRENCH|FRE|FRA)\b)|
                                                                             (?<russian>\b(?:rus|ru)\b)|
