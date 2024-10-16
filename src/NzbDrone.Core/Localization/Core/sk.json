@@ -293,5 +293,7 @@
     "AddDelayProfileError": "Nie je možné pridať novú podmienku, skúste to znova.",
     "AddQualityProfileError": "Nie je možné pridať novú podmienku, skúste to znova.",
     "DeleteSelectedImportListExclusionsMessageText": "Naozaj chcete toto vylúčenie importného zoznamu zmazať?",
-    "DeleteSelectedCustomFormats": "Klonovať vlastný formát"
+    "DeleteSelectedCustomFormats": "Klonovať vlastný formát",
+    "Discord": "Discord",
+    "TMDb": "TMDb"
 }

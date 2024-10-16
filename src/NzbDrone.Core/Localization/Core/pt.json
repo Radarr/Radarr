@@ -483,8 +483,8 @@
     "NegateHelpText": "Se marcada, o formato personalizado não se aplicará caso a condição corresponda a {0}.",
     "ImportCustomFormat": "Importar formato personalizado",
     "ExportCustomFormat": "Exportar formato personalizado",
-    "CustomFormatUnknownConditionOption": "Opção \"{0}\" desconhecida para a condição \"{1}\"",
-    "CustomFormatUnknownCondition": "Condição de formato personalizado \"{0}\" desconhecida",
+    "CustomFormatUnknownConditionOption": "Opção \"{key}\" desconhecida para a condição \"{implementation}\"",
+    "CustomFormatUnknownCondition": "Condição de formato personalizado \"{implementation}\" desconhecida",
     "CloneCustomFormat": "Clonar formato personalizado",
     "AutomaticSearch": "Pesquisa automática",
     "IndexersLoadError": "Não foi possível carregar os indexadores",
@@ -1123,7 +1123,7 @@
     "CountImportListsSelected": "{count} importar lista(s) selecionada(s)",
     "Default": "Predefinição",
     "AppUpdatedVersion": "{appName} foi atualizado para a versão `{version}`, para obter as alterações mais recentes, você precisará recarregar {appName}",
-    "AutoTaggingRequiredHelpText": "Esta condição {0} tem de corresponder para que a regra de marcação automática seja aplicada. Caso contrário, uma única correspondência {0} é suficiente.",
+    "AutoTaggingRequiredHelpText": "Esta condição {implementationName} tem de corresponder para que a regra de marcação automática seja aplicada. Caso contrário, uma única correspondência {implementationName} é suficiente.",
     "BypassDelayIfAboveCustomFormatScoreHelpText": "Ativar o desvio quando a versão tem uma pontuação superior à pontuação mínima configurada para o formato personalizado",
     "EditImportListImplementation": "Editar Lista de Importação - {implementationName}",
     "AutoRedownloadFailed": "Falha na transferência",
@@ -1261,5 +1261,10 @@
     "ShowPhysicalRelease": "Data da versão física",
     "ShowPhysicalReleaseHelpText": "Mostrar data de lançamento abaixo do cartaz",
     "SmartReplaceHint": "Traço ou Espaço e Traço, dependendo do nome",
-    "FolderNameTokens": "Tokens de nome do ficheiro"
+    "FolderNameTokens": "Tokens de nome do ficheiro",
+    "BlackholeWatchFolderHelpText": "Pasta de onde {appName} deve importar os downloads completos",
+    "CountCustomFormatsSelected": "{count} formatos selecionados",
+    "BlackholeFolderHelpText": "Pasta em que {appName} guardará o ficheiro {extension}.",
+    "AnnouncedMovieAvailabilityDescription": "Filmes estão disponíveis assim que forem adicionados a {appName}.",
+    "CountVotes": "{votes} votos"
 }
