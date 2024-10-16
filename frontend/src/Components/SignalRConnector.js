@@ -168,7 +168,7 @@ class SignalRConnector extends Component {
     const status = resource.status;
 
     // Both successful and failed commands need to be
-    // completed, otherwise they spin until they timeout.
+    // completed, otherwise they spin until they time out.
 
     if (status === 'completed' || status === 'failed') {
       this.props.dispatchFinishCommand(resource);
@@ -192,8 +192,48 @@ class SignalRConnector extends Component {
     }
   };
 
+  handleDownloadclient = ({ action, resource }) => {
+    const section = 'settings.downloadClients';
+
+    if (action === 'created' || action === 'updated') {
+      this.props.dispatchUpdateItem({ section, ...resource });
+    } else if (action === 'deleted') {
+      this.props.dispatchRemoveItem({ section, id: resource.id });
+    }
+  };
+
   handleHealth = () => {
     this.props.dispatchFetchHealth();
+  };
+
+  handleImportlist = ({ action, resource }) => {
+    const section = 'settings.importLists';
+
+    if (action === 'created' || action === 'updated') {
+      this.props.dispatchUpdateItem({ section, ...resource });
+    } else if (action === 'deleted') {
+      this.props.dispatchRemoveItem({ section, id: resource.id });
+    }
+  };
+
+  handleIndexer = ({ action, resource }) => {
+    const section = 'settings.indexers';
+
+    if (action === 'created' || action === 'updated') {
+      this.props.dispatchUpdateItem({ section, ...resource });
+    } else if (action === 'deleted') {
+      this.props.dispatchRemoveItem({ section, id: resource.id });
+    }
+  };
+
+  handleNotification = ({ action, resource }) => {
+    const section = 'settings.notifications';
+
+    if (action === 'created' || action === 'updated') {
+      this.props.dispatchUpdateItem({ section, ...resource });
+    } else if (action === 'deleted') {
+      this.props.dispatchRemoveItem({ section, id: resource.id });
+    }
   };
 
   handleMovie = (body) => {
