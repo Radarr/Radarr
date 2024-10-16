@@ -38,6 +38,7 @@ import fonts from 'Styles/Variables/fonts';
 import * as keyCodes from 'Utilities/Constants/keyCodes';
 import formatRuntime from 'Utilities/Date/formatRuntime';
 import formatBytes from 'Utilities/Number/formatBytes';
+import equalsIgnoringCase from 'Utilities/String/equalsIgnoringCase';
 import translate from 'Utilities/String/translate';
 import MovieCastPosters from './Credits/Cast/MovieCastPosters';
 import MovieCrewPosters from './Credits/Crew/MovieCrewPosters';
@@ -620,6 +621,20 @@ class MovieDetails extends Component {
                       >
                         <span className={styles.originalLanguage}>
                           {originalLanguage.name}
+                        </span>
+                      </InfoLabel> :
+                      null
+                  }
+
+                  {
+                    originalTitle && !isSmallScreen && !equalsIgnoringCase(title, originalTitle) ?
+                      <InfoLabel
+                        className={styles.detailsInfoLabel}
+                        name={translate('OriginalTitle')}
+                        size={sizes.LARGE}
+                      >
+                        <span className={styles.originalLanguage}>
+                          {originalTitle}
                         </span>
                       </InfoLabel> :
                       null

@@ -9,6 +9,7 @@ interface CssExports {
   'icons': string;
   'links': string;
   'originalLanguage': string;
+  'originalTitle': string;
   'overlay': string;
   'overview': string;
   'poster': string;
