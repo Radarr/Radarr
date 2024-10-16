@@ -354,5 +354,13 @@
     "AddDelayProfileError": "Neuspješno dodavanje profila odgode, molimo pokušaj ponovno.",
     "AddDownloadClientError": "Nesupješno dodavanje klijenta za preuzimanje, molimo pokušaj ponovno.",
     "Any": "BIlo koji",
-    "AppUpdatedVersion": "{appName} je ažuriran na verziju '{version}', kako bi najnovije promjene bile aktivne potrebno je ponovno učitati {appName}"
+    "AppUpdatedVersion": "{appName} je ažuriran na verziju '{version}', kako bi najnovije promjene bile aktivne potrebno je ponovno učitati {appName}",
+    "UnableToLoadRootFolders": "Neuspješno dodavanje korijenske mape",
+    "EditReleaseProfile": "Dodaj profil verzije",
+    "EditDownloadClientImplementation": "Dodaj Klijenta za Preuzimanje- {implementationName}",
+    "EditImportListImplementation": "Dodaj Listu Za Uvoz - {implementationName}",
+    "EditIndexerImplementation": "Dodaj Indexer - {implementationName}",
+    "EditConnectionImplementation": "Dodaj Vezu - {implementationName}",
+    "EditConditionImplementation": "Dodaj Vezu - {implementationName}",
+    "DownloadFailed": "Ponovno preuzimanje neuspješno"
 }

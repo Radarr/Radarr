@@ -315,5 +315,7 @@
     "DeleteMovieFolderCountConfirmation": "Er du sikker på at du vil slette formattaggen {0}?",
     "DeleteSelectedImportListExclusionsMessageText": "Er du sikker på at du vil slette denne ekskluderingen av importlister?",
     "DeleteSelectedCustomFormats": "Klon egendefinert format",
-    "DeleteSelectedCustomFormatsMessageText": "Er du sikker på at du vil slette formattaggen {0}?"
+    "DeleteSelectedCustomFormatsMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
+    "Discord": "Discord",
+    "TMDb": "TMDb"
 }
