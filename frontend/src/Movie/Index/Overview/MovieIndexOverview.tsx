@@ -73,6 +73,7 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
     tags,
     hasFile,
     isAvailable,
+    isAvailableDate,
     tmdbId,
     imdbId,
     studio,
@@ -165,6 +166,7 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
             monitored={monitored}
             hasFile={hasFile}
             isAvailable={isAvailable}
+            isAvailableDate={isAvailableDate}
             status={status}
             width={posterWidth}
             detailedProgressBar={overviewOptions.detailedProgressBar}
