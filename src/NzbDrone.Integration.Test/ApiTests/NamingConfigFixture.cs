@@ -25,7 +25,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         {
             var config = NamingConfig.GetSingle();
             config.RenameMovies = false;
-            config.StandardMovieFormat = "{Movie Title}";
+            config.StandardMovieFormat = "{Movie Title} {Release Year}";
 
             var result = NamingConfig.Put(config);
             result.RenameMovies.Should().BeFalse();
