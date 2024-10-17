@@ -15,11 +15,14 @@ namespace NzbDrone.Core.ImportLists
         public ImportListFetchResult()
         {
             Movies = new List<ImportListMovie>();
+            SyncedLists = new List<int>();
+            SyncedWithoutFailure = new List<int>();
         }
 
         public List<ImportListMovie> Movies { get; set; }
         public bool AnyFailure { get; set; }
-        public int SyncedLists { get; set; }
+        public List<int> SyncedLists { get; set; }
+        public List<int> SyncedWithoutFailure { get; set; }
     }
 
     public abstract class ImportListBase<TSettings> : IImportList
