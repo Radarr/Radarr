@@ -41,7 +41,7 @@ function MovieDetailsLinks(props: MovieDetailsLinksProps) {
           {translate('Trakt')}
         </Label>
       </Link>
-
+      
       <Link
         className={styles.link}
         to={`https://letterboxd.com/tmdb/${tmdbId}`}
@@ -90,6 +90,19 @@ function MovieDetailsLinks(props: MovieDetailsLinksProps) {
               size={sizes.LARGE}
             >
               MDBList
+            </Label>
+          </Link>
+          
+          <Link
+            className={styles.link}
+            to={`https://simkl.com/search/?type=movies&q=${tmdbId}`}
+          >
+            <Label
+              className={styles.linkLabel}
+              kind={kinds.INFO}
+              size={sizes.LARGE}
+            >
+              {translate('Simkl')}
             </Label>
           </Link>
         </>
