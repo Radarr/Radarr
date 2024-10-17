@@ -13,7 +13,7 @@ namespace NzbDrone.Core.ImportLists
 {
     public interface IFetchAndParseImportList
     {
-        ImportListFetchResult Fetch();
+        ImportListFetchResult Fetch(bool forceSync = false);
         ImportListFetchResult FetchSingleList(ImportListDefinition definition);
     }
 
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.ImportLists
             _logger = logger;
         }
 
-        public ImportListFetchResult Fetch()
+        public ImportListFetchResult Fetch(bool forceSync = false)
         {
             var result = new ImportListFetchResult();
 
@@ -64,19 +64,22 @@ namespace NzbDrone.Core.ImportLists
             foreach (var importList in importLists)
             {
                 var importListLocal = importList;
-                var importListStatus = _importListStatusService.GetLastSyncListInfo(importListLocal.Definition.Id);
-
-                if (importListStatus.HasValue)
-                {
-                    var importListNextSync = importListStatus.Value + importListLocal.MinRefreshInterval;
-
-                    if (DateTime.UtcNow < importListNextSync)
+                if (!forceSync)
                     {
-                        _logger.Trace("Skipping refresh of Import List {0} ({1}) due to minimum refresh interval. Next Sync after {2}", importList.Name, importListLocal.Definition.Name, importListNextSync);
+                    var importListStatus = _importListStatusService.GetLastSyncListInfo(importListLocal.Definition.Id);
 
-                        continue;
+                    if (importListStatus.HasValue)
+                        {
+                        var importListNextSync = importListStatus.Value + importListLocal.MinRefreshInterval;
+
+                        if (DateTime.UtcNow < importListNextSync)
+                            {
+                                _logger.Trace("Skipping refresh of Import List {0} ({1}) due to minimum refresh interval. Next Sync after {2}", importList.Name, importListLocal.Definition.Name, importListNextSync);
+
+                                continue;
+                            }
+                        }
                     }
-                }
 
                 _logger.ProgressInfo("Syncing Movies for Import List {0} ({1})", importList.Name, importListLocal.Definition.Name);
 
