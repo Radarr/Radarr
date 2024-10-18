@@ -1,8 +1,8 @@
 using NLog;
+using NzbDrone.Common.Cache;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.ImportLists.TMDb.List
@@ -19,9 +19,9 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
                                  IImportListStatusService importListStatusService,
                                  IConfigService configService,
                                  IParsingService parsingService,
-                                 ISearchForNewMovie searchForNewMovie,
+                                 ICacheManager cacheManager,
                                  Logger logger)
-        : base(requestBuilder, httpClient, importListStatusService, configService, parsingService, searchForNewMovie, logger)
+        : base(requestBuilder, httpClient, importListStatusService, configService, parsingService, cacheManager, logger)
         {
         }
 

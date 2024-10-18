@@ -1,28 +1,28 @@
 using NLog;
+using NzbDrone.Common.Cache;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.ImportLists.TMDb.Company
 {
     public class TMDbCompanyImport : TMDbImportListBase<TMDbCompanySettings>
     {
+        public override string Name => "TMDb Company";
+        public override bool Enabled => true;
+        public override bool EnableAuto => false;
+
         public TMDbCompanyImport(IRadarrCloudRequestBuilder requestBuilder,
                                  IHttpClient httpClient,
                                  IImportListStatusService importListStatusService,
                                  IConfigService configService,
                                  IParsingService parsingService,
-                                 ISearchForNewMovie searchForNewMovie,
+                                 ICacheManager cacheManager,
                                  Logger logger)
-        : base(requestBuilder, httpClient, importListStatusService, configService, parsingService, searchForNewMovie, logger)
+        : base(requestBuilder, httpClient, importListStatusService, configService, parsingService, cacheManager, logger)
         {
         }
-
-        public override string Name => "TMDb Company";
-        public override bool Enabled => true;
-        public override bool EnableAuto => false;
 
         public override IParseImportListResponse GetParser()
         {
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.Company
 
         public override IImportListRequestGenerator GetRequestGenerator()
         {
-            return new TMDbCompanyRequestGenerator()
+            return new TMDbCompanyRequestGenerator
             {
                 RequestBuilder = _requestBuilder,
                 Settings = Settings,
