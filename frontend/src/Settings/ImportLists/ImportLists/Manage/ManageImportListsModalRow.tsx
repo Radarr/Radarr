@@ -19,6 +19,7 @@ interface ManageImportListsModalRowProps {
   minimumAvailability: string;
   implementation: string;
   tags: number[];
+  retroApplyTags: boolean;
   enabled: boolean;
   enableAuto: boolean;
   columns: Column[];
@@ -38,6 +39,7 @@ function ManageImportListsModalRow(props: ManageImportListsModalRowProps) {
     enabled,
     enableAuto,
     tags,
+    retroApplyTags,
     onSelectedChange,
   } = props;
 
@@ -90,6 +92,10 @@ function ManageImportListsModalRow(props: ManageImportListsModalRowProps) {
 
       <TableRowCell className={styles.tags}>
         <TagListConnector tags={tags} />
+      </TableRowCell>
+
+      <TableRowCell className={styles.enabled}>
+        {retroApplyTags ? translate('Yes') : translate('No')}
       </TableRowCell>
     </TableRow>
   );
