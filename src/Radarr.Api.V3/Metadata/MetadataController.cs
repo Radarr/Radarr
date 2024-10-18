@@ -1,6 +1,8 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Extras.Metadata;
+using NzbDrone.Core.ThingiProvider.Events;
+using NzbDrone.SignalR;
 using Radarr.Http;
 
 namespace Radarr.Api.V3.Metadata
@@ -11,8 +13,8 @@ namespace Radarr.Api.V3.Metadata
         public static readonly MetadataResourceMapper ResourceMapper = new ();
         public static readonly MetadataBulkResourceMapper BulkResourceMapper = new ();
 
-        public MetadataController(IMetadataFactory metadataFactory)
-            : base(metadataFactory, "metadata", ResourceMapper, BulkResourceMapper)
+        public MetadataController(IBroadcastSignalRMessage signalRBroadcaster, IMetadataFactory metadataFactory)
+            : base(signalRBroadcaster, metadataFactory, "metadata", ResourceMapper, BulkResourceMapper)
         {
         }
 
@@ -24,6 +26,24 @@ namespace Radarr.Api.V3.Metadata
 
         [NonAction]
         public override object DeleteProviders([FromBody] MetadataBulkResource resource)
+        {
+            throw new NotImplementedException();
+        }
+
+        [NonAction]
+        public override void Handle(ProviderAddedEvent<IMetadata> message)
+        {
+            throw new NotImplementedException();
+        }
+
+        [NonAction]
+        public override void Handle(ProviderUpdatedEvent<IMetadata> message)
+        {
+            throw new NotImplementedException();
+        }
+
+        [NonAction]
+        public override void Handle(ProviderDeletedEvent<IMetadata> message)
         {
             throw new NotImplementedException();
         }
