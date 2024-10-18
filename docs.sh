@@ -7,7 +7,7 @@ elif [ "$PLATFORM" = "Linux" ]; then
 elif [ "$PLATFORM" = "Mac" ]; then
   RUNTIME="osx-x64"
 else
-  echo "Platform must be provided as first arguement: Windows, Linux or Mac"
+  echo "Platform must be provided as first argument: Windows, Linux or Mac"
   exit 1
 fi
 
@@ -35,7 +35,7 @@ dotnet msbuild -restore $slnFile -p:Configuration=Debug -p:Platform=$platform -p
 dotnet new tool-manifest
 dotnet tool install --version 6.6.2 Swashbuckle.AspNetCore.Cli
 
-dotnet tool run swagger tofile --output ./src/Radarr.Api.V3/openapi.json "$outputFolder/net6.0/$RUNTIME/$application" v3 &
+dotnet tool run swagger tofile --output ./src/Radarr.Api.V3/openapi.json "$outputFolder/net8.0/$RUNTIME/$application" v3 &
 
 sleep 45
 

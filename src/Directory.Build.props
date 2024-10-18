@@ -99,13 +99,6 @@
     <RootNamespace Condition="'$(RadarrProject)'=='true'">$(MSBuildProjectName.Replace('Radarr','NzbDrone'))</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TestProject)'!='true'">
-    <!-- Annotates .NET assemblies with repository information including SHA -->
-    <!-- Sentry uses this to link directly to GitHub at the exact version/file/line -->
-    <!-- This is built-in on .NET 8 and can be removed once the project is updated -->
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-  </ItemGroup>
-
   <!-- Sentry specific configuration: Only in Release mode -->
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <!-- https://docs.sentry.io/platforms/dotnet/configuration/msbuild/ -->
@@ -136,7 +129,7 @@
     <PackageReference Include="NunitXml.TestLogger" Version="3.0.131" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TestProject)'=='true' and '$(TargetFramework)'=='net6.0'">
+  <ItemGroup Condition="'$(TestProject)'=='true' and '$(TargetFramework)'=='net8.0'">
     <PackageReference Include="coverlet.collector" Version="3.0.4-preview.27.ge7cb7c3b40" />
   </ItemGroup>
 
