@@ -208,7 +208,7 @@ function Updates() {
                       {formatDate(update.releaseDate, shortDateFormat)}
                     </div>
 
-                    {update.branch === 'main' ? null : (
+                    {update.branch === 'master' ? null : (
                       <Label className={styles.label}>{update.branch}</Label>
                     )}
 
