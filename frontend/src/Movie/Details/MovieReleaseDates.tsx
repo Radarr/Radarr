@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Icon from 'Components/Icon';
+import InlineMarkdown from 'Components/Markdown/InlineMarkdown';
 import { icons } from 'Helpers/Props';
 import Movie from 'Movie/Movie';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
@@ -11,10 +12,11 @@ import styles from './MovieReleaseDates.css';
 
 type MovieReleaseDatesProps = Pick<
   Movie,
-  'inCinemas' | 'digitalRelease' | 'physicalRelease'
+  'tmdbId' | 'inCinemas' | 'digitalRelease' | 'physicalRelease'
 >;
 
 function MovieReleaseDates({
+  tmdbId,
   inCinemas,
   digitalRelease,
   physicalRelease,
@@ -28,7 +30,12 @@ function MovieReleaseDates({
         <div className={styles.dateIcon}>
           <Icon name={icons.MISSING} />
         </div>
-        {translate('NoMovieReleaseDatesAvailable')}
+
+        <InlineMarkdown
+          data={translate('NoMovieReleaseDatesAvailable', {
+            url: `https://www.themoviedb.org/movie/${tmdbId}`,
+          })}
+        />
       </div>
     );
   }
