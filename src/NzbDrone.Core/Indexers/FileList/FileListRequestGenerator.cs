@@ -26,14 +26,14 @@ namespace NzbDrone.Core.Indexers.FileList
 
             if (searchCriteria.Movie.MovieMetadata.Value.ImdbId.IsNotNullOrWhiteSpace())
             {
-                pageableRequests.Add(GetRequest("search-torrents", string.Format("&type=imdb&query={0}", searchCriteria.Movie.MovieMetadata.Value.ImdbId)));
+                pageableRequests.Add(GetRequest("search-torrents", $"&type=imdb&query={searchCriteria.Movie.MovieMetadata.Value.ImdbId}"));
             }
-            else
+            else if (searchCriteria.Movie.Year > 0)
             {
                 foreach (var queryTitle in searchCriteria.CleanSceneTitles)
                 {
-                    var titleYearSearchQuery = string.Format("{0}+{1}", queryTitle, searchCriteria.Movie.Year);
-                    pageableRequests.Add(GetRequest("search-torrents", string.Format("&type=name&query={0}", titleYearSearchQuery.Trim())));
+                    var titleYearSearchQuery = $"{queryTitle}+{searchCriteria.Movie.Year}";
+                    pageableRequests.Add(GetRequest("search-torrents", $"&type=name&query={titleYearSearchQuery.Trim()}"));
                 }
             }
 
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Indexers.FileList
         {
             var categoriesQuery = string.Join(",", Settings.Categories.Distinct());
 
-            var baseUrl = string.Format("{0}/api.php?action={1}&category={2}{3}", Settings.BaseUrl.TrimEnd('/'), searchType, categoriesQuery, parameters);
+            var baseUrl = $"{Settings.BaseUrl.TrimEnd('/')}/api.php?action={searchType}&category={categoriesQuery}{parameters}";
 
             var request = new IndexerRequest(baseUrl, HttpAccept.Json);
             request.HttpRequest.Credentials = new BasicNetworkCredential(Settings.Username.Trim(), Settings.Passkey.Trim());
