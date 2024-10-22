@@ -170,5 +170,7 @@
     "DownloadFailed": "Pengunduhan Ulang Gagal",
     "Months": "Bulan",
     "File": "File",
-    "Weeks": "Minggu"
+    "Weeks": "Minggu",
+    "ToggleMonitoredToUnmonitored": "Dimonitor, klik untuk berhenti monitor",
+    "ToggleUnmonitoredToMonitored": "Tidak dimonitor, klik untuk monitor"
 }

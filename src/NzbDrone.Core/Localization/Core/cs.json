@@ -286,7 +286,6 @@
     "Tomorrow": "Zítra",
     "OnGrab": "Chyť",
     "OnHealthIssue": "K otázce zdraví",
-    "OnImport": "Při importu",
     "OnlyTorrent": "Pouze Torrent",
     "OnlyUsenet": "Pouze Usenet",
     "OnRename": "Při přejmenování",
@@ -953,7 +952,6 @@
     "OnMovieDelete": "Při mazání filmu",
     "OnMovieFileDelete": "Při mazání filmových souborů",
     "OnMovieFileDeleteForUpgrade": "Na filmovém souboru Odstranit pro upgrade",
-    "OnUpgrade": "Při upgradu",
     "Reddit": "Reddit",
     "More": "Více",
     "Download": "Stažení",
@@ -1202,5 +1200,6 @@
     "ShowDigitalRelease": "Zobrazit datum vydání kina",
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "Několik kořenových adresářů chybí pro seznamy importu: {rootFoldersInfo}",
     "FolderNameTokens": "Tokeny názvů souborů",
-    "Letterboxd": "Letterboxd"
+    "Letterboxd": "Letterboxd",
+    "DefaultNotFoundMessage": "Asi jsi se ztratil, není tu nic k vidění."
 }

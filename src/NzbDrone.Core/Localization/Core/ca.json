@@ -640,14 +640,12 @@
     "OAuthPopupMessage": "Les finestres emergents estan sent bloquejades pel vostre navegador",
     "OnApplicationUpdate": "A l'actualitzar de l'aplicació",
     "OnHealthIssue": "Al detectar incidència",
-    "OnImport": "Al importar",
     "OnLatestVersion": "La darrera versió de {appName} ja està instal·lada",
     "OnlyTorrent": "Només Torrent",
     "OnlyUsenet": "Només Usenet",
     "OnMovieFileDelete": "Al suprimir fitxer de pel·lícula",
     "OnMovieFileDeleteForUpgrade": "Al suprimir el fitxer de pel·lícula per a l'actualització",
     "OnRename": "Al reanomenar",
-    "OnUpgrade": "A l'actualitzar",
     "Options": "Opcions",
     "Organize": "Organitza",
     "OrganizeConfirm": "Esteu segur que voleu organitzar tots els fitxers de la(es) {count} pel·lícula(es) seleccionada(es)?",
@@ -1386,5 +1384,6 @@
     "ShowDigitalRelease": "Mostra la data d'estrena",
     "ShowDigitalReleaseHelpText": "Mostra la data de llançament sota el cartell",
     "Logout": "Tanca la sessió",
-    "FolderNameTokens": "Testimonis de nom de fitxer"
+    "FolderNameTokens": "Testimonis de nom de fitxer",
+    "DefaultNotFoundMessage": "Deu estar perdut, no hi ha res a veure aquí."
 }

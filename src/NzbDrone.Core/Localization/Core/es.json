@@ -800,7 +800,6 @@
     "MovieFilesTotaling": "Totalización de archivos de película",
     "OnGrab": "Al capturar",
     "OnHealthIssue": "Al haber un problema de salud",
-    "OnImport": "Al importar",
     "OnLatestVersion": "La última versión de {appName} ya está instalada",
     "OnlyTorrent": "Solo torrent",
     "OnlyUsenet": "Solo Usenet",
@@ -946,7 +945,6 @@
     "OnMovieDelete": "Al Eliminar Película",
     "OnMovieFileDelete": "Al Eliminar Archivo De Película",
     "OnMovieFileDeleteForUpgrade": "Al Eliminar Archivo De Pelicula Para Mejorar La Calidad",
-    "OnUpgrade": "Al actualizar",
     "Reddit": "Reddit",
     "More": "Más",
     "Download": "Descargar",
@@ -1762,7 +1760,7 @@
     "IncludeTrending": "Incluir tendencias",
     "IncludeTrendingMoviesHelpText": "Incluye películas en tendencia en TMDb",
     "BlocklistFilterHasNoItems": "El filtro de lista de bloqueo seleccionado no contiene elementos",
-    "NoMovieReleaseDatesAvailable": "Ninguna fecha de lanzamiento disponible en TMDb para esta película.",
+    "NoMovieReleaseDatesAvailable": "Ninguna fecha de lanzamiento disponible en [TMDb]({url}) para esta película.",
     "CutoffUnmetLoadError": "Error cargando elementos con límites no alcanzados",
     "CutoffUnmetNoItems": "Ningún elemento con límites no alcanzados",
     "External": "Externa",
@@ -1836,5 +1834,9 @@
     "ReleasedMovieAvailabilityDescription": "Las películas se consideran disponibles tan pronto como se lanzan la versión en Blu-Ray o en streaming.",
     "SmartReplaceHint": "Raya o barra espaciadora según el nombre",
     "SmartReplace": "Reemplazo inteligente",
-    "FolderNameTokens": "Tokens de nombre de carpeta"
+    "FolderNameTokens": "Tokens de nombre de carpeta",
+    "Install": "Instalar",
+    "InstallMajorVersionUpdate": "Instalar actualización",
+    "InstallMajorVersionUpdateMessage": "Esta actualización instalará una nueva versión principal y podría no ser compatible con tu sistema. ¿Estás seguro que quieres instalar esta actualización?",
+    "InstallMajorVersionUpdateMessageLink": "Por favor revisa [{domain}]({url}) para más información."
 }

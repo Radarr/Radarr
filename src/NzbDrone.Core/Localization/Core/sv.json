@@ -456,7 +456,6 @@
     "NoLinks": "Inga länkar",
     "NoLogFiles": "Inga loggfiler",
     "None": "Ingen",
-    "OnImport": "Vid import",
     "MoviesSelectedInterp": "{0} Film(er) markerade",
     "DeleteSelectedMovieFiles": "Radera markerade filmfiler",
     "DeleteSelectedMovie": "Radera markerad(e) film(er)",
@@ -953,7 +952,6 @@
     "OnMovieDelete": "Vid radering av film",
     "OnMovieFileDelete": "På filmfil Ta bort",
     "OnMovieFileDeleteForUpgrade": "På filmfil Radera för uppgradering",
-    "OnUpgrade": "Vid uppgradering",
     "Reddit": "Reddit",
     "More": "Mer",
     "Download": "Ladda ner",
@@ -1096,5 +1094,6 @@
     "ShowDigitalRelease": "Visa utgivningsdatum för bio",
     "ShowDigitalReleaseHelpText": "Visa släppdatum under affischen",
     "ShowPhysicalRelease": "Fysiskt utgivningsdatum",
-    "ShowPhysicalReleaseHelpText": "Visa släppdatum under affischen"
+    "ShowPhysicalReleaseHelpText": "Visa släppdatum under affischen",
+    "FolderNameTokens": "Filnamn tokens"
 }

@@ -213,7 +213,6 @@
     "MovieFilesTotaling": "Elokuvatiedostot yhteensä",
     "OnGrab": "Kun julkaisu kaapataan",
     "OnHealthIssue": "Vakausongelmat",
-    "OnImport": "Tuotaessa",
     "OnLatestVersion": "Uusin {appName}-versio on jo asennettu",
     "OnlyTorrent": "Vain Torrent",
     "OnlyUsenet": "Vain Usenet",
@@ -950,7 +949,6 @@
     "ShowReleaseDate": "Näytä fyysinen julkaisu",
     "ShowReleaseDateHelpText": "Näytä fyysisen julkaisun päivä julisteen alla.",
     "OnMovieDelete": "Kun elokuva poistetaan",
-    "OnUpgrade": "Päivitettäessä",
     "OnMovieFileDelete": "Kun elokuvatiedosto poistetaan",
     "OnMovieFileDeleteForUpgrade": "Kun elokuvatiedosto poistetaan päivitystä varten",
     "Reddit": "Reddit",
@@ -1760,5 +1758,8 @@
     "Logout": "Kirjaudu ulos",
     "ShowTraktRatingPosterHelpText": "Näytä Tomato-arvio julisteen alla.",
     "SmartReplaceHint": "Yhdysmerkki tai välilyönti nimen perusteella",
-    "FolderNameTokens": "Tiedostonimen muuttujat"
+    "FolderNameTokens": "Tiedostonimen muuttujat",
+    "DefaultNotFoundMessage": "Lienet eksyksissä, koska täällä ei ole mitään nähtävää.",
+    "ToggleMonitoredToUnmonitored": "Valvotaan (lopeta painamalla)",
+    "ToggleUnmonitoredToMonitored": "Ei valvota (aloita painamalla)"
 }

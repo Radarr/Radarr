@@ -818,7 +818,6 @@
     "MovieFilesTotaling": "Totale file di film",
     "OnGrab": "Al Prelievo",
     "OnHealthIssue": "Quando c'è un problema",
-    "OnImport": "In importazione",
     "OnLatestVersion": "L'ultima versione di {appName} è già installata",
     "OnlyTorrent": "Solo Torrent",
     "OnlyUsenet": "Solo Usenet",
@@ -951,7 +950,6 @@
     "OnMovieDelete": "All'eliminazione del filmato",
     "OnMovieFileDelete": "Su Elimina file filmato",
     "OnMovieFileDeleteForUpgrade": "Su file filmato Elimina per aggiornamento",
-    "OnUpgrade": "In aggiornamento",
     "Reddit": "Reddit",
     "More": "Altro",
     "Download": "Scarica",
@@ -1471,5 +1469,6 @@
     "YesterdayAt": "Ieri alle {time}",
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "Diverse cartelle principale sono perse per l’importazione: {rootFoldersInfo}",
     "ShowTraktRatingPosterHelpText": "Mostra valutazione Tomato sotta la locandina",
-    "FolderNameTokens": "Token nome file"
+    "FolderNameTokens": "Token nome file",
+    "DefaultNotFoundMessage": "Ti devi essere perso, non c'è nulla da vedere qui."
 }

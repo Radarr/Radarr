@@ -725,11 +725,9 @@
     "NotMonitored": "Не контролюється",
     "OAuthPopupMessage": "Ваш браузер блокує спливаючі вікна",
     "Ok": "Гаразд",
-    "OnImport": "При імпорті",
     "OnLatestVersion": "Остання версія {appName} вже встановлена",
     "OnlyTorrent": "Тільки торрент",
     "OnlyUsenet": "Тільки Usenet",
-    "OnUpgrade": "При оновленні",
     "OpenBrowserOnStart": "Відкрийте браузер при запуску",
     "Original": "Оригінал",
     "OriginalLanguage": "Мова оригіналу",
@@ -1288,5 +1286,6 @@
     "ShowDigitalReleaseHelpText": "Показати дату випуску під плакатом",
     "ShowPhysicalRelease": "Дата фізичного випуску",
     "ShowPhysicalReleaseHelpText": "Показати дату випуску під плакатом",
-    "FolderNameTokens": "Маркери імен файлів"
+    "FolderNameTokens": "Маркери імен файлів",
+    "DefaultNotFoundMessage": "Ви, мабуть, заблукали, тут нічого не видно."
 }
