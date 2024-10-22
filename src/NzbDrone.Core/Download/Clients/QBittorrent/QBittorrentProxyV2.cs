@@ -246,14 +246,20 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 request.AddFormParameter("category", settings.MovieCategory);
             }
 
-            // Note: ForceStart is handled by separate api call
-            if ((QBittorrentState)settings.InitialState == QBittorrentState.Start)
+            // Avoid extraneous API version check if initial state is ForceStart
+            if ((QBittorrentState)settings.InitialState is QBittorrentState.Start or QBittorrentState.Stop)
             {
-                request.AddFormParameter("paused", false);
-            }
-            else if ((QBittorrentState)settings.InitialState == QBittorrentState.Pause)
-            {
-                request.AddFormParameter("paused", true);
+                var stoppedParameterName = GetApiVersion(settings) >= new Version(2, 11, 0) ? "stopped" : "paused";
+
+                // Note: ForceStart is handled by separate api call
+                if ((QBittorrentState)settings.InitialState == QBittorrentState.Start)
+                {
+                    request.AddFormParameter(stoppedParameterName, false);
+                }
+                else if ((QBittorrentState)settings.InitialState == QBittorrentState.Stop)
+                {
+                    request.AddFormParameter(stoppedParameterName, true);
+                }
             }
 
             if (settings.SequentialOrder)
@@ -291,7 +297,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             catch (DownloadClientException ex)
             {
                 // setShareLimits was added in api v2.0.1 so catch it case of the unlikely event that someone has api v2.0
-                if (ex.InnerException is HttpException && (ex.InnerException as HttpException).Response.StatusCode == HttpStatusCode.NotFound)
+                if (ex.InnerException is HttpException httpException && httpException.Response.StatusCode == HttpStatusCode.NotFound)
                 {
                     return;
                 }
@@ -313,29 +319,13 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             catch (DownloadClientException ex)
             {
                 // qBittorrent rejects all Prio commands with 409: Conflict if Options -> BitTorrent -> Torrent Queueing is not enabled
-                if (ex.InnerException is HttpException && (ex.InnerException as HttpException).Response.StatusCode == HttpStatusCode.Conflict)
+                if (ex.InnerException is HttpException httpException && httpException.Response.StatusCode == HttpStatusCode.Conflict)
                 {
                     return;
                 }
 
                 throw;
             }
-        }
-
-        public void PauseTorrent(string hash, QBittorrentSettings settings)
-        {
-            var request = BuildRequest(settings).Resource("/api/v2/torrents/pause")
-                                                .Post()
-                                                .AddFormParameter("hashes", hash);
-            ProcessRequest(request, settings);
-        }
-
-        public void ResumeTorrent(string hash, QBittorrentSettings settings)
-        {
-            var request = BuildRequest(settings).Resource("/api/v2/torrents/resume")
-                                                .Post()
-                                                .AddFormParameter("hashes", hash);
-            ProcessRequest(request, settings);
         }
 
         public void SetForceStart(string hash, bool enabled, QBittorrentSettings settings)
