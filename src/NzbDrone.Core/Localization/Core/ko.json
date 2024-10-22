@@ -239,7 +239,6 @@
     "CancelPendingTask": "이 보류 중인 작업을 취소하시겠습니까?",
     "OnGrab": "잡기",
     "OnHealthIssue": "건강 문제",
-    "OnImport": "가져올 때",
     "OnLatestVersion": "최신 버전의 {appName}가 이미 설치되어 있습니다.",
     "OnlyTorrent": "토렌트 만",
     "OnlyUsenet": "유즈넷 만",
@@ -951,7 +950,6 @@
     "ShowCinemaRelease": "영화 개봉일 표시",
     "ShowReleaseDate": "출시일 표시",
     "OnMovieFileDeleteForUpgrade": "영화 파일에서 업그레이드를 위해 삭제",
-    "OnUpgrade": "업그레이드시",
     "OnMovieDelete": "영화 삭제 시",
     "OnMovieFileDelete": "영화 파일 삭제",
     "Reddit": "레딧",
@@ -1054,5 +1052,7 @@
     "DeleteSelectedMovies": "선택한 동영상 파일 삭제",
     "DeleteSelectedImportListExclusionsMessageText": "이 가져오기 목록 제외를 삭제하시겠습니까?",
     "DeleteSelectedCustomFormats": "사용자 지정 형식 삭제",
-    "ReleaseDate": "출시일"
+    "ReleaseDate": "출시일",
+    "MovieFileDeleted": "영화 파일 삭제",
+    "MovieFileDeletedTooltip": "영화 파일 삭제"
 }

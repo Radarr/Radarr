@@ -857,7 +857,6 @@
     "NoResultsFound": "Aucun résultat trouvé",
     "OnGrab": "Lors de la saisie",
     "OnHealthIssue": "Lors de problème de santé",
-    "OnImport": "À l'importation",
     "OnLatestVersion": "La dernière version de {appName} est déjà installée",
     "OnlyTorrent": "Uniquement Torrent",
     "OnlyUsenet": "Uniquement Usenet",
@@ -951,7 +950,6 @@
     "ShowCinemaRelease": "Afficher la date de sortie du cinéma",
     "ShowReleaseDate": "Afficher la date de sortie",
     "ShowReleaseDateHelpText": "Affiche la date de sortie sous l'affiche",
-    "OnUpgrade": "Lors de la mise à niveau",
     "OnMovieDelete": "À la suppression d'un film",
     "OnMovieFileDelete": "À la suppression d'un fichier vidéo",
     "OnMovieFileDeleteForUpgrade": "À la suppression d'un fichier vidéo pour mise à niveau",
@@ -1824,5 +1822,14 @@
     "AnnouncedMovieAvailabilityDescription": "Les films sont considérés disponibles dès qu'ils sont ajouté à {appName}.",
     "CustomFormatsSpecificationExceptLanguage": "Excepté Langue",
     "CustomFormatsSpecificationExceptLanguageHelpText": "Corresponf si l'autre langue que celle sélectionné est présente",
-    "FolderNameTokens": "Jetons de nom de fichier"
+    "FolderNameTokens": "Jetons de nom de fichier",
+    "Install": "Installer",
+    "InstallMajorVersionUpdate": "Installer la mise à jour",
+    "InstallMajorVersionUpdateMessage": "Cette mise à jour installera une nouvelle version majeure et pourrait ne pas être compatible avec votre système. Êtes-vous sûr de vouloir installer cette mise à jour ?",
+    "InstallMajorVersionUpdateMessageLink": "Veuillez consulter [{domain}]({url}) pour plus d'informations.",
+    "DefaultNotFoundMessage": "Vous devez être perdu, rien à voir ici.",
+    "ToggleMonitoredToUnmonitored": "Surveillé, cliquez pour annuler la surveillance",
+    "ToggleUnmonitoredToMonitored": "Non surveillé, cliquez pour surveiller",
+    "OnFileImport": "Lors de l'importation du fichier",
+    "OnFileUpgrade": "Lors de la mise à jour du fichier"
 }

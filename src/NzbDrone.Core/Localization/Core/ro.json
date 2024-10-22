@@ -257,7 +257,7 @@
     "CustomFormatUnknownCondition": "Stare necunoscută pentru formatul personalizat „{0}”",
     "QualitySettings": "Setări de calitate",
     "Cutoff": "A tăia calea",
-    "FileNameTokens": "Jetoane cu nume de fișier",
+    "FileNameTokens": "Jetoane pentru nume de fișier",
     "ChownGroupHelpTextWarning": "Acest lucru funcționează numai dacă utilizatorul care rulează {appName} este proprietarul fișierului. Este mai bine să vă asigurați că clientul de descărcare folosește același grup ca {appName}.",
     "QualitiesHelpText": "Calitățile mai mari din listă sunt mai preferate. Calitățile din același grup sunt egale. Se doresc doar calități verificate",
     "MovieInfoLanguageHelpTextWarning": "Reîncărcare browser necesară",
@@ -351,7 +351,6 @@
     "DatabaseMigration": "Migrarea BD",
     "Manual": "Manual",
     "OnHealthIssue": "Cu privire la problema sănătății",
-    "OnImport": "La import",
     "OnLatestVersion": "Cea mai recentă versiune a {appName} este deja instalată",
     "OnlyTorrent": "Numai Torrent",
     "OnlyUsenet": "Doar Usenet",
@@ -954,7 +953,6 @@
     "OnMovieDelete": "Pe Ștergere film",
     "OnMovieFileDelete": "Pe Ștergere fișier film",
     "OnMovieFileDeleteForUpgrade": "Ștergeți fișierul de film pentru actualizare",
-    "OnUpgrade": "La actualizare",
     "Reddit": "Reddit",
     "More": "Mai mult",
     "Download": "Descarca",
@@ -1147,5 +1145,7 @@
     "ShowDigitalReleaseHelpText": "Afișați data lansării sub afiș",
     "ShowPhysicalRelease": "Data de lansare fizică",
     "ShowPhysicalReleaseHelpText": "Afișați data lansării sub afiș",
-    "FolderNameTokens": "Jetoane cu nume de fișier"
+    "FolderNameTokens": "Jetoane pentru nume de folder",
+    "OnFileImport": "La import fișier",
+    "OnFileUpgrade": "La actualizare fișier"
 }

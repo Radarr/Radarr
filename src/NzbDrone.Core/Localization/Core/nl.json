@@ -895,7 +895,6 @@
     "OnlyUsenet": "Alleen Usenet",
     "OnlyTorrent": "Alleen Torrent",
     "OnLatestVersion": "De nieuwste versie van {appName} is al geïnstalleerd",
-    "OnImport": "Bij importeren",
     "OnHealthIssue": "Bij gezondheidsprobleem",
     "OnGrab": "Bij ophalen",
     "NoResultsFound": "Geen resultaten gevonden",
@@ -954,7 +953,6 @@
     "OnMovieDelete": "Op film verwijderen",
     "OnMovieFileDelete": "Op filmbestand verwijderen",
     "OnMovieFileDeleteForUpgrade": "Op filmbestand verwijderen voor upgrade",
-    "OnUpgrade": "Bij Opwaarderen",
     "Reddit": "Reddit",
     "More": "Meer",
     "Download": "Downloaden",
@@ -1238,5 +1236,7 @@
     "ShowDigitalReleaseHelpText": "Laat releasedatum zien onder poster",
     "ShowPhysicalRelease": "Fysieke Release Datum",
     "ShowPhysicalReleaseHelpText": "Laat releasedatum zien onder poster",
-    "FolderNameTokens": "Bestandsnaam Tokens"
+    "FolderNameTokens": "Bestandsnaam Tokens",
+    "CountVotes": "{votes} Stemmen",
+    "AnnouncedMovieAvailabilityDescription": "Films worden als beschikbaar getoond zodra deze zijn toegevoegd aan {appName}."
 }

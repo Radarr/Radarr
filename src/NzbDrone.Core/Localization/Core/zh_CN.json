@@ -544,7 +544,6 @@
     "OnlyUsenet": "只有usenet",
     "OnlyTorrent": "只有torrent",
     "OnLatestVersion": "已安装最新版的{appName}",
-    "OnImport": "导入中",
     "OnGrab": "抓取中",
     "NotMonitored": "不追踪项",
     "NoMoveFilesSelf": " 不，我要自己移动文件",
@@ -951,7 +950,6 @@
     "ShowReleaseDateHelpText": "根据最小可用条件在海报下显示发布日期",
     "OnMovieFileDelete": "电影文件删除时",
     "OnMovieFileDeleteForUpgrade": "电影文件为升级删除时",
-    "OnUpgrade": "升级中",
     "OnMovieDelete": "电影删除时",
     "Reddit": "Reddit",
     "More": "更多",
@@ -1836,5 +1834,8 @@
     "InCinemasMovieAvailabilityDescription": "一旦在影院上映便被视为可用的电影。",
     "ReleasedMovieAvailabilityDescription": "一旦蓝光或流媒体版本发布便被视为可用的电影。",
     "TraktRating": "Trakt 评分",
-    "FolderNameTokens": "文件名标记"
+    "FolderNameTokens": "文件名标记",
+    "ToggleMonitoredToUnmonitored": "已监视，单击可取消监视",
+    "ToggleUnmonitoredToMonitored": "未监控，单击进行监控",
+    "DefaultNotFoundMessage": "你一定是迷路了，这里没什么可看的。"
 }

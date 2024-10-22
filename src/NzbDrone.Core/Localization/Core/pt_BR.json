@@ -859,7 +859,6 @@
     "OnlyUsenet": "Só Usenet",
     "OnlyTorrent": "Só Torrent",
     "OnLatestVersion": "A versão mais recente do {appName} já está instalada",
-    "OnImport": "Ao Importar",
     "OnHealthIssue": "Ao Problema de Saúde",
     "OnGrab": "Ao obter",
     "Ok": "Ok",
@@ -953,7 +952,6 @@
     "ShowReleaseDateHelpText": "Mostrar data de lançamento com base na disponibilidade mínima no pôster",
     "OnMovieFileDelete": "Ao Excluir Arquivo do Filme",
     "OnMovieFileDeleteForUpgrade": "Ao Excluir Arquivo do Filme para Atualizar",
-    "OnUpgrade": "Ao Atualizar",
     "OnMovieDelete": "Ao Excluir Filme",
     "Reddit": "Reddit",
     "More": "Mais",
@@ -1762,7 +1760,7 @@
     "IncludePopularMoviesHelpText": "Incluir filmes populares no TMDb",
     "IncludeTrending": "Incluir Tendências",
     "IncludeTrendingMoviesHelpText": "Incluir filmes populares no TMDb",
-    "NoMovieReleaseDatesAvailable": "Nenhuma data de lançamento disponível no TMDb para este filme.",
+    "NoMovieReleaseDatesAvailable": "Nenhuma data de lançamento disponível no [TMDb]({url}) para este filme.",
     "CutoffUnmetLoadError": "Erro ao carregar itens de corte não atingidos",
     "CutoffUnmetNoItems": "Nenhum item com limite não atingido",
     "External": "Externo",
@@ -1836,5 +1834,9 @@
     "ReleasedMovieAvailabilityDescription": "Filmes são considerados como disponíveis assim que é lançado em Blu-Ray ou no streaming.",
     "SmartReplace": "Substituição inteligente",
     "SmartReplaceHint": "Traço ou Espaço e Traço, dependendo do nome",
-    "FolderNameTokens": "Tokens de Nome de Pasta"
+    "FolderNameTokens": "Tokens de Nome de Pasta",
+    "Install": "Instalar",
+    "InstallMajorVersionUpdate": "Instalar Atualização",
+    "InstallMajorVersionUpdateMessage": "Esta atualização instalará uma nova versão principal e pode não ser compatível com o seu sistema. Tem certeza de que deseja instalar esta atualização?",
+    "InstallMajorVersionUpdateMessageLink": "Verifique [{domain}]({url}) para obter mais informações."
 }

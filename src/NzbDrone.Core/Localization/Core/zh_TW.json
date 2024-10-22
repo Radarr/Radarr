@@ -246,5 +246,8 @@
     "AddQualityProfileError": "無法加入新的條件，請重新嘗試。",
     "AddCustomFormatError": "無法加入新的自動標籤，請重新嘗試。",
     "AddDelayProfileError": "無法加入新的條件，請重新嘗試。",
-    "DeleteImportListExclusion": "新增排除清單"
+    "DeleteImportListExclusion": "新增排除清單",
+    "Letterboxd": "文字方框",
+    "Discord": "Discord",
+    "TMDb": "TMDb"
 }
