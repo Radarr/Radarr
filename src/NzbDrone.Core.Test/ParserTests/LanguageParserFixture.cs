@@ -120,6 +120,8 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Japanese.1080p.XviD-LOL")]
+        [TestCase("Movie.Title (1988) 2160p HDR 5.1 Eng - Jpn x265 10bit")]
+        [TestCase("Movie Title (1985) (1080p.AC3 ITA-ENG-JPN)")]
         public void should_parse_language_japanese(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -291,6 +293,8 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Korean.1080p.XviD-LOL")]
+        [TestCase("Movie Title [2006] BDRip 720p [Kor Rus] GROUP")]
+        [TestCase("Movie.Title.2019.KOR.1080p.HDRip.H264.AAC-GROUP")]
         public void should_parse_language_korean(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
