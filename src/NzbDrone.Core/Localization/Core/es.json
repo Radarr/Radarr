@@ -1838,5 +1838,10 @@
     "Install": "Instalar",
     "InstallMajorVersionUpdate": "Instalar actualización",
     "InstallMajorVersionUpdateMessage": "Esta actualización instalará una nueva versión principal y podría no ser compatible con tu sistema. ¿Estás seguro que quieres instalar esta actualización?",
-    "InstallMajorVersionUpdateMessageLink": "Por favor revisa [{domain}]({url}) para más información."
+    "InstallMajorVersionUpdateMessageLink": "Por favor revisa [{domain}]({url}) para más información.",
+    "DefaultNotFoundMessage": "Debes estar perdido, no hay nada que ver aquí.",
+    "ToggleMonitoredToUnmonitored": "Monitorizado, haz clic para dejar de monitorizar",
+    "ToggleUnmonitoredToMonitored": "Sin monitorizar, haz clic para monitorizar",
+    "OnFileImport": "Al importar un archivo",
+    "OnFileUpgrade": "Al actualizar archivo"
 }
