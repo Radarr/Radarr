@@ -1465,5 +1465,8 @@
     "ShowDigitalReleaseHelpText": "Kino-Erscheinungsdatum unter Poster anzeigen",
     "ShowPhysicalRelease": "Disc Veröffentlichungsdatum",
     "ShowPhysicalReleaseHelpText": "Kino-Erscheinungsdatum unter Poster anzeigen",
-    "FolderNameTokens": "Dateinamen Teile"
+    "FolderNameTokens": "Dateinamen Teile",
+    "DefaultNotFoundMessage": "Sie müssen verloren sein, hier gibt es nichts zu sehen.",
+    "ToggleMonitoredToUnmonitored": "Überwacht, klicken Sie, um die Überwachung aufzuheben",
+    "ToggleUnmonitoredToMonitored": "Nicht überwacht, klicke zum Überwachen"
 }

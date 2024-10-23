@@ -1442,5 +1442,8 @@
     "Logout": "Kijelentkezés",
     "SmartReplace": "Intelligens csere",
     "SmartReplaceHint": "Dash vagy Space Dash névtől függően",
-    "FolderNameTokens": "Fájlnév-tokenek"
+    "FolderNameTokens": "Fájlnév-tokenek",
+    "DefaultNotFoundMessage": "Biztosan eltévedtél, nincs itt semmi látnivaló.",
+    "ToggleMonitoredToUnmonitored": "Felügyelt, kattintson a figyelés megszüntetéséhez",
+    "ToggleUnmonitoredToMonitored": "Nem figyelt, kattintson a figyeléshez"
 }
