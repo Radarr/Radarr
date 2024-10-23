@@ -25,6 +25,7 @@ export interface GrabbedHistoryData {
   downloadUrl: string;
   guid: string;
   tmdbId: string;
+  imdbId: string;
   protocol: string;
   customFormatScore?: string;
   movieMatchType: string;

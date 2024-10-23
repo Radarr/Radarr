@@ -150,6 +150,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("DownloadUrl", message.Movie.Release.DownloadUrl);
             history.Data.Add("Guid", message.Movie.Release.Guid);
             history.Data.Add("TmdbId", message.Movie.Release.TmdbId.ToString());
+            history.Data.Add("ImdbId", message.Movie.Release.ImdbId.ToString());
             history.Data.Add("Protocol", ((int)message.Movie.Release.DownloadProtocol).ToString());
             history.Data.Add("CustomFormatScore", message.Movie.CustomFormatScore.ToString());
             history.Data.Add("MovieMatchType", message.Movie.MovieMatchType.ToString());
