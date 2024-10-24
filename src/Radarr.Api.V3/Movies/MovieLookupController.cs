@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.ImportLists.ImportExclusions;
@@ -24,6 +25,11 @@ namespace Radarr.Api.V3.Movies
         private readonly IMapCoversToLocal _coverMapper;
         private readonly IConfigService _configService;
         private readonly IImportListExclusionService _importListExclusionService;
+
+        private static readonly Regex ImdbIdRegex = new Regex(@"imdb\.com/title/(?<id>tt\d+)",
+                                                              RegexOptions.Compiled);
+        private static readonly Regex TmdbIdRegex = new Regex(@"themoviedb\.org/movie/(?<id>\d+)",
+                                                              RegexOptions.Compiled);
 
         public MovieLookupController(ISearchForNewMovie searchProxy,
                                  IProvideMovieInfo movieInfo,
@@ -75,9 +81,27 @@ namespace Radarr.Api.V3.Movies
         [HttpGet]
         public object Search([FromQuery] string term)
         {
-            var searchResults = _searchProxy.SearchForNewMovie(term);
+            var convertedTerm = ConvertDbLinkToId(term);
+            var searchResults = _searchProxy.SearchForNewMovie(convertedTerm);
 
             return MapToResource(searchResults);
+        }
+
+        private string ConvertDbLinkToId(string title)
+        {
+            var match = ImdbIdRegex.Match(title);
+            if (match.Success)
+            {
+                return "imdb:" + match.Groups["id"].Value;
+            }
+
+            match = TmdbIdRegex.Match(title);
+            if (match.Success)
+            {
+                return "tmdb:" + match.Groups["id"].Value;
+            }
+
+            return title;
         }
 
         private IEnumerable<MovieResource> MapToResource(IEnumerable<Movie> movies)
