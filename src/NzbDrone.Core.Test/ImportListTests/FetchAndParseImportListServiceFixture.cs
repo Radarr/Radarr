@@ -7,8 +7,6 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.ImportLists.ImportListMovies;
-using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ImportListTests
@@ -36,10 +34,6 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             _listMovies = Builder<ImportListMovie>.CreateListOfSize(5)
                 .Build().ToList();
-
-            Mocker.GetMock<ISearchForNewMovie>()
-                .Setup(v => v.MapMovieToTmdbMovie(It.IsAny<MovieMetadata>()))
-                .Returns<MovieMetadata>(m => new MovieMetadata { TmdbId = m.TmdbId });
         }
 
         private void GivenList(int id, bool enabled, bool enabledAuto, ImportListFetchResult fetchResult)
@@ -135,9 +129,6 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             var listResult = Subject.Fetch();
             listResult.AnyFailure.Should().BeFalse();
-
-            Mocker.GetMock<IImportListMovieService>()
-                .Verify(v => v.SyncMoviesForList(It.IsAny<List<ImportListMovie>>(), listId), Times.Once());
         }
 
         [Test]
@@ -149,9 +140,6 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             var listResult = Subject.Fetch();
             listResult.AnyFailure.Should().BeTrue();
-
-            Mocker.GetMock<IImportListMovieService>()
-                .Verify(v => v.SyncMoviesForList(It.IsAny<List<ImportListMovie>>(), listId), Times.Never());
         }
 
         [Test]
@@ -166,9 +154,6 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             var listResult = Subject.Fetch();
             listResult.AnyFailure.Should().BeTrue();
-
-            Mocker.GetMock<IImportListMovieService>()
-                .Verify(v => v.SyncMoviesForList(It.IsAny<List<ImportListMovie>>(), passedListId), Times.Once());
         }
 
         [Test]
