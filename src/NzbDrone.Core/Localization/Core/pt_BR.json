@@ -1843,5 +1843,16 @@
     "ToggleMonitoredToUnmonitored": "Monitorado, clique para cancelar o monitoramento",
     "ToggleUnmonitoredToMonitored": "Não monitorado, clique para monitorar",
     "OnFileImport": "Ao Importar o Arquivo",
-    "OnFileUpgrade": "Ao Atualizar o Arquivo"
+    "OnFileUpgrade": "Ao Atualizar o Arquivo",
+    "MetadataSettingsMovieImages": "Imagens do Filme",
+    "MetadataSettingsMovieMetadata": "Metadados do Filme",
+    "MetadataSettingsMovieMetadataCollectionName": "Nome da Coleção do Filme",
+    "MetadataSettingsMovieMetadataLanguage": "Idioma dos Metadados do Filme",
+    "MetadataSettingsMovieMetadataNfo": "Usar movie.nfo",
+    "MetadataSettingsMovieMetadataUrl": "URL dos Metadados do Filme",
+    "MetadataXmbcSettingsMovieMetadataCollectionNameHelpText": "Incluir o nome da coleção no .nfo",
+    "MetadataXmbcSettingsMovieMetadataHelpText": ".nfo com metadados completos do filme",
+    "MetadataXmbcSettingsMovieMetadataLanguageHelpText": "Incluir o idioma selecionado, se disponível em .nfo",
+    "MetadataXmbcSettingsMovieMetadataNfoHelpText": "Grave metadados em movie.nfo em vez do nome de arquivo de filme padrão .nfo",
+    "MetadataXmbcSettingsMovieMetadataUrlHelpText": "Incluir URLs de filmes TMDb e IMDb no .nfo"
 }
