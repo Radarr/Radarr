@@ -77,6 +77,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     studio,
     added,
     year,
+    isAvailableDate,
     inCinemas,
     physicalRelease,
     digitalRelease,
@@ -219,6 +220,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         monitored={monitored}
         hasFile={hasFile}
         isAvailable={isAvailable}
+        isAvailableDate={isAvailableDate}
         status={status}
         width={posterWidth}
         detailedProgressBar={detailedProgressBar}
