@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace NzbDrone.Core.ImportLists.TMDb
@@ -40,7 +41,7 @@ namespace NzbDrone.Core.ImportLists.TMDb
         public string ReleaseDate { get; set; }
 
         [JsonProperty("genre_ids")]
-        public int?[] GenreIds { get; set; }
+        public IReadOnlyCollection<int> GenreIds { get; set; }
         public int Id { get; set; }
 
         [JsonProperty("original_title")]
@@ -118,9 +119,9 @@ namespace NzbDrone.Core.ImportLists.TMDb
 
     public class PersonCreditsResource
     {
-        public CreditsResultResource[] Cast { get; set; }
-        public CreditsResultResource[] Crew { get; set; }
         public int Id { get; set; }
+        public IReadOnlyCollection<CreditsResultResource> Cast { get; set; }
+        public IReadOnlyCollection<CreditsResultResource> Crew { get; set; }
     }
 
     public class ListItemResource : MovieResultResource
@@ -132,5 +133,25 @@ namespace NzbDrone.Core.ImportLists.TMDb
         public string Name { get; set; }
         [JsonProperty("original_name")]
         public string OriginalName { get; set; }
+    }
+
+    public class LanguageResource
+    {
+        [JsonProperty("iso_639_1")]
+        public string Language { get; set; }
+        public string Name { get; set; }
+        [JsonProperty("english_name")]
+        public string EnglishName { get; set; }
+    }
+
+    public class GenresResponseResource
+    {
+        public IReadOnlyCollection<GenreResource> Genres { get; set; }
+    }
+
+    public class GenreResource
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
