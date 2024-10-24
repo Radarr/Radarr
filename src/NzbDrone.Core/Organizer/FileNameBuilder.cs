@@ -309,11 +309,27 @@ namespace NzbDrone.Core.Organizer
             return movie.Title;
         }
 
+        private string ToTitleCaseIgnoreOrdinals(string text)
+        {
+            return Regex.Replace(text, @"\b([0-9]{1,3}(?:st|th|rd|nd))\b", new MatchEvaluator((m) => m.Captures[0].Value.ToLower()), RegexOptions.IgnoreCase);
+        }
+
+        private string ToTitleCaseAlwaysUpper(string text)
+        {
+            return Regex.Replace(text, @"\b(imax|3d|sdr|hdr)\b", new MatchEvaluator((m) => m.Captures[0].Value.ToUpper()), RegexOptions.IgnoreCase);
+        }
+
+        private string ToEditionTitleCase(MovieFile movieFile)
+        {
+            var titleCase = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(movieFile.Edition.ToLower());
+            return ToTitleCaseAlwaysUpper(ToTitleCaseIgnoreOrdinals(titleCase));
+        }
+
         private void AddEditionTagsTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
         {
             if (movieFile.Edition.IsNotNullOrWhiteSpace())
             {
-                tokenHandlers["{Edition Tags}"] = m => Truncate(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(movieFile.Edition.ToLower()), m.CustomFormat);
+                tokenHandlers["{Edition Tags}"] = m => Truncate(ToEditionTitleCase(movieFile), m.CustomFormat);
             }
         }
 
