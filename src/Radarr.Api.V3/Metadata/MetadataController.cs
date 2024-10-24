@@ -1,7 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Extras.Metadata;
-using NzbDrone.Core.ThingiProvider.Events;
 using NzbDrone.SignalR;
 using Radarr.Http;
 
@@ -26,24 +25,6 @@ namespace Radarr.Api.V3.Metadata
 
         [NonAction]
         public override object DeleteProviders([FromBody] MetadataBulkResource resource)
-        {
-            throw new NotImplementedException();
-        }
-
-        [NonAction]
-        public override void Handle(ProviderAddedEvent<IMetadata> message)
-        {
-            throw new NotImplementedException();
-        }
-
-        [NonAction]
-        public override void Handle(ProviderUpdatedEvent<IMetadata> message)
-        {
-            throw new NotImplementedException();
-        }
-
-        [NonAction]
-        public override void Handle(ProviderDeletedEvent<IMetadata> message)
         {
             throw new NotImplementedException();
         }
