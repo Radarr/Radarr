@@ -62,6 +62,8 @@ namespace NzbDrone.Core.Configuration
         string WhitelistedHardcodedSubs { get; set; }
 
         string ListSyncLevel { get; set; }
+        string ImportExclusions { get; set; }
+        HashSet<int> CleanLibraryTags { get; set; }
 
         // Metadata Provider
         TMDbCountryCode CertificationCountry { get; set; }

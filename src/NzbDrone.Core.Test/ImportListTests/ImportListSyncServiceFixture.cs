@@ -24,6 +24,8 @@ namespace NzbDrone.Core.Test.ImportList
         private ImportListSyncCommand _commandAll;
         private ImportListSyncCommand _commandSingle;
 
+        private HashSet<int> _cleanLibraryTags;
+
         [SetUp]
         public void Setup()
         {
@@ -55,6 +57,8 @@ namespace NzbDrone.Core.Test.ImportList
                 .With(s => s.TmdbId = 8)
                 .With(s => s.ImdbId = "8")
                 .Build().ToList();
+
+            _cleanLibraryTags = new HashSet<int>();
 
             _importListFetch = new ImportListFetchResult
             {
@@ -89,8 +93,12 @@ namespace NzbDrone.Core.Test.ImportList
                   .Returns(new List<int>());
 
             Mocker.GetMock<IFetchAndParseImportList>()
-                  .Setup(v => v.Fetch())
+                  .Setup(v => v.Fetch(false))
                   .Returns(_importListFetch);
+
+            Mocker.GetMock<IConfigService>()
+                  .Setup(v => v.CleanLibraryTags)
+                  .Returns(_cleanLibraryTags);
         }
 
         private void GivenListFailure()
@@ -195,7 +203,7 @@ namespace NzbDrone.Core.Test.ImportList
                   .Verify(v => v.DeleteMovie(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Never());
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Once());
+                  .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Never());
         }
 
         [Test]

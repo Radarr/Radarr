@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -32,10 +33,27 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 .Concat(GetAutoTaggingTagSpecificationTags(mapper))
                 .Distinct()
                 .ToList();
+            var cleanLibraryTags = mapper.Query<string>($"SELECT Value FROM Config WHERE Config.Key='cleanlibrarytags'");
 
-            if (usedTags.Any())
+            if (usedTags.Any() || !cleanLibraryTags.Empty())
             {
                 var usedTagsList = usedTags.Select(d => d.ToString()).Join(",");
+                foreach (var t1 in cleanLibraryTags)
+                {
+                    var cleanLibraryTagsList = string.Empty;
+                    if (!(string.IsNullOrEmpty(t1) || t1.Equals("[]")))
+                    {
+                        cleanLibraryTagsList = string.Join(",", Array.ConvertAll(t1.Replace("[", "").Replace("]", "").Split(' '), s => int.Parse(s)));
+                        if (usedTagsList.Length == 0)
+                        {
+                            usedTagsList = cleanLibraryTagsList;
+                        }
+                        else
+                        {
+                            usedTagsList = usedTagsList + "," + cleanLibraryTagsList;
+                        }
+                    }
+                }
 
                 if (_database.DatabaseType == DatabaseType.PostgreSQL)
                 {

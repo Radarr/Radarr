@@ -16,6 +16,8 @@ namespace NzbDrone.Core.Tags
         public List<int> AutoTagIds { get; set; }
         public List<int> DownloadClientIds { get; set; }
 
+        public bool IsCleanLibraryTag { get; set; }
+
         public bool InUse => MovieIds.Any() ||
                              NotificationIds.Any() ||
                              ReleaseProfileIds.Any() ||
@@ -23,6 +25,7 @@ namespace NzbDrone.Core.Tags
                              ImportListIds.Any() ||
                              IndexerIds.Any() ||
                              AutoTagIds.Any() ||
+                             IsCleanLibraryTag ||
                              DownloadClientIds.Any();
     }
 }

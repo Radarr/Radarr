@@ -41,7 +41,7 @@ namespace NzbDrone.Core.ImportLists
             _configService = configService;
         }
 
-        private void SyncAll()
+        private void SyncAll(bool forceSync = false)
         {
             if (_importListFactory.Enabled().Empty())
             {
@@ -50,7 +50,7 @@ namespace NzbDrone.Core.ImportLists
                 return;
             }
 
-            var listItemsResult = _listFetcherAndParser.Fetch();
+            var listItemsResult = _listFetcherAndParser.Fetch(forceSync);
 
             if (listItemsResult.SyncedLists == 0)
             {
@@ -176,7 +176,7 @@ namespace NzbDrone.Core.ImportLists
             }
             else
             {
-                SyncAll();
+                SyncAll(message.Trigger.ToString() == "Manual");
             }
         }
 
@@ -194,6 +194,7 @@ namespace NzbDrone.Core.ImportLists
 
             var moviesToUpdate = new List<Movie>();
 
+            var cleanLibraryTagIds = _configService.CleanLibraryTags.ToArray();
             foreach (var movie in moviesInLibrary)
             {
                 var movieExists = listMovies.Any(c => c.TmdbId == movie.TmdbId || c.ImdbId == movie.ImdbId);
@@ -204,9 +205,20 @@ namespace NzbDrone.Core.ImportLists
                     {
                         case "logOnly":
                             _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie);
+                            foreach (var tagId in cleanLibraryTagIds)
+                            {
+                                movie.Tags.Add(tagId);
+                            }
+
+                            moviesToUpdate.Add(movie);
                             break;
                         case "keepAndUnmonitor":
                             _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie);
+                            foreach (var tagId in cleanLibraryTagIds)
+                            {
+                                movie.Tags.Add(tagId);
+                            }
+
                             movie.Monitored = false;
                             moviesToUpdate.Add(movie);
                             break;
@@ -218,6 +230,17 @@ namespace NzbDrone.Core.ImportLists
                             _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie);
                             _movieService.DeleteMovie(movie.Id, true);
                             break;
+                    }
+                }
+                else
+                {
+                    foreach (var tagId in cleanLibraryTagIds)
+                    {
+                        if (movie.Tags.Contains(tagId))
+                        {
+                            movie.Tags.Remove(tagId);
+                            moviesToUpdate.Add(movie);
+                        }
                     }
                 }
             }
