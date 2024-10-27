@@ -15,6 +15,7 @@ import {
   faFileVideo as farFileVideo,
   faFolder as farFolder,
   faHdd as farHdd,
+  faHeart as farHeart,
   faKeyboard as farKeyboard,
   faObjectGroup as farObjectGroup,
   faObjectUngroup as farObjectUngroup,
@@ -174,6 +175,7 @@ export const GENRE = fasTheaterMasks;
 export const GROUP = farObjectGroup;
 export const HEALTH = fasMedkit;
 export const HEART = fasHeart;
+export const HEART_OUTLINE = farHeart;
 export const HISTORY = fasHistory;
 export const HOUSEKEEPING = fasHome;
 export const IGNORE = fasTimesCircle;
