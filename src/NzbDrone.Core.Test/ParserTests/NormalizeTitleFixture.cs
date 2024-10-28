@@ -186,5 +186,17 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             "Tokyo Ghoul A".CleanMovieTitle().Should().Be("tokyoghoula");
         }
+
+        [TestCase("Prestige, The", "theprestige")]
+        [TestCase("Prestige, A", "aprestige")]
+        [TestCase("Crow, The", "thecrow")]
+        [TestCase("Crow, A", "acrow")]
+        [TestCase("Beautiful Romance, The", "thebeautifulromance")]
+        [TestCase("Beautiful Romance, A", "abeautifulromance")]
+        public void should_swap_determiner(string parsedSeriesName, string seriesName)
+        {
+            var result = parsedSeriesName.CleanMovieTitle();
+            result.Should().Be(seriesName);
+        }
     }
 }
