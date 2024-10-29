@@ -416,6 +416,10 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Catalan.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.2024.Catalán.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.(2024).(Catala.Spanish.Subs).WEBRip.1080p.x264-EAC3")]
+        [TestCase("Movie.Title.(2024).(Spanish.Catala.English.Subs).BDRip.1080p.x264-EAC3")]
+        [TestCase("Movie Title [2024] [BDrip 1080p-x264-AC3 5.1 català-español-english+sub]")]
         public void should_parse_language_catalan(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
