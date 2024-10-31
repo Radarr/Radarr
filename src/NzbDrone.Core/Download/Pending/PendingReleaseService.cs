@@ -254,10 +254,7 @@ namespace NzbDrone.Core.Download.Pending
             {
                 foreach (var movie in knownRemoteMovies.Values.Select(v => v.Movie))
                 {
-                    if (!movieMap.ContainsKey(movie.Id))
-                    {
-                        movieMap[movie.Id] = movie;
-                    }
+                    movieMap.TryAdd(movie.Id, movie);
                 }
             }
 
@@ -273,7 +270,7 @@ namespace NzbDrone.Core.Download.Pending
                 // Just in case the movie was removed, but wasn't cleaned up yet (housekeeper will clean it up)
                 if (movie == null)
                 {
-                    return null;
+                    continue;
                 }
 
                 // Languages will be empty if added before upgrading to v4, reparsing the languages if they're empty will set it to Unknown or better.
