@@ -72,6 +72,15 @@ namespace NzbDrone.Core.Datastore
             return builder.LeftJoin($"\"{rightTable}\" ON {wb.ToString()}");
         }
 
+        public static SqlBuilder InnerJoin<TLeft, TRight>(this SqlBuilder builder, Expression<Func<TLeft, TRight, bool>> filter)
+        {
+            var wb = GetWhereBuilder(builder.DatabaseType, filter, false, builder.Sequence);
+
+            var rightTable = TableMapping.Mapper.TableNameMapping(typeof(TRight));
+
+            return builder.InnerJoin($"\"{rightTable}\" ON {wb}");
+        }
+
         public static SqlBuilder GroupBy<TModel>(this SqlBuilder builder, Expression<Func<TModel, object>> property)
         {
             var table = TableMapping.Mapper.TableNameMapping(typeof(TModel));

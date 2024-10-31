@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Download.Pending
 {
@@ -30,7 +31,11 @@ namespace NzbDrone.Core.Download.Pending
 
         public List<PendingRelease> WithoutFallback()
         {
-            return Query(x => x.Reason != PendingReleaseReason.Fallback);
+            var builder = new SqlBuilder(_database.DatabaseType)
+                .InnerJoin<PendingRelease, Movie>((p, m) => p.MovieId == m.Id)
+                .Where<PendingRelease>(p => p.Reason != PendingReleaseReason.Fallback);
+
+            return Query(builder);
         }
     }
 }
