@@ -107,7 +107,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex NormalizeAlternativeTitleRegex = new Regex(@"[ ]+(?:A\.K\.A\.)[ ]+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex NormalizeRegex = new Regex(@"((?:\b|_)(?<!^|[^a-zA-Z0-9_']\w[^a-zA-Z0-9_'])(a(?!$|[^a-zA-Z0-9_']\w[^a-zA-Z0-9_'])|an|the|and|or|of)(?!$)(?:\b|_))|\W|_",
+        private static readonly Regex NormalizeRegex = new Regex(@"((?:\b|_)(?<!^|[^a-zA-Z0-9_']\w[^a-zA-Z0-9_'])([aà](?!$|[^a-zA-Z0-9_']\w[^a-zA-Z0-9_'])|an|the|and|or|of)(?!$)(?:\b|_))|\W|_",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex FileExtensionRegex = new Regex(@"\.[a-z0-9]{2,4}$",
@@ -471,7 +471,7 @@ namespace NzbDrone.Core.Parser
                 return title;
             }
 
-            return ReplaceGermanUmlauts(NormalizeRegex.Replace(title, string.Empty).ToLower()).RemoveAccent();
+            return ReplaceGermanUmlauts(NormalizeRegex.Replace(title, string.Empty).ToLowerInvariant()).RemoveAccent();
         }
 
         public static string NormalizeEpisodeTitle(this string title)
