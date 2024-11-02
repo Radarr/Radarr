@@ -13,4 +13,5 @@ public class RQBitTorrent
     public bool IsFinished { get; set; }
     public bool IsActive { get; set; }
     public long FinishedTime { get; set; }
+    public string Path { get; set; }
 }

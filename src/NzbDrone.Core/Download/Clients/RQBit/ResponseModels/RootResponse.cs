@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace NzbDrone.Core.Download.Clients.rQbit;
 
 public class RootResponse
 {
-    public Dictionary<string, string> apis { get; set; }
-    public string server { get; set; }
-    public string version { get; set; }
+    [JsonProperty("apis")]
+    public Dictionary<string, string> Apis { get; set; }
+    [JsonProperty("server")]
+    public string Server { get; set; }
+    [JsonProperty("version")]
+    public string Version { get; set; }
 }

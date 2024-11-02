@@ -45,7 +45,7 @@ public class RQbitProxy : IRQbitProxy
         {
             var jsonStr = Encoding.UTF8.GetString(response.ResponseData);
             var rootResponse = JsonConvert.DeserializeObject<RootResponse>(jsonStr);
-            version = rootResponse.version;
+            version = rootResponse.Version;
         }
         else
         {
@@ -76,14 +76,15 @@ public class RQbitProxy : IRQbitProxy
             result = new List<RQBitTorrent>();
             foreach (var torrentListItem in torrentList.torrents)
             {
-                var torrentResponse = getTorrent(torrentListItem.info_hash, settings);
-                var torrentStatsResponse = getTorrentStats(torrentListItem.info_hash, settings);
+                var torrentResponse = getTorrent(torrentListItem.InfoHash, settings);
+                var torrentStatsResponse = getTorrentStats(torrentListItem.InfoHash, settings);
                 var torrent = new RQBitTorrent();
 
-                torrent.id = torrentListItem.id;
-                torrent.Name = torrentResponse.name;
-                torrent.Hash = torrentResponse.info_hash;
+                torrent.id = torrentListItem.Id;
+                torrent.Name = torrentResponse.Name;
+                torrent.Hash = torrentResponse.InfoHash;
                 torrent.TotalSize = torrentStatsResponse.TotalBytes;
+                torrent.Path = torrentResponse.OutputFolder + torrentResponse.Name;
 
                 var statsLive = torrentStatsResponse.Live;
                 if (statsLive != null && statsLive.Snapshot != null)
@@ -124,9 +125,9 @@ public class RQbitProxy : IRQbitProxy
         var jsonStr = Encoding.UTF8.GetString(httpResponse.ResponseData);
         var response = JsonConvert.DeserializeObject<PostTorrentResponse>(jsonStr);
 
-        if (response.details != null)
+        if (response.Details != null)
         {
-            info_hash = response.details.info_hash;
+            info_hash = response.Details.InfoHash;
         }
 
         return info_hash;
@@ -149,9 +150,9 @@ public class RQbitProxy : IRQbitProxy
         var jsonStr = Encoding.UTF8.GetString(httpResponse.ResponseData);
         var response = JsonConvert.DeserializeObject<PostTorrentResponse>(jsonStr);
 
-        if (response.details != null)
+        if (response.Details != null)
         {
-            info_hash = response.details.info_hash;
+            info_hash = response.Details.InfoHash;
         }
 
         return info_hash;
@@ -166,7 +167,7 @@ public class RQbitProxy : IRQbitProxy
     {
         var result = true;
         var rqBitTorrentResponse = getTorrent(hash, settings);
-        if (rqBitTorrentResponse == null || string.IsNullOrWhiteSpace(rqBitTorrentResponse.info_hash))
+        if (rqBitTorrentResponse == null || string.IsNullOrWhiteSpace(rqBitTorrentResponse.InfoHash))
         {
             result = false;
         }

@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Download.Clients.rQbit
                 item.Title = torrent.Name;
                 item.DownloadId = torrent.Hash;
 
-                // item.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.Path));
+                item.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.Path));
                 item.TotalSize = torrent.TotalSize;
                 item.RemainingSize = torrent.RemainingSize;
                 item.Category = torrent.Category;
