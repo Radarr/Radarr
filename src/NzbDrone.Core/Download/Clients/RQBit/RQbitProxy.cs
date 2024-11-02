@@ -83,18 +83,18 @@ public class RQbitProxy : IRQbitProxy
                 torrent.id = torrentListItem.id;
                 torrent.Name = torrentResponse.name;
                 torrent.Hash = torrentResponse.info_hash;
-                torrent.TotalSize = torrentStatsResponse.total_bytes;
+                torrent.TotalSize = torrentStatsResponse.TotalBytes;
 
-                var statsLive = torrentStatsResponse.live;
-                if (statsLive != null && statsLive.snapshot != null)
+                var statsLive = torrentStatsResponse.Live;
+                if (statsLive != null && statsLive.Snapshot != null)
                 {
-                    torrent.DownRate = statsLive.download_speed.mbps * 1048576; // mib/sec -> bytes per second
+                    torrent.DownRate = statsLive.DownloadSpeed.Mbps * 1048576; // mib/sec -> bytes per second
                 }
 
-                torrent.RemainingSize = torrentStatsResponse.total_bytes - torrentStatsResponse.progress_bytes;
-                torrent.Ratio = torrentStatsResponse.uploaded_bytes / torrentStatsResponse.progress_bytes;
-                torrent.IsFinished = torrentStatsResponse.finished;
-                torrent.IsActive = torrentStatsResponse.state != "paused";
+                torrent.RemainingSize = torrentStatsResponse.TotalBytes - torrentStatsResponse.ProgressBytes;
+                torrent.Ratio = torrentStatsResponse.UploadedBytes / torrentStatsResponse.ProgressBytes;
+                torrent.IsFinished = torrentStatsResponse.Finished;
+                torrent.IsActive = torrentStatsResponse.State != "paused";
 
                 result.Add(torrent);
             }

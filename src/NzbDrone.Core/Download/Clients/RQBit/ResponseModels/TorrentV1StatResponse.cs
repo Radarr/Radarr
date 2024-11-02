@@ -1,49 +1,89 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace NzbDrone.Core.Download.Clients.RQBit.ResponseModels;
 
 public class TorrentV1StatResponse
 {
-    public string state { get; set; }
-    public List<long> file_progress { get; set; }
-    public string error { get; set; }
-    public long progress_bytes { get; set; }
-    public long uploaded_bytes { get; set; }
-    public long total_bytes { get; set; }
-    public bool finished { get; set; }
-    public TorrentV1StatLiveResponse live { get; set; }
+    [JsonProperty("state")]
+    public string State { get; set; }
+
+    [JsonProperty("file_progress")]
+    public List<long> FileProgress { get; set; }
+
+    [JsonProperty("error")]
+    public string Error { get; set; }
+
+    [JsonProperty("progress_bytes")]
+    public long ProgressBytes { get; set; }
+
+    [JsonProperty("uploaded_bytes")]
+    public long UploadedBytes { get; set; }
+
+    [JsonProperty("total_bytes")]
+    public long TotalBytes { get; set; }
+
+    [JsonProperty("finished")]
+    public bool Finished { get; set; }
+
+    [JsonProperty("live")]
+    public TorrentV1StatLiveResponse Live { get; set; }
 }
 
 public class RQBitTorrentSpeedResponse
 {
-    public long mbps { get; set; }
-    public string human_readable { get; set; }
+    [JsonProperty("mbps")]
+    public long Mbps { get; set; }
+
+    [JsonProperty("human_readable")]
+    public string HumanReadable { get; set; }
 }
 
 public class TorrentV1StatLiveResponse
 {
-    public TorrentV1StatLiveSnapshotResponse snapshot { get; set; }
-    public RQBitTorrentSpeedResponse download_speed { get; set; }
-    public RQBitTorrentSpeedResponse upload_speed { get; set; }
+    [JsonProperty("snapshot")]
+    public TorrentV1StatLiveSnapshotResponse Snapshot { get; set; }
+    [JsonProperty("download_speed")]
+    public RQBitTorrentSpeedResponse DownloadSpeed { get; set; }
+    [JsonProperty("upload_speed")]
+    public RQBitTorrentSpeedResponse UploadSpeed { get; set; }
 }
 
 public class TorrentV1StatLiveSnapshotResponse
 {
-    public long downloaded_and_checked_bytes { get; set; }
-    public long fetched_bytes { get; set; }
-    public long uploaded_bytes { get; set; }
-    public long downloaded_and_checked_pieces { get; set; }
-    public long total_piece_downloaded_ms { get; set; }
-    public TorrentV1StatLiveSnapshotPeerStatsResponse peer_stats { get; set; }
+    [JsonProperty("downloaded_and_checked_bytes")]
+    public long DownloadedAndCheckedBytes { get; set; }
+
+    [JsonProperty("fetched_bytes")]
+    public long FetchedBytes { get; set; }
+
+    [JsonProperty("uploaded_bytes")]
+    public long UploadedBytes { get; set; }
+
+    [JsonProperty("downloaded_and_checked_pieces")]
+    public long DownloadedAndCheckedPieces { get; set; }
+
+    [JsonProperty("total_piece_downloaded_ms")]
+    public long TotalPieceDownloadedMs { get; set; }
+
+    [JsonProperty("peer_stats")]
+    public TorrentV1StatLiveSnapshotPeerStatsResponse PeerStats { get; set; }
 }
 
 public class TorrentV1StatLiveSnapshotPeerStatsResponse
 {
-    public int queued { get; set; }
-    public int connecting { get; set; }
-    public int live { get; set; }
-    public int seen { get; set; }
-    public int dead { get; set; }
-    public int not_needed { get; set; }
-    public int steals { get; set; }
+    [JsonProperty("queued")]
+    public int Queued { get; set; }
+    [JsonProperty("connecting")]
+    public int Connecting { get; set; }
+    [JsonProperty("live")]
+    public int Live { get; set; }
+    [JsonProperty("seen")]
+    public int Seen { get; set; }
+    [JsonProperty("dead")]
+    public int Dead { get; set; }
+    [JsonProperty("not_needed")]
+    public int NotNeeded { get; set; }
+    [JsonProperty("steals")]
+    public int Steals { get; set; }
 }
