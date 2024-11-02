@@ -295,5 +295,8 @@
     "DeleteSelectedImportListExclusionsMessageText": "Naozaj chcete toto vylúčenie importného zoznamu zmazať?",
     "DeleteSelectedCustomFormats": "Klonovať vlastný formát",
     "Discord": "Discord",
-    "TMDb": "TMDb"
+    "TMDb": "TMDb",
+    "Reason": "Séria",
+    "Clone": "Zatvoriť",
+    "AllTitles": "Všetky súbory"
 }

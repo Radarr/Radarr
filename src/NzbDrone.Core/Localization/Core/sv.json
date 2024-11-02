@@ -1095,5 +1095,8 @@
     "ShowDigitalReleaseHelpText": "Visa släppdatum under affischen",
     "ShowPhysicalRelease": "Fysiskt utgivningsdatum",
     "ShowPhysicalReleaseHelpText": "Visa släppdatum under affischen",
-    "FolderNameTokens": "Filnamn tokens"
+    "FolderNameTokens": "Filnamn tokens",
+    "Clone": "Avsluta",
+    "AllTitles": "Samtliga filer",
+    "EditReleaseProfile": "Redigera fördröjningsprofil"
 }

@@ -1069,5 +1069,8 @@
     "ShowDigitalReleaseHelpText": "Sýnið útgáfudagsetningu undir veggspjaldi",
     "ShowPhysicalRelease": "Líkamlegur útgáfudagur",
     "ShowPhysicalReleaseHelpText": "Sýnið útgáfudagsetningu undir veggspjaldi",
-    "FolderNameTokens": "Auðkenni skráarheita"
+    "FolderNameTokens": "Auðkenni skráarheita",
+    "Clone": "Lokaðu",
+    "EditReleaseProfile": "Breyta seinkunarprófíl",
+    "AllTitles": "Allar skrár"
 }

@@ -172,5 +172,7 @@
     "File": "File",
     "Weeks": "Minggu",
     "ToggleMonitoredToUnmonitored": "Dimonitor, klik untuk berhenti monitor",
-    "ToggleUnmonitoredToMonitored": "Tidak dimonitor, klik untuk monitor"
+    "ToggleUnmonitoredToMonitored": "Tidak dimonitor, klik untuk monitor",
+    "Clone": "Tutup",
+    "EnableSsl": "Aktifkan RSS"
 }

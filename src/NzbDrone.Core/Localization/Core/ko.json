@@ -1054,5 +1054,8 @@
     "DeleteSelectedCustomFormats": "사용자 지정 형식 삭제",
     "ReleaseDate": "출시일",
     "MovieFileDeleted": "영화 파일 삭제",
-    "MovieFileDeletedTooltip": "영화 파일 삭제"
+    "MovieFileDeletedTooltip": "영화 파일 삭제",
+    "Clone": "닫기",
+    "EditReleaseProfile": "지연 프로필 편집",
+    "AllTitles": "모든 파일"
 }

@@ -1185,5 +1185,6 @@
     "ShowPhysicalRelease": "Fizyczna data wydania",
     "ShowPhysicalReleaseHelpText": "Pokaż datę premiery pod plakatem",
     "YesterdayAt": "Wczoraj o {time}",
-    "FolderNameTokens": "Tokeny nazw plików"
+    "FolderNameTokens": "Tokeny nazw plików",
+    "Clone": "Zamknij"
 }

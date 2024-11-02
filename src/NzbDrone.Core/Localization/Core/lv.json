@@ -22,5 +22,6 @@
     "EditIndexerImplementation": "Pievienot Nosacījumu - {implementationName}",
     "EditConditionImplementation": "Pievienot Nosacījumu - {implementationName}",
     "ExportCustomFormat": "Pievienot Pielāgotu Formātu",
-    "New": "Jauns"
+    "New": "Jauns",
+    "EditReleaseProfile": "Pievienot Aizkaves Profilu"
 }

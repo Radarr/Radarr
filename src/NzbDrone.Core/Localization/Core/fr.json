@@ -1831,5 +1831,17 @@
     "ToggleMonitoredToUnmonitored": "Surveillé, cliquez pour annuler la surveillance",
     "ToggleUnmonitoredToMonitored": "Non surveillé, cliquez pour surveiller",
     "OnFileImport": "Lors de l'importation du fichier",
-    "OnFileUpgrade": "Lors de la mise à jour du fichier"
+    "OnFileUpgrade": "Lors de la mise à jour du fichier",
+    "ShowTraktRating": "Affiche la note Trakt",
+    "ReleasedMovieAvailabilityDescription": "Les films sont considérés comme disponibles dès la sortie de la version Blu-Ray ou streaming.",
+    "LastSearched": "Dernière recherche",
+    "SkipFreeSpaceCheckHelpText": "Utiliser quand {appName} ne parvient pas à détecter l'espace disponible de votre dossier racine",
+    "MetadataXmbcSettingsMovieMetadataCollectionNameHelpText": "Inclure le nom de la collection dans le .nfo",
+    "MetadataXmbcSettingsMovieMetadataHelpText": ".nfo avec les métadonnées complètes du film",
+    "MetadataXmbcSettingsMovieMetadataLanguageHelpText": "Inclure la langue sélectionnée si disponible dans le .nfo",
+    "MetadataSettingsMovieMetadata": "Métadonnées du film",
+    "MetadataSettingsMovieMetadataCollectionName": "Nom de la collection de films",
+    "MetadataSettingsMovieMetadataUrl": "Lien des métadonnées du film",
+    "InCinemasMovieAvailabilityDescription": "Les films sont considérés comme disponibles dès leur sortie en salles.",
+    "Disposition": "Disposition"
 }

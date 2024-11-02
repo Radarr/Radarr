@@ -1147,5 +1147,7 @@
     "ShowPhysicalReleaseHelpText": "Afișați data lansării sub afiș",
     "FolderNameTokens": "Jetoane pentru nume de folder",
     "OnFileImport": "La import fișier",
-    "OnFileUpgrade": "La actualizare fișier"
+    "OnFileUpgrade": "La actualizare fișier",
+    "EditReleaseProfile": "Editați profilul de întârziere",
+    "Clone": "Închide"
 }
