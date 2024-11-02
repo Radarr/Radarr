@@ -362,5 +362,7 @@
     "EditIndexerImplementation": "Dodaj Indexer - {implementationName}",
     "EditConnectionImplementation": "Dodaj Vezu - {implementationName}",
     "EditConditionImplementation": "Dodaj Vezu - {implementationName}",
-    "DownloadFailed": "Ponovno preuzimanje neuspješno"
+    "DownloadFailed": "Ponovno preuzimanje neuspješno",
+    "Clone": "Zatvori",
+    "Reason": "Sezona"
 }

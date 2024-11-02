@@ -317,5 +317,7 @@
     "DeleteSelectedCustomFormats": "Klon egendefinert format",
     "DeleteSelectedCustomFormatsMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
     "Discord": "Discord",
-    "TMDb": "TMDb"
+    "TMDb": "TMDb",
+    "Clone": "Lukk",
+    "Reason": "Sesong"
 }

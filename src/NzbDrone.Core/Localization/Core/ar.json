@@ -1072,5 +1072,8 @@
     "ShowDigitalReleaseHelpText": "عرض تاريخ الإصدار تحت الملصق",
     "ShowPhysicalRelease": "تاريخ الإصدار المادي",
     "ShowPhysicalReleaseHelpText": "عرض تاريخ الإصدار تحت الملصق",
-    "FolderNameTokens": "رموز اسم الملف"
+    "FolderNameTokens": "رموز اسم الملف",
+    "EditReleaseProfile": "تحرير ملف تعريف التأخير",
+    "Clone": "قريب",
+    "AllTitles": "كل الملفات"
 }

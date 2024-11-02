@@ -1231,5 +1231,7 @@
     "ShowDigitalRelease": "Εμφάνιση ημερομηνίας κυκλοφορίας κινηματογράφου",
     "SmartReplace": "Έξυπνη Αντικατάσταση",
     "SmartReplaceHint": "Παύλα ή Κενό-Παύλα ανάλογα με το όνομα",
-    "FolderNameTokens": "Διακριτικά ονόματος αρχείου"
+    "FolderNameTokens": "Διακριτικά ονόματος αρχείου",
+    "DownloadIgnored": "Λήψη Εισήχθη",
+    "AllTitles": "Ολα τα αρχεία"
 }

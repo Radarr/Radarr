@@ -1114,5 +1114,8 @@
     "ShowPhysicalRelease": "תאריך שחרור פיזי",
     "ShowPhysicalReleaseHelpText": "הצג תאריך יציאה תחת הכרזה",
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "מספר תיקיות אב חסרות לייבוא רשימות: {rootFoldersInfo}",
-    "FolderNameTokens": "אסימונים לשם קובץ"
+    "FolderNameTokens": "אסימונים לשם קובץ",
+    "AllTitles": "כל הקבצים",
+    "Clone": "סגור",
+    "EditReleaseProfile": "ערוך פרופיל עיכוב"
 }

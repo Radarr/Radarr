@@ -1069,5 +1069,8 @@
     "ShowDigitalRelease": "Показване на датата на излизане на киното",
     "ShowDigitalReleaseHelpText": "Показване на датата на пускане под постер",
     "ShowPhysicalRelease": "Дата на физическото издаване",
-    "FolderNameTokens": "Токени за име на файл"
+    "FolderNameTokens": "Токени за име на файл",
+    "EditReleaseProfile": "Редактиране на профил за забавяне",
+    "Clone": "Близо",
+    "AllTitles": "Всички файлове"
 }

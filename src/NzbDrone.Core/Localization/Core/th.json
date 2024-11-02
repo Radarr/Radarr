@@ -1067,5 +1067,8 @@
     "ShowDigitalReleaseHelpText": "แสดงวันที่วางจำหน่ายใต้โปสเตอร์",
     "ShowPhysicalRelease": "วันที่วางจำหน่ายจริง",
     "ShowPhysicalReleaseHelpText": "แสดงวันที่วางจำหน่ายใต้โปสเตอร์",
-    "FolderNameTokens": "โทเค็นชื่อไฟล์"
+    "FolderNameTokens": "โทเค็นชื่อไฟล์",
+    "Clone": "ปิด",
+    "AllTitles": "เอกสารทั้งหมด",
+    "EditReleaseProfile": "แก้ไขโปรไฟล์ความล่าช้า"
 }

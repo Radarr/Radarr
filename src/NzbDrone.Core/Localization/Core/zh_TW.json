@@ -249,5 +249,7 @@
     "DeleteImportListExclusion": "新增排除清單",
     "Letterboxd": "文字方框",
     "Discord": "Discord",
-    "TMDb": "TMDb"
+    "TMDb": "TMDb",
+    "EditReleaseProfile": "新增延時配置",
+    "Reason": "季"
 }
