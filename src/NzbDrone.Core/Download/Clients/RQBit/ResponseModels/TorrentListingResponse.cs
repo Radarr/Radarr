@@ -1,7 +1,11 @@
-﻿namespace NzbDrone.Core.Download.Clients.RQBit.ResponseModels;
+﻿using Newtonsoft.Json;
+
+namespace NzbDrone.Core.Download.Clients.RQBit.ResponseModels;
 
 public class TorrentListingResponse
 {
-    public long id { get; set; }
-    public string info_hash { get; set; }
+    [JsonProperty("id")]
+    public long Id { get; set; }
+    [JsonProperty("info_hash")]
+    public string InfoHash { get; set; }
 }

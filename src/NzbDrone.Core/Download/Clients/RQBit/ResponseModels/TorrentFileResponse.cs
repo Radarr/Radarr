@@ -1,11 +1,16 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace NzbDrone.Core.Download.Clients.RQBit.ResponseModels;
 
 public class TorrentFileResponse
 {
-    public string name { get; set; }
-    public List<string> components { get; set; }
-    public long length { get; set; }
-    public bool included { get; set; }
+    [JsonProperty("name")]
+    public string Name { get; set; }
+    [JsonProperty("components")]
+    public List<string> Components { get; set; }
+    [JsonProperty("length")]
+    public long Length { get; set; }
+    [JsonProperty("included")]
+    public bool Included { get; set; }
 }
