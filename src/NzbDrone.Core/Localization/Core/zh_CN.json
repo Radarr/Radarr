@@ -408,7 +408,6 @@
     "DownloadWarning": "下载警告：{warningMessage}",
     "DownloadedButNotMonitored": "已下载（未追踪）",
     "DownloadedAndMonitored": "已下载（已追踪）",
-    "DownloadClientUnavailable": "下载客户端不可用",
     "DownloadClientStatusCheckSingleClientMessage": "所有下载客户端都不可用： {downloadClientNames}",
     "DownloadClientStatusCheckAllClientMessage": "下载客户端因故障均不可用",
     "DownloadClientsSettingsSummary": "下载客户端、下载处理和远程路径映射",

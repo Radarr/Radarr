@@ -421,7 +421,6 @@
     "EnableAutomaticSearchHelpText": "Sera utilisé lorsque les recherches automatiques sont effectuées via l'interface utilisateur ou par {appName}",
     "DownloadWarning": "Avertissement de téléchargement : {warningMessage}",
     "Downloading": "Téléchargement",
-    "DownloadClientUnavailable": "Le client de téléchargement n'est pas disponible",
     "DeleteRestrictionHelpText": "Voulez-vous vraiment supprimer cette restriction ?",
     "DeleteIndexerMessageText": "Voulez-vous vraiment supprimer l'indexeur « {name} » ?",
     "CopyToClipboard": "Copier dans le presse-papier",

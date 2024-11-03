@@ -579,7 +579,6 @@
     "DownloadFailed": "Download fallito",
     "DownloadedButNotMonitored": "Scaricato (non monitorato)",
     "DownloadedAndMonitored": "Scaricato (Monitorato)",
-    "DownloadClientUnavailable": "Il client di download non è disponibile",
     "DeleteTagMessageText": "Sei sicuro di voler eliminare l'etichetta '{label}'?",
     "DeleteRestrictionHelpText": "Sei sicuro di voler eliminare questa restrizione?",
     "DeleteNotificationMessageText": "Sei sicuro di voler eliminare la notifica '{name}'?",

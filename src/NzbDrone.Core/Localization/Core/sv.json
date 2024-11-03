@@ -301,7 +301,6 @@
     "Edition": "Utgåva",
     "Downloading": "Laddar ner",
     "DownloadFailed": "Misslyckad nedladdning",
-    "DownloadClientUnavailable": "Nedladdningsklient är otillgänglig",
     "DownloadClientSettings": "Inställningar för Nedladdningsklient",
     "Docker": "Docker",
     "Disabled": "Inaktiverad",

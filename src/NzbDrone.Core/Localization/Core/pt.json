@@ -588,7 +588,6 @@
     "DownloadFailed": "Falha na transferência",
     "DownloadedButNotMonitored": "Transferido (Não monitorado)",
     "DownloadedAndMonitored": "Transferido (Monitorado)",
-    "DownloadClientUnavailable": "O cliente de transferências está indisponível",
     "Disabled": "Desativado",
     "DeleteTagMessageText": "Tem a certeza que quer eliminar a etiqueta \"{label}\"?",
     "DeleteRestrictionHelpText": "Tem a certeza de que quer eliminar esta restrição?",

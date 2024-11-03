@@ -634,7 +634,6 @@
     "DownloadedButNotMonitored": "Скачано (неотслеживается)",
     "DownloadedAndMonitored": "Скачано (Отслежено)",
     "Downloaded": "Скачано",
-    "DownloadClientUnavailable": "Программа для скачивания недоступна",
     "PhysicalRelease": "Релиз на носителе",
     "PhysicalReleaseDate": "Дата релиза на носителе",
     "MountCheckMessage": "Смонтированный путь к фильму смонтировано режиме только для чтения: ",

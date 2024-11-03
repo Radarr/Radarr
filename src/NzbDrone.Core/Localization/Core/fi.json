@@ -502,7 +502,6 @@
     "EditCustomFormat": "Muokkaa mukautettua muotoa",
     "DownloadClientsSettingsSummary": "Lataustyökalut, latausten käsittely ja etäsijaintien kohdistukset.",
     "DownloadClientStatusCheckSingleClientMessage": "Lataustyökaluja ei ole ongelmien vuoksi käytettävissä: {downloadClientNames}",
-    "DownloadClientUnavailable": "Lataustyökalu ei ole käytettävissä",
     "Downloaded": "Ladattu",
     "DownloadedAndMonitored": "Ladattu (valvottu)",
     "DownloadedButNotMonitored": "Ladattu (valvomaton)",

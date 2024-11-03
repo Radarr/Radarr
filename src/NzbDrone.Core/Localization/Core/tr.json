@@ -694,7 +694,6 @@
     "DownloadClientSettings": "İstemci Ayarlarını İndir",
     "DownloadClientsSettingsSummary": "İndirme İstemcileri, indirme işlemleri ve uzaktan yol eşlemeleri",
     "DownloadClientStatusCheckSingleClientMessage": "Hatalar nedeniyle indirilemeyen istemciler: {downloadClientNames}",
-    "DownloadClientUnavailable": "İndirme istemcisi kullanılamıyor",
     "DownloadedAndMonitored": "İndirildi (Takip Ediliyor)",
     "DownloadedButNotMonitored": "İndirildi (Takip Edilmiyor)",
     "DownloadFailed": "Yükleme başarısız",

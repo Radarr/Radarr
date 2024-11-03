@@ -500,7 +500,6 @@
     "DownloadClientSettings": "클라이언트 설정 다운로드",
     "DownloadClientsSettingsSummary": "클라이언트 다운로드, 다운로드 처리 및 원격 경로 매핑",
     "DownloadClientStatusCheckSingleClientMessage": "실패로 인해 다운 불러올 수 없는 클라이언트 : {downloadClientNames}",
-    "DownloadClientUnavailable": "다운로드 클라이언트를 사용할 수 없습니다.",
     "Downloaded": "다운로드됨",
     "DownloadedAndMonitored": "다운로드됨 (모니터링됨)",
     "DownloadedButNotMonitored": "다운로드됨 (모니터링되지 않음)",

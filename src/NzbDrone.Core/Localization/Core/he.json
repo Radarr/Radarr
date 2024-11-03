@@ -40,7 +40,6 @@
     "DeleteEmptyFolders": "מחק תיקיות ריקות",
     "DeleteFile": "מחק קובץ",
     "DestinationPath": "נתיב יעד",
-    "DownloadClientUnavailable": "לקוח ההורדות אינו זמין",
     "EditMovie": "ערוך את הסרט",
     "EnableCompletedDownloadHandlingHelpText": "ייבא אוטומטית הורדות שהושלמו מלקוח ההורדות",
     "AnalyseVideoFilesHelpText": "חלץ מידע וידאו כגון רזולוציה, זמן ריצה ומידע קודק מקבצים. זה מחייב את {appName} לקרוא חלקים מהקובץ שעלולים לגרום לדיסק גבוה או לפעילות רשת במהלך הסריקות.",

@@ -512,7 +512,6 @@
     "DownloadClientSettings": "Pobierz ustawienia klienta",
     "DownloadClientsSettingsSummary": "Pobieranie klientów, obsługa pobierania i mapowanie ścieżek zdalnych",
     "DownloadClientStatusCheckSingleClientMessage": "Klienci pobierania niedostępni z powodu błędów: {downloadClientNames}",
-    "DownloadClientUnavailable": "Klient pobierania jest niedostępny",
     "Downloaded": "Pobrano",
     "DownloadedAndMonitored": "Pobrane (monitorowane)",
     "DownloadedButNotMonitored": "Pobrane (niemonitorowane)",

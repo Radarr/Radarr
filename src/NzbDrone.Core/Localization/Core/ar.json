@@ -923,7 +923,6 @@
     "DownloadedButNotMonitored": "تم التنزيل (غير مراقب)",
     "DownloadedAndMonitored": "تم التنزيل (مراقب)",
     "Downloaded": "تم التنزيل",
-    "DownloadClientUnavailable": "عميل التنزيل غير متوفر",
     "DownloadClientStatusCheckSingleClientMessage": "برامج التنزيل غير متاحة بسبب الإخفاقات: {downloadClientNames}",
     "DownloadClientStatusCheckAllClientMessage": "جميع عملاء التنزيل غير متاحين بسبب الفشل",
     "DownloadClientsSettingsSummary": "تنزيل العملاء وتنزيل المناولة وتعيينات المسار البعيد",

@@ -42,7 +42,6 @@
     "DownloadedButNotMonitored": "Letöltve, (nincs Figyelve)",
     "DownloadedAndMonitored": "Letöltve (Figyelve)",
     "Downloaded": "Letöltve",
-    "DownloadClientUnavailable": "Letöltőkliens nem elérhető",
     "DownloadClientStatusCheckSingleClientMessage": "Letöltőkliens hiba miatt nem elérhető: {downloadClientNames}",
     "DownloadClientStatusCheckAllClientMessage": "Az összes letöltőkliens elérhetetlen, hiba miatt",
     "DownloadClientsSettingsSummary": "Kliensek letöltése, letöltéskezelés és távoli útvonalleképezések",

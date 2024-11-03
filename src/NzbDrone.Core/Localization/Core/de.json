@@ -619,7 +619,6 @@
     "DownloadWarning": "Download Warnung: {0}",
     "Downloading": "Lädt herunter",
     "DownloadFailed": "Download fehlgeschlagen",
-    "DownloadClientUnavailable": "Downloader ist nicht verfügbar",
     "DeleteTagMessageText": "Bist du sicher, dass du den Tag '{label}' wirklich löschen willst?",
     "DeleteRestrictionHelpText": "Beschränkung '{0}' wirklich löschen?",
     "DeleteNotificationMessageText": "Bist du sicher, dass du die Benachrichtigung '{name}' wirklich löschen willst?",

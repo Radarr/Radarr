@@ -587,7 +587,6 @@
     "DownloadClientSettings": "ดาวน์โหลด Client Settings",
     "DownloadClientsSettingsSummary": "ดาวน์โหลดไคลเอนต์การจัดการการดาวน์โหลดและการแมปเส้นทางระยะไกล",
     "DownloadClientStatusCheckSingleClientMessage": "ดาวน์โหลดไคลเอ็นต์ไม่ได้เนื่องจากความล้มเหลว: {downloadClientNames}",
-    "DownloadClientUnavailable": "ไม่สามารถดาวน์โหลดไคลเอนต์ได้",
     "Downloaded": "ดาวน์โหลดแล้ว",
     "DownloadedButNotMonitored": "ดาวน์โหลด (ไม่ได้ตรวจสอบ)",
     "DownloadFailed": "ดาวน์โหลดล้มเหลว",

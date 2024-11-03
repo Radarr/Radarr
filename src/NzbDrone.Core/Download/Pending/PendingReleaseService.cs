@@ -17,6 +17,7 @@ using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Queue;
 
 namespace NzbDrone.Core.Download.Pending
 {
@@ -340,7 +341,7 @@ namespace NzbDrone.Core.Download.Pending
                 Timeleft = timeleft,
                 EstimatedCompletionTime = ect,
                 Added = pendingRelease.Added,
-                Status = pendingRelease.Reason.ToString(),
+                Status = Enum.TryParse(pendingRelease.Reason.ToString(), out QueueStatus outValue) ? outValue : QueueStatus.Unknown,
                 Protocol = pendingRelease.RemoteMovie.Release.DownloadProtocol,
                 Indexer = pendingRelease.RemoteMovie.Release.Indexer,
                 DownloadClient = downloadClientName

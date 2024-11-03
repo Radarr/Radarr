@@ -136,7 +136,7 @@ namespace Radarr.Api.V3.Queue
 
         [HttpGet]
         [Produces("application/json")]
-        public PagingResource<QueueResource> GetQueue([FromQuery] PagingRequestResource paging, bool includeUnknownMovieItems = false, bool includeMovie = false, [FromQuery] int[] movieIds = null, DownloadProtocol? protocol = null, [FromQuery] int[] languages = null, [FromQuery] int[] quality = null)
+        public PagingResource<QueueResource> GetQueue([FromQuery] PagingRequestResource paging, bool includeUnknownMovieItems = false, bool includeMovie = false, [FromQuery] int[] movieIds = null, DownloadProtocol? protocol = null, [FromQuery] int[] languages = null, [FromQuery] int[] quality = null, [FromQuery] QueueStatus[] status = null)
         {
             var pagingResource = new PagingResource<QueueResource>(paging);
             var pagingSpec = pagingResource.MapToPagingSpec<QueueResource, NzbDrone.Core.Queue.Queue>(
@@ -160,10 +160,10 @@ namespace Radarr.Api.V3.Queue
                 "timeleft",
                 SortDirection.Ascending);
 
-            return pagingSpec.ApplyToPage((spec) => GetQueue(spec, movieIds?.ToHashSet(), protocol, languages?.ToHashSet(), quality?.ToHashSet(), includeUnknownMovieItems), (q) => MapToResource(q, includeMovie));
+            return pagingSpec.ApplyToPage((spec) => GetQueue(spec, movieIds?.ToHashSet(), protocol, languages?.ToHashSet(), quality?.ToHashSet(), status?.ToHashSet(), includeUnknownMovieItems), (q) => MapToResource(q, includeMovie));
         }
 
-        private PagingSpec<NzbDrone.Core.Queue.Queue> GetQueue(PagingSpec<NzbDrone.Core.Queue.Queue> pagingSpec, HashSet<int> movieIds, DownloadProtocol? protocol, HashSet<int> languages, HashSet<int> quality, bool includeUnknownMovieItems)
+        private PagingSpec<NzbDrone.Core.Queue.Queue> GetQueue(PagingSpec<NzbDrone.Core.Queue.Queue> pagingSpec, HashSet<int> movieIds, DownloadProtocol? protocol, HashSet<int> languages, HashSet<int> quality, HashSet<QueueStatus> status, bool includeUnknownMovieItems)
         {
             var ascending = pagingSpec.SortDirection == SortDirection.Ascending;
             var orderByFunc = GetOrderByFunc(pagingSpec);
@@ -175,6 +175,7 @@ namespace Radarr.Api.V3.Queue
             var hasMovieIdFilter = movieIds.Any();
             var hasLanguageFilter = languages.Any();
             var hasQualityFilter = quality.Any();
+            var hasStatusFilter = status.Any();
 
             var fullQueue = filteredQueue.Concat(pending).Where(q =>
             {
@@ -198,6 +199,11 @@ namespace Radarr.Api.V3.Queue
                 if (include && hasQualityFilter)
                 {
                     include &= quality.Contains(q.Quality.Quality.Id);
+                }
+
+                if (include && hasStatusFilter)
+                {
+                    include &= status.Contains(q.Status);
                 }
 
                 return include;
@@ -279,7 +285,7 @@ namespace Radarr.Api.V3.Queue
             switch (pagingSpec.SortKey)
             {
                 case "status":
-                    return q => q.Status;
+                    return q => q.Status.ToString();
                 case "movies.sortTitle":
                     return q => q.Movie?.MovieMetadata.Value.SortTitle ?? q.Title;
                 case "title":

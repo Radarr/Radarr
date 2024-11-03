@@ -569,7 +569,6 @@
     "DeleteQualityProfile": "Видалити профіль якості",
     "DeleteRestriction": "Видалити обмеження",
     "DownloadedAndMonitored": "Завантажено (Відстежується)",
-    "DownloadClientUnavailable": "Клієнт завантажувача недоступний",
     "DownloadedButNotMonitored": "Завантажено (Не відстежується)",
     "DownloadFailed": "Помилка завантаження",
     "DownloadWarning": "Попередження про завантаження: {0}",

@@ -39,7 +39,6 @@
     "DeleteSelectedMovieFiles": "選択したムービーファイルを削除する",
     "DownloadClientCheckUnableToCommunicateMessage": "{downloadClientName}と通信できません。",
     "DownloadClientsSettingsSummary": "クライアントのダウンロード、ダウンロード処理、リモートパスマッピング",
-    "DownloadClientUnavailable": "ダウンロードクライアントは利用できません",
     "DownloadedAndMonitored": "ダウンロード（監視）",
     "DownloadPropersAndRepacks": "適切なものと再梱包",
     "EditCustomFormat": "カスタムフォーマットの編集",

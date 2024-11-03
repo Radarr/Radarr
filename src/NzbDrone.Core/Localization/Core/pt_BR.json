@@ -174,7 +174,6 @@
     "DownloadedButNotMonitored": "Baixado (não monitorado)",
     "DownloadedAndMonitored": "Baixado (monitorado)",
     "Downloaded": "Baixado",
-    "DownloadClientUnavailable": "O cliente de download está indisponível",
     "DownloadClientStatusCheckSingleClientMessage": "Clientes de download indisponíveis devido a falhas: {downloadClientNames}",
     "DownloadClientStatusCheckAllClientMessage": "Todos os clientes de download estão indisponíveis devido a falhas",
     "DownloadClientsSettingsSummary": "Clientes de download, gerenciamento de download e mapeamentos de caminhos remotos",

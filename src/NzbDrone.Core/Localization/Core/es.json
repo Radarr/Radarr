@@ -620,7 +620,6 @@
     "DownloadWarning": "Alerta de descarga: {warningMessage}",
     "Downloading": "Descargando",
     "DownloadFailed": "La descarga ha fallado",
-    "DownloadClientUnavailable": "El cliente de descargas no está disponible",
     "DeleteTagMessageText": "¿Estás seguro que quieres eliminar la etiqueta '{label}'?",
     "DeleteRestrictionHelpText": "¿Estás seguro que quieres eliminar esta restricción?",
     "DeleteNotificationMessageText": "¿Estás seguro que quieres eliminar la notificación '{name}'?",

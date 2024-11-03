@@ -626,7 +626,6 @@
     "DownloadWarning": "Download waarschuwing: {warningMessage}",
     "Downloading": "Downloaden",
     "DownloadFailed": "Download mislukt",
-    "DownloadClientUnavailable": "Downloader is onbeschikbaar",
     "DeleteTagMessageText": "Weet je zeker dat je de tag '{label}' wil verwijderen?",
     "DeleteRestrictionHelpText": "Bent u zeker dat u deze restrictie wilt verwijderen?",
     "DeleteNotificationMessageText": "Weet je zeker dat je de notificatie ‘{name}’ wil verwijderen?",

@@ -537,7 +537,6 @@
     "AnalyseVideoFiles": "Greindu vídeóskrár",
     "AnalyticsEnabledHelpText": "Sendu nafnlausar upplýsingar um notkun og villur á netþjóna {appName}. Þetta felur í sér upplýsingar í vafranum þínum, hvaða {appName} WebUI síður þú notar, villuskýrslur sem og stýrikerfi og keyrsluútgáfu. Við munum nota þessar upplýsingar til að forgangsraða eiginleikum og villuleiðréttingum.",
     "AppDataDirectory": "AppData skrá",
-    "DownloadClientUnavailable": "Niðurhalsþjónn er ekki tiltækur",
     "Downloaded": "Sótt",
     "DownloadedAndMonitored": "Sótt (fylgst með)",
     "DownloadedButNotMonitored": "Sótt (óeftirlit)",
