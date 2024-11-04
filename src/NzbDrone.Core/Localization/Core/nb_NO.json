@@ -275,7 +275,7 @@
     "DeleteAutoTagHelpText": "Er du sikker på at du vil slette formattaggen {0}?",
     "DeleteSelectedDownloadClientsMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
     "DeleteRootFolderMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
-    "AddConnection": "Legg til kobling",
+    "AddConnection": "Legg til tilkobling",
     "DisabledForLocalAddresses": "Deaktivert for lokale adresser",
     "Released": "utgivelse",
     "ConnectionLostReconnect": "{appName} vil forsøke å koble til automatisk, eller du kan klikke oppdater nedenfor.",

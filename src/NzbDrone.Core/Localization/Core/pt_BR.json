@@ -773,7 +773,7 @@
     "Socks4": "Socks4",
     "ShownClickToHide": "Mostrado, clique para ocultar",
     "RecyclingBinCleanupHelpText": "Defina como 0 para desabilitar a limpeza automática",
-    "RecentFolders": "Pastas recentes",
+    "RecentFolders": "Pastas Recentes",
     "RecentChanges": "Mudanças Recentes",
     "Reason": "Razão",
     "Real": "Real",
@@ -1854,5 +1854,7 @@
     "MetadataXmbcSettingsMovieMetadataHelpText": ".nfo com metadados completos do filme",
     "MetadataXmbcSettingsMovieMetadataLanguageHelpText": "Incluir o idioma selecionado, se disponível em .nfo",
     "MetadataXmbcSettingsMovieMetadataNfoHelpText": "Grave metadados em movie.nfo em vez do nome de arquivo de filme padrão .nfo",
-    "MetadataXmbcSettingsMovieMetadataUrlHelpText": "Incluir URLs de filmes TMDb e IMDb no .nfo"
+    "MetadataXmbcSettingsMovieMetadataUrlHelpText": "Incluir URLs de filmes TMDb e IMDb no .nfo",
+    "FileBrowser": "Navegador de Arquivos",
+    "ManageFormats": "Gerenciar Formatos"
 }

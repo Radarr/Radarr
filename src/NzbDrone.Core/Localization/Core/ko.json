@@ -1057,5 +1057,14 @@
     "MovieFileDeletedTooltip": "영화 파일 삭제",
     "Clone": "닫기",
     "EditReleaseProfile": "지연 프로필 편집",
-    "AllTitles": "모든 파일"
+    "AllTitles": "모든 파일",
+    "AppUpdated": "{appName} 업데이트",
+    "AddIndexerImplementation": "인덱서 추가 - {implementationName}",
+    "Any": "모두",
+    "AddConnection": "연결 추가",
+    "AddConnectionImplementation": "연결 추가 - {implementationName}",
+    "AddDownloadClientImplementation": "다운로드 클라이언트 추가 - {implementationName}",
+    "ApiKeyValidationHealthCheckMessage": "API 키를 {length}자 이상으로 업데이트하세요. 설정 또는 구성 파일을 통해 이 작업을 수행할 수 있습니다.",
+    "AppUpdatedVersion": "{appName}이 버전 `{version}`으로 업데이트되었습니다. 최신 변경 사항을 받으려면 {appName}을 다시 로드해야 합니다",
+    "IndexerSettingsRejectBlocklistedTorrentHashesHelpText": "해시에 의해 토렌트가 차단된 경우 일부 인덱서의 RSS/검색 중에 토렌트가 제대로 거부되지 않을 수 있습니다. 이 기능을 활성화하면 토렌트를 가져온 후 클라이언트로 전송하기 전에 토렌트를 거부할 수 있습니다."
 }

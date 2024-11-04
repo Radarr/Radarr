@@ -1069,5 +1069,6 @@
     "ShowPhysicalRelease": "物理的なリリース日",
     "ShowPhysicalReleaseHelpText": "ポスターの下にリリース日を表示する",
     "ShowDigitalReleaseHelpText": "ポスターの下にリリース日を表示する",
-    "FolderNameTokens": "ファイル名トークン"
+    "FolderNameTokens": "ファイル名トークン",
+    "Clone": "閉じる"
 }

@@ -1843,5 +1843,6 @@
     "MetadataSettingsMovieMetadataCollectionName": "Nom de la collection de films",
     "MetadataSettingsMovieMetadataUrl": "Lien des métadonnées du film",
     "InCinemasMovieAvailabilityDescription": "Les films sont considérés comme disponibles dès leur sortie en salles.",
-    "Disposition": "Disposition"
+    "Disposition": "Disposition",
+    "FileBrowser": "Explorateur de fichiers"
 }
