@@ -1787,5 +1787,6 @@
     "OnFileUpgrade": "При обновлении файла",
     "AnnouncedMovieAvailabilityDescription": "Фильмы считаются доступными, как только они добавляются в {appName}.",
     "CountCustomFormatsSelected": "{count} пользовательских форматов выбрано",
-    "CustomFormatsSpecificationExceptLanguage": "Исключить язык"
+    "CustomFormatsSpecificationExceptLanguage": "Исключить язык",
+    "FileBrowser": "Файловый браузер"
 }

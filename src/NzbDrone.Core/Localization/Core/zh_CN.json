@@ -1851,5 +1851,6 @@
     "MetadataXmbcSettingsMovieMetadataHelpText": "包含电影所有元数据的 .nfo 文件",
     "MetadataSettingsMovieImages": "电影图片",
     "MetadataXmbcSettingsMovieMetadataNfoHelpText": "将元数据写入 movie.nfo 而非默认的 <movie-filename>.nfo",
-    "MetadataXmbcSettingsMovieMetadataUrlHelpText": "在 .nfo 文件中包含电影的 TMDb 和 IMDb URLs"
+    "MetadataXmbcSettingsMovieMetadataUrlHelpText": "在 .nfo 文件中包含电影的 TMDb 和 IMDb URLs",
+    "FileBrowser": "文件浏览器"
 }

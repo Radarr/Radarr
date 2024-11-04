@@ -1854,5 +1854,6 @@
     "MetadataSettingsMovieMetadataUrl": "URL de los metadatos de la película",
     "MetadataSettingsMovieMetadataNfo": "Usar película.nfo",
     "MetadataXmbcSettingsMovieMetadataUrlHelpText": "Incluye las URLs de TMDb e IMDb de la película en el .nfo",
-    "MetadataXmbcSettingsMovieMetadataNfoHelpText": "Escribe los metadatos en película.nfo en lugar de al archivo <nombreArchivo-película>.nfo predeterminado"
+    "MetadataXmbcSettingsMovieMetadataNfoHelpText": "Escribe los metadatos en película.nfo en lugar de al archivo <nombreArchivo-película>.nfo predeterminado",
+    "FileBrowser": "Explorador de archivos"
 }

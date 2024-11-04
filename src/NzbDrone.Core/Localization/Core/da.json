@@ -1091,5 +1091,6 @@
     "ShowDigitalRelease": "Vis biografens udgivelsesdato",
     "ShowDigitalReleaseHelpText": "Vis udgivelsesdato under plakat",
     "ShowPhysicalRelease": "Fysisk udgivelsesdato",
-    "FolderNameTokens": "Filnavn tokens"
+    "FolderNameTokens": "Filnavn tokens",
+    "Clone": "Luk"
 }

@@ -1761,5 +1761,6 @@
     "FolderNameTokens": "Tiedostonimen muuttujat",
     "DefaultNotFoundMessage": "Lienet eksyksissä, koska täällä ei ole mitään nähtävää.",
     "ToggleMonitoredToUnmonitored": "Valvotaan (lopeta painamalla)",
-    "ToggleUnmonitoredToMonitored": "Ei valvota (aloita painamalla)"
+    "ToggleUnmonitoredToMonitored": "Ei valvota (aloita painamalla)",
+    "FileBrowser": "Tiedostoselain"
 }

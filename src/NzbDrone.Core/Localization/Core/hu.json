@@ -1445,5 +1445,6 @@
     "FolderNameTokens": "Fájlnév-tokenek",
     "DefaultNotFoundMessage": "Biztosan eltévedtél, nincs itt semmi látnivaló.",
     "ToggleMonitoredToUnmonitored": "Felügyelt, kattintson a figyelés megszüntetéséhez",
-    "ToggleUnmonitoredToMonitored": "Nem figyelt, kattintson a figyeléshez"
+    "ToggleUnmonitoredToMonitored": "Nem figyelt, kattintson a figyeléshez",
+    "FileBrowser": "Fájl Böngésző"
 }
