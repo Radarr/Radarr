@@ -507,7 +507,7 @@
     "MovieAlreadyExcluded": "A film már ki lett zárva",
     "Movie": "Film",
     "MoveFiles": "Fájlok áthelyezése",
-    "MountCheckMessage": "A filmútvonalat tartalmazó mappa csak olvasható: ",
+    "MountMovieHealthCheckMessage": "A filmútvonalat tartalmazó mappa csak olvasható: ",
     "MoreInfo": "Több információ",
     "YouCanAlsoSearch": "Kereshetsz a film TMDb azonosítójával vagy IMDb azonosítójával is. Például. \"tmdb: 71663\"",
     "MonitorMovie": "Film Monitorozása",

@@ -35,7 +35,7 @@
     "NoChanges": "Nessun Cambiamento",
     "NoChange": "Nessun Cambio",
     "MovieNaming": "Nomi dei Film",
-    "MountCheckMessage": "La destinazione contenente il percorso di un film è montata in sola lettura: ",
+    "MountMovieHealthCheckMessage": "La destinazione contenente il percorso di un film è montata in sola lettura: ",
     "MonitoredOnly": "Solo Monitorati",
     "Monitor": "Segui",
     "MediaManagementSettingsSummary": "Impostazioni di ridenominazione e gestione file",

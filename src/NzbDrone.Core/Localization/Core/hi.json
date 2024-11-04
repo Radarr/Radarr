@@ -463,7 +463,7 @@
     "MinutesSixty": "60 मिनट: {0}",
     "Missing": "लापता",
     "MoreDetails": "अधिक जानकारी",
-    "MountCheckMessage": "मूवी पथ पर माउंट माउंट केवल पढ़ने योग्य है: ",
+    "MountMovieHealthCheckMessage": "मूवी पथ पर माउंट माउंट केवल पढ़ने योग्य है: ",
     "MovieIndex": "मूवी इंडेक्स",
     "MovieInfoLanguageHelpText": "यूआई में मूवी की जानकारी के लिए {appName} जो भाषा का उपयोग करेगा",
     "MovieInfoLanguageHelpTextWarning": "ब्राउज़र रीलोड आवश्यक है",

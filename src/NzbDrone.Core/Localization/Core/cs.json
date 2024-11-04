@@ -141,7 +141,7 @@
     "Import": "Import",
     "Manual": "Manuál",
     "MinimumFreeSpace": "Minimální volné místo",
-    "MountCheckMessage": "Mount obsahující filmovou cestu je připojen jen pro čtení: ",
+    "MountMovieHealthCheckMessage": "Mount obsahující filmovou cestu je připojen jen pro čtení: ",
     "Announced": "Oznámeno",
     "AvailabilityDelayHelpText": "Množství času před nebo po dostupném datu pro vyhledání filmu",
     "ImportExistingMovies": "Importovat existující filmy",

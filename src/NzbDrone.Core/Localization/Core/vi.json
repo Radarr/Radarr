@@ -24,7 +24,7 @@
     "MediaManagementSettingsSummary": "Cài đặt đặt tên và quản lý tệp",
     "MinutesSixty": "60 phút: {0}",
     "MoreDetails": "Thêm chi tiết",
-    "MountCheckMessage": "Mount chứa đường dẫn phim được mount ở chế độ chỉ đọc: ",
+    "MountMovieHealthCheckMessage": "Mount chứa đường dẫn phim được mount ở chế độ chỉ đọc: ",
     "MovieID": "ID phim",
     "MovieIndex": "Mục lục phim",
     "MovieInfoLanguageHelpText": "Ngôn ngữ mà {appName} sẽ sử dụng cho Thông tin phim trong giao diện người dùng",

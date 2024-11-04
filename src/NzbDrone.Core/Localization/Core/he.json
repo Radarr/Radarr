@@ -273,7 +273,7 @@
     "MinutesSixty": "60 דקות: {0}",
     "Missing": "חָסֵר",
     "MoreDetails": "פרטים נוספים",
-    "MountCheckMessage": "הר המכיל נתיב סרט מותקן לקריאה בלבד: ",
+    "MountMovieHealthCheckMessage": "הר המכיל נתיב סרט מותקן לקריאה בלבד: ",
     "MovieFolderFormat": "פורמט תיקיית סרטים",
     "MovieID": "מזהה סרט",
     "MovieIndex": "אינדקס סרטים",

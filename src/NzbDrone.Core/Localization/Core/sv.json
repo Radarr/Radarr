@@ -199,7 +199,7 @@
     "MovieIndex": "Filmindex",
     "MovieEditor": "Filmredigerare",
     "Movie": "Film",
-    "MountCheckMessage": "Montering (eng. Mount) innehållande filmsökväg är monterad med endast Läs-behörighet: ",
+    "MountMovieHealthCheckMessage": "Montering (eng. Mount) innehållande filmsökväg är monterad med endast Läs-behörighet: ",
     "Warn": "Varna",
     "VideoCodec": "Video codec",
     "Unavailable": "Otillgänglig",

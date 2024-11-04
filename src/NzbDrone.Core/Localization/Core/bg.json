@@ -59,7 +59,7 @@
     "Month": "Месец",
     "MoreDetails": "Повече информация",
     "EditDelayProfile": "Редактиране на профил за забавяне",
-    "MountCheckMessage": "Монтажът, съдържащ път на филм, е монтиран само за четене: ",
+    "MountMovieHealthCheckMessage": "Монтажът, съдържащ път на филм, е монтиран само за четене: ",
     "MovieFolderFormat": "Формат на папка за филми",
     "MovieInfoLanguageHelpText": "Език, който {appName} ще използва за информация за филми в потребителския интерфейс",
     "IncludeCustomFormatWhenRenamingHelpText": "Включете във формат за преименуване на {Custom Formats}",

@@ -315,7 +315,7 @@
     "MinutesSixty": "60 분 : {0}",
     "Missing": "잃어버린",
     "Month": "달",
-    "MountCheckMessage": "동영상 경로가 포함된 마운트는 읽기 전용으로 마운트됩니다. ",
+    "MountMovieHealthCheckMessage": "동영상 경로가 포함된 마운트는 읽기 전용으로 마운트됩니다. ",
     "MovieID": "영화 ID",
     "MovieIndex": "영화 색인",
     "MovieInfoLanguageHelpText": "{appName}가 UI의 영화 정보에 사용할 언어",

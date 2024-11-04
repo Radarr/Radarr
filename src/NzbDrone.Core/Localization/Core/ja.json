@@ -315,7 +315,7 @@
     "Missing": "行方不明",
     "Month": "月",
     "MoreDetails": "詳細",
-    "MountCheckMessage": "ムービーパスを含むマウントは読み取り専用でマウントされます。 ",
+    "MountMovieHealthCheckMessage": "ムービーパスを含むマウントは読み取り専用でマウントされます。 ",
     "MovieFolderFormat": "ムービーフォルダ形式",
     "MovieID": "映画ID",
     "MovieIndex": "映画インデックス",

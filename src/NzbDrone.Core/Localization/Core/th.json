@@ -426,7 +426,7 @@
     "Missing": "หายไป",
     "Month": "เดือน",
     "MoreDetails": "รายละเอียดเพิ่มเติม",
-    "MountCheckMessage": "เมาท์ที่มีเส้นทางภาพยนตร์ถูกเมาท์แบบอ่านอย่างเดียว: ",
+    "MountMovieHealthCheckMessage": "เมาท์ที่มีเส้นทางภาพยนตร์ถูกเมาท์แบบอ่านอย่างเดียว: ",
     "MovieID": "รหัสภาพยนตร์",
     "MovieIndex": "ดัชนีภาพยนตร์",
     "MovieInfoLanguageHelpText": "ภาษาที่ {appName} จะใช้สำหรับข้อมูลภาพยนตร์ใน UI",

@@ -61,7 +61,7 @@
     "DeleteTag": "Usuń tag",
     "IncludeCustomFormatWhenRenaming": "Uwzględnij format niestandardowy podczas zmiany nazwy",
     "LoadingMovieExtraFilesFailed": "Ładowanie dodatkowych plików filmowych nie powiodło się",
-    "MountCheckMessage": "Montaż zawierający ścieżkę filmu jest montowany tylko do odczytu: ",
+    "MountMovieHealthCheckMessage": "Montaż zawierający ścieżkę filmu jest montowany tylko do odczytu: ",
     "SupportedListsMovie": "{appName} obsługuje wszystkie listy filmów RSS, jak również wymienione poniżej.",
     "RecyclingBinHelpText": "Pliki filmowe trafią tutaj po usunięciu, a nie na stałe",
     "Restore": "Przywracać",

@@ -155,7 +155,7 @@
     "MovieEditor": "Editor de filmes",
     "Movie": "Filme",
     "MoveFiles": "Mover ficheiros",
-    "MountCheckMessage": "O volume que contém um caminho de filme é somente leitura: ",
+    "MountMovieHealthCheckMessage": "O volume que contém um caminho de filme é somente leitura: ",
     "MoreInfo": "Mais informações",
     "Month": "Mês",
     "MonitorMovie": "Monitorar filme",

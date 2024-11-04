@@ -208,7 +208,7 @@
     "MarkAsFailed": "Başarısız olarak işaretle",
     "MaximumSizeHelpText": "MB cinsinden alınacak bir sürüm için maksimum boyut. Sınırsız olarak ayarlamak için sıfıra ayarlayın",
     "MediaManagementSettings": "Medya Yönetimi Ayarları",
-    "MountCheckMessage": "Bir film yolu içeren bağlama, salt okunur olarak bağlanır: ",
+    "MountMovieHealthCheckMessage": "Bir film yolu içeren bağlama, salt okunur olarak bağlanır: ",
     "RadarrTags": "{appName} Etiketleri",
     "VideoCodec": "Video Codec",
     "NoLimitForAnyRuntime": "Herhangi bir çalışma zamanı için sınır yok",

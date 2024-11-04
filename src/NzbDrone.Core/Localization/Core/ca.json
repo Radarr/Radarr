@@ -606,7 +606,7 @@
     "MonitorMovie": "Monitora pel·lícula",
     "MoreDetails": "Més detalls",
     "MoreInfo": "Més informació",
-    "MountCheckMessage": "El muntatge que conté una ruta de pel·lícula es munta com a només de lectura: ",
+    "MountMovieHealthCheckMessage": "El muntatge que conté una ruta de pel·lícula es munta com a només de lectura: ",
     "MoveFiles": "Mou arxius",
     "MovieCollectionRootFolderMissingRootHealthCheckMessage": "Falta la carpeta arrel per a la col·lecció de pel·lícules: {rootFolderInfo}",
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "Falten diverses carpetes arrel per a les col·leccions de pel·lícules: {rootFoldersInfo}",

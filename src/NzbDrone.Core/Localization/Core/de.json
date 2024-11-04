@@ -77,7 +77,7 @@
     "Monitor": "Beobachten",
     "Month": "Monat",
     "MoreInfo": "Mehr Infos",
-    "MountCheckMessage": "Der Einhängepunkt, welcher einen Filmpfad enthält, ist schreibgeschützt eingehängt: ",
+    "MountMovieHealthCheckMessage": "Der Einhängepunkt, welcher einen Filmpfad enthält, ist schreibgeschützt eingehängt: ",
     "Movie": "Film",
     "MovieEditor": "Filmeditor",
     "MovieIndex": "Filmindex",

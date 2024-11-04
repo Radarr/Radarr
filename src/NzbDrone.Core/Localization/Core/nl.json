@@ -148,7 +148,7 @@
     "ProxyCheckResolveIpMessage": "Achterhalen van het IP-adres voor de geconfigureerde proxy host {proxyHostName} is mislukt",
     "ProxyCheckFailedToTestMessage": "Testen van proxy is mislukt: {url}",
     "ProxyCheckBadRequestMessage": "Testen van proxy is mislukt. Statuscode: {statusCode}",
-    "MountCheckMessage": "Een mount dat een film pad bevat is gemount als alleen-lezen: ",
+    "MountMovieHealthCheckMessage": "Een mount dat een film pad bevat is gemount als alleen-lezen: ",
     "Wanted": "Gezocht",
     "UpdateSelected": "Selectie Bijwerken",
     "UiSettingsSummary": "Kalender, datum en tijd, kleurenblindheid en taal instellingen",

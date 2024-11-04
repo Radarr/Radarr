@@ -279,7 +279,7 @@
     "Missing": "Puuttuu",
     "Month": "Kuukausi",
     "MoreDetails": "Lisätietoja",
-    "MountCheckMessage": "Kohteen sijainnin sisältävä media on kytketty vain luku -tilassa: ",
+    "MountMovieHealthCheckMessage": "Kohteen sijainnin sisältävä media on kytketty vain luku -tilassa: ",
     "MovieID": "Elokuvan tunnus",
     "MovieIndex": "Elokuvakirjasto",
     "MovieInfoLanguageHelpText": "{appName}in käyttöliittymässä näkyvien elokuvatietojen kieli.",

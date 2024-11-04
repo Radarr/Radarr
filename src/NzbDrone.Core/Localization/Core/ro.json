@@ -111,7 +111,7 @@
     "MovieEditor": "Editor Filme",
     "Movie": "Film",
     "MoveFiles": "Mută Fișiere",
-    "MountCheckMessage": "Calea ce conține filme este montată în mod de read-only: ",
+    "MountMovieHealthCheckMessage": "Calea ce conține filme este montată în mod de read-only: ",
     "MoreInfo": "Mai multe informații",
     "Month": "Lună",
     "MonitoredOnly": "Doar monitorizate",

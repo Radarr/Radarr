@@ -494,7 +494,7 @@
     "MoveFolders2": "Deseja mover os arquivos de filmes de \"{0}\" para \"{1}\"?",
     "MoveFolders1": "Deseja mover as pastas de filmes para \"{0}\"?",
     "MoveFiles": "Mover arquivos",
-    "MountCheckMessage": "A montagem que contém um caminho de filme é montada somente para leitura: ",
+    "MountMovieHealthCheckMessage": "A montagem que contém um caminho de filme é montada somente para leitura: ",
     "MoreInfo": "Mais informações",
     "MoreDetails": "Mais detalhes",
     "Months": "Meses",

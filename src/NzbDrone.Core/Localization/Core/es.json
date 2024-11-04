@@ -168,7 +168,7 @@
     "PhysicalRelease": "Estreno Físico",
     "OutputPath": "Ruta de salida",
     "MovieTitle": "Título de la Película",
-    "MountCheckMessage": "El punto de montaje que contiene la ruta de una película es de solo lectura: ",
+    "MountMovieHealthCheckMessage": "El punto de montaje que contiene la ruta de una película es de solo lectura: ",
     "MonitoredOnly": "Solo monitorizados",
     "MetadataSettingsMovieSummary": "Crea archivos de metadatos cuando las películas se importen o actualicen",
     "MediaManagementSettingsSummary": "Ajustes de nombrado y gestión de archivos",

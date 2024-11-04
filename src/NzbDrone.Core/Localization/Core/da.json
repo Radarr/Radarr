@@ -362,7 +362,7 @@
     "Missing": "Mangler",
     "Month": "Måned",
     "MoreDetails": "Flere detaljer",
-    "MountCheckMessage": "Mount, der indeholder en filmsti, er monteret skrivebeskyttet: ",
+    "MountMovieHealthCheckMessage": "Mount, der indeholder en filmsti, er monteret skrivebeskyttet: ",
     "MovieFolderFormat": "Filmmappeformat",
     "MovieID": "Film-ID",
     "MovieIndex": "Filmindeks",

@@ -9,7 +9,7 @@
     "SuggestTranslationChange": "Legg til þýðingabreytingu",
     "IndexerStatusCheckAllClientMessage": "Allir verðtryggingaraðilar eru ekki tiltækir vegna bilana",
     "Level": "Stig",
-    "MountCheckMessage": "Fjall sem inniheldur kvikmyndaslóð er aðeins skrifvarið: ",
+    "MountMovieHealthCheckMessage": "Fjall sem inniheldur kvikmyndaslóð er aðeins skrifvarið: ",
     "MovieInfoLanguageHelpTextWarning": "Endurhlaða vafra krafist",
     "ProtocolHelpText": "Veldu hvaða samskiptareglur (s) á að nota og hver er valinn þegar þú velur á milli annars jafnra útgáfa",
     "SupportedDownloadClients": "{appName} styður hvaða niðurhals viðskiptavinur sem notar Newznab staðalinn, auk annarra niðurhals viðskiptavina sem taldir eru upp hér að neðan.",

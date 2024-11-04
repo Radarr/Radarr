@@ -797,7 +797,7 @@
     "Age": "年龄",
     "CustomFormatHelpText": "{appName} 会根据满足自定义格式与否给每个发布版本评分，如果一个新的发布版本有更高的分数且有相同或更高的质量，则 {appName} 会抓取该发布版本。",
     "LookingForReleaseProfiles2": "代替。",
-    "MountCheckMessage": "包含电影路径的挂载点被设置为只读： ",
+    "MountMovieHealthCheckMessage": "包含电影路径的挂载点被设置为只读： ",
     "NoAlternativeTitles": "没有其他标题。",
     "PreviewRenameHelpText": "小提示：要预览重命名效果，选择 “取消” ，然后点击任何电影标题并使用",
     "PtpOldSettingsCheckMessage": "以下 PassThePopcorn 索引器的设置已弃用，应更新为：{0}",

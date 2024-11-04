@@ -223,7 +223,7 @@
     "Monday": "Понеділок",
     "MonitoredHelpText": "Завантажте фільм, якщо є",
     "MoreDetails": "Детальніше",
-    "MountCheckMessage": "Монтування, що містить шлях до фільму, монтується лише для читання: ",
+    "MountMovieHealthCheckMessage": "Монтування, що містить шлях до фільму, монтується лише для читання: ",
     "MovieIsRecommend": "Фільм рекомендовано на основі останнього додавання",
     "MovieIsOnImportExclusionList": "Фільм у списку винятків для імпорту",
     "MultiLanguage": "Багатомовність",

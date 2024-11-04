@@ -31,7 +31,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             {
                 return new HealthCheck(GetType(),
                     HealthCheckResult.Error,
-                    $"{_localizationService.GetLocalizedString("MountCheckMessage")}{string.Join(", ", mounts.Select(m => $"{m.Item1.Name} ({m.Item2})"))}",
+                    $"{_localizationService.GetLocalizedString("MountMovieHealthCheckMessage")}{string.Join(", ", mounts.Select(m => $"{m.Item1.Name} ({m.Item2})"))}",
                     "#movie-mount-ro");
             }
 

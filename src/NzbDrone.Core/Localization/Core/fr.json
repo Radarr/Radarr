@@ -138,7 +138,7 @@
     "MovieIndex": "Index des films",
     "MovieEditor": "Éditeur de films",
     "Movie": "Film",
-    "MountCheckMessage": "Le montage contenant un chemin de film est monté en lecture seule : ",
+    "MountMovieHealthCheckMessage": "Le montage contenant un chemin de film est monté en lecture seule : ",
     "MoreInfo": "Plus d'informations",
     "Month": "Mois",
     "ImportListsSettingsSummary": "Importer depuis une autre instance {appName} ou des listes Trakt et gérer les exclusions de listes",
