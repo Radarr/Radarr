@@ -1263,5 +1263,8 @@
     "CountCustomFormatsSelected": "{count} formatos selecionados",
     "BlackholeFolderHelpText": "Pasta em que {appName} guardará o ficheiro {extension}.",
     "AnnouncedMovieAvailabilityDescription": "Filmes estão disponíveis assim que forem adicionados a {appName}.",
-    "CountVotes": "{votes} votos"
+    "CountVotes": "{votes} votos",
+    "Completed": "Completo",
+    "Delay": "Atraso",
+    "DownloadClientUnavailable": "O cliente de transferências está indisponível"
 }

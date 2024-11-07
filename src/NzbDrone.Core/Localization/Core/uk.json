@@ -1286,5 +1286,8 @@
     "ShowPhysicalRelease": "Дата фізичного випуску",
     "ShowPhysicalReleaseHelpText": "Показати дату випуску під плакатом",
     "FolderNameTokens": "Маркери імен файлів",
-    "DefaultNotFoundMessage": "Ви, мабуть, заблукали, тут нічого не видно."
+    "DefaultNotFoundMessage": "Ви, мабуть, заблукали, тут нічого не видно.",
+    "Completed": "Завершено",
+    "Delay": "Затримка",
+    "DownloadClientUnavailable": "Клієнт завантажувача недоступний"
 }

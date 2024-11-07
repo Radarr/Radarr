@@ -1069,5 +1069,7 @@
     "FolderNameTokens": "โทเค็นชื่อไฟล์",
     "Clone": "ปิด",
     "AllTitles": "เอกสารทั้งหมด",
-    "EditReleaseProfile": "แก้ไขโปรไฟล์ความล่าช้า"
+    "EditReleaseProfile": "แก้ไขโปรไฟล์ความล่าช้า",
+    "AddReleaseProfile": "แก้ไขโปรไฟล์ความล่าช้า",
+    "DownloadClientUnavailable": "ไม่สามารถดาวน์โหลดไคลเอนต์ได้"
 }

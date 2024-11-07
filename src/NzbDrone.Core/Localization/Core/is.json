@@ -1071,5 +1071,7 @@
     "FolderNameTokens": "Auðkenni skráarheita",
     "Clone": "Lokaðu",
     "EditReleaseProfile": "Breyta seinkunarprófíl",
-    "AllTitles": "Allar skrár"
+    "AllTitles": "Allar skrár",
+    "AddReleaseProfile": "Breyta seinkunarprófíl",
+    "DownloadClientUnavailable": "Niðurhalsþjónn er ekki tiltækur"
 }

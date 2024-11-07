@@ -1761,5 +1761,8 @@
     "DefaultNotFoundMessage": "Lienet eksyksissä, koska täällä ei ole mitään nähtävää.",
     "ToggleMonitoredToUnmonitored": "Valvotaan (lopeta painamalla)",
     "ToggleUnmonitoredToMonitored": "Ei valvota (aloita painamalla)",
-    "FileBrowser": "Tiedostoselain"
+    "FileBrowser": "Tiedostoselain",
+    "Completed": "Kokonaiset",
+    "Delay": "Viive",
+    "DownloadClientUnavailable": "Lataustyökalu ei ole käytettävissä"
 }

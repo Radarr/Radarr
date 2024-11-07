@@ -1116,5 +1116,7 @@
     "FolderNameTokens": "אסימונים לשם קובץ",
     "AllTitles": "כל הקבצים",
     "Clone": "סגור",
-    "EditReleaseProfile": "ערוך פרופיל עיכוב"
+    "EditReleaseProfile": "ערוך פרופיל עיכוב",
+    "AddReleaseProfile": "ערוך פרופיל עיכוב",
+    "DownloadClientUnavailable": "לקוח ההורדות אינו זמין"
 }

@@ -1071,5 +1071,7 @@
     "FolderNameTokens": "Токени за име на файл",
     "EditReleaseProfile": "Редактиране на профил за забавяне",
     "Clone": "Близо",
-    "AllTitles": "Всички файлове"
+    "AllTitles": "Всички файлове",
+    "AddReleaseProfile": "Редактиране на профил за забавяне",
+    "DownloadClientUnavailable": "Клиентът за изтегляне не е наличен"
 }

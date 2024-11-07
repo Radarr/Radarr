@@ -1232,5 +1232,7 @@
     "SmartReplaceHint": "Παύλα ή Κενό-Παύλα ανάλογα με το όνομα",
     "FolderNameTokens": "Διακριτικά ονόματος αρχείου",
     "DownloadIgnored": "Λήψη Εισήχθη",
-    "AllTitles": "Ολα τα αρχεία"
+    "AllTitles": "Ολα τα αρχεία",
+    "Completed": "Ολοκληρώθηκαν",
+    "DownloadClientUnavailable": "Ο πελάτης λήψης δεν είναι διαθέσιμος"
 }

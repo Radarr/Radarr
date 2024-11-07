@@ -1185,5 +1185,7 @@
     "ShowPhysicalReleaseHelpText": "Pokaż datę premiery pod plakatem",
     "YesterdayAt": "Wczoraj o {time}",
     "FolderNameTokens": "Tokeny nazw plików",
-    "Clone": "Zamknij"
+    "Clone": "Zamknij",
+    "Delay": "Opóźnienie",
+    "DownloadClientUnavailable": "Klient pobierania jest niedostępny"
 }

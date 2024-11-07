@@ -267,7 +267,7 @@
     "AlreadyInYourLibrary": "Deja în biblioteca dvs.",
     "BackupFolderHelpText": "Căile relative vor fi în directorul AppData al lui {appName}",
     "ClickToChangeMovie": "Faceți clic pentru a schimba filmul",
-    "CloneCustomFormat": "Clonați format personalizat",
+    "CloneCustomFormat": "Clonează format personalizat",
     "CopyUsingHardlinksHelpTextWarning": "Ocazional, blocarea fișierelor poate împiedica redenumirea fișierelor care sunt însămânțate. Puteți dezactiva temporar însămânțarea și puteți utiliza funcția de redenumire a lui {appName} ca soluție.",
     "CustomFormatHelpText": "{appName} marchează fiecare versiune folosind suma scorurilor pentru potrivirea formatelor personalizate. Dacă o nouă versiune ar îmbunătăți scorul, la aceeași calitate sau mai bună, atunci {appName} îl va lua.",
     "UpgradeUntilMovieHelpText": "Odată atinsă această calitate, {appName} nu va mai descărca filme",
@@ -588,8 +588,8 @@
     "Real": "Real",
     "ClickToChangeLanguage": "Faceți clic pentru a schimba limba",
     "ClickToChangeQuality": "Faceți clic pentru a schimba calitatea",
-    "CloneIndexer": "Clonă Indexer",
-    "CloneProfile": "Clonați profil",
+    "CloneIndexer": "Clonează Indexer",
+    "CloneProfile": "Clonează Profil",
     "CloseCurrentModal": "Închideți modul curent",
     "ColonReplacement": "Înlocuirea colonului",
     "ColonReplacementFormatHelpText": "Schimbați modul în care {appName} gestionează înlocuirea colonului",
@@ -992,7 +992,7 @@
     "ApplyChanges": "Aplicați modificări",
     "AnnouncedMovieDescription": "Filmul este anunțat",
     "AutomaticAdd": "Adăugare automată",
-    "CloneCondition": "Clonați condiție",
+    "CloneCondition": "Clonează condiție",
     "AllTitles": "Toate titlurile",
     "ApplicationURL": "URL aplicație",
     "ApplyTagsHelpTextHowToApplyImportLists": "Cum se aplică etichete listelor de import selectate",
@@ -1148,5 +1148,8 @@
     "OnFileImport": "La import fișier",
     "OnFileUpgrade": "La actualizare fișier",
     "EditReleaseProfile": "Editați profilul de întârziere",
-    "Clone": "Închide"
+    "Clone": "Clonează",
+    "AddReleaseProfile": "Editați profilul de întârziere",
+    "Delay": "Întârziere",
+    "DownloadClientUnavailable": "Client de descărcare indisponibil"
 }

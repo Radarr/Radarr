@@ -1384,5 +1384,8 @@
     "ShowDigitalReleaseHelpText": "Mostra la data de llançament sota el cartell",
     "Logout": "Tanca la sessió",
     "FolderNameTokens": "Testimonis de nom de fitxer",
-    "DefaultNotFoundMessage": "Deu estar perdut, no hi ha res a veure aquí."
+    "DefaultNotFoundMessage": "Deu estar perdut, no hi ha res a veure aquí.",
+    "Completed": "Completat",
+    "Delay": "Retard",
+    "DownloadClientUnavailable": "El client de descàrrega no està disponible"
 }
