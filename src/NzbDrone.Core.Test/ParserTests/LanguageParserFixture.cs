@@ -537,6 +537,16 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().Contain(Language.German);
         }
 
+        [TestCase("Movie.Title.2025.Original.1080P.WEB.H264-RlsGrp")]
+        [TestCase("Movie.Title.2025.Orig.1080P.WEB.H264-RlsGrp")]
+        [TestCase("Movie Title 2025 [HEVC, HDR10, Dolby Vision, WEB-DL 2160p] [Hybrid] 3 XX + Original")]
+        public void should_parse_original_title_from_release_name(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle);
+            result.Languages.Count.Should().Be(1);
+            result.Languages.Should().Contain(Language.Original);
+        }
+
         [TestCase("The.Movie.Name.2023.German.ML.EAC3.720p.NF.WEB.H264-RlsGrp")]
         public void should_add_original_language_and_english_to_german_release_with_ml_tag(string postTitle)
         {
