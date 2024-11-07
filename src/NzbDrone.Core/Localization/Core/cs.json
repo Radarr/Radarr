@@ -1200,5 +1200,8 @@
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "Několik kořenových adresářů chybí pro seznamy importu: {rootFoldersInfo}",
     "FolderNameTokens": "Tokeny názvů souborů",
     "Letterboxd": "Letterboxd",
-    "DefaultNotFoundMessage": "Asi jsi se ztratil, není tu nic k vidění."
+    "DefaultNotFoundMessage": "Asi jsi se ztratil, není tu nic k vidění.",
+    "Completed": "Dokončit",
+    "Delay": "Zpoždění",
+    "DownloadClientUnavailable": "Stahovací klient není k dispozici"
 }

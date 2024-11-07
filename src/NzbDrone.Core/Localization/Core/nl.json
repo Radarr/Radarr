@@ -1237,5 +1237,8 @@
     "ShowPhysicalReleaseHelpText": "Laat releasedatum zien onder poster",
     "FolderNameTokens": "Bestandsnaam Tokens",
     "CountVotes": "{votes} Stemmen",
-    "AnnouncedMovieAvailabilityDescription": "Films worden als beschikbaar getoond zodra deze zijn toegevoegd aan {appName}."
+    "AnnouncedMovieAvailabilityDescription": "Films worden als beschikbaar getoond zodra deze zijn toegevoegd aan {appName}.",
+    "Completed": "Compleet",
+    "Delay": "Uitstel",
+    "DownloadClientUnavailable": "Downloader is onbeschikbaar"
 }

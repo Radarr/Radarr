@@ -1843,5 +1843,8 @@
     "MetadataSettingsMovieMetadataUrl": "Lien des métadonnées du film",
     "InCinemasMovieAvailabilityDescription": "Les films sont considérés comme disponibles dès leur sortie en salles.",
     "Disposition": "Disposition",
-    "FileBrowser": "Explorateur de fichiers"
+    "FileBrowser": "Explorateur de fichiers",
+    "Completed": "Terminé",
+    "Delay": "Délai",
+    "DownloadClientUnavailable": "Le client de téléchargement n'est pas disponible"
 }

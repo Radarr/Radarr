@@ -1069,5 +1069,7 @@
     "FolderNameTokens": "फ़ाइल नाम टोकन",
     "Clone": "बंद करे",
     "AllTitles": "सारे दस्तावेज",
-    "EditReleaseProfile": "देरी प्रोफ़ाइल संपादित करें"
+    "EditReleaseProfile": "देरी प्रोफ़ाइल संपादित करें",
+    "DownloadClientUnavailable": "डाउनलोड क्लाइंट अनुपलब्ध है",
+    "AddReleaseProfile": "देरी प्रोफ़ाइल संपादित करें"
 }

@@ -282,7 +282,7 @@
     "SelectFolder": "Seleccionar carpeta",
     "SearchOnAdd": "Buscar al Añadir",
     "SearchMovie": "Buscar Película",
-    "RecentFolders": "Carpetas Recientes",
+    "RecentFolders": "Carpetas recientes",
     "QuickImport": "Mover Automáticamente",
     "PosterSize": "Tamaño de póster",
     "Posters": "Pósteres",
@@ -1854,5 +1854,13 @@
     "MetadataSettingsMovieMetadataNfo": "Usar película.nfo",
     "MetadataXmbcSettingsMovieMetadataUrlHelpText": "Incluye las URLs de TMDb e IMDb de la película en el .nfo",
     "MetadataXmbcSettingsMovieMetadataNfoHelpText": "Escribe los metadatos en película.nfo en lugar de al archivo <nombreArchivo-película>.nfo predeterminado",
-    "FileBrowser": "Explorador de archivos"
+    "FileBrowser": "Explorador de archivos",
+    "ManageFormats": "Gestionar formatos",
+    "Completed": "Completados",
+    "Delay": "Retardo",
+    "FavoriteFolderAdd": "Añadir carpeta favorita",
+    "FavoriteFolders": "Carpetas favoritas",
+    "Warning": "Aviso",
+    "FavoriteFolderRemove": "Eliminar carpeta favorita",
+    "DownloadClientUnavailable": "Cliente de descarga no disponible"
 }

@@ -251,5 +251,7 @@
     "Discord": "Discord",
     "TMDb": "TMDb",
     "EditReleaseProfile": "新增延時配置",
-    "Reason": "季"
+    "Reason": "季",
+    "Delay": "延遲",
+    "AddReleaseProfile": "新增延時配置"
 }

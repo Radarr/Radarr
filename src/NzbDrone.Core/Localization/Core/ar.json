@@ -1074,5 +1074,7 @@
     "FolderNameTokens": "رموز اسم الملف",
     "EditReleaseProfile": "تحرير ملف تعريف التأخير",
     "Clone": "قريب",
-    "AllTitles": "كل الملفات"
+    "AllTitles": "كل الملفات",
+    "AddReleaseProfile": "تحرير ملف تعريف التأخير",
+    "DownloadClientUnavailable": "عميل التنزيل غير متوفر"
 }

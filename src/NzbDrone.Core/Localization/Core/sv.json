@@ -1097,5 +1097,8 @@
     "FolderNameTokens": "Filnamn tokens",
     "Clone": "Avsluta",
     "AllTitles": "Samtliga filer",
-    "EditReleaseProfile": "Redigera fördröjningsprofil"
+    "EditReleaseProfile": "Redigera fördröjningsprofil",
+    "AddReleaseProfile": "Redigera fördröjningsprofil",
+    "Delay": "Fördröj",
+    "DownloadClientUnavailable": "Nedladdningsklient är otillgänglig"
 }

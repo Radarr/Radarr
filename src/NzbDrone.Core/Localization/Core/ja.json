@@ -1069,5 +1069,9 @@
     "ShowPhysicalReleaseHelpText": "ポスターの下にリリース日を表示する",
     "ShowDigitalReleaseHelpText": "ポスターの下にリリース日を表示する",
     "FolderNameTokens": "ファイル名トークン",
-    "Clone": "閉じる"
+    "Clone": "閉じる",
+    "AllTitles": "すべてのファイル",
+    "EditReleaseProfile": "遅延プロファイルの編集",
+    "DownloadClientUnavailable": "ダウンロードクライアントは利用できません",
+    "AddReleaseProfile": "遅延プロファイルの編集"
 }

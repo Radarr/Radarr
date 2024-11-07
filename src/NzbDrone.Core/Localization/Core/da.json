@@ -1091,5 +1091,9 @@
     "ShowDigitalReleaseHelpText": "Vis udgivelsesdato under plakat",
     "ShowPhysicalRelease": "Fysisk udgivelsesdato",
     "FolderNameTokens": "Filnavn tokens",
-    "Clone": "Luk"
+    "Clone": "Luk",
+    "Delay": "Forsinkelse",
+    "EditReleaseProfile": "Rediger forsinkelsesprofil",
+    "DownloadClientUnavailable": "Downloadklienten er ikke tilgængelig",
+    "AddReleaseProfile": "Rediger forsinkelsesprofil"
 }

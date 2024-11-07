@@ -1468,5 +1468,8 @@
     "DefaultNotFoundMessage": "Sie müssen verloren sein, hier gibt es nichts zu sehen.",
     "ToggleMonitoredToUnmonitored": "Überwacht, klicken Sie, um die Überwachung aufzuheben",
     "ToggleUnmonitoredToMonitored": "Nicht überwacht, klicke zum Überwachen",
-    "DownloadIgnored": "Importiere herunterladen"
+    "DownloadIgnored": "Importiere herunterladen",
+    "Completed": "Vollständig",
+    "Delay": "Verzögerung",
+    "DownloadClientUnavailable": "Downloader ist nicht verfügbar"
 }

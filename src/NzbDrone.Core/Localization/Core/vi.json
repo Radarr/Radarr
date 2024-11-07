@@ -1108,5 +1108,8 @@
     "UnknownEventTooltip": "Sự kiện không rõ",
     "EditReleaseProfile": "Chỉnh sửa hồ sơ độ trễ",
     "Clone": "Đóng",
-    "AllTitles": "Tất cả các tệp"
+    "AllTitles": "Tất cả các tệp",
+    "DownloadClientUnavailable": "Ứng dụng khách tải xuống không khả dụng",
+    "AddReleaseProfile": "Chỉnh sửa hồ sơ độ trễ",
+    "EditConditionImplementation": "Thêm điều kiện - {implementationName}"
 }

@@ -1854,5 +1854,7 @@
     "MetadataXmbcSettingsMovieMetadataNfoHelpText": "Meta verileri varsayılan <film-dosyaadı>.nfo yerine movie.nfo'ya yaz",
     "MetadataXmbcSettingsMovieMetadataUrlHelpText": "TMDb ve IMDb film URL'lerini .nfo'ya ekleyin",
     "ToggleUnmonitoredToMonitored": "İzlenmiyor, izlemek için tıklayın",
-    "FileBrowser": "Dosya Yöneticisi"
+    "FileBrowser": "Dosya Yöneticisi",
+    "Completed": "Tamamla",
+    "DownloadClientUnavailable": "İndirme istemcisi kullanılamıyor"
 }

@@ -1469,5 +1469,8 @@
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "Diverse cartelle principale sono perse per l’importazione: {rootFoldersInfo}",
     "ShowTraktRatingPosterHelpText": "Mostra valutazione Tomato sotta la locandina",
     "FolderNameTokens": "Token nome file",
-    "DefaultNotFoundMessage": "Ti devi essere perso, non c'è nulla da vedere qui."
+    "DefaultNotFoundMessage": "Ti devi essere perso, non c'è nulla da vedere qui.",
+    "Completed": "Completo",
+    "Delay": "Ritardo",
+    "DownloadClientUnavailable": "Il client di download non è disponibile"
 }

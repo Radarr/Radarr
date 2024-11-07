@@ -906,7 +906,7 @@
     "MovieExcludedFromAutomaticAdd": "电影已被排除在自动添加之外",
     "MovieDetailsPreviousMovie": "电影详情：前作",
     "MovieDetailsNextMovie": "电影详情：续作",
-    "MovieChat": "电影聊天",
+    "MovieChat": "Movie Chat",
     "MovieAlreadyExcluded": "电影已排除",
     "Mode": "模式",
     "MinimumLimits": "最小限制",
@@ -1851,5 +1851,9 @@
     "MetadataSettingsMovieImages": "电影图片",
     "MetadataXmbcSettingsMovieMetadataNfoHelpText": "将元数据写入 movie.nfo 而非默认的 <movie-filename>.nfo",
     "MetadataXmbcSettingsMovieMetadataUrlHelpText": "在 .nfo 文件中包含电影的 TMDb 和 IMDb URLs",
-    "FileBrowser": "文件浏览器"
+    "FileBrowser": "文件浏览器",
+    "Completed": "完成",
+    "Delay": "延迟",
+    "DownloadClientUnavailable": "下载客户端不可用",
+    "Fallback": "备选"
 }

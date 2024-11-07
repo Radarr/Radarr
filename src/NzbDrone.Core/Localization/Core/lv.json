@@ -23,5 +23,6 @@
     "EditConditionImplementation": "Pievienot Nosacījumu - {implementationName}",
     "ExportCustomFormat": "Pievienot Pielāgotu Formātu",
     "New": "Jauns",
-    "EditReleaseProfile": "Pievienot Aizkaves Profilu"
+    "EditReleaseProfile": "Pievienot Aizkaves Profilu",
+    "AddReleaseProfile": "Pievienot Aizkaves Profilu"
 }
