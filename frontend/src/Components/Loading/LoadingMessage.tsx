@@ -20,6 +20,12 @@ const messages = [
   "Don't forget to tip your waitress",
   'Apply directly to the forehead',
   'Loading Battlestation',
+  'Please wait while the minions do their work…',
+  'Please wait… we are testing your patience.',
+  'Loading… because why not?',
+  'Rolling out the red carpet…',
+  'Popcorn ready? Here we go!',
+  'Editing the final cut…',
 ];
 
 let message: string | null = null;
