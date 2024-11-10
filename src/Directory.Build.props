@@ -37,6 +37,11 @@
         CS1591: Missing XML comment for publicly visible type or member 'Type_or_Member'
     -->
     <NoWarn>$(NoWarn);CS1591</NoWarn>
+
+    <!-- Add more shared configuration properties -->
+    <PropertyGroup>
+        <NetCoreVersion>6.0</NetCoreVersion>
+    </PropertyGroup>
   </PropertyGroup>
 
   <PropertyGroup>

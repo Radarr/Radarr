@@ -80,3 +80,11 @@ body:
     options:
     - label: I have read and followed the steps in the wiki link above and provided the required trace logs - the logs contain `trace` - that are relevant and show this issue.
       required: true
+- type: dropdown
+  attributes:
+    label: Impact Level
+    options:
+      - Critical
+      - High
+      - Medium
+      - Low
