@@ -444,6 +444,14 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Should().Contain(Language.Kannada);
         }
 
+        [TestCase("Movie Title (2024) Albanian 1080p HD AVC MP4 x264 .9.8GB TEAMTR")]
+        [TestCase("Movie.Title.2024.Albanian.1080p.AMZN.WEB-DL.DD+2.0.x264-Telly")]
+        public void should_parse_language_albanian(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Albanian);
+        }
+
         [TestCase("Movie.Title.en.sub")]
         [TestCase("Movie Title.eng.sub")]
         [TestCase("Movie.Title.eng.forced.sub")]
