@@ -277,6 +277,26 @@ namespace NzbDrone.Core.MediaFiles
 
             var extension = Path.GetExtension(fileInfo.Name);
 
+            if (FileExtensions.DangerousExtensions.Contains(extension))
+            {
+                return new List<ImportResult>
+                {
+                    new ImportResult(new ImportDecision(new LocalMovie { Path = fileInfo.FullName },
+                            new ImportRejection(ImportRejectionReason.DangerousFile, $"Caution: Found potentially dangerous file with extension: {extension}")),
+                        $"Caution: Found potentially dangerous file with extension: {extension}")
+                };
+            }
+
+            if (FileExtensions.ExecutableExtensions.Contains(extension))
+            {
+                return new List<ImportResult>
+                {
+                    new ImportResult(new ImportDecision(new LocalMovie { Path = fileInfo.FullName },
+                            new ImportRejection(ImportRejectionReason.ExecutableFile, $"Caution: Found executable file with extension: '{extension}'")),
+                        $"Caution: Found executable file with extension: '{extension}'")
+                };
+            }
+
             if (extension.IsNullOrWhiteSpace() || !MediaFileExtensions.Extensions.Contains(extension))
             {
                 _logger.Debug("[{0}] has an unsupported extension: '{1}'", fileInfo.FullName, extension);
@@ -334,6 +354,11 @@ namespace NzbDrone.Core.MediaFiles
         private ImportResult CheckEmptyResultForIssue(string folder)
         {
             var files = _diskProvider.GetFiles(folder, true);
+
+            if (files.Any(file => FileExtensions.DangerousExtensions.Contains(Path.GetExtension(file))))
+            {
+                return RejectionResult(ImportRejectionReason.DangerousFile, "Caution: Found potentially dangerous file");
+            }
 
             if (files.Any(file => FileExtensions.ExecutableExtensions.Contains(Path.GetExtension(file))))
             {
