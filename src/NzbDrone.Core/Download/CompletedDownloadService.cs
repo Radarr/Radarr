@@ -33,6 +33,7 @@ namespace NzbDrone.Core.Download
         private readonly IParsingService _parsingService;
         private readonly IMovieService _movieService;
         private readonly ITrackedDownloadAlreadyImported _trackedDownloadAlreadyImported;
+        private readonly IRejectedImportService _rejectedImportService;
         private readonly Logger _logger;
 
         public CompletedDownloadService(IEventAggregator eventAggregator,
@@ -42,6 +43,7 @@ namespace NzbDrone.Core.Download
                                         IParsingService parsingService,
                                         IMovieService movieService,
                                         ITrackedDownloadAlreadyImported trackedDownloadAlreadyImported,
+                                        IRejectedImportService rejectedImportService,
                                         Logger logger)
         {
             _eventAggregator = eventAggregator;
@@ -51,6 +53,7 @@ namespace NzbDrone.Core.Download
             _parsingService = parsingService;
             _movieService = movieService;
             _trackedDownloadAlreadyImported = trackedDownloadAlreadyImported;
+            _rejectedImportService = rejectedImportService;
             _logger = logger;
         }
 
@@ -159,10 +162,8 @@ namespace NzbDrone.Core.Download
             {
                 var firstResult = importResults.First();
 
-                if (firstResult.Result == ImportResultType.Rejected && firstResult.ImportDecision.LocalMovie == null)
+                if (_rejectedImportService.Process(trackedDownload, firstResult))
                 {
-                    trackedDownload.Warn(new TrackedDownloadStatusMessage(firstResult.Errors.First(), new List<string>()));
-
                     return;
                 }
             }

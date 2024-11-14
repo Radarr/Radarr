@@ -5,6 +5,7 @@ public enum ImportRejectionReason
     Unknown,
     FileLocked,
     UnknownMovie,
+    DangerousFile,
     ExecutableFile,
     ArchiveFile,
     MovieFolder,
