@@ -2,10 +2,11 @@
 // Please do not change this file!
 interface CssExports {
   'buttonWrapper': string;
-  'inputWrapper': string;
   'itemContainer': string;
   'keyInput': string;
+  'keyInputWrapper': string;
   'valueInput': string;
+  'valueInputWrapper': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
