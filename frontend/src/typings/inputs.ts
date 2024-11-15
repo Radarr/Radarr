@@ -3,4 +3,6 @@ export type InputChanged<T = unknown> = {
   value: T;
 };
 
+export type InputOnChange<T> = (change: InputChanged<T>) => void;
+
 export type CheckInputChanged = InputChanged<boolean>;
