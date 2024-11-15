@@ -1226,7 +1226,7 @@ stages:
       - task: SonarCloudAnalyze@2
         condition: eq(variables['System.PullRequest.IsFork'], 'False')
         displayName: Publish SonarCloud Results
-      - task: reportgenerator@5
+      - task: reportgenerator@5.3.11
         displayName: Generate Coverage Report
         inputs:
           reports: '$(Build.SourcesDirectory)/CoverageResults/**/coverage.opencover.xml'
