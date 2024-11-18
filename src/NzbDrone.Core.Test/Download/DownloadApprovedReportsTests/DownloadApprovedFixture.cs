@@ -128,7 +128,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
 
         [Test]
         [Ignore("TODO: Fix this test up, fails with profile grabs")]
-        public async void should_return_all_downloaded_reports()
+        public async Task should_return_all_downloaded_reports()
         {
             var remoteMovie1 = GetRemoteMovie(new QualityModel(Quality.HDTV720p), GetMovie(1));
 
@@ -145,7 +145,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
 
         [Test]
         [Ignore("TODO: Fix this test up, fails with profile grabs")]
-        public async void should_only_return_downloaded_reports()
+        public async Task should_only_return_downloaded_reports()
         {
             var remoteMovie1 = GetRemoteMovie(
                                                     new QualityModel(Quality.HDTV720p),
