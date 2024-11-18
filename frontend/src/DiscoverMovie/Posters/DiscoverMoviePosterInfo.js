@@ -50,15 +50,13 @@ function DiscoverMoviePosterInfo(props) {
   }
 
   if (sortKey === 'inCinemas' && inCinemas) {
-    const inCinemasDate = getRelativeDate(
-      inCinemas,
+    const inCinemasDate = getRelativeDate({
+      date: inCinemas,
       shortDateFormat,
       showRelativeDates,
-      {
-        timeFormat,
-        timeForToday: false
-      }
-    );
+      timeFormat,
+      timeForToday: false
+    });
 
     return (
       <div className={styles.info} title={translate('InCinemas')}>
@@ -68,15 +66,13 @@ function DiscoverMoviePosterInfo(props) {
   }
 
   if (sortKey === 'digitalRelease' && digitalRelease) {
-    const digitalReleaseDate = getRelativeDate(
-      digitalRelease,
+    const digitalReleaseDate = getRelativeDate({
+      date: digitalRelease,
       shortDateFormat,
       showRelativeDates,
-      {
-        timeFormat,
-        timeForToday: false
-      }
-    );
+      timeFormat,
+      timeForToday: false
+    });
 
     return (
       <div className={styles.info} title={translate('DigitalRelease')}>
@@ -86,15 +82,13 @@ function DiscoverMoviePosterInfo(props) {
   }
 
   if (sortKey === 'physicalRelease' && physicalRelease) {
-    const physicalReleaseDate = getRelativeDate(
-      physicalRelease,
+    const physicalReleaseDate = getRelativeDate({
+      date: physicalRelease,
       shortDateFormat,
       showRelativeDates,
-      {
-        timeFormat,
-        timeForToday: false
-      }
-    );
+      timeFormat,
+      timeForToday: false
+    });
 
     return (
       <div className={styles.info} title={translate('PhysicalRelease')}>
