@@ -27,6 +27,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
             _movie = Builder<Movie>.CreateNew()
                 .With(s => s.Path = @"C:\Test\Movies\Casablanca".AsOsAgnostic())
+                .And(s => s.QualityProfileIds = new List<int> { 1 })
                 .Build();
 
             _localMovie = new LocalMovie
@@ -55,8 +56,6 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [Test]
         public void should_accept_if_episode_does_not_have_file()
         {
-            _movie.MovieFiles = new Core.Datastore.LazyLoaded<List<Core.MediaFiles.MovieFile>>();
-
             Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).All(x => x.Accepted).Should().BeTrue();
         }
 
