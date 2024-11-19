@@ -53,6 +53,7 @@ namespace NzbDrone.Integration.Test
         public ClientBase<TagResource> Tags;
         public ClientBase<MovieResource> WantedMissing;
         public ClientBase<MovieResource> WantedCutoffUnmet;
+        public QueueClient Queue;
 
         private List<SignalRMessage> _signalRReceived;
 
@@ -115,6 +116,7 @@ namespace NzbDrone.Integration.Test
             Tags = new ClientBase<TagResource>(RestClient, ApiKey);
             WantedMissing = new ClientBase<MovieResource>(RestClient, ApiKey, "wanted/missing");
             WantedCutoffUnmet = new ClientBase<MovieResource>(RestClient, ApiKey, "wanted/cutoff");
+            Queue = new QueueClient(RestClient, ApiKey);
         }
 
         [OneTimeTearDown]

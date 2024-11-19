@@ -62,8 +62,8 @@ namespace NzbDrone.Core.Queue
                 Quality = trackedDownload.RemoteMovie?.ParsedMovieInfo.Quality ?? new QualityModel(Quality.Unknown),
                 Title = trackedDownload.DownloadItem.Title,
                 Size = trackedDownload.DownloadItem.TotalSize,
-                Sizeleft = trackedDownload.DownloadItem.RemainingSize,
-                Timeleft = trackedDownload.DownloadItem.RemainingTime,
+                SizeLeft = trackedDownload.DownloadItem.RemainingSize,
+                TimeLeft = trackedDownload.DownloadItem.RemainingTime,
                 Status = Enum.TryParse(trackedDownload.DownloadItem.Status.ToString(), out QueueStatus outValue) ? outValue : QueueStatus.Unknown,
                 TrackedDownloadStatus = trackedDownload.Status,
                 TrackedDownloadState = trackedDownload.State,
@@ -82,9 +82,9 @@ namespace NzbDrone.Core.Queue
 
             queue.Id = HashConverter.GetHashInt31($"trackedDownload-{trackedDownload.DownloadClient}-{trackedDownload.DownloadItem.DownloadId}");
 
-            if (queue.Timeleft.HasValue)
+            if (queue.TimeLeft.HasValue)
             {
-                queue.EstimatedCompletionTime = DateTime.UtcNow.Add(queue.Timeleft.Value);
+                queue.EstimatedCompletionTime = DateTime.UtcNow.Add(queue.TimeLeft.Value);
             }
 
             return queue;

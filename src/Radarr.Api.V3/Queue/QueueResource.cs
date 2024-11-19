@@ -22,8 +22,11 @@ namespace Radarr.Api.V3.Queue
         public int CustomFormatScore { get; set; }
         public decimal Size { get; set; }
         public string Title { get; set; }
-        public decimal Sizeleft { get; set; }
-        public TimeSpan? Timeleft { get; set; }
+
+        // Collides with existing properties due to case-insensitive deserialization
+        // public decimal SizeLeft { get; set; }
+        // public TimeSpan? TimeLeft { get; set; }
+
         public DateTime? EstimatedCompletionTime { get; set; }
         public DateTime? Added { get; set; }
         public QueueStatus Status { get; set; }
@@ -37,6 +40,12 @@ namespace Radarr.Api.V3.Queue
         public bool DownloadClientHasPostImportCategory { get; set; }
         public string Indexer { get; set; }
         public string OutputPath { get; set; }
+
+        [Obsolete("Will be replaced by SizeLeft")]
+        public decimal Sizeleft { get; set; }
+
+        [Obsolete("Will be replaced by TimeLeft")]
+        public TimeSpan? Timeleft { get; set; }
     }
 
     public static class QueueResourceMapper
@@ -62,8 +71,11 @@ namespace Radarr.Api.V3.Queue
                 CustomFormatScore = customFormatScore,
                 Size = model.Size,
                 Title = model.Title,
-                Sizeleft = model.Sizeleft,
-                Timeleft = model.Timeleft,
+
+                // Collides with existing properties due to case-insensitive deserialization
+                // SizeLeft = model.SizeLeft,
+                // TimeLeft = model.TimeLeft,
+
                 EstimatedCompletionTime = model.EstimatedCompletionTime,
                 Added = model.Added,
                 Status = model.Status,
@@ -76,7 +88,12 @@ namespace Radarr.Api.V3.Queue
                 DownloadClient = model.DownloadClient,
                 DownloadClientHasPostImportCategory = model.DownloadClientHasPostImportCategory,
                 Indexer = model.Indexer,
-                OutputPath = model.OutputPath
+                OutputPath = model.OutputPath,
+
+                #pragma warning disable CS0618
+                Sizeleft = model.SizeLeft,
+                Timeleft = model.TimeLeft,
+                #pragma warning restore CS0618
             };
         }
 
