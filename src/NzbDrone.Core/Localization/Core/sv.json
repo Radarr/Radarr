@@ -249,7 +249,7 @@
     "AllMoviesHiddenDueToFilter": "Samtliga filmer är dolda på grund av tillämpade filter.",
     "Age": "Ålder",
     "AddNewMovie": "Lägg till ny film",
-    "SystemTimeCheckMessage": "Systemklockan går fel med mer än en dag. Schemalagda uppgifter kan få problem att köras innan tiden är korrigerad",
+    "SystemTimeHealthCheckMessage": "Systemklockan går fel med mer än en dag. Schemalagda uppgifter kan få problem att köras innan tiden är korrigerad",
     "NoHistory": "Ingen historik",
     "MovieYear": "Filmår",
     "NoBackupsAreAvailable": "Inga säkerhetskopior tillgängliga",

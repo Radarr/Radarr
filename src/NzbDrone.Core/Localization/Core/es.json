@@ -247,7 +247,7 @@
     "AllMoviesHiddenDueToFilter": "Todas las películas están ocultas debido al filtro aplicado.",
     "Age": "Antigüedad",
     "AddNewMovie": "Añadir película nueva",
-    "SystemTimeCheckMessage": "El reloj del sistema está retrasado más de un día. Las tareas de mantenimiento no se ejecutarán correctamente hasta que se haya corregido",
+    "SystemTimeHealthCheckMessage": "El reloj del sistema está retrasado más de un día. Las tareas de mantenimiento no se ejecutarán correctamente hasta que se haya corregido",
     "MonitorMovie": "Monitorizar Película",
     "ExistingMovies": "Película(s) Existente(s)",
     "EditRemotePathMapping": "Editar mapeo de ruta remota",

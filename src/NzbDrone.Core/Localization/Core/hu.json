@@ -635,7 +635,7 @@
     "TagIsNotUsedAndCanBeDeleted": "A címke nincs használatban, törölhető",
     "TagCannotBeDeletedWhileInUse": "Használat közben nem törölhető",
     "TableOptionsColumnsMessage": "Válasszd ki, mely oszlopok legyenek láthatóak, és milyen sorrendben jelenjenek meg",
-    "SystemTimeCheckMessage": "A rendszeridő több mint 1 napja nem frissült. Előfordulhat, hogy az ütemezett feladatok az idő kijavításáig nem futnak megfelelően",
+    "SystemTimeHealthCheckMessage": "A rendszeridő több mint 1 napja nem frissült. Előfordulhat, hogy az ütemezett feladatok az idő kijavításáig nem futnak megfelelően",
     "ColonReplacementFormatHelpText": "Változtassa meg, hogy a {appName} hogyan helyettesíti a kettőspontokat",
     "ColonReplacement": "Kettőspont Helyettesítés",
     "IndexerStatusCheckAllClientMessage": "Az összes indexer elérhetetlen hiba miatt",

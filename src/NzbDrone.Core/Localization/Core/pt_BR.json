@@ -599,7 +599,7 @@
     "TableOptionsColumnsMessage": "Escolha quais colunas são visíveis e em que ordem aparecem",
     "TableOptions": "Opções de Tabela",
     "Table": "Tabela",
-    "SystemTimeCheckMessage": "A hora do sistema está desligada por mais de 1 dia. Tarefas agendadas podem não ser executadas corretamente até que o horário seja corrigido",
+    "SystemTimeHealthCheckMessage": "A hora do sistema está desligada por mais de 1 dia. Tarefas agendadas podem não ser executadas corretamente até que o horário seja corrigido",
     "System": "Sistema",
     "Sunday": "Domingo",
     "SuggestTranslationChange": "Sugerir mudança de tradução",

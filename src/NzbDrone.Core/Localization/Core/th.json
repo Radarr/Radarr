@@ -494,7 +494,7 @@
     "FileBrowserPlaceholderText": "เริ่มพิมพ์หรือเลือกเส้นทางด้านล่าง",
     "StartupDirectory": "ไดเร็กทอรีเริ่มต้น",
     "System": "ระบบ",
-    "SystemTimeCheckMessage": "เวลาของระบบปิดมากกว่า 1 วัน งานที่ตั้งเวลาไว้อาจทำงานไม่ถูกต้องจนกว่าจะมีการแก้ไขเวลา",
+    "SystemTimeHealthCheckMessage": "เวลาของระบบปิดมากกว่า 1 วัน งานที่ตั้งเวลาไว้อาจทำงานไม่ถูกต้องจนกว่าจะมีการแก้ไขเวลา",
     "Posters": "โปสเตอร์",
     "PosterSize": "ขนาดโปสเตอร์",
     "TagCannotBeDeletedWhileInUse": "ไม่สามารถลบได้ขณะใช้งาน",

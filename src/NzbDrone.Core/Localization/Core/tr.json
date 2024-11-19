@@ -615,7 +615,7 @@
     "SendAnonymousUsageData": "Anonim Kullanım Verilerini Gönderin",
     "FileBrowserPlaceholderText": "Yazmaya başlayın veya aşağıdan bir yol seçin",
     "StartupDirectory": "Başlangıç Dizini",
-    "SystemTimeCheckMessage": "Sistem saati 1 günden fazla kapalı. Zamanlanan görevler, saat düzeltilene kadar doğru çalışmayabilir",
+    "SystemTimeHealthCheckMessage": "Sistem saati 1 günden fazla kapalı. Zamanlanan görevler, saat düzeltilene kadar doğru çalışmayabilir",
     "Posters": "Posterler",
     "PosterSize": "Poster Boyutu",
     "TagCannotBeDeletedWhileInUse": "Kullanımdayken silinemez",

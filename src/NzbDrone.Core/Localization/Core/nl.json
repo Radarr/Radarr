@@ -213,7 +213,7 @@
     "Test": "Test",
     "TableOptionsColumnsMessage": "Kies welke kolommen zichtbaar zijn en in welke volgorde",
     "TableOptions": "Tabel Opties",
-    "SystemTimeCheckMessage": "De systeemtijd loopt verkeerd met meer dan 1 dag. Geplande taken worden mogelijk niet goed uitgevoerd tot dit is opgelost",
+    "SystemTimeHealthCheckMessage": "De systeemtijd loopt verkeerd met meer dan 1 dag. Geplande taken worden mogelijk niet goed uitgevoerd tot dit is opgelost",
     "Source": "Bron",
     "Shutdown": "Afsluiten",
     "Save": "Opslaan",

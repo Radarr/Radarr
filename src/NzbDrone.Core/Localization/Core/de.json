@@ -246,7 +246,7 @@
     "AllMoviesHiddenDueToFilter": "Alle Filme sind wegen dem Filter ausgeblendet.",
     "Age": "Alter",
     "AddNewMovie": "Neuen Film hinzufügen",
-    "SystemTimeCheckMessage": "Die Systemzeit ist um einen Tag versetzt. Bis die Zeit korrigiert wurde, könnten die geplanten Aufgaben nicht korrekt ausgeführt werden",
+    "SystemTimeHealthCheckMessage": "Die Systemzeit ist um einen Tag versetzt. Bis die Zeit korrigiert wurde, könnten die geplanten Aufgaben nicht korrekt ausgeführt werden",
     "UnsavedChanges": "Nicht gespeicherte Änderungen",
     "Table": "Tabelle",
     "ShowTitle": "Titel anzeigen",

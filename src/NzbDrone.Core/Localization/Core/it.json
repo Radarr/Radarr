@@ -259,7 +259,7 @@
     "Test": "Prova",
     "TableOptionsColumnsMessage": "Scegli quali colonne rendere visibili ed il loro ordine",
     "TableOptions": "Opzioni Tabella",
-    "SystemTimeCheckMessage": "L'orario di sistema è sbagliato di più di un giorno. Le attività pianificate potrebbero non essere eseguite correttamente fino alla correzione",
+    "SystemTimeHealthCheckMessage": "L'orario di sistema è sbagliato di più di un giorno. Le attività pianificate potrebbero non essere eseguite correttamente fino alla correzione",
     "Source": "Fonte",
     "Shutdown": "Spegnimento",
     "Seeders": "Seeders",

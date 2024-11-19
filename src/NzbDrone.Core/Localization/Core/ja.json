@@ -18,7 +18,7 @@
     "QualityProfiles": "品質プロファイル",
     "RequiredHelpText": "カスタム形式を適用するには、この{0}条件が一致する必要があります。それ以外の場合は、単一の{1}一致で十分です。",
     "SendAnonymousUsageData": "匿名の使用状況データを送信する",
-    "SystemTimeCheckMessage": "システム時刻が1日以上ずれています。スケジュールされたタスクは、時間が修正されるまで正しく実行されない場合があります",
+    "SystemTimeHealthCheckMessage": "システム時刻が1日以上ずれています。スケジュールされたタスクは、時間が修正されるまで正しく実行されない場合があります",
     "NotAvailable": "利用不可",
     "ClickToChangeMovie": "クリックしてムービーを変更",
     "CloneCustomFormat": "カスタムフォーマットのクローン",

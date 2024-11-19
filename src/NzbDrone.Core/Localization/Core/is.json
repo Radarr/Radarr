@@ -427,7 +427,7 @@
     "FileBrowserPlaceholderText": "Byrjaðu að slá eða veldu leið hér að neðan",
     "StartupDirectory": "Ræsiskrá",
     "System": "Kerfi",
-    "SystemTimeCheckMessage": "Slökkt er á tíma kerfisins meira en 1 dag. Skipulögð verkefni ganga kannski ekki rétt fyrr en tíminn er leiðréttur",
+    "SystemTimeHealthCheckMessage": "Slökkt er á tíma kerfisins meira en 1 dag. Skipulögð verkefni ganga kannski ekki rétt fyrr en tíminn er leiðréttur",
     "Posters": "Veggspjöld",
     "TimeFormat": "Tímasnið",
     "Timeleft": "Tími eftir",

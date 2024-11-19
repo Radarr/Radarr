@@ -396,7 +396,7 @@
     "AllowHardcodedSubs": "Zezwalaj na wbudowane napisy",
     "AllowHardcodedSubsHelpText": "Wykryte wbudowane napisy zostaną automatycznie pobrane",
     "AlreadyInYourLibrary": "Już w Twojej bibliotece",
-    "SystemTimeCheckMessage": "Czas systemowy jest wyłączony o więcej niż 1 dzień. Zaplanowane zadania mogą nie działać poprawnie, dopóki czas nie zostanie skorygowany",
+    "SystemTimeHealthCheckMessage": "Czas systemowy jest wyłączony o więcej niż 1 dzień. Zaplanowane zadania mogą nie działać poprawnie, dopóki czas nie zostanie skorygowany",
     "AnalyticsEnabledHelpText": "Wysyłaj anonimowe informacje o użytkowaniu i błędach do serwerów {appName}. Obejmuje to informacje o Twojej przeglądarce, z których stron {appName} WebUI korzystasz, raportowanie błędów, a także wersję systemu operacyjnego i środowiska wykonawczego. Wykorzystamy te informacje, aby nadać priorytet funkcjom i poprawkom błędów.",
     "MinimumFreeSpace": "Minimalna wolna przestrzeń",
     "MinimumLimits": "Minimalne limity",

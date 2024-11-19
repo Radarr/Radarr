@@ -221,7 +221,7 @@
     "RssSync": "Sincronització RSS",
     "ListEnabledHelpText": "Habiliteu aquesta llista per a utilitzar-la a {appName}",
     "Error": "Error",
-    "SystemTimeCheckMessage": "L'hora del sistema està apagada durant més d'1 dia. És possible que les tasques programades no s'executin correctament fins que no es corregeixi l'hora",
+    "SystemTimeHealthCheckMessage": "L'hora del sistema està apagada durant més d'1 dia. És possible que les tasques programades no s'executin correctament fins que no es corregeixi l'hora",
     "SupportedIndexersMoreInfo": "Per a obtenir més informació sobre els indexadors individuals, feu clic als botons d'informació.",
     "GeneralSettingsSummary": "Port, SSL, nom d'usuari/contrasenya, servidor intermediari, analítiques i actualitzacions",
     "Genres": "Gèneres",

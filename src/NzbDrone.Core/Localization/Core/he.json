@@ -392,7 +392,7 @@
     "Warn": "לְהַזהִיר",
     "StartupDirectory": "ספריית ההפעלה",
     "System": "מערכת",
-    "SystemTimeCheckMessage": "זמן המערכת אינו פעיל יותר מיום אחד. משימות מתוזמנות עשויות שלא לפעול כראוי עד לתיקון הזמן",
+    "SystemTimeHealthCheckMessage": "זמן המערכת אינו פעיל יותר מיום אחד. משימות מתוזמנות עשויות שלא לפעול כראוי עד לתיקון הזמן",
     "Posters": "כרזות",
     "PosterSize": "גודל פוסטר",
     "TagCannotBeDeletedWhileInUse": "לא ניתן למחוק בזמן השימוש",

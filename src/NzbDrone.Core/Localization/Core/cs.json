@@ -442,7 +442,7 @@
     "FileBrowserPlaceholderText": "Začněte psát nebo vyberte cestu níže",
     "StartupDirectory": "Spouštěcí adresář",
     "System": "Systém",
-    "SystemTimeCheckMessage": "Systémový čas je vypnutý o více než 1 den. Naplánované úlohy nemusí fungovat správně, dokud nebude čas opraven",
+    "SystemTimeHealthCheckMessage": "Systémový čas je vypnutý o více než 1 den. Naplánované úlohy nemusí fungovat správně, dokud nebude čas opraven",
     "Posters": "Plakáty",
     "PosterSize": "Velikost plakátu",
     "TagCannotBeDeletedWhileInUse": "Během používání nelze smazat",

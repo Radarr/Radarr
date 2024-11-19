@@ -199,7 +199,7 @@
     "Tags": "Etichete",
     "TableOptionsColumnsMessage": "Alege ce coloane sunt vizibile și în ce ordine apar",
     "TableOptions": "Opțiuni tabel",
-    "SystemTimeCheckMessage": "Ora sistemului este diferită cu mai mult de 1 zi. Operațiunile programate s-ar putea să nu funcționeze corect până când ora nu este corectată",
+    "SystemTimeHealthCheckMessage": "Ora sistemului este diferită cu mai mult de 1 zi. Operațiunile programate s-ar putea să nu funcționeze corect până când ora nu este corectată",
     "System": "Sistem",
     "Style": "Stil",
     "Studio": "Studio",

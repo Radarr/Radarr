@@ -249,7 +249,7 @@
     "HardlinkCopyFiles": "Lien physique/Copie de fichiers",
     "Extension": "Extension",
     "CustomFormatScore": "Score du format personnalisé",
-    "SystemTimeCheckMessage": "L'heure du système est décalée de plus d'un jour. Les tâches planifiées peuvent ne pas s'exécuter correctement tant que l'heure ne sera pas corrigée",
+    "SystemTimeHealthCheckMessage": "L'heure du système est décalée de plus d'un jour. Les tâches planifiées peuvent ne pas s'exécuter correctement tant que l'heure ne sera pas corrigée",
     "ShowMonitored": "Afficher le chemin",
     "WeekColumnHeaderHelpText": "Affiché au dessus de chaque colonne quand \"Semaine\" est l'affichage actif",
     "ShowRelativeDates": "Afficher les dates relatives",

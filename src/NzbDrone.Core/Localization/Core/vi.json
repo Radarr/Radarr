@@ -608,7 +608,7 @@
     "FileBrowserPlaceholderText": "Bắt đầu nhập hoặc chọn một đường dẫn bên dưới",
     "StartupDirectory": "Thư mục khởi động",
     "System": "Hệ thống",
-    "SystemTimeCheckMessage": "Thời gian hệ thống tắt hơn 1 ngày. Các tác vụ đã lên lịch có thể không chạy chính xác cho đến khi thời gian được sửa",
+    "SystemTimeHealthCheckMessage": "Thời gian hệ thống tắt hơn 1 ngày. Các tác vụ đã lên lịch có thể không chạy chính xác cho đến khi thời gian được sửa",
     "Posters": "Áp phích",
     "PosterSize": "Kích thước áp phích",
     "TotalFileSize": "Tổng kích thước tệp",

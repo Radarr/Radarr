@@ -436,7 +436,7 @@
     "MustNotContain": "Må ikke indeholde",
     "NamingSettings": "Navngivningsindstillinger",
     "NegateHelpText": "Hvis dette er markeret, gælder det tilpassede format ikke, hvis denne {0} betingelse stemmer overens.",
-    "SystemTimeCheckMessage": "Systemtiden er slukket mere end 1 dag. Planlagte opgaver kører muligvis ikke korrekt, før tiden er rettet",
+    "SystemTimeHealthCheckMessage": "Systemtiden er slukket mere end 1 dag. Planlagte opgaver kører muligvis ikke korrekt, før tiden er rettet",
     "Posters": "Plakater",
     "PosterSize": "Plakatstørrelse",
     "TimeFormat": "Tidsformat",

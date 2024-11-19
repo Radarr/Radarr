@@ -491,7 +491,7 @@
     "TableOptionsColumnsMessage": "اختر الأعمدة المرئية والترتيب الذي تظهر به",
     "TableOptions": "خيارات الجدول",
     "Table": "الطاولة",
-    "SystemTimeCheckMessage": "توقف وقت النظام بأكثر من يوم واحد. قد لا تعمل المهام المجدولة بشكل صحيح حتى يتم تصحيح الوقت",
+    "SystemTimeHealthCheckMessage": "توقف وقت النظام بأكثر من يوم واحد. قد لا تعمل المهام المجدولة بشكل صحيح حتى يتم تصحيح الوقت",
     "System": "النظام",
     "Sunday": "الأحد",
     "SuggestTranslationChange": "اقترح تغيير الترجمة",

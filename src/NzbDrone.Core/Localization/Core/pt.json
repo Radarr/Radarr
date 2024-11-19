@@ -34,7 +34,7 @@
     "TableOptionsColumnsMessage": "Escolha quais colunas são visíveis e em qual ordem aparecem",
     "TableOptions": "Opções da tabela",
     "Table": "Tabela",
-    "SystemTimeCheckMessage": "A hora do sistema está atrasada em mais de 1 dia. As tarefas agendadas podem não ocorrer corretamente até a hora ser corrigida",
+    "SystemTimeHealthCheckMessage": "A hora do sistema está atrasada em mais de 1 dia. As tarefas agendadas podem não ocorrer corretamente até a hora ser corrigida",
     "System": "Sistema",
     "Style": "Estilo",
     "Studio": "Estúdio",
