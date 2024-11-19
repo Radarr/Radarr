@@ -311,11 +311,11 @@ namespace NzbDrone.Core.Download.Pending
                 ect = ect.AddMinutes(_configService.RssSyncInterval);
             }
 
-            var timeleft = ect.Subtract(DateTime.UtcNow);
+            var timeLeft = ect.Subtract(DateTime.UtcNow);
 
-            if (timeleft.TotalSeconds < 0)
+            if (timeLeft.TotalSeconds < 0)
             {
-                timeleft = TimeSpan.Zero;
+                timeLeft = TimeSpan.Zero;
             }
 
             string downloadClientName = null;
@@ -336,9 +336,9 @@ namespace NzbDrone.Core.Download.Pending
                 Languages = pendingRelease.RemoteMovie.Languages,
                 Title = pendingRelease.Title,
                 Size = pendingRelease.RemoteMovie.Release.Size,
-                Sizeleft = pendingRelease.RemoteMovie.Release.Size,
+                SizeLeft = pendingRelease.RemoteMovie.Release.Size,
                 RemoteMovie = pendingRelease.RemoteMovie,
-                Timeleft = timeleft,
+                TimeLeft = timeLeft,
                 EstimatedCompletionTime = ect,
                 Added = pendingRelease.Added,
                 Status = Enum.TryParse(pendingRelease.Reason.ToString(), out QueueStatus outValue) ? outValue : QueueStatus.Unknown,
