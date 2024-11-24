@@ -253,5 +253,11 @@
     "EditReleaseProfile": "新增延時配置",
     "Reason": "季",
     "Delay": "延遲",
-    "AddReleaseProfile": "新增延時配置"
+    "AddReleaseProfile": "新增延時配置",
+    "Version": "版本",
+    "Uptime": "上線時間",
+    "UpdateAvailableHealthCheckMessage": "可用的新版本: {version}",
+    "UpdateAppDirectlyLoadError": "無法直接更新 {appName}，",
+    "UnselectAll": "取消全選",
+    "Any": "任何"
 }
