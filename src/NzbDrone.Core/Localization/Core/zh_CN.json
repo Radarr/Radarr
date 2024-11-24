@@ -1814,7 +1814,7 @@
     "NotificationsDiscordSettingsOnManualInteractionFields": "手动操作时字段",
     "NotificationsPushoverSettingsSoundHelpText": "通知声音，留空使用默认声音",
     "ReleaseGroupFootNote": "可选参数，控制使用省略号（`...`）的最大截断字数。支持从末尾截断（例如：`{Movie Title:30}`）或从开头截断（例如：`{Movie Title:-30}`）。",
-    "Disposition": "Disposition",
+    "Disposition": "配置",
     "NotificationsGotifySettingsMetadataLinks": "元数据链接",
     "NotificationsGotifySettingsPreferredMetadataLink": "首选元数据链接",
     "NotificationsGotifySettingsMetadataLinksMovieHelpText": "添加一个在发送通知时指向电影元数据的链接",
