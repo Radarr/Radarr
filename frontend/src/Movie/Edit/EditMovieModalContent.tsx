@@ -4,6 +4,7 @@ import MovieMinimumAvailabilityPopoverContent from 'AddMovie/MovieMinimumAvailab
 import AppState from 'App/State/AppState';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
+import FormInputButton from 'Components/Form/FormInputButton';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import Icon from 'Components/Icon';
@@ -28,6 +29,8 @@ import { saveMovie, setMovieValue } from 'Store/Actions/movieActions';
 import selectSettings from 'Store/Selectors/selectSettings';
 import { InputChanged } from 'typings/inputs';
 import translate from 'Utilities/String/translate';
+import RootFolderModal from './RootFolder/RootFolderModal';
+import { RootFolderUpdated } from './RootFolder/RootFolderModalContent';
 import styles from './EditMovieModalContent.css';
 
 export interface EditMovieModalContentProps {
@@ -49,6 +52,7 @@ function EditMovieModalContent({
     qualityProfileId,
     path,
     tags,
+    rootFolderPath: initialRootFolderPath,
   } = useMovie(movieId)!;
 
   const { isSaving, saveError, pendingChanges } = useSelector(
@@ -56,6 +60,10 @@ function EditMovieModalContent({
   );
 
   const wasSaving = usePrevious(isSaving);
+
+  const [isRootFolderModalOpen, setIsRootFolderModalOpen] = useState(false);
+
+  const [rootFolderPath, setRootFolderPath] = useState(initialRootFolderPath);
 
   const isPathChanging = pendingChanges.path && path !== pendingChanges.path;
 
@@ -89,6 +97,26 @@ function EditMovieModalContent({
       dispatch(setMovieValue({ name, value }));
     },
     [dispatch]
+  );
+
+  const handleRootFolderPress = useCallback(() => {
+    setIsRootFolderModalOpen(true);
+  }, []);
+
+  const handleRootFolderModalClose = useCallback(() => {
+    setIsRootFolderModalOpen(false);
+  }, []);
+
+  const handleRootFolderChange = useCallback(
+    ({
+      path: newPath,
+      rootFolderPath: newRootFolderPath,
+    }: RootFolderUpdated) => {
+      setIsRootFolderModalOpen(false);
+      setRootFolderPath(newRootFolderPath);
+      handleInputChange({ name: 'path', value: newPath });
+    },
+    [handleInputChange]
   );
 
   const handleCancelPress = useCallback(() => {
@@ -183,6 +211,16 @@ function EditMovieModalContent({
               type={inputTypes.PATH}
               name="path"
               {...settings.path}
+              buttons={[
+                <FormInputButton
+                  key="fileBrowser"
+                  kind={kinds.DEFAULT}
+                  title={translate('RootFolder')}
+                  onPress={handleRootFolderPress}
+                >
+                  <Icon name={icons.ROOT_FOLDER} />
+                </FormInputButton>,
+              ]}
               includeFiles={false}
               onChange={handleInputChange}
             />
@@ -220,6 +258,14 @@ function EditMovieModalContent({
           {translate('Save')}
         </SpinnerErrorButton>
       </ModalFooter>
+
+      <RootFolderModal
+        isOpen={isRootFolderModalOpen}
+        movieId={movieId}
+        rootFolderPath={rootFolderPath}
+        onSavePress={handleRootFolderChange}
+        onModalClose={handleRootFolderModalClose}
+      />
 
       <MoveMovieModal
         originalPath={path}

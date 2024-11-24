@@ -68,6 +68,7 @@ interface Movie extends ModelBase {
   physicalRelease?: string;
   digitalRelease?: string;
   releaseDate?: string;
+  rootFolderPath: string;
   runtime: number;
   minimumAvailability: string;
   path: string;
