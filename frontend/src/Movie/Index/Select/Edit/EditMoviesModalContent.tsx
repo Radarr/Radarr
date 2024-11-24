@@ -203,7 +203,7 @@ function EditMoviesModalContent(props: EditMoviesModalContentProps) {
             includeNoChange={true}
             includeNoChangeDisabled={false}
             selectedValueOptions={{ includeFreeSpace: false }}
-            helpText="Moving movies to the same root folder can be used to rename movie folders to match updated title or naming format"
+            helpText={translate('MovieEditRootFolderHelpText')}
             onChange={onInputChange}
           />
         </FormGroup>
