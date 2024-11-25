@@ -8,13 +8,13 @@ import Icon from 'Components/Icon';
 import PageSectionContent from 'Components/Page/PageSectionContent';
 import useModalOpenState from 'Helpers/Hooks/useModalOpenState';
 import { icons } from 'Helpers/Props';
-import ReleaseProfileRow from 'Settings/Profiles/Release/ReleaseProfileRow';
 import { fetchIndexers } from 'Store/Actions/Settings/indexers';
 import { fetchReleaseProfiles } from 'Store/Actions/Settings/releaseProfiles';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import createTagsSelector from 'Store/Selectors/createTagsSelector';
 import translate from 'Utilities/String/translate';
 import EditReleaseProfileModal from './EditReleaseProfileModal';
+import ReleaseProfileItem from './ReleaseProfileItem';
 import styles from './ReleaseProfiles.css';
 
 function ReleaseProfiles() {
@@ -59,7 +59,7 @@ function ReleaseProfiles() {
 
           {items.map((item) => {
             return (
-              <ReleaseProfileRow
+              <ReleaseProfileItem
                 key={item.id}
                 tagList={tagList}
                 indexerList={indexerList}
