@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Tag } from 'App/State/TagsAppState';
 import Card from 'Components/Card';
 import Label from 'Components/Label';
+import MiddleTruncate from 'Components/MiddleTruncate';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import TagList from 'Components/TagList';
 import useModalOpenState from 'Helpers/Hooks/useModalOpenState';
@@ -12,14 +13,14 @@ import Indexer from 'typings/Indexer';
 import ReleaseProfile from 'typings/Settings/ReleaseProfile';
 import translate from 'Utilities/String/translate';
 import EditReleaseProfileModal from './EditReleaseProfileModal';
-import styles from './ReleaseProfileRow.css';
+import styles from './ReleaseProfileItem.css';
 
 interface ReleaseProfileProps extends ReleaseProfile {
   tagList: Tag[];
   indexerList: Indexer[];
 }
 
-function ReleaseProfileRow(props: ReleaseProfileProps) {
+function ReleaseProfileItem(props: ReleaseProfileProps) {
   const {
     id,
     name,
@@ -69,7 +70,7 @@ function ReleaseProfileRow(props: ReleaseProfileProps) {
 
           return (
             <Label key={item} className={styles.label} kind={kinds.SUCCESS}>
-              {item}
+              <MiddleTruncate text={item} />
             </Label>
           );
         })}
@@ -83,7 +84,7 @@ function ReleaseProfileRow(props: ReleaseProfileProps) {
 
           return (
             <Label key={item} className={styles.label} kind={kinds.DANGER}>
-              {item}
+              <MiddleTruncate text={item} />
             </Label>
           );
         })}
@@ -127,4 +128,4 @@ function ReleaseProfileRow(props: ReleaseProfileProps) {
   );
 }
 
-export default ReleaseProfileRow;
+export default ReleaseProfileItem;
