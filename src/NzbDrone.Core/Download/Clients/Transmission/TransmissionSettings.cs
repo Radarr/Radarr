@@ -49,6 +49,18 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             MovieCategory = movieCategory;
         }
 
+        // TODO: Remove this in v5
+        // This constructor is used when deserializing from JSON, it will set the
+        // category to the deserialized value, defaulting to null.
+        [JsonConstructor]
+        public TransmissionSettings(string tvCategory = null)
+        {
+            Host = "localhost";
+            Port = 9091;
+            UrlBase = "/transmission/";
+            TvCategory = tvCategory;
+        }
+
         [FieldDefinition(0, Label = "Host", Type = FieldType.Textbox)]
         public string Host { get; set; }
 
