@@ -53,5 +53,14 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = IsoLanguages.Find(isoCode);
             result.Language.Should().Be(Language.Telugu);
         }
+
+        [TestCase("af")]
+        [TestCase("afr")]
+        [TestCase("af-ZA")]
+        public void should_return_afrikaans(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Language.Should().Be(Language.Afrikaans);
+        }
     }
 }
