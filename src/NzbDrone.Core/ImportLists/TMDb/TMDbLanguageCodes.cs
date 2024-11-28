@@ -63,6 +63,8 @@ namespace NzbDrone.Core.ImportLists.TMDb
         [FieldOption(Hint = "Kannada")]
         kn,
         [FieldOption(Hint = "Albanian")]
-        sq
+        sq,
+        [FieldOption(Hint = "Afrikaans")]
+        af
     }
 }
