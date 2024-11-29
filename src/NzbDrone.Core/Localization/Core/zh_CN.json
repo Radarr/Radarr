@@ -1855,5 +1855,14 @@
     "Completed": "完成",
     "Delay": "延迟",
     "DownloadClientUnavailable": "下载客户端不可用",
-    "Fallback": "备选"
+    "Fallback": "备选",
+    "FavoriteFolderAdd": "添加收藏文件夹",
+    "FavoriteFolderRemove": "删除收藏夹",
+    "FavoriteFolders": "收藏夹",
+    "MetadataXmbcSettingsMovieMetadataLanguageHelpText": "如果 .nfo 中可用，请包含所选语言",
+    "OnFileUpgrade": "文件升级时",
+    "OnFileImport": "关于文件导入",
+    "ManageFormats": "管理格式",
+    "NotificationsSettingsWebhookHeaders": "标头",
+    "Warning": "警告"
 }

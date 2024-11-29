@@ -259,5 +259,12 @@
     "UpdateAvailableHealthCheckMessage": "可用的新版本: {version}",
     "UpdateAppDirectlyLoadError": "無法直接更新 {appName}，",
     "UnselectAll": "取消全選",
-    "Any": "任何"
+    "Any": "任何",
+    "UiLanguage": "使用者介面語言",
+    "IndexersLoadError": "無法載入索引器",
+    "TagsLoadError": "無法載入標籤",
+    "UiSettings": "使用者介面設定",
+    "UiSettingsLoadError": "無法載入 UI 設定",
+    "HistoryLoadError": "無法載入歷史記錄",
+    "UiLanguageHelpText": "{appName} 介面所使用的語言"
 }

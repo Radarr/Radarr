@@ -1862,5 +1862,6 @@
     "FavoriteFolders": "Carpetas favoritas",
     "Warning": "Aviso",
     "FavoriteFolderRemove": "Eliminar carpeta favorita",
-    "DownloadClientUnavailable": "Cliente de descarga no disponible"
+    "DownloadClientUnavailable": "Cliente de descarga no disponible",
+    "NotificationsSettingsWebhookHeaders": "Cabeceras"
 }

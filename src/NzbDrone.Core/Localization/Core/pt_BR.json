@@ -389,7 +389,7 @@
     "MassMovieSearch": "Pesquisar filmes em massa",
     "MarkAsFailed": "Marcar como falha",
     "MarkAsFailedMessageText": "Tem certeza que deseja marcar \"{0}\" como falhado?",
-    "MappedNetworkDrivesWindowsService": "As unidades de rede mapeadas não estão disponíveis quando executadas como um serviço do Windows. Consulte as Perguntas frequentes para saber mais",
+    "MappedNetworkDrivesWindowsService": "As unidades de rede mapeadas não estão disponíveis quando executadas como um serviço do Windows. Consulte as [FAQ]({url}) para obter mais informações.",
     "ManualImportSelectQuality": " Importação manual - Selecionar qualidade",
     "ManualImportSelectMovie": "Importação manual - Selecionar filme",
     "ManualImportSelectLanguage": "Importação manual - Selecionar idioma",
@@ -399,7 +399,7 @@
     "Lowercase": "Minúsculas",
     "LookingForReleaseProfiles2": "em vez disso.",
     "LookingForReleaseProfiles1": "Procurando pelos perfis de lançamento? Tente",
-    "Logs": "Logs",
+    "Logs": "Registros",
     "LogOnly": "Só registro em log",
     "LogLevelTraceHelpTextWarning": "O registro em log para rastreamento deve ser habilitado apenas temporariamente",
     "LogLevel": "Nível de registro em log",
@@ -1863,5 +1863,6 @@
     "FavoriteFolderRemove": "Remover Pasta Favorita",
     "FavoriteFolders": "Pastas Favoritas",
     "Warning": "Cuidado",
-    "DownloadClientUnavailable": "Cliente de download indisponível"
+    "DownloadClientUnavailable": "Cliente de download indisponível",
+    "NotificationsSettingsWebhookHeaders": "Cabeçalhos"
 }

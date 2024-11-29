@@ -1111,5 +1111,6 @@
     "AllTitles": "Tất cả các tệp",
     "DownloadClientUnavailable": "Ứng dụng khách tải xuống không khả dụng",
     "AddReleaseProfile": "Chỉnh sửa hồ sơ độ trễ",
-    "EditConditionImplementation": "Thêm điều kiện - {implementationName}"
+    "EditConditionImplementation": "Thêm điều kiện - {implementationName}",
+    "EditIndexerImplementation": "Thêm điều kiện - {implementationName}"
 }
