@@ -954,7 +954,7 @@
     "Reddit": "Reddit",
     "More": "Ещё",
     "Download": "Загрузить",
-    "DownloadClientCheckDownloadingToRoot": "Клиент загрузки {downloadClientName} помещает загрузки в корневую папку {path}. Вы не должны загружать в корневую папку.",
+    "DownloadClientRootFolderHealthCheckMessage": "Клиент загрузки {downloadClientName} помещает загрузки в корневую папку {rootFolderPath}. Вы не должны загружать в корневую папку.",
     "RemotePathMappingCheckWrongOSPath": "Удалённый клиент загрузки {downloadClientName} загружает файлы в {path}, но это не действительный путь {osName}.  Проверьте соответствие удаленных путей и настройки клиента загрузки.",
     "RemotePathMappingCheckRemoteDownloadClient": "Удалённый клиент загрузки {downloadClientName} сообщил о файлах в {path}, но эта директория, похоже, не существует.  Вероятно, отсутствует сопоставление удаленных путей.",
     "RemotePathMappingCheckLocalWrongOSPath": "Локальный клиент загрузки {downloadClientName} загружает файлы в {path}, но это не правильный путь {osName}.  Проверьте настройки клиента загрузки.",

@@ -954,7 +954,7 @@
     "Reddit": "Reddit",
     "More": "Mer",
     "Download": "Ladda ner",
-    "DownloadClientCheckDownloadingToRoot": "Ladda ner klient {downloadClientName} placerar nedladdningar i rotmappen {path}. Du bör inte ladda ner till en rotmapp.",
+    "DownloadClientRootFolderHealthCheckMessage": "Ladda ner klient {downloadClientName} placerar nedladdningar i rotmappen {rootFolderPath}. Du bör inte ladda ner till en rotmapp.",
     "Blocklist": "Svartlista",
     "BlocklistRelease": "Svartlista utgåva",
     "RemoveFromBlocklist": "Ta bort från svartlistan",

@@ -954,7 +954,7 @@
     "Reddit": "רדיט",
     "More": "יותר",
     "Download": "הורד",
-    "DownloadClientCheckDownloadingToRoot": "הורד לקוח {downloadClientName} ממקם הורדות בתיקיית הבסיס {path}. אתה לא צריך להוריד לתיקיית שורש.",
+    "DownloadClientRootFolderHealthCheckMessage": "הורד לקוח {downloadClientName} ממקם הורדות בתיקיית הבסיס {rootFolderPath}. אתה לא צריך להוריד לתיקיית שורש.",
     "Blocklist": "רשימה שחורה",
     "BlocklistRelease": "שחרור הרשימה השחורה",
     "RemoveFromBlocklist": "הסר מהרשימה השחורה",

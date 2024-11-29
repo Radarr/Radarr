@@ -954,7 +954,7 @@
     "Reddit": "Reddit",
     "More": "Daha",
     "Download": "İndir",
-    "DownloadClientCheckDownloadingToRoot": "İndirme istemcisi {downloadClientName}, indirmeleri kök klasöre yerleştirir {path}. Bir kök klasöre indirmemelisiniz.",
+    "DownloadClientRootFolderHealthCheckMessage": "İndirme istemcisi {downloadClientName}, indirmeleri kök klasöre yerleştirir {rootFolderPath}. Bir kök klasöre indirmemelisiniz.",
     "Blocklist": "Kara liste",
     "BlocklistRelease": "Kara Liste Sürümü",
     "RemoveFromBlocklist": "Kara listeden kaldır",

@@ -955,7 +955,7 @@
     "Reddit": "Reddit",
     "More": "Meer",
     "Download": "Downloaden",
-    "DownloadClientCheckDownloadingToRoot": "Downloadclient {downloadClientName} plaatst downloads in de hoofdmap {path}. U mag niet naar een hoofdmap downloaden.",
+    "DownloadClientRootFolderHealthCheckMessage": "Downloadclient {downloadClientName} plaatst downloads in de hoofdmap {rootFolderPath}. U mag niet naar een hoofdmap downloaden.",
     "UpdateAvailableHealthCheckMessage": "Nieuwe update is beschikbaar",
     "From": "van",
     "RemotePathMappingCheckDownloadPermissions": "{appName} kan gedownloade film {path} zien, maar niet openen.  Waarschijnlijk fout met machtigingen.",

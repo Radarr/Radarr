@@ -954,7 +954,7 @@
     "Reddit": "Reddit",
     "More": "Hơn",
     "Download": "Tải xuống",
-    "DownloadClientCheckDownloadingToRoot": "Tải xuống ứng dụng khách {downloadClientName} đặt các bản tải xuống trong thư mục gốc {path}. Bạn không nên tải xuống thư mục gốc.",
+    "DownloadClientRootFolderHealthCheckMessage": "Tải xuống ứng dụng khách {downloadClientName} đặt các bản tải xuống trong thư mục gốc {rootFolderPath}. Bạn không nên tải xuống thư mục gốc.",
     "Blocklist": "Danh sách chặn",
     "BlocklistRelease": "Chặn bản phát hành",
     "RemoveFromBlocklist": "Xóa khỏi danh sách đen",

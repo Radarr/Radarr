@@ -954,7 +954,7 @@
     "Reddit": "Reddit",
     "More": "Meira",
     "Download": "Sækja",
-    "DownloadClientCheckDownloadingToRoot": "Sæktu viðskiptavinur {downloadClientName} setur niðurhal í rótarmöppuna {path}. Þú ættir ekki að hlaða niður í rótarmöppu.",
+    "DownloadClientRootFolderHealthCheckMessage": "Sæktu viðskiptavinur {downloadClientName} setur niðurhal í rótarmöppuna {rootFolderPath}. Þú ættir ekki að hlaða niður í rótarmöppu.",
     "Blocklist": "Svartur listi",
     "BlocklistRelease": "Útgáfa svartalista",
     "RemoveFromBlocklist": "Fjarlægja af svörtum lista",

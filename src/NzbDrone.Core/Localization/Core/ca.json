@@ -446,7 +446,7 @@
     "DoneEditingGroups": "Acabada l'edició de grups",
     "DoNotPrefer": "No ho prefereixo",
     "DoNotUpgradeAutomatically": "No actualitzeu automàticament",
-    "DownloadClientCheckDownloadingToRoot": "El client de baixada {downloadClientName} col·loca les baixades a la carpeta arrel {path}. No s'hauria de baixar a una carpeta arrel.",
+    "DownloadClientRootFolderHealthCheckMessage": "El client de baixada {downloadClientName} col·loca les baixades a la carpeta arrel {rootFolderPath}. No s'hauria de baixar a una carpeta arrel.",
     "DownloadClientCheckUnableToCommunicateMessage": "No es pot comunicar amb {downloadClientName}. {errorMessage}",
     "DownloadClientsSettingsSummary": "Descàrrega de clients, gestió de descàrregues i mapes de camins remots",
     "Downloaded": "S'ha baixat",

@@ -947,7 +947,7 @@
     "Reddit": "Reddit",
     "More": "Más",
     "Download": "Descargar",
-    "DownloadClientCheckDownloadingToRoot": "El cliente de descarga {downloadClientName} coloca las descargas en la carpeta raíz {path}. No deberías descargar a una carpeta raíz.",
+    "DownloadClientRootFolderHealthCheckMessage": "El cliente de descarga {downloadClientName} coloca las descargas en la carpeta raíz {rootFolderPath}. No deberías descargar a una carpeta raíz.",
     "ImportListMultipleMissingRoots": "Faltan varias carpetas raíz de las listas de importación: {rootFoldersInfo}",
     "ImportListMissingRoot": "Falta la capeta raíz de la(s) lista(s) de importación: {rootFolderInfo}",
     "From": "de",

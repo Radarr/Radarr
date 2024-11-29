@@ -54,7 +54,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     {
                         return new HealthCheck(GetType(),
                             HealthCheckResult.Warning,
-                            _localizationService.GetLocalizedString("DownloadClientCheckDownloadingToRoot", new Dictionary<string, object>
+                            _localizationService.GetLocalizedString("DownloadClientRootFolderHealthCheckMessage", new Dictionary<string, object>
                             {
                                 { "downloadClientName", client.Definition.Name },
                                 { "rootFolderPath", folder.FullPath }

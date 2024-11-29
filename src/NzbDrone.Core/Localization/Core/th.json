@@ -954,7 +954,7 @@
     "Reddit": "Reddit",
     "More": "มากกว่า",
     "Download": "ดาวน์โหลด",
-    "DownloadClientCheckDownloadingToRoot": "ดาวน์โหลดไคลเอนต์ {downloadClientName} จะทำการดาวน์โหลดในโฟลเดอร์รูท {path} คุณไม่ควรดาวน์โหลดไปยังโฟลเดอร์รูท",
+    "DownloadClientRootFolderHealthCheckMessage": "ดาวน์โหลดไคลเอนต์ {downloadClientName} จะทำการดาวน์โหลดในโฟลเดอร์รูท {rootFolderPath} คุณไม่ควรดาวน์โหลดไปยังโฟลเดอร์รูท",
     "Blocklist": "บัญชีดำ",
     "BlocklistRelease": "Blacklist Release",
     "RemoveFromBlocklist": "ลบออกจากบัญชีดำ",

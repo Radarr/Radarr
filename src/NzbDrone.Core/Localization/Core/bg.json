@@ -954,7 +954,7 @@
     "Reddit": "Reddit",
     "More": "| Повече ▼",
     "Download": "Изтегли",
-    "DownloadClientCheckDownloadingToRoot": "Клиентът за изтегляне {downloadClientName} поставя изтеглянията в основната папка {path}. Не трябва да изтегляте в основна папка.",
+    "DownloadClientRootFolderHealthCheckMessage": "Клиентът за изтегляне {downloadClientName} поставя изтеглянията в основната папка {rootFolderPath}. Не трябва да изтегляте в основна папка.",
     "Blocklist": "Черен списък",
     "BlocklistRelease": "Освобождаване на черния списък",
     "RemoveFromBlocklist": "Премахване от черния списък",

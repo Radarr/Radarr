@@ -955,7 +955,7 @@
     "Reddit": "Reddit",
     "More": "Plus",
     "Download": "Téléchargement",
-    "DownloadClientCheckDownloadingToRoot": "Le client de téléchargement {downloadClientName} place les téléchargements dans le dossier racine {path}. Vous ne devez pas télécharger dans un dossier racine.",
+    "DownloadClientRootFolderHealthCheckMessage": "Le client de téléchargement {downloadClientName} place les téléchargements dans le dossier racine {rootFolderPath}. Vous ne devez pas télécharger dans un dossier racine.",
     "NotificationTriggersHelpText": "Sélectionnez les événements qui doivent déclencher cette notification",
     "From": "de",
     "UpdateAvailableHealthCheckMessage": "Une nouvelle mise à jour est disponible : {version}",

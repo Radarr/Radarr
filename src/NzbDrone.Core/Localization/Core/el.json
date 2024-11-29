@@ -954,7 +954,7 @@
     "Reddit": "Reddit",
     "More": "Περισσότερο",
     "Download": "Κατεβάστε",
-    "DownloadClientCheckDownloadingToRoot": "Λήψη προγράμματος-πελάτη {downloadClientName} τοποθετεί λήψεις στον ριζικό φάκελο {path}. Δεν πρέπει να κάνετε λήψη σε έναν ριζικό φάκελο.",
+    "DownloadClientRootFolderHealthCheckMessage": "Λήψη προγράμματος-πελάτη {downloadClientName} τοποθετεί λήψεις στον ριζικό φάκελο {rootFolderPath}. Δεν πρέπει να κάνετε λήψη σε έναν ριζικό φάκελο.",
     "Blocklist": "Αποριφθέντα",
     "BlocklistRelease": "Έκδοση μαύρης λίστας",
     "RemoveFromBlocklist": "Κατάργηση από μαύρη λίστα",

@@ -954,7 +954,7 @@
     "Reddit": "Reddit",
     "More": "Mere",
     "Download": "Hent",
-    "DownloadClientCheckDownloadingToRoot": "Download klient {downloadClientName} placerer downloads i rodmappen {path}. Du skal ikke downloade til en rodmappe.",
+    "DownloadClientRootFolderHealthCheckMessage": "Download klient {downloadClientName} placerer downloads i rodmappen {rootFolderPath}. Du skal ikke downloade til en rodmappe.",
     "Blocklist": "Blacklist",
     "BlocklistRelease": "Udgivelse af sortliste",
     "RemoveFromBlocklist": "Fjern fra sortlisten",

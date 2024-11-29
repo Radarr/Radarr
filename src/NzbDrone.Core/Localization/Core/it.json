@@ -952,7 +952,7 @@
     "Reddit": "Reddit",
     "More": "Altro",
     "Download": "Scarica",
-    "DownloadClientCheckDownloadingToRoot": "Il client di download {downloadClientName} colloca i download nella cartella radice {path}. Non dovresti scaricare in una cartella radice.",
+    "DownloadClientRootFolderHealthCheckMessage": "Il client di download {downloadClientName} colloca i download nella cartella radice {rootFolderPath}. Non dovresti scaricare in una cartella radice.",
     "Blocklist": "Lista dei Blocchi",
     "BlocklistRelease": "Release in Lista dei Blocchi",
     "RemoveFromBlocklist": "Rimuovi della blacklist",

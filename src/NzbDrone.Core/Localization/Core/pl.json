@@ -953,7 +953,7 @@
     "Reddit": "Reddit",
     "More": "Jeszcze",
     "Download": "Ściągnij",
-    "DownloadClientCheckDownloadingToRoot": "Klient pobierania {downloadClientName} umieszcza pliki do pobrania w folderze głównym {path}. Nie należy pobierać do folderu głównego.",
+    "DownloadClientRootFolderHealthCheckMessage": "Klient pobierania {downloadClientName} umieszcza pliki do pobrania w folderze głównym {rootFolderPath}. Nie należy pobierać do folderu głównego.",
     "Blocklist": "Czarna lista",
     "BlocklistRelease": "Dodaj wersję do czarnej listy",
     "RemoveFromBlocklist": "Usuń z czarnej listy",

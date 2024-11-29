@@ -953,7 +953,7 @@
     "Reddit": "Reddit",
     "More": "Lisää",
     "Download": "Lataa",
-    "DownloadClientCheckDownloadingToRoot": "Lataustyökalu \"{downloadClientName}\" tallentaa lataukset juurikansioon \"{path}\", mutta ne tulisi tallentaa muualle.",
+    "DownloadClientRootFolderHealthCheckMessage": "Lataustyökalu \"{downloadClientName}\" tallentaa lataukset juurikansioon \"{rootFolderPath}\", mutta ne tulisi tallentaa muualle.",
     "Blocklist": "Estolista",
     "BlocklistRelease": "Lisää julkaisu estolistalle",
     "RemoveFromBlocklist": "Poista estolistalta",

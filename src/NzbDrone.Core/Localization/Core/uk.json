@@ -955,7 +955,7 @@
     "Test": "Тест",
     "TorrentsDisabled": "Торренти вимкнено",
     "TotalFileSize": "Загальний розмір файлу",
-    "DownloadClientCheckDownloadingToRoot": "Клієнт завантаження {downloadClientName} розміщує завантаження в кореневій папці {path}. Ви не повинні завантажувати в кореневу папку.",
+    "DownloadClientRootFolderHealthCheckMessage": "Клієнт завантаження {downloadClientName} розміщує завантаження в кореневій папці {rootFolderPath}. Ви не повинні завантажувати в кореневу папку.",
     "DigitalRelease": "Цифровий випуск",
     "Disabled": "Вимкнено",
     "DeleteEmptyFoldersHelpText": "Видаляти порожні папки фільмів під час сканування диска та під час видалення файлів фільмів",
