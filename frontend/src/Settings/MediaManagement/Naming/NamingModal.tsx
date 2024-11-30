@@ -115,6 +115,11 @@ const movieTokens = [
     example: 'The Movie Collection',
     footNote: true,
   },
+  {
+    token: '{Movie Studio}',
+    example: 'The Movie Studio',
+    footNote: true,
+  },
   { token: '{Movie Certification}', example: 'R' },
   { token: '{Release Year}', example: '2009' },
 ];

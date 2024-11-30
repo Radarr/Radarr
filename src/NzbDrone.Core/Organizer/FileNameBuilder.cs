@@ -280,6 +280,7 @@ namespace NzbDrone.Core.Organizer
 
             tokenHandlers["{Movie Certification}"] = m => movie.MovieMetadata.Value.Certification ?? string.Empty;
             tokenHandlers["{Movie Collection}"] = m => Truncate(movie.MovieMetadata.Value.CollectionTitle, m.CustomFormat) ?? string.Empty;
+            tokenHandlers["{Movie Studio}"] = m => Truncate(movie.MovieMetadata.Value.Studio, m.CustomFormat) ?? string.Empty;
         }
 
         private string GetLanguageTitle(Movie movie, string isoCodes)
