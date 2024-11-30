@@ -320,7 +320,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 UpgradeAllowed = false
             });
 
-            _parseResultSingle.Series.QualityProfile.Value.FormatItems = new List<ProfileFormatItem>
+            _parseResultSingle.Movie.QualityProfile.FormatItems = new List<ProfileFormatItem>
             {
                 new ProfileFormatItem
                 {
