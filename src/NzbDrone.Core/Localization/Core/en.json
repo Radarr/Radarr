@@ -919,6 +919,8 @@
   "Menu": "Menu",
   "Message": "Message",
   "Metadata": "Metadata",
+  "MetadataKometaDeprecated": "Kometa files will no longer be created, support will be removed completely in v6",
+  "MetadataKometaDeprecatedSetting": "Deprecated",
   "MetadataLoadError": "Unable to load Metadata",
   "MetadataSettings": "Metadata Settings",
   "MetadataSettingsMovieImages": "Movie Images",

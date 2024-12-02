@@ -1,23 +1,7 @@
-import ModelBase from 'App/ModelBase';
+import Provider from './Provider';
 
-export interface Field {
-  order: number;
-  name: string;
-  label: string;
-  value: boolean | number | string;
-  type: string;
-  advanced: boolean;
-  privacy: string;
-}
-
-interface Notification extends ModelBase {
+interface Notification extends Provider {
   enable: boolean;
-  name: string;
-  fields: Field[];
-  implementationName: string;
-  implementation: string;
-  configContract: string;
-  infoLink: string;
   tags: number[];
 }
 

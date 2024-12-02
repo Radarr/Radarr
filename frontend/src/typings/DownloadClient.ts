@@ -1,27 +1,13 @@
-import ModelBase from 'App/ModelBase';
+import Provider from './Provider';
 
-export interface Field {
-  order: number;
-  name: string;
-  label: string;
-  value: boolean | number | string;
-  type: string;
-  advanced: boolean;
-  privacy: string;
-}
+export type Protocol = 'torrent' | 'usenet' | 'unknown';
 
-interface DownloadClient extends ModelBase {
+interface DownloadClient extends Provider {
   enable: boolean;
-  protocol: string;
+  protocol: Protocol;
   priority: number;
   removeCompletedDownloads: boolean;
   removeFailedDownloads: boolean;
-  name: string;
-  fields: Field[];
-  implementationName: string;
-  implementation: string;
-  configContract: string;
-  infoLink: string;
   tags: number[];
 }
 

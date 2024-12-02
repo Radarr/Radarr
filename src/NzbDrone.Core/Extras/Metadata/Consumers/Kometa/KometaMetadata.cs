@@ -1,13 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Metadata.Files;
-using NzbDrone.Core.MediaCover;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Extras.Metadata.Consumers.Kometa
 {
@@ -15,13 +14,15 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Kometa
     {
         private static readonly Regex MovieImagesRegex = new (@"^(?:poster|background)\.(?:png|jpe?g)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private readonly IMapCoversToLocal _mediaCoverService;
+        private readonly ILocalizationService _localizationService;
 
         public override string Name => "Kometa";
 
-        public KometaMetadata(IMapCoversToLocal mediaCoverService)
+        public override ProviderMessage Message => new (_localizationService.GetLocalizedString("MetadataKometaDeprecated"), ProviderMessageType.Warning);
+
+        public KometaMetadata(ILocalizationService localizationService)
         {
-            _mediaCoverService = mediaCoverService;
+            _localizationService = localizationService;
         }
 
         public override MetadataFile FindMetadataFile(Movie movie, string path)
@@ -56,31 +57,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Kometa
 
         public override List<ImageFileResult> MovieImages(Movie movie)
         {
-            if (!Settings.MovieImages)
-            {
-                return new List<ImageFileResult>();
-            }
-
-            return ProcessMovieImages(movie).ToList();
-        }
-
-        private IEnumerable<ImageFileResult> ProcessMovieImages(Movie movie)
-        {
-            foreach (var image in movie.MovieMetadata.Value.Images.Where(i => i.CoverType is MediaCoverTypes.Poster or MediaCoverTypes.Fanart))
-            {
-                var source = _mediaCoverService.GetCoverPath(movie.Id, image.CoverType);
-
-                var filename = image.CoverType switch
-                {
-                    MediaCoverTypes.Poster => "poster",
-                    MediaCoverTypes.Fanart => "background",
-                    _ => throw new ArgumentOutOfRangeException($"{image.CoverType} is not supported")
-                };
-
-                var destination = filename + Path.GetExtension(source);
-
-                yield return new ImageFileResult(destination, source);
-            }
+            return new List<ImageFileResult>();
         }
     }
 }

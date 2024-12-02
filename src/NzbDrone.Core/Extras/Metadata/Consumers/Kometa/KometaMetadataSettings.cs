@@ -15,11 +15,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Kometa
 
         public KometaMetadataSettings()
         {
-            MovieImages = true;
+            Deprecated = true;
         }
 
-        [FieldDefinition(0, Label = "MetadataSettingsMovieImages", Type = FieldType.Checkbox, Section = MetadataSectionType.Image, HelpText = "poster.jpg, background.jpg")]
-        public bool MovieImages { get; set; }
+        [FieldDefinition(0, Label = "MetadataKometaDeprecatedSetting", Type = FieldType.Checkbox, Section = MetadataSectionType.Image, Hidden = HiddenType.Hidden)]
+        public bool Deprecated { get; set; }
 
         public NzbDroneValidationResult Validate()
         {

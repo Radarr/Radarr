@@ -40,7 +40,7 @@ function createImportListExclusionSelector(id?: number) {
         importListExclusions;
 
       const mapping = id
-        ? items.find((i) => i.id === id)
+        ? items.find((i) => i.id === id)!
         : newImportListExclusion;
       const settings = selectSettings(mapping, pendingChanges, saveError);
 
