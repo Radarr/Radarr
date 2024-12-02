@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 
@@ -20,6 +21,7 @@ namespace NzbDrone.Core.Notifications.Webhook
         public List<string> Genres { get; set; }
         public List<WebhookImage> Images { get; set; }
         public List<string> Tags { get; set; }
+        public Language OriginalLanguage { get; set; }
 
         public WebhookMovie()
         {
@@ -38,6 +40,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             Genres = movie.MovieMetadata.Value.Genres;
             Images = movie.MovieMetadata.Value.Images.Select(i => new WebhookImage(i)).ToList();
             Tags = tags;
+            OriginalLanguage = movie.MovieMetadata.Value.OriginalLanguage;
         }
 
         public WebhookMovie(Movie movie, MovieFile movieFile, List<string> tags)
