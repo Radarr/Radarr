@@ -83,6 +83,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
                 case UpgradeableRejectReason.MinCustomFormatScore:
                     return Decision.Reject("Existing file on disk has Custom Format score within Custom Format score increment: {0}", qualityProfile.MinUpgradeFormatScore);
+
+                case UpgradeableRejectReason.UpgradesNotAllowed:
+                    return Decision.Reject("Existing file on disk and Quality Profile '{0}' does not allow upgrades", qualityProfile.Name);
             }
 
             return Decision.Accept();

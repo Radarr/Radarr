@@ -121,7 +121,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                        new List<CustomFormat>(),
                        new QualityModel(Quality.HDTV720p, new Revision(version: 1)),
                        new List<CustomFormat>())
-                   .Should().Be(UpgradeableRejectReason.CustomFormatScore);
+                   .Should().Be(UpgradeableRejectReason.UpgradesNotAllowed);
         }
 
         [Test]
