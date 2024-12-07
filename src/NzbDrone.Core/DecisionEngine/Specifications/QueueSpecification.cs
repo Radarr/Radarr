@@ -96,17 +96,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
                     case UpgradeableRejectReason.MinCustomFormatScore:
                         return Decision.Reject("Release in queue has Custom Format score within Custom Format score increment: {0}", qualityProfile.MinUpgradeFormatScore);
-                }
 
-                _logger.Debug("Checking if profiles allow upgrading. Queued: {0}", remoteMovie.ParsedMovieInfo.Quality);
-
-                if (!_upgradableSpecification.IsUpgradeAllowed(subject.Movie.QualityProfile,
-                                                               remoteMovie.ParsedMovieInfo.Quality,
-                                                               remoteMovie.CustomFormats,
-                                                               subject.ParsedMovieInfo.Quality,
-                                                               subject.CustomFormats))
-                {
-                    return Decision.Reject("Another release is queued and the Quality profile does not allow upgrades");
+                    case UpgradeableRejectReason.UpgradesNotAllowed:
+                        return Decision.Reject("Release in queue and Quality Profile '{0}' does not allow upgrades", qualityProfile.Name);
                 }
 
                 if (_upgradableSpecification.IsRevisionUpgrade(remoteMovie.ParsedMovieInfo.Quality, subject.ParsedMovieInfo.Quality))
