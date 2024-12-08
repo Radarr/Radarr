@@ -8,7 +8,7 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { sizes } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
-import MediaInfoPopover from './Editor/MediaInfoPopover';
+import MediaInfo from './Editor/MediaInfo';
 
 function FileDetailsModal(props) {
   const {
@@ -31,7 +31,7 @@ function FileDetailsModal(props) {
         </ModalHeader>
 
         <ModalBody>
-          <MediaInfoPopover {...mediaInfo} />
+          <MediaInfo {...mediaInfo} />
         </ModalBody>
 
         <ModalFooter>

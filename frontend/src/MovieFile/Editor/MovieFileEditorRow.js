@@ -14,7 +14,7 @@ import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguages from 'Movie/MovieLanguages';
 import MovieQuality from 'Movie/MovieQuality';
 import FileEditModal from 'MovieFile/Edit/FileEditModal';
-import MediaInfoConnector from 'MovieFile/MediaInfoConnector';
+import MediaInfo from 'MovieFile/MediaInfo';
 import * as mediaInfoTypes from 'MovieFile/mediaInfoTypes';
 import formatBytes from 'Utilities/Number/formatBytes';
 import formatCustomFormatScore from 'Utilities/Number/formatCustomFormatScore';
@@ -224,7 +224,7 @@ class MovieFileEditorRow extends Component {
                   key={name}
                   className={styles.audio}
                 >
-                  <MediaInfoConnector
+                  <MediaInfo
                     type={mediaInfoTypes.AUDIO}
                     movieFileId={id}
                   />
@@ -238,7 +238,7 @@ class MovieFileEditorRow extends Component {
                   key={name}
                   className={styles.audioLanguages}
                 >
-                  <MediaInfoConnector
+                  <MediaInfo
                     type={mediaInfoTypes.AUDIO_LANGUAGES}
                     movieFileId={id}
                   />
@@ -252,7 +252,7 @@ class MovieFileEditorRow extends Component {
                   key={name}
                   className={styles.subtitles}
                 >
-                  <MediaInfoConnector
+                  <MediaInfo
                     type={mediaInfoTypes.SUBTITLES}
                     movieFileId={id}
                   />
@@ -266,7 +266,7 @@ class MovieFileEditorRow extends Component {
                   key={name}
                   className={styles.video}
                 >
-                  <MediaInfoConnector
+                  <MediaInfo
                     type={mediaInfoTypes.VIDEO}
                     movieFileId={id}
                   />
@@ -280,7 +280,7 @@ class MovieFileEditorRow extends Component {
                   key={name}
                   className={styles.videoDynamicRangeType}
                 >
-                  <MediaInfoConnector
+                  <MediaInfo
                     type={mediaInfoTypes.VIDEO_DYNAMIC_RANGE_TYPE}
                     movieFileId={id}
                   />
