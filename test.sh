@@ -41,7 +41,7 @@ elif [ "$PLATFORM" = "Linux" ] || [ "$PLATFORM" = "Mac" ] ; then
   mkdir -p ~/.config/Radarr
   WHERE="$WHERE&Category!=WINDOWS"
 else
-  echo "Platform must be provided as first arguement: Windows, Linux or Mac"
+  echo "Platform must be provided as first argument: Windows, Linux or Mac"
   exit 1
 fi
 
