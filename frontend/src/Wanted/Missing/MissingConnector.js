@@ -17,9 +17,10 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.wanted.missing,
     createCommandExecutingSelector(commandNames.MISSING_MOVIES_SEARCH),
-    (missing, isSearchingForMissingMovies) => {
+    createCommandExecutingSelector(commandNames.MOVIE_SEARCH),
+    (missing, isSearchingForMissingMovies, isSearchingForSelectedMissingMovies) => {
       return {
-        isSearchingForMissingMovies,
+        isSearchingForMissingMovies: isSearchingForMissingMovies || isSearchingForSelectedMissingMovies,
         isSaving: missing.items.filter((m) => m.isSaving).length > 1,
         ...missing
       };

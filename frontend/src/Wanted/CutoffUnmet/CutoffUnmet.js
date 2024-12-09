@@ -153,11 +153,14 @@ class CutoffUnmet extends Component {
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label={translate('SearchSelected')}
+              label={itemsSelected ? translate('SearchSelected') : translate('SearchAll')}
               iconName={icons.SEARCH}
-              isDisabled={!itemsSelected || isSearchingForCutoffUnmetMovies}
-              onPress={this.onSearchSelectedPress}
+              isDisabled={isSearchingForCutoffUnmetMovies}
+              isSpinning={isSearchingForCutoffUnmetMovies}
+              onPress={itemsSelected ? this.onSearchSelectedPress : this.onSearchAllCutoffUnmetPress}
             />
+
+            <PageToolbarSeparator />
 
             <PageToolbarButton
               label={isShowingMonitored ? translate('UnmonitorSelected') : translate('MonitorSelected')}
@@ -166,18 +169,6 @@ class CutoffUnmet extends Component {
               isSpinning={isSaving}
               onPress={this.onToggleSelectedPress}
             />
-
-            <PageToolbarSeparator />
-
-            <PageToolbarButton
-              label={translate('SearchAll')}
-              iconName={icons.SEARCH}
-              isDisabled={!items.length}
-              isSpinning={isSearchingForCutoffUnmetMovies}
-              onPress={this.onSearchAllCutoffUnmetPress}
-            />
-
-            <PageToolbarSeparator />
           </PageToolbarSection>
 
           <PageToolbarSection alignContent={align.RIGHT}>

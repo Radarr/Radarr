@@ -18,9 +18,10 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.wanted.cutoffUnmet,
     createCommandExecutingSelector(commandNames.CUTOFF_UNMET_MOVIES_SEARCH),
-    (cutoffUnmet, isSearchingForCutoffUnmetMovies) => {
+    createCommandExecutingSelector(commandNames.MOVIE_SEARCH),
+    (cutoffUnmet, isSearchingForCutoffUnmetMovies, isSearchingForSelectedCutoffUnmetMovies) => {
       return {
-        isSearchingForCutoffUnmetMovies,
+        isSearchingForCutoffUnmetMovies: isSearchingForCutoffUnmetMovies || isSearchingForSelectedCutoffUnmetMovies,
         isSaving: cutoffUnmet.items.filter((m) => m.isSaving).length > 1,
         ...cutoffUnmet
       };
