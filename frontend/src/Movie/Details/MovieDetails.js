@@ -42,6 +42,7 @@ import translate from 'Utilities/String/translate';
 import MovieCastPosters from './Credits/Cast/MovieCastPosters';
 import MovieCrewPosters from './Credits/Crew/MovieCrewPosters';
 import MovieDetailsLinks from './MovieDetailsLinks';
+import MovieGenres from './MovieGenres';
 import MovieReleaseDates from './MovieReleaseDates';
 import MovieStatusLabel from './MovieStatusLabel';
 import MovieTagsConnector from './MovieTagsConnector';
@@ -651,9 +652,7 @@ class MovieDetails extends Component {
                         name={translate('Genres')}
                         size={sizes.LARGE}
                       >
-                        <span className={styles.genres}>
-                          {genres.join(', ')}
-                        </span>
+                        <MovieGenres className={styles.genres} genres={genres} />
                       </InfoLabel> :
                       null
                   }
