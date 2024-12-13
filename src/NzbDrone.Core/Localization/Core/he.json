@@ -865,7 +865,7 @@
     "BrowserReloadRequired": "חובה לטעון דפדפן",
     "UiSettings": "הגדרות ממשק המשתמש",
     "UiSettingsSummary": "אפשרויות לקויות לוח שנה, תאריך וצבע",
-    "AddConditionError": "לא ניתן להוסיף תנאי חדש, נסה שוב.",
+    "AddConditionError": "לא ניתן להוסיף תנאי חדש, נסה שנית.",
     "AddCustomFormatError": "לא ניתן להוסיף פורמט מותאם אישית חדש, נסה שוב.",
     "AddDownloadClientError": "לא ניתן להוסיף לקוח הורדות חדש, נסה שוב.",
     "AddIndexerError": "לא ניתן להוסיף אינדקס חדש, נסה שוב.",
@@ -1048,7 +1048,7 @@
     "ReleaseProfilesLoadError": "לא ניתן לטעון פרופילי עיכוב",
     "RemoveQueueItemConfirmation": "האם אתה בטוח שברצונך להסיר את {0} פריט {1} מהתור?",
     "Yes": "כן",
-    "AddAutoTag": "הוסף טגית אוטומטית",
+    "AddAutoTag": "הוסף תג אוטומטית",
     "DeleteQualityProfileMessageText": "האם אתה בטוח שברצונך למחוק את פרופיל האיכות {0}",
     "ApplyTagsHelpTextHowToApplyDownloadClients": "כיצד להחיל תגים על הסרטים שנבחרו",
     "DisabledForLocalAddresses": "מושבת לכתובות מקומיות",
@@ -1084,7 +1084,7 @@
     "DeleteReleaseProfile": "מחק פרופיל עיכוב",
     "InteractiveSearchModalHeader": "חיפוש אינטראקטיבי",
     "InteractiveImportLoadError": "לא ניתן לטעון פריטי ייבוא ידניים",
-    "AddAutoTagError": "לא ניתן להוסיף רשימה חדשה, אנא נסה שוב.",
+    "AddAutoTagError": "לא ניתן להוסיף תג חדש, נסה שנית.",
     "No": "לא",
     "MustNotContainHelpText": "המהדורה תידחה אם היא מכילה אחד או יותר מהתנאים (חסר רישיות)",
     "ApplyTagsHelpTextHowToApplyMovies": "כיצד להחיל תגים על הסרטים שנבחרו",
@@ -1118,5 +1118,6 @@
     "Clone": "סגור",
     "EditReleaseProfile": "ערוך פרופיל עיכוב",
     "AddReleaseProfile": "ערוך פרופיל עיכוב",
-    "DownloadClientUnavailable": "לקוח ההורדות אינו זמין"
+    "DownloadClientUnavailable": "לקוח ההורדות אינו זמין",
+    "AddCondition": "הוסף תנאי"
 }

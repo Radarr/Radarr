@@ -1864,5 +1864,6 @@
     "OnFileImport": "关于文件导入",
     "ManageFormats": "管理格式",
     "NotificationsSettingsWebhookHeaders": "标头",
-    "Warning": "警告"
+    "Warning": "警告",
+    "MetadataKometaDeprecatedSetting": "弃用"
 }

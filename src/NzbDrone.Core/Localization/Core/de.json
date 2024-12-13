@@ -1787,5 +1787,6 @@
     "UnableToImportAutomatically": "Kann nicht automatisch importiert werden",
     "UnknownEventTooltip": "Unbekanntes Ereignis",
     "Warning": "Warnung",
-    "YesterdayAt": "Gestern um {time}"
+    "YesterdayAt": "Gestern um {time}",
+    "RemotePathMappingsInfo": "Remote-Pfadzuordnungen sind sehr selten erforderlich. Wenn {appName} und dein Download-Client auf demselben System sind, ist es besser, deine Pfade abzugleichen. Weitere Informationen findest du im [Wiki]({wikiLink})."
 }

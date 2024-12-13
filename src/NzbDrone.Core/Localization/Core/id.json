@@ -7,7 +7,7 @@
     "Activity": "Aktivitas",
     "Add": "Tambah",
     "AddCustomFormat": "Tambahkan Format Khusus",
-    "AddDownloadClient": "Tambahkan Klien Pengunduhan",
+    "AddDownloadClient": "Tambahkan Download Client",
     "AddIndexer": "Tambahkan Pengindeks",
     "Age": "Usia",
     "All": "Semua",
@@ -174,5 +174,7 @@
     "ToggleMonitoredToUnmonitored": "Dimonitor, klik untuk berhenti monitor",
     "ToggleUnmonitoredToMonitored": "Tidak dimonitor, klik untuk monitor",
     "Clone": "Tutup",
-    "EnableSsl": "Aktifkan RSS"
+    "EnableSsl": "Aktifkan RSS",
+    "AddCustomFormatError": "Tidak dapat menambahkan format khusus baru, coba lagi.",
+    "AddDelayProfile": "Tambah Delay Profile"
 }
