@@ -22,7 +22,7 @@ function createMapStateToProps() {
       return {
         ...collection,
         movies: [...collection.movies].sort((a, b) => b.year - a.year),
-        genres: Array.from(new Set(allGenres)).slice(0, 3)
+        genres: Array.from(new Set(allGenres))
       };
     }
   );

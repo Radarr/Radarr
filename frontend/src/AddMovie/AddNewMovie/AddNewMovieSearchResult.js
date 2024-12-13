@@ -10,6 +10,7 @@ import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import MovieStatusLabel from 'Movie/Details/MovieStatusLabel';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
+import MovieGenres from 'Movie/MovieGenres';
 import MoviePoster from 'Movie/MoviePoster';
 import formatRuntime from 'Utilities/Date/formatRuntime';
 import translate from 'Utilities/String/translate';
@@ -249,9 +250,7 @@ class AddNewMovieSearchResult extends Component {
                       name={icons.GENRE}
                       size={13}
                     />
-                    <span className={styles.genres}>
-                      {genres.slice(0, 3).join(', ')}
-                    </span>
+                    <MovieGenres className={styles.genres} genres={genres} />
                   </Label> :
                   null
               }
@@ -280,7 +279,7 @@ class AddNewMovieSearchResult extends Component {
                 }
                 canFlip={true}
                 kind={kinds.INVERSE}
-                position={tooltipPositions.BOTTOM}
+                position={tooltipPositions.TOP}
               />
 
               {

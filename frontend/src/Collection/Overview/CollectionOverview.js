@@ -10,6 +10,7 @@ import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
 import { icons, sizes } from 'Helpers/Props';
+import MovieGenres from 'Movie/MovieGenres';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
 import dimensions from 'Styles/Variables/dimensions';
 import fonts from 'Styles/Variables/fonts';
@@ -242,12 +243,10 @@ class CollectionOverview extends Component {
                         size={sizes.MEDIUM}
                       >
                         <Icon
-                          name={icons.PROFILE}
+                          name={icons.GENRE}
                           size={13}
                         />
-                        <span className={styles.genres}>
-                          {genres.join(', ')}
-                        </span>
+                        <MovieGenres className={styles.genres} genres={genres} />
                       </Label>
                   }
 
