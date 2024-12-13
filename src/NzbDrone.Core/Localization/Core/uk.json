@@ -1120,7 +1120,7 @@
     "RetryingDownloadOn": "Завантаження відкладається до {0} о {1}",
     "TablePageSize": "Розмір сторінки",
     "BlocklistLoadError": "Не вдалося завантажити список блокувань",
-    "BlocklistReleaseHelpText": "Забороняє {appName} знову автоматично захопити цей випуск",
+    "BlocklistReleaseHelpText": "Блокує завантаження цього випуску {appName} через RSS або Автоматичний пошук",
     "DelayingDownloadUntil": "Завантаження відкладається до {date} о {time}",
     "DeletedReasonUpgrade": "Файл видалено, щоб імпортувати оновлення",
     "AutoRedownloadFailed": "Помилка повторного завантаження",
@@ -1289,5 +1289,8 @@
     "DefaultNotFoundMessage": "Ви, мабуть, заблукали, тут нічого не видно.",
     "Completed": "Завершено",
     "Delay": "Затримка",
-    "DownloadClientUnavailable": "Клієнт завантажувача недоступний"
+    "DownloadClientUnavailable": "Клієнт завантажувача недоступний",
+    "CountIndexersSelected": "{count} індексер(-и) обрано",
+    "AnnouncedMovieAvailabilityDescription": "Фільми вважаються доступними, щойно їх додають у {appName}.",
+    "CountCustomFormatsSelected": "Користувацькі формати обрано {count}"
 }

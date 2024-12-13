@@ -1864,5 +1864,7 @@
     "FavoriteFolders": "Pastas Favoritas",
     "Warning": "Cuidado",
     "DownloadClientUnavailable": "Cliente de download indisponível",
-    "NotificationsSettingsWebhookHeaders": "Cabeçalhos"
+    "NotificationsSettingsWebhookHeaders": "Cabeçalhos",
+    "MetadataKometaDeprecatedSetting": "Deprecado",
+    "MetadataKometaDeprecated": "Os arquivos Kometa não serão mais criados, o suporte será completamente removido na v6"
 }

@@ -1863,5 +1863,8 @@
     "Warning": "Aviso",
     "FavoriteFolderRemove": "Eliminar carpeta favorita",
     "DownloadClientUnavailable": "Cliente de descarga no disponible",
-    "NotificationsSettingsWebhookHeaders": "Cabeceras"
+    "NotificationsSettingsWebhookHeaders": "Cabeceras",
+    "MetadataKometaDeprecated": "Los archivos de Kometa no seguirán siendo creados, el soporte se eliminará completamente en la v6",
+    "MetadataKometaDeprecatedSetting": "Obsoleto",
+    "Fallback": "Retirada"
 }
