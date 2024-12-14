@@ -33,14 +33,14 @@ EnableExtraPlatformsInSDK()
         echo "Extra platforms already enabled"
     else
         echo "Enabling extra platform support"
-        sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64;linux-x86/' $BUNDLEDVERSIONS
+        sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64/' "$BUNDLEDVERSIONS"
     fi
 }
 
 EnableExtraPlatforms()
 {
     if grep -qv freebsd-x64 src/Directory.Build.props; then
-        sed -i'' -e "s^<RuntimeIdentifiers>\(.*\)</RuntimeIdentifiers>^<RuntimeIdentifiers>\1;freebsd-x64;linux-x86</RuntimeIdentifiers>^g" src/Directory.Build.props
+        sed -i'' -e "s^<RuntimeIdentifiers>\(.*\)</RuntimeIdentifiers>^<RuntimeIdentifiers>\1;freebsd-x64</RuntimeIdentifiers>^g" src/Directory.Build.props
     fi
 }
 
@@ -385,7 +385,6 @@ then
         if [ "$ENABLE_EXTRA_PLATFORMS" = "YES" ];
         then
             PackageTests "net8.0" "freebsd-x64"
-            PackageTests "net8.0" "linux-x86"
         fi
     else
         PackageTests "$FRAMEWORK" "$RID"
@@ -426,7 +425,6 @@ then
         if [ "$ENABLE_EXTRA_PLATFORMS" = "YES" ];
         then
             Package "net8.0" "freebsd-x64"
-            Package "net8.0" "linux-x86"
         fi
     else
         Package "$FRAMEWORK" "$RID"

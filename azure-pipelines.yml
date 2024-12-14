@@ -106,7 +106,7 @@ stages:
             echo "Extra platforms already enabled"
           else
             echo "Enabling extra platform support"
-            sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64;linux-x86/' $BUNDLEDVERSIONS
+            sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64/' "$BUNDLEDVERSIONS"
           fi
         displayName: Enable Extra Platform Support
       - bash: ./build.sh --backend --enable-extra-platforms
@@ -129,10 +129,6 @@ stages:
       - publish: '$(testsFolder)/net8.0/linux-x64/publish'
         artifact: linux-x64-tests
         displayName: Publish linux-x64 Test Package
-        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net8.0/linux-x86/publish'
-        artifact: linux-x86-tests
-        displayName: Publish linux-x86 Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - publish: '$(testsFolder)/net8.0/linux-musl-x64/publish'
         artifact: linux-musl-x64-tests
@@ -315,14 +311,6 @@ stages:
           includeRootFolder: false
           rootFolderOrFile: $(artifactsFolder)/linux-musl-x64/net8.0
       - task: ArchiveFiles@2
-        displayName: Create linux-x86 tar
-        inputs:
-          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).linux-core-x86.tar.gz'
-          archiveType: 'tar'
-          tarCompression: 'gz'
-          includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-x86/net8.0
-      - task: ArchiveFiles@2
         displayName: Create linux-arm tar
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).linux-core-arm.tar.gz'
@@ -493,10 +481,6 @@ stages:
             testName: 'Musl Net Core'
             artifactName: linux-musl-x64-tests
             containerImage: ghcr.io/servarr/testimages:alpine
-          linux-x86:
-            testName: 'linux-x86'
-            artifactName: linux-x86-tests
-            containerImage: ghcr.io/servarr/testimages:linux-x86
 
       pool:
         vmImage: ${{ variables.linuxImage }}
@@ -510,12 +494,6 @@ stages:
         displayName: 'Install .NET'
         inputs:
           version: $(dotnetVersion)
-        condition: and(succeeded(), ne(variables['testName'], 'linux-x86'))
-      - bash: |
-          SDKURL=$(curl -s https://api.github.com/repos/Servarr/dotnet-linux-x86/releases | jq -rc '.[].assets[].browser_download_url' | grep sdk-${DOTNETVERSION}.*gz$)
-          curl -fsSL $SDKURL | tar xzf - -C /opt/dotnet
-        displayName: 'Install .NET'
-        condition: and(succeeded(), eq(variables['testName'], 'linux-x86'))
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
@@ -926,11 +904,6 @@ stages:
             artifactName: linux-musl-x64-tests
             containerImage: ghcr.io/servarr/testimages:alpine
             pattern: 'Radarr.*.linux-musl-core-x64.tar.gz'
-          linux-x86:
-            testName: 'linux-x86'
-            artifactName: linux-x86-tests
-            containerImage: ghcr.io/servarr/testimages:linux-x86
-            pattern: 'Radarr.*.linux-core-x86.tar.gz'
       pool:
         vmImage: ${{ variables.linuxImage }}
 
@@ -943,12 +916,6 @@ stages:
         displayName: 'Install .NET'
         inputs:
           version: $(dotnetVersion)
-        condition: and(succeeded(), ne(variables['testName'], 'linux-x86'))
-      - bash: |
-          SDKURL=$(curl -s https://api.github.com/repos/Servarr/dotnet-linux-x86/releases | jq -rc '.[].assets[].browser_download_url' | grep sdk-${DOTNETVERSION}.*gz$)
-          curl -fsSL $SDKURL | tar xzf - -C /opt/dotnet
-        displayName: 'Install .NET'
-        condition: and(succeeded(), eq(variables['testName'], 'linux-x86'))
       - checkout: none
       - task: DownloadPipelineArtifact@2
         displayName: Download Test Artifact
