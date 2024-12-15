@@ -133,14 +133,20 @@ class DiscoverMovieOverview extends Component {
                 />
               </div>
 
-              <MoviePoster
-                className={styles.poster}
+              <Link
+                className={styles.link}
                 style={elementStyle}
-                images={images}
-                size={250}
-                lazy={false}
-                overflow={true}
-              />
+                {...linkProps}
+              >
+                <MoviePoster
+                  className={styles.poster}
+                  style={elementStyle}
+                  images={images}
+                  size={250}
+                  lazy={false}
+                  overflow={true}
+                />
+              </Link>
             </div>
           </div>
 
@@ -242,11 +248,13 @@ class DiscoverMovieOverview extends Component {
             </div>
 
             <div className={styles.details}>
-              <div className={styles.overview}>
-                <TextTruncate
-                  line={Math.floor(overviewHeight / (defaultFontSize * lineHeight))}
-                  text={overview}
-                />
+              <div className={styles.overviewContainer}>
+                <Link className={styles.overview} {...linkProps}>
+                  <TextTruncate
+                    line={Math.floor(overviewHeight / (defaultFontSize * lineHeight))}
+                    text={overview}
+                  />
+                </Link>
               </div>
 
               <DiscoverMovieOverviewInfo
@@ -255,7 +263,6 @@ class DiscoverMovieOverview extends Component {
                 {...overviewOptions}
                 {...otherProps}
               />
-
             </div>
           </div>
         </div>
