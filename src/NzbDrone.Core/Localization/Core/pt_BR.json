@@ -1866,5 +1866,9 @@
     "DownloadClientUnavailable": "Cliente de download indisponível",
     "NotificationsSettingsWebhookHeaders": "Cabeçalhos",
     "MetadataKometaDeprecatedSetting": "Deprecado",
-    "MetadataKometaDeprecated": "Os arquivos Kometa não serão mais criados, o suporte será completamente removido na v6"
+    "MetadataKometaDeprecated": "Os arquivos Kometa não serão mais criados, o suporte será completamente removido na v6",
+    "NotificationsTelegramSettingsIncludeInstanceName": "Incluir nome da instância no título",
+    "NotificationsTelegramSettingsIncludeInstanceNameHelpText": "Opcionalmente, inclua o nome da instância na notificação",
+    "NotificationsTelegramSettingsMetadataLinks": "Links de metadados",
+    "NotificationsTelegramSettingsMetadataLinksMovieHelpText": "Adicione links aos metadados da série ao enviar notificações"
 }

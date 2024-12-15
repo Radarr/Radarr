@@ -1846,5 +1846,7 @@
     "FileBrowser": "Explorateur de fichiers",
     "Completed": "Terminé",
     "Delay": "Délai",
-    "DownloadClientUnavailable": "Le client de téléchargement n'est pas disponible"
+    "DownloadClientUnavailable": "Le client de téléchargement n'est pas disponible",
+    "NotificationsTelegramSettingsMetadataLinks": "Liens de métadonnées",
+    "NotificationsTelegramSettingsMetadataLinksMovieHelpText": "Ajouter un lien vers les métadonnées de la série lors de l'envoi de notifications"
 }

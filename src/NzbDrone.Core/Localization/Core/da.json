@@ -1096,5 +1096,6 @@
     "EditReleaseProfile": "Rediger forsinkelsesprofil",
     "DownloadClientUnavailable": "Downloadklienten er ikke tilgængelig",
     "AddReleaseProfile": "Rediger forsinkelsesprofil",
-    "ApiKeyValidationHealthCheckMessage": "Opdater din API-nøgle til at være på mindste {length} karakterer. Dette kan gøres i indstillingerne eller i konfigurationsfilen"
+    "ApiKeyValidationHealthCheckMessage": "Opdater din API-nøgle til at være på mindste {length} karakterer. Dette kan gøres i indstillingerne eller i konfigurationsfilen",
+    "AutoTaggingSpecificationTag": "Etiket"
 }

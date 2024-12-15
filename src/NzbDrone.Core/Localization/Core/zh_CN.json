@@ -1865,5 +1865,7 @@
     "ManageFormats": "管理格式",
     "NotificationsSettingsWebhookHeaders": "标头",
     "Warning": "警告",
-    "MetadataKometaDeprecatedSetting": "弃用"
+    "MetadataKometaDeprecatedSetting": "弃用",
+    "NotificationsTelegramSettingsMetadataLinks": "元数据链接",
+    "NotificationsTelegramSettingsMetadataLinksMovieHelpText": "添加一个在发送通知时指向电影元数据的链接"
 }
