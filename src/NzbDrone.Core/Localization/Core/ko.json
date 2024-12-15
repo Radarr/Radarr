@@ -1091,5 +1091,6 @@
     "Warning": "경고",
     "VideoDynamicRange": "동영상 다이나믹 레인지",
     "XmlRpcPath": "XML RPC 경로",
-    "YesterdayAt": "어제 {time}"
+    "YesterdayAt": "어제 {time}",
+    "DownloadClientPneumaticSettingsNzbFolder": "Nzb 폴더"
 }

@@ -1866,5 +1866,9 @@
     "NotificationsSettingsWebhookHeaders": "Cabeceras",
     "MetadataKometaDeprecated": "Los archivos de Kometa no seguirán siendo creados, el soporte se eliminará completamente en la v6",
     "MetadataKometaDeprecatedSetting": "Obsoleto",
-    "Fallback": "Retirada"
+    "Fallback": "Retirada",
+    "NotificationsTelegramSettingsMetadataLinks": "Enlaces de metadatos",
+    "NotificationsTelegramSettingsIncludeInstanceName": "Incluir el nombre de la instancia en el título",
+    "NotificationsTelegramSettingsIncludeInstanceNameHelpText": "Opcionalmente incluye el nombre de la instancia en la notificación",
+    "NotificationsTelegramSettingsMetadataLinksMovieHelpText": "Añade un enlace a los metadatos de la película cuando se envían notificaciones"
 }
