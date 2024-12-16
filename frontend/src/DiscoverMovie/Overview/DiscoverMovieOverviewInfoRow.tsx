@@ -1,10 +1,10 @@
 import React from 'react';
-import Icon, { IconProps } from 'Components/Icon';
+import Icon, { IconName } from 'Components/Icon';
 import styles from './DiscoverMovieOverviewInfoRow.css';
 
 interface DiscoverMovieOverviewInfoRowProps {
   title?: string;
-  iconName: IconProps['name'];
+  iconName: IconName;
   label: string | null;
 }
 
