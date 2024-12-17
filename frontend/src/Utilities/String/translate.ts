@@ -17,7 +17,7 @@ export async function fetchTranslations(): Promise<boolean> {
       translations = data.Strings;
 
       resolve(true);
-    } catch (error) {
+    } catch {
       resolve(false);
     }
   });
