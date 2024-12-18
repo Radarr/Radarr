@@ -109,7 +109,7 @@ namespace Radarr.Api.V3.Indexers
                     }
                     else
                     {
-                        throw new NzbDroneClientException(HttpStatusCode.NotFound, "Unable to find matching movie");
+                        throw new NzbDroneClientException(HttpStatusCode.NotFound, "Unable to find matching movie, will need to be manually provided");
                     }
                 }
 
