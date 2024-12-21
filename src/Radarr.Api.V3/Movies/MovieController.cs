@@ -39,6 +39,7 @@ namespace Radarr.Api.V3.Movies
                                 IHandle<MovieEditedEvent>,
                                 IHandle<MoviesDeletedEvent>,
                                 IHandle<MovieRenamedEvent>,
+                                IHandle<MoviesBulkEditedEvent>,
                                 IHandle<MediaCoversUpdatedEvent>
     {
         private readonly IMovieService _moviesService;
@@ -368,6 +369,15 @@ namespace Radarr.Api.V3.Movies
         public void Handle(MovieRenamedEvent message)
         {
             BroadcastResourceChange(ModelAction.Updated, MapToResource(message.Movie));
+        }
+
+        [NonAction]
+        public void Handle(MoviesBulkEditedEvent message)
+        {
+            foreach (var movie in message.Movies)
+            {
+                BroadcastResourceChange(ModelAction.Updated, MapToResource(movie));
+            }
         }
 
         [NonAction]
