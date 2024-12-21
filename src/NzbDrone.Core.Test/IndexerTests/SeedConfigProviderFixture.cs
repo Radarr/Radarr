@@ -33,6 +33,26 @@ namespace NzbDrone.Core.Test.IndexerTests
         }
 
         [Test]
+        public void should_not_return_config_for_invalid_indexer()
+        {
+            Mocker.GetMock<ICachedIndexerSettingsProvider>()
+                .Setup(v => v.GetSettings(It.IsAny<int>()))
+                .Returns<CachedIndexerSettings>(null);
+
+            var result = Subject.GetSeedConfiguration(new RemoteMovie
+            {
+                Release = new ReleaseInfo
+                {
+                    DownloadProtocol = DownloadProtocol.Torrent,
+                    IndexerId = 1
+                },
+                ParsedMovieInfo = new ParsedMovieInfo()
+            });
+
+            result.Should().BeNull();
+        }
+
+        [Test]
         public void should_return_seed_time_for_movies()
         {
             var settings = new TorznabSettings();
