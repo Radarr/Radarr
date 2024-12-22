@@ -43,7 +43,7 @@ export interface PropertyFilter {
 
 export interface Filter {
   key: string;
-  label: string;
+  label: string | (() => string);
   filers: PropertyFilter[];
 }
 

@@ -157,7 +157,7 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
   );
 
   const onFilterSelect = useCallback(
-    (value: string) => {
+    (value: string | number) => {
       dispatch(setMovieFilter({ selectedFilterKey: value }));
     },
     [dispatch]

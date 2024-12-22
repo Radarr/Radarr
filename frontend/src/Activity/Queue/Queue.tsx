@@ -183,7 +183,7 @@ function Queue() {
   });
 
   const handleFilterSelect = useCallback(
-    (selectedFilterKey: string) => {
+    (selectedFilterKey: string | number) => {
       dispatch(setQueueFilter({ selectedFilterKey }));
     },
     [dispatch]

@@ -10,7 +10,7 @@ interface MovieIndexSortMenuProps {
   sortKey?: string;
   sortDirection?: SortDirection;
   isDisabled: boolean;
-  onSortSelect(sortKey: string): unknown;
+  onSortSelect(sortKey: string): void;
 }
 
 function MovieIndexSortMenu(props: MovieIndexSortMenuProps) {

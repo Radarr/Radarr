@@ -77,7 +77,7 @@ function History() {
   });
 
   const handleFilterSelect = useCallback(
-    (selectedFilterKey: string) => {
+    (selectedFilterKey: string | number) => {
       dispatch(setHistoryFilter({ selectedFilterKey }));
     },
     [dispatch]
