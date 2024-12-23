@@ -33,7 +33,7 @@ import MoviePoster from 'Movie/MoviePoster';
 import MovieInteractiveSearchModal from 'Movie/Search/MovieInteractiveSearchModal';
 import MovieFileEditorTable from 'MovieFile/Editor/MovieFileEditorTable';
 import ExtraFileTable from 'MovieFile/Extras/ExtraFileTable';
-import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
+import OrganizePreviewModal from 'Organize/OrganizePreviewModal';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
 import fonts from 'Styles/Variables/fonts';
 import * as keyCodes from 'Utilities/Constants/keyCodes';
@@ -724,7 +724,7 @@ class MovieDetails extends Component {
             </FieldSet>
           </div>
 
-          <OrganizePreviewModalConnector
+          <OrganizePreviewModal
             isOpen={isOrganizeModalOpen}
             movieId={id}
             onModalClose={this.onOrganizeModalClose}

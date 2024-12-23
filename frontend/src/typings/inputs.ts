@@ -5,4 +5,6 @@ export type InputChanged<T = unknown> = {
 
 export type InputOnChange<T> = (change: InputChanged<T>) => void;
 
-export type CheckInputChanged = InputChanged<boolean>;
+export interface CheckInputChanged extends InputChanged<boolean> {
+  shiftKey: boolean;
+}

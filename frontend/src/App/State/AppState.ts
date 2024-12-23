@@ -9,6 +9,7 @@ import MovieCreditAppState from './MovieCreditAppState';
 import MovieFilesAppState from './MovieFilesAppState';
 import MovieHistoryAppState from './MovieHistoryAppState';
 import MoviesAppState, { MovieIndexAppState } from './MoviesAppState';
+import OrganizePreviewAppState from './OrganizePreviewAppState';
 import ParseAppState from './ParseAppState';
 import PathsAppState from './PathsAppState';
 import QueueAppState from './QueueAppState';
@@ -76,6 +77,7 @@ interface AppState {
   movieHistory: MovieHistoryAppState;
   movieIndex: MovieIndexAppState;
   movies: MoviesAppState;
+  organizePreview: OrganizePreviewAppState;
   parse: ParseAppState;
   paths: PathsAppState;
   queue: QueueAppState;
