@@ -65,7 +65,7 @@ interface RowItemData {
 }
 
 function Row({ index, style, data }: ListChildComponentProps<RowItemData>) {
-  const { items, columns, onMovieSelect } = data;
+  const { items, onMovieSelect } = data;
   const movie = index >= items.length ? null : items[index];
 
   const handlePress = useCallback(() => {
@@ -88,13 +88,11 @@ function Row({ index, style, data }: ListChildComponentProps<RowItemData>) {
       onPress={handlePress}
     >
       <SelectMovieRow
-        id={movie.id}
+        key={movie.id}
         title={movie.title}
         tmdbId={movie.tmdbId}
         imdbId={movie.imdbId}
         year={movie.year}
-        columns={columns}
-        onMovieSelect={onMovieSelect}
       />
     </VirtualTableRowButton>
   );
