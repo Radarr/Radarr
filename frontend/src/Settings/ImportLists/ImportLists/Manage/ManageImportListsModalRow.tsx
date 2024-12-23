@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
+import MovieTagList from 'Components/MovieTagList';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import Column from 'Components/Table/Column';
 import TableRow from 'Components/Table/TableRow';
-import TagListConnector from 'Components/TagListConnector';
 import { createQualityProfileSelectorForHook } from 'Store/Selectors/createQualityProfileSelector';
 import { SelectStateInputProps } from 'typings/props';
 import firstCharToUpper from 'Utilities/String/firstCharToUpper';
@@ -89,7 +89,7 @@ function ManageImportListsModalRow(props: ManageImportListsModalRowProps) {
       </TableRowCell>
 
       <TableRowCell className={styles.tags}>
-        <TagListConnector tags={tags} />
+        <MovieTagList tags={tags} />
       </TableRowCell>
     </TableRow>
   );

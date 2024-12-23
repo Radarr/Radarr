@@ -7,8 +7,8 @@ import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import MovieTagList from 'Components/MovieTagList';
 import RottenTomatoRating from 'Components/RottenTomatoRating';
-import TagListConnector from 'Components/TagListConnector';
 import TmdbRating from 'Components/TmdbRating';
 import Popover from 'Components/Tooltip/Popover';
 import TraktRating from 'Components/TraktRating';
@@ -346,7 +346,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
       {showTags && tags.length ? (
         <div className={styles.tags}>
           <div className={styles.tagsList}>
-            <TagListConnector tags={tags} />
+            <MovieTagList tags={tags} />
           </div>
         </div>
       ) : null}

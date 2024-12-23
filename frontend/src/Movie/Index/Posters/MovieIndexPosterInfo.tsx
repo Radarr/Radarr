@@ -1,8 +1,8 @@
 import React from 'react';
 import Icon from 'Components/Icon';
 import ImdbRating from 'Components/ImdbRating';
+import MovieTagList from 'Components/MovieTagList';
 import RottenTomatoRating from 'Components/RottenTomatoRating';
-import TagListConnector from 'Components/TagListConnector';
 import TmdbRating from 'Components/TmdbRating';
 import TraktRating from 'Components/TraktRating';
 import { icons } from 'Helpers/Props';
@@ -261,7 +261,7 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     return (
       <div className={styles.tags}>
         <div className={styles.tagsList}>
-          <TagListConnector tags={tags} />
+          <MovieTagList tags={tags} />
         </div>
       </div>
     );

@@ -6,7 +6,7 @@ import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
-import TagListConnector from 'Components/TagListConnector';
+import MovieTagList from 'Components/MovieTagList';
 import Popover from 'Components/Tooltip/Popover';
 import { icons } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
@@ -231,7 +231,7 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
 
               {overviewOptions.showTags ? (
                 <div className={styles.tags}>
-                  <TagListConnector tags={tags} />
+                  <MovieTagList tags={tags} />
                 </div>
               ) : null}
             </div>
