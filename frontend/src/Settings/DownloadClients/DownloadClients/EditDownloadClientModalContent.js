@@ -38,7 +38,6 @@ class EditDownloadClientModalContent extends Component {
       onModalClose,
       onSavePress,
       onTestPress,
-      onAdvancedSettingsPress,
       onDeleteDownloadClientPress,
       ...otherProps
     } = this.props;
@@ -198,8 +197,6 @@ class EditDownloadClientModalContent extends Component {
           }
 
           <AdvancedSettingsButton
-            advancedSettings={advancedSettings}
-            onAdvancedSettingsPress={onAdvancedSettingsPress}
             showLabel={false}
           />
 
@@ -243,7 +240,6 @@ EditDownloadClientModalContent.propTypes = {
   onModalClose: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onTestPress: PropTypes.func.isRequired,
-  onAdvancedSettingsPress: PropTypes.func.isRequired,
   onDeleteDownloadClientPress: PropTypes.func
 };
 
