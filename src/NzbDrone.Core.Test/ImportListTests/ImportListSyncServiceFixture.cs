@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.ImportList
         private List<ImportListMovie> _list1Movies;
         private List<ImportListMovie> _list2Movies;
         private List<MovieCollection> _movieCollections;
-        private List<Movie> _moviesInCollections;
+        private List<MovieMetadata> _moviesInCollections;
 
         private List<Movie> _existingMovies;
         private List<IImportList> _importLists;
@@ -58,20 +58,20 @@ namespace NzbDrone.Core.Test.ImportList
                 .TheNext(1)
                 .With(s => s.TmdbId = 8)
                 .With(s => s.ImdbId = "8")
-                .With(s => s.MovieMetadata.Value.CollectionTmdbId = 1)
+                .With(s => s.MovieMetadata.Value.CollectionTmdbId = 999)
                 .Build().ToList();
 
-            _moviesInCollections = Builder<Movie>.CreateListOfSize(1)
+            _moviesInCollections = Builder<MovieMetadata>.CreateListOfSize(1)
                 .TheFirst(1)
                 .With(s => s.TmdbId = 8)
                 .With(s => s.ImdbId = "8")
-                .With(s => s.MovieMetadata.Value.CollectionTmdbId = 999)
+                .With(s => s.CollectionTmdbId = 999)
                 .Build().ToList();
 
             _movieCollections = Builder<MovieCollection>.CreateListOfSize(1)
                                 .TheFirst(1)
                                 .With(s => s.TmdbId = 999)
-                                .With(s => _moviesInCollections)
+                                .With(s => s.Movies = _moviesInCollections)
                                 .Build().ToList();
 
             _importListFetch = new ImportListFetchResult
@@ -130,6 +130,13 @@ namespace NzbDrone.Core.Test.ImportList
             Mocker.GetMock<IConfigService>()
                   .SetupGet(v => v.ListSyncLevel)
                   .Returns(cleanLevel);
+        }
+
+        private void GivenIncludeCollectionsInListSync(bool isEnabled)
+        {
+            Mocker.GetMock<IConfigService>()
+                  .SetupGet(v => v.IncludeCollectionsInListSync)
+                  .Returns(isEnabled);
         }
 
         private void GivenList(int id, bool enabledAuto)
@@ -295,7 +302,7 @@ namespace NzbDrone.Core.Test.ImportList
         }
 
         [Test]
-        public void should_delete_movies_not_files_on_clean_library_if_config_value_logonly()
+        public void should_delete_movies_not_files_on_clean_library_if_config_value_removeAndKeep()
         {
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
             GivenList(1, true);
@@ -325,7 +332,7 @@ namespace NzbDrone.Core.Test.ImportList
         }
 
         [Test]
-        public void should_delete_movies_and_files_on_clean_library_if_config_value_logonly()
+        public void should_delete_movies_and_files_on_clean_library_if_config_value_removeAndDelete()
         {
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
             GivenList(1, true);
