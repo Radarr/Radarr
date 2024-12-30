@@ -196,7 +196,8 @@ namespace NzbDrone.Core.ImportLists
 
             // TODO use AllMovieTmdbIds here?
             var moviesInLibrary = _movieService.GetAllMovies();
-            var movieCollections = _movieCollectionService.GetAllCollections().ToDictionary(x => x.TmdbId);
+            var movieCollections = _movieCollectionService.GetAllCollections()
+                                   .ToDictionary(x => x.TmdbId, x => x.Movies.Select(x => x.TmdbId));
 
             var moviesToUpdate = new List<Movie>();
 
@@ -206,11 +207,12 @@ namespace NzbDrone.Core.ImportLists
 
                 if (!isInList)
                 {
-                    if (_configService.IgnoreRelatedCollectionMoviesDuringListSync && movie.MovieMetadata.Value.CollectionTmdbId > 0)
+                    if (_configService.IgnoreRelatedCollectionMoviesDuringListSync
+                        && movie.MovieMetadata.Value.CollectionTmdbId > 0
+                        && movieCollections.ContainsKey(movie.MovieMetadata.Value.CollectionTmdbId))
                     {
                         var collection = movieCollections[movie.MovieMetadata.Value.CollectionTmdbId];
-                        var collectionIds = collection?.Movies?.Select(x => x.TmdbId) ?? Array.Empty<int>();
-                        var listMoviesInCollection = listMovies.Where(x => collectionIds.Contains(x.TmdbId));
+                        var listMoviesInCollection = listMovies.Where(x => collection.Contains(x.TmdbId));
 
                         if (listMoviesInCollection.Any())
                         {
