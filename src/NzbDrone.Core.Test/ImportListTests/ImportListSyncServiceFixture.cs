@@ -42,6 +42,7 @@ namespace NzbDrone.Core.Test.ImportList
                 .TheNext(1)
                 .With(s => s.TmdbId = 8)
                 .With(s => s.ImdbId = "8")
+                .With(s => s.MovieMetadata.Value.CollectionTmdbId = 1)
                 .Build().ToList();
 
             _list2Movies = Builder<ImportListMovie>.CreateListOfSize(3)
