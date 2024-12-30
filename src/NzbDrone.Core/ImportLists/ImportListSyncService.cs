@@ -196,6 +196,7 @@ namespace NzbDrone.Core.ImportLists
 
             // TODO use AllMovieTmdbIds here?
             var moviesInLibrary = _movieService.GetAllMovies();
+            var movieCollections = _movieCollectionService.GetAllCollections().ToDictionary(x => x.TmdbId);
 
             var moviesToUpdate = new List<Movie>();
 
@@ -207,12 +208,14 @@ namespace NzbDrone.Core.ImportLists
                 {
                     if (_configService.IncludeCollectionsInListSync && movie.MovieMetadata.Value.CollectionTmdbId > 0)
                     {
-                        var collection = _movieCollectionService.FindByTmdbId(movie.MovieMetadata.Value.CollectionTmdbId);
+                        var collection = movieCollections[movie.MovieMetadata.Value.CollectionTmdbId];
                         var collectionIds = collection?.Movies?.Select(x => x.TmdbId) ?? Array.Empty<int>();
+                        var listMoviesInCollection = listMovies.Where(x => collectionIds.Contains(x.TmdbId));
 
-                        if (listMovies.Select(x => x.TmdbId).Any(x => collectionIds.Contains(x)))
+                        if (listMoviesInCollection.Any())
                         {
-                            _logger.Info("{0} was in your library but not found in your lists, however it is part of a collection that a movie on your import lists is a part of --> {0} will not be altered due to having IncludeCollectionsInListSync enabled", movie);
+                            var listMoviesInCollectionTitles = listMoviesInCollection.Select(x => x.Title).Join(", ");
+                            _logger.Info("{0} was in your library but not found in your lists, however it is part of a collection that includes '{1}' which is in your import lists --> {0} will not be altered due to having IncludeCollectionsInListSync enabled", movie, listMoviesInCollectionTitles);
                             continue;
                         }
                     }
