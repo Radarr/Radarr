@@ -221,23 +221,19 @@ namespace NzbDrone.Core.ImportLists
                     {
                         case "logOnly":
                             _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie);
-
                             break;
                         case "keepAndUnmonitor":
                             _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie);
                             movie.Monitored = false;
                             moviesToUpdate.Add(movie);
-
                             break;
                         case "removeAndKeep":
                             _logger.Info("{0} was in your library, but not found in your lists --> Removing from library (keeping files)", movie);
                             _movieService.DeleteMovie(movie.Id, false);
-
                             break;
                         case "removeAndDelete":
                             _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie);
                             _movieService.DeleteMovie(movie.Id, true);
-
                             break;
                     }
                 }
