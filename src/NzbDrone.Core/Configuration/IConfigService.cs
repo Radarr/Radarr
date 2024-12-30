@@ -63,6 +63,12 @@ namespace NzbDrone.Core.Configuration
 
         string ListSyncLevel { get; set; }
 
+        /// <summary>
+        /// If true, movies that are a part of a larger collection that a list import is also a part of are not removed during list sync. (new behavior)
+        /// If false, movies are always removed unless they are explictly part of an import list (old behavior)
+        /// </summary>
+        bool IncludeCollectionsInListSync { get; set; }
+
         // Metadata Provider
         TMDbCountryCode CertificationCountry { get; set; }
 

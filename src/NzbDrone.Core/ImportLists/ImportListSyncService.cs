@@ -192,31 +192,66 @@ namespace NzbDrone.Core.ImportLists
             // TODO use AllMovieTmdbIds here?
             var moviesInLibrary = _movieService.GetAllMovies();
 
+            // All movie TMDB IDs that are part of a collection
+            var moviesInLibraryInCollections = _movieService.AllMovieWithCollectionsTmdbIds();
+
             var moviesToUpdate = new List<Movie>();
 
             foreach (var movie in moviesInLibrary)
             {
-                var movieExists = listMovies.Any(c => c.TmdbId == movie.TmdbId || c.ImdbId == movie.ImdbId);
+                var isInList = listMovies.Any(c => c.TmdbId == movie.TmdbId || c.ImdbId == movie.ImdbId);
 
-                if (!movieExists)
+                if (!isInList)
                 {
                     switch (_configService.ListSyncLevel)
                     {
                         case "logOnly":
-                            _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie);
+                            if (_configService.IncludeCollectionsInListSync && moviesInLibraryInCollections.Contains(movie.TmdbId))
+                            {
+                                _logger.Info("{0} was in your library but not found in your lists, however you have enabled IncludeCollectionsInListSync --> {0} will not be altered", movie);
+                            }
+                            else
+                            {
+                                _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie);
+                            }
+
                             break;
                         case "keepAndUnmonitor":
-                            _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie);
-                            movie.Monitored = false;
-                            moviesToUpdate.Add(movie);
+                            if (_configService.IncludeCollectionsInListSync && moviesInLibraryInCollections.Contains(movie.TmdbId))
+                            {
+                                _logger.Info("{0} was in your library but not found in your lists, however you have enabled IncludeCollectionsInListSync --> {0} will not be altered", movie);
+                            }
+                            else
+                            {
+                                _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie);
+                                movie.Monitored = false;
+                                moviesToUpdate.Add(movie);
+                            }
+
                             break;
                         case "removeAndKeep":
-                            _logger.Info("{0} was in your library, but not found in your lists --> Removing from library (keeping files)", movie);
-                            _movieService.DeleteMovie(movie.Id, false);
+                            if (_configService.IncludeCollectionsInListSync && moviesInLibraryInCollections.Contains(movie.TmdbId))
+                            {
+                                _logger.Info("{0} was in your library but not found in your lists, however you have enabled IncludeCollectionsInListSync --> {0} will not be altered", movie);
+                            }
+                            else
+                            {
+                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library (keeping files)", movie);
+                                _movieService.DeleteMovie(movie.Id, false);
+                            }
+
                             break;
                         case "removeAndDelete":
-                            _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie);
-                            _movieService.DeleteMovie(movie.Id, true);
+                            if (_configService.IncludeCollectionsInListSync && moviesInLibraryInCollections.Contains(movie.TmdbId))
+                            {
+                                _logger.Info("{0} was in your library but not found in your lists, however you have enabled IncludeCollectionsInListSync --> {0} will not be altered", movie);
+                            }
+                            else
+                            {
+                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie);
+                                _movieService.DeleteMovie(movie.Id, true);
+                            }
+
                             break;
                     }
                 }

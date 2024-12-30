@@ -122,6 +122,12 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("ListSyncLevel", value); }
         }
 
+        public bool IncludeCollectionsInListSync
+        {
+            get { return GetValueBoolean("IncludeCollectionsInListSync", false); }
+            set { SetValue("IncludeCollectionsInListSync", value); }
+        }
+
         public string ImportExclusions
         {
             get { return GetValue("ImportExclusions", string.Empty); }
