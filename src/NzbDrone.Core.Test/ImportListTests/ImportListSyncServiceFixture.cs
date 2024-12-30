@@ -20,7 +20,6 @@ namespace NzbDrone.Core.Test.ImportList
         private List<ImportListMovie> _list1Movies;
         private List<ImportListMovie> _list2Movies;
         private List<MovieCollection> _movieCollections;
-        private List<MovieMetadata> _moviesInCollections;
 
         private List<Movie> _existingMovies;
         private List<IImportList> _importLists;
@@ -35,7 +34,7 @@ namespace NzbDrone.Core.Test.ImportList
             _list1Movies = Builder<ImportListMovie>.CreateListOfSize(5)
                 .Build().ToList();
 
-            _existingMovies = Builder<Movie>.CreateListOfSize(3)
+            _existingMovies = Builder<Movie>.CreateListOfSize(5)
                 .TheFirst(1)
                 .With(s => s.TmdbId = 6)
                 .With(s => s.ImdbId = "6")
@@ -45,7 +44,15 @@ namespace NzbDrone.Core.Test.ImportList
                 .TheNext(1)
                 .With(s => s.TmdbId = 8)
                 .With(s => s.ImdbId = "8")
-                .With(s => s.MovieMetadata.Value.CollectionTmdbId = 999)
+                .With(s => s.MovieMetadata.Value.CollectionTmdbId = 999) // movie on list and part of collection
+                .TheNext(1)
+                .With(s => s.TmdbId = 9)
+                .With(s => s.ImdbId = "9")
+                .With(s => s.MovieMetadata.Value.CollectionTmdbId = 999) // movie not on list, part of a collection that includes a movie on a list
+                .TheNext(1)
+                .With(s => s.TmdbId = 10)
+                .With(s => s.ImdbId = "10")
+                .With(s => s.MovieMetadata.Value.CollectionTmdbId = 1010) // movie not on list, part of a collection that does not include a movie on a list
                 .Build().ToList();
 
             _list2Movies = Builder<ImportListMovie>.CreateListOfSize(3)
@@ -61,17 +68,13 @@ namespace NzbDrone.Core.Test.ImportList
                 .With(s => s.MovieMetadata.Value.CollectionTmdbId = 999)
                 .Build().ToList();
 
-            _moviesInCollections = Builder<MovieMetadata>.CreateListOfSize(1)
-                .TheFirst(1)
-                .With(s => s.TmdbId = 8)
-                .With(s => s.ImdbId = "8")
-                .With(s => s.CollectionTmdbId = 999)
-                .Build().ToList();
-
-            _movieCollections = Builder<MovieCollection>.CreateListOfSize(1)
-                                .TheFirst(1)
+            _movieCollections = Builder<MovieCollection>.CreateListOfSize(2)
+                                .TheFirst(1) // movie on list with collection
                                 .With(s => s.TmdbId = 999)
-                                .With(s => s.Movies = _moviesInCollections)
+                                .With(s => s.Movies = new List<MovieMetadata> { new MovieMetadata() { TmdbId = 8, ImdbId = "8" } })
+                                .TheNext(1) // movie not on list with collection
+                                .With(s => s.TmdbId = 1010)
+                                .With(s => s.Movies = new List<MovieMetadata> { new MovieMetadata() { TmdbId = 10, ImdbId = "10" } })
                                 .Build().ToList();
 
             _importListFetch = new ImportListFetchResult
@@ -233,6 +236,7 @@ namespace NzbDrone.Core.Test.ImportList
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
             GivenList(1, true);
             GivenCleanLevel("keepAndUnmonitor");
+            GivenIncludeCollectionsInListSync(false);
 
             Mocker.GetMock<IMovieService>()
                   .Setup(v => v.GetAllMovies())
@@ -251,7 +255,7 @@ namespace NzbDrone.Core.Test.ImportList
                   .Verify(v => v.DeleteMovie(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Never());
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.Count == 3 && s.All(m => !m.Monitored)), true), Times.Once());
+                  .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.Count == 5 && s.All(m => !m.Monitored)), true), Times.Once());
         }
 
         [Test]
@@ -274,7 +278,7 @@ namespace NzbDrone.Core.Test.ImportList
             Subject.Execute(_commandAll);
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.Count == 2 && s.All(m => !m.Monitored)), true), Times.Once());
+                  .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.Count == 4 && s.All(m => !m.Monitored)), true), Times.Once());
         }
 
         [Test]
@@ -298,7 +302,7 @@ namespace NzbDrone.Core.Test.ImportList
             Subject.Execute(_commandAll);
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.Count == 2 && s.All(m => !m.Monitored)), true), Times.Once());
+                  .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.Count == 4 && s.All(m => !m.Monitored)), true), Times.Once());
         }
 
         [Test]
@@ -322,7 +326,7 @@ namespace NzbDrone.Core.Test.ImportList
                   .Verify(v => v.GetAllMovies(), Times.Once());
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.DeleteMovie(It.IsAny<int>(), false, It.IsAny<bool>()), Times.Exactly(3));
+                  .Verify(v => v.DeleteMovie(It.IsAny<int>(), false, It.IsAny<bool>()), Times.Exactly(5));
 
             Mocker.GetMock<IMovieService>()
                   .Verify(v => v.DeleteMovie(It.IsAny<int>(), true, It.IsAny<bool>()), Times.Never());
@@ -355,7 +359,7 @@ namespace NzbDrone.Core.Test.ImportList
                   .Verify(v => v.DeleteMovie(It.IsAny<int>(), false, It.IsAny<bool>()), Times.Never());
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.DeleteMovie(It.IsAny<int>(), true, It.IsAny<bool>()), Times.Exactly(3));
+                  .Verify(v => v.DeleteMovie(It.IsAny<int>(), true, It.IsAny<bool>()), Times.Exactly(5));
 
             Mocker.GetMock<IMovieService>()
                   .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Once());
@@ -486,6 +490,41 @@ namespace NzbDrone.Core.Test.ImportList
 
             Mocker.GetMock<IAddMovieService>()
                   .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7 && s.All(m => m.TmdbId != _existingMovies[0].TmdbId)), true), Times.Once());
+        }
+
+        [Test]
+        public void should_not_remove_movies_in_collections_if_IncludeCollectionsInListSync_enabled()
+        {
+            _list2Movies.ForEach(m => m.ListId = 2);
+            _importListFetch.Movies.ForEach(m => m.ListId = 1);
+            _importListFetch.Movies.AddRange(_list2Movies);
+
+            GivenList(1, true);
+            GivenList(2, true);
+            GivenCleanLevel("removeAndDelete");
+            GivenIncludeCollectionsInListSync(true);
+
+            Mocker.GetMock<IMovieService>()
+                  .Setup(v => v.GetAllMovies())
+                  .Returns(_existingMovies);
+
+            Mocker.GetMock<IImportListMovieService>()
+               .Setup(v => v.GetAllListMovies())
+               .Returns(_list2Movies);
+
+            Subject.Execute(_commandAll);
+
+            Mocker.GetMock<IMovieService>()
+                  .Verify(v => v.GetAllMovies(), Times.Once());
+
+            Mocker.GetMock<IMovieService>()
+                  .Verify(v => v.DeleteMovie(It.IsAny<int>(), false, It.IsAny<bool>()), Times.Never());
+
+            Mocker.GetMock<IMovieService>()
+                  .Verify(v => v.DeleteMovie(It.IsAny<int>(), true, It.IsAny<bool>()), Times.Once());
+
+            Mocker.GetMock<IMovieService>()
+                  .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Once());
         }
     }
 }
