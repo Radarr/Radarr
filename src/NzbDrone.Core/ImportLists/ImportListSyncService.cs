@@ -217,7 +217,7 @@ namespace NzbDrone.Core.ImportLists
                         if (listMoviesInCollection.Any())
                         {
                             var listMoviesInCollectionTitles = listMoviesInCollection.Select(x => x.Title).Join(", ");
-                            _logger.Info("{0} was in your library but not found in your lists, however it is part of a collection that includes '{1}' which is in your import lists --> {0} will not be altered due to having IncludeCollectionsInListSync enabled", movie, listMoviesInCollectionTitles);
+                            _logger.Info("{0} was in your library but not found in your lists, however it is part of a collection that includes '{1}' which is in your import lists --> {0} will not be altered due to having 'Ignore Collections' enabled", movie, listMoviesInCollectionTitles);
 
                             continue;
                         }
