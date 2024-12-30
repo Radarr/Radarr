@@ -205,14 +205,14 @@ namespace NzbDrone.Core.ImportLists
 
                 if (!isInList)
                 {
-                    if (_configService.IncludeCollectionsInListSync)
+                    if (_configService.IncludeCollectionsInListSync && movie.MovieMetadata.Value.CollectionTmdbId > 0)
                     {
                         var collection = _movieCollectionService.FindByTmdbId(movie.MovieMetadata.Value.CollectionTmdbId);
                         var collectionIds = collection?.Movies?.Select(x => x.TmdbId) ?? Array.Empty<int>();
 
                         if (listMovies.Select(x => x.TmdbId).Any(x => collectionIds.Contains(x)))
                         {
-                            _logger.Info("{0} was in your library but not found in your lists, however it is part of a collection that a movie on your import list is a part of --> {0} will not be altered due to having IncludeCollectionsInListSync enabled", movie);
+                            _logger.Info("{0} was in your library but not found in your lists, however it is part of a collection that a movie on your import lists is a part of --> {0} will not be altered due to having IncludeCollectionsInListSync enabled", movie);
                             continue;
                         }
                     }
