@@ -63,7 +63,7 @@ function ImportListOptions(props: ImportListOptionsPageProps) {
     hasSettings,
   } = useSelector(createImportListOptionsSelector());
 
-  const { listSyncLevel } = settings;
+  const { listSyncLevel, ignoreRelatedCollectionMoviesDuringListSync } = settings;
 
   const dispatch = useDispatch();
 
@@ -119,6 +119,16 @@ function ImportListOptions(props: ImportListOptionsPageProps) {
               helpText={translate('ListSyncLevelHelpText')}
               onChange={onInputChange}
               {...listSyncLevel}
+            />
+          </FormGroup>
+          <FormGroup advancedSettings={advancedSettings} isAdvanced={true}>
+            <FormLabel>{translate('IgnoreRelatedCollectionMoviesDuringListSync')}</FormLabel>
+            <FormInputGroup
+              type={inputTypes.CHECK}
+              name="ignoreRelatedCollectionMoviesDuringListSync"
+              helpText={translate('IgnoreRelatedCollectionMoviesDuringListSyncHelpText')}
+              onChange={onInputChange}
+              {...ignoreRelatedCollectionMoviesDuringListSync}
             />
           </FormGroup>
         </Form>

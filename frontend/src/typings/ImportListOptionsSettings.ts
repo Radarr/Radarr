@@ -7,4 +7,5 @@ export type ListSyncLevel =
 
 export default interface ImportListOptionsSettings {
   listSyncLevel: ListSyncLevel;
+  ignoreRelatedCollectionMoviesDuringListSync: boolean;
 }

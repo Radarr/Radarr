@@ -722,6 +722,8 @@
   "Ignored": "Ignored",
   "IgnoredAddresses": "Ignored Addresses",
   "IgnoredHelpText": "The release will be rejected if it contains one or more of the terms (case insensitive)",
+  "IgnoreRelatedCollectionMoviesDuringListSync": "Ignore Related Collection Movies During List Sync",
+  "IgnoreRelatedCollectionMoviesDuringListSyncHelpText": "Do not alter movies that are not on an import list, but part of a collection that includes a movie on a list",
   "IllRestartLater": "I'll restart later",
   "Images": "Images",
   "ImdbRating": "IMDb Rating",
