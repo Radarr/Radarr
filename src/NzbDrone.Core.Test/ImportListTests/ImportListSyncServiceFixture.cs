@@ -8,6 +8,7 @@ using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.ImportLists.ImportExclusions;
 using NzbDrone.Core.ImportLists.ImportListMovies;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ImportList
@@ -18,6 +19,8 @@ namespace NzbDrone.Core.Test.ImportList
         private ImportListFetchResult _importListFetch;
         private List<ImportListMovie> _list1Movies;
         private List<ImportListMovie> _list2Movies;
+        private List<MovieCollection> _movieCollections;
+        private List<Movie> _moviesInCollections;
 
         private List<Movie> _existingMovies;
         private List<IImportList> _importLists;
@@ -42,7 +45,7 @@ namespace NzbDrone.Core.Test.ImportList
                 .TheNext(1)
                 .With(s => s.TmdbId = 8)
                 .With(s => s.ImdbId = "8")
-                .With(s => s.MovieMetadata.Value.CollectionTmdbId = 1)
+                .With(s => s.MovieMetadata.Value.CollectionTmdbId = 999)
                 .Build().ToList();
 
             _list2Movies = Builder<ImportListMovie>.CreateListOfSize(3)
@@ -55,7 +58,21 @@ namespace NzbDrone.Core.Test.ImportList
                 .TheNext(1)
                 .With(s => s.TmdbId = 8)
                 .With(s => s.ImdbId = "8")
+                .With(s => s.MovieMetadata.Value.CollectionTmdbId = 1)
                 .Build().ToList();
+
+            _moviesInCollections = Builder<Movie>.CreateListOfSize(1)
+                .TheFirst(1)
+                .With(s => s.TmdbId = 8)
+                .With(s => s.ImdbId = "8")
+                .With(s => s.MovieMetadata.Value.CollectionTmdbId = 999)
+                .Build().ToList();
+
+            _movieCollections = Builder<MovieCollection>.CreateListOfSize(1)
+                                .TheFirst(1)
+                                .With(s => s.TmdbId = 999)
+                                .With(s => _moviesInCollections)
+                                .Build().ToList();
 
             _importListFetch = new ImportListFetchResult
             {
@@ -88,6 +105,10 @@ namespace NzbDrone.Core.Test.ImportList
             Mocker.GetMock<IMovieService>()
                   .Setup(v => v.AllMovieTmdbIds())
                   .Returns(new List<int>());
+
+            Mocker.GetMock<IMovieCollectionService>()
+                  .Setup(v => v.GetAllCollections())
+                  .Returns(_movieCollections);
 
             Mocker.GetMock<IFetchAndParseImportList>()
                   .Setup(v => v.Fetch())
