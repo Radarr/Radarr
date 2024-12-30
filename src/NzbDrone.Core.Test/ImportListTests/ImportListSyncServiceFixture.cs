@@ -138,7 +138,7 @@ namespace NzbDrone.Core.Test.ImportList
         private void GivenIncludeCollectionsInListSync(bool isEnabled)
         {
             Mocker.GetMock<IConfigService>()
-                  .SetupGet(v => v.IncludeCollectionsInListSync)
+                  .SetupGet(v => v.IgnoreRelatedCollectionMoviesDuringListSync)
                   .Returns(isEnabled);
         }
 

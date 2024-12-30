@@ -206,7 +206,7 @@ namespace NzbDrone.Core.ImportLists
 
                 if (!isInList)
                 {
-                    if (_configService.IncludeCollectionsInListSync && movie.MovieMetadata.Value.CollectionTmdbId > 0)
+                    if (_configService.IgnoreRelatedCollectionMoviesDuringListSync && movie.MovieMetadata.Value.CollectionTmdbId > 0)
                     {
                         var collection = movieCollections[movie.MovieMetadata.Value.CollectionTmdbId];
                         var collectionIds = collection?.Movies?.Select(x => x.TmdbId) ?? Array.Empty<int>();

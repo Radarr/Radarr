@@ -122,10 +122,10 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("ListSyncLevel", value); }
         }
 
-        public bool IncludeCollectionsInListSync
+        public bool IgnoreRelatedCollectionMoviesDuringListSync
         {
-            get { return GetValueBoolean("IncludeCollectionsInListSync", false); }
-            set { SetValue("IncludeCollectionsInListSync", value); }
+            get { return GetValueBoolean("IgnoreRelatedCollectionMoviesDuringListSync", false); }
+            set { SetValue("IgnoreRelatedCollectionMoviesDuringListSync", value); }
         }
 
         public string ImportExclusions
