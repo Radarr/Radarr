@@ -62,5 +62,14 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = IsoLanguages.Find(isoCode);
             result.Language.Should().Be(Language.Afrikaans);
         }
+
+        [TestCase("mr")]
+        [TestCase("mar")]
+        [TestCase("mr-IN")]
+        public void should_return_marathi(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Language.Should().Be(Language.Marathi);
+        }
     }
 }
