@@ -646,13 +646,19 @@ namespace NzbDrone.Core.Notifications.Discord
             return title.Length > 256 ? $"{title.AsSpan(0, 253)}..." : title;
         }
 
-        private IEnumerable<string> GetTagLabels(Movie movie)
+        private List<string> GetTagLabels(Movie movie)
         {
-            return movie.Tags?
-                .Select(t => _tagRepository.Find(t)?.Label)
+            if (movie == null)
+            {
+                return null;
+            }
+
+            return _tagRepository.GetTags(movie.Tags)
+                .Select(t => t.Label)
                 .Where(l => l.IsNotNullOrWhiteSpace())
                 .OrderBy(l => l)
-                .Take(5);
+                .Take(5)
+                .ToList();
         }
     }
 }
