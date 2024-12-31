@@ -460,6 +460,14 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Should().Contain(Language.Afrikaans);
         }
 
+        [TestCase("Movie Title 2015 Marathi 1080p WebRip x264 AC3 5.1 ESubs [TMB]")]
+        [TestCase("Movie.Title.(2018).720p.CensorRip.Marathi.x264.AAC.-.LHDm@Telly")]
+        public void should_parse_language_marathi(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Marathi);
+        }
+
         [TestCase("Movie.Title.en.sub")]
         [TestCase("Movie Title.eng.sub")]
         [TestCase("Movie.Title.eng.forced.sub")]
