@@ -42,7 +42,7 @@
     "AuthForm": "Skjemaer (påloggingsside)",
     "Automatic": "Automatisk",
     "AutomaticSearch": "Automatisk Søk",
-    "AutoUnmonitorPreviouslyDownloadedMoviesHelpText": "Filmer som er slettet fra disken, blir automatisk overvåket i {appName}",
+    "UnmonitorDeletedMoviesHelpText": "Filmer som er slettet fra disken, blir automatisk overvåket i {appName}",
     "AvailabilityDelay": "Tilgjengelighet Forsinkelse",
     "AvailabilityDelayHelpText": "Hvor lang tid før eller etter tilgjengelig dato for å søke etter film",
     "Backup": "Sikkerhetskopiering",

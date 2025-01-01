@@ -71,7 +71,7 @@
     "AllResultsHiddenFilter": "Všetky výsledky sú skryté použitým filtrom",
     "AnalyticsEnabledHelpText": "Odosielajte anonymné informácie o používaní a chybách na servery aplikácie {appName}. Zahŕňa to informácie o vašom prehliadači, ktoré stránky webového používateľského rozhrania {appName} používate, hlásenia chýb, ako aj verziu operačného systému a spustenia. Tieto informácie použijeme na stanovenie priorít funkcií a opráv chýb.",
     "AutomaticSearch": "Automatické vyhľadávanie",
-    "AutoUnmonitorPreviouslyDownloadedMoviesHelpText": "Filmy odstránené z disku sa automaticky prestanú v {appName}e sledovať",
+    "UnmonitorDeletedMoviesHelpText": "Filmy odstránené z disku sa automaticky prestanú v {appName}e sledovať",
     "BackupFolderHelpText": "Relatívne cesty budú v priečinku AppData {appName}u",
     "BackupRetentionHelpText": "Automatické zálohy staršie než doba uchovania budú automaticky vyčistené",
     "BindAddressHelpText": "Platná adresa IP4 alebo '*' pre všetky rozhrania",

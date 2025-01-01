@@ -46,7 +46,6 @@ function createImportListExclusionSelector(id?: number) {
       const settings = selectSettings(mapping, pendingChanges, saveError);
 
       return {
-        id,
         isFetching,
         error,
         isSaving,

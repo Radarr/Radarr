@@ -142,7 +142,7 @@
     "Automatic": "Automatski",
     "AutomaticSearch": "Automatska Pretraga",
     "AutoRedownloadFailedHelpText": "Automatski pretraži i pokušaj preuzeti drukčiju verziju",
-    "AutoUnmonitorPreviouslyDownloadedMoviesHelpText": "U {appName}u se automatski isključuje nadzor za filmove koji su izbrisani sa diska",
+    "UnmonitorDeletedMoviesHelpText": "U {appName}u se automatski isključuje nadzor za filmove koji su izbrisani sa diska",
     "AvailabilityDelay": "Mogućnost Odgode",
     "AvailabilityDelayHelpText": "Vremenski iznos prije ili nakon dostupnog datuma za pretragu filma",
     "BackupFolderHelpText": "Relativne putanje će biti unutar {appName}ovog AppData direktorija",
