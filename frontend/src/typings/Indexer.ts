@@ -1,11 +1,15 @@
+import DownloadProtocol from 'DownloadClient/DownloadProtocol';
 import Provider from './Provider';
 
 interface Indexer extends Provider {
   enableRss: boolean;
   enableAutomaticSearch: boolean;
   enableInteractiveSearch: boolean;
-  protocol: string;
+  supportsRss: boolean;
+  supportsSearch: boolean;
+  protocol: DownloadProtocol;
   priority: number;
+  downloadClientId: number;
   tags: number[];
 }
 
