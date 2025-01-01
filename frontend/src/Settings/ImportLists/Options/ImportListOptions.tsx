@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
-import AppState from 'App/State/AppState';
 import Alert from 'Components/Alert';
 import FieldSet from 'Components/FieldSet';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
+import { EnhancedSelectInputValue } from 'Components/Form/Select/EnhancedSelectInput';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import useShowAdvancedSettings from 'Helpers/Hooks/useShowAdvancedSettings';
 import { inputTypes, kinds } from 'Helpers/Props';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
 import {
@@ -20,52 +20,61 @@ import createSettingsSectionSelector from 'Store/Selectors/createSettingsSection
 import translate from 'Utilities/String/translate';
 
 const SECTION = 'importListOptions';
-const cleanLibraryLevelOptions = [
-  { key: 'disabled', value: () => translate('Disabled') },
-  { key: 'logOnly', value: () => translate('LogOnly') },
-  { key: 'keepAndUnmonitor', value: () => translate('KeepAndUnmonitorMovie') },
-  { key: 'removeAndKeep', value: () => translate('RemoveMovieAndKeepFiles') },
+const cleanLibraryLevelOptions: EnhancedSelectInputValue<string>[] = [
+  {
+    key: 'disabled',
+    get value() {
+      return translate('Disabled');
+    },
+  },
+  {
+    key: 'logOnly',
+    get value() {
+      return translate('LogOnly');
+    },
+  },
+  {
+    key: 'keepAndUnmonitor',
+    get value() {
+      return translate('KeepAndUnmonitorMovie');
+    },
+  },
+  {
+    key: 'removeAndKeep',
+    get value() {
+      return translate('RemoveMovieAndKeepFiles');
+    },
+  },
   {
     key: 'removeAndDelete',
-    value: () => translate('RemoveMovieAndDeleteFiles'),
+    get value() {
+      return translate('RemoveMovieAndDeleteFiles');
+    },
   },
 ];
 
-function createImportListOptionsSelector() {
-  return createSelector(
-    (state: AppState) => state.settings.advancedSettings,
-    createSettingsSectionSelector(SECTION),
-    (advancedSettings, sectionSettings) => {
-      return {
-        advancedSettings,
-        save: sectionSettings.isSaving,
-        ...sectionSettings,
-      };
-    }
-  );
-}
-
-interface ImportListOptionsPageProps {
+interface ImportListOptionsProps {
   setChildSave(saveCallback: () => void): void;
   onChildStateChange(payload: unknown): void;
 }
 
-function ImportListOptions(props: ImportListOptionsPageProps) {
-  const { setChildSave, onChildStateChange } = props;
+function ImportListOptions({
+  setChildSave,
+  onChildStateChange,
+}: ImportListOptionsProps) {
+  const dispatch = useDispatch();
+  const showAdvancedSettings = useShowAdvancedSettings();
 
   const {
     isSaving,
     hasPendingChanges,
-    advancedSettings,
     isFetching,
     error,
     settings,
     hasSettings,
-  } = useSelector(createImportListOptionsSelector());
+  } = useSelector(createSettingsSectionSelector(SECTION));
 
   const { listSyncLevel } = settings;
-
-  const dispatch = useDispatch();
 
   const onInputChange = useCallback(
     ({ name, value }: { name: string; value: unknown }) => {
@@ -80,7 +89,7 @@ function ImportListOptions(props: ImportListOptionsPageProps) {
     setChildSave(() => dispatch(saveImportListOptions()));
 
     return () => {
-      dispatch(clearPendingChanges({ section: SECTION }));
+      dispatch(clearPendingChanges({ section: `settings.${SECTION}` }));
     };
   }, [dispatch, setChildSave]);
 
@@ -91,16 +100,11 @@ function ImportListOptions(props: ImportListOptionsPageProps) {
     });
   }, [onChildStateChange, isSaving, hasPendingChanges]);
 
-  const translatedLevelOptions = cleanLibraryLevelOptions.map(
-    ({ key, value }) => {
-      return {
-        key,
-        value: value(),
-      };
-    }
-  );
+  if (!showAdvancedSettings) {
+    return null;
+  }
 
-  return advancedSettings ? (
+  return (
     <FieldSet legend={translate('Options')}>
       {isFetching ? <LoadingIndicator /> : null}
 
@@ -110,12 +114,12 @@ function ImportListOptions(props: ImportListOptionsPageProps) {
 
       {hasSettings && !isFetching && !error ? (
         <Form>
-          <FormGroup advancedSettings={advancedSettings} isAdvanced={true}>
+          <FormGroup advancedSettings={showAdvancedSettings} isAdvanced={true}>
             <FormLabel>{translate('CleanLibraryLevel')}</FormLabel>
             <FormInputGroup
               type={inputTypes.SELECT}
               name="listSyncLevel"
-              values={translatedLevelOptions}
+              values={cleanLibraryLevelOptions}
               helpText={translate('ListSyncLevelHelpText')}
               onChange={onInputChange}
               {...listSyncLevel}
@@ -124,7 +128,7 @@ function ImportListOptions(props: ImportListOptionsPageProps) {
         </Form>
       ) : null}
     </FieldSet>
-  ) : null;
+  );
 }
 
 export default ImportListOptions;
