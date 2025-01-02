@@ -1082,7 +1082,7 @@
     "AutoRedownloadFailed": "Download fallito",
     "AddAutoTagError": "Impossibile aggiungere un nuovo tag automatico, riprova.",
     "AddDelayProfileError": "Impossibile aggiungere un nuovo profilo di ritardo, riprova.",
-    "AddListExclusion": "Aggiungi Lista esclusioni",
+    "AddListExclusion": "Aggiungi elenco esclusioni",
     "Label": "Etichetta",
     "QueueLoadError": "Impossibile caricare la Coda",
     "IncludeHealthWarnings": "Includi gli avvisi di salute",

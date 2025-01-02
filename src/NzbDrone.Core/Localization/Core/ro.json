@@ -1133,7 +1133,7 @@
     "DeleteMovieFolders": "Ștergeți dosarul filmului",
     "DeleteMovieFoldersHelpText": "Ștergeți folderul filmului și conținutul acestuia",
     "DeleteSelectedMovies": "Ștergeți fișierele film selectate",
-    "DownloadClientSettingsRecentPriority": "Prioritate client",
+    "DownloadClientSettingsRecentPriority": "Prioritate recente",
     "MovieIsNotMonitored": "Filmul nu este monitorizat",
     "DeleteSelectedImportListExclusionsMessageText": "Sigur doriți să ștergeți această excludere din lista de importuri?",
     "UpdateAvailableHealthCheckMessage": "O nouă versiune este disponibilă: {version}",
@@ -1151,5 +1151,6 @@
     "Clone": "Clonează",
     "AddReleaseProfile": "Editați profilul de întârziere",
     "Delay": "Întârziere",
-    "DownloadClientUnavailable": "Client de descărcare indisponibil"
+    "DownloadClientUnavailable": "Client de descărcare indisponibil",
+    "DownloadClientSettingsOlderPriority": "Prioritate mai vechi"
 }
