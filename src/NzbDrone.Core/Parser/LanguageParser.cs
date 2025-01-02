@@ -244,6 +244,11 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Marathi);
             }
 
+            if (lowerTitle.Contains("tagalog"))
+            {
+                languages.Add(Language.Tagalog);
+            }
+
             // Case sensitive
             var caseSensitiveMatches = CaseSensitiveLanguageRegex.Matches(title);
 
