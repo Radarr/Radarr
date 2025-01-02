@@ -67,6 +67,8 @@ namespace NzbDrone.Core.ImportLists.TMDb
         [FieldOption(Hint = "Afrikaans")]
         af,
         [FieldOption(Hint = "Marathi")]
-        mr
+        mr,
+        [FieldOption(Hint = "Tagalog")]
+        tl,
     }
 }

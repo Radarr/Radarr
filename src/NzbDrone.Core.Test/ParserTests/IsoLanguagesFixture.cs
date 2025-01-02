@@ -71,5 +71,14 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = IsoLanguages.Find(isoCode);
             result.Language.Should().Be(Language.Marathi);
         }
+
+        [TestCase("tl")]
+        [TestCase("tgl")]
+        [TestCase("tl-PH")]
+        public void should_return_tagalog(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Language.Should().Be(Language.Tagalog);
+        }
     }
 }
