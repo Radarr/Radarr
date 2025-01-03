@@ -38,7 +38,7 @@ function createIndexersSelector(includeAny: boolean) {
   );
 }
 
-interface IndexerSelectInputProps {
+export interface IndexerSelectInputProps {
   name: string;
   value: number;
   includeAny?: boolean;

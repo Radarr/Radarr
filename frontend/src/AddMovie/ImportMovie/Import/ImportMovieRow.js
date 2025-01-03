@@ -44,7 +44,7 @@ function ImportMovieRow(props) {
 
       <VirtualTableRowCell className={styles.monitor}>
         <FormInputGroup
-          type={inputTypes.MOVIE_MONITORED_SELECT}
+          type={inputTypes.MONITOR_MOVIES_SELECT}
           name="monitor"
           value={monitor}
           onChange={onInputChange}

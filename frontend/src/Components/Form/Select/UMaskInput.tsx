@@ -66,7 +66,7 @@ function formatPermissions(permissions: number) {
   return result;
 }
 
-interface UMaskInputProps {
+export interface UMaskInputProps {
   name: string;
   value: string;
   hasError?: boolean;
