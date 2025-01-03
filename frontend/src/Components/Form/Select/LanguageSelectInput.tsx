@@ -4,7 +4,7 @@ import EnhancedSelectInput, {
   EnhancedSelectInputValue,
 } from './EnhancedSelectInput';
 
-interface LanguageSelectInputProps {
+export interface LanguageSelectInputProps {
   name: string;
   value: number;
   values: EnhancedSelectInputValue<number>[];

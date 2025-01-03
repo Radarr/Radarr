@@ -110,7 +110,7 @@ class AddNewMovieModalContent extends Component {
                   </FormLabel>
 
                   <FormInputGroup
-                    type={inputTypes.MOVIE_MONITORED_SELECT}
+                    type={inputTypes.MONITOR_MOVIES_SELECT}
                     name="monitor"
                     onChange={onInputChange}
                     {...monitor}

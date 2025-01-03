@@ -117,7 +117,7 @@ class ImportMovieFooter extends Component {
           </div>
 
           <FormInputGroup
-            type={inputTypes.MOVIE_MONITORED_SELECT}
+            type={inputTypes.MONITOR_MOVIES_SELECT}
             name="monitor"
             value={monitor}
             isDisabled={!selectedCount}

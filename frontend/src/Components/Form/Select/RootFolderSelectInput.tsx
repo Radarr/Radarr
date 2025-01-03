@@ -24,7 +24,7 @@ export interface RootFolderSelectInputValue
   isMissing?: boolean;
 }
 
-interface RootFolderSelectInputProps
+export interface RootFolderSelectInputProps
   extends Omit<
     EnhancedSelectInputProps<EnhancedSelectInputValue<string>, string>,
     'value' | 'values'

@@ -24,12 +24,13 @@ function parseValue(
   return newValue;
 }
 
-interface NumberInputProps
-  extends Omit<TextInputProps<number | null>, 'value'> {
+export interface NumberInputProps
+  extends Omit<TextInputProps, 'value' | 'onChange'> {
   value?: number | null;
   min?: number;
   max?: number;
   isFloat?: boolean;
+  onChange: (input: InputChanged<number | null>) => void;
 }
 
 function NumberInput({

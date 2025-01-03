@@ -183,6 +183,7 @@ function EditMovieModalContent({
               type={inputTypes.PATH}
               name="path"
               {...settings.path}
+              includeFiles={false}
               onChange={handleInputChange}
             />
           </FormGroup>

@@ -142,7 +142,7 @@ function EditImportListModalContent(props) {
                 <FormLabel>{translate('Monitor')}</FormLabel>
 
                 <FormInputGroup
-                  type={inputTypes.MOVIE_MONITORED_SELECT}
+                  type={inputTypes.MONITOR_MOVIES_SELECT}
                   name="monitor"
                   helpText={translate('ListMonitorMovieHelpText')}
                   {...monitor}
