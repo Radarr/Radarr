@@ -6,6 +6,7 @@ import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import useModalOpenState from 'Helpers/Hooks/useModalOpenState';
 import { icons } from 'Helpers/Props';
+import { MovieEntity } from 'Movie/useMovie';
 import { executeCommand } from 'Store/Actions/commandActions';
 import createExecutingCommandsSelector from 'Store/Selectors/createExecutingCommandsSelector';
 import translate from 'Utilities/String/translate';
@@ -14,6 +15,7 @@ import styles from './MovieSearchCell.css';
 
 interface MovieSearchCellProps {
   movieId: number;
+  movieEntity?: MovieEntity;
 }
 
 function MovieSearchCell({ movieId }: MovieSearchCellProps) {

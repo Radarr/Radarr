@@ -1,4 +1,11 @@
-export default function getFilterValue(filters, filterKey, filterValueKey, defaultValue) {
+import { Filter } from 'App/State/AppState';
+
+export default function getFilterValue<T>(
+  filters: Filter[],
+  filterKey: string | number,
+  filterValueKey: string,
+  defaultValue: T
+) {
   const filter = filters.find((f) => f.key === filterKey);
 
   if (!filter) {
