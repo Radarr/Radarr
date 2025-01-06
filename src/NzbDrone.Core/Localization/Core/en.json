@@ -124,6 +124,7 @@
   "AutoTaggingSpecificationOriginalLanguage": "Language",
   "AutoTaggingSpecificationQualityProfile": "Quality Profile",
   "AutoTaggingSpecificationRootFolder": "Root Folder",
+  "AutoTaggingSpecificationStatus": "Status",
   "AutoTaggingSpecificationTag": "Tag",
   "AutoUnmonitorPreviouslyDownloadedMoviesHelpText": "Movies deleted from the disk are automatically unmonitored in {appName}",
   "Automatic": "Automatic",
