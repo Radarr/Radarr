@@ -53,7 +53,7 @@ import {
 } from 'Store/Actions/movieFileActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import { SortCallback } from 'typings/callbacks';
-import { SelectStateInputProps } from 'typings/props';
+import { CheckInputChanged } from 'typings/inputs';
 import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import translate from 'Utilities/String/translate';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
@@ -360,7 +360,7 @@ function InteractiveImportModalContent(
   }, [previousIsDeleting, isDeleting, deleteError, onModalClose]);
 
   const onSelectAllChange = useCallback(
-    ({ value }: SelectStateInputProps) => {
+    ({ value }: CheckInputChanged) => {
       setSelectState({ type: value ? 'selectAll' : 'unselectAll', items });
     },
     [items, setSelectState]
@@ -378,8 +378,8 @@ function InteractiveImportModalContent(
 
       setWithoutMovieFileIdRowsSelected(
         hasMovieFileId || !value
-          ? without(withoutMovieFileIdRowsSelected, id)
-          : [...withoutMovieFileIdRowsSelected, id]
+          ? without(withoutMovieFileIdRowsSelected, id as number)
+          : [...withoutMovieFileIdRowsSelected, id as number]
       );
     },
     [

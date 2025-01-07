@@ -128,8 +128,8 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
     }
   }, [id, movie, quality, languages, isSelected, onValidRowChange]);
 
-  const onSelectedChangeWrapper = useCallback(
-    (result: SelectedChangeProps) => {
+  const handleSelectedChange = useCallback(
+    (result: SelectStateInputProps) => {
       onSelectedChange({
         ...result,
         hasMovieFileId: !!movieFileId,
@@ -271,7 +271,7 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
       <TableSelectCell
         id={id}
         isSelected={isSelected}
-        onSelectedChange={onSelectedChangeWrapper}
+        onSelectedChange={handleSelectedChange}
       />
 
       <TableRowCell className={styles.relativePath} title={relativePath}>
