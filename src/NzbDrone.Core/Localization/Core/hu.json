@@ -1448,5 +1448,21 @@
     "FileBrowser": "Fájl Böngésző",
     "Completed": "Teljes",
     "Delay": "Késleltetés",
-    "DownloadClientUnavailable": "Letöltőkliens nem elérhető"
+    "DownloadClientUnavailable": "Letöltőkliens nem elérhető",
+    "AutoTaggingSpecificationGenre": "Műfaj(ok)",
+    "AutoTaggingSpecificationMaximumYear": "Maximum Év",
+    "AutoTaggingSpecificationMinimumYear": "Minimum Év",
+    "AutoTaggingSpecificationOriginalLanguage": "Nyelv",
+    "AutoTaggingSpecificationQualityProfile": "Minőségi profil",
+    "AutoTaggingSpecificationRootFolder": "Gyökérmappa",
+    "AutoTaggingSpecificationStatus": "Állapot",
+    "CustomFormatsSpecificationLanguage": "Nyelv",
+    "CustomFormatsSpecificationMaximumSize": "Maximális méret",
+    "CustomFormatsSpecificationMaximumSizeHelpText": "A kioldásnak kisebbnek vagy egyenlőnek kell lennie ennél a méretnél",
+    "CustomFormatsSpecificationMaximumYear": "Maximum Év",
+    "CustomFormatsSpecificationMinimumSize": "Minimum méret",
+    "CustomFormatsSpecificationMinimumSizeHelpText": "A kibocsátásnak nagyobbnak kell lennie ennél a méretnél",
+    "CustomFormatsSpecificationMinimumYear": "Minimum Év",
+    "CustomFormatsSpecificationResolution": "Felbontás",
+    "CustomFormatsSpecificationSource": "Forrás"
 }

@@ -1100,5 +1100,12 @@
     "EditReleaseProfile": "Redigera fördröjningsprofil",
     "AddReleaseProfile": "Redigera fördröjningsprofil",
     "Delay": "Fördröj",
-    "DownloadClientUnavailable": "Nedladdningsklient är otillgänglig"
+    "DownloadClientUnavailable": "Nedladdningsklient är otillgänglig",
+    "AutoTaggingSpecificationQualityProfile": "Kvalitetsprofil",
+    "AutoTaggingSpecificationRootFolder": "Rotmapp",
+    "AutoTaggingSpecificationStatus": "Status",
+    "CustomFormatsSpecificationLanguage": "Språk",
+    "CustomFormatsSpecificationMaximumSize": "Maximal storlek",
+    "CustomFormatsSpecificationSource": "Källa",
+    "AutoTaggingSpecificationOriginalLanguage": "Språk"
 }

@@ -1152,5 +1152,12 @@
     "AddReleaseProfile": "Editați profilul de întârziere",
     "Delay": "Întârziere",
     "DownloadClientUnavailable": "Client de descărcare indisponibil",
-    "DownloadClientSettingsOlderPriority": "Prioritate mai vechi"
+    "DownloadClientSettingsOlderPriority": "Prioritate mai vechi",
+    "AutoTaggingSpecificationQualityProfile": "Profil de Calitate",
+    "AutoTaggingSpecificationRootFolder": "Folder Rădăcină",
+    "AutoTaggingSpecificationStatus": "Status",
+    "CustomFormatsSpecificationLanguage": "Limbă",
+    "CustomFormatsSpecificationMaximumSize": "Dimensiune maximă",
+    "CustomFormatsSpecificationSource": "Sursă",
+    "AutoTaggingSpecificationOriginalLanguage": "Limbă"
 }

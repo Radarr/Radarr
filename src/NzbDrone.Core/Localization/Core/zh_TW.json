@@ -282,5 +282,10 @@
     "AuthenticationRequiredPasswordHelpTextWarning": "請輸入新密碼",
     "AuthenticationRequiredUsernameHelpTextWarning": "請輸入新用戶名",
     "AuthenticationRequiredPasswordConfirmationHelpTextWarning": "確認新密碼",
-    "AutoRedownloadFailedFromInteractiveSearch": "失敗時重新下載來自手動搜索的資源"
+    "AutoRedownloadFailedFromInteractiveSearch": "失敗時重新下載來自手動搜索的資源",
+    "AutoTaggingSpecificationOriginalLanguage": "語言",
+    "AutoTaggingSpecificationQualityProfile": "品質設定檔",
+    "AutoTaggingSpecificationRootFolder": "根目錄資料夾",
+    "CustomFormatsSpecificationLanguage": "語言",
+    "CustomFormatsSpecificationResolution": "解析度"
 }

@@ -176,5 +176,8 @@
     "Clone": "Tutup",
     "EnableSsl": "Aktifkan RSS",
     "AddCustomFormatError": "Tidak dapat menambahkan format khusus baru, coba lagi.",
-    "AddDelayProfile": "Tambah Delay Profile"
+    "AddDelayProfile": "Tambah Delay Profile",
+    "AutoTaggingSpecificationOriginalLanguage": "Bahasa",
+    "AutoTaggingSpecificationQualityProfile": "Profil Kualitas",
+    "CustomFormatsSpecificationLanguage": "Bahasa"
 }

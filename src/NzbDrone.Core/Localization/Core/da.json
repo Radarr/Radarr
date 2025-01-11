@@ -1097,5 +1097,13 @@
     "DownloadClientUnavailable": "Downloadklienten er ikke tilgængelig",
     "AddReleaseProfile": "Rediger forsinkelsesprofil",
     "ApiKeyValidationHealthCheckMessage": "Opdater din API-nøgle til at være på mindste {length} karakterer. Dette kan gøres i indstillingerne eller i konfigurationsfilen",
-    "AutoTaggingSpecificationTag": "Etiket"
+    "AutoTaggingSpecificationTag": "Etiket",
+    "AutoTaggingSpecificationOriginalLanguage": "Sprog",
+    "AutoTaggingSpecificationQualityProfile": "Kvalitetsprofil",
+    "AutoTaggingSpecificationRootFolder": "Rodmappe",
+    "AutoTaggingSpecificationStatus": "Status",
+    "CustomFormatsSpecificationLanguage": "Sprog",
+    "CustomFormatsSpecificationMaximumSize": "Maksimal størrelse",
+    "CustomFormatsSpecificationResolution": "Opløsning",
+    "CustomFormatsSpecificationSource": "Kilde"
 }

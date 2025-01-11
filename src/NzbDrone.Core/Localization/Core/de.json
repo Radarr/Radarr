@@ -1789,5 +1789,21 @@
     "Warning": "Warnung",
     "YesterdayAt": "Gestern um {time}",
     "RemotePathMappingsInfo": "Remote-Pfadzuordnungen sind sehr selten erforderlich. Wenn {appName} und dein Download-Client auf demselben System sind, ist es besser, deine Pfade abzugleichen. Weitere Informationen findest du im [Wiki]({wikiLink}).",
-    "NotificationsTelegramSettingsMetadataLinks": "Metadaten-Links"
+    "NotificationsTelegramSettingsMetadataLinks": "Metadaten-Links",
+    "CustomFormatsSpecificationMinimumYear": "Höchstjahr",
+    "CustomFormatsSpecificationResolution": "Auflösung",
+    "CustomFormatsSpecificationSource": "Quelle",
+    "AutoTaggingSpecificationGenre": "Genre(s)",
+    "AutoTaggingSpecificationMaximumYear": "Höchstjahr",
+    "AutoTaggingSpecificationMinimumYear": "Höchstjahr",
+    "AutoTaggingSpecificationOriginalLanguage": "Sprache",
+    "AutoTaggingSpecificationQualityProfile": "Qualitätsprofil",
+    "AutoTaggingSpecificationRootFolder": "Root-Ordner",
+    "AutoTaggingSpecificationStatus": "Status",
+    "CustomFormatsSpecificationLanguage": "Sprache",
+    "CustomFormatsSpecificationMaximumSize": "Maximale Größe",
+    "CustomFormatsSpecificationMaximumSizeHelpText": "Das Release muss kleiner oder gleich Groß sein",
+    "CustomFormatsSpecificationMaximumYear": "Höchstjahr",
+    "CustomFormatsSpecificationMinimumSize": "Mindestgröße",
+    "CustomFormatsSpecificationMinimumSizeHelpText": "Das Release muss größer als diese Größe sein"
 }

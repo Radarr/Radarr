@@ -366,5 +366,12 @@
     "Clone": "Zatvori",
     "Reason": "Sezona",
     "Delay": "Odgoda",
-    "DeleteSelectedMovieFilesHelpText": "Jeste li sigurni da želite obrisati ovaj profil odgode?"
+    "DeleteSelectedMovieFilesHelpText": "Jeste li sigurni da želite obrisati ovaj profil odgode?",
+    "AutoTaggingSpecificationStatus": "Status",
+    "AutoTaggingSpecificationOriginalLanguage": "jezik",
+    "AutoTaggingSpecificationQualityProfile": "Profil Kvalitete",
+    "AutoTaggingSpecificationRootFolder": "Korijenska Mapa",
+    "CustomFormatsSpecificationLanguage": "jezik",
+    "CustomFormatsSpecificationResolution": "Razlučivost",
+    "CustomFormatsSpecificationSource": "Izvor"
 }

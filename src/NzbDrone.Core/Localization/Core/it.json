@@ -1472,5 +1472,21 @@
     "DefaultNotFoundMessage": "Ti devi essere perso, non c'è nulla da vedere qui.",
     "Completed": "Completo",
     "Delay": "Ritardo",
-    "DownloadClientUnavailable": "Il client di download non è disponibile"
+    "DownloadClientUnavailable": "Il client di download non è disponibile",
+    "AutoTaggingSpecificationGenre": "Genere/i",
+    "AutoTaggingSpecificationMaximumYear": "Anno Massimo",
+    "AutoTaggingSpecificationMinimumYear": "Anno Minimo",
+    "AutoTaggingSpecificationOriginalLanguage": "Lingua",
+    "AutoTaggingSpecificationQualityProfile": "Profilo Qualità",
+    "AutoTaggingSpecificationRootFolder": "Cartella Radice",
+    "AutoTaggingSpecificationStatus": "Stato",
+    "CustomFormatsSpecificationLanguage": "Lingua",
+    "CustomFormatsSpecificationMaximumSize": "Dimensione Massima",
+    "CustomFormatsSpecificationMaximumSizeHelpText": "La release deve essere minore o uguale a questa dimensione",
+    "CustomFormatsSpecificationMaximumYear": "Anno Massimo",
+    "CustomFormatsSpecificationMinimumSize": "Dimensione Minima",
+    "CustomFormatsSpecificationMinimumSizeHelpText": "La release deve essere maggiore di questa dimensione",
+    "CustomFormatsSpecificationMinimumYear": "Anno Minimo",
+    "CustomFormatsSpecificationResolution": "Risoluzione",
+    "CustomFormatsSpecificationSource": "Fonte"
 }

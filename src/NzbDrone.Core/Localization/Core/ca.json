@@ -1387,5 +1387,18 @@
     "DefaultNotFoundMessage": "Deu estar perdut, no hi ha res a veure aquí.",
     "Completed": "Completat",
     "Delay": "Retard",
-    "DownloadClientUnavailable": "El client de descàrrega no està disponible"
+    "DownloadClientUnavailable": "El client de descàrrega no està disponible",
+    "AutoTaggingSpecificationGenre": "Gènere(s)",
+    "AutoTaggingSpecificationMaximumYear": "Any màxim",
+    "AutoTaggingSpecificationMinimumYear": "Any mínim",
+    "AutoTaggingSpecificationOriginalLanguage": "Idioma",
+    "AutoTaggingSpecificationQualityProfile": "Perfil de Qualitat",
+    "AutoTaggingSpecificationRootFolder": "Carpeta arrel",
+    "AutoTaggingSpecificationStatus": "Estat",
+    "CustomFormatsSpecificationLanguage": "Idioma",
+    "CustomFormatsSpecificationMaximumSize": "Mida màxima",
+    "CustomFormatsSpecificationMaximumYear": "Any màxim",
+    "CustomFormatsSpecificationMinimumYear": "Any mínim",
+    "CustomFormatsSpecificationResolution": "Resolució",
+    "CustomFormatsSpecificationSource": "Font"
 }

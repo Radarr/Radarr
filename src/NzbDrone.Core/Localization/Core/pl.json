@@ -1187,5 +1187,13 @@
     "FolderNameTokens": "Tokeny nazw plików",
     "Clone": "Zamknij",
     "Delay": "Opóźnienie",
-    "DownloadClientUnavailable": "Klient pobierania jest niedostępny"
+    "DownloadClientUnavailable": "Klient pobierania jest niedostępny",
+    "AutoTaggingSpecificationOriginalLanguage": "Język",
+    "AutoTaggingSpecificationQualityProfile": "Profil jakości",
+    "AutoTaggingSpecificationRootFolder": "Folder główny",
+    "AutoTaggingSpecificationStatus": "Status",
+    "CustomFormatsSpecificationLanguage": "Język",
+    "CustomFormatsSpecificationMaximumSize": "Największy rozmiar",
+    "CustomFormatsSpecificationResolution": "Rozdzielczość",
+    "CustomFormatsSpecificationSource": "Źródło"
 }

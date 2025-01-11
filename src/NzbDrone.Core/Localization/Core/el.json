@@ -1234,5 +1234,12 @@
     "DownloadIgnored": "Λήψη Εισήχθη",
     "AllTitles": "Ολα τα αρχεία",
     "Completed": "Ολοκληρώθηκαν",
-    "DownloadClientUnavailable": "Ο πελάτης λήψης δεν είναι διαθέσιμος"
+    "DownloadClientUnavailable": "Ο πελάτης λήψης δεν είναι διαθέσιμος",
+    "AutoTaggingSpecificationOriginalLanguage": "Γλώσσα",
+    "AutoTaggingSpecificationQualityProfile": "Ποιοτικό προφίλ",
+    "AutoTaggingSpecificationRootFolder": "Φάκελος ρίζας",
+    "AutoTaggingSpecificationStatus": "Κατάσταση",
+    "CustomFormatsSpecificationLanguage": "Γλώσσα",
+    "CustomFormatsSpecificationMaximumSize": "Μέγιστο μέγεθος",
+    "CustomFormatsSpecificationSource": "Πηγή"
 }
