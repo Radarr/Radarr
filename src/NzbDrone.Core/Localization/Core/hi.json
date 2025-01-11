@@ -1071,5 +1071,12 @@
     "AllTitles": "सारे दस्तावेज",
     "EditReleaseProfile": "देरी प्रोफ़ाइल संपादित करें",
     "DownloadClientUnavailable": "डाउनलोड क्लाइंट अनुपलब्ध है",
-    "AddReleaseProfile": "देरी प्रोफ़ाइल संपादित करें"
+    "AddReleaseProfile": "देरी प्रोफ़ाइल संपादित करें",
+    "AutoTaggingSpecificationOriginalLanguage": "भाषा: हिन्दी",
+    "AutoTaggingSpecificationQualityProfile": "गुणवत्ता प्रोफ़ाइल",
+    "AutoTaggingSpecificationRootFolder": "मूल फ़ोल्डर",
+    "AutoTaggingSpecificationStatus": "स्थिति",
+    "CustomFormatsSpecificationLanguage": "भाषा: हिन्दी",
+    "CustomFormatsSpecificationMaximumSize": "अधिकतम आकार",
+    "CustomFormatsSpecificationSource": "स्रोत"
 }

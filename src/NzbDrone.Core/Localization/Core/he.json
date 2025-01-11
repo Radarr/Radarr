@@ -1119,5 +1119,12 @@
     "EditReleaseProfile": "ערוך פרופיל עיכוב",
     "AddReleaseProfile": "ערוך פרופיל עיכוב",
     "DownloadClientUnavailable": "לקוח ההורדות אינו זמין",
-    "AddCondition": "הוסף תנאי"
+    "AddCondition": "הוסף תנאי",
+    "AutoTaggingSpecificationOriginalLanguage": "שפה",
+    "AutoTaggingSpecificationQualityProfile": "פרופיל איכות",
+    "CustomFormatsSpecificationLanguage": "שפה",
+    "CustomFormatsSpecificationMaximumSize": "גודל מקסימלי",
+    "CustomFormatsSpecificationSource": "מָקוֹר",
+    "AutoTaggingSpecificationRootFolder": "תיקיית שורש",
+    "AutoTaggingSpecificationStatus": "סטָטוּס"
 }

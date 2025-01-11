@@ -1112,5 +1112,12 @@
     "DownloadClientUnavailable": "Ứng dụng khách tải xuống không khả dụng",
     "AddReleaseProfile": "Chỉnh sửa hồ sơ độ trễ",
     "EditConditionImplementation": "Thêm điều kiện - {implementationName}",
-    "EditIndexerImplementation": "Thêm điều kiện - {implementationName}"
+    "EditIndexerImplementation": "Thêm điều kiện - {implementationName}",
+    "AutoTaggingSpecificationOriginalLanguage": "Ngôn ngữ",
+    "AutoTaggingSpecificationQualityProfile": "Hồ sơ chất lượng",
+    "AutoTaggingSpecificationRootFolder": "Thư mục gốc",
+    "AutoTaggingSpecificationStatus": "Trạng thái",
+    "CustomFormatsSpecificationLanguage": "Ngôn ngữ",
+    "CustomFormatsSpecificationMaximumSize": "Kích thước tối đa",
+    "CustomFormatsSpecificationSource": "Nguồn"
 }

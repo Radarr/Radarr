@@ -1092,5 +1092,12 @@
     "VideoDynamicRange": "동영상 다이나믹 레인지",
     "XmlRpcPath": "XML RPC 경로",
     "YesterdayAt": "어제 {time}",
-    "DownloadClientPneumaticSettingsNzbFolder": "Nzb 폴더"
+    "DownloadClientPneumaticSettingsNzbFolder": "Nzb 폴더",
+    "AutoTaggingSpecificationOriginalLanguage": "언어",
+    "AutoTaggingSpecificationQualityProfile": "품질 프로필",
+    "AutoTaggingSpecificationRootFolder": "루트 폴더",
+    "AutoTaggingSpecificationStatus": "상태",
+    "CustomFormatsSpecificationLanguage": "언어",
+    "CustomFormatsSpecificationMaximumSize": "최대 크기",
+    "CustomFormatsSpecificationSource": "출처"
 }

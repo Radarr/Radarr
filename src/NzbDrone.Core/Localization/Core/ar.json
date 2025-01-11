@@ -1076,5 +1076,12 @@
     "Clone": "قريب",
     "AllTitles": "كل الملفات",
     "AddReleaseProfile": "تحرير ملف تعريف التأخير",
-    "DownloadClientUnavailable": "عميل التنزيل غير متوفر"
+    "DownloadClientUnavailable": "عميل التنزيل غير متوفر",
+    "AutoTaggingSpecificationOriginalLanguage": "لغة",
+    "AutoTaggingSpecificationQualityProfile": "ملف الجودة",
+    "AutoTaggingSpecificationRootFolder": "المجلد الرئيسي",
+    "AutoTaggingSpecificationStatus": "الحالة",
+    "CustomFormatsSpecificationLanguage": "لغة",
+    "CustomFormatsSpecificationMaximumSize": "أكبر مقاس",
+    "CustomFormatsSpecificationSource": "مصدر"
 }

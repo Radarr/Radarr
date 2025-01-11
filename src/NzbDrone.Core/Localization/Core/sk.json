@@ -299,5 +299,10 @@
     "Reason": "Séria",
     "Clone": "Zatvoriť",
     "AllTitles": "Všetky súbory",
-    "Delay": "Oneskorenie"
+    "Delay": "Oneskorenie",
+    "AutoTaggingSpecificationOriginalLanguage": "jazyk",
+    "AutoTaggingSpecificationQualityProfile": "Profil kvality",
+    "AutoTaggingSpecificationRootFolder": "Koreňový priečinok",
+    "CustomFormatsSpecificationResolution": "Rozlíšenie",
+    "CustomFormatsSpecificationLanguage": "jazyk"
 }

@@ -1073,5 +1073,12 @@
     "EditReleaseProfile": "Breyta seinkunarprófíl",
     "AllTitles": "Allar skrár",
     "AddReleaseProfile": "Breyta seinkunarprófíl",
-    "DownloadClientUnavailable": "Niðurhalsþjónn er ekki tiltækur"
+    "DownloadClientUnavailable": "Niðurhalsþjónn er ekki tiltækur",
+    "AutoTaggingSpecificationOriginalLanguage": "Tungumál",
+    "AutoTaggingSpecificationRootFolder": "Rótamappa",
+    "AutoTaggingSpecificationStatus": "Staða",
+    "CustomFormatsSpecificationLanguage": "Tungumál",
+    "CustomFormatsSpecificationMaximumSize": "Hámarksstærð",
+    "CustomFormatsSpecificationSource": "Heimild",
+    "AutoTaggingSpecificationQualityProfile": "Gæðaprófíll"
 }

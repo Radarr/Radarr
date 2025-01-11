@@ -320,5 +320,10 @@
     "TMDb": "TMDb",
     "Clone": "Lukk",
     "Reason": "Sesong",
-    "Delay": "Utsett"
+    "Delay": "Utsett",
+    "AutoTaggingSpecificationQualityProfile": "Kvaltietsprofil",
+    "AutoTaggingSpecificationRootFolder": "Rotmappe",
+    "CustomFormatsSpecificationResolution": "Oppløsning",
+    "AutoTaggingSpecificationOriginalLanguage": "språk",
+    "CustomFormatsSpecificationLanguage": "språk"
 }

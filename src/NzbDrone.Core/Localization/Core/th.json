@@ -1071,5 +1071,12 @@
     "AllTitles": "เอกสารทั้งหมด",
     "EditReleaseProfile": "แก้ไขโปรไฟล์ความล่าช้า",
     "AddReleaseProfile": "แก้ไขโปรไฟล์ความล่าช้า",
-    "DownloadClientUnavailable": "ไม่สามารถดาวน์โหลดไคลเอนต์ได้"
+    "DownloadClientUnavailable": "ไม่สามารถดาวน์โหลดไคลเอนต์ได้",
+    "AutoTaggingSpecificationOriginalLanguage": "ภาษา",
+    "AutoTaggingSpecificationQualityProfile": "โปรไฟล์คุณภาพ",
+    "AutoTaggingSpecificationRootFolder": "โฟลเดอร์รูท",
+    "AutoTaggingSpecificationStatus": "สถานะ",
+    "CustomFormatsSpecificationLanguage": "ภาษา",
+    "CustomFormatsSpecificationMaximumSize": "ขนาดสูงสุด",
+    "CustomFormatsSpecificationSource": "ที่มา"
 }

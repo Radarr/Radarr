@@ -1073,5 +1073,12 @@
     "AllTitles": "すべてのファイル",
     "EditReleaseProfile": "遅延プロファイルの編集",
     "DownloadClientUnavailable": "ダウンロードクライアントは利用できません",
-    "AddReleaseProfile": "遅延プロファイルの編集"
+    "AddReleaseProfile": "遅延プロファイルの編集",
+    "AutoTaggingSpecificationOriginalLanguage": "言語",
+    "AutoTaggingSpecificationQualityProfile": "品質プロファイル",
+    "AutoTaggingSpecificationRootFolder": "ルートフォルダ",
+    "AutoTaggingSpecificationStatus": "状態",
+    "CustomFormatsSpecificationMaximumSize": "最大サイズ",
+    "CustomFormatsSpecificationSource": "ソース",
+    "CustomFormatsSpecificationLanguage": "言語"
 }

@@ -1867,5 +1867,21 @@
     "Warning": "警告",
     "MetadataKometaDeprecatedSetting": "弃用",
     "NotificationsTelegramSettingsMetadataLinks": "元数据链接",
-    "NotificationsTelegramSettingsMetadataLinksMovieHelpText": "添加一个在发送通知时指向电影元数据的链接"
+    "NotificationsTelegramSettingsMetadataLinksMovieHelpText": "添加一个在发送通知时指向电影元数据的链接",
+    "AutoTaggingSpecificationMinimumYear": "最小年份",
+    "AutoTaggingSpecificationOriginalLanguage": "语言",
+    "AutoTaggingSpecificationQualityProfile": "质量配置",
+    "AutoTaggingSpecificationRootFolder": "根目录",
+    "AutoTaggingSpecificationStatus": "状态",
+    "CustomFormatsSpecificationLanguage": "语言",
+    "CustomFormatsSpecificationMaximumSize": "最大文件体积",
+    "CustomFormatsSpecificationMaximumSizeHelpText": "必须小于或等于该尺寸时才会发布",
+    "CustomFormatsSpecificationMaximumYear": "最大年份",
+    "CustomFormatsSpecificationMinimumSize": "最小尺寸",
+    "CustomFormatsSpecificationMinimumSizeHelpText": "必须大于该尺寸才会发布",
+    "CustomFormatsSpecificationMinimumYear": "最小年份",
+    "CustomFormatsSpecificationResolution": "分辨率",
+    "CustomFormatsSpecificationSource": "代码",
+    "AutoTaggingSpecificationGenre": "类型",
+    "AutoTaggingSpecificationMaximumYear": "最大年份"
 }

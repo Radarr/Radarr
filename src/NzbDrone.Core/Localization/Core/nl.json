@@ -1240,5 +1240,18 @@
     "AnnouncedMovieAvailabilityDescription": "Films worden als beschikbaar getoond zodra deze zijn toegevoegd aan {appName}.",
     "Completed": "Compleet",
     "Delay": "Uitstel",
-    "DownloadClientUnavailable": "Downloader is onbeschikbaar"
+    "DownloadClientUnavailable": "Downloader is onbeschikbaar",
+    "AutoTaggingSpecificationGenre": "Genre(s)",
+    "AutoTaggingSpecificationMaximumYear": "Maximum Jaar",
+    "AutoTaggingSpecificationMinimumYear": "Minimum Jaar",
+    "AutoTaggingSpecificationOriginalLanguage": "Taal",
+    "AutoTaggingSpecificationQualityProfile": "Kwaliteitsprofiel",
+    "AutoTaggingSpecificationRootFolder": "Hoofdmap",
+    "AutoTaggingSpecificationStatus": "Status",
+    "CustomFormatsSpecificationMaximumSize": "Maximum Grootte",
+    "CustomFormatsSpecificationMaximumYear": "Maximum Jaar",
+    "CustomFormatsSpecificationMinimumYear": "Minimum Jaar",
+    "CustomFormatsSpecificationResolution": "Resolutie",
+    "CustomFormatsSpecificationSource": "Bron",
+    "CustomFormatsSpecificationLanguage": "Taal"
 }

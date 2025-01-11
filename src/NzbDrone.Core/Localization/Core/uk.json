@@ -1292,5 +1292,21 @@
     "DownloadClientUnavailable": "Клієнт завантажувача недоступний",
     "CountIndexersSelected": "{count} індексер(-и) обрано",
     "AnnouncedMovieAvailabilityDescription": "Фільми вважаються доступними, щойно їх додають у {appName}.",
-    "CountCustomFormatsSelected": "Користувацькі формати обрано {count}"
+    "CountCustomFormatsSelected": "Користувацькі формати обрано {count}",
+    "AutoTaggingSpecificationGenre": "Жанр(и)",
+    "AutoTaggingSpecificationMaximumYear": "Максимальний рік",
+    "AutoTaggingSpecificationMinimumYear": "Мінімальний рік",
+    "AutoTaggingSpecificationQualityProfile": "Профіль якості",
+    "AutoTaggingSpecificationRootFolder": "Коренева папка",
+    "AutoTaggingSpecificationStatus": "Статус",
+    "CustomFormatsSpecificationLanguage": "Мова",
+    "CustomFormatsSpecificationMaximumSize": "Максимальний розмір",
+    "CustomFormatsSpecificationMaximumSizeHelpText": "Випуск повинен бути меншим або дорівнювати цьому розміру",
+    "CustomFormatsSpecificationMaximumYear": "Максимальний рік",
+    "CustomFormatsSpecificationMinimumSize": "Мінімальний розмір",
+    "CustomFormatsSpecificationMinimumSizeHelpText": "Випуск повинен бути більше цього розміру",
+    "CustomFormatsSpecificationMinimumYear": "Мінімальний рік",
+    "CustomFormatsSpecificationResolution": "Роздільна здатність",
+    "CustomFormatsSpecificationSource": "Джерело",
+    "AutoTaggingSpecificationOriginalLanguage": "Мова"
 }

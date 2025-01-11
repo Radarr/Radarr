@@ -1791,5 +1791,21 @@
     "Completed": "Завершенный",
     "Delay": "Задержка",
     "DownloadClientUnavailable": "Программа для скачивания недоступна",
-    "RegularExpressionsTutorialLink": "Более подробную информацию о регулярных выражениях можно найти [здесь]({url})."
+    "RegularExpressionsTutorialLink": "Более подробную информацию о регулярных выражениях можно найти [здесь]({url}).",
+    "AutoTaggingSpecificationGenre": "Жанры",
+    "AutoTaggingSpecificationMaximumYear": "Максимальный год",
+    "AutoTaggingSpecificationMinimumYear": "Минимальный год",
+    "AutoTaggingSpecificationOriginalLanguage": "Язык",
+    "AutoTaggingSpecificationQualityProfile": "Профиль качества",
+    "AutoTaggingSpecificationRootFolder": "Корневой каталог",
+    "AutoTaggingSpecificationStatus": "Статус",
+    "CustomFormatsSpecificationLanguage": "Язык",
+    "CustomFormatsSpecificationMaximumSize": "Максимальный размер",
+    "CustomFormatsSpecificationMaximumSizeHelpText": "Релиз должен быть меньше или равен этому размеру",
+    "CustomFormatsSpecificationMaximumYear": "Максимальный год",
+    "CustomFormatsSpecificationMinimumSize": "Минимальный размер",
+    "CustomFormatsSpecificationMinimumSizeHelpText": "Релиз должен быть больше этого размера",
+    "CustomFormatsSpecificationMinimumYear": "Минимальный год",
+    "CustomFormatsSpecificationResolution": "Разрешение",
+    "CustomFormatsSpecificationSource": "Исходный код"
 }

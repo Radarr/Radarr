@@ -1266,5 +1266,13 @@
     "CountVotes": "{votes} votos",
     "Completed": "Completo",
     "Delay": "Atraso",
-    "DownloadClientUnavailable": "O cliente de transferências está indisponível"
+    "DownloadClientUnavailable": "O cliente de transferências está indisponível",
+    "AutoTaggingSpecificationOriginalLanguage": "Idioma",
+    "AutoTaggingSpecificationQualityProfile": "Perfil de qualidade",
+    "AutoTaggingSpecificationRootFolder": "Pasta raiz",
+    "AutoTaggingSpecificationStatus": "Estado",
+    "CustomFormatsSpecificationLanguage": "Idioma",
+    "CustomFormatsSpecificationMaximumSize": "Tamanho máximo",
+    "CustomFormatsSpecificationResolution": "Resolução",
+    "CustomFormatsSpecificationSource": "Origem"
 }
