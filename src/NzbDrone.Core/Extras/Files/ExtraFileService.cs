@@ -144,11 +144,10 @@ namespace NzbDrone.Core.Extras.Files
 
         public void HandleAsync(MovieFileImportedEvent message)
         {
-            var extrasToMigrate = message.OldFiles
-                .SelectMany(old => _repository.GetFilesByMovieFile(old.MovieFile.Id))
+            var extrasToMigrate = _repository.GetFilesByMovie(message.ImportedMovie.MovieId)
+                .FindAll(extra => extra.MovieFileId != message.ImportedMovie.Id)
                 .Select(extra =>
                 {
-                    extra.MovieId = message.ImportedMovie.MovieId;
                     extra.MovieFileId = message.ImportedMovie.Id;
                     return extra;
                 })
