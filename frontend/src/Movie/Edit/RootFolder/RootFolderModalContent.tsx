@@ -37,7 +37,7 @@ function RootFolderModalContent(props: RootFolderModalContentProps) {
   const [rootFolderPath, setRootFolderPath] = useState(props.rootFolderPath);
 
   const { isLoading, data } = useApiQuery<MovieFolder>({
-    url: `/movie/${movieId}/folder`,
+    path: `/movie/${movieId}/folder`,
   });
 
   const onInputChange = useCallback(({ value }: InputChanged<string>) => {
