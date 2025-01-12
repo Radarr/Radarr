@@ -27,7 +27,8 @@ namespace NzbDrone.Core.Extras.Files
 
     public abstract class ExtraFileService<TExtraFile> : IExtraFileService<TExtraFile>,
                                                          IHandleAsync<MovieFileDeletedEvent>,
-                                                         IHandleAsync<MoviesDeletedEvent>
+                                                         IHandleAsync<MoviesDeletedEvent>,
+                                                         IHandleAsync<MovieFileImportedEvent>
         where TExtraFile : ExtraFile, new()
     {
         private readonly IExtraFileRepository<TExtraFile> _repository;
@@ -103,14 +104,23 @@ namespace NzbDrone.Core.Extras.Files
         public void HandleAsync(MovieFileDeletedEvent message)
         {
             var movieFile = message.MovieFile;
+            var cleanDisk = true;
+            var cleanDb = true;
 
             if (message.Reason == DeleteMediaFileReason.NoLinkedEpisodes)
             {
                 _logger.Debug("Removing movie file from DB as part of cleanup routine, not deleting extra files from disk.");
+                cleanDisk = false;
             }
-            else
+            else if (message.Reason == DeleteMediaFileReason.Upgrade)
             {
-                var movie = _movieService.GetMovie(message.MovieFile.MovieId);
+                cleanDb = cleanDisk = CleanDuringUpgrade(message.UpgradeManagementConfig);
+            }
+
+            if (cleanDisk)
+            {
+                _logger.Debug("Deleting Extras from disk for movie file: {0}", movieFile);
+                var movie = _movieService.GetMovie(movieFile.MovieId);
 
                 foreach (var extra in _repository.GetFilesByMovieFile(movieFile.Id))
                 {
@@ -125,8 +135,29 @@ namespace NzbDrone.Core.Extras.Files
                 }
             }
 
-            _logger.Debug("Deleting Extra from database for movie file: {0}", movieFile);
-            _repository.DeleteForMovieFile(movieFile.Id);
+            if (cleanDb)
+            {
+                _logger.Debug("Deleting Extras from database for movie file: {0}", movieFile);
+                _repository.DeleteForMovieFile(movieFile.Id);
+            }
         }
+
+        public void HandleAsync(MovieFileImportedEvent message)
+        {
+            var extrasToMigrate = message.OldFiles
+                .SelectMany(old => _repository.GetFilesByMovieFile(old.MovieFile.Id))
+                .Select(extra =>
+                {
+                    extra.MovieId = message.ImportedMovie.MovieId;
+                    extra.MovieFileId = message.ImportedMovie.Id;
+                    return extra;
+                })
+                .ToList();
+
+            _logger.Debug("Handling {0} dangling extra(s) after upgrade", extrasToMigrate.Count);
+            Upsert(extrasToMigrate);
+        }
+
+        protected abstract bool CleanDuringUpgrade(UpgradeManagementConfigSnapshot configSnapshot);
     }
 }

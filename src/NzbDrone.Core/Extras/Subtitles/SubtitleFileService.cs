@@ -2,6 +2,7 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Extras.Subtitles
@@ -15,6 +16,11 @@ namespace NzbDrone.Core.Extras.Subtitles
         public SubtitleFileService(IExtraFileRepository<SubtitleFile> repository, IMovieService movieService, IDiskProvider diskProvider, IRecycleBinProvider recycleBinProvider, Logger logger)
             : base(repository, movieService, diskProvider, recycleBinProvider, logger)
         {
+        }
+
+        protected override bool CleanDuringUpgrade(UpgradeManagementConfigSnapshot configSnapshot)
+        {
+            return !configSnapshot.KeepSubtitles;
         }
     }
 }

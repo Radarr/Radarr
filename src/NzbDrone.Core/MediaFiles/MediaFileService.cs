@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NzbDrone.Common;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
@@ -26,14 +27,17 @@ namespace NzbDrone.Core.MediaFiles
 
     public class MediaFileService : IMediaFileService, IHandleAsync<MoviesDeletedEvent>
     {
+        private readonly IConfigService _configService;
         private readonly IMediaFileRepository _mediaFileRepository;
         private readonly IMovieRepository _movieRepository;
         private readonly IEventAggregator _eventAggregator;
 
-        public MediaFileService(IMediaFileRepository mediaFileRepository,
+        public MediaFileService(IConfigService configService,
+                                IMediaFileRepository mediaFileRepository,
                                 IMovieRepository movieRepository,
                                 IEventAggregator eventAggregator)
         {
+            _configService = configService;
             _mediaFileRepository = mediaFileRepository;
             _movieRepository = movieRepository;
             _eventAggregator = eventAggregator;
@@ -73,7 +77,14 @@ namespace NzbDrone.Core.MediaFiles
             movieFile.Path = Path.Combine(movieFile.Movie.Path, movieFile.RelativePath);
 
             _mediaFileRepository.Delete(movieFile);
-            _eventAggregator.PublishEvent(new MovieFileDeletedEvent(movieFile, reason));
+
+            var upgradeManagementConfigSnapshot = new UpgradeManagementConfigSnapshot()
+            {
+                KeepSubtitles = _configService.UpgradeKeepSubtitlesFiles,
+                KeepMetadata = _configService.UpgradeKeepMetadataFiles,
+                KeepOthers = _configService.UpgradeKeepOtherFiles
+            };
+            _eventAggregator.PublishEvent(new MovieFileDeletedEvent(movieFile, reason, upgradeManagementConfigSnapshot));
         }
 
         public List<MovieFile> GetFilesByMovie(int movieId)
