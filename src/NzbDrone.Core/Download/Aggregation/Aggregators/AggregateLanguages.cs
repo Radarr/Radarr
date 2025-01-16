@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
                 if (indexer?.Settings is IIndexerSettings settings && settings.MultiLanguages.Any() && Parser.Parser.HasMultipleLanguages(releaseInfo.Title))
                 {
                     // Use indexer setting for Multi-languages
-                    if (languages.Count == 0 || languages.First() == Language.Unknown)
+                    if (languages.Count == 0 || (languages.Count == 1 && languages.First() == Language.Unknown))
                     {
                         languages = settings.MultiLanguages.Select(i => (Language)i).ToList();
                     }
