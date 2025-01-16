@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
                 languages = languages.Except(languagesToRemove).ToList();
             }
 
-            if (releaseInfo?.Title?.IsNotNullOrWhiteSpace() == true && Parser.Parser.HasMultipleLanguages(releaseInfo.Title))
+            if (releaseInfo?.Title?.IsNotNullOrWhiteSpace() == true)
             {
                 IndexerDefinition indexer = null;
 
@@ -85,7 +85,7 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
                     indexer = _indexerFactory.FindByName(releaseInfo.Indexer);
                 }
 
-                if (indexer?.Settings is IIndexerSettings settings && settings.MultiLanguages.Any())
+                if (indexer?.Settings is IIndexerSettings settings && settings.MultiLanguages.Any() && Parser.Parser.HasMultipleLanguages(releaseInfo.Title))
                 {
                     // Use indexer setting for Multi-languages
                     if (languages.Count == 0 || languages.First() == Language.Unknown)
