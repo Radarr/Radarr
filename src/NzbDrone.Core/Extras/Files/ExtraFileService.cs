@@ -5,6 +5,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
@@ -31,18 +32,21 @@ namespace NzbDrone.Core.Extras.Files
                                                          IHandleAsync<MovieFileImportedEvent>
         where TExtraFile : ExtraFile, new()
     {
+        private readonly IConfigService _configService;
         private readonly IExtraFileRepository<TExtraFile> _repository;
         private readonly IMovieService _movieService;
         private readonly IDiskProvider _diskProvider;
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly Logger _logger;
 
-        public ExtraFileService(IExtraFileRepository<TExtraFile> repository,
+        public ExtraFileService(IConfigService configService,
+                                IExtraFileRepository<TExtraFile> repository,
                                 IMovieService movieService,
                                 IDiskProvider diskProvider,
                                 IRecycleBinProvider recycleBinProvider,
                                 Logger logger)
         {
+            _configService = configService;
             _repository = repository;
             _movieService = movieService;
             _diskProvider = diskProvider;
@@ -114,7 +118,7 @@ namespace NzbDrone.Core.Extras.Files
             }
             else if (message.Reason == DeleteMediaFileReason.Upgrade)
             {
-                cleanDb = cleanDisk = CleanDuringUpgrade(message.UpgradeManagementConfig);
+                cleanDb = cleanDisk = CleanDuringUpgrade(_configService);
             }
 
             if (cleanDisk)
@@ -154,9 +158,12 @@ namespace NzbDrone.Core.Extras.Files
                 .ToList();
 
             _logger.Debug("Handling {0} dangling extra(s) after upgrade", extrasToMigrate.Count);
-            Upsert(extrasToMigrate);
+            if (extrasToMigrate.Count > 0)
+            {
+                Upsert(extrasToMigrate);
+            }
         }
 
-        protected abstract bool CleanDuringUpgrade(UpgradeManagementConfigSnapshot configSnapshot);
+        protected abstract bool CleanDuringUpgrade(IConfigService configService);
     }
 }

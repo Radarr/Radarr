@@ -1,8 +1,8 @@
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Extras.Others
@@ -13,14 +13,14 @@ namespace NzbDrone.Core.Extras.Others
 
     public class OtherExtraFileService : ExtraFileService<OtherExtraFile>, IOtherExtraFileService
     {
-        public OtherExtraFileService(IExtraFileRepository<OtherExtraFile> repository, IMovieService movieService, IDiskProvider diskProvider, IRecycleBinProvider recycleBinProvider, Logger logger)
-            : base(repository, movieService, diskProvider, recycleBinProvider, logger)
+        public OtherExtraFileService(IConfigService configService, IExtraFileRepository<OtherExtraFile> repository, IMovieService movieService, IDiskProvider diskProvider, IRecycleBinProvider recycleBinProvider, Logger logger)
+            : base(configService, repository, movieService, diskProvider, recycleBinProvider, logger)
         {
         }
 
-        protected override bool CleanDuringUpgrade(UpgradeManagementConfigSnapshot configSnapshot)
+        protected override bool CleanDuringUpgrade(IConfigService configService)
         {
-            return !configSnapshot.KeepOthers;
+            return !configService.UpgradeKeepOtherFiles;
         }
     }
 }

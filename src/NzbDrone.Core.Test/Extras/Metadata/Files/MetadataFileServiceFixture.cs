@@ -5,6 +5,7 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.MediaFiles;
@@ -64,12 +65,11 @@ namespace NzbDrone.Core.Test.Extras.Metadata.Files
             [Values] DeleteMediaFileReason reason,
             [Values(false, true)] bool keep)
         {
-            var configSnapshot = new UpgradeManagementConfigSnapshot()
-            {
-                KeepMetadata = keep
-            };
+            Mocker.GetMock<IConfigService>()
+                .Setup(s => s.UpgradeKeepMetadataFiles)
+                .Returns(keep);
 
-            var evt = new MovieFileDeletedEvent(_movieFile, reason, configSnapshot);
+            var evt = new MovieFileDeletedEvent(_movieFile, reason);
 
             Subject.HandleAsync(evt);
 

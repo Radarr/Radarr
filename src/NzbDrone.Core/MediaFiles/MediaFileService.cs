@@ -27,7 +27,6 @@ namespace NzbDrone.Core.MediaFiles
 
     public class MediaFileService : IMediaFileService, IHandleAsync<MoviesDeletedEvent>
     {
-        private readonly IConfigService _configService;
         private readonly IMediaFileRepository _mediaFileRepository;
         private readonly IMovieRepository _movieRepository;
         private readonly IEventAggregator _eventAggregator;
@@ -37,7 +36,6 @@ namespace NzbDrone.Core.MediaFiles
                                 IMovieRepository movieRepository,
                                 IEventAggregator eventAggregator)
         {
-            _configService = configService;
             _mediaFileRepository = mediaFileRepository;
             _movieRepository = movieRepository;
             _eventAggregator = eventAggregator;
@@ -77,14 +75,7 @@ namespace NzbDrone.Core.MediaFiles
             movieFile.Path = Path.Combine(movieFile.Movie.Path, movieFile.RelativePath);
 
             _mediaFileRepository.Delete(movieFile);
-
-            var upgradeManagementConfigSnapshot = new UpgradeManagementConfigSnapshot()
-            {
-                KeepSubtitles = _configService.UpgradeKeepSubtitlesFiles,
-                KeepMetadata = _configService.UpgradeKeepMetadataFiles,
-                KeepOthers = _configService.UpgradeKeepOtherFiles
-            };
-            _eventAggregator.PublishEvent(new MovieFileDeletedEvent(movieFile, reason, upgradeManagementConfigSnapshot));
+            _eventAggregator.PublishEvent(new MovieFileDeletedEvent(movieFile, reason));
         }
 
         public List<MovieFile> GetFilesByMovie(int movieId)
