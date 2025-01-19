@@ -325,5 +325,12 @@
     "AutoTaggingSpecificationRootFolder": "Rotmappe",
     "CustomFormatsSpecificationResolution": "Oppløsning",
     "AutoTaggingSpecificationOriginalLanguage": "språk",
-    "CustomFormatsSpecificationLanguage": "språk"
+    "CustomFormatsSpecificationLanguage": "språk",
+    "AddRemotePathMappingError": "Kunne ikke legge til ny ekstern stimapping, vennligst prøv igjen.",
+    "AddRootFolderError": "Kunne ikke legge til rotmappe",
+    "FailedLoadingSearchResults": "Kunne ikke laste søkeresultat, vennligst prøv igjen.",
+    "AddImportList": "Ny Importliste",
+    "AddNewRestriction": "Legg til ny begrensning",
+    "AddDownloadClientImplementation": "Ny Nedlastingsklient - {implementationName}",
+    "AddImportListImplementation": "Legg til importliste - {implementationName}"
 }

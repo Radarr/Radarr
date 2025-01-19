@@ -307,7 +307,7 @@
     "RecyclingBinCleanup": "Recyklace koše Vyčištění",
     "Refresh": "Obnovit",
     "RefreshMovie": "Obnovit film",
-    "RegularExpressionsCanBeTested": "Regulární výrazy lze testovat ",
+    "RegularExpressionsCanBeTested": "Regulární výrazy lze testovat [zde]({url}).",
     "RejectionCount": "Počet odmítnutí",
     "RelativePath": "Relativní cesta",
     "Released": "Uvolněno",
@@ -634,7 +634,7 @@
     "Indexers": "Indexery",
     "IndexerSearchCheckNoAutomaticMessage": "Nejsou k dispozici žádné indexery se zapnutým automatickým vyhledáváním, {appName} neposkytne žádné automatické výsledky hledání",
     "IndexerSearchCheckNoAvailableIndexersMessage": "Všechny indexery podporující vyhledávání jsou dočasně nedostupné kvůli nedávným chybám indexeru",
-    "IndexerSearchCheckNoInteractiveMessage": "Při povoleném interaktivním vyhledávání, nejsou dostupné žádné indexovací moduly, {appName} neposkytne žádné interaktivní výsledky hledání",
+    "IndexerSearchCheckNoInteractiveMessage": "Se zapnutým interaktivním vyhledáváním nejsou k dispozici žádné indexery, {appName} neposkytne žádné výsledky interaktivního vyhledávání",
     "IndexerSettings": "Nastavení indexeru",
     "IndexerStatusCheckSingleClientMessage": "Indexery nedostupné z důvodu selhání: {indexerNames}",
     "InstallLatest": "Nainstalujte nejnovější",
@@ -663,7 +663,7 @@
     "ManualImportSelectLanguage": "Ruční import - vyberte jazyk",
     "ManualImportSelectMovie": "Ruční import - vyberte Film",
     "ManualImportSelectQuality": " Ruční import - vyberte kvalitu",
-    "MappedNetworkDrivesWindowsService": "Mapované síťové jednotky nejsou k dispozici, když běží jako služba Windows. Další informace najdete v častých dotazech",
+    "MappedNetworkDrivesWindowsService": "Mapované síťové jednotky nejsou k dispozici, když běží jako služba Windows. Další informace najdete v [FAQ]({url}).",
     "MarkAsFailedMessageText": "Opravdu chcete označit „{0}“ jako neúspěšné?",
     "MassMovieSearch": "Hromadné vyhledávání filmů",
     "MaximumLimits": "Maximální limity",
@@ -1261,5 +1261,7 @@
     "External": "Externí",
     "NotificationsGotifySettingsAppToken": "Token aplikace",
     "UsenetBlackholeNzbFolder": "Složka Nzb",
-    "DownloadClientFloodSettingsAdditionalTags": "Další štítky"
+    "DownloadClientFloodSettingsAdditionalTags": "Další štítky",
+    "ManualImportSetReleaseGroup": "Ruční import - nastavte skupinu vydání",
+    "NotificationTriggersHelpText": "Vyber, které události mají vyvolat toto upozornění"
 }
