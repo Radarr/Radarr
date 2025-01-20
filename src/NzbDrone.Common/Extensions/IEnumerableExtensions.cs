@@ -75,7 +75,9 @@ namespace NzbDrone.Common.Extensions
             return result;
         }
 
-        public static void AddIfNotNull<TSource>(this List<TSource> source, TSource item)
+        #nullable enable
+        public static void AddIfNotNull<TSource>(this List<TSource> source, TSource? item)
+        #nullable disable
         {
             if (item == null)
             {

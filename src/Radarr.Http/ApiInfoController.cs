@@ -11,8 +11,8 @@ namespace Radarr.Http
         {
             return new ApiInfoResource
             {
-                Current = "v3",
-                Deprecated = new List<string>()
+                Current = "v4",
+                Deprecated = new List<string> { "v3" }
             };
         }
     }
