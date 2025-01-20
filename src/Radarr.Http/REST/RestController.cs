@@ -59,7 +59,12 @@ namespace Radarr.Http.REST
             }
         }
 
-        protected abstract TResource GetResourceById(int id);
+        #nullable enable
+        protected virtual TResource? GetResourceById(int id)
+        {
+            throw new NotImplementedException();
+        }
+        #nullable disable
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
