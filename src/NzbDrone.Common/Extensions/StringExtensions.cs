@@ -65,6 +65,10 @@ namespace NzbDrone.Common.Extensions
         public static string RemoveAccent(this string text)
         {
             var normalizedString = text.Normalize(NormalizationForm.FormD);
+
+            // use the Cyrillic letter "й" instead of the combined unicode characters
+            normalizedString = Regex.Replace(normalizedString, "и\u0306", "й", RegexOptions.IgnoreCase);
+
             var stringBuilder = new StringBuilder();
 
             foreach (var c in normalizedString)
