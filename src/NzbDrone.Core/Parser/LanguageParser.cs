@@ -34,7 +34,9 @@ namespace NzbDrone.Core.Parser
                                                                             (?<catalan>\b(?:catalan?|catalán|català)\b)|
                                                                             (?<latvian>\b(?:lat|lav|lv)\b)|
                                                                             (?<telugu>\btel\b)|
-                                                                            (?<vietnamese>\bVIE\b)",
+                                                                            (?<vietnamese>\bVIE\b)|
+                                                                            (?<japanese>\bJPN\b)|
+                                                                            (?<korean>\bKOR\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?:(?i)(?<!SUB[\W|_|^]))(?:(?<lithuanian>\bLT\b)|
@@ -392,6 +394,16 @@ namespace NzbDrone.Core.Parser
                 if (match.Groups["vietnamese"].Success)
                 {
                     languages.Add(Language.Vietnamese);
+                }
+
+                if (match.Groups["japanese"].Success)
+                {
+                    languages.Add(Language.Japanese);
+                }
+
+                if (match.Groups["korean"].Success)
+                {
+                    languages.Add(Language.Korean);
                 }
             }
 
