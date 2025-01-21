@@ -86,7 +86,7 @@ export const actionHandlers = handleThunks({
       section,
       ...item,
       term,
-      queued: true,
+      isQueued: true,
       items: []
     }));
 
@@ -151,6 +151,8 @@ export const actionHandlers = handleThunks({
     abortCurrentLookup = abortRequest;
 
     request.done((data) => {
+      const selectedMovie = queued.selectedMovie || data[0];
+
       dispatch(updateItem({
         section,
         id: queued.id,
@@ -158,8 +160,8 @@ export const actionHandlers = handleThunks({
         isPopulated: true,
         error: null,
         items: data,
-        queued: false,
-        selectedMovie: queued.selectedMovie || data[0],
+        isQueued: false,
+        selectedMovie,
         updateOnly: true
       }));
     });
@@ -171,7 +173,7 @@ export const actionHandlers = handleThunks({
         isFetching: false,
         isPopulated: false,
         error: xhr,
-        queued: false,
+        isQueued: false,
         updateOnly: true
       }));
     });
@@ -278,7 +280,23 @@ export const actionHandlers = handleThunks({
 export const reducers = createHandleActions({
 
   [CANCEL_LOOKUP_MOVIE]: function(state) {
-    return Object.assign({}, state, { isLookingUpMovie: false });
+    queue.splice(0, queue.length);
+
+    const items = state.items.map((item) => {
+      if (item.isQueued) {
+        return {
+          ...item,
+          isQueued: false
+        };
+      }
+
+      return item;
+    });
+
+    return Object.assign({}, state, {
+      isLookingUpMovie: false,
+      items
+    });
   },
 
   [CLEAR_IMPORT_MOVIE]: function(state) {
