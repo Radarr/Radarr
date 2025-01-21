@@ -54,10 +54,8 @@ namespace NzbDrone.Common.Extensions
             foreach (var item in src)
             {
                 var key = keySelector(item);
-                if (!result.ContainsKey(key))
-                {
-                    result[key] = item;
-                }
+
+                result.TryAdd(key, item);
             }
 
             return result;
@@ -69,10 +67,9 @@ namespace NzbDrone.Common.Extensions
             foreach (var item in src)
             {
                 var key = keySelector(item);
-                if (!result.ContainsKey(key))
-                {
-                    result[key] = valueSelector(item);
-                }
+                var value = valueSelector(item);
+
+                result.TryAdd(key, value);
             }
 
             return result;
