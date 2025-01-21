@@ -150,7 +150,7 @@ namespace Radarr.Api.V3.Movies
                 var translations = _movieTranslationService
                     .GetAllTranslationsForLanguage(translationLanguage);
 
-                var tdict = translations.ToDictionary(x => x.MovieMetadataId);
+                var tdict = translations.ToDictionaryIgnoreDuplicates(x => x.MovieMetadataId);
                 var sdict = movieStats.ToDictionary(x => x.MovieId);
 
                 if (!excludeLocalCovers)

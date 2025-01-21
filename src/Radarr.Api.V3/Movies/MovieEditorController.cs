@@ -116,7 +116,7 @@ namespace Radarr.Api.V3.Movies
             var availabilityDelay = _configService.AvailabilityDelay;
 
             var translations = _movieTranslationService.GetAllTranslationsForLanguage(configLanguage);
-            var tdict = translations.ToDictionary(x => x.MovieMetadataId);
+            var tdict = translations.ToDictionaryIgnoreDuplicates(x => x.MovieMetadataId);
 
             var updatedMovies = _movieService.UpdateMovie(moviesToUpdate, !resource.MoveFiles);
 
