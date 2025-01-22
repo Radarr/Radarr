@@ -389,7 +389,7 @@
     "UpgradeManagement": "Gestión de Actualizaciones",
     "UpgradeKeepSubtitlesFiles": "Conservar archivos de subtítulos",
     "UpgradeKeepSubtitlesFilesHelpText": "No eliminar del disco subtítulos previamente importados",
-    "UpgradeKeepMetadataFiles": "Conserver archivos de metadatos",
+    "UpgradeKeepMetadataFiles": "Conservar archivos de metadatos",
     "UpgradeKeepMetadataFilesHelpText": "No eliminar del disco metadatos previamente importados",
     "UpgradeKeepOtherFiles": "Conservar otros archivos",
     "UpgradeKeepOtherFilesHelpText": "No eliminar del disco otros archivos previamente importados",
