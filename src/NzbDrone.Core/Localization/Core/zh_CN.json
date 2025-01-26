@@ -1883,5 +1883,6 @@
     "CustomFormatsSpecificationResolution": "分辨率",
     "CustomFormatsSpecificationSource": "代码",
     "AutoTaggingSpecificationGenre": "类型",
-    "AutoTaggingSpecificationMaximumYear": "最大年份"
+    "AutoTaggingSpecificationMaximumYear": "最大年份",
+    "Mixed": "混合"
 }

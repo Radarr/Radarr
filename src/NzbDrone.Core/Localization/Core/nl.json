@@ -1253,5 +1253,6 @@
     "CustomFormatsSpecificationMinimumYear": "Minimum Jaar",
     "CustomFormatsSpecificationResolution": "Resolutie",
     "CustomFormatsSpecificationSource": "Bron",
-    "CustomFormatsSpecificationLanguage": "Taal"
+    "CustomFormatsSpecificationLanguage": "Taal",
+    "Mixed": "Opgelost"
 }

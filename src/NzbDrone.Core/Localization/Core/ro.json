@@ -1159,5 +1159,6 @@
     "CustomFormatsSpecificationLanguage": "Limbă",
     "CustomFormatsSpecificationMaximumSize": "Dimensiune maximă",
     "CustomFormatsSpecificationSource": "Sursă",
-    "AutoTaggingSpecificationOriginalLanguage": "Limbă"
+    "AutoTaggingSpecificationOriginalLanguage": "Limbă",
+    "Mixed": "Fix"
 }

@@ -1889,5 +1889,6 @@
     "Warning": "Avertissement",
     "NotificationsGotifySettingsPreferredMetadataLink": "Lien de métadonnées préféré",
     "NotificationsGotifySettingsPreferredMetadataLinkHelpText": "Lien de métadonnées pour les clients qui ne prennent en charge qu'un seul lien",
-    "ManageFormats": "Gérer les formats"
+    "ManageFormats": "Gérer les formats",
+    "Mixed": "Mixte"
 }

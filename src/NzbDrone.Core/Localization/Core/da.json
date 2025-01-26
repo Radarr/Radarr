@@ -1105,5 +1105,6 @@
     "CustomFormatsSpecificationLanguage": "Sprog",
     "CustomFormatsSpecificationMaximumSize": "Maksimal størrelse",
     "CustomFormatsSpecificationResolution": "Opløsning",
-    "CustomFormatsSpecificationSource": "Kilde"
+    "CustomFormatsSpecificationSource": "Kilde",
+    "Mixed": "Fast"
 }

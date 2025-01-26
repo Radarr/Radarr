@@ -1,3 +1,23 @@
 {
-    "About": "درباره"
+    "About": "درباره",
+    "DotNetVersion": ".NET",
+    "Add": "افزودن",
+    "AddAutoTag": "افزودن برچسب خودکار",
+    "AddCondition": "افزودن شرط",
+    "AddConnectionImplementation": "افزودن پیوند - {implementationName}",
+    "AddDownloadClientImplementation": "افزودن کلاینت دانلود - {implementationName}",
+    "AddImportList": "افزودن لیست واردات",
+    "Docker": "Docker",
+    "Usenet": "Usenet",
+    "AddConditionError": "افزودن شرط جدید ناموفق بود، لطفا مجددا تلاش کنید.",
+    "AddAutoTagError": "افزودن برچسب خودکار جدید ناموفق بود، لطفا مجددا تلاش کنید.",
+    "AddDelayProfile": "افزودن نمایه تاخیر",
+    "AddDelayProfileError": "افزودن نمایه تاخیر جدید ناموفق بود، لطفا مجددا تلاش کنید.",
+    "AddImportListExclusion": "افزودن لیست واردات مستثنی",
+    "ApiKey": "کلید API",
+    "Torrents": "تورنت ها",
+    "AddConditionImplementation": "افزودن شرط - {implementationName}",
+    "AddConnection": "افزودن پیوند",
+    "Actions": "اقدامات",
+    "Activity": "فعالیت"
 }

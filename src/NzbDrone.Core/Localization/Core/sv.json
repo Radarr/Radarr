@@ -1107,5 +1107,6 @@
     "CustomFormatsSpecificationLanguage": "Språk",
     "CustomFormatsSpecificationMaximumSize": "Maximal storlek",
     "CustomFormatsSpecificationSource": "Källa",
-    "AutoTaggingSpecificationOriginalLanguage": "Språk"
+    "AutoTaggingSpecificationOriginalLanguage": "Språk",
+    "Mixed": "Fast"
 }
