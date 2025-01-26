@@ -10,7 +10,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.35" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.7" />
     <PackageReference Include="Npgsql" Version="7.0.9" />
-    <PackageReference Include="Polly" Version="8.5.0" />
+    <PackageReference Include="Polly" Version="8.5.1" />
     <PackageReference Include="Servarr.FFMpegCore" Version="4.7.0-26" />
     <PackageReference Include="Servarr.FFprobe" Version="5.1.4.112" />
     <PackageReference Include="System.Memory" Version="4.6.0" />
