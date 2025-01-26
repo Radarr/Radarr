@@ -1083,5 +1083,6 @@
     "AutoTaggingSpecificationStatus": "الحالة",
     "CustomFormatsSpecificationLanguage": "لغة",
     "CustomFormatsSpecificationMaximumSize": "أكبر مقاس",
-    "CustomFormatsSpecificationSource": "مصدر"
+    "CustomFormatsSpecificationSource": "مصدر",
+    "Mixed": "ثابت"
 }

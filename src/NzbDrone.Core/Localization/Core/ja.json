@@ -1080,5 +1080,6 @@
     "AutoTaggingSpecificationStatus": "状態",
     "CustomFormatsSpecificationMaximumSize": "最大サイズ",
     "CustomFormatsSpecificationSource": "ソース",
-    "CustomFormatsSpecificationLanguage": "言語"
+    "CustomFormatsSpecificationLanguage": "言語",
+    "Mixed": "修繕"
 }

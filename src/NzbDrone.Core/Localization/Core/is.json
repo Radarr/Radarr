@@ -1080,5 +1080,6 @@
     "CustomFormatsSpecificationLanguage": "Tungumál",
     "CustomFormatsSpecificationMaximumSize": "Hámarksstærð",
     "CustomFormatsSpecificationSource": "Heimild",
-    "AutoTaggingSpecificationQualityProfile": "Gæðaprófíll"
+    "AutoTaggingSpecificationQualityProfile": "Gæðaprófíll",
+    "Mixed": "Fastur"
 }

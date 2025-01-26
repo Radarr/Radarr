@@ -1889,5 +1889,6 @@
     "CustomFormatsSpecificationMaximumYear": "Año máximo",
     "AutoTaggingSpecificationMaximumRuntime": "Tiempo de ejecución máximo",
     "AutoTaggingSpecificationMinimumRuntime": "Tiempo de ejecución mínimo",
-    "CustomFormatsSpecificationQualityModifier": "Modificador de calidad"
+    "CustomFormatsSpecificationQualityModifier": "Modificador de calidad",
+    "Mixed": "Mezclado"
 }

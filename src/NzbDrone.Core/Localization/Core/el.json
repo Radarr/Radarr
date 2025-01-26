@@ -1241,5 +1241,6 @@
     "AutoTaggingSpecificationStatus": "Κατάσταση",
     "CustomFormatsSpecificationLanguage": "Γλώσσα",
     "CustomFormatsSpecificationMaximumSize": "Μέγιστο μέγεθος",
-    "CustomFormatsSpecificationSource": "Πηγή"
+    "CustomFormatsSpecificationSource": "Πηγή",
+    "Mixed": "Σταθερός"
 }

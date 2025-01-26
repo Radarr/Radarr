@@ -1892,5 +1892,6 @@
     "ReleaseProfiles": "출시 프로필",
     "RemoveCompletedDownloads": "완료된 다운로드 제거",
     "RemoveTagsAutomaticallyHelpText": "조건이 충족되지 않으면 태그를 자동으로 제거",
-    "DownloadClientQbittorrentSettingsSequentialOrder": "순차적 순서"
+    "DownloadClientQbittorrentSettingsSequentialOrder": "순차적 순서",
+    "Mixed": "결정된"
 }

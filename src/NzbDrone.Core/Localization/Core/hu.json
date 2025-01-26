@@ -1464,5 +1464,6 @@
     "CustomFormatsSpecificationMinimumSizeHelpText": "A kibocsátásnak nagyobbnak kell lennie ennél a méretnél",
     "CustomFormatsSpecificationMinimumYear": "Minimum Év",
     "CustomFormatsSpecificationResolution": "Felbontás",
-    "CustomFormatsSpecificationSource": "Forrás"
+    "CustomFormatsSpecificationSource": "Forrás",
+    "Mixed": "Mixed"
 }

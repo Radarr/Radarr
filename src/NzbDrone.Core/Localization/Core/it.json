@@ -1488,5 +1488,6 @@
     "CustomFormatsSpecificationMinimumSizeHelpText": "La release deve essere maggiore di questa dimensione",
     "CustomFormatsSpecificationMinimumYear": "Anno Minimo",
     "CustomFormatsSpecificationResolution": "Risoluzione",
-    "CustomFormatsSpecificationSource": "Fonte"
+    "CustomFormatsSpecificationSource": "Fonte",
+    "Mixed": "Fissato"
 }

@@ -1807,5 +1807,7 @@
     "CustomFormatsSpecificationMinimumSizeHelpText": "Релиз должен быть больше этого размера",
     "CustomFormatsSpecificationMinimumYear": "Минимальный год",
     "CustomFormatsSpecificationResolution": "Разрешение",
-    "CustomFormatsSpecificationSource": "Исходный код"
+    "CustomFormatsSpecificationSource": "Исходный код",
+    "CustomFormatsSpecificationExceptLanguageHelpText": "Подходит, если есть любой язык кроме указанного",
+    "Mixed": "Смешанный"
 }

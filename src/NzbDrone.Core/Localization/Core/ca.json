@@ -1400,5 +1400,9 @@
     "CustomFormatsSpecificationMaximumYear": "Any màxim",
     "CustomFormatsSpecificationMinimumYear": "Any mínim",
     "CustomFormatsSpecificationResolution": "Resolució",
-    "CustomFormatsSpecificationSource": "Font"
+    "CustomFormatsSpecificationSource": "Font",
+    "Mixed": "Combinat",
+    "CountCustomFormatsSelected": "{count} format(s) personalitzat(s) seleccionat(s)",
+    "BlocklistFilterHasNoItems": "El filtre de la llista de bloqueig seleccionat no conté elements",
+    "CountVotes": "{votes} vots"
 }

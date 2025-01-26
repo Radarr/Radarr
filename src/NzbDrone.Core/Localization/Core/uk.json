@@ -1308,5 +1308,6 @@
     "CustomFormatsSpecificationMinimumYear": "Мінімальний рік",
     "CustomFormatsSpecificationResolution": "Роздільна здатність",
     "CustomFormatsSpecificationSource": "Джерело",
-    "AutoTaggingSpecificationOriginalLanguage": "Мова"
+    "AutoTaggingSpecificationOriginalLanguage": "Мова",
+    "Mixed": "Виправлено"
 }
