@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 import FieldSet from 'Components/FieldSet';
 import SelectInput from 'Components/Form/SelectInput';
 import TextInput from 'Components/Form/TextInput';
-import Icon from 'Components/Icon';
 import Button from 'Components/Link/Button';
 import InlineMarkdown from 'Components/Markdown/InlineMarkdown';
 import Modal from 'Components/Modal/Modal';
@@ -10,7 +9,7 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
-import { icons, sizes } from 'Helpers/Props';
+import { sizes } from 'Helpers/Props';
 import NamingConfig from 'typings/Settings/NamingConfig';
 import translate from 'Utilities/String/translate';
 import NamingOption from './NamingOption';
@@ -88,32 +87,32 @@ const fileNameTokens = [
 ];
 
 const movieTokens = [
-  { token: '{Movie Title}', example: "Movie's Title", footNote: true },
-  { token: '{Movie Title:DE}', example: 'Titel des Films', footNote: true },
-  { token: '{Movie CleanTitle}', example: 'Movies Title', footNote: true },
+  { token: '{Movie Title}', example: "Movie's Title", footNotes: '1' },
+  { token: '{Movie Title:DE}', example: 'Titel des Films', footNotes: '1' },
+  { token: '{Movie CleanTitle}', example: 'Movies Title', footNotes: '1' },
   {
     token: '{Movie CleanTitle:DE}',
     example: 'Titel des Films',
-    footNote: true,
+    footNotes: '1',
   },
-  { token: '{Movie TitleThe}', example: "Movie's Title, The", footNote: true },
+  { token: '{Movie TitleThe}', example: "Movie's Title, The", footNotes: '1' },
   {
     token: '{Movie CleanTitleThe}',
     example: 'Movies Title, The',
-    footNote: true,
+    footNotes: '1',
   },
-  { token: '{Movie OriginalTitle}', example: 'Τίτλος ταινίας', footNote: true },
+  { token: '{Movie OriginalTitle}', example: 'Τίτλος ταινίας', footNotes: '1' },
   {
     token: '{Movie CleanOriginalTitle}',
     example: 'Τίτλος ταινίας',
-    footNote: true,
+    footNotes: '1',
   },
   { token: '{Movie TitleFirstCharacter}', example: 'M' },
   { token: '{Movie TitleFirstCharacter:DE}', example: 'T' },
   {
     token: '{Movie Collection}',
     example: 'The Movie Collection',
-    footNote: true,
+    footNotes: '1',
   },
   { token: '{Movie Certification}', example: 'R' },
   { token: '{Release Year}', example: '2009' },
@@ -131,12 +130,21 @@ const qualityTokens = [
 
 const mediaInfoTokens = [
   { token: '{MediaInfo Simple}', example: 'x264 DTS' },
-  { token: '{MediaInfo Full}', example: 'x264 DTS [EN+DE]', footNote: true },
+  { token: '{MediaInfo Full}', example: 'x264 DTS [EN+DE]', footNotes: '1' },
 
   { token: '{MediaInfo AudioCodec}', example: 'DTS' },
   { token: '{MediaInfo AudioChannels}', example: '5.1' },
-  { token: '{MediaInfo AudioLanguages}', example: '[EN+DE]', footNote: true },
-  { token: '{MediaInfo SubtitleLanguages}', example: '[DE]', footNote: true },
+  {
+    token: '{MediaInfo AudioLanguages}',
+    example: '[EN+DE]',
+    footNotes: '1,2',
+  },
+  {
+    token: '{MediaInfo AudioLanguagesAll}',
+    example: '[EN]',
+    footNotes: '1',
+  },
+  { token: '{MediaInfo SubtitleLanguages}', example: '[DE]', footNotes: '1' },
 
   { token: '{MediaInfo VideoCodec}', example: 'x264' },
   { token: '{MediaInfo VideoBitDepth}', example: '10' },
@@ -146,11 +154,11 @@ const mediaInfoTokens = [
 ];
 
 const releaseGroupTokens = [
-  { token: '{Release Group}', example: 'Rls Grp', footNote: true },
+  { token: '{Release Group}', example: 'Rls Grp', footNotes: '1' },
 ];
 
 const editionTokens = [
-  { token: '{Edition Tags}', example: 'IMAX', footNote: true },
+  { token: '{Edition Tags}', example: 'IMAX', footNotes: '1' },
 ];
 
 const customFormatTokens = [
@@ -287,13 +295,13 @@ function NamingModal(props: NamingModalProps) {
 
           <FieldSet legend={translate('Movie')}>
             <div className={styles.groups}>
-              {movieTokens.map(({ token, example, footNote }) => {
+              {movieTokens.map(({ token, example, footNotes }) => {
                 return (
                   <NamingOption
                     key={token}
                     token={token}
                     example={example}
-                    footNote={footNote}
+                    footNotes={footNotes}
                     tokenSeparator={tokenSeparator}
                     tokenCase={tokenCase}
                     onPress={handleOptionPress}
@@ -303,7 +311,7 @@ function NamingModal(props: NamingModalProps) {
             </div>
 
             <div className={styles.footNote}>
-              <Icon className={styles.icon} name={icons.FOOTNOTE} />
+              <sup className={styles.identifier}>1</sup>
               <InlineMarkdown data={translate('MovieFootNote')} />
             </div>
           </FieldSet>
@@ -346,13 +354,13 @@ function NamingModal(props: NamingModalProps) {
 
               <FieldSet legend={translate('MediaInfo')}>
                 <div className={styles.groups}>
-                  {mediaInfoTokens.map(({ token, example, footNote }) => {
+                  {mediaInfoTokens.map(({ token, example, footNotes }) => {
                     return (
                       <NamingOption
                         key={token}
                         token={token}
                         example={example}
-                        footNote={footNote}
+                        footNotes={footNotes}
                         tokenSeparator={tokenSeparator}
                         tokenCase={tokenCase}
                         onPress={handleOptionPress}
@@ -362,20 +370,25 @@ function NamingModal(props: NamingModalProps) {
                 </div>
 
                 <div className={styles.footNote}>
-                  <Icon className={styles.icon} name={icons.FOOTNOTE} />
+                  <sup className={styles.identifier}>1</sup>
                   <InlineMarkdown data={translate('MediaInfoFootNote')} />
+                </div>
+
+                <div className={styles.footNote}>
+                  <sup className={styles.identifier}>2</sup>
+                  <InlineMarkdown data={translate('MediaInfoFootNote2')} />
                 </div>
               </FieldSet>
 
               <FieldSet legend={translate('ReleaseGroup')}>
                 <div className={styles.groups}>
-                  {releaseGroupTokens.map(({ token, example, footNote }) => {
+                  {releaseGroupTokens.map(({ token, example, footNotes }) => {
                     return (
                       <NamingOption
                         key={token}
                         token={token}
                         example={example}
-                        footNote={footNote}
+                        footNotes={footNotes}
                         tokenSeparator={tokenSeparator}
                         tokenCase={tokenCase}
                         onPress={handleOptionPress}
@@ -385,20 +398,20 @@ function NamingModal(props: NamingModalProps) {
                 </div>
 
                 <div className={styles.footNote}>
-                  <Icon className={styles.icon} name={icons.FOOTNOTE} />
+                  <sup className={styles.identifier}>1</sup>
                   <InlineMarkdown data={translate('ReleaseGroupFootNote')} />
                 </div>
               </FieldSet>
 
               <FieldSet legend={translate('Edition')}>
                 <div className={styles.groups}>
-                  {editionTokens.map(({ token, example, footNote }) => {
+                  {editionTokens.map(({ token, example, footNotes }) => {
                     return (
                       <NamingOption
                         key={token}
                         token={token}
                         example={example}
-                        footNote={footNote}
+                        footNotes={footNotes}
                         tokenSeparator={tokenSeparator}
                         tokenCase={tokenCase}
                         onPress={handleOptionPress}
@@ -408,7 +421,7 @@ function NamingModal(props: NamingModalProps) {
                 </div>
 
                 <div className={styles.footNote}>
-                  <Icon className={styles.icon} name={icons.FOOTNOTE} />
+                  <sup className={styles.identifier}>1</sup>
                   <InlineMarkdown data={translate('EditionFootNote')} />
                 </div>
               </FieldSet>

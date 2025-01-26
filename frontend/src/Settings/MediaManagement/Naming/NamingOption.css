@@ -40,7 +40,7 @@
   padding: 6px;
   background-color: var(--popoverBodyBackgroundColor);
 
-  .footNote {
+  .footNotes {
     padding: 2px;
     color: #aaa;
   }
