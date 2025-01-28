@@ -40,7 +40,7 @@ dotnet msbuild -restore $slnFile -p:Configuration=Debug -p:Platform=$platform -p
 dotnet new tool-manifest
 dotnet tool install --version 8.1.1 Swashbuckle.AspNetCore.Cli
 
-dotnet tool run swagger tofile --output ./src/Radarr.Api.V3/openapi.json "$outputFolder/$FRAMEWORK/$RUNTIME/$application" v3 &
+dotnet tool run swagger tofile --output ./src/Radarr.Api.V4/openapi.json "$outputFolder/$FRAMEWORK/$RUNTIME/$application" v4 &
 
 sleep 45
 
