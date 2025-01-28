@@ -1143,7 +1143,7 @@ stages:
           then
             git commit -am 'Automated API Docs update'
             git push -f --set-upstream origin api-docs
-            curl -X POST -H "Authorization: token ${GITHUBTOKEN}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/radarr/radarr/pulls -d '{"head":"api-docs","base":"develop","title":"Update API docs"}'
+            curl -X POST -H "Authorization: token ${GITHUBTOKEN}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/radarr/radarr/pulls -d '{"head":"api-docs","base":"v6-develop","title":"Update API docs"}'
           else
             echo "No changes since last run"
           fi

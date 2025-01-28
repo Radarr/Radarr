@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DryIoc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -179,6 +181,37 @@ namespace NzbDrone.Host
                 });
 
                 c.DescribeAllParametersInCamelCase();
+
+                // Generate docs based on the controller's API version
+                c.DocInclusionPredicate((docName, apiDesc) =>
+                {
+                    Type type = null;
+
+                    if (apiDesc.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor)
+                    {
+                        type = controllerActionDescriptor.ControllerTypeInfo;
+                    }
+
+                    if (type == null)
+                    {
+                        return false;
+                    }
+
+                    var versions = new List<int>();
+
+                    versions.AddRange(type
+                        .GetCustomAttributes(true)
+                        .OfType<VersionedApiControllerAttribute>()
+                        .Select(attr => attr.Version));
+
+                    versions.AddRange(type
+                        .GetCustomAttributes(true)
+                        .OfType<VersionedFeedControllerAttribute>()
+                        .Select(attr => attr.Version));
+
+                    // Return anything with no version or a matching version
+                    return !versions.Any() || versions.Any(v => $"v{v}" == docName);
+                });
             });
 
             services
