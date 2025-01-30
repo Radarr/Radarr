@@ -20,6 +20,8 @@ import HintedSelectInputSelectedValue from './HintedSelectInputSelectedValue';
 import TextInput from './TextInput';
 import styles from './EnhancedSelectInput.css';
 
+const MINIMUM_DISTANCE_FROM_EDGE = 10;
+
 function isArrowKey(keyCode) {
   return keyCode === keyCodes.UP_ARROW || keyCode === keyCodes.DOWN_ARROW;
 }
@@ -137,18 +139,9 @@ class EnhancedSelectInput extends Component {
   // Listeners
 
   onComputeMaxHeight = (data) => {
-    const {
-      top,
-      bottom
-    } = data.offsets.reference;
-
     const windowHeight = window.innerHeight;
 
-    if ((/^botton/).test(data.placement)) {
-      data.styles.maxHeight = windowHeight - bottom;
-    } else {
-      data.styles.maxHeight = top;
-    }
+    data.styles.maxHeight = windowHeight - MINIMUM_DISTANCE_FROM_EDGE;
 
     return data;
   };
@@ -463,6 +456,10 @@ class EnhancedSelectInput extends Component {
                   order: 851,
                   enabled: true,
                   fn: this.onComputeMaxHeight
+                },
+                preventOverflow: {
+                  enabled: true,
+                  boundariesElement: 'viewport'
                 }
               }}
             >
