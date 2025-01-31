@@ -29,6 +29,8 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
     public class TrackedDownloadService : ITrackedDownloadService,
                                           IHandle<MovieAddedEvent>,
+                                          IHandle<MovieEditedEvent>,
+                                          IHandle<MoviesBulkEditedEvent>,
                                           IHandle<MoviesDeletedEvent>
     {
         private readonly IParsingService _parsingService;
@@ -262,6 +264,38 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 .Where(t =>
                     t.RemoteMovie?.Movie == null ||
                     message.Movie?.TmdbId == t.RemoteMovie.Movie.TmdbId)
+                .ToList();
+
+            if (cachedItems.Any())
+            {
+                cachedItems.ForEach(UpdateCachedItem);
+
+                _eventAggregator.PublishEvent(new TrackedDownloadRefreshedEvent(GetTrackedDownloads()));
+            }
+        }
+
+        public void Handle(MovieEditedEvent message)
+        {
+            var cachedItems = _cache.Values
+                .Where(t =>
+                    t.RemoteMovie?.Movie != null &&
+                    (t.RemoteMovie.Movie.Id == message.Movie?.Id || t.RemoteMovie.Movie.TmdbId == message.Movie?.TmdbId))
+                .ToList();
+
+            if (cachedItems.Any())
+            {
+                cachedItems.ForEach(UpdateCachedItem);
+
+                _eventAggregator.PublishEvent(new TrackedDownloadRefreshedEvent(GetTrackedDownloads()));
+            }
+        }
+
+        public void Handle(MoviesBulkEditedEvent message)
+        {
+            var cachedItems = _cache.Values
+                .Where(t =>
+                    t.RemoteMovie?.Movie != null &&
+                    message.Movies.Any(m => m.Id == t.RemoteMovie.Movie.Id || m.TmdbId == t.RemoteMovie.Movie.TmdbId))
                 .ToList();
 
             if (cachedItems.Any())
