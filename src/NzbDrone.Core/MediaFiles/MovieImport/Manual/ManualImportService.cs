@@ -7,7 +7,6 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.CustomFormats;
-using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Languages;
@@ -255,7 +254,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                     localMovie.Languages = LanguageParser.ParseLanguages(file);
                     localMovie.Size = _diskProvider.GetFileSize(file);
 
-                    return MapItem(new ImportDecision(localMovie, new Rejection("Unknown Movie")), rootFolder, downloadId, null);
+                    return MapItem(new ImportDecision(localMovie,
+                        new ImportRejection(ImportRejectionReason.UnknownMovie, "Unknown Movie")),
+                        rootFolder,
+                        downloadId,
+                        null);
                 }
 
                 var importDecisions = _importDecisionMaker.GetImportDecisions(new List<string> { file }, movie, trackedDownload?.DownloadItem, null, SceneSource(movie, baseFolder));
@@ -277,7 +280,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 RelativePath = rootFolder.GetRelativePath(file),
                 Name = Path.GetFileNameWithoutExtension(file),
                 Size = _diskProvider.GetFileSize(file),
-                Rejections = new List<Rejection>()
+                Rejections = new List<ImportRejection>()
             };
         }
 

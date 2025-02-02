@@ -23,14 +23,14 @@ namespace NzbDrone.Core.DecisionEngine
 
     public class DownloadDecisionMaker : IMakeDownloadDecision
     {
-        private readonly IEnumerable<IDecisionEngineSpecification> _specifications;
+        private readonly IEnumerable<IDownloadDecisionEngineSpecification> _specifications;
         private readonly IParsingService _parsingService;
         private readonly IConfigService _configService;
         private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly IRemoteMovieAggregationService _aggregationService;
         private readonly Logger _logger;
 
-        public DownloadDecisionMaker(IEnumerable<IDecisionEngineSpecification> specifications,
+        public DownloadDecisionMaker(IEnumerable<IDownloadDecisionEngineSpecification> specifications,
                                      IParsingService parsingService,
                                      IConfigService configService,
                                      ICustomFormatCalculationService formatCalculator,
@@ -85,9 +85,7 @@ namespace NzbDrone.Core.DecisionEngine
 
                         if (remoteMovie.Movie == null)
                         {
-                            var reason = "Unknown Movie";
-
-                            decision = new DownloadDecision(remoteMovie, new Rejection(reason));
+                            decision = new DownloadDecision(remoteMovie, new DownloadRejection(DownloadRejectionReason.UnknownMovie, "Unknown Movie"));
                         }
                         else
                         {
@@ -123,7 +121,7 @@ namespace NzbDrone.Core.DecisionEngine
                                 Languages = parsedMovieInfo.Languages
                             };
 
-                            decision = new DownloadDecision(remoteMovie, new Rejection("Unable to parse release"));
+                            decision = new DownloadDecision(remoteMovie, new DownloadRejection(DownloadRejectionReason.UnableToParse, "Unable to parse release"));
                         }
                     }
                 }
@@ -132,7 +130,7 @@ namespace NzbDrone.Core.DecisionEngine
                     _logger.Error(e, "Couldn't process release.");
 
                     var remoteMovie = new RemoteMovie { Release = report };
-                    decision = new DownloadDecision(remoteMovie, new Rejection("Unexpected error processing release"));
+                    decision = new DownloadDecision(remoteMovie, new DownloadRejection(DownloadRejectionReason.Error, "Unexpected error processing release"));
                 }
 
                 reportNumber++;
@@ -175,7 +173,7 @@ namespace NzbDrone.Core.DecisionEngine
 
         private DownloadDecision GetDecisionForReport(RemoteMovie remoteMovie, SearchCriteriaBase searchCriteria = null)
         {
-            var reasons = Array.Empty<Rejection>();
+            var reasons = Array.Empty<DownloadRejection>();
 
             foreach (var specifications in _specifications.GroupBy(v => v.Priority).OrderBy(v => v.Key))
             {
@@ -192,7 +190,7 @@ namespace NzbDrone.Core.DecisionEngine
             return new DownloadDecision(remoteMovie, reasons.ToArray());
         }
 
-        private Rejection EvaluateSpec(IDecisionEngineSpecification spec, RemoteMovie remoteMovie, SearchCriteriaBase searchCriteriaBase = null)
+        private DownloadRejection EvaluateSpec(IDownloadDecisionEngineSpecification spec, RemoteMovie remoteMovie, SearchCriteriaBase searchCriteriaBase = null)
         {
             try
             {
@@ -200,7 +198,7 @@ namespace NzbDrone.Core.DecisionEngine
 
                 if (!result.Accepted)
                 {
-                    return new Rejection(result.Reason, spec.Type);
+                    return new DownloadRejection(result.Reason, result.Message, spec.Type);
                 }
             }
             catch (NotImplementedException)
@@ -212,7 +210,7 @@ namespace NzbDrone.Core.DecisionEngine
                 e.Data.Add("report", remoteMovie.Release.ToJson());
                 e.Data.Add("parsed", remoteMovie.ParsedMovieInfo.ToJson());
                 _logger.Error(e, "Couldn't evaluate decision on {0}, with spec: {1}", remoteMovie.Release.Title, spec.GetType().Name);
-                return new Rejection($"{spec.GetType().Name}: {e.Message}");
+                return new DownloadRejection(DownloadRejectionReason.DecisionError, $"{spec.GetType().Name}: {e.Message}");
             }
 
             return null;

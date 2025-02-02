@@ -3,6 +3,7 @@ using System.Linq;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.MediaFiles.MovieImport.Manual;
 using NzbDrone.Core.Qualities;
 using Radarr.Api.V3.CustomFormats;
@@ -27,7 +28,7 @@ namespace Radarr.Api.V3.ManualImport
         public List<CustomFormatResource> CustomFormats { get; set; }
         public int CustomFormatScore { get; set; }
         public int IndexerFlags { get; set; }
-        public IEnumerable<Rejection> Rejections { get; set; }
+        public IEnumerable<ImportRejectionResource> Rejections { get; set; }
     }
 
     public static class ManualImportResourceMapper
@@ -60,13 +61,36 @@ namespace Radarr.Api.V3.ManualImport
                 // QualityWeight
                 DownloadId = model.DownloadId,
                 IndexerFlags = model.IndexerFlags,
-                Rejections = model.Rejections
+                Rejections = model.Rejections.Select(r => r.ToResource())
             };
         }
 
         public static List<ManualImportResource> ToResource(this IEnumerable<ManualImportItem> models)
         {
             return models.Select(ToResource).ToList();
+        }
+    }
+
+    public class ImportRejectionResource
+    {
+        public string Reason { get; set; }
+        public RejectionType Type { get; set; }
+    }
+
+    public static class ImportRejectionResourceMapper
+    {
+        public static ImportRejectionResource ToResource(this ImportRejection rejection)
+        {
+            if (rejection == null)
+            {
+                return null;
+            }
+
+            return new ImportRejectionResource
+            {
+                Reason = rejection.Message,
+                Type = rejection.Type
+            };
         }
     }
 }

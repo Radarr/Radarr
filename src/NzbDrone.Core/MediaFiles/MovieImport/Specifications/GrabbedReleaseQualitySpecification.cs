@@ -1,7 +1,6 @@
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Parser.Model;
@@ -21,11 +20,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             _historyService = historyService;
         }
 
-        public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        public ImportSpecDecision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             if (downloadClientItem == null)
             {
-                return Decision.Accept();
+                return ImportSpecDecision.Accept();
             }
 
             var grabbedHistory = _historyService.FindByDownloadId(downloadClientItem.DownloadId)
@@ -35,7 +34,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             if (grabbedHistory.Empty())
             {
                 _logger.Debug("No grabbed history for this download client item");
-                return Decision.Accept();
+                return ImportSpecDecision.Accept();
             }
 
             foreach (var item in grabbedHistory)
@@ -47,7 +46,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                 }
             }
 
-            return Decision.Accept();
+            return ImportSpecDecision.Accept();
         }
     }
 }

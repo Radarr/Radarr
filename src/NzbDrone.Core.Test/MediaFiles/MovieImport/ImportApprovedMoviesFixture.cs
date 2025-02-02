@@ -7,7 +7,6 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
@@ -46,9 +45,9 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
                 .With(s => s.Path = @"C:\Test\TV\30 Rock".AsOsAgnostic())
                 .Build();
 
-            _rejectedDecisions.Add(new ImportDecision(new LocalMovie(), new Rejection("Rejected!")));
-            _rejectedDecisions.Add(new ImportDecision(new LocalMovie(), new Rejection("Rejected!")));
-            _rejectedDecisions.Add(new ImportDecision(new LocalMovie(), new Rejection("Rejected!")));
+            _rejectedDecisions.Add(new ImportDecision(new LocalMovie(), new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")));
+            _rejectedDecisions.Add(new ImportDecision(new LocalMovie(), new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")));
+            _rejectedDecisions.Add(new ImportDecision(new LocalMovie(), new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")));
 
             _approvedDecisions.Add(new ImportDecision(
                                        new LocalMovie

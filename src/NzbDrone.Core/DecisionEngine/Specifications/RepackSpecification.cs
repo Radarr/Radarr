@@ -8,7 +8,7 @@ using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
-    public class RepackSpecification : IDecisionEngineSpecification
+    public class RepackSpecification : IDownloadDecisionEngineSpecification
     {
         private readonly UpgradableSpecification _upgradableSpecification;
         private readonly IConfigService _configService;
@@ -24,19 +24,19 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public DownloadSpecDecision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             var downloadPropersAndRepacks = _configService.DownloadPropersAndRepacks;
 
             if (!subject.ParsedMovieInfo.Quality.Revision.IsRepack)
             {
-                return Decision.Accept();
+                return DownloadSpecDecision.Accept();
             }
 
             if (downloadPropersAndRepacks == ProperDownloadTypes.DoNotPrefer)
             {
                 _logger.Debug("Repacks are not preferred, skipping check");
-                return Decision.Accept();
+                return DownloadSpecDecision.Accept();
             }
 
             if (subject.Movie.MovieFileId != 0)
@@ -51,17 +51,17 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     if (downloadPropersAndRepacks == ProperDownloadTypes.DoNotUpgrade)
                     {
                         _logger.Debug("Auto downloading of repacks is disabled");
-                        return Decision.Reject("Repack downloading is disabled");
+                        return DownloadSpecDecision.Reject(DownloadRejectionReason.RepackDisabled, "Repack downloading is disabled");
                     }
 
                     if (fileReleaseGroup.IsNullOrWhiteSpace())
                     {
-                        return Decision.Reject("Unable to determine release group for the existing file");
+                        return DownloadSpecDecision.Reject(DownloadRejectionReason.RepackUnknownReleaseGroup, "Unable to determine release group for the existing file");
                     }
 
                     if (releaseGroup.IsNullOrWhiteSpace())
                     {
-                        return Decision.Reject("Unable to determine release group for this release");
+                        return DownloadSpecDecision.Reject(DownloadRejectionReason.RepackUnknownReleaseGroup, "Unable to determine release group for this release");
                     }
 
                     if (!fileReleaseGroup.Equals(releaseGroup, StringComparison.InvariantCultureIgnoreCase))
@@ -70,7 +70,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                             "Release is a repack for a different release group. Release Group: {0}. File release group: {1}",
                             releaseGroup,
                             fileReleaseGroup);
-                        return Decision.Reject(
+                        return DownloadSpecDecision.Reject(
+                            DownloadRejectionReason.RepackReleaseGroupDoesNotMatch,
                             "Release is a repack for a different release group. Release Group: {0}. File release group: {1}",
                             releaseGroup,
                             fileReleaseGroup);
@@ -78,7 +79,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 }
             }
 
-            return Decision.Accept();
+            return DownloadSpecDecision.Accept();
         }
     }
 }

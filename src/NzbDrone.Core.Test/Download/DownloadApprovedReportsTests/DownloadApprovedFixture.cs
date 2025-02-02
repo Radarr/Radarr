@@ -189,8 +189,8 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         {
             var decisions = new List<DownloadDecision>();
             RemoteMovie remoteMovie = null;
-            decisions.Add(new DownloadDecision(remoteMovie, new Rejection("Failure!")));
-            decisions.Add(new DownloadDecision(remoteMovie, new Rejection("Failure!")));
+            decisions.Add(new DownloadDecision(remoteMovie, new DownloadRejection(DownloadRejectionReason.Unknown, "Failure!")));
+            decisions.Add(new DownloadDecision(remoteMovie, new DownloadRejection(DownloadRejectionReason.Unknown, "Failure!")));
 
             Subject.GetQualifiedReports(decisions).Should().BeEmpty();
         }
@@ -201,7 +201,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             var remoteMovie = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie, new Rejection("Failure!", RejectionType.Temporary)));
+            decisions.Add(new DownloadDecision(remoteMovie, new DownloadRejection(DownloadRejectionReason.Unknown, "Failure!", RejectionType.Temporary)));
 
             await Subject.ProcessDecisions(decisions);
             Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteMovie>(), null), Times.Never());
@@ -214,7 +214,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(removeMovie));
-            decisions.Add(new DownloadDecision(removeMovie, new Rejection("Failure!", RejectionType.Temporary)));
+            decisions.Add(new DownloadDecision(removeMovie, new DownloadRejection(DownloadRejectionReason.Unknown, "Failure!", RejectionType.Temporary)));
 
             await Subject.ProcessDecisions(decisions);
             Mocker.GetMock<IPendingReleaseService>().Verify(v => v.AddMany(It.IsAny<List<Tuple<DownloadDecision, PendingReleaseReason>>>()), Times.Never());
@@ -226,8 +226,8 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             var remoteEpisode = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteEpisode, new Rejection("Failure!", RejectionType.Temporary)));
-            decisions.Add(new DownloadDecision(remoteEpisode, new Rejection("Failure!", RejectionType.Temporary)));
+            decisions.Add(new DownloadDecision(remoteEpisode, new DownloadRejection(DownloadRejectionReason.Unknown, "Failure!", RejectionType.Temporary)));
+            decisions.Add(new DownloadDecision(remoteEpisode, new DownloadRejection(DownloadRejectionReason.Unknown, "Failure!", RejectionType.Temporary)));
 
             await Subject.ProcessDecisions(decisions);
             Mocker.GetMock<IPendingReleaseService>().Verify(v => v.AddMany(It.IsAny<List<Tuple<DownloadDecision, PendingReleaseReason>>>()), Times.Once());
