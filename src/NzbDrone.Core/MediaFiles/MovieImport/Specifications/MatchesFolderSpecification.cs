@@ -1,6 +1,5 @@
 using System.IO;
 using NLog;
-using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
 
@@ -15,18 +14,18 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        public ImportSpecDecision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             if (localMovie.ExistingFile)
             {
-                return Decision.Accept();
+                return ImportSpecDecision.Accept();
             }
 
             var dirInfo = new FileInfo(localMovie.Path).Directory;
 
             if (dirInfo == null)
             {
-                return Decision.Accept();
+                return ImportSpecDecision.Accept();
             }
 
             // TODO: Actually implement this!!!!
@@ -37,7 +36,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                 return Decision.Accept();
             }*/
 
-            return Decision.Accept();
+            return ImportSpecDecision.Accept();
         }
     }
 }

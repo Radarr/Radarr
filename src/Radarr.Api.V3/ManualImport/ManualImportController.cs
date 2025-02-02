@@ -38,7 +38,7 @@ namespace Radarr.Api.V3.ManualImport
 
                 item.Movie = processedItem.Movie.ToResource(0);
                 item.IndexerFlags = processedItem.IndexerFlags;
-                item.Rejections = processedItem.Rejections;
+                item.Rejections = processedItem.Rejections.Select(r => r.ToResource());
                 item.CustomFormats = processedItem.CustomFormats.ToResource(false);
                 item.CustomFormatScore = processedItem.CustomFormatScore;
 

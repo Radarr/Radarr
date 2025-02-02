@@ -105,7 +105,7 @@ namespace Radarr.Api.V3.Indexers
                 Rejected = model.Rejected,
                 TmdbId = releaseInfo.TmdbId,
                 ImdbId = releaseInfo.ImdbId,
-                Rejections = model.Rejections.Select(r => r.Reason).ToList(),
+                Rejections = model.Rejections.Select(r => r.Message).ToList(),
                 PublishDate = releaseInfo.PublishDate,
                 CommentUrl = releaseInfo.CommentUrl,
                 DownloadUrl = releaseInfo.DownloadUrl,

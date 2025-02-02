@@ -4,7 +4,6 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
-using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
@@ -107,11 +106,11 @@ namespace NzbDrone.Core.Test.Download
                            {
                                new ImportResult(
                                    new ImportDecision(
-                                       new LocalMovie { Path = @"C:\TestPath\Droned.1998.mkv" }, new Rejection("Rejected!")), "Test Failure"),
+                                       new LocalMovie { Path = @"C:\TestPath\Droned.1998.mkv" }, new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")), "Test Failure"),
 
                                new ImportResult(
                                    new ImportDecision(
-                                       new LocalMovie { Path = @"C:\TestPath\Droned.1999.mkv" }, new Rejection("Rejected!")), "Test Failure")
+                                       new LocalMovie { Path = @"C:\TestPath\Droned.1999.mkv" }, new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")), "Test Failure")
                            });
 
             Subject.Import(_trackedDownload);
@@ -131,11 +130,11 @@ namespace NzbDrone.Core.Test.Download
                            {
                                new ImportResult(
                                    new ImportDecision(
-                                       new LocalMovie { Path = @"C:\TestPath\Droned.1998.mkv" }, new Rejection("Rejected!")), "Test Failure"),
+                                       new LocalMovie { Path = @"C:\TestPath\Droned.1998.mkv" }, new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")), "Test Failure"),
 
                                new ImportResult(
                                    new ImportDecision(
-                                       new LocalMovie { Path = @"C:\TestPath\Droned.1998.mkv" }, new Rejection("Rejected!")), "Test Failure")
+                                       new LocalMovie { Path = @"C:\TestPath\Droned.1998.mkv" }, new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")), "Test Failure")
                            });
 
             _trackedDownload.RemoteMovie.Movie = new Movie();

@@ -5,7 +5,7 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
-    public class CustomFormatAllowedbyProfileSpecification : IDecisionEngineSpecification
+    public class CustomFormatAllowedbyProfileSpecification : IDownloadDecisionEngineSpecification
     {
         private readonly Logger _logger;
 
@@ -17,19 +17,19 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public virtual DownloadSpecDecision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             var minScore = subject.Movie.QualityProfile.MinFormatScore;
             var score = subject.CustomFormatScore;
 
             if (score < minScore)
             {
-                return Decision.Reject("Custom Formats {0} have score {1} below Movie's profile minimum {2}", subject.CustomFormats.ConcatToString(), score, minScore);
+                return DownloadSpecDecision.Reject(DownloadRejectionReason.CustomFormatMinimumScore, "Custom Formats {0} have score {1} below Movie's profile minimum {2}", subject.CustomFormats.ConcatToString(), score, minScore);
             }
 
             _logger.Trace("Custom Format Score of {0} [{1}] above Movie's profile minimum {2}", score, subject.CustomFormats.ConcatToString(), minScore);
 
-            return Decision.Accept();
+            return DownloadSpecDecision.Accept();
         }
     }
 }
