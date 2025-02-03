@@ -9908,6 +9908,19 @@
         ],
         "type": "string"
       },
+      "ImportRejectionResource": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/RejectionType"
+          }
+        },
+        "additionalProperties": false
+      },
       "IndexerBulkResource": {
         "type": "object",
         "properties": {
@@ -10284,7 +10297,7 @@
           "rejections": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Rejection"
+              "$ref": "#/components/schemas/ImportRejectionResource"
             },
             "nullable": true
           }
@@ -10361,7 +10374,7 @@
           "rejections": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Rejection"
+              "$ref": "#/components/schemas/ImportRejectionResource"
             },
             "nullable": true
           }
@@ -11878,19 +11891,6 @@
           },
           "trakt": {
             "$ref": "#/components/schemas/RatingChild"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Rejection": {
-        "type": "object",
-        "properties": {
-          "reason": {
-            "type": "string",
-            "nullable": true
-          },
-          "type": {
-            "$ref": "#/components/schemas/RejectionType"
           }
         },
         "additionalProperties": false
