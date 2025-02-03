@@ -12,8 +12,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
     {
         private static readonly Regex[] MovieMultiPartRegex = new[]
         {
-            new Regex(@"(?<!^)(?<identifier>[ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[ _.-]*[0-9]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase),
-            new Regex(@"(?<!^)(?<identifier>[ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[ _.-]*[a-d]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+            new Regex(@"(?<!^)(?<identifier>[ _.-]*(?:cd|dvd|p(?:(?:ar)?t)?|dis[ck])[ _.-]*[0-9]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+            new Regex(@"(?<!^)(?<identifier>[ _.-]*(?:cd|dvd|p(?:(?:ar)?t)?|dis[ck])[ _.-]*[a-d]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase),
         };
 
         private readonly IDiskProvider _diskProvider;
