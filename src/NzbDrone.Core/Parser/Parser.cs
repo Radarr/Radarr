@@ -224,10 +224,8 @@ namespace NzbDrone.Core.Parser
                     Logger.Debug("Reversed name detected. Converted to '{0}'", title);
                 }
 
-                var releaseTitle = RemoveFileExtension(title);
-
                 // Trim dashes from end
-                releaseTitle = releaseTitle.Trim('-', '_');
+                var releaseTitle = title.Trim('-', '_');
 
                 releaseTitle = releaseTitle.Replace("【", "[").Replace("】", "]");
 
@@ -283,6 +281,8 @@ namespace NzbDrone.Core.Parser
                         {
                             continue;
                         }
+
+                        releaseTitle = RemoveFileExtension(releaseTitle);
 
                         // TODO: Add tests for this!
                         var simpleReleaseTitle = SimpleReleaseTitleRegex.Replace(releaseTitle, string.Empty);
