@@ -1890,5 +1890,6 @@
     "AutoTaggingSpecificationMaximumRuntime": "Tiempo de ejecución máximo",
     "AutoTaggingSpecificationMinimumRuntime": "Tiempo de ejecución mínimo",
     "CustomFormatsSpecificationQualityModifier": "Modificador de calidad",
-    "Mixed": "Mezclado"
+    "Mixed": "Mezclado",
+    "MediaInfoFootNote2": "MediaInfo AudioLanguages excluye el inglés si es el único idioma. Usa MediaInfo AudioLanguagesAll para incluir solo el inglés"
 }
