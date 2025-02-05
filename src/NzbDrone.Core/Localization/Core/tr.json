@@ -1893,5 +1893,6 @@
     "ReleaseSource": "Yayın Kaynağı",
     "UserInvokedSearch": "Kullanıcı Tarafından Çağrılan Arama",
     "ReleasePush": "Yayın İtimi",
-    "Mixed": "Karışık"
+    "Mixed": "Karışık",
+    "MediaInfoFootNote2": "MediaInfo AudioLanguages, tek dil İngilizce ise hariç tutar. MediaInfo AudioLanguagesAll'ı yalnızca İngilizce'yi dahil etmek için kullanın"
 }

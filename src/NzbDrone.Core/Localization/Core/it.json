@@ -1489,5 +1489,10 @@
     "CustomFormatsSpecificationMinimumYear": "Anno Minimo",
     "CustomFormatsSpecificationResolution": "Risoluzione",
     "CustomFormatsSpecificationSource": "Fonte",
-    "Mixed": "Fissato"
+    "Mixed": "Fissato",
+    "AutoRedownloadFailedFromInteractiveSearchHelpText": "Cerca automaticamente e tenta di scaricare una versione diversa quando il rilascio non riuscito è stato acquisito dalla ricerca interattiva",
+    "AutoTaggingLoadError": "Impossibile caricare auto tagging",
+    "AnnouncedMovieAvailabilityDescription": "I film sono considerati disponibili non appena vengono aggiunti a {appName}.",
+    "AutoRedownloadFailedFromInteractiveSearch": "Riesecuzione del download non riuscita dalla ricerca interattiva",
+    "AutoTaggingRequiredHelpText": "Questa condizione {implementationName} deve corrispondere perché si applichi la regola di auto tagging. Altrimenti è sufficiente una singola corrispondenza {implementationName}."
 }

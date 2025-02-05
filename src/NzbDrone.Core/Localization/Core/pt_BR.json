@@ -1893,5 +1893,6 @@
     "ReleasePush": "Impulsionar Lançamento",
     "ReleaseSource": "Fonte do Lançamento",
     "UserInvokedSearch": "Pesquisa Invocada pelo Usuário",
-    "Mixed": "Misturado"
+    "Mixed": "Misturado",
+    "MediaInfoFootNote2": "O MediaInfo Audiolanguages exclui o inglês se for o único idioma. Use MediaInfo AudiolanguagesAll para incluir apenas o inglês"
 }

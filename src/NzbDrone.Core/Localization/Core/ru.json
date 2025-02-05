@@ -1809,5 +1809,6 @@
     "CustomFormatsSpecificationResolution": "Разрешение",
     "CustomFormatsSpecificationSource": "Исходный код",
     "CustomFormatsSpecificationExceptLanguageHelpText": "Подходит, если есть любой язык кроме указанного",
-    "Mixed": "Смешанный"
+    "Mixed": "Смешанный",
+    "MediaInfoFootNote2": "MediaInfo AudioLanguages не добавляет английский язык, если это единственный доступный язык. Используйте MediaInfo AudioLanguagesAll для добавления английского языка в таких случаях"
 }

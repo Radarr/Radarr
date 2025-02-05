@@ -1294,5 +1294,6 @@
     "CountVotes": "{votes} hlasy",
     "CustomFormatsSpecificationRegularExpression": "Běžný výraz",
     "AutoTaggingSpecificationGenre": "Žánr(y)",
-    "DeleteSelected": "Smazat vybrané"
+    "DeleteSelected": "Smazat vybrané",
+    "IndexerDownloadClientHealthCheckMessage": "Indexery s neplatnými klienty pro stahování: {indexerNames}."
 }

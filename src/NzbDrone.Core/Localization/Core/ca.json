@@ -1425,5 +1425,6 @@
     "DownloadClientFloodSettingsAddPaused": "Afegeix pausats",
     "NotificationsAppriseSettingsTags": "Etiquetes d'Apprise",
     "NotificationsSettingsWebhookHeaders": "Capçaleres",
-    "PreviouslyInstalled": "Instal·lat anteriorment"
+    "PreviouslyInstalled": "Instal·lat anteriorment",
+    "DownloadClientSettingsAddPaused": "Afegeix pausats"
 }
