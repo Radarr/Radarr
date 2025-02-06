@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly RegexReplace[] PreSubstitutionRegex = Array.Empty<RegexReplace>();
 
-        private static readonly Regex ExtraParametersRegex = new Regex(@"(?<extra>.+)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+        private static readonly Regex PostTitleParametersRegex = new Regex(@"(?<additional>.+)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex[] ReportMovieTitleRegex = new[]
         {
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Parser
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),*/
 
             // Normal movie format, e.g: Mission.Impossible.3.2011
-            new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|(1(8|9)|20)\d{2}|\]|\W(1(8|9)|20)\d{2})))+(\W+|_|$)(?!\\)" + ExtraParametersRegex, RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|(1(8|9)|20)\d{2}|\]|\W(1(8|9)|20)\d{2})))+(\W+|_|$)(?!\\)" + PostTitleParametersRegex, RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
             // PassThePopcorn Torrent names: Star.Wars[PassThePopcorn]
             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(\[\w *\])))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
@@ -669,9 +669,9 @@ namespace NzbDrone.Core.Parser
                 result.Edition = matchCollection[0].Groups["edition"].Value.Replace(".", " ");
             }
 
-            if (matchCollection[0].Groups["extra"].Success)
+            if (matchCollection[0].Groups["additional"].Success)
             {
-                result.TitleExtraParameters = matchCollection[0].Groups["extra"].Value.Replace(".", " ");
+                result.PostTitleParameters = matchCollection[0].Groups["additional"].Value.Replace(".", " ");
             }
 
             var movieTitles = new List<string>();

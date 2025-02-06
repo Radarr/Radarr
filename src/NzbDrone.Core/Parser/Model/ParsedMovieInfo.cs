@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Parser.Model
         public string OriginalTitle { get; set; }
         public string ReleaseTitle { get; set; }
         public string SimpleReleaseTitle { get; set; }
-        public string TitleExtraParameters { get; set; }
+        public string PostTitleParameters { get; set; }
         public QualityModel Quality { get; set; }
         public List<Language> Languages { get; set; }
         public string ReleaseGroup { get; set; }
