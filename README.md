@@ -87,4 +87,4 @@ This project is also supported by DigitalOcean
 ### License
 
 * [GNU GPL v3](http://www.gnu.org/licenses/gpl.html)
-* Copyright 2010-2024
+* Copyright 2010-2025
