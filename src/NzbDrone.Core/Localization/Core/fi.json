@@ -322,7 +322,7 @@
     "MovieTitleToExcludeHelpText": "Ohitettavan elokuvan nimi (voi olla miktä tahansa merkityksellistä).",
     "MovieYear": "Elokuvan vuosi",
     "TestAllClients": "Koesta latauspalvelut",
-    "TestAllIndexers": "Tietolähteiden testaus",
+    "TestAllIndexers": "Koesta pavelut",
     "TestAllLists": "Koesta listat",
     "AddRemotePathMapping": "Lisää etäsijainnin kohdistus",
     "Apply": "Käytä",
@@ -1727,7 +1727,7 @@
     "UrlBaseHelpText": "Käänteisen välityspalvelimen tukea varten. Oletusarvo on tyhjä.",
     "IndexerSettingsMultiLanguageRelease": "Useat kielet",
     "IndexerSettingsSeedRatio": "Jakosuhde",
-    "IndexerSettingsSeedRatioHelpText": "Suhde, joka torrentin tulee saavuttaa ennen sen pysäytystä. Käytä latauspalvelun oletusta jättämällä tyhjäksi. Suhteen tulisi olla ainakin 1.0 ja noudattaa tietolähteen sääntöjä.",
+    "IndexerSettingsSeedRatioHelpText": "Suhde, joka torrentin tulee saavuttaa ennen sen pysäytystä. Käytä latauspalvelun oletusta jättämällä tyhjäksi. Suhteen tulisi olla ainakin 1.0 ja noudattaa hakupalvelun sääntöjä.",
     "IndexerSettingsSeedTime": "Jakoaika",
     "IndexerSettingsSeedTimeHelpText": "Aika, joka torrentia tulee jakaa ennen sen pysäytystä. Käytä latauspalvelun oletusta jättämällä tyhjäksi.",
     "DownloadClientDelugeSettingsDirectoryCompletedHelpText": "Vaihtoehtoinen sijainti, johon valmistuneet lataukset siirretään. Käytä Delugen oletusta jättämällä tyhjäksi.",
@@ -1893,5 +1893,6 @@
     "ReleaseSource": "Julkaisulähde",
     "UserInvokedSearch": "Käyttäjä herätti haun",
     "ReleasePush": "Julkaisun työntö",
-    "Mixed": "Sekoitettu"
+    "Mixed": "Sekoitettu",
+    "MediaInfoFootNote2": "MediaInfo AudioLanguages ei huomioi englantia sen ollessa ainoa kieli. MediaInfo AudioLanguagesAll sisällyttää vain englanninkielen sisältävät kohteet."
 }
