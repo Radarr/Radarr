@@ -10334,6 +10334,15 @@
           "movie": {
             "$ref": "#/components/schemas/MovieResource"
           },
+          "movieFileId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "releaseGroup": {
+            "type": "string",
+            "nullable": true
+          },
           "quality": {
             "$ref": "#/components/schemas/QualityModel"
           },
@@ -10342,10 +10351,6 @@
             "items": {
               "$ref": "#/components/schemas/Language"
             },
-            "nullable": true
-          },
-          "releaseGroup": {
-            "type": "string",
             "nullable": true
           },
           "qualityWeight": {
