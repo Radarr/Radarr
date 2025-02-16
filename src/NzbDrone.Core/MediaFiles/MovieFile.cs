@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
@@ -26,6 +27,7 @@ namespace NzbDrone.Core.MediaFiles
         public string Edition { get; set; }
         public Movie Movie { get; set; }
         public List<Language> Languages { get; set; }
+        public DownloadProtocol DownloadProtocol { get; set; }
 
         public override string ToString()
         {

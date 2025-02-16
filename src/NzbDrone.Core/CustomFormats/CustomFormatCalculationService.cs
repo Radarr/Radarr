@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.History;
+using NzbDrone.Core.Indexers;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
@@ -42,7 +43,8 @@ namespace NzbDrone.Core.CustomFormats
                 Movie = remoteMovie.Movie,
                 Size = size,
                 Languages = remoteMovie.Languages,
-                IndexerFlags = remoteMovie.Release?.IndexerFlags ?? 0
+                IndexerFlags = remoteMovie.Release?.IndexerFlags ?? 0,
+                DownloadProtocol = remoteMovie.Release?.DownloadProtocol ?? 0
             };
 
             return ParseCustomFormat(input);
@@ -79,7 +81,8 @@ namespace NzbDrone.Core.CustomFormats
                 Movie = movie,
                 Size = blocklist.Size ?? 0,
                 Languages = blocklist.Languages,
-                IndexerFlags = blocklist.IndexerFlags
+                IndexerFlags = blocklist.IndexerFlags,
+                DownloadProtocol = blocklist.Protocol
             };
 
             return ParseCustomFormat(input);
@@ -91,6 +94,7 @@ namespace NzbDrone.Core.CustomFormats
 
             long.TryParse(history.Data.GetValueOrDefault("size"), out var size);
             Enum.TryParse(history.Data.GetValueOrDefault("indexerFlags"), true, out IndexerFlags indexerFlags);
+            Enum.TryParse(history.Data.GetValueOrDefault("protocol"), true, out DownloadProtocol downloadProtocol);
 
             var movieInfo = new ParsedMovieInfo
             {
@@ -109,7 +113,8 @@ namespace NzbDrone.Core.CustomFormats
                 Movie = movie,
                 Size = size,
                 Languages = history.Languages,
-                IndexerFlags = indexerFlags
+                IndexerFlags = indexerFlags,
+                DownloadProtocol = downloadProtocol
             };
 
             return ParseCustomFormat(input);
@@ -135,7 +140,8 @@ namespace NzbDrone.Core.CustomFormats
                 Size = localMovie.Size,
                 Languages = localMovie.Languages,
                 IndexerFlags = localMovie.IndexerFlags,
-                Filename = Path.GetFileName(localMovie.Path)
+                Filename = Path.GetFileName(localMovie.Path),
+                DownloadProtocol = localMovie.DownloadItem?.DownloadClientInfo?.Protocol ?? 0
             };
 
             return ParseCustomFormat(input);
@@ -206,7 +212,8 @@ namespace NzbDrone.Core.CustomFormats
                 Size = movieFile.Size,
                 Languages = movieFile.Languages,
                 IndexerFlags = movieFile.IndexerFlags,
-                Filename = Path.GetFileName(movieFile.RelativePath)
+                Filename = Path.GetFileName(movieFile.RelativePath),
+                DownloadProtocol = movieFile.DownloadProtocol
             };
 
             return ParseCustomFormat(input, allCustomFormats);
