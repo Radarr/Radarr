@@ -13,6 +13,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
         public string FolderName { get; set; }
         public string Name { get; set; }
         public long Size { get; set; }
+        public Movie Movie { get; set; }
+        public int? MovieFileId { get; set; }
         public QualityModel Quality { get; set; }
         public List<Language> Languages { get; set; }
         public string ReleaseGroup { get; set; }
@@ -21,7 +23,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
         public int CustomFormatScore { get; set; }
         public int IndexerFlags { get; set; }
         public IEnumerable<ImportRejection> Rejections { get; set; }
-        public Movie Movie { get; set; }
 
         public ManualImportItem()
         {
