@@ -46,7 +46,6 @@ namespace NzbDrone.Core.ImportLists.Trakt
         }
 
         public string Link => "https://api.trakt.tv";
-        public virtual string Scope => "";
 
         [FieldDefinition(0, Label = "Access Token", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
         public string AccessToken { get; set; }
@@ -60,13 +59,10 @@ namespace NzbDrone.Core.ImportLists.Trakt
         [FieldDefinition(0, Label = "Auth User", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
         public string AuthUser { get; set; }
 
-        [FieldDefinition(5, Label = "Limit", HelpText = "Limit the number of movies to get")]
+        [FieldDefinition(98, Label = "ImportListsTraktSettingsLimit", HelpText = "ImportListsTraktSettingsLimitMovieHelpText")]
         public int Limit { get; set; }
 
-        [FieldDefinition(6, Label = "Additional Parameters", HelpText = "Additional Trakt API parameters", Advanced = true)]
-        public string TraktAdditionalParameters { get; set; }
-
-        [FieldDefinition(99, Label = "Authenticate with Trakt", Type = FieldType.OAuth)]
+        [FieldDefinition(99, Label = "ImportListsTraktSettingsAuthenticateWithTrakt", Type = FieldType.OAuth)]
         public string SignIn { get; set; }
 
         public override NzbDroneValidationResult Validate()

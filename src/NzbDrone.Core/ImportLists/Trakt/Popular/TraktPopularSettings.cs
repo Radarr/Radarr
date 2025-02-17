@@ -45,20 +45,23 @@ namespace NzbDrone.Core.ImportLists.Trakt.Popular
             Years = "";
         }
 
-        [FieldDefinition(1, Label = "List Type", Type = FieldType.Select, SelectOptions = typeof(TraktPopularListType), HelpText = "Type of list you're seeking to import from")]
+        [FieldDefinition(1, Label = "ImportListsTraktSettingsListType", Type = FieldType.Select, SelectOptions = typeof(TraktPopularListType), HelpText = "ImportListsTraktSettingsListTypeHelpText")]
         public int TraktListType { get; set; }
 
-        [FieldDefinition(2, Label = "Rating", HelpText = "Filter movies by rating range (0-100)")]
+        [FieldDefinition(2, Label = "ImportListsTraktSettingsRating", HelpText = "ImportListsTraktSettingsRatingMovieHelpText")]
         public string Rating { get; set; }
 
-        [FieldDefinition(3, Label = "Certification", HelpText = "Filter movies by a certification (NR,G,PG,PG-13,R,NC-17), (Comma Separated)")]
+        [FieldDefinition(3, Label = "ImportListsTraktSettingsCertification", HelpText = "ImportListsTraktSettingsCertificationMovieHelpText")]
         public string Certification { get; set; }
 
-        [FieldDefinition(4, Label = "Genres", HelpText = "Filter movies by Trakt Genre Slug (Comma Separated) Only for Popular Lists")]
+        [FieldDefinition(4, Label = "ImportListsTraktSettingsGenres", HelpText = "ImportListsTraktSettingsGenresMovieHelpText")]
         public string Genres { get; set; }
 
-        [FieldDefinition(5, Label = "Years", HelpText = "Filter movies by year or year range")]
+        [FieldDefinition(5, Label = "ImportListsTraktSettingsYears", HelpText = "ImportListsTraktSettingsYearsMovieHelpText")]
         public string Years { get; set; }
+
+        [FieldDefinition(6, Label = "ImportListsTraktSettingsAdditionalParameters", HelpText = "ImportListsTraktSettingsAdditionalParametersHelpText", Advanced = true)]
+        public string TraktAdditionalParameters { get; set; }
 
         public override NzbDroneValidationResult Validate()
         {
