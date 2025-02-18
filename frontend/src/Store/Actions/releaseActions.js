@@ -210,6 +210,12 @@ export const defaultState = {
       name: 'rejectionCount',
       label: () => translate('RejectionCount'),
       type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'movieRequested',
+      label: () => translate('MovieRequested'),
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.BOOL
     }
   ],
   selectedFilterKey: 'all'
