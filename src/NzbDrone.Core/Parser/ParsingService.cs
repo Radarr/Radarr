@@ -116,6 +116,11 @@ namespace NzbDrone.Core.Parser
 
             remoteMovie.Languages = parsedMovieInfo.Languages;
 
+            if (searchCriteria != null)
+            {
+                remoteMovie.MovieRequested = remoteMovie.Movie?.Id == searchCriteria.Movie?.Id;
+            }
+
             return remoteMovie;
         }
 

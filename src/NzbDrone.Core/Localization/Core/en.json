@@ -1045,6 +1045,7 @@
   "MovieMissingFromDisk": "Movie missing from disk",
   "MovieNaming": "Movie Naming",
   "MovieOnly": "Movie Only",
+  "MovieRequested": "Movie Requested",
   "MovieSearchResultsLoadError": "Unable to load results for this movie search. Try again later",
   "MovieTitle": "Movie Title",
   "MovieTitleToExcludeHelpText": "The title of the movie to exclude (can be anything meaningful)",

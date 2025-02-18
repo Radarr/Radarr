@@ -44,6 +44,7 @@ namespace Radarr.Api.V3.Indexers
         public string CommentUrl { get; set; }
         public string DownloadUrl { get; set; }
         public string InfoUrl { get; set; }
+        public bool MovieRequested { get; set; }
         public bool DownloadAllowed { get; set; }
         public int ReleaseWeight { get; set; }
         public string Edition { get; set; }
@@ -110,6 +111,7 @@ namespace Radarr.Api.V3.Indexers
                 CommentUrl = releaseInfo.CommentUrl,
                 DownloadUrl = releaseInfo.DownloadUrl,
                 InfoUrl = releaseInfo.InfoUrl,
+                MovieRequested = remoteMovie.MovieRequested,
                 DownloadAllowed = remoteMovie.DownloadAllowed,
                 Edition = parsedMovieInfo.Edition,
 
