@@ -1,33 +1,33 @@
-using System.Runtime.Serialization;
+using NzbDrone.Core.Annotations;
 
 namespace NzbDrone.Core.ImportLists.Trakt.Popular
 {
     public enum TraktPopularListType
     {
-        [EnumMember(Value = "Trending Movies")]
+        [FieldOption(Label = "ImportListsTraktSettingsPopularListTypeTrendingMovies")]
         Trending = 0,
-        [EnumMember(Value = "Popular Movies")]
+        [FieldOption(Label = "ImportListsTraktSettingsPopularListTypePopularMovies")]
         Popular = 1,
-        [EnumMember(Value = "Top Anticipated Movies")]
+        [FieldOption(Label = "ImportListsTraktSettingsPopularListTypeTopAnticipatedMovies")]
         Anticipated = 2,
-        [EnumMember(Value = "Top Box Office Movies")]
+        [FieldOption(Label = "ImportListsTraktSettingsPopularListTypeTopBoxOfficeMovies")]
         BoxOffice = 3,
 
-        [EnumMember(Value = "Top Watched Movies By Week")]
+        [FieldOption(Label = "ImportListsTraktSettingsPopularListTypeTopWatchedMoviesByWeek")]
         TopWatchedByWeek = 4,
-        [EnumMember(Value = "Top Watched Movies By Month")]
+        [FieldOption(Label = "ImportListsTraktSettingsPopularListTypeTopWatchedMoviesByMonth")]
         TopWatchedByMonth = 5,
-        [EnumMember(Value = "Top Watched Movies By Year")]
+        [FieldOption(Label = "ImportListsTraktSettingsPopularListTypeTopWatchedMoviesByYear")]
         TopWatchedByYear = 6,
-        [EnumMember(Value = "Top Watched Movies Of All Time")]
+        [FieldOption(Label = "ImportListsTraktSettingsPopularListTypeTopWatchedMoviesOfAllTime")]
         TopWatchedByAllTime = 7,
-        [EnumMember(Value = "Recommended Movies By Week")]
+        [FieldOption(Label = "ImportListsTraktSettingsPopularListTypeRecommendedMoviesByWeek")]
         RecommendedByWeek = 8,
-        [EnumMember(Value = "Recommended Movies By Month")]
+        [FieldOption(Label = "ImportListsTraktSettingsPopularListTypeRecommendedMoviesByMonth")]
         RecommendedByMonth = 9,
-        [EnumMember(Value = "Recommended Movies By Year")]
+        [FieldOption(Label = "ImportListsTraktSettingsPopularListTypeRecommendedMoviesByYear")]
         RecommendedByYear = 10,
-        [EnumMember(Value = "Recommended Movies Of All Time")]
+        [FieldOption(Label = "ImportListsTraktSettingsPopularListTypeRecommendedMoviesOfAllTime")]
         RecommendedByAllTime = 11
     }
 }
