@@ -12074,6 +12074,9 @@
             "type": "string",
             "nullable": true
           },
+          "movieRequested": {
+            "type": "boolean"
+          },
           "downloadAllowed": {
             "type": "boolean"
           },
