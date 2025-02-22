@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using System.Net.Http;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
 using NzbDrone.Core.Notifications.Trakt;
 
 namespace NzbDrone.Core.ImportLists.Trakt.User
@@ -8,11 +8,12 @@ namespace NzbDrone.Core.ImportLists.Trakt.User
     public class TraktUserRequestGenerator : IImportListRequestGenerator
     {
         private readonly ITraktProxy _traktProxy;
-        public TraktUserSettings Settings { get; set; }
+        private readonly TraktUserSettings _settings;
 
-        public TraktUserRequestGenerator(ITraktProxy traktProxy)
+        public TraktUserRequestGenerator(ITraktProxy traktProxy, TraktUserSettings settings)
         {
             _traktProxy = traktProxy;
+            _settings = settings;
         }
 
         public virtual ImportListPageableRequestChain GetMovies()
@@ -26,25 +27,39 @@ namespace NzbDrone.Core.ImportLists.Trakt.User
 
         private IEnumerable<ImportListRequest> GetMoviesRequest()
         {
-            var link = string.Empty;
-            var userName = Settings.Username.IsNotNullOrWhiteSpace() ? Settings.Username.Trim() : Settings.AuthUser.Trim();
+            var requestBuilder = new HttpRequestBuilder(_settings.Link.Trim());
 
-            switch (Settings.TraktListType)
+            switch (_settings.TraktListType)
             {
                 case (int)TraktUserListType.UserWatchList:
-                    link += $"users/{userName}/watchlist/movies?limit={Settings.Limit}";
+                    var watchSorting = _settings.TraktWatchSorting switch
+                    {
+                        (int)TraktUserWatchSorting.Added => "added",
+                        (int)TraktUserWatchSorting.Title => "title",
+                        (int)TraktUserWatchSorting.Released => "released",
+                        _ => "rank"
+                    };
+
+                    requestBuilder
+                        .Resource("/users/{userName}/watchlist/movies/{sorting}")
+                        .SetSegment("sorting", watchSorting);
                     break;
                 case (int)TraktUserListType.UserWatchedList:
-                    link += $"users/{userName}/watched/movies?limit={Settings.Limit}";
+                    requestBuilder.Resource("/users/{userName}/watched/movies");
                     break;
                 case (int)TraktUserListType.UserCollectionList:
-                    link += $"users/{userName}/collection/movies?limit={Settings.Limit}";
+                    requestBuilder.Resource("/users/{userName}/collection/movies");
                     break;
             }
 
-            var request = new ImportListRequest(_traktProxy.BuildRequest(link, HttpMethod.Get, Settings.AccessToken));
+            var userName = _settings.Username.IsNotNullOrWhiteSpace() ? _settings.Username.Trim() : _settings.AuthUser.Trim();
 
-            yield return request;
+            requestBuilder
+                .SetSegment("userName", userName)
+                .WithRateLimit(4)
+                .AddQueryParam("limit", _settings.Limit.ToString());
+
+            yield return new ImportListRequest(_traktProxy.BuildRequest(requestBuilder.Build(), _settings.AccessToken));
         }
     }
 }
