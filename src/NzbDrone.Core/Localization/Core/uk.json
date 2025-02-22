@@ -1309,5 +1309,8 @@
     "CustomFormatsSpecificationResolution": "Роздільна здатність",
     "CustomFormatsSpecificationSource": "Джерело",
     "AutoTaggingSpecificationOriginalLanguage": "Мова",
-    "Mixed": "Виправлено"
+    "Mixed": "Виправлено",
+    "ImportListsTraktSettingsRating": "Рейтинг",
+    "ImportListsTraktSettingsCertification": "Віковий рейтинг",
+    "ImportListsTraktSettingsGenres": "Жанри"
 }

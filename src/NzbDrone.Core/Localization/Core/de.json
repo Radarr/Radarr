@@ -1893,5 +1893,15 @@
     "NotificationsGotifySettingIncludeMoviePoster": "Film-Poster einbeziehen",
     "OverrideGrabNoMovie": "Ein Film muss ausgewählt werden",
     "ShowRottenTomatoesRatingHelpText": "Tomato-Bewertung unter dem Poster anzeigen",
-    "NotificationsTagsMovieHelpText": "Benachrichtigungen nur für Filme mit mindestens einem übereinstimmenden Tag senden"
+    "NotificationsTagsMovieHelpText": "Benachrichtigungen nur für Filme mit mindestens einem übereinstimmenden Tag senden",
+    "ImportListsTraktSettingsAdditionalParameters": "Zusätzliche Parameter",
+    "ImportListsTraktSettingsAdditionalParametersHelpText": "Zusätzliche Trakt-API-Parameter",
+    "ImportListsTraktSettingsGenres": "Genres",
+    "ImportListsTraktSettingsListType": "Listentyp",
+    "ImportListsTraktSettingsListTypeHelpText": "Typ der Liste, von der du importieren möchtest",
+    "ImportListsTraktSettingsRating": "Bewertung",
+    "ImportListsTraktSettingsYears": "Jahre",
+    "ImportListsTraktSettingsAuthenticateWithTrakt": "Mit Trakt authentifizieren",
+    "ImportListsTraktSettingsCertification": "Zertifizierung",
+    "ImportListsTraktSettingsLimit": "Limit"
 }

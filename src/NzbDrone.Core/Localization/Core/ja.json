@@ -1081,5 +1081,8 @@
     "CustomFormatsSpecificationMaximumSize": "最大サイズ",
     "CustomFormatsSpecificationSource": "ソース",
     "CustomFormatsSpecificationLanguage": "言語",
-    "Mixed": "修繕"
+    "Mixed": "修繕",
+    "ImportListsTraktSettingsCertification": "認証",
+    "ImportListsTraktSettingsGenres": "ジャンル",
+    "ImportListsTraktSettingsRating": "評価"
 }

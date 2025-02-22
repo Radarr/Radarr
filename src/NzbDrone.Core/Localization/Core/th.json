@@ -1079,5 +1079,8 @@
     "CustomFormatsSpecificationLanguage": "ภาษา",
     "CustomFormatsSpecificationMaximumSize": "ขนาดสูงสุด",
     "CustomFormatsSpecificationSource": "ที่มา",
-    "Mixed": "แก้ไขแล้ว"
+    "Mixed": "แก้ไขแล้ว",
+    "ImportListsTraktSettingsCertification": "การรับรอง",
+    "ImportListsTraktSettingsGenres": "ประเภท",
+    "ImportListsTraktSettingsRating": "การให้คะแนน"
 }

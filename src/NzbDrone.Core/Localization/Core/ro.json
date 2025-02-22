@@ -1160,5 +1160,14 @@
     "CustomFormatsSpecificationMaximumSize": "Dimensiune maximă",
     "CustomFormatsSpecificationSource": "Sursă",
     "AutoTaggingSpecificationOriginalLanguage": "Limbă",
-    "Mixed": "Fix"
+    "Mixed": "Fix",
+    "AddCondition": "Adăugați Conditie",
+    "AddAutoTag": "Adăugați Tagare Automata",
+    "AddImportList": "Adăugați Lista de Import",
+    "AnnouncedMovieAvailabilityDescription": "Filmele sunt considerate disponibile imediat ce sunt adăugate in {appName}.",
+    "Any": "Oricare",
+    "ApiKeyValidationHealthCheckMessage": "Te rugăm să actualizezi cheia API astfel încât să aibă cel puțin {length} caractere. Poți face acest lucru din setări sau din fișierul de configurare",
+    "ImportListsTraktSettingsCertification": "Certificare",
+    "ImportListsTraktSettingsGenres": "Genuri",
+    "ImportListsTraktSettingsRating": "Recenzii"
 }

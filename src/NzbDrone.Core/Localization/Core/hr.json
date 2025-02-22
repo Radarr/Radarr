@@ -373,5 +373,8 @@
     "AutoTaggingSpecificationRootFolder": "Korijenska Mapa",
     "CustomFormatsSpecificationLanguage": "jezik",
     "CustomFormatsSpecificationResolution": "Razlučivost",
-    "CustomFormatsSpecificationSource": "Izvor"
+    "CustomFormatsSpecificationSource": "Izvor",
+    "ImportListsTraktSettingsRating": "Ocjena",
+    "ImportListsTraktSettingsCertification": "Certifikacija",
+    "ImportListsTraktSettingsGenres": "Žanr"
 }

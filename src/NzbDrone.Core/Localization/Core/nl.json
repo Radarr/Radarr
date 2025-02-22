@@ -1254,5 +1254,8 @@
     "CustomFormatsSpecificationResolution": "Resolutie",
     "CustomFormatsSpecificationSource": "Bron",
     "CustomFormatsSpecificationLanguage": "Taal",
-    "Mixed": "Opgelost"
+    "Mixed": "Opgelost",
+    "ImportListsTraktSettingsCertification": "Certificatie",
+    "ImportListsTraktSettingsRating": "Score",
+    "ImportListsTraktSettingsGenres": "Genres"
 }

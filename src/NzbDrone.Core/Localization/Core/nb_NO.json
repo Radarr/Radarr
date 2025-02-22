@@ -332,5 +332,7 @@
     "AddImportList": "Ny Importliste",
     "AddNewRestriction": "Legg til ny begrensning",
     "AddDownloadClientImplementation": "Ny Nedlastingsklient - {implementationName}",
-    "AddImportListImplementation": "Legg til importliste - {implementationName}"
+    "AddImportListImplementation": "Legg til importliste - {implementationName}",
+    "ImportListsTraktSettingsCertification": "Sertifisering",
+    "ImportListsTraktSettingsRating": "Vurdering"
 }

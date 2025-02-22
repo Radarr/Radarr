@@ -1465,5 +1465,11 @@
     "CustomFormatsSpecificationMinimumYear": "Minimum Év",
     "CustomFormatsSpecificationResolution": "Felbontás",
     "CustomFormatsSpecificationSource": "Forrás",
-    "Mixed": "Mixed"
+    "Mixed": "Mixed",
+    "ImportListsTraktSettingsCertification": "Tanúsítvány",
+    "ImportListsTraktSettingsGenres": "Műfajok",
+    "ImportListsTraktSettingsListType": "Lista típus",
+    "ImportListsTraktSettingsListTypeHelpText": "Az importálni kívánt lista típusa",
+    "ImportListsTraktSettingsRating": "Értékelés",
+    "ImportListsTraktSettingsYears": "Évek"
 }

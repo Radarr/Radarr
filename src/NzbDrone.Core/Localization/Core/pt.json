@@ -1275,5 +1275,8 @@
     "CustomFormatsSpecificationMaximumSize": "Tamanho máximo",
     "CustomFormatsSpecificationResolution": "Resolução",
     "CustomFormatsSpecificationSource": "Origem",
-    "Mixed": "Corrigido"
+    "Mixed": "Corrigido",
+    "ImportListsTraktSettingsCertification": "Certificação",
+    "ImportListsTraktSettingsGenres": "Gêneros",
+    "ImportListsTraktSettingsRating": "Classificação"
 }
