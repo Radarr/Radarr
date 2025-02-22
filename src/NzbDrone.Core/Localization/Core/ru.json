@@ -1811,5 +1811,17 @@
     "CustomFormatsSpecificationExceptLanguageHelpText": "Подходит, если есть любой язык кроме указанного",
     "Mixed": "Смешанный",
     "MediaInfoFootNote2": "MediaInfo AudioLanguages не добавляет английский язык, если это единственный доступный язык. Используйте MediaInfo AudioLanguagesAll для добавления английского языка в таких случаях",
-    "AutoTaggingSpecificationMinimumRuntime": "Минимальное время выполнения"
+    "AutoTaggingSpecificationMinimumRuntime": "Минимальное время выполнения",
+    "EditSelectedCustomFormats": "Изменить выбранные пользовательские форматы",
+    "DeleteSelected": "Удалить выбранные",
+    "ImportListsTraktSettingsAdditionalParameters": "Дополнительные параметры",
+    "ImportListsTraktSettingsCertification": "Возрастной рейтинг",
+    "ImportListsTraktSettingsGenres": "Жанры",
+    "ImportListsTraktSettingsLimit": "Лимит",
+    "ImportListsTraktSettingsListType": "Тип списка",
+    "ImportListsTraktSettingsListTypeHelpText": "Тип списка, из которого вы хотите импортировать",
+    "ImportListsTraktSettingsRating": "Рейтинг",
+    "ImportListsTraktSettingsYears": "Годы",
+    "ImportListsTraktSettingsAdditionalParametersHelpText": "Дополнительные параметры Trakt API",
+    "ImportListsTraktSettingsAuthenticateWithTrakt": "Аутентификация с помощью Trakt"
 }

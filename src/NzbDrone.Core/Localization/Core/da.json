@@ -1106,5 +1106,8 @@
     "CustomFormatsSpecificationMaximumSize": "Maksimal størrelse",
     "CustomFormatsSpecificationResolution": "Opløsning",
     "CustomFormatsSpecificationSource": "Kilde",
-    "Mixed": "Fast"
+    "Mixed": "Fast",
+    "ImportListsTraktSettingsCertification": "Certifikation",
+    "ImportListsTraktSettingsGenres": "Genrer",
+    "ImportListsTraktSettingsRating": "Bedømmelse"
 }

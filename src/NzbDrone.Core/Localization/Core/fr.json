@@ -1890,5 +1890,18 @@
     "NotificationsGotifySettingsPreferredMetadataLink": "Lien de métadonnées préféré",
     "NotificationsGotifySettingsPreferredMetadataLinkHelpText": "Lien de métadonnées pour les clients qui ne prennent en charge qu'un seul lien",
     "ManageFormats": "Gérer les formats",
-    "Mixed": "Mixte"
+    "Mixed": "Mixte",
+    "MediaInfoFootNote2": "MediaInfo AudioLanguages exclut l'anglais s'il s'agit de la seule langue. Utilisez MediaInfo AudioLanguagesAll pour inclure uniquement l'anglais",
+    "UserInvokedSearch": "Recherche invoquée par l'utilisateur",
+    "MovieRequested": "Film demandé",
+    "ImportListsTraktSettingsRating": "Evaluation",
+    "ImportListsTraktSettingsYears": "Années",
+    "ImportListsTraktSettingsAdditionalParameters": "Paramètres supplémentaires",
+    "ImportListsTraktSettingsAdditionalParametersHelpText": "Paramètres supplémentaires de l'API Trakt",
+    "ImportListsTraktSettingsAuthenticateWithTrakt": "S'authentifier avec Trakt",
+    "ImportListsTraktSettingsCertification": "Certification",
+    "ImportListsTraktSettingsGenres": "Genres",
+    "ImportListsTraktSettingsLimit": "Limite",
+    "ImportListsTraktSettingsListType": "Type de liste",
+    "ImportListsTraktSettingsListTypeHelpText": "Type de liste à partir de laquelle vous cherchez à importer"
 }

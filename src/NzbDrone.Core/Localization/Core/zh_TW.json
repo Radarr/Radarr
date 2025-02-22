@@ -287,5 +287,6 @@
     "AutoTaggingSpecificationQualityProfile": "品質設定檔",
     "AutoTaggingSpecificationRootFolder": "根目錄資料夾",
     "CustomFormatsSpecificationLanguage": "語言",
-    "CustomFormatsSpecificationResolution": "解析度"
+    "CustomFormatsSpecificationResolution": "解析度",
+    "ImportListsTraktSettingsRating": "評分"
 }

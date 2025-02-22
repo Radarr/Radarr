@@ -1195,5 +1195,8 @@
     "Delay": "Забавяне",
     "Label": "Етикет",
     "DownloadClientSettingsAddPaused": "Добави на пауза",
-    "Theme": "Тема"
+    "Theme": "Тема",
+    "ImportListsTraktSettingsCertification": "Сертифициране",
+    "ImportListsTraktSettingsGenres": "Жанрове",
+    "ImportListsTraktSettingsRating": "Оценки"
 }

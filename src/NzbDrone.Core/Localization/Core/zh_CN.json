@@ -1884,5 +1884,10 @@
     "CustomFormatsSpecificationSource": "代码",
     "AutoTaggingSpecificationGenre": "类型",
     "AutoTaggingSpecificationMaximumYear": "最大年份",
-    "Mixed": "混合"
+    "Mixed": "混合",
+    "ImportListsTraktSettingsAdditionalParameters": "附加参数",
+    "ImportListsTraktSettingsAuthenticateWithTrakt": "使用 Trakt 进行认证",
+    "ImportListsTraktSettingsCertification": "分级",
+    "ImportListsTraktSettingsGenres": "类型",
+    "ImportListsTraktSettingsRating": "评分"
 }

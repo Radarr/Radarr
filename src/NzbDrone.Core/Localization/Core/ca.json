@@ -1426,5 +1426,8 @@
     "NotificationsAppriseSettingsTags": "Etiquetes d'Apprise",
     "NotificationsSettingsWebhookHeaders": "Capçaleres",
     "PreviouslyInstalled": "Instal·lat anteriorment",
-    "DownloadClientSettingsAddPaused": "Afegeix pausats"
+    "DownloadClientSettingsAddPaused": "Afegeix pausats",
+    "ImportListsTraktSettingsCertification": "Certificació",
+    "ImportListsTraktSettingsRating": "Valoració",
+    "ImportListsTraktSettingsGenres": "Gèneres"
 }

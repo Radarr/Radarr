@@ -304,5 +304,7 @@
     "AutoTaggingSpecificationQualityProfile": "Profil kvality",
     "AutoTaggingSpecificationRootFolder": "Koreňový priečinok",
     "CustomFormatsSpecificationResolution": "Rozlíšenie",
-    "CustomFormatsSpecificationLanguage": "jazyk"
+    "CustomFormatsSpecificationLanguage": "jazyk",
+    "ImportListsTraktSettingsRating": "Hodnotenie",
+    "ImportListsTraktSettingsCertification": "Certifikácia"
 }

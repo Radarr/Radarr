@@ -1120,5 +1120,8 @@
     "CustomFormatsSpecificationLanguage": "Ngôn ngữ",
     "CustomFormatsSpecificationMaximumSize": "Kích thước tối đa",
     "CustomFormatsSpecificationSource": "Nguồn",
-    "Mixed": "đã sửa"
+    "Mixed": "đã sửa",
+    "ImportListsTraktSettingsCertification": "Chứng chỉ",
+    "ImportListsTraktSettingsGenres": "Thể loại",
+    "ImportListsTraktSettingsRating": "Xếp hạng"
 }

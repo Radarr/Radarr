@@ -1196,5 +1196,8 @@
     "CustomFormatsSpecificationMaximumSize": "Największy rozmiar",
     "CustomFormatsSpecificationResolution": "Rozdzielczość",
     "CustomFormatsSpecificationSource": "Źródło",
-    "Mixed": "Naprawiony"
+    "Mixed": "Naprawiony",
+    "ImportListsTraktSettingsRating": "Ocena",
+    "ImportListsTraktSettingsCertification": "Certyfikacja",
+    "ImportListsTraktSettingsGenres": "Gatunki"
 }

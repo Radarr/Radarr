@@ -1127,5 +1127,8 @@
     "CustomFormatsSpecificationSource": "מָקוֹר",
     "AutoTaggingSpecificationRootFolder": "תיקיית שורש",
     "AutoTaggingSpecificationStatus": "סטָטוּס",
-    "Mixed": "תוקן"
+    "Mixed": "תוקן",
+    "ImportListsTraktSettingsCertification": "תעודה",
+    "ImportListsTraktSettingsGenres": "ז'אנרים",
+    "ImportListsTraktSettingsRating": "דירוגים"
 }

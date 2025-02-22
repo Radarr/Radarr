@@ -1084,5 +1084,8 @@
     "CustomFormatsSpecificationLanguage": "لغة",
     "CustomFormatsSpecificationMaximumSize": "أكبر مقاس",
     "CustomFormatsSpecificationSource": "مصدر",
-    "Mixed": "ثابت"
+    "Mixed": "ثابت",
+    "ImportListsTraktSettingsCertification": "شهادة",
+    "ImportListsTraktSettingsGenres": "الأنواع",
+    "ImportListsTraktSettingsRating": "التقييمات"
 }

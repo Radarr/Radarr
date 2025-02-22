@@ -1081,5 +1081,8 @@
     "CustomFormatsSpecificationMaximumSize": "Hámarksstærð",
     "CustomFormatsSpecificationSource": "Heimild",
     "AutoTaggingSpecificationQualityProfile": "Gæðaprófíll",
-    "Mixed": "Fastur"
+    "Mixed": "Fastur",
+    "ImportListsTraktSettingsCertification": "Vottun",
+    "ImportListsTraktSettingsGenres": "Tegundir",
+    "ImportListsTraktSettingsRating": "Einkunnir"
 }

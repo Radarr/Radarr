@@ -1079,5 +1079,8 @@
     "CustomFormatsSpecificationLanguage": "भाषा: हिन्दी",
     "CustomFormatsSpecificationMaximumSize": "अधिकतम आकार",
     "CustomFormatsSpecificationSource": "स्रोत",
-    "Mixed": "फिक्स्ड"
+    "Mixed": "फिक्स्ड",
+    "ImportListsTraktSettingsCertification": "प्रमाणीकरण",
+    "ImportListsTraktSettingsGenres": "शैलियां",
+    "ImportListsTraktSettingsRating": "रेटिंग्स"
 }

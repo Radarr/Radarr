@@ -1295,5 +1295,9 @@
     "CustomFormatsSpecificationRegularExpression": "Běžný výraz",
     "AutoTaggingSpecificationGenre": "Žánr(y)",
     "DeleteSelected": "Smazat vybrané",
-    "IndexerDownloadClientHealthCheckMessage": "Indexery s neplatnými klienty pro stahování: {indexerNames}."
+    "IndexerDownloadClientHealthCheckMessage": "Indexery s neplatnými klienty pro stahování: {indexerNames}.",
+    "ImportListsTraktSettingsAdditionalParameters": "Dodatečné parametry",
+    "ImportListsTraktSettingsRating": "Hodnocení",
+    "ImportListsTraktSettingsCertification": "Osvědčení",
+    "ImportListsTraktSettingsGenres": "Žánry"
 }

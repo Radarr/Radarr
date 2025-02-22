@@ -1108,5 +1108,8 @@
     "CustomFormatsSpecificationMaximumSize": "Maximal storlek",
     "CustomFormatsSpecificationSource": "Källa",
     "AutoTaggingSpecificationOriginalLanguage": "Språk",
-    "Mixed": "Fast"
+    "Mixed": "Fast",
+    "ImportListsTraktSettingsGenres": "Genrer",
+    "ImportListsTraktSettingsCertification": "Certifikation",
+    "ImportListsTraktSettingsRating": "Betyg"
 }

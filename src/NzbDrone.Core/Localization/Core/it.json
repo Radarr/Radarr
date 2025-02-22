@@ -1494,5 +1494,12 @@
     "AutoTaggingLoadError": "Impossibile caricare auto tagging",
     "AnnouncedMovieAvailabilityDescription": "I film sono considerati disponibili non appena vengono aggiunti a {appName}.",
     "AutoRedownloadFailedFromInteractiveSearch": "Riesecuzione del download non riuscita dalla ricerca interattiva",
-    "AutoTaggingRequiredHelpText": "Questa condizione {implementationName} deve corrispondere perché si applichi la regola di auto tagging. Altrimenti è sufficiente una singola corrispondenza {implementationName}."
+    "AutoTaggingRequiredHelpText": "Questa condizione {implementationName} deve corrispondere perché si applichi la regola di auto tagging. Altrimenti è sufficiente una singola corrispondenza {implementationName}.",
+    "ImportListsTraktSettingsAdditionalParameters": "Parametri Addizionali",
+    "ImportListsTraktSettingsAuthenticateWithTrakt": "Autentica con Trakt",
+    "ImportListsTraktSettingsRating": "Valutazione",
+    "ImportListsTraktSettingsCertification": "Certificazione",
+    "ImportListsTraktSettingsGenres": "Generi",
+    "ImportListsTraktSettingsLimit": "Limite",
+    "ImportListsTraktSettingsListType": "Tipo Lista"
 }
