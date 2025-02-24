@@ -1922,5 +1922,10 @@
     "ImportListsTraktSettingsRatingMovieHelpText": "Suodata elokuvia arvioden perusteella (alue 0–100).",
     "ImportListsTraktSettingsPopularListTypeTopWatchedMoviesOfAllTime": "Kaikkien aikojen katsotuimmat elokuvat",
     "ImportListsTraktSettingsPopularListTypeTrendingMovies": "Trendaavat elokuvat",
-    "ImportListsTraktSettingsGenresMovieHelpText": "Suodata elokuvia Trakt-lajityyppien slug-arvojen perusteella (pilkuin eroteltuna). Koskee vain suosituimpia listoja."
+    "ImportListsTraktSettingsGenresMovieHelpText": "Suodata elokuvia Trakt-lajityyppien slug-arvojen perusteella (pilkuin eroteltuna). Koskee vain suosituimpia listoja.",
+    "ImportListsTraktSettingsUserListTypeCollection": "Käyttäjän kokoelmat",
+    "ImportListsTraktSettingsUserListTypeWatch": "Käyttäjän katselulista",
+    "ImportListsTraktSettingsUserListTypeWatched": "Käyttäjän katseltujen lista",
+    "ImportListsTraktSettingsUserListUsernameHelpText": "Listan tuontiin käytettävä käyttäjänimi. Käytä tunnistautunutta käyttäjää jättämällä tyhjäksi.",
+    "ImportListsTraktSettingsWatchListSorting": "Katselulistan järjestys"
 }

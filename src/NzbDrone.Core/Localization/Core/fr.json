@@ -1903,5 +1903,10 @@
     "ImportListsTraktSettingsGenres": "Genres",
     "ImportListsTraktSettingsLimit": "Limite",
     "ImportListsTraktSettingsListType": "Type de liste",
-    "ImportListsTraktSettingsListTypeHelpText": "Type de liste à partir de laquelle vous cherchez à importer"
+    "ImportListsTraktSettingsListTypeHelpText": "Type de liste à partir de laquelle vous cherchez à importer",
+    "ImportListsTraktSettingsUserListTypeCollection": "Liste des collections d'utilisateurs",
+    "ImportListsTraktSettingsUserListUsernameHelpText": "Nom d'utilisateur pour la liste à importer (laisser vide pour utiliser Auth User)",
+    "ImportListsTraktSettingsWatchListSorting": "Tri de la liste de surveillance",
+    "ImportListsTraktSettingsUserListTypeWatch": "Liste de surveillance des utilisateurs",
+    "ImportListsTraktSettingsUserListTypeWatched": "Liste des utilisateurs surveillés"
 }

@@ -1518,7 +1518,7 @@
     "NotificationsEmailSettingsUseEncryptionHelpText": "Se preferir usar criptografia se configurado no servidor, usar sempre criptografia via SSL (somente porta 465) ou StartTLS (qualquer outra porta) ou nunca usar criptografia",
     "ChangeCategoryMultipleHint": "Altera os downloads para a \"Categoria pós-importação' do cliente de download",
     "BlackholeFolderHelpText": "Pasta na qual o {appName} armazenará o arquivo {extension}",
-    "BlackholeWatchFolder": "Pasta de monitoramento",
+    "BlackholeWatchFolder": "Pasta de Monitoramento",
     "BlackholeWatchFolderHelpText": "Pasta da qual o {appName} deve importar os downloads concluídos",
     "Category": "Categoria",
     "Destination": "Destino",
@@ -1922,5 +1922,11 @@
     "ImportListsTraktSettingsPopularListTypeTopWatchedMoviesOfAllTime": "Filmes Mais Assistidos de Todos os Tempos",
     "ImportListsTraktSettingsPopularListTypeTrendingMovies": "Filmes em Alta",
     "ImportListsTraktSettingsRatingMovieHelpText": "Filtrar filmes por faixa de avaliação (0-100)",
-    "ImportListsTraktSettingsYearsMovieHelpText": "Filtrar filmes por ano ou faixa de ano"
+    "ImportListsTraktSettingsYearsMovieHelpText": "Filtrar filmes por ano ou faixa de ano",
+    "ImportListsTraktSettingsWatchListSortingHelpText": "Se o Tipo de Lista estiver Monitorar, selecione o pedido para classificar a lista",
+    "ImportListsTraktSettingsUserListTypeCollection": "Lista de coleção do usuário",
+    "ImportListsTraktSettingsUserListTypeWatch": "Lista para Assistir do Usuário",
+    "ImportListsTraktSettingsUserListTypeWatched": "Lista de Assistidos do Usuário",
+    "ImportListsTraktSettingsUserListUsernameHelpText": "Nome de usuário da lista a importar (deixe em branco para usar o Usuário autenticado)",
+    "ImportListsTraktSettingsWatchListSorting": "Classificação da Lista para Assistir"
 }

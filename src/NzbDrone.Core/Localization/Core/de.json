@@ -1903,5 +1903,10 @@
     "ImportListsTraktSettingsYears": "Jahre",
     "ImportListsTraktSettingsAuthenticateWithTrakt": "Mit Trakt authentifizieren",
     "ImportListsTraktSettingsCertification": "Zertifizierung",
-    "ImportListsTraktSettingsLimit": "Limit"
+    "ImportListsTraktSettingsLimit": "Limit",
+    "ImportListsTraktSettingsUserListTypeCollection": "Benutzer-Sammlungs-Liste",
+    "ImportListsTraktSettingsUserListTypeWatch": "Benutzer-Watch-Liste",
+    "ImportListsTraktSettingsUserListTypeWatched": "Benutzer-Gesehene-Liste",
+    "ImportListsTraktSettingsWatchListSorting": "Sortierung der Gesehenen Liste",
+    "ImportListsTraktSettingsUserListUsernameHelpText": "Benutzername für die Liste, von der du importieren möchtest (leer lassen, um den Authentifizierten Benutzer zu verwenden)"
 }
