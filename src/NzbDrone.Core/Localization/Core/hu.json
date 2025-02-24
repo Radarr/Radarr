@@ -1471,5 +1471,10 @@
     "ImportListsTraktSettingsListType": "Lista típus",
     "ImportListsTraktSettingsListTypeHelpText": "Az importálni kívánt lista típusa",
     "ImportListsTraktSettingsRating": "Értékelés",
-    "ImportListsTraktSettingsYears": "Évek"
+    "ImportListsTraktSettingsYears": "Évek",
+    "ImportListsTraktSettingsUserListTypeCollection": "Felhasználói gyűjtőlista",
+    "ImportListsTraktSettingsUserListTypeWatch": "Felhasználói figyelőlista",
+    "ImportListsTraktSettingsUserListTypeWatched": "Felhasználói figyelt lista",
+    "ImportListsTraktSettingsUserListUsernameHelpText": "Felhasználónév az importálandó listához (hagyja üresen az Auth User használatához)",
+    "ImportListsTraktSettingsWatchListSorting": "Figyelőlista rendezése"
 }

@@ -1823,5 +1823,10 @@
     "ImportListsTraktSettingsRating": "Рейтинг",
     "ImportListsTraktSettingsYears": "Годы",
     "ImportListsTraktSettingsAdditionalParametersHelpText": "Дополнительные параметры Trakt API",
-    "ImportListsTraktSettingsAuthenticateWithTrakt": "Аутентификация с помощью Trakt"
+    "ImportListsTraktSettingsAuthenticateWithTrakt": "Аутентификация с помощью Trakt",
+    "ImportListsTraktSettingsUserListTypeCollection": "Список коллекций пользователей",
+    "ImportListsTraktSettingsUserListTypeWatch": "Список наблюдения пользователя",
+    "ImportListsTraktSettingsUserListTypeWatched": "Список просмотренного пользователем",
+    "ImportListsTraktSettingsUserListUsernameHelpText": "Имя пользователя для импорта списка (оставьте пустым, чтобы использовать пользователя с аутентификацией)",
+    "ImportListsTraktSettingsWatchListSorting": "Сортировка списка просмотра"
 }

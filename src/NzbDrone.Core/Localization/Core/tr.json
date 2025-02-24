@@ -1922,5 +1922,11 @@
     "ImportListsTraktSettingsPopularListTypeTrendingMovies": "Trend Filmler",
     "ImportListsTraktSettingsRatingMovieHelpText": "Filmleri derecelendirme aralığına göre filtrele (0-100)",
     "ImportListsTraktSettingsYearsMovieHelpText": "Filmleri yıla veya yıl aralığına göre filtrele",
-    "ImportListsTraktSettingsPopularListTypeTopWatchedMoviesByMonth": "Aylara Göre En Çok İzlenen Filmler"
+    "ImportListsTraktSettingsPopularListTypeTopWatchedMoviesByMonth": "Aylara Göre En Çok İzlenen Filmler",
+    "ImportListsTraktSettingsUserListTypeCollection": "Kullanıcı Koleksiyon Listesi",
+    "ImportListsTraktSettingsUserListTypeWatch": "Kullanıcı İzleme Listesi",
+    "ImportListsTraktSettingsUserListTypeWatched": "Kullanıcının İzlediği Liste",
+    "ImportListsTraktSettingsUserListUsernameHelpText": "İçe aktarılacak Liste için Kullanıcı Adı (Yetkili Kullanıcı için boş bırakın)",
+    "ImportListsTraktSettingsWatchListSorting": "İzleme Listesi Sıralaması",
+    "ImportListsTraktSettingsWatchListSortingHelpText": "Liste Türü İzleme ise, listeyi sıralama sırasını seçin"
 }

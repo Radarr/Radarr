@@ -1921,5 +1921,10 @@
     "ImportListsTraktSettingsRatingMovieHelpText": "Filtrar películas por rango de calificación (0-100)",
     "ImportListsTraktSettingsYearsMovieHelpText": "Filtras películas por año o rango de años",
     "MovieRequested": "Películas solicitadas",
-    "ReleasePush": "Lanzamiento"
+    "ReleasePush": "Lanzamiento",
+    "ImportListsTraktSettingsUserListTypeCollection": "Lista de colecciones de usuario",
+    "ImportListsTraktSettingsUserListTypeWatch": "Lista de seguimiento de usuario",
+    "ImportListsTraktSettingsUserListTypeWatched": "Lista de vistos de usuario",
+    "ImportListsTraktSettingsUserListUsernameHelpText": "Usuario para la lista de la que importar (dejar vacío para usar Autenticación de usuario)",
+    "ImportListsTraktSettingsWatchListSorting": "Ordenar la lista de vistos"
 }

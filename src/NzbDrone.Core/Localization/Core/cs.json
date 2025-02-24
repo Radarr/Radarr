@@ -1299,5 +1299,12 @@
     "ImportListsTraktSettingsAdditionalParameters": "Dodatečné parametry",
     "ImportListsTraktSettingsRating": "Hodnocení",
     "ImportListsTraktSettingsCertification": "Osvědčení",
-    "ImportListsTraktSettingsGenres": "Žánry"
+    "ImportListsTraktSettingsGenres": "Žánry",
+    "DownloadClientDelugeValidationLabelPluginInactive": "Plugin pro štítky není aktivován",
+    "DownloadClientDelugeTorrentStateError": "Deluge hlásí chybu",
+    "DownloadClientDelugeSettingsDirectoryCompleted": "Adresář kam přesunout po dokončení",
+    "DownloadClientDelugeSettingsDirectoryHelpText": "Nepovinné - umístění stahovaných souborů, pokud ponecháte prázné, použije se výchozí umístění Deluge",
+    "DownloadClientDelugeSettingsDirectoryCompletedHelpText": "Nepovinné - umístění kam přesunout dokončená stahování, pokud ponecháte prázné, použije se výchozí umístění Deluge",
+    "DownloadClientDelugeValidationLabelPluginInactiveDetail": "Pro použití kategorií je nutné mít v {clientName} aktivovaný plugin pro štítky.",
+    "DownloadClientDownloadStationProviderMessage": "Pokud je ve vašem účtu DSM zapnuto dvoufázové ověření, {appName} se nebude moci připojit k Download station"
 }
