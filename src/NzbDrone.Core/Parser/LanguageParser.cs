@@ -15,7 +15,8 @@ namespace NzbDrone.Core.Parser
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(LanguageParser));
 
-        private static readonly Regex LanguageRegex = new Regex(@"(?:\W|_|^)(?<italian>\b(?:ita|italian)\b)|
+        private static readonly Regex LanguageRegex = new Regex(@"(?:\W|_|^)(?<english>\beng\b)|
+                                                                            (?<italian>\b(?:ita|italian)\b)|
                                                                             (?<german>german\b|videomann|ger[. ]dub|\bger\b)|
                                                                             (?<flemish>flemish)|
                                                                             (?<bulgarian>bgaudio)|
@@ -24,7 +25,6 @@ namespace NzbDrone.Core.Parser
                                                                             (?<greek>greek)|
                                                                             (?<french>\b(?:FR|VO|VF|VFF|VFQ|VFI|VF2|TRUEFRENCH|FRENCH|FRE|FRA)\b)|
                                                                             (?<russian>\b(?:rus|ru)\b)|
-                                                                            (?<english>\beng\b)|
                                                                             (?<hungarian>\b(?:HUNDUB|HUN)\b)|
                                                                             (?<hebrew>\b(?:HebDub|HebDubbed)\b)|
                                                                             (?<polish>\b(?:PL\W?DUB|DUB\W?PL|LEK\W?PL|PL\W?LEK)\b)|
@@ -297,6 +297,11 @@ namespace NzbDrone.Core.Parser
 
             foreach (Match match in matches)
             {
+                if (match.Groups["english"].Success)
+                {
+                    languages.Add(Language.English);
+                }
+
                 if (match.Groups["italian"].Captures.Any())
                 {
                     languages.Add(Language.Italian);
@@ -325,11 +330,6 @@ namespace NzbDrone.Core.Parser
                 if (match.Groups["russian"].Success)
                 {
                     languages.Add(Language.Russian);
-                }
-
-                if (match.Groups["english"].Success)
-                {
-                    languages.Add(Language.English);
                 }
 
                 if (match.Groups["bulgarian"].Success)

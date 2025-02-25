@@ -52,6 +52,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Title  : Other Title 2010 x264.720p.Blu-ray Rip HD.VOSTFR.VFF. ONLY")]
         [TestCase("Movie Title  2019 HEVC.2160p.Blu-ray 4K.VOSTFR.VFF. JATO")]
         [TestCase("Movie.Title.1956.MULTi.VF.Bluray.1080p.REMUX.AC3.x264")]
+        [TestCase("Movie.Title.2016.ENG-ITA-FRA.AAC.1080p.WebDL.x264")]
+        [TestCase("Movie Title 2016 (BDrip 1080p ENG-ITA-FRA) Multisub x264")]
         [TestCase("Movie.Title.2016.ENG-ITA-FRE.AAC.1080p.WebDL.x264")]
         [TestCase("Movie Title 2016 (BDrip 1080p ENG-ITA-FRE) Multisub x264")]
         public void should_parse_language_french(string postTitle)
