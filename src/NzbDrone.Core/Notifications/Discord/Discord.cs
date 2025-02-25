@@ -200,8 +200,8 @@ namespace NzbDrone.Core.Notifications.Discord
                         discordField.Inline = true;
                         discordField.Value = string.Format("{0} / {1} {2}",
                             MediaInfoFormatter.FormatVideoCodec(message.MovieFile.MediaInfo, null),
-                            MediaInfoFormatter.FormatAudioCodec(message.MovieFile.MediaInfo, null),
-                            MediaInfoFormatter.FormatAudioChannels(message.MovieFile.MediaInfo));
+                            MediaInfoFormatter.FormatAudioCodec(message.MovieFile.MediaInfo.PrimaryAudioStream, null),
+                            MediaInfoFormatter.FormatAudioChannels(message.MovieFile.MediaInfo.PrimaryAudioStream));
                         break;
                     case DiscordImportFieldType.Group:
                         discordField.Name = "Group";
@@ -214,11 +214,11 @@ namespace NzbDrone.Core.Notifications.Discord
                         break;
                     case DiscordImportFieldType.Languages:
                         discordField.Name = "Languages";
-                        discordField.Value = message.MovieFile.MediaInfo.AudioLanguages.ConcatToString("/");
+                        discordField.Value = message.MovieFile.MediaInfo.AudioStreams?.Select(l => l.Language).ConcatToString("/");
                         break;
                     case DiscordImportFieldType.Subtitles:
                         discordField.Name = "Subtitles";
-                        discordField.Value = message.MovieFile.MediaInfo.Subtitles.ConcatToString("/");
+                        discordField.Value = message.MovieFile.MediaInfo.SubtitleStreams?.Select(l => l.Language).ConcatToString("/");
                         break;
                     case DiscordImportFieldType.Release:
                         discordField.Name = "Release";

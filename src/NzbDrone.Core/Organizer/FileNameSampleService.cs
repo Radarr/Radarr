@@ -32,11 +32,21 @@ namespace NzbDrone.Core.Organizer
                 VideoMultiViewCount = 2,
                 VideoColourPrimaries = "bt2020",
                 VideoTransferCharacteristics = "HLG",
-                AudioFormat = "DTS",
-                AudioChannels = 6,
-                AudioChannelPositions = "5.1",
-                AudioLanguages = new List<string> { "ger" },
-                Subtitles = new List<string> { "eng", "ger" }
+                AudioStreams =
+                [
+                    new MediaInfoAudioStreamModel
+                    {
+                        Language = "ger",
+                        Format = "dts",
+                        Channels = 6,
+                        ChannelPositions = "5.1",
+                    }
+                ],
+                SubtitleStreams =
+                [
+                    new MediaInfoSubtitleStreamModel { Language = "eng" },
+                    new MediaInfoSubtitleStreamModel { Language = "ger" }
+                ],
             };
 
             _movieFile = new MovieFile

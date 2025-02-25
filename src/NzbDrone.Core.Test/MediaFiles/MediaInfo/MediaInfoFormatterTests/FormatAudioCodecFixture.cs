@@ -45,26 +45,26 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         [TestCase(new[] { "adpcm_ms", "", "" }, "Custom", "PCM")]
         public void should_format_audio_format(string[] audioFormat, string sceneName, string expectedFormat)
         {
-            var mediaInfoModel = new MediaInfoModel
+            var audioStreamModel = new MediaInfoAudioStreamModel
             {
-                AudioFormat = audioFormat[0],
-                AudioCodecID = audioFormat[1],
-                AudioProfile = audioFormat[2]
+                Format = audioFormat[0],
+                CodecId = audioFormat[1],
+                Profile = audioFormat[2],
             };
 
-            MediaInfoFormatter.FormatAudioCodec(mediaInfoModel, sceneName).Should().Be(expectedFormat);
+            MediaInfoFormatter.FormatAudioCodec(audioStreamModel, sceneName).Should().Be(expectedFormat);
         }
 
         [Test]
         public void should_return_audio_format_by_default()
         {
-            var mediaInfoModel = new MediaInfoModel
+            var audioStreamModel = new MediaInfoAudioStreamModel
             {
-                AudioFormat = "Other Audio Format",
-                AudioCodecID = "Other Audio Codec"
+                Format = "Other Audio Format",
+                CodecId = "Other Audio Codec"
             };
 
-            MediaInfoFormatter.FormatAudioCodec(mediaInfoModel, SceneName).Should().Be(mediaInfoModel.AudioFormat);
+            MediaInfoFormatter.FormatAudioCodec(audioStreamModel, SceneName).Should().Be(audioStreamModel.Format);
         }
 
         [Test]

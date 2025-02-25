@@ -369,20 +369,25 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                     streamDetails.Add(video);
 
-                    var audio = new XElement("audio");
-                    var audioChannelCount = movieFile.MediaInfo.AudioChannels;
-                    audio.Add(new XElement("bitrate", movieFile.MediaInfo.AudioBitrate));
-                    audio.Add(new XElement("channels", audioChannelCount));
-                    audio.Add(new XElement("codec", MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, sceneName)));
-                    audio.Add(new XElement("language", movieFile.MediaInfo.AudioLanguages));
-                    streamDetails.Add(audio);
-
-                    if (movieFile.MediaInfo.Subtitles is { Count: > 0 })
+                    if (movieFile.MediaInfo.AudioStreams is { Count: > 0 })
                     {
-                        foreach (var s in movieFile.MediaInfo.Subtitles)
+                        foreach (var audioStream in movieFile.MediaInfo.AudioStreams)
+                        {
+                            var audio = new XElement("audio");
+                            audio.Add(new XElement("bitrate", audioStream.Bitrate));
+                            audio.Add(new XElement("channels", audioStream.Channels));
+                            audio.Add(new XElement("codec", MediaInfoFormatter.FormatAudioCodec(audioStream, sceneName)));
+                            audio.Add(new XElement("language", audioStream.Language));
+                            streamDetails.Add(audio);
+                        }
+                    }
+
+                    if (movieFile.MediaInfo.SubtitleStreams is { Count: > 0 })
+                    {
+                        foreach (var subtitleStream in movieFile.MediaInfo.SubtitleStreams)
                         {
                             var subtitle = new XElement("subtitle");
-                            subtitle.Add(new XElement("language", s));
+                            subtitle.Add(new XElement("language", subtitleStream.Language));
                             streamDetails.Add(subtitle);
                         }
                     }

@@ -8,36 +8,37 @@ using NzbDrone.Common.Instrumentation.Extensions;
 
 namespace NzbDrone.Core.MediaFiles.MediaInfo
 {
-    public static class MediaInfoFormatter
+    public static partial class MediaInfoFormatter
     {
         private const string VideoDynamicRangeHdr = "HDR";
 
-        private static readonly Regex PositionRegex = new Regex(@"(?<position>^\d\.\d)", RegexOptions.Compiled);
+        [GeneratedRegex(@"(?<position>^\d\.\d)", RegexOptions.Compiled)]
+        private static partial Regex PositionRegex();
 
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(MediaInfoFormatter));
 
-        public static decimal FormatAudioChannels(MediaInfoModel mediaInfo)
+        public static decimal FormatAudioChannels(MediaInfoAudioStreamModel audioStream)
         {
-            var audioChannels = FormatAudioChannelsFromAudioChannelPositions(mediaInfo);
+            var audioChannels = FormatAudioChannelsFromAudioChannelPositions(audioStream);
 
-            if (audioChannels == null || audioChannels == 0.0m)
+            if (audioChannels is null or 0.0m)
             {
-                audioChannels = mediaInfo?.AudioChannels;
+                audioChannels = audioStream?.Channels;
             }
 
             return audioChannels ?? 0;
         }
 
-        public static string FormatAudioCodec(MediaInfoModel mediaInfo, string sceneName)
+        public static string FormatAudioCodec(MediaInfoAudioStreamModel audioStream, string sceneName)
         {
-            if (mediaInfo?.AudioFormat == null)
+            if (audioStream?.Format == null)
             {
                 return string.Empty;
             }
 
-            var audioFormat = mediaInfo.AudioFormat?.Trim();
-            var audioCodecID = mediaInfo.AudioCodecID ?? string.Empty;
-            var audioProfile = mediaInfo.AudioProfile ?? string.Empty;
+            var audioFormat = audioStream.Format?.Trim();
+            var audioCodecId = audioStream.CodecId ?? string.Empty;
+            var audioProfile = audioStream.Profile ?? string.Empty;
 
             if (audioFormat.IsNullOrWhiteSpace())
             {
@@ -45,7 +46,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             // see definitions here https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/codec_desc.c
-            if (audioCodecID == "thd+")
+            if (audioCodecId == "thd+")
             {
                 return "TrueHD Atmos";
             }
@@ -78,7 +79,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 };
             }
 
-            if (audioCodecID == "ec+3")
+            if (audioCodecId == "ec+3")
             {
                 return "EAC3 Atmos";
             }
@@ -99,7 +100,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             if (audioFormat == "aac")
             {
-                if (audioCodecID == "A_AAC/MPEG4/LC/SBR")
+                if (audioCodecId == "A_AAC/MPEG4/LC/SBR")
                 {
                     return "HE-AAC";
                 }
@@ -145,8 +146,8 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             Logger.ForDebugEvent()
-                  .Message("Unknown audio format: '{0}' in '{1}'. Streams: {2}", audioFormat, sceneName, mediaInfo.RawStreamData)
-                  .WriteSentryWarn("UnknownAudioFormatFFProbe", mediaInfo.ContainerFormat, mediaInfo.AudioFormat, audioCodecID)
+                  .Message("Unknown audio format: '{0}' in '{1}'", audioFormat, sceneName)
+                  .WriteSentryWarn("UnknownAudioFormatFFProbe", audioStream.Format, audioCodecId)
                   .Log();
 
             return audioFormat;
@@ -160,7 +161,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             var videoFormat = mediaInfo.VideoFormat?.Trim();
-            var videoCodecID = mediaInfo.VideoCodecID ?? string.Empty;
+            var videoCodecId = mediaInfo.VideoCodecID ?? string.Empty;
 
             if (videoFormat.IsNullOrWhiteSpace())
             {
@@ -168,7 +169,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             // see definitions here: https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/codec_desc.c
-            if (videoCodecID == "x264")
+            if (videoCodecId == "x264")
             {
                 return "x264";
             }
@@ -178,7 +179,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return GetSceneNameMatch(sceneName, "AVC", "x264", "h264");
             }
 
-            if (videoCodecID == "x265")
+            if (videoCodecId == "x265")
             {
                 return "x265";
             }
@@ -200,14 +201,14 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             if (videoFormat == "mpeg4" || videoFormat.Contains("msmpeg4"))
             {
-                if (videoCodecID.ToUpperInvariant() == "XVID")
+                if (videoCodecId.ToUpperInvariant() == "XVID")
                 {
                     return "XviD";
                 }
 
-                if (videoCodecID == "DIV3" ||
-                    videoCodecID == "DX50" ||
-                    videoCodecID.ToUpperInvariant() == "DIVX")
+                if (videoCodecId == "DIV3" ||
+                    videoCodecId == "DX50" ||
+                    videoCodecId.ToUpperInvariant() == "DIVX")
                 {
                     return "DivX";
                 }
@@ -259,20 +260,20 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             Logger.ForDebugEvent()
                   .Message("Unknown video format: '{0}' in '{1}'. Streams: {2}", videoFormat, sceneName, mediaInfo.RawStreamData)
-                  .WriteSentryWarn("UnknownVideoFormatFFProbe", mediaInfo.ContainerFormat, videoFormat, videoCodecID)
+                  .WriteSentryWarn("UnknownVideoFormatFFProbe", mediaInfo.ContainerFormat, videoFormat, videoCodecId)
                   .Log();
 
             return videoFormat;
         }
 
-        private static decimal? FormatAudioChannelsFromAudioChannelPositions(MediaInfoModel mediaInfo)
+        private static decimal? FormatAudioChannelsFromAudioChannelPositions(MediaInfoAudioStreamModel audioStream)
         {
-            if (mediaInfo?.AudioChannelPositions == null)
+            if (audioStream?.ChannelPositions == null)
             {
                 return 0;
             }
 
-            var match = PositionRegex.Match(mediaInfo.AudioChannelPositions);
+            var match = PositionRegex().Match(audioStream.ChannelPositions);
             if (match.Success)
             {
                 return decimal.Parse(match.Groups["position"].Value, NumberStyles.Number, CultureInfo.InvariantCulture);
@@ -304,29 +305,19 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
         public static string FormatVideoDynamicRangeType(MediaInfoModel mediaInfo)
         {
-            switch (mediaInfo.VideoHdrFormat)
+            return mediaInfo.VideoHdrFormat switch
             {
-                case HdrFormat.DolbyVision:
-                    return "DV";
-                case HdrFormat.DolbyVisionHdr10:
-                    return "DV HDR10";
-                case HdrFormat.DolbyVisionHdr10Plus:
-                    return "DV HDR10Plus";
-                case HdrFormat.DolbyVisionHlg:
-                    return "DV HLG";
-                case HdrFormat.DolbyVisionSdr:
-                    return "DV SDR";
-                case HdrFormat.Hdr10:
-                    return "HDR10";
-                case HdrFormat.Hdr10Plus:
-                    return "HDR10Plus";
-                case HdrFormat.Hlg10:
-                    return "HLG";
-                case HdrFormat.Pq10:
-                    return "PQ";
-            }
-
-            return "";
+                HdrFormat.DolbyVision => "DV",
+                HdrFormat.DolbyVisionHdr10 => "DV HDR10",
+                HdrFormat.DolbyVisionHdr10Plus => "DV HDR10Plus",
+                HdrFormat.DolbyVisionHlg => "DV HLG",
+                HdrFormat.DolbyVisionSdr => "DV SDR",
+                HdrFormat.Hdr10 => "HDR10",
+                HdrFormat.Hdr10Plus => "HDR10Plus",
+                HdrFormat.Hlg10 => "HLG",
+                HdrFormat.Pq10 => "PQ",
+                _ => ""
+            };
         }
     }
 }

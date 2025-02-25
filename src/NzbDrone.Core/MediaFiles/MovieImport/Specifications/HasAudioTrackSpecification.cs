@@ -21,7 +21,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                 return ImportSpecDecision.Accept();
             }
 
-            if (localMovie.MediaInfo.AudioStreamCount == 0)
+            if (localMovie.MediaInfo.AudioStreams == null || localMovie.MediaInfo.AudioStreams.Count == 0)
             {
                 _logger.Debug("No audio tracks found in file");
 

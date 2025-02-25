@@ -163,17 +163,17 @@ namespace NzbDrone.Core.MediaFiles
             else
             {
                 environmentVariables.Add("Radarr_MovieFile_MediaInfo_AudioChannels",
-                    MediaInfoFormatter.FormatAudioChannels(localMovie.MediaInfo).ToString());
+                    MediaInfoFormatter.FormatAudioChannels(localMovie.MediaInfo.PrimaryAudioStream).ToString());
                 environmentVariables.Add("Radarr_MovieFile_MediaInfo_AudioCodec",
-                    MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, null));
+                    MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo.PrimaryAudioStream, null));
                 environmentVariables.Add("Radarr_MovieFile_MediaInfo_AudioLanguages",
-                    movieFile.MediaInfo.AudioLanguages.Distinct().ConcatToString(" / "));
+                    movieFile.MediaInfo.AudioStreams?.Select(l => l.Language).Distinct().ConcatToString(" / "));
                 environmentVariables.Add("Radarr_MovieFile_MediaInfo_Languages",
-                    movieFile.MediaInfo.AudioLanguages.ConcatToString(" / "));
+                    movieFile.MediaInfo.AudioStreams?.Select(l => l.Language).ConcatToString(" / "));
                 environmentVariables.Add("Radarr_MovieFile_MediaInfo_Height", movieFile.MediaInfo.Height.ToString());
                 environmentVariables.Add("Radarr_MovieFile_MediaInfo_Width", movieFile.MediaInfo.Width.ToString());
                 environmentVariables.Add("Radarr_MovieFile_MediaInfo_Subtitles",
-                    movieFile.MediaInfo.Subtitles.ConcatToString(" / "));
+                    movieFile.MediaInfo.SubtitleStreams?.Select(l => l.Language).ConcatToString(" / "));
                 environmentVariables.Add("Radarr_MovieFile_MediaInfo_VideoCodec",
                     MediaInfoFormatter.FormatVideoCodec(movieFile.MediaInfo, null));
                 environmentVariables.Add("Radarr_MovieFile_MediaInfo_VideoDynamicRangeType",
