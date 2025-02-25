@@ -4,14 +4,14 @@ import translate from 'Utilities/String/translate';
 import useMovieFile from './useMovieFile';
 
 function formatLanguages(
-  languages: string | undefined,
+  languages: string[] | undefined,
   getLanguageName: (code: string) => string
 ) {
   if (!languages) {
     return null;
   }
 
-  const splitLanguages = [...new Set(languages.split('/'))].map((l) => {
+  const splitLanguages = [...new Set(languages)].map((l) => {
     const simpleLanguage = l.split('_')[0];
 
     if (simpleLanguage === 'und') {
@@ -54,15 +54,20 @@ function MediaInfo({ movieFileId, type }: MediaInfoProps) {
   }
 
   const {
-    audioChannels,
-    audioCodec,
-    audioLanguages,
-    subtitles,
+    audioStreams = [],
+    subtitleStreams = [],
     videoCodec,
     videoDynamicRangeType,
   } = movieFile.mediaInfo;
 
   if (type === 'audio') {
+    const [
+      { channels: audioChannels, codec: audioCodec } = {
+        channels: null,
+        codec: null,
+      },
+    ] = audioStreams;
+
     return (
       <span>
         {audioCodec ? audioCodec : ''}
@@ -75,11 +80,17 @@ function MediaInfo({ movieFileId, type }: MediaInfoProps) {
   }
 
   if (type === 'audioLanguages') {
-    return formatLanguages(audioLanguages, getLanguageName);
+    return formatLanguages(
+      audioStreams.map(({ language }) => language),
+      getLanguageName
+    );
   }
 
   if (type === 'subtitles') {
-    return formatLanguages(subtitles, getLanguageName);
+    return formatLanguages(
+      subtitleStreams.map(({ language }) => language),
+      getLanguageName
+    );
   }
 
   if (type === 'video') {

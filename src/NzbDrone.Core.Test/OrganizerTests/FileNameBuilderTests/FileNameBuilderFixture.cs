@@ -383,9 +383,25 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _movieFile.MediaInfo = new MediaInfoModel()
             {
                 VideoFormat = "h264",
-                AudioFormat = "dts",
-                AudioLanguages = new List<string> { "eng", "spa" },
-                Subtitles = new List<string> { "eng", "spa", "ita" }
+                AudioStreams =
+                [
+                    new MediaInfoAudioStreamModel
+                    {
+                        Format = "dts",
+                        Language = "eng",
+                    },
+                    new MediaInfoAudioStreamModel
+                    {
+                        Format = "dts",
+                        Language = "spa",
+                    },
+                ],
+                SubtitleStreams =
+                [
+                    new MediaInfoSubtitleStreamModel { Language = "eng" },
+                    new MediaInfoSubtitleStreamModel { Language = "spa" },
+                    new MediaInfoSubtitleStreamModel { Language = "ita" },
+                ],
             };
 
             Subject.BuildFileName(_movie, _movieFile)
@@ -416,10 +432,19 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _movieFile.MediaInfo = new MediaInfoModel()
             {
                 VideoFormat = "h264",
-                AudioFormat = "dts",
-                AudioChannels = 6,
-                AudioLanguages = new List<string> { "eng" },
-                Subtitles = new List<string> { language },
+                AudioStreams =
+                [
+                    new MediaInfoAudioStreamModel
+                    {
+                        Format = "dts",
+                        Channels = 6,
+                        Language = "eng",
+                    },
+                ],
+                SubtitleStreams =
+                [
+                    new MediaInfoSubtitleStreamModel { Language = language },
+                ],
                 SchemaRevision = 3
             };
 
@@ -435,9 +460,20 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _movieFile.MediaInfo = new MediaInfoModel()
             {
                 VideoFormat = "h264",
-                AudioFormat = "dts",
-                AudioLanguages = new List<string> { "eng" },
-                Subtitles = new List<string> { "eng", "spa", "ita" }
+                AudioStreams =
+                [
+                    new MediaInfoAudioStreamModel
+                    {
+                        Format = "dts",
+                        Language = "eng",
+                    },
+                ],
+                SubtitleStreams =
+                [
+                    new MediaInfoSubtitleStreamModel { Language = "eng" },
+                    new MediaInfoSubtitleStreamModel { Language = "spa" },
+                    new MediaInfoSubtitleStreamModel { Language = "ita" },
+                ],
             };
 
             Subject.BuildFileName(_movie, _movieFile)
@@ -453,9 +489,20 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             {
                 VideoFormat = "h264",
                 VideoMultiViewCount = 2,
-                AudioFormat = "dts",
-                AudioLanguages = new List<string> { "eng" },
-                Subtitles = new List<string> { "eng", "spa", "ita" }
+                AudioStreams =
+                [
+                    new MediaInfoAudioStreamModel
+                    {
+                        Format = "dts",
+                        Language = "eng",
+                    },
+                ],
+                SubtitleStreams =
+                [
+                    new MediaInfoSubtitleStreamModel { Language = "eng" },
+                    new MediaInfoSubtitleStreamModel { Language = "spa" },
+                    new MediaInfoSubtitleStreamModel { Language = "ita" },
+                ],
             };
 
             Subject.BuildFileName(_movie, _movieFile)
@@ -787,10 +834,18 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _movieFile.MediaInfo = new MediaInfoModel
             {
                 VideoFormat = videoCodec,
-                AudioFormat = audioCodec,
-                AudioChannels = audioChannels,
-                AudioLanguages = audioLanguages.Split("/").ToList(),
-                Subtitles = subtitles.Split("/").ToList(),
+                AudioStreams = audioLanguages.Split('/')
+                    .Select(language => new MediaInfoAudioStreamModel
+                    {
+                        Format = audioCodec,
+                        Channels = audioChannels,
+                        Language = language,
+                    }).ToList(),
+                SubtitleStreams = subtitles.Split('/')
+                    .Select(language => new MediaInfoSubtitleStreamModel
+                    {
+                        Language = language
+                    }).ToList(),
                 VideoBitDepth = videoBitDepth,
                 VideoHdrFormat = hdrFormat,
                 SchemaRevision = schemaRevision

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using Radarr.Http.REST;
@@ -7,10 +9,15 @@ namespace Radarr.Api.V3.MovieFiles
 {
     public class MediaInfoResource : RestResource
     {
+        [Obsolete("Migrated to AudioStreams")]
         public long AudioBitrate { get; set; }
+        [Obsolete("Migrated to AudioStreams")]
         public decimal AudioChannels { get; set; }
+        [Obsolete("Migrated to AudioStreams")]
         public string AudioCodec { get; set; }
+        [Obsolete("Migrated to AudioStreams")]
         public string AudioLanguages { get; set; }
+        [Obsolete("Migrated to AudioStreams")]
         public int AudioStreamCount { get; set; }
         public int VideoBitDepth { get; set; }
         public long VideoBitrate { get; set; }
@@ -21,7 +28,10 @@ namespace Radarr.Api.V3.MovieFiles
         public string Resolution { get; set; }
         public string RunTime { get; set; }
         public string ScanType { get; set; }
+        [Obsolete("Migrated to SubtitleStreams")]
         public string Subtitles { get; set; }
+        public List<MediaInfoAudioStreamResource> AudioStreams { get; set; }
+        public List<MediaInfoSubtitleStreamResource> SubtitleStreams { get; set; }
     }
 
     public static class MediaInfoResourceMapper
@@ -35,11 +45,13 @@ namespace Radarr.Api.V3.MovieFiles
 
             return new MediaInfoResource
             {
-                AudioBitrate = model.AudioBitrate,
-                AudioChannels = MediaInfoFormatter.FormatAudioChannels(model),
-                AudioLanguages = model.AudioLanguages.ConcatToString("/"),
-                AudioStreamCount = model.AudioStreamCount,
-                AudioCodec = MediaInfoFormatter.FormatAudioCodec(model, sceneName),
+#pragma warning disable CS0618 // Type or member is obsolete
+                AudioBitrate = model.PrimaryAudioStream?.Bitrate ?? 0,
+                AudioChannels = MediaInfoFormatter.FormatAudioChannels(model.PrimaryAudioStream),
+                AudioLanguages = model.AudioStreams?.Select(l => l.Language).ConcatToString("/"),
+                AudioStreamCount = model.AudioStreams?.Count ?? 0,
+                AudioCodec = MediaInfoFormatter.FormatAudioCodec(model.PrimaryAudioStream, sceneName),
+#pragma warning restore CS0618 // Type or member is obsolete
                 VideoBitDepth = model.VideoBitDepth,
                 VideoBitrate = model.VideoBitrate,
                 VideoCodec = MediaInfoFormatter.FormatVideoCodec(model, sceneName),
@@ -49,7 +61,11 @@ namespace Radarr.Api.V3.MovieFiles
                 Resolution = $"{model.Width}x{model.Height}",
                 RunTime = FormatRuntime(model.RunTime),
                 ScanType = model.ScanType,
-                Subtitles = model.Subtitles.ConcatToString("/")
+#pragma warning disable CS0618 // Type or member is obsolete
+                Subtitles = model.SubtitleStreams?.Select(l => l.Language).ConcatToString("/"),
+#pragma warning restore CS0618 // Type or member is obsolete
+                AudioStreams = model.AudioStreams?.Select(stream => stream.ToResource(sceneName)).ToList(),
+                SubtitleStreams = model.SubtitleStreams?.Select(stream => stream.ToResource()).ToList()
             };
         }
 

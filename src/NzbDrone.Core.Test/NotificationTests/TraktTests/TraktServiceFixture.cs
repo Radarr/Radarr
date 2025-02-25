@@ -52,8 +52,13 @@ namespace NzbDrone.Core.Test.NotificationTests
         {
             _downloadMessage.MovieFile.MediaInfo = new MediaInfoModel
             {
-                AudioChannelPositions = audioChannels,
-                AudioFormat = audioFormat,
+                AudioStreams = [
+                    new MediaInfoAudioStreamModel
+                    {
+                        ChannelPositions = audioChannels,
+                        Format = audioFormat,
+                    },
+                ],
                 ScanType = scanType,
                 VideoHdrFormat = hdrFormat
             };
