@@ -264,7 +264,21 @@ namespace NzbDrone.Core.Configuration
         }
 
         public string UiFolder => BuildInfo.IsDebug ? Path.Combine("..", "UI") : "UI";
-        public string InstanceName => _appOptions.InstanceName ?? GetValue("InstanceName", BuildInfo.AppName);
+
+        public string InstanceName
+        {
+            get
+            {
+                var instanceName = _appOptions.InstanceName ?? GetValue("InstanceName", BuildInfo.AppName);
+
+                if (instanceName.Contains(BuildInfo.AppName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return instanceName;
+                }
+
+                return BuildInfo.AppName;
+            }
+        }
 
         public bool UpdateAutomatically => _updateOptions.Automatically ?? GetValueBoolean("UpdateAutomatically", OsInfo.IsWindows, false);
 
