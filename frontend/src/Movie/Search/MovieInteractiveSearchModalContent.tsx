@@ -6,7 +6,9 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { scrollDirections } from 'Helpers/Props';
-import InteractiveSearchConnector from 'InteractiveSearch/InteractiveSearchConnector';
+import InteractiveSearch from 'InteractiveSearch/InteractiveSearch';
+import { clearMovieBlocklist } from 'Store/Actions/movieBlocklistActions';
+import { clearMovieHistory } from 'Store/Actions/movieHistoryActions';
 import {
   cancelFetchReleases,
   clearReleases,
@@ -30,6 +32,9 @@ function MovieInteractiveSearchModalContent(
     return () => {
       dispatch(cancelFetchReleases());
       dispatch(clearReleases());
+
+      dispatch(clearMovieBlocklist());
+      dispatch(clearMovieHistory());
     };
   }, [dispatch]);
 
@@ -44,7 +49,7 @@ function MovieInteractiveSearchModalContent(
       </ModalHeader>
 
       <ModalBody scrollDirection={scrollDirections.BOTH}>
-        <InteractiveSearchConnector searchPayload={{ movieId }} />
+        <InteractiveSearch searchPayload={{ movieId }} />
       </ModalBody>
 
       <ModalFooter>
