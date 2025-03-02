@@ -63,9 +63,7 @@ class PageSidebarItem extends Component {
               </span>
           }
 
-          <span className={isChildItem ? styles.noIcon : null}>
-            {typeof title === 'function' ? title() : title}
-          </span>
+          {typeof title === 'function' ? title() : title}
 
           {
             !!StatusComponent &&
