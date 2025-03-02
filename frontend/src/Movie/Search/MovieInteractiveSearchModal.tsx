@@ -2,6 +2,8 @@ import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import Modal from 'Components/Modal/Modal';
 import { sizes } from 'Helpers/Props';
+import { clearMovieBlocklist } from 'Store/Actions/movieBlocklistActions';
+import { clearMovieHistory } from 'Store/Actions/movieHistoryActions';
 import {
   cancelFetchReleases,
   clearReleases,
@@ -23,6 +25,9 @@ function MovieInteractiveSearchModal(props: MovieInteractiveSearchModalProps) {
   const handleModalClose = useCallback(() => {
     dispatch(cancelFetchReleases());
     dispatch(clearReleases());
+
+    dispatch(clearMovieBlocklist());
+    dispatch(clearMovieHistory());
 
     onModalClose();
   }, [dispatch, onModalClose]);

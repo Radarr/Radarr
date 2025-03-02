@@ -8,11 +8,9 @@ import * as commandNames from 'Commands/commandNames';
 import { executeCommand } from 'Store/Actions/commandActions';
 import { clearExtraFiles, fetchExtraFiles } from 'Store/Actions/extraFileActions';
 import { toggleMovieMonitored } from 'Store/Actions/movieActions';
-import { clearMovieBlocklist, fetchMovieBlocklist } from 'Store/Actions/movieBlocklistActions';
 import { clearMovieCredits, fetchMovieCredits } from 'Store/Actions/movieCreditsActions';
 import { clearMovieFiles, fetchMovieFiles } from 'Store/Actions/movieFileActions';
 import { clearQueueDetails, fetchQueueDetails } from 'Store/Actions/queueActions';
-import { cancelFetchReleases, clearReleases } from 'Store/Actions/releaseActions';
 import { fetchImportListSchema } from 'Store/Actions/settingsActions';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
@@ -188,12 +186,6 @@ function createMapDispatchToProps(dispatch, props) {
     dispatchClearExtraFiles() {
       dispatch(clearExtraFiles());
     },
-    dispatchClearReleases() {
-      dispatch(clearReleases());
-    },
-    dispatchCancelFetchReleases() {
-      dispatch(cancelFetchReleases());
-    },
     dispatchFetchQueueDetails({ movieId }) {
       dispatch(fetchQueueDetails({ movieId }));
     },
@@ -211,12 +203,6 @@ function createMapDispatchToProps(dispatch, props) {
     },
     onGoToMovie(titleSlug) {
       dispatch(push(`${window.Radarr.urlBase}/movie/${titleSlug}`));
-    },
-    dispatchFetchMovieBlocklist({ movieId }) {
-      dispatch(fetchMovieBlocklist({ movieId }));
-    },
-    dispatchClearMovieBlocklist() {
-      dispatch(clearMovieBlocklist());
     }
   };
 }
@@ -270,7 +256,6 @@ class MovieDetailsConnector extends Component {
     const movieId = this.props.id;
 
     this.props.dispatchFetchMovieFiles({ movieId });
-    this.props.dispatchFetchMovieBlocklist({ movieId });
     this.props.dispatchFetchExtraFiles({ movieId });
     this.props.dispatchFetchMovieCredits({ movieId });
     this.props.dispatchFetchQueueDetails({ movieId });
@@ -278,13 +263,10 @@ class MovieDetailsConnector extends Component {
   };
 
   unpopulate = () => {
-    this.props.dispatchCancelFetchReleases();
-    this.props.dispatchClearMovieBlocklist();
     this.props.dispatchClearMovieFiles();
     this.props.dispatchClearExtraFiles();
     this.props.dispatchClearMovieCredits();
     this.props.dispatchClearQueueDetails();
-    this.props.dispatchClearReleases();
   };
 
   //
@@ -341,15 +323,11 @@ MovieDetailsConnector.propTypes = {
   dispatchClearExtraFiles: PropTypes.func.isRequired,
   dispatchFetchMovieCredits: PropTypes.func.isRequired,
   dispatchClearMovieCredits: PropTypes.func.isRequired,
-  dispatchClearReleases: PropTypes.func.isRequired,
-  dispatchCancelFetchReleases: PropTypes.func.isRequired,
   dispatchToggleMovieMonitored: PropTypes.func.isRequired,
   dispatchFetchQueueDetails: PropTypes.func.isRequired,
   dispatchClearQueueDetails: PropTypes.func.isRequired,
   dispatchFetchImportListSchema: PropTypes.func.isRequired,
   dispatchExecuteCommand: PropTypes.func.isRequired,
-  dispatchFetchMovieBlocklist: PropTypes.func.isRequired,
-  dispatchClearMovieBlocklist: PropTypes.func.isRequired,
   onGoToMovie: PropTypes.func.isRequired
 };
 
