@@ -43,8 +43,12 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
         [Test]
         public void should_update_insert_remove_titles()
         {
-            var titles = new List<AlternativeTitle> { _title2, _title3 };
-            var updates = new List<AlternativeTitle> { _title2 };
+            // Deep copy of _title2, but change Title
+            // to ensure it gets into the update list
+            var updatedTitle2 = _title2.JsonClone();
+            updatedTitle2.Title = updatedTitle2.Title + "TEST";
+            var titles = new List<AlternativeTitle> { updatedTitle2, _title3 };
+            var updates = new List<AlternativeTitle> { updatedTitle2 };
             var deletes = new List<AlternativeTitle> { _title1 };
             var inserts = new List<AlternativeTitle> { _title3 };
             GivenExistingTitles(_title1, _title2);
@@ -98,11 +102,22 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
             var existingTitle = Builder<AlternativeTitle>.CreateNew().With(t => t.Id = 2).Build();
             GivenExistingTitles(existingTitle);
             var updateTitle = existingTitle.JsonClone();
+            updateTitle.Title = updateTitle.Title + "TEST";
             updateTitle.Id = 0;
 
             Subject.UpdateTitles(new List<AlternativeTitle> { updateTitle }, _movie);
 
             Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.UpdateMany(It.Is<IList<AlternativeTitle>>(list => list.First().Id == existingTitle.Id)), Times.Once());
+        }
+
+        [Test]
+        public void should_not_update_same_translations()
+        {
+            GivenExistingTitles(_title1);
+
+            Subject.UpdateTitles(new List<AlternativeTitle> { _title1 }, _movie);
+
+            Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.UpdateMany(new List<AlternativeTitle>()), Times.Once());
         }
     }
 }

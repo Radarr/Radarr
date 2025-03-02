@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using NzbDrone.Core.ChangeTracker;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.Events;
@@ -57,15 +58,12 @@ namespace NzbDrone.Core.Movies.Translations
             // Now find translations to delete, update and insert
             var existingTranslations = _translationRepo.FindByMovieMetadataId(movieMetadataId);
 
-            translations.ForEach(c => c.Id = existingTranslations.FirstOrDefault(t => t.Language == c.Language)?.Id ?? 0);
+            ChangeTracker<MovieTranslation>.DetectChanges(translations, existingTranslations, t => t.Language, out var insert, out var update, out var delete);
 
-            var insert = translations.Where(t => t.Id == 0).ToList();
-            var update = translations.Where(t => t.Id > 0).ToList();
-            var delete = existingTranslations.Where(t => !translations.Any(c => c.Language == t.Language)).ToList();
-
-            _translationRepo.DeleteMany(delete.ToList());
-            _translationRepo.UpdateMany(update.ToList());
-            _translationRepo.InsertMany(insert.ToList());
+            _logger.Debug("UpdateTranslation({0}): [{1}] inserts, [{2}] updates, [{3}] deletes", translations.Count, insert.Count, update.Count, delete.Count);
+            _translationRepo.DeleteMany(delete);
+            _translationRepo.UpdateMany(update);
+            _translationRepo.InsertMany(insert);
 
             return translations;
         }

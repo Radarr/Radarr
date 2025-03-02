@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using NLog;
+using NzbDrone.Core.ChangeTracker;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.Events;
 
@@ -18,10 +20,12 @@ namespace NzbDrone.Core.Movies.Credits
     public class CreditService : ICreditService, IHandleAsync<MoviesDeletedEvent>
     {
         private readonly ICreditRepository _creditRepo;
+        private readonly Logger _logger;
 
-        public CreditService(ICreditRepository creditRepo)
+        public CreditService(ICreditRepository creditRepo, Logger logger)
         {
             _creditRepo = creditRepo;
+            _logger = logger;
         }
 
         public List<Credit> GetAllCreditsForMovieMetadata(int movieMetadataId)
@@ -70,12 +74,9 @@ namespace NzbDrone.Core.Movies.Credits
             // Should never have multiple credits with same credit_id, but check to ensure incase TMDB is on fritz
             var dupeFreeCredits = credits.DistinctBy(m => m.CreditTmdbId).ToList();
 
-            dupeFreeCredits.ForEach(c => c.Id = existingCredits.FirstOrDefault(t => t.CreditTmdbId == c.CreditTmdbId)?.Id ?? 0);
+            ChangeTracker<Credit>.DetectChanges(dupeFreeCredits, existingCredits, t => t.CreditTmdbId, out var insert, out var update, out var delete);
 
-            var insert = dupeFreeCredits.Where(t => t.Id == 0).ToList();
-            var update = dupeFreeCredits.Where(t => t.Id > 0).ToList();
-            var delete = existingCredits.Where(t => !dupeFreeCredits.Any(c => c.CreditTmdbId == t.CreditTmdbId)).ToList();
-
+            _logger.Debug("CreditService({0}): [{1}] inserts, [{2}] updates, [{3}] deletes", credits.Count, insert.Count, update.Count, delete.Count);
             _creditRepo.DeleteMany(delete);
             _creditRepo.UpdateMany(update);
             _creditRepo.InsertMany(insert);
