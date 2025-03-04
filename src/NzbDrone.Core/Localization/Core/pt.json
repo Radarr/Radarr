@@ -1278,5 +1278,6 @@
     "Mixed": "Corrigido",
     "ImportListsTraktSettingsCertification": "Certificação",
     "ImportListsTraktSettingsGenres": "Gêneros",
-    "ImportListsTraktSettingsRating": "Classificação"
+    "ImportListsTraktSettingsRating": "Classificação",
+    "AutoTaggingSpecificationGenre": "Gênero(s)"
 }

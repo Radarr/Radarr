@@ -372,7 +372,7 @@
     "BypassProxyForLocalAddresses": "Obcházení proxy serveru pro místní adresy",
     "MovieIsUnmonitored": "Film není sledován",
     "Movies": "Filmy",
-    "MoviesSelectedInterp": "{0} Vybrané filmy",
+    "MoviesSelectedInterp": "{count} Vybraných Filmů",
     "MovieTitle": "Název filmu",
     "MovieTitleToExcludeHelpText": "Název filmu, který se má vyloučit (může mít cokoli smysluplného)",
     "MovieYear": "Filmový rok",

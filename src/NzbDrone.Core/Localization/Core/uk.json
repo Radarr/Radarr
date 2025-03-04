@@ -105,7 +105,7 @@
     "All": "Всі",
     "AllFiles": "Всі файли",
     "AllMoviesHiddenDueToFilter": "Всі фільми заховані відповідно до фільтра.",
-    "AllMoviesInPathHaveBeenImported": "Усі фільми з {0} імпортовано",
+    "AllMoviesInPathHaveBeenImported": "Усі фільми з {path} імпортовано",
     "AllowHardcodedSubs": "Дозволити вбудовані підписки",
     "AllowHardcodedSubsHelpText": "Виявлені вбудовані підписки будуть завантажені автоматично",
     "AllResultsHiddenFilter": "Всі результати приховані фільтром",
