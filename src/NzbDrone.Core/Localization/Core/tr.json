@@ -756,7 +756,7 @@
     "IconForCutoffUnmet": "Sınırlandırılmamış için Simge",
     "Ignored": "Yok sayıldı",
     "IgnoredAddresses": "Yoksayılan Adresler",
-    "IgnoreDeletedMovies": "Silinen Filmlerin takibini Kaldır",
+    "IgnoreDeletedMovies": "Silinen Filmlerin Takibini Kaldır",
     "IgnoredHelpText": "Bir veya daha fazla terim içeriyorsa izin reddedilecektir (büyük / küçük harfe duyarlı değildir)",
     "Images": "Görüntüler",
     "IMDb": "IMDb",
@@ -1928,5 +1928,6 @@
     "ImportListsTraktSettingsUserListTypeWatched": "Kullanıcının İzlediği Liste",
     "ImportListsTraktSettingsUserListUsernameHelpText": "İçe aktarılacak Liste için Kullanıcı Adı (Yetkili Kullanıcı için boş bırakın)",
     "ImportListsTraktSettingsWatchListSorting": "İzleme Listesi Sıralaması",
-    "ImportListsTraktSettingsWatchListSortingHelpText": "Liste Türü İzleme ise, listeyi sıralama sırasını seçin"
+    "ImportListsTraktSettingsWatchListSortingHelpText": "Liste Türü İzleme ise, listeyi sıralama sırasını seçin",
+    "DownloadClientUTorrentProviderMessage": "uTorrent, kripto yazılımlar, kötü amaçlı yazılımlar ve reklamlarla tanındığı için qBittorrent, Deluge veya ruTorrent gibi daha iyi bir istemciye geçmenizi öneririz."
 }
