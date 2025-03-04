@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
-using NzbDrone.Core.ChangeTracker;
+using NzbDrone.Core.ChangeDetector;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.Events;
 
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Movies.Credits
             // Should never have multiple credits with same credit_id, but check to ensure incase TMDB is on fritz
             var dupeFreeCredits = credits.DistinctBy(m => m.CreditTmdbId).ToList();
 
-            ChangeTracker<Credit>.DetectChanges(dupeFreeCredits, existingCredits, t => t.CreditTmdbId, out var insert, out var update, out var delete);
+            ChangeDetector<Credit>.DetectChanges(dupeFreeCredits, existingCredits, t => t.CreditTmdbId, out var insert, out var update, out var delete);
 
             _logger.Debug("CreditService({0}): [{1}] inserts, [{2}] updates, [{3}] deletes", credits.Count, insert.Count, update.Count, delete.Count);
             _creditRepo.DeleteMany(delete);

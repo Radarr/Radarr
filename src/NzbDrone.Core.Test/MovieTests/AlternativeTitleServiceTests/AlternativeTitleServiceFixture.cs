@@ -18,6 +18,33 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
         private AlternativeTitle _title2;
         private AlternativeTitle _title3;
 
+        // https://api.radarr.video/v1/movie/330459
+        private static string[] _titles = new string[]
+        {
+            "Star Wars: Rogue One",
+            "Rogue One: Uma História de Guerra nas Estrelas",
+            "Star Wars, Episode 3.5 - Rogue One",
+            "Star Wars, épisode III bis - Rogue One",
+            "로그 원: 스타 워즈 스토리",
+            "Star Wars: Rogue One",
+            "로그원: 스타워즈 스토리",
+            "스타워즈-로그원",
+            "Star Wars: Episode III.V - Rogue One: A Star Wars Story",
+            "Rogue One: Hvězdné války",
+            "Star Wars - Rogue One: Una historia de Star Wars",
+            "Rogue One: A Star Wars Story",
+            "Zsivány Egyes: Egy Star Wars-történet",
+            "Star Wars, épisode III.2 - Rogue One",
+            "Haydut: Bir Yıldız Savaşları Hikayesi",
+            "Rogue One: Chiến Tranh Giữa Các Vì Sao Ngoại Truyện",
+            "Күрескер бір: Жұлдызды соғыстар хикаясы",
+            "Rogue One: Tähesõdade lugu",
+            "Rogue One",
+            "La guerra de las galaxias. Rogue One: Una historia de Star Wars",
+            "俠盜一號：星球大戰外傳",
+            "Rogue One - A Star Wars Story"
+        };
+
         private MovieMetadata _movie;
 
         [SetUp]
@@ -73,6 +100,24 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
         }
 
         [Test]
+        public void should_not_update_existing_titles()
+        {
+            var titles = Builder<AlternativeTitle>.CreateListOfSize(_titles.Length)
+                .All()
+                .With(t => t.MovieMetadataId = 0)
+                .With((t, idx) => t.Title = _titles[idx])
+                .Build()
+                .ToList();
+            GivenExistingTitles(titles.ToArray());
+
+            Subject.UpdateTitles(titles, _movie);
+
+            Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.InsertMany(new List<AlternativeTitle>()), Times.Once());
+            Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.UpdateMany(new List<AlternativeTitle>()), Times.Once());
+            Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.DeleteMany(new List<AlternativeTitle>()), Times.Once());
+        }
+
+        [Test]
         public void should_not_insert_main_title()
         {
             GivenExistingTitles();
@@ -108,6 +153,20 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
             Subject.UpdateTitles(new List<AlternativeTitle> { updateTitle }, _movie);
 
             Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.UpdateMany(It.Is<IList<AlternativeTitle>>(list => list.First().Id == existingTitle.Id)), Times.Once());
+        }
+
+        [Test]
+        public void should_remove_existing_duplicates()
+        {
+            var duplicated = _title1.JsonClone();
+            duplicated.Id = 2;
+            GivenExistingTitles(_title1, duplicated);
+            var translations = new List<AlternativeTitle> { _title1 };
+            var deleted = new List<AlternativeTitle> { duplicated };
+
+            Subject.UpdateTitles(translations, _movie);
+
+            Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.DeleteMany(deleted), Times.Once());
         }
 
         [Test]

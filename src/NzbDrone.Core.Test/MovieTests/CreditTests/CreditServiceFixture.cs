@@ -101,6 +101,20 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
         }
 
         [Test]
+        public void should_remove_existing_duplicates()
+        {
+            var duplicated = _credit1.JsonClone();
+            duplicated.Id = 2;
+            GivenExistingCredits(_credit1, duplicated);
+            var translations = new List<Credit> { _credit1 };
+            var deleted = new List<Credit> { duplicated };
+
+            Subject.UpdateCredits(translations, _movie);
+
+            Mocker.GetMock<ICreditRepository>().Verify(r => r.DeleteMany(deleted), Times.Once());
+        }
+
+        [Test]
         public void should_not_update_same_credits()
         {
             GivenExistingCredits(_credit1);

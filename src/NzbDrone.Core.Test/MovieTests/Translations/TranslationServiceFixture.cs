@@ -8,6 +8,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Translations;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MovieTests.TranslationServiceTests
@@ -19,6 +20,49 @@ namespace NzbDrone.Core.Test.MovieTests.TranslationServiceTests
         private MovieTranslation _translation2;
         private MovieTranslation _translation3;
 
+        // https://api.radarr.video/v1/movie/330459
+        private static (string lang, string translation)[] _translations = new (string, string)[]
+        {
+            ("en-US", "Rogue One: A Star Wars Story"),
+            ("es-ES", "Rogue One: Una historia de Star Wars"),
+            ("ro-RO", "Rogue One: O poveste Star Wars"),
+            ("fr-FR", "Rogue One : A Star Wars Story"),
+            ("cs-CZ", "Rogue One: Star Wars Story"),
+            ("el-GR", "Rogue One: A Star Wars Story"),
+            ("ru-RU", "Изгой-один: Звёздные войны. Истории"),
+            ("de-DE", "Rogue One: A Star Wars Story"),
+            ("he-IL", "רוג אחת: סיפור מלחמת הכוכבים"),
+            ("it-IT", "Rogue One: A Star Wars Story"),
+            ("hu-HU", "Zsivány Egyes: Egy Star Wars-történet"),
+            ("pt-BR", "Rogue One: Uma História Star Wars"),
+            ("pl-PL", "Łotr 1. Gwiezdne wojny – historie"),
+            ("nl-NL", "Rogue One: A Star Wars Story"),
+            ("da-DK", "Rogue One: A Star Wars Story"),
+            ("pt-PT", "Rogue One: Uma História de Star Wars"),
+            ("ko-KR", "로그 원: 스타워즈 스토리"),
+            ("uk-UA", "Бунтар Один. Зоряні війни: Історія"),
+            ("tr-TR", "Rogue One: Bir Star Wars Hikayesi"),
+            ("bs-BS", "Rogue One: A Star Wars Story"),
+            ("ja-JP", "ローグ・ワン／スター・ウォーズ・ストーリー"),
+            ("zh-CN", "星球大战外传：侠盗一号"),
+            ("ar-SA", "روج وان: قصة من حرب النجوم"),
+            ("hr-HR", "Rogue One: Priča iz Ratova zvijezda"),
+            ("sv-SE", "Rogue One: A Star Wars Story"),
+            ("bg-BG", "Rogue One: История от Междузвездни войни"),
+            ("sk-SK", "Rogue One: A Star Wars Story"),
+            ("es-MX", "Star Wars: Rogue One"),
+            ("sr-RS", "ОДМЕТНИК-1: прича Ратова звезда"),
+            ("sl-SI", "Rogue One: Zgodba vojne zvezd"),
+            ("fi-FI", "Rogue One: A Star Wars Story"),
+            ("th-TH", "โร้ค วัน ตำนานสตาร์ วอร์ส"),
+            ("ml-IN", "റോഗ് വൺ: എ സ്റ്റാർ വാഴ്‌സ് സ്റ്റോറി"),
+            ("vi-VN", "Rogue One: Star Wars Ngoại Truyện"),
+            ("fa-IR", "یاغی: داستانی از جنگ ستارگان"),
+            ("no-NO", "Rogue One - A Star Wars Story"),
+            ("lv-LV", "Rogue One: Zvaigžņu karu stāsts"),
+            ("lt-LT", "Šelmis-1. Žvaigždžių karų istorija"),
+            ("et-EE", "Rogue One: Tähesõdade lugu")
+        };
         private MovieMetadata _movie;
 
         [SetUp]
@@ -103,6 +147,39 @@ namespace NzbDrone.Core.Test.MovieTests.TranslationServiceTests
             Subject.UpdateTranslations(new List<MovieTranslation> { updateTranslations }, _movie);
 
             Mocker.GetMock<IMovieTranslationRepository>().Verify(r => r.UpdateMany(It.Is<IList<MovieTranslation>>(list => list.First().Id == existingTranslations.Id)), Times.Once());
+        }
+
+        [Test]
+        public void should_remove_existing_duplicates()
+        {
+            var duplicated = _translation1.JsonClone();
+            duplicated.Id = 2;
+            GivenExistingTranslations(_translation1, duplicated);
+            var translations = new List<MovieTranslation> { _translation1 };
+            var deleted = new List<MovieTranslation> { duplicated };
+
+            Subject.UpdateTranslations(translations, _movie);
+
+            Mocker.GetMock<IMovieTranslationRepository>().Verify(r => r.DeleteMany(deleted), Times.Once());
+        }
+
+        [Test]
+        public void should_not_update_existing_translations()
+        {
+            var translations = Builder<MovieTranslation>.CreateListOfSize(_translations.Length)
+                .All()
+                .With(t => t.MovieMetadataId = 0)
+                .With((t, idx) => t.Title = _translations[idx].translation)
+                .With((t, idx) => t.Language = IsoLanguages.Find(_translations[idx].lang).Language)
+                .Build()
+                .ToList();
+            GivenExistingTranslations(translations.ToArray());
+
+            Subject.UpdateTranslations(translations, _movie);
+
+            Mocker.GetMock<IMovieTranslationRepository>().Verify(r => r.InsertMany(new List<MovieTranslation>()), Times.Once());
+            Mocker.GetMock<IMovieTranslationRepository>().Verify(r => r.UpdateMany(new List<MovieTranslation>()), Times.Once());
+            Mocker.GetMock<IMovieTranslationRepository>().Verify(r => r.DeleteMany(new List<MovieTranslation>()), Times.Once());
         }
 
         [Test]

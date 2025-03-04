@@ -4,9 +4,9 @@ using System.Linq;
 using Equ;
 using NzbDrone.Core.Datastore;
 
-namespace NzbDrone.Core.ChangeTracker
+namespace NzbDrone.Core.ChangeDetector
 {
-    internal static class ChangeTracker<TSource>
+    internal static class ChangeDetector<TSource>
         where TSource : ModelBase
     {
         private static MemberwiseEqualityComparer<TSource> _comparer;
