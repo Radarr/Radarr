@@ -1926,5 +1926,11 @@
     "ImportListsTraktSettingsUserListTypeWatch": "Lista de seguimiento de usuario",
     "ImportListsTraktSettingsUserListTypeWatched": "Lista de vistos de usuario",
     "ImportListsTraktSettingsUserListUsernameHelpText": "Usuario para la lista de la que importar (dejar vacío para usar Autenticación de usuario)",
-    "ImportListsTraktSettingsWatchListSorting": "Ordenar la lista de vistos"
+    "ImportListsTraktSettingsWatchListSorting": "Ordenar la lista de vistos",
+    "ImportListsTraktSettingsWatchListSortingHelpText": "Si el tipo de lista es Vistos, selecciona el orden para ordenar la lista",
+    "BlocklistedAt": "En la lista negra el {date}",
+    "FailedAt": "Error el {date}",
+    "GrabbedAt": "Capturado el {date}",
+    "ReleaseSource": "Origen del lanzamiento",
+    "DownloadClientUTorrentProviderMessage": "Debido a que uTorrent es conocido por el cryptoware, el malware y la publicidad, sugerimos cambiar a un cliente mejor como qBittorrent, Deluge o ruTorrent."
 }

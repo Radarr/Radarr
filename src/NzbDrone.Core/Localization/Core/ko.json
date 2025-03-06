@@ -1896,5 +1896,11 @@
     "Mixed": "결정된",
     "ImportListsTraktSettingsCertification": "인증",
     "ImportListsTraktSettingsGenres": "장르",
-    "ImportListsTraktSettingsRating": "등급"
+    "ImportListsTraktSettingsRating": "등급",
+    "ImportListsTraktSettingsYears": "년",
+    "ImportListsTraktSettingsAdditionalParametersHelpText": "추가 Trakt API 매개변수",
+    "ImportListsTraktSettingsAdditionalParameters": "매개 변수 추가",
+    "MediaInfoFootNote2": "MediaInfo AudioLanguages는 영어가 유일한 언어인 경우 영어를 제외합니다. MediaInfo AudioLanguagesAll을 사용하여 영어만 포함합니다",
+    "ImportListsTraktSettingsLimit": "한도",
+    "ImportListsTraktSettingsListType": "목록 유형"
 }

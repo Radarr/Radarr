@@ -875,7 +875,7 @@
     "RenameMovies": "Filmleri Yeniden Adlandır",
     "RenameMoviesHelpText": "Yeniden adlandırma devre dışı bırakılırsa, {appName} mevcut dosya adını kullanacaktır",
     "ReplaceIllegalCharacters": "Geçersiz Karakterleri Değiştirin",
-    "ReplaceIllegalCharactersHelpText": "Geçersiz karakterleri değiştirin. İşaretlenmezse bunun yerine {appName} bunları kaldıracak",
+    "ReplaceIllegalCharactersHelpText": "Geçersiz karakterleri değiştirin. İşaretlenmezse, {appName} bu karakterleri silecektir",
     "ReplaceWithSpaceDash": "'Boşluk' ve 'Kısa Çizgi' ile değiştir",
     "Required": "Gerekli",
     "RequiredRestrictionHelpText": "Yayın, bu terimlerden en az birini içermelidir (büyük / küçük harfe duyarlı değildir)",
@@ -1929,5 +1929,8 @@
     "ImportListsTraktSettingsUserListUsernameHelpText": "İçe aktarılacak Liste için Kullanıcı Adı (Yetkili Kullanıcı için boş bırakın)",
     "ImportListsTraktSettingsWatchListSorting": "İzleme Listesi Sıralaması",
     "ImportListsTraktSettingsWatchListSortingHelpText": "Liste Türü İzleme ise, listeyi sıralama sırasını seçin",
-    "DownloadClientUTorrentProviderMessage": "uTorrent, kripto yazılımlar, kötü amaçlı yazılımlar ve reklamlarla tanındığı için qBittorrent, Deluge veya ruTorrent gibi daha iyi bir istemciye geçmenizi öneririz."
+    "DownloadClientUTorrentProviderMessage": "uTorrent, kripto yazılımlar, kötü amaçlı yazılımlar ve reklamlarla tanındığı için qBittorrent, Deluge veya ruTorrent gibi daha iyi bir istemciye geçmenizi öneririz.",
+    "BlocklistedAt": "{date} tarihinde engellendi",
+    "FailedAt": "{date} tarihinde başarısız oldu",
+    "GrabbedAt": "{date} tarihinde yakalandı"
 }
