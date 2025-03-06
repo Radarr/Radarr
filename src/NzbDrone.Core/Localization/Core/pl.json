@@ -1199,5 +1199,8 @@
     "Mixed": "Naprawiony",
     "ImportListsTraktSettingsRating": "Ocena",
     "ImportListsTraktSettingsCertification": "Certyfikacja",
-    "ImportListsTraktSettingsGenres": "Gatunki"
+    "ImportListsTraktSettingsGenres": "Gatunki",
+    "True": "Prawda",
+    "Umask": "Umask",
+    "Or": "lub"
 }

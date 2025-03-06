@@ -1476,5 +1476,6 @@
     "ImportListsTraktSettingsUserListTypeWatch": "Felhasználói figyelőlista",
     "ImportListsTraktSettingsUserListTypeWatched": "Felhasználói figyelt lista",
     "ImportListsTraktSettingsUserListUsernameHelpText": "Felhasználónév az importálandó listához (hagyja üresen az Auth User használatához)",
-    "ImportListsTraktSettingsWatchListSorting": "Figyelőlista rendezése"
+    "ImportListsTraktSettingsWatchListSorting": "Figyelőlista rendezése",
+    "ImportListsTraktSettingsWatchListSortingHelpText": "Ha a Lista típusa Figyelt, válassza ki a sorrendet a lista rendezéséhez"
 }
