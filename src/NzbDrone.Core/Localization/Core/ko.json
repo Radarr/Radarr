@@ -643,7 +643,7 @@
     "Mode": "모드",
     "Monitor": "모니터",
     "Monitored": "모니터링",
-    "MonitoredHelpText": "가능한 경우 영화 다운로드",
+    "MonitoredMovieHelpText": "가능한 경우 영화 다운로드",
     "MonitoredOnly": "모니터링 만",
     "MonitoredStatus": "모니터링 됨 / 상태",
     "MonitorMovie": "영화 모니터링",

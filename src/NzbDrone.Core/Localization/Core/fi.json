@@ -49,7 +49,7 @@
     "MappedNetworkDrivesWindowsService": "Yhdistetyt verkkoasemat eivät ole käytettävissä kun sovellus suoritetaan Windows-palveluna. Saat lisätietoja UKK:sta ({url}).",
     "MinimumAgeHelpText": "Vain Usenet: NZB:n vähimmäisikä minuutteina, ennen niiden kaappausta. Tämän avulla uusille julkaisuille voidaan antaa aikaa levitä Usenet-palveluntarjoajalle.",
     "MinimumFreeSpaceHelpText": "Estä tuonti, jos sen jälkeinen vapaa levytila olisi tässä määritettyä pienempi.",
-    "MonitoredHelpText": "Elokuvaa etsitään ja se ladataan, jos se on saatavilla.",
+    "MonitoredMovieHelpText": "Elokuvaa etsitään ja se ladataan, jos se on saatavilla.",
     "MoveMovieFoldersToRootFolder": "Haluatko siirtää elokuvakansiot kohteeseen \"{0}\"?",
     "MovieChat": "Elokuvakeskustelu",
     "MultiLanguage": "Useita kieliä",

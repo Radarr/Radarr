@@ -600,7 +600,7 @@
     "Missing": "Absents",
     "MonitorCollection": "Monitora col·leccions",
     "MonitoredCollectionHelpText": "Monitora per a afegir automàticament pel·lícules d'aquesta col·lecció a la biblioteca",
-    "MonitoredHelpText": "Baixeu la pel·lícula si està disponible",
+    "MonitoredMovieHelpText": "Baixeu la pel·lícula si està disponible",
     "MonitoredOnly": "Només monitoritzat",
     "MonitoredStatus": "Monitorat/Estat",
     "MonitorMovie": "Monitora pel·lícula",

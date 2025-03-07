@@ -677,7 +677,7 @@
     "MinutesNinety": "90 mínútur: {0}",
     "Mode": "Mode",
     "Monitored": "Fylgst með",
-    "MonitoredHelpText": "Sæktu kvikmyndina ef hún er til",
+    "MonitoredMovieHelpText": "Sæktu kvikmyndina ef hún er til",
     "MonitoredOnly": "Aðeins fylgst með",
     "MonitoredStatus": "Fylgst með / Staða",
     "MonitorMovie": "Fylgstu með kvikmynd",

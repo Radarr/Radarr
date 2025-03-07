@@ -512,7 +512,7 @@
     "YouCanAlsoSearch": "Kereshetsz a film TMDb azonosítójával vagy IMDb azonosítójával is. Például. \"tmdb: 71663\"",
     "MonitorMovie": "Film Monitorozása",
     "MonitoredOnly": "Csak megfigyelt",
-    "MonitoredHelpText": "Töltse le a filmet, ha elérhető",
+    "MonitoredMovieHelpText": "Töltse le a filmet, ha elérhető",
     "Monitored": "Felügyelt",
     "Monitor": "Monitor",
     "Mode": "Mód",

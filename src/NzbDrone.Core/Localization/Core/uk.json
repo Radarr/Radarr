@@ -221,7 +221,7 @@
     "LogLevelTraceHelpTextWarning": "Журнал трасування слід увімкнути лише тимчасово",
     "LogLevel": "Рівень журналу",
     "Monday": "Понеділок",
-    "MonitoredHelpText": "Завантажте фільм, якщо є",
+    "MonitoredMovieHelpText": "Завантажте фільм, якщо є",
     "MoreDetails": "Детальніше",
     "MountMovieHealthCheckMessage": "Монтування, що містить шлях до фільму, монтується лише для читання: ",
     "MovieIsRecommend": "Фільм рекомендовано на основі останнього додавання",

@@ -514,7 +514,7 @@
     "MovieID": "ID de Película",
     "MovieFolderFormat": "Formato de Carpeta de Película",
     "MovieFiles": "Archivos de película",
-    "MonitoredHelpText": "Descargar película si está disponible",
+    "MonitoredMovieHelpText": "Descargar película si está disponible",
     "Mode": "Modo",
     "MinimumLimits": "Límites mínimos",
     "MinimumFreeSpaceHelpText": "Evita importar si se quedaría menos que esta cantidad de disco disponible",

@@ -759,7 +759,7 @@
     "MinutesHundredTwenty": "120 मिनट: {0}",
     "Mode": "मोड",
     "Monitored": "नजर रखी",
-    "MonitoredHelpText": "यदि उपलब्ध हो तो मूवी डाउनलोड करें",
+    "MonitoredMovieHelpText": "यदि उपलब्ध हो तो मूवी डाउनलोड करें",
     "MonitoredOnly": "केवल निगरानी की",
     "MonitorMovie": "मॉनिटर मूवी",
     "Months": "महीने",

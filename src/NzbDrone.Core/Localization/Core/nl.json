@@ -426,7 +426,7 @@
     "MovieID": "Film ID",
     "MovieFolderFormat": "Film Map Formaat",
     "MovieFiles": "Filmbestanden",
-    "MonitoredHelpText": "Download film indien beschikbaar",
+    "MonitoredMovieHelpText": "Download film indien beschikbaar",
     "Mode": "Modus",
     "MinimumLimits": "Minimum Limieten",
     "MinimumFreeSpace": "Minimum Vrije Ruimte",

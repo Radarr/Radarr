@@ -817,7 +817,7 @@
     "MinutesNinety": "90 Dakika: {ninety}",
     "Mode": "Mod",
     "Monitored": "Takip Ediliyor",
-    "MonitoredHelpText": "Varsa filmi indirin",
+    "MonitoredMovieHelpText": "Varsa filmi indirin",
     "MonitoredStatus": "Takip Edilen/Durum",
     "MonitorMovie": "Filmi Takip Et",
     "Months": "Aylar",

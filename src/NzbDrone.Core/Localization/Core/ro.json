@@ -746,7 +746,7 @@
     "MinimumCustomFormatScore": "Scor minim format personalizat",
     "MinimumFreeSpaceHelpText": "Împiedicați importul dacă ar lăsa mai puțin decât această cantitate de spațiu pe disc disponibil",
     "Mode": "Mod",
-    "MonitoredHelpText": "Descărcați filmul dacă este disponibil",
+    "MonitoredMovieHelpText": "Descărcați filmul dacă este disponibil",
     "MonitoredStatus": "Monitorizat / Stare",
     "MonitorMovie": "Monitorizați filmul",
     "MovieAlreadyExcluded": "Filmul deja a fost exclus",

@@ -658,7 +658,7 @@
     "Mode": "Tryb",
     "Monitor": "Monitor",
     "Monitored": "Monitorowane",
-    "MonitoredHelpText": "Pobierz film, jeśli jest dostępny",
+    "MonitoredMovieHelpText": "Pobierz film, jeśli jest dostępny",
     "MonitoredOnly": "Tylko monitorowane",
     "MonitoredStatus": "Monitorowane / Stan",
     "MonitorMovie": "Monitoruj film",

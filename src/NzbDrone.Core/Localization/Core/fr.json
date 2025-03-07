@@ -497,7 +497,7 @@
     "MovieExcludedFromAutomaticAdd": "Film exclu de l'ajout automatique",
     "MovieAlreadyExcluded": "Film déjà exclu",
     "MoreDetails": "Plus de détails",
-    "MonitoredHelpText": "Télécharger le film si disponible",
+    "MonitoredMovieHelpText": "Télécharger le film si disponible",
     "Mode": "Mode",
     "MissingNotMonitored": "Manquant (non surveillé)",
     "MissingMonitoredAndConsideredAvailable": "Manquant (surveillé)",

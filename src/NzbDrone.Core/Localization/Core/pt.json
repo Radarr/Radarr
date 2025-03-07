@@ -343,7 +343,7 @@
     "MovieID": "ID do filme",
     "MovieFolderFormat": "Formato da pasta de filme",
     "MovieFiles": "Ficheiros de filme",
-    "MonitoredHelpText": "Transferir filme se disponível",
+    "MonitoredMovieHelpText": "Transferir filme se disponível",
     "Mode": "Modo",
     "MinimumLimits": "Limites mínimos",
     "MinimumFreeSpaceHelpText": "Evitar a importação caso deixe menos espaço livre em disco que esta quantidade",

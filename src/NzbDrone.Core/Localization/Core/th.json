@@ -106,7 +106,7 @@
     "Metadata": "ข้อมูลเมตา",
     "MinimumAgeHelpText": "Usenet เท่านั้น: อายุต่ำสุดเป็นนาทีของ NZB ก่อนที่จะถูกคว้า ใช้สิ่งนี้เพื่อให้เวลารุ่นใหม่เผยแพร่ไปยังผู้ให้บริการ usenet ของคุณ",
     "MinimumFreeSpaceHelpText": "ป้องกันการนำเข้าหากเหลือพื้นที่ดิสก์น้อยกว่าจำนวนนี้",
-    "MonitoredHelpText": "ดาวน์โหลดภาพยนตร์ถ้ามี",
+    "MonitoredMovieHelpText": "ดาวน์โหลดภาพยนตร์ถ้ามี",
     "MoveMovieFoldersToRootFolder": "คุณต้องการย้ายโฟลเดอร์ภาพยนตร์ไปที่ \"{0}\" หรือไม่",
     "MoreInfo": "ข้อมูลเพิ่มเติม",
     "MovieAlreadyExcluded": "ยกเว้นภาพยนตร์แล้ว",

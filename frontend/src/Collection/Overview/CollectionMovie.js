@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Link from 'Components/Link/Link';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
-import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
+import EditMovieModal from 'Movie/Edit/EditMovieModal';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MoviePoster from 'Movie/MoviePoster';
 import translate from 'Utilities/String/translate';
@@ -172,7 +172,7 @@ class CollectionMovie extends Component {
           collectionId={collectionId}
         />
 
-        <EditMovieModalConnector
+        <EditMovieModal
           isOpen={isEditMovieModalOpen}
           movieId={id}
           onModalClose={this.onEditMovieModalClose}

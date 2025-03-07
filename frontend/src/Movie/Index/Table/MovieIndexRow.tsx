@@ -18,7 +18,7 @@ import TraktRating from 'Components/TraktRating';
 import { icons, kinds } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
-import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
+import EditMovieModal from 'Movie/Edit/EditMovieModal';
 import createMovieIndexItemSelector from 'Movie/Index/createMovieIndexItemSelector';
 import { Statistics } from 'Movie/Movie';
 import MoviePopularityIndex from 'Movie/MoviePopularityIndex';
@@ -480,7 +480,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
         return null;
       })}
 
-      <EditMovieModalConnector
+      <EditMovieModal
         isOpen={isEditMovieModalOpen}
         movieId={movieId}
         onModalClose={onEditMovieModalClose}

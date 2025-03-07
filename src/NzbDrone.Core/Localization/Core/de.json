@@ -407,7 +407,7 @@
     "MinimumFreeSpaceHelpText": "Verhindere den Import, wenn dadurch weniger als dieser Speicherplatz auf der Festplatte verfügbar bleibt",
     "MinimumLimits": "Minimale Grenzen",
     "Mode": "Modus",
-    "MonitoredHelpText": "Herunterladen wenn der Film verfügbar ist",
+    "MonitoredMovieHelpText": "Herunterladen wenn der Film verfügbar ist",
     "MovieFiles": "Film Dateien",
     "MovieFolderFormat": "Filmordner Format",
     "MovieID": "Film ID",

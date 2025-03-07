@@ -281,7 +281,7 @@
     "ShowMonitored": "Visa bevakade",
     "MovieIsUnmonitored": "Filmen är obevakad",
     "MovieIsMonitored": "FIlmen är bevakad",
-    "MonitoredHelpText": "Ladda ned film om tillgänglig",
+    "MonitoredMovieHelpText": "Ladda ned film om tillgänglig",
     "MissingNotMonitored": "Saknas (obevakad)",
     "MissingMonitoredAndConsideredAvailable": "Saknas (bevakad)",
     "DownloadedButNotMonitored": "Nedladdad (obevakad)",

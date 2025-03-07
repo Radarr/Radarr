@@ -557,7 +557,7 @@
     "MonitorMovie": "追踪电影",
     "MonitoredStatus": "已追踪/状态",
     "MonitoredOnly": "已追踪项",
-    "MonitoredHelpText": "可用时下载电影",
+    "MonitoredMovieHelpText": "可用时下载电影",
     "Monitor": "追踪",
     "MinimumFreeSpaceHelpText": "如果导入的磁盘空间不足，则禁止导入",
     "MinimumFreeSpace": "最小剩余空间",

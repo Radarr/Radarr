@@ -105,7 +105,7 @@
     "MinimumAgeHelpText": "Usenet only: Tuổi tối thiểu tính bằng phút của NZB trước khi chúng bị tóm. Sử dụng điều này để cho các bản phát hành mới có thời gian phổ biến tới nhà cung cấp mạng sử dụng của bạn.",
     "MinimumCustomFormatScore": "Điểm định dạng tùy chỉnh tối thiểu",
     "Monitor": "Giám sát",
-    "MonitoredHelpText": "Tải xuống phim nếu có",
+    "MonitoredMovieHelpText": "Tải xuống phim nếu có",
     "MonitoredOnly": "Chỉ giám sát",
     "MonitoredStatus": "Theo dõi / Trạng thái",
     "MoveMovieFoldersToRootFolder": "Bạn có muốn di chuyển các thư mục phim vào '{0}' không?",

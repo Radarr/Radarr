@@ -634,7 +634,7 @@
     "Mode": "モード",
     "Monitor": "モニター",
     "Monitored": "監視",
-    "MonitoredHelpText": "可能な場合は映画をダウンロードする",
+    "MonitoredMovieHelpText": "可能な場合は映画をダウンロードする",
     "MonitoredOnly": "監視のみ",
     "MonitoredStatus": "監視/ステータス",
     "MonitorMovie": "モニタームービー",
