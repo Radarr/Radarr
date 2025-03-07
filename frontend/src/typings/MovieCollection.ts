@@ -12,6 +12,7 @@ interface MovieCollection extends ModelBase {
   movies: Movie[];
   missingMovies: number;
   tags: number[];
+  isSaving?: boolean;
 }
 
 export default MovieCollection;
