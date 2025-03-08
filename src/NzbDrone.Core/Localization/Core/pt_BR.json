@@ -1932,5 +1932,6 @@
     "DownloadClientUTorrentProviderMessage": "Como o uTorrent é conhecido por CryptoWare, malware e anúncios, sugerimos mudar para um cliente melhor como Qbittorrent, Deluge ou ruTorrent.",
     "BlocklistedAt": "Lista de bloqueio em {date}",
     "FailedAt": "Falhou em {date}",
-    "GrabbedAt": "Obtido em {date}"
+    "GrabbedAt": "Obtido em {date}",
+    "EditMovieModalHeader": "Editar - {title}"
 }

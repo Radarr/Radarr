@@ -1501,5 +1501,6 @@
     "ImportListsTraktSettingsCertification": "Certificazione",
     "ImportListsTraktSettingsGenres": "Generi",
     "ImportListsTraktSettingsLimit": "Limite",
-    "ImportListsTraktSettingsListType": "Tipo Lista"
+    "ImportListsTraktSettingsListType": "Tipo Lista",
+    "EditMovieModalHeader": "Modifica - {title}"
 }

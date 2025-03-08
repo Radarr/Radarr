@@ -1909,5 +1909,6 @@
     "ImportListsTraktSettingsUserListTypeWatched": "Benutzer-Gesehene-Liste",
     "ImportListsTraktSettingsWatchListSorting": "Sortierung der Gesehenen Liste",
     "ImportListsTraktSettingsUserListUsernameHelpText": "Benutzername für die Liste, von der du importieren möchtest (leer lassen, um den Authentifizierten Benutzer zu verwenden)",
-    "ImportListsTraktSettingsWatchListSortingHelpText": "Wenn der Listentyp 'Gesehen' ist, wähle die Reihenfolge, in der die Liste sortiert werden soll"
+    "ImportListsTraktSettingsWatchListSortingHelpText": "Wenn der Listentyp 'Gesehen' ist, wähle die Reihenfolge, in der die Liste sortiert werden soll",
+    "EditMovieModalHeader": "Bearbeiten - {title}"
 }

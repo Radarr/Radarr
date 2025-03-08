@@ -1909,5 +1909,6 @@
     "ImportListsTraktSettingsWatchListSorting": "Tri de la liste de surveillance",
     "ImportListsTraktSettingsUserListTypeWatch": "Liste de surveillance des utilisateurs",
     "ImportListsTraktSettingsUserListTypeWatched": "Liste des utilisateurs surveillés",
-    "ImportListsTraktSettingsWatchListSortingHelpText": "Si le type de liste est surveillé, sélectionnez l'ordre de tri de la liste"
+    "ImportListsTraktSettingsWatchListSortingHelpText": "Si le type de liste est surveillé, sélectionnez l'ordre de tri de la liste",
+    "EditMovieModalHeader": "Modifier - {title}"
 }

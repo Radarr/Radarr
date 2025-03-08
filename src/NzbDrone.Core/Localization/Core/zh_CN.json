@@ -1930,5 +1930,6 @@
     "ImportListsTraktSettingsYearsMovieHelpText": "按年份或年份范围筛选电影",
     "AutoTaggingSpecificationMaximumRuntime": "最大运行时间",
     "AutoTaggingSpecificationMinimumRuntime": "最小运行时间",
-    "DownloadClientUTorrentProviderMessage": "由于uTorrent以加密软件、恶意软件和广告而闻名，我们建议切换到更好的客户端，例如qBittorrent、Deluge或ruTorrent。"
+    "DownloadClientUTorrentProviderMessage": "由于uTorrent以加密软件、恶意软件和广告而闻名，我们建议切换到更好的客户端，例如qBittorrent、Deluge或ruTorrent。",
+    "EditMovieModalHeader": "编辑 - {title}"
 }
