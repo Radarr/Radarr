@@ -544,7 +544,7 @@
     "MinutesNinety": "90 minutos: {0}",
     "MinutesHundredTwenty": "120 minutos: {0}",
     "MIA": "Desaparecidos",
-    "MarkAsFailedMessageText": "Tem a certeza que quer marcar \"{0}\" como falhado?",
+    "MarkAsFailedConfirmation": "Tem a certeza que quer marcar \"{0}\" como falhado?",
     "MarkAsFailed": "Marcar como falhado",
     "Manual": "Manual",
     "LoadingMovieFilesFailed": "Falha no carregamento dos ficheiros do filme",

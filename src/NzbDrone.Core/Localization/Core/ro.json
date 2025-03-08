@@ -735,7 +735,7 @@
     "ManualImportSelectLanguage": "Import manual - Selectați limba",
     "ManualImportSelectMovie": "Import manual - Selectați film",
     "ManualImportSelectQuality": " Import manual - Selectați calitatea",
-    "MarkAsFailedMessageText": "Sigur doriți să marcați „{0}” ca eșuat?",
+    "MarkAsFailedConfirmation": "Sigur doriți să marcați „{0}” ca eșuat?",
     "MaximumLimits": "Limite maxime",
     "MaximumSize": "Dimensiune maximă",
     "MegabytesPerMinute": "Megaocteți pe minut",

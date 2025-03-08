@@ -608,7 +608,7 @@
     "MovieIsMonitored": "Film wordt gemonitord",
     "MovieExcludedFromAutomaticAdd": "Film Uitgesloten Van Automatisch Toevoegen",
     "MovieAlreadyExcluded": "Film werd al Uitgesloten",
-    "MarkAsFailedMessageText": "Bent u zeker dat u '{0}' als mislukt wilt markeren?",
+    "MarkAsFailedConfirmation": "Bent u zeker dat u '{0}' als mislukt wilt markeren?",
     "Manual": "Manueel",
     "LogLevelTraceHelpTextWarning": "Trace log niveau moet enkel tijdelijk worden gebruikt",
     "LastDuration": "Laatste Looptijd",

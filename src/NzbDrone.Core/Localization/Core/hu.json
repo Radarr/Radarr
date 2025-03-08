@@ -544,7 +544,7 @@
     "MaximumSize": "Maximális méret",
     "MaximumLimits": "Maximális korlátok",
     "MassMovieSearch": "Tömeges filmkeresés",
-    "MarkAsFailedMessageText": "Biztosan sikertelennek szeretnéd jelölni a (z) „{0}”-t?",
+    "MarkAsFailedConfirmation": "Biztosan sikertelennek szeretnéd jelölni a (z) „{0}”-t?",
     "MarkAsFailed": "Megjelölés sikertelenként",
     "ManualImport": "Kézi importálás",
     "Manual": "Kézi",

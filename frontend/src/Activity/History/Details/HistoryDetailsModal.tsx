@@ -37,7 +37,7 @@ interface HistoryDetailsModalProps {
   sourceTitle: string;
   data: HistoryData;
   downloadId?: string;
-  isMarkingAsFailed: boolean;
+  isMarkingAsFailed?: boolean;
   onMarkAsFailedPress: () => void;
   onModalClose: () => void;
 }

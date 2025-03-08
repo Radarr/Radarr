@@ -667,7 +667,7 @@
     "ManualImportSetReleaseGroup": "Імпорт вручну - встановити групу випуску",
     "MappedNetworkDrivesWindowsService": "Підключені мережеві диски недоступні під час роботи як служби Windows. Щоб отримати додаткову інформацію, перегляньте FAQ",
     "MarkAsFailed": "Позначити як помилку",
-    "MarkAsFailedMessageText": "Ви впевнені, що бажаєте позначити \"{0}\" як невдале?",
+    "MarkAsFailedConfirmation": "Ви впевнені, що бажаєте позначити \"{0}\" як невдале?",
     "MassMovieSearch": "Масовий пошук фільмів",
     "Max": "Максимальний",
     "MaximumSize": "Максимальний розмір",

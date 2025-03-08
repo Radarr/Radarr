@@ -324,7 +324,7 @@
     "EditMovie": "Edita pel·lícula",
     "EnableColorImpairedModeHelpText": "Estil alterat per a permetre als usuaris amb problemes de color distingir millor la informació codificada per colors",
     "Folder": "Carpeta",
-    "MarkAsFailedMessageText": "Esteu segur que voleu marcar '{0}' com a fallat?",
+    "MarkAsFailedConfirmation": "Esteu segur que voleu marcar '{0}' com a fallat?",
     "Negated": "Negat",
     "Profiles": "Perfils",
     "Real": "Real",

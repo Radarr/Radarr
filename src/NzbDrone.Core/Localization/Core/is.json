@@ -663,7 +663,7 @@
     "ManualImportSelectMovie": "Handvirkur innflutningur - Veldu kvikmynd",
     "ManualImportSelectQuality": " Handvirkur innflutningur - Veldu gæði",
     "MappedNetworkDrivesWindowsService": "Kortlagðar netdrif eru ekki fáanlegar þegar þær eru keyrðar sem Windows þjónusta. Vinsamlegast skoðaðu algengar spurningar fyrir frekari upplýsingar",
-    "MarkAsFailedMessageText": "Ertu viss um að þú viljir merkja '{0}' sem mistókst?",
+    "MarkAsFailedConfirmation": "Ertu viss um að þú viljir merkja '{0}' sem mistókst?",
     "MaximumLimits": "Hámarksmörk",
     "MaximumSize": "Hámarksstærð",
     "MegabytesPerMinute": "Megabæti á mínútu",

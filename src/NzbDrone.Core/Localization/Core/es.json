@@ -602,7 +602,7 @@
     "MovieIsMonitored": "La película está monitorizada",
     "MovieExcludedFromAutomaticAdd": "Película Excluida de Adición Automática",
     "MovieAlreadyExcluded": "Película ya Excluida",
-    "MarkAsFailedMessageText": "¿Estás seguro que quieres marcar '{0}' como fallida?",
+    "MarkAsFailedConfirmation": "¿Estás seguro que quieres marcar '{0}' como fallida?",
     "Manual": "Manual",
     "LogLevelTraceHelpTextWarning": "El registro de seguimiento sólo debe activarse temporalmente",
     "LastDuration": "Última Duración",

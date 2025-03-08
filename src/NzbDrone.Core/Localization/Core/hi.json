@@ -747,7 +747,7 @@
     "LookingForReleaseProfiles2": "बजाय।",
     "Lowercase": "लोअर केस",
     "ManualImportSelectQuality": " मैनुअल आयात - गुणवत्ता का चयन करें",
-    "MarkAsFailedMessageText": "क्या आप वाकई '{0}' को चिह्नित करना चाहते हैं?",
+    "MarkAsFailedConfirmation": "क्या आप वाकई '{0}' को चिह्नित करना चाहते हैं?",
     "MassMovieSearch": "मास मूवी सर्च",
     "MaximumLimits": "अधिकतम सीमा",
     "Message": "संदेश",

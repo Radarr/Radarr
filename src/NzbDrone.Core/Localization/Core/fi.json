@@ -628,7 +628,7 @@
     "Lowercase": "Pienet kirjaimet",
     "ManualImportSelectLanguage": "Manuaalinen tuonti – Valitse kieli",
     "ManualImportSelectQuality": " Manuaalinen tuonti – Valitse laatu",
-    "MarkAsFailedMessageText": "Haluatko varmasti merkitä kohteen {0} epäonnistuneeksi?",
+    "MarkAsFailedConfirmation": "Haluatko varmasti merkitä kohteen {0} epäonnistuneeksi?",
     "MassMovieSearch": "Elokuvien massahaku",
     "MaximumLimits": "Enimmäisrajoitukset",
     "MaximumSize": "Enimmäiskoko",

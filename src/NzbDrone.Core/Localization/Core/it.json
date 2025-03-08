@@ -502,7 +502,7 @@
     "MaximumSizeHelpText": "La dimensione massima in MB di una release affinchè sia presa, imposta zero per illimitata",
     "MaximumSize": "Dimensione Massima",
     "MaximumLimits": "Limiti massimi",
-    "MarkAsFailedMessageText": "Sei sicuro di voler segnare '{0}' come fallito?",
+    "MarkAsFailedConfirmation": "Sei sicuro di voler segnare '{0}' come fallito?",
     "MarkAsFailed": "Segna come fallito",
     "Manual": "Manuale",
     "MaintenanceRelease": "Release di Manutenzione: correzione di bug e altri miglioramenti. Vedi la storia dei Commit su Github per maggiori dettagli",

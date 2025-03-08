@@ -801,7 +801,7 @@
     "ManualImportSelectMovie": "Manuel İçe Aktar - Film Seç",
     "ManualImportSelectQuality": " Manuel İçe Aktar - Kalite Seç",
     "MappedNetworkDrivesWindowsService": "Windows Hizmeti olarak çalıştırıldığında eşlenen ağ sürücüleri kullanılamaz, daha fazla bilgi için [SSS]({url}) bölümüne bakın.",
-    "MarkAsFailedMessageText": "'{0}' başarısız olarak işaretlemek istediğinizden emin misiniz?",
+    "MarkAsFailedConfirmation": "'{0}' başarısız olarak işaretlemek istediğinizden emin misiniz?",
     "MaximumLimits": "Maksimum Sınırlar",
     "MaximumSize": "Maksimum Boyut",
     "MegabytesPerMinute": "Dakika Başına Megabayt",

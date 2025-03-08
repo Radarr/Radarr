@@ -695,7 +695,7 @@
     "Lowercase": "ตัวพิมพ์เล็ก",
     "ManualImportSelectLanguage": "นำเข้าด้วยตนเอง - เลือกภาษา",
     "ManualImportSelectQuality": " นำเข้าด้วยตนเอง - เลือกคุณภาพ",
-    "MarkAsFailedMessageText": "แน่ใจหรือไม่ว่าต้องการทำเครื่องหมาย \"{0}\" ว่าล้มเหลว",
+    "MarkAsFailedConfirmation": "แน่ใจหรือไม่ว่าต้องการทำเครื่องหมาย \"{0}\" ว่าล้มเหลว",
     "MaximumLimits": "ขีด จำกัด สูงสุด",
     "MaximumSize": "ขนาดสูงสุด",
     "MegabytesPerMinute": "เมกะไบต์ต่อนาที",

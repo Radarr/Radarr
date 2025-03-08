@@ -92,7 +92,7 @@
     "ManualImportSelectMovie": "Nhập thủ công - Chọn phim",
     "ManualImportSelectQuality": " Nhập thủ công - Chọn chất lượng",
     "MappedNetworkDrivesWindowsService": "Các ổ đĩa mạng được ánh xạ không khả dụng khi chạy dưới dạng Dịch vụ Windows. Vui lòng xem Câu hỏi thường gặp để biết thêm thông tin",
-    "MarkAsFailedMessageText": "Bạn có chắc chắn muốn đánh dấu '{0}' là không thành công không?",
+    "MarkAsFailedConfirmation": "Bạn có chắc chắn muốn đánh dấu '{0}' là không thành công không?",
     "MassMovieSearch": "Tìm kiếm phim hàng loạt",
     "MaximumLimits": "Giới hạn tối đa",
     "MaximumSize": "Kích thước tối đa",

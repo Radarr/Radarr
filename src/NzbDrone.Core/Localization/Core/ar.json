@@ -879,7 +879,7 @@
     "MaximumLimits": "الحدود القصوى",
     "Max": "ماكس",
     "MassMovieSearch": "البحث الشامل عن الأفلام",
-    "MarkAsFailedMessageText": "هل أنت متأكد أنك تريد وضع علامة \"{0}\" على أنه فشل؟",
+    "MarkAsFailedConfirmation": "هل أنت متأكد أنك تريد وضع علامة \"{0}\" على أنه فشل؟",
     "MarkAsFailed": "وضع علامة فشل",
     "MappedNetworkDrivesWindowsService": "لا تتوفر محركات أقراص الشبكة المعينة عند التشغيل كخدمة Windows. يرجى الاطلاع على التعليمات لمزيد من المعلومات",
     "ManualImportSelectQuality": " استيراد يدوي - حدد الجودة",

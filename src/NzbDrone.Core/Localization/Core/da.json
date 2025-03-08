@@ -627,7 +627,7 @@
     "ManualImportSelectLanguage": "Manuel import - Vælg sprog",
     "ManualImportSelectMovie": "Manuel import - Vælg film",
     "ManualImportSelectQuality": " Manuel import - Vælg kvalitet",
-    "MarkAsFailedMessageText": "Er du sikker på, at du vil markere '{0}' som mislykket?",
+    "MarkAsFailedConfirmation": "Er du sikker på, at du vil markere '{0}' som mislykket?",
     "MaximumLimits": "Maksimumgrænser",
     "MaximumSize": "Maksimal størrelse",
     "MegabytesPerMinute": "Megabyte pr. Minut",

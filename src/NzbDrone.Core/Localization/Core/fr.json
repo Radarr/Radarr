@@ -653,7 +653,7 @@
     "RemovingTag": "Supprimer la balise",
     "RadarrTags": "Étiquettes {appName}",
     "Paused": "En pause",
-    "MarkAsFailedMessageText": "Voulez-vous vraiment marquer '{0}' comme échoué ?",
+    "MarkAsFailedConfirmation": "Voulez-vous vraiment marquer '{0}' comme échoué ?",
     "ExistingTag": "Balise existante",
     "DownloadPropersAndRepacksHelpTextWarning": "Utilisez des formats personnalisés pour les mises à niveau automatiques vers Propers/Repacks",
     "DownloadPropersAndRepacksHelpTextCustomFormat": "Utiliser 'Ne pas préférer' pour trier par score de mot préféré par rapport aux propres/repacks",

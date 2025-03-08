@@ -601,7 +601,7 @@
     "MovieIsMonitored": "Film wird beobachtet",
     "MovieExcludedFromAutomaticAdd": "Film vom automatischen hinzufügen ausgeschlossen",
     "MovieAlreadyExcluded": "Film ist schon ausgeschlossen",
-    "MarkAsFailedMessageText": "'{0}' wirklich als fehlgeschlagen markieren?",
+    "MarkAsFailedConfirmation": "'{0}' wirklich als fehlgeschlagen markieren?",
     "Manual": "Manuell",
     "LogLevelTraceHelpTextWarning": "Die Trace-Protokollierung sollte nur vorübergehend aktiviert werden",
     "LastDuration": "Letzte Dauer",

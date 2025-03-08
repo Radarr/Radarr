@@ -664,7 +664,7 @@
     "ManualImportSelectMovie": "Ruční import - vyberte Film",
     "ManualImportSelectQuality": " Ruční import - vyberte kvalitu",
     "MappedNetworkDrivesWindowsService": "Mapované síťové jednotky nejsou k dispozici, když běží jako služba Windows. Další informace najdete v [FAQ]({url}).",
-    "MarkAsFailedMessageText": "Opravdu chcete označit „{0}“ jako neúspěšné?",
+    "MarkAsFailedConfirmation": "Opravdu chcete označit „{0}“ jako neúspěšné?",
     "MassMovieSearch": "Hromadné vyhledávání filmů",
     "MaximumLimits": "Maximální limity",
     "MaximumSize": "Maximální velikost",

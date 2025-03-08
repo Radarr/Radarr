@@ -628,7 +628,7 @@
     "ManualImportSelectMovie": "ייבוא ידני - בחר סרט",
     "ManualImportSelectQuality": " יבוא ידני - בחר איכות",
     "MappedNetworkDrivesWindowsService": "כונני רשת ממופים אינם זמינים כאשר הם פועלים כשירות Windows. אנא עיין בשאלות הנפוצות למידע נוסף",
-    "MarkAsFailedMessageText": "האם אתה בטוח שברצונך לסמן את '{0}' ככושל?",
+    "MarkAsFailedConfirmation": "האם אתה בטוח שברצונך לסמן את '{0}' ככושל?",
     "MassMovieSearch": "חיפוש סרטים המוני",
     "MaximumLimits": "מגבלות מקסימליות",
     "MaximumSize": "גודל מקסימלי",

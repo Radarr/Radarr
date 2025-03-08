@@ -599,7 +599,7 @@
     "InteractiveSearch": "Interaktiv sökning",
     "LookingForReleaseProfiles1": "Letar du efter utgåvorsprofiler? Prova",
     "ManualImportSelectQuality": " Manuell import - Välj kvalitet",
-    "MarkAsFailedMessageText": "Är du säker på att du vill markera \"{0}\" som misslyckad?",
+    "MarkAsFailedConfirmation": "Är du säker på att du vill markera \"{0}\" som misslyckad?",
     "MinimumAgeHelpText": "Endast Usenet: Lägsta ålder i minuter av NZB innan de tas. Använd detta för att ge nya utgåvor tid att sprida sig till din usenet-leverantör.",
     "RecyclingBinCleanupHelpText": "Ställ in på 0 för att inaktivera automatisk rensning",
     "RemoveHelpTextWarning": "Om du tar bort tas nedladdningen och filen (filerna) bort från nedladdningsklienten.",

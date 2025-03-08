@@ -329,7 +329,7 @@
     "ManualImportSelectMovie": "Ръчно импортиране - Изберете филм",
     "ManualImportSelectQuality": " Ръчен импорт - Изберете качество",
     "MappedNetworkDrivesWindowsService": "Картографираните мрежови устройства не са налични, когато се изпълняват като услуга на Windows. Моля, вижте често задаваните въпроси за повече информация",
-    "MarkAsFailedMessageText": "Наистина ли искате да маркирате „{0}“ като неуспешен?",
+    "MarkAsFailedConfirmation": "Наистина ли искате да маркирате „{0}“ като неуспешен?",
     "MassMovieSearch": "Масово търсене на филми",
     "MaximumLimits": "Максимални граници",
     "MaximumSize": "Максимален размер",

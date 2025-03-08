@@ -100,7 +100,7 @@
     "KeyboardShortcuts": "Skróty klawiszowe",
     "LinkHere": "tutaj",
     "ManualImportSelectQuality": " Import ręczny - wybierz Jakość",
-    "MarkAsFailedMessageText": "Czy na pewno chcesz oznaczyć „{0}” jako nieudany?",
+    "MarkAsFailedConfirmation": "Czy na pewno chcesz oznaczyć „{0}” jako nieudany?",
     "MinimumAvailability": "Minimalna dostępność",
     "Months": "Miesięcy",
     "PreferIndexerFlagsHelpText": "Nadaj priorytet wydaniom za pomocą specjalnych flag",

@@ -625,7 +625,7 @@
     "ManualImportSelectMovie": "수동 가져오기 - 동영상 선택",
     "ManualImportSelectQuality": " 수동 가져오기-품질 선택",
     "MappedNetworkDrivesWindowsService": "윈도우 서비스로 실행할 때는 매핑 된 네트워크 드라이브를 사용할 수 없습니다, 상세 내용은 FAQ를 참조하세요.",
-    "MarkAsFailedMessageText": "'{0}'을(를) 실패한 것으로 표시 하시겠습니까?",
+    "MarkAsFailedConfirmation": "'{0}'을(를) 실패한 것으로 표시 하시겠습니까?",
     "MassMovieSearch": "대량 영화 검색",
     "MaximumLimits": "최대 한도",
     "MaximumSize": "최대 크기",

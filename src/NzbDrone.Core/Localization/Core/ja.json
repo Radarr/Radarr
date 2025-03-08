@@ -615,7 +615,7 @@
     "ManualImportSelectMovie": "手動インポート-ムービーを選択",
     "ManualImportSelectQuality": " 手動インポート-品質を選択",
     "MappedNetworkDrivesWindowsService": "マップされたネットワークドライブは、Windowsサービスとして実行している場合は使用できません。詳細については、FAQを参照してください",
-    "MarkAsFailedMessageText": "'{0}'を失敗としてマークしてもよろしいですか？",
+    "MarkAsFailedConfirmation": "'{0}'を失敗としてマークしてもよろしいですか？",
     "MassMovieSearch": "マスムービー検索",
     "MaximumLimits": "最大制限",
     "MaximumSize": "最大サイズ",

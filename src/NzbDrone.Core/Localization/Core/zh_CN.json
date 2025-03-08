@@ -568,7 +568,7 @@
     "MaximumSizeHelpText": "抓取发布资源的最大大小（MB）。设置为零则不限制",
     "Max": "最大的",
     "MassMovieSearch": "批量搜索电影",
-    "MarkAsFailedMessageText": "您确定要标记'{0}'为已失败？",
+    "MarkAsFailedConfirmation": "您确定要标记'{0}'为已失败？",
     "ManualImportSelectQuality": " 手动导入 - 选择质量",
     "ManualImportSelectMovie": "手动导入 - 选择电影",
     "ManualImportSelectLanguage": "手动导入 - 选择语言",

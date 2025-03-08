@@ -955,7 +955,7 @@
   "ManualImportSetReleaseGroup": "Manual Import - Set Release Group",
   "MappedNetworkDrivesWindowsService": "Mapped network drives are not available when running as a Windows Service, see the [FAQ]({url}) for more information.",
   "MarkAsFailed": "Mark as Failed",
-  "MarkAsFailedMessageText": "Are you sure you want to mark '{0}' as failed?",
+  "MarkAsFailedConfirmation": "Are you sure you want to mark '{sourceTitle}' as failed?",
   "MassMovieSearch": "Mass Movie Search",
   "MassSearchCancelWarning": "This cannot be cancelled once started without restarting {appName} or disabling all of your indexers.",
   "MatchedToMovie": "Matched to Movie",

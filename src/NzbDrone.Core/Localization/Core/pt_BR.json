@@ -388,7 +388,7 @@
     "Max": "Máx.",
     "MassMovieSearch": "Pesquisar filmes em massa",
     "MarkAsFailed": "Marcar como falha",
-    "MarkAsFailedMessageText": "Tem certeza que deseja marcar \"{0}\" como falhado?",
+    "MarkAsFailedConfirmation": "Tem certeza que deseja marcar \"{0}\" como falhado?",
     "MappedNetworkDrivesWindowsService": "As unidades de rede mapeadas não estão disponíveis quando executadas como um serviço do Windows. Consulte as [FAQ]({url}) para obter mais informações.",
     "ManualImportSelectQuality": " Importação manual - Selecionar qualidade",
     "ManualImportSelectMovie": "Importação manual - Selecionar filme",
