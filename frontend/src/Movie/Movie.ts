@@ -18,6 +18,7 @@ export interface Image {
 }
 
 export interface Collection {
+  tmdbId: number;
   title: string;
 }
 
@@ -74,7 +75,7 @@ interface Movie extends ModelBase {
   ratings: Ratings;
   popularity: number;
   certification: string;
-  statistics: Statistics;
+  statistics?: Statistics;
   tags: number[];
   images: Image[];
   movieFile: MovieFile;

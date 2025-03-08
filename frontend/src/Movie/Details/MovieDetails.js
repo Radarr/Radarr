@@ -747,7 +747,6 @@ class MovieDetails extends Component {
             isOpen={isDeleteMovieModalOpen}
             movieId={id}
             onModalClose={this.onDeleteMovieModalClose}
-            nextMovieRelativePath={`/movie/${nextMovie.titleSlug}`}
           />
 
           <InteractiveImportModal
