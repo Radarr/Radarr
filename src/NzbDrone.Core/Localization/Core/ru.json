@@ -1928,5 +1928,6 @@
     "MovieFileRenamed": "Файл фильма переименован",
     "MovieFileRenamedTooltip": "Файл фильма переименован",
     "MovieFolderImportedTooltip": "Фильм импортирован из папки фильма",
-    "Recommended": "Рекомендуемое"
+    "Recommended": "Рекомендуемое",
+    "EditMovieModalHeader": "Изменить – {title}"
 }
