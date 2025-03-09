@@ -74,12 +74,9 @@ class AddNewMovieSearchResult extends Component {
       isExistingMovie,
       isExcluded,
       isSmallScreen,
-      colorImpairedMode,
-      id,
       monitored,
       isAvailable,
       movieFile,
-      queueItem,
       runtime,
       movieRuntimeFormat,
       certification
@@ -285,14 +282,12 @@ class AddNewMovieSearchResult extends Component {
               {
                 isExistingMovie && isSmallScreen &&
                   <MovieStatusLabel
-                    status={status}
-                    hasMovieFiles={hasMovieFile}
+                    movieId={existingMovieId}
                     monitored={monitored}
                     isAvailable={isAvailable}
-                    queueItem={queueItem}
-                    id={id}
+                    hasMovieFiles={hasMovieFile}
+                    status={status}
                     useLabel={true}
-                    colorImpairedMode={colorImpairedMode}
                   />
               }
             </div>
@@ -337,12 +332,9 @@ AddNewMovieSearchResult.propTypes = {
   isExistingMovie: PropTypes.bool.isRequired,
   isExcluded: PropTypes.bool,
   isSmallScreen: PropTypes.bool.isRequired,
-  id: PropTypes.number,
   monitored: PropTypes.bool.isRequired,
   isAvailable: PropTypes.bool.isRequired,
   movieFile: PropTypes.object,
-  queueItem: PropTypes.object,
-  colorImpairedMode: PropTypes.bool,
   runtime: PropTypes.number.isRequired,
   movieRuntimeFormat: PropTypes.string.isRequired,
   certification: PropTypes.string

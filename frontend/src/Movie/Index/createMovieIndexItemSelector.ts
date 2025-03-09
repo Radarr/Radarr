@@ -14,13 +14,15 @@ function createMovieIndexItemSelector(movieId: number) {
     (movie: Movie, qualityProfile, executingCommands: Command[]) => {
       const isRefreshingMovie = executingCommands.some((command) => {
         return (
-          command.name === REFRESH_MOVIE && command.body.movieId === movieId
+          command.name === REFRESH_MOVIE &&
+          command.body.movieIds?.includes(movieId)
         );
       });
 
       const isSearchingMovie = executingCommands.some((command) => {
         return (
-          command.name === MOVIE_SEARCH && command.body.movieId === movieId
+          command.name === MOVIE_SEARCH &&
+          command.body.movieIds?.includes(movieId)
         );
       });
 

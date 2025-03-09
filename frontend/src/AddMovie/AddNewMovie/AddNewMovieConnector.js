@@ -6,7 +6,6 @@ import { clearAddMovie, lookupMovie } from 'Store/Actions/addMovieActions';
 import { clearMovieFiles, fetchMovieFiles } from 'Store/Actions/movieFileActions';
 import { clearQueueDetails, fetchQueueDetails } from 'Store/Actions/queueActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
-import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import parseUrl from 'Utilities/String/parseUrl';
@@ -17,15 +16,13 @@ function createMapStateToProps() {
     (state) => state.addMovie,
     (state) => state.movies.items.length,
     (state) => state.router.location,
-    createUISettingsSelector(),
-    (addMovie, existingMoviesCount, location, uiSettings) => {
+    (addMovie, existingMoviesCount, location) => {
       const { params } = parseUrl(location.search);
 
       return {
         ...addMovie,
         term: params.term,
-        hasExistingMovies: existingMoviesCount > 0,
-        colorImpairedMode: uiSettings.enableColorImpairedMode
+        hasExistingMovies: existingMoviesCount > 0
       };
     }
   );

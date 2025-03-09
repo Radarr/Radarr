@@ -192,10 +192,9 @@ const importModeSelector = createSelector(
   }
 );
 
-interface InteractiveImportModalContentProps {
+export interface InteractiveImportModalContentProps {
   downloadId?: string;
   movieId?: number;
-  seasonNumber?: number;
   showMovie?: boolean;
   allowMovieChange?: boolean;
   showDelete?: boolean;
@@ -217,7 +216,6 @@ function InteractiveImportModalContent(
   const {
     downloadId,
     movieId,
-    seasonNumber,
     allowMovieChange = true,
     showMovie = true,
     showFilterExistingFiles = false,
@@ -343,7 +341,6 @@ function InteractiveImportModalContent(
         fetchInteractiveImportItems({
           downloadId,
           movieId,
-          seasonNumber,
           folder,
           filterExistingFiles,
         })

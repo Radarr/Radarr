@@ -1,13 +1,23 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Label from 'Components/Label';
 import { kinds, sizes } from 'Helpers/Props';
+import { Kind } from 'Helpers/Props/kinds';
+import { MovieStatus } from 'Movie/Movie';
+import { createQueueItemSelectorForHook } from 'Store/Selectors/createQueueItemSelector';
+import Queue from 'typings/Queue';
 import getQueueStatusText from 'Utilities/Movie/getQueueStatusText';
 import firstCharToUpper from 'Utilities/String/firstCharToUpper';
 import translate from 'Utilities/String/translate';
 import styles from './MovieStatusLabel.css';
 
-function getMovieStatus(status, hasFile, isMonitored, isAvailable, queueItem = false) {
+function getMovieStatus(
+  status: MovieStatus,
+  isMonitored: boolean,
+  isAvailable: boolean,
+  hasFiles: boolean,
+  queueItem: Queue | null = null
+) {
   if (queueItem) {
     const queueStatus = queueItem.status;
     const queueState = queueItem.trackedDownloadStatus;
@@ -18,11 +28,11 @@ function getMovieStatus(status, hasFile, isMonitored, isAvailable, queueItem = f
     }
   }
 
-  if (hasFile && !isMonitored) {
+  if (hasFiles && !isMonitored) {
     return 'availNotMonitored';
   }
 
-  if (hasFile) {
+  if (hasFiles) {
     return 'ended';
   }
 
@@ -30,34 +40,52 @@ function getMovieStatus(status, hasFile, isMonitored, isAvailable, queueItem = f
     return 'deleted';
   }
 
-  if (isAvailable && !isMonitored && !hasFile) {
+  if (isAvailable && !isMonitored && !hasFiles) {
     return 'missingUnmonitored';
   }
 
-  if (isAvailable && !hasFile) {
+  if (isAvailable && !hasFiles) {
     return 'missingMonitored';
   }
 
   return 'continuing';
 }
 
-function MovieStatusLabel(props) {
-  const {
+interface MovieStatusLabelProps {
+  movieId: number;
+  monitored: boolean;
+  isAvailable: boolean;
+  hasMovieFiles: boolean;
+  status: MovieStatus;
+  useLabel?: boolean;
+}
+
+function MovieStatusLabel({
+  movieId,
+  monitored,
+  isAvailable,
+  hasMovieFiles,
+  status,
+  useLabel = false,
+}: MovieStatusLabelProps) {
+  const queueItem = useSelector(createQueueItemSelectorForHook(movieId));
+
+  let movieStatus = getMovieStatus(
     status,
-    hasMovieFiles,
     monitored,
     isAvailable,
-    queueItem,
-    useLabel,
-    colorImpairedMode
-  } = props;
+    hasMovieFiles,
+    queueItem
+  );
 
-  let movieStatus = getMovieStatus(status, hasMovieFiles, monitored, isAvailable, queueItem);
   let statusClass = movieStatus;
 
   if (movieStatus === 'availNotMonitored' || movieStatus === 'ended') {
     movieStatus = 'downloaded';
-  } else if (movieStatus === 'missingMonitored' || movieStatus === 'missingUnmonitored') {
+  } else if (
+    movieStatus === 'missingMonitored' ||
+    movieStatus === 'missingUnmonitored'
+  ) {
     movieStatus = 'missing';
   } else if (movieStatus === 'continuing') {
     movieStatus = 'notAvailable';
@@ -68,7 +96,7 @@ function MovieStatusLabel(props) {
   }
 
   if (useLabel) {
-    let kind = kinds.SUCCESS;
+    let kind: Kind = kinds.SUCCESS;
 
     switch (statusClass) {
       case 'queue':
@@ -93,11 +121,7 @@ function MovieStatusLabel(props) {
     }
 
     return (
-      <Label
-        kind={kind}
-        size={sizes.LARGE}
-        colorImpairedMode={colorImpairedMode}
-      >
+      <Label kind={kind} size={sizes.LARGE}>
         {translate(firstCharToUpper(movieStatus))}
       </Label>
     );
@@ -105,26 +129,13 @@ function MovieStatusLabel(props) {
 
   return (
     <span
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       className={styles[statusClass]}
     >
       {translate(firstCharToUpper(movieStatus))}
     </span>
   );
 }
-
-MovieStatusLabel.propTypes = {
-  status: PropTypes.string.isRequired,
-  hasMovieFiles: PropTypes.bool.isRequired,
-  monitored: PropTypes.bool.isRequired,
-  isAvailable: PropTypes.bool.isRequired,
-  queueItem: PropTypes.object,
-  useLabel: PropTypes.bool,
-  colorImpairedMode: PropTypes.bool
-};
-
-MovieStatusLabel.defaultProps = {
-  useLabel: false,
-  colorImpairedMode: false
-};
 
 export default MovieStatusLabel;

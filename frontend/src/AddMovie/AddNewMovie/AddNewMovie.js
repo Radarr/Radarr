@@ -82,8 +82,7 @@ class AddNewMovie extends Component {
     const {
       error,
       items,
-      hasExistingMovies,
-      colorImpairedMode
+      hasExistingMovies
     } = this.props;
 
     const term = this.state.term;
@@ -150,7 +149,6 @@ class AddNewMovie extends Component {
                     return (
                       <AddNewMovieSearchResultConnector
                         key={item.tmdbId}
-                        colorImpairedMode={colorImpairedMode}
                         {...item}
                       />
                     );
@@ -223,8 +221,7 @@ AddNewMovie.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   hasExistingMovies: PropTypes.bool.isRequired,
   onMovieLookupChange: PropTypes.func.isRequired,
-  onClearMovieLookup: PropTypes.func.isRequired,
-  colorImpairedMode: PropTypes.bool.isRequired
+  onClearMovieLookup: PropTypes.func.isRequired
 };
 
 export default AddNewMovie;

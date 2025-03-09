@@ -1,6 +1,7 @@
 import BlocklistAppState from './BlocklistAppState';
 import CalendarAppState from './CalendarAppState';
 import CommandAppState from './CommandAppState';
+import ExtraFilesAppState from './ExtraFilesAppState';
 import HistoryAppState, { MovieHistoryAppState } from './HistoryAppState';
 import InteractiveImportAppState from './InteractiveImportAppState';
 import MovieBlocklistAppState from './MovieBlocklistAppState';
@@ -53,6 +54,7 @@ export interface CustomFilter {
 export interface AppSectionState {
   isConnected: boolean;
   isReconnecting: boolean;
+  isSidebarVisible: boolean;
   version: string;
   prevVersion?: string;
   dimensions: {
@@ -67,6 +69,7 @@ interface AppState {
   blocklist: BlocklistAppState;
   calendar: CalendarAppState;
   commands: CommandAppState;
+  extraFiles: ExtraFilesAppState;
   history: HistoryAppState;
   interactiveImport: InteractiveImportAppState;
   movieBlocklist: MovieBlocklistAppState;

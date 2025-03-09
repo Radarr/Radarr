@@ -10,7 +10,7 @@ import CollectionConnector from 'Collection/CollectionConnector';
 import NotFound from 'Components/NotFound';
 import Switch from 'Components/Router/Switch';
 import DiscoverMovieConnector from 'DiscoverMovie/DiscoverMovieConnector';
-import MovieDetailsPageConnector from 'Movie/Details/MovieDetailsPageConnector';
+import MovieDetailsPage from 'Movie/Details/MovieDetailsPage';
 import MovieIndex from 'Movie/Index/MovieIndex';
 import CustomFormatSettingsPage from 'Settings/CustomFormats/CustomFormatSettingsPage';
 import DownloadClientSettingsConnector from 'Settings/DownloadClients/DownloadClientSettingsConnector';
@@ -67,7 +67,7 @@ function AppRoutes() {
 
       <Route path="/add/discover" component={DiscoverMovieConnector} />
 
-      <Route path="/movie/:titleSlug" component={MovieDetailsPageConnector} />
+      <Route path="/movie/:titleSlug" component={MovieDetailsPage} />
 
       {/*
         Calendar
