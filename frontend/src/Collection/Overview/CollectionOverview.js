@@ -11,7 +11,7 @@ import IconButton from 'Components/Link/IconButton';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
 import { icons, sizes } from 'Helpers/Props';
 import MovieGenres from 'Movie/MovieGenres';
-import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
+import QualityProfileName from 'Settings/Profiles/Quality/QualityProfileName';
 import dimensions from 'Styles/Variables/dimensions';
 import fonts from 'Styles/Variables/fonts';
 import translate from 'Utilities/String/translate';
@@ -212,7 +212,7 @@ class CollectionOverview extends Component {
                         />
                         <span className={styles.qualityProfileName}>
                           {
-                            <QualityProfileNameConnector
+                            <QualityProfileName
                               qualityProfileId={qualityProfileId}
                             />
                           }

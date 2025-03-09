@@ -52,7 +52,7 @@ import MovieInteractiveSearchModal from 'Movie/Search/MovieInteractiveSearchModa
 import MovieFileEditorTable from 'MovieFile/Editor/MovieFileEditorTable';
 import ExtraFileTable from 'MovieFile/Extras/ExtraFileTable';
 import OrganizePreviewModal from 'Organize/OrganizePreviewModal';
-import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
+import QualityProfileName from 'Settings/Profiles/Quality/QualityProfileName';
 import { executeCommand } from 'Store/Actions/commandActions';
 import {
   clearExtraFiles,
@@ -818,9 +818,7 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
                   size={sizes.LARGE}
                 >
                   <span className={styles.qualityProfileName}>
-                    <QualityProfileNameConnector
-                      qualityProfileId={qualityProfileId}
-                    />
+                    <QualityProfileName qualityProfileId={qualityProfileId} />
                   </span>
                 </InfoLabel>
 
