@@ -71,6 +71,10 @@ import {
   clearQueueDetails,
   fetchQueueDetails,
 } from 'Store/Actions/queueActions';
+import {
+  cancelFetchReleases,
+  clearReleases,
+} from 'Store/Actions/releaseActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import { fetchImportListSchema } from 'Store/Actions/Settings/importLists';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
@@ -462,6 +466,8 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
       dispatch(clearExtraFiles());
       dispatch(clearMovieCredits());
       dispatch(clearQueueDetails());
+      dispatch(cancelFetchReleases());
+      dispatch(clearReleases());
     };
   }, [populate, dispatch]);
 
