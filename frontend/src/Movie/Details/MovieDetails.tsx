@@ -431,6 +431,17 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
 
   const handleKeyUp = useCallback(
     (event: KeyboardEvent) => {
+      if (
+        isOrganizeModalOpen ||
+        isManageMoviesModalOpen ||
+        isInteractiveSearchModalOpen ||
+        isEditMovieModalOpen ||
+        isDeleteMovieModalOpen ||
+        isMovieHistoryModalOpen
+      ) {
+        return;
+      }
+
       if (event.composedPath && event.composedPath().length === 4) {
         if (event.key === 'ArrowLeft' && previousMovie !== undefined) {
           history.push(getPathWithUrlBase(`/movie/${previousMovie.titleSlug}`));
@@ -441,7 +452,17 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
         }
       }
     },
-    [previousMovie, nextMovie, history]
+    [
+      isOrganizeModalOpen,
+      isManageMoviesModalOpen,
+      isInteractiveSearchModalOpen,
+      isEditMovieModalOpen,
+      isDeleteMovieModalOpen,
+      isMovieHistoryModalOpen,
+      previousMovie,
+      nextMovie,
+      history,
+    ]
   );
 
   const populate = useCallback(() => {
