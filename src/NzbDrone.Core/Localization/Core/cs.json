@@ -577,7 +577,6 @@
     "Extension": "Rozšíření",
     "ExtraFileExtensionsHelpText": "Seznam extra souborů k importu oddělených čárkami (.nfo bude importován jako .nfo-orig)",
     "ExtraFileExtensionsHelpTextsExamples": "Příklady: „.sub, .nfo“ nebo „sub, nfo“",
-    "FailedToLoadMovieFromAPI": "Načtení filmu z API se nezdařilo",
     "FeatureRequests": "Žádosti o funkce",
     "FileManagement": "Správa souborů",
     "Filename": "Název souboru",

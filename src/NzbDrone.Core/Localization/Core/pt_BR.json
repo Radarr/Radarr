@@ -112,7 +112,6 @@
     "FileManagement": "Gerenciamento de arquivo",
     "ChangeFileDateHelpText": "Alterar a data do arquivo ao importar/verificar novamente",
     "FeatureRequests": "Solicitação de recursos",
-    "FailedToLoadMovieFromAPI": "Falha ao carregar o filme da API",
     "FailedLoadingSearchResults": "Falha ao carregar os resultados da pesquisa. Tente novamente.",
     "FailedDownloadHandling": "Falha no gerenciamento de download",
     "Failed": "Falhou",

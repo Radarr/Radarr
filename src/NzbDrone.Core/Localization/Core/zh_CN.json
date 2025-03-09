@@ -613,7 +613,6 @@
     "MoveMovieFoldersRenameFolderWarning": "这也将根据设置中的电影文件夹格式重命名电影文件夹。",
     "FocusSearchBox": "聚焦搜索框",
     "Fixed": "已修复",
-    "FailedToLoadMovieFromAPI": "从 API 加载电影失败",
     "ExtraFileExtensionsHelpTextsExamples": "例：'.sub, .nfo' 或者 'sub,nfo'",
     "ExternalUpdater": "{appName}配置为使用外部更新机制",
     "ExportCustomFormat": "导出自定义格式",

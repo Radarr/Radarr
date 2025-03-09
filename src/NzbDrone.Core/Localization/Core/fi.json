@@ -543,7 +543,6 @@
     "ExternalUpdater": "{appName} on määritetty käyttämään ulkoista päivitysratkaisua.",
     "ExtraFileExtensionsHelpTextsExamples": "Esimerkiksi \"sub, .nfo\" tai \"sub,nfo\".",
     "FailedLoadingSearchResults": "Hakutulosten lataus epäonnistui. Yritä uudelleen.",
-    "FailedToLoadMovieFromAPI": "Elokuvan lataus rajapinnasta epäonnistui",
     "FeatureRequests": "Kehitysehdotukset",
     "ChangeFileDateHelpText": "Muuta tiedoston päiväys tuonnin/kirjaston uudelleentarkistuksen yhteydessä.",
     "FileManagement": "Tiedostojen hallinta",

@@ -818,7 +818,6 @@
     "Add": "Hozzáadás",
     "FileNameTokens": "Fájlnév-tokenek",
     "FeatureRequests": "Funkciókérés",
-    "FailedToLoadMovieFromAPI": "Nem sikerült betölteni a filmet az API-ból",
     "ExternalUpdater": "A {appName} egy külső frissítési mechanizmus használatára van konfigurálva",
     "ExcludeTitle": "Kizárja a következőt: {0}? Ez megakadályozza, hogy a {appName} automatikusan hozzáadja a listaszinkronizáláshoz.",
     "MoveMovieFoldersRenameFolderWarning": "Ezzel a filmmappa a filmmappa formátuma szerint is átnevezésre kerül a beállításokban.",

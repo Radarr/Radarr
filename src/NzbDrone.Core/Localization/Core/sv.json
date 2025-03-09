@@ -779,7 +779,6 @@
     "ExternalUpdater": "{appName} är konfigurerad för att använda en extern uppdateringsmekanism",
     "FailedLoadingSearchResults": "Det gick inte att ladda sökresultaten. Försök igen.",
     "ExtraFileExtensionsHelpText": "Kommaseparerad lista med extra filer som ska importeras (.nfo importeras som .nfo-orig)",
-    "FailedToLoadMovieFromAPI": "Det gick inte att ladda filmen från API",
     "FeatureRequests": "Funktionsbegäranden",
     "ChangeFileDateHelpText": "Ändra fildatum vid import / omskanning",
     "FileNames": "Filnamn",

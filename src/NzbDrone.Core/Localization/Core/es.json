@@ -854,7 +854,6 @@
     "EditQualityProfile": "Editar perfil de calidad",
     "ErrorRestoringBackup": "Error restaurando la copia de seguridad",
     "ExternalUpdater": "{appName} está configurado para usar un mecanismo de actualización externo",
-    "FailedToLoadMovieFromAPI": "No se pudo cargar la película desde la API",
     "FeatureRequests": "Peticiones de características",
     "MoveMovieFoldersRenameFolderWarning": "Esto también renombrará la carpeta de películas según el formato de carpeta de películas en la configuración.",
     "IMDb": "IMDb",

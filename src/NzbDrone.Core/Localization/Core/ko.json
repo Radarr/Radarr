@@ -540,7 +540,6 @@
     "ExtraFileExtensionsHelpText": "가져올 추가 파일의 쉼표로 구분 된 목록 (.nfo는 .nfo-orig로 가져옴)",
     "ExtraFileExtensionsHelpTextsExamples": "예: '.sub, .nfo'또는 'sub, nfo'",
     "FailedLoadingSearchResults": "검색 결과를 로드하지 못함 재시도하세요.",
-    "FailedToLoadMovieFromAPI": "API에서 영화를 로드하지 못함",
     "FeatureRequests": "기능 요청",
     "ChangeFileDateHelpText": "가져오기 / 재검색시 파일 날짜 변경",
     "Filename": "파일이름",

@@ -815,7 +815,6 @@
     "EditImportListExclusion": "Modifier l'exclusion de liste",
     "Enabled": "Activé",
     "ExcludeTitle": "Exclure {0} ? {appName} n'importera plus automatiquement ce film des listes de synchronisation.",
-    "FailedToLoadMovieFromAPI": "Erreur lors du chargement du film via l'API",
     "FeatureRequests": "Requêtes de nouvelles fonctionnalités",
     "FileNameTokens": "Jetons de nom de fichier",
     "MoveMovieFoldersRenameFolderWarning": "Ceci va également renommer le dossier du film par le format de dossier défini dans les paramètres.",

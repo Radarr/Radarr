@@ -71,7 +71,6 @@
     "ErrorLoadingContents": "เกิดข้อผิดพลาดในการโหลดเนื้อหา",
     "Extension": "ส่วนขยาย",
     "ExtraFileExtensionsHelpText": "รายการไฟล์พิเศษที่คั่นด้วยจุลภาคที่จะนำเข้า (.nfo จะนำเข้าเป็น. nfo-orig)",
-    "FailedToLoadMovieFromAPI": "ไม่สามารถโหลดภาพยนตร์จาก API",
     "ChangeFileDateHelpText": "เปลี่ยนวันที่ของไฟล์ในการนำเข้า / สแกนใหม่",
     "MoveMovieFoldersRenameFolderWarning": "นอกจากนี้ยังจะเปลี่ยนชื่อโฟลเดอร์ภาพยนตร์ตามรูปแบบโฟลเดอร์ภาพยนตร์ในการตั้งค่า",
     "FollowPerson": "ติดตามบุคคล",

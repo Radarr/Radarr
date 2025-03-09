@@ -541,7 +541,6 @@
     "ExtraFileExtensionsHelpText": "רשימה מופרדת באמצעות פסיקים של קבצים נוספים לייבוא (.nfo יובא כ- nfo-orig)",
     "ExtraFileExtensionsHelpTextsExamples": "דוגמאות: '.sub, .nfo' או 'sub, nfo'",
     "FailedLoadingSearchResults": "טעינת תוצאות החיפוש נכשלה, נסה שוב.",
-    "FailedToLoadMovieFromAPI": "טעינת הסרט נכשלה מה- API נכשלה",
     "FeatureRequests": "בקשות תכונה",
     "ChangeFileDateHelpText": "שנה את תאריך הקובץ בעת הייבוא / סריקה מחדש",
     "Filename": "שם קובץ",
