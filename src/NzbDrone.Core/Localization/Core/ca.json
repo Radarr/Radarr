@@ -492,7 +492,6 @@
     "Failed": "S'ha produït un error",
     "FailedDownloadHandling": "No s'ha pogut gestionar la baixada",
     "FailedLoadingSearchResults": "No s'han pogut carregar els resultats de la cerca, torneu-ho a provar.",
-    "FailedToLoadMovieFromAPI": "No s'ha pogut carregar la pel·lícula des de l'API",
     "FeatureRequests": "Sol·licitud de noves característiques",
     "ChangeFileDateHelpText": "Canvia la data del fitxer en importar/reescanejar",
     "FileManagement": "Gestió del fitxers",

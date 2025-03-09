@@ -676,7 +676,6 @@
     "ExternalUpdater": "{appName} este configurat pentru a utiliza un mecanism de actualizare extern",
     "ExtraFileExtensionsHelpText": "Lista separată prin virgulă a fișierelor suplimentare de importat (.nfo va fi importat ca .nfo-orig)",
     "ExtraFileExtensionsHelpTextsExamples": "Exemple: „.sub, .nfo” sau „sub, nfo”",
-    "FailedToLoadMovieFromAPI": "Nu s-a putut încărca filmul din API",
     "FeatureRequests": "Cereri de caracteristici",
     "ChangeFileDateHelpText": "Schimbați data fișierului la import / rescanare",
     "FileNames": "Numele fișierelor",

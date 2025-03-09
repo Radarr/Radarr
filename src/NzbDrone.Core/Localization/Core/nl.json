@@ -795,7 +795,6 @@
     "HomePage": "Startpagina",
     "FileNameTokens": "Bestandsnaam Tokens",
     "FeatureRequests": "Functieverzoeken",
-    "FailedToLoadMovieFromAPI": "Kan film niet laden vanuit de API",
     "ExternalUpdater": "{appName} is geconfigureerd om een extern update mechanisme te gebruiken",
     "ExcludeTitle": "{0} uitzonderen? Dit zal voorkomen dat {appName} deze automatisch toevoegt via lijst synchronisatie.",
     "ErrorRestoringBackup": "Fout bij het herstellen van de back-up",

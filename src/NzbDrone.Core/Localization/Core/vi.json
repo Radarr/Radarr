@@ -732,7 +732,6 @@
     "ExternalUpdater": "{appName} được định cấu hình để sử dụng cơ chế cập nhật bên ngoài",
     "ExtraFileExtensionsHelpText": "Danh sách các tệp bổ sung cần nhập được phân tách bằng dấu phẩy (.nfo sẽ được nhập dưới dạng .nfo-orig)",
     "ExtraFileExtensionsHelpTextsExamples": "Ví dụ: '.sub, .nfo' hoặc 'sub, nfo'",
-    "FailedToLoadMovieFromAPI": "Không tải được phim từ API",
     "FeatureRequests": "Yêu cầu tính năng",
     "FileManagement": "Quản lý tệp",
     "Filename": "Tên tệp",

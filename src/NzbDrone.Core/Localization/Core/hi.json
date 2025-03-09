@@ -294,7 +294,6 @@
     "FailedDownloadHandling": "डाउनलोड हैंडलिंग विफल",
     "Failed": "अनुत्तीर्ण होना",
     "ExtraFileExtensionsHelpTextsExamples": "उदाहरण: '.sub, .nfo' या 'सब, nfo'",
-    "FailedToLoadMovieFromAPI": "API से मूवी लोड करने में विफल",
     "HaveNotAddedMovies": "आपने अभी तक कोई फ़िल्में नहीं जोड़ी हैं, क्या आप पहले कुछ या सभी फ़िल्में आयात करना चाहते हैं?",
     "HomePage": "मुख पृष्ठ",
     "ImportIncludeQuality": "सुनिश्चित करें कि आपकी फ़ाइल में उनके फ़ाइल नाम में गुणवत्ता शामिल है। जैसे {0}",

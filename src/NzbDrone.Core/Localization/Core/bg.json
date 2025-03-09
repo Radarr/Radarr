@@ -227,7 +227,6 @@
     "ExtraFileExtensionsHelpText": "Списък с допълнителни файлове за импортиране, разделени със запетая (.nfo ще бъде импортиран като .nfo-orig)",
     "ExtraFileExtensionsHelpTextsExamples": "Примери: '.sub, .nfo' или 'sub, nfo'",
     "FailedLoadingSearchResults": "Неуспешно зареждане на резултатите от търсенето, моля, опитайте отново.",
-    "FailedToLoadMovieFromAPI": "Зареждането на филм от API не бе успешно",
     "FeatureRequests": "Заявки за функции",
     "ChangeFileDateHelpText": "Променете датата на файла при импортиране / пресканиране",
     "FileManagement": "Управление на файлове",

@@ -602,7 +602,6 @@
     "FileManagement": "Управление файлами",
     "ChangeFileDateHelpText": "Заменить дату файла при импорте/сканировании",
     "FeatureRequests": "Запросы функций",
-    "FailedToLoadMovieFromAPI": "Не удалось загрузить фильмы из API",
     "FailedLoadingSearchResults": "Не удалось загрузить результат поиска, попробуйте еще раз.",
     "Failed": "Неудачно",
     "ExtraFileExtensionsHelpTextsExamples": "Например: '.sub, .nfo' или 'sub,nfo'",

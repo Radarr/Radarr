@@ -732,7 +732,6 @@
     "ExternalUpdater": "{appName}, harici bir güncelleme mekanizması kullanacak şekilde yapılandırıldı",
     "ExtraFileExtensionsHelpText": "İçe aktarılacak ekstra dosyaların virgülle ayrılmış listesi (.nfo, .nfo-orig olarak içe aktarılacaktır)",
     "FailedLoadingSearchResults": "Arama sonuçları yüklenemedi, lütfen tekrar deneyin.",
-    "FailedToLoadMovieFromAPI": "API'den film yüklenemedi",
     "FeatureRequests": "Özellik talepleri",
     "ChangeFileDateHelpText": "İçe aktarma/yeniden tarama sırasında dosya tarihini değiştir",
     "FileNames": "Dosya Adları",

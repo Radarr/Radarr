@@ -264,7 +264,6 @@
     "ErrorRestoringBackup": "Помилка відновлення резервної копії",
     "Events": "Події",
     "FailedLoadingSearchResults": "Не вдалося завантажити результати пошуку, повторіть спробу.",
-    "FailedToLoadMovieFromAPI": "Не вдалося завантажити фільм із API",
     "ChangeFileDateHelpText": "Змінити дату файлу під час імпорту/повторного сканування",
     "Files": "Файли",
     "Filter": "Фільтр",

@@ -546,7 +546,6 @@
     "ExtraFileExtensionsHelpText": "Λίστα πρόσθετων αρχείων που διαχωρίζονται με κόμμα για εισαγωγή (το .nfo θα εισαχθεί ως .nfo-orig)",
     "ExtraFileExtensionsHelpTextsExamples": "Παραδείγματα: «.sub, .nfo» ή «sub, nfo»",
     "FailedLoadingSearchResults": "Αποτυχία φόρτωσης αποτελεσμάτων αναζήτησης, δοκιμάστε ξανά.",
-    "FailedToLoadMovieFromAPI": "Αποτυχία φόρτωσης ταινίας από το API",
     "FeatureRequests": "Αιτήματα χαρακτηριστικών",
     "ChangeFileDateHelpText": "Αλλαγή ημερομηνίας αρχείου κατά την εισαγωγή / επανασύνδεση",
     "FileNames": "Ονόματα αρχείων",

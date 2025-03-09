@@ -554,7 +554,6 @@
     "ExtraFileExtensionsHelpText": "Rozdzielana przecinkami lista dodatkowych plików do zaimportowania (.nfo zostanie zaimportowane jako .nfo-orig)",
     "ExtraFileExtensionsHelpTextsExamples": "Przykłady: „.sub, .nfo” lub „sub, nfo”",
     "FailedLoadingSearchResults": "Nie udało się załadować wyników wyszukiwania, spróbuj ponownie.",
-    "FailedToLoadMovieFromAPI": "Nie udało się załadować filmu z interfejsu API",
     "FeatureRequests": "Żądania funkcji",
     "FileManagement": "Zarządzanie plikami",
     "Filename": "Nazwa pliku",

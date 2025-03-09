@@ -878,7 +878,6 @@
     "HomePage": "Hauptseite",
     "MoveMovieFoldersRenameFolderWarning": "Dies wird auch den Filmordner nach dem Filmordnerformat aus den Einstellungen umbenennen.",
     "FeatureRequests": "Feature Anfragen",
-    "FailedToLoadMovieFromAPI": "Film konnte nicht über die API geladen werden",
     "ExternalUpdater": "{appName} ist so konfiguriert, dass es einen externen Aktualisierungsmechanismus verwendet",
     "ExcludeTitle": "{0} ausschließen? Dies wird {appName} daran hindern, es automatisch beim Listen synchronisieren hinzuzufügen.",
     "ErrorRestoringBackup": "Fehler beim Wiederherstellen der Sicherung",

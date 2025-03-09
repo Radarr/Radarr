@@ -435,7 +435,6 @@
     "FileManagement": "إدارة الملفات",
     "ChangeFileDateHelpText": "تغيير تاريخ الملف عند الاستيراد / إعادة الفحص",
     "FeatureRequests": "طلبات مخصصة",
-    "FailedToLoadMovieFromAPI": "فشل تحميل الفيلم من API",
     "FailedLoadingSearchResults": "فشل تحميل نتائج البحث ، يرجى المحاولة مرة أخرى.",
     "FailedDownloadHandling": "فشل معالجة التنزيل",
     "Failed": "فشل",
