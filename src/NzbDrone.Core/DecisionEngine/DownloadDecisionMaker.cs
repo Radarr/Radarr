@@ -9,6 +9,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Download.Aggregation;
+using NzbDrone.Core.History;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
@@ -29,13 +30,15 @@ namespace NzbDrone.Core.DecisionEngine
         private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly IRemoteMovieAggregationService _aggregationService;
         private readonly Logger _logger;
+        private readonly IHistoryRepository _historyRepository;
 
         public DownloadDecisionMaker(IEnumerable<IDownloadDecisionEngineSpecification> specifications,
                                      IParsingService parsingService,
                                      IConfigService configService,
                                      ICustomFormatCalculationService formatCalculator,
                                      IRemoteMovieAggregationService aggregationService,
-                                     Logger logger)
+                                     Logger logger,
+                                     IHistoryRepository historyRepository)
         {
             _specifications = specifications;
             _parsingService = parsingService;
@@ -43,6 +46,7 @@ namespace NzbDrone.Core.DecisionEngine
             _formatCalculator = formatCalculator;
             _aggregationService = aggregationService;
             _logger = logger;
+            _historyRepository = historyRepository;
         }
 
         public List<DownloadDecision> GetRssDecision(List<ReleaseInfo> reports, bool pushedRelease = false)
@@ -94,10 +98,31 @@ namespace NzbDrone.Core.DecisionEngine
                             remoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(remoteMovie, remoteMovie.Release.Size);
                             remoteMovie.CustomFormatScore = remoteMovie?.Movie?.QualityProfile?.CalculateCustomFormatScore(remoteMovie.CustomFormats) ?? 0;
 
+                            var movieHistorie = _historyRepository.GetByMovieId(remoteMovie.Movie.Id, null).FirstOrDefault();
+
+                            var historyIsBetter = false;
+
+                            if (movieHistorie != null)
+                            {
+                                var customFormats = _formatCalculator.ParseCustomFormat(movieHistorie, movieHistorie.Movie);
+                                var oldScore = movieHistorie.Movie?.QualityProfile?.CalculateCustomFormatScore(customFormats) ?? 0;
+
+                                if (oldScore > remoteMovie.CustomFormatScore)
+                                {
+                                    _logger.Trace("Old Custom Format Score of '{0}' while new score was '{1}' calculated for '{2}'", oldScore, remoteMovie.CustomFormatScore, report.Title);
+                                    decision = new DownloadDecision(remoteMovie, new DownloadRejection(DownloadRejectionReason.HistoryCustomFormatScore, "The latest history score is higher."));
+                                    historyIsBetter = true;
+                                }
+                            }
+
                             _logger.Trace("Custom Format Score of '{0}' [{1}] calculated for '{2}'", remoteMovie.CustomFormatScore, remoteMovie.CustomFormats?.ConcatToString(), report.Title);
 
                             remoteMovie.DownloadAllowed = remoteMovie.Movie != null;
-                            decision = GetDecisionForReport(remoteMovie, searchCriteria);
+
+                            if (!historyIsBetter)
+                            {
+                                decision = GetDecisionForReport(remoteMovie, searchCriteria);
+                            }
                         }
                     }
 
