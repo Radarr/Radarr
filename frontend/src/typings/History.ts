@@ -35,6 +35,7 @@ export interface GrabbedHistoryData {
 
 export interface DownloadFailedHistory {
   message: string;
+  indexer?: string;
 }
 
 export interface DownloadFolderImportedHistory {
