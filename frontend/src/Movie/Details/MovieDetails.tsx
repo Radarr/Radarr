@@ -210,7 +210,6 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
   const { isSmallScreen } = useSelector(createDimensionsSelector());
 
   const commands = useSelector(createCommandsSelector());
-  const isSaving = useSelector((state: AppState) => state.movies.isSaving);
 
   const { isRefreshing, isRenaming, isSearching } = useMemo(() => {
     const movieRefreshingCommand = findCommand(commands, {
@@ -551,6 +550,7 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
     isAvailable,
     images,
     tags,
+    isSaving = false,
   } = movie;
 
   const { sizeOnDisk = 0 } = statistics;
