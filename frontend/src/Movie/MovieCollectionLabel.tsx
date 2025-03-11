@@ -4,6 +4,7 @@ import MonitorToggleButton from 'Components/MonitorToggleButton';
 import { toggleCollectionMonitored } from 'Store/Actions/movieCollectionActions';
 import { createCollectionSelectorForHook } from 'Store/Selectors/createCollectionSelector';
 import MovieCollection from 'typings/MovieCollection';
+import translate from 'Utilities/String/translate';
 import styles from './MovieCollectionLabel.css';
 
 interface MovieCollectionLabelProps {
@@ -16,7 +17,8 @@ function MovieCollectionLabel({ tmdbId }: MovieCollectionLabelProps) {
     monitored,
     title,
     isSaving = false,
-  } = useSelector(createCollectionSelectorForHook(tmdbId)) as MovieCollection;
+  } = useSelector(createCollectionSelectorForHook(tmdbId)) ||
+  ({} as MovieCollection);
 
   const dispatch = useDispatch();
 
@@ -28,6 +30,10 @@ function MovieCollectionLabel({ tmdbId }: MovieCollectionLabelProps) {
     },
     [id, dispatch]
   );
+
+  if (!id) {
+    return translate('Unknown');
+  }
 
   return (
     <div>
