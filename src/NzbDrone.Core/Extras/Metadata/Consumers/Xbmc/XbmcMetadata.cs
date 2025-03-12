@@ -355,6 +355,23 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                             video.Add(new XElement("durationinseconds", Math.Round(movieFile.MediaInfo.RunTime.TotalSeconds)));
                         }
 
+                        if (movieFile.MediaInfo.VideoHdrFormat is HdrFormat.DolbyVision or HdrFormat.DolbyVisionHdr10 or HdrFormat.DolbyVisionHdr10Plus or HdrFormat.DolbyVisionHlg or HdrFormat.DolbyVisionSdr)
+                        {
+                            video.Add(new XElement("hdrtype", "dolbyvision"));
+                        }
+                        else if (movieFile.MediaInfo.VideoHdrFormat is HdrFormat.Hdr10 or HdrFormat.Hdr10Plus or HdrFormat.Pq10)
+                        {
+                            video.Add(new XElement("hdrtype", "hdr10"));
+                        }
+                        else if (movieFile.MediaInfo.VideoHdrFormat == HdrFormat.Hlg10)
+                        {
+                            video.Add(new XElement("hdrtype", "hlg"));
+                        }
+                        else if (movieFile.MediaInfo.VideoHdrFormat == HdrFormat.None)
+                        {
+                            video.Add(new XElement("hdrtype", ""));
+                        }
+
                         streamDetails.Add(video);
 
                         var audio = new XElement("audio");
