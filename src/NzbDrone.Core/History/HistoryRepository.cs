@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
@@ -18,6 +19,7 @@ namespace NzbDrone.Core.History
         List<MovieHistory> GetByMovieId(int movieId, MovieHistoryEventType? eventType);
         void DeleteForMovies(List<int> movieIds);
         MovieHistory MostRecentForMovie(int movieId);
+        MovieHistory MostRecentForMovieInEventCollection(int movieId, ReadOnlyCollection<MovieHistoryEventType> eventTypesToIgnore);
         List<MovieHistory> Since(DateTime date, MovieHistoryEventType? eventType);
         PagingSpec<MovieHistory> GetPaged(PagingSpec<MovieHistory> pagingSpec, int[] languages, int[] qualities);
     }
@@ -78,6 +80,11 @@ namespace NzbDrone.Core.History
         public MovieHistory MostRecentForMovie(int movieId)
         {
             return Query(x => x.MovieId == movieId).MaxBy(h => h.Date);
+        }
+
+        public MovieHistory MostRecentForMovieInEventCollection(int movieId, ReadOnlyCollection<MovieHistoryEventType> eventTypes)
+        {
+            return Query(x => x.MovieId == movieId).Where(x => eventTypes.Contains(x.EventType)).MaxBy(h => h.Date);
         }
 
         public List<MovieHistory> Since(DateTime date, MovieHistoryEventType? eventType)

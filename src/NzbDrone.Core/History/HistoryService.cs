@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using NLog;
@@ -21,6 +22,7 @@ namespace NzbDrone.Core.History
         QualityModel GetBestQualityInHistory(QualityProfile profile, int movieId);
         PagingSpec<MovieHistory> Paged(PagingSpec<MovieHistory> pagingSpec, int[] languages, int[] qualities);
         MovieHistory MostRecentForMovie(int movieId);
+        MovieHistory MostRecentForMovieInEventCollection(int movieId, ReadOnlyCollection<MovieHistoryEventType> eventTypes);
         MovieHistory MostRecentForDownloadId(string downloadId);
         MovieHistory Get(int historyId);
         List<MovieHistory> Find(string downloadId, MovieHistoryEventType eventType);
@@ -57,6 +59,11 @@ namespace NzbDrone.Core.History
         public MovieHistory MostRecentForMovie(int movieId)
         {
             return _historyRepository.MostRecentForMovie(movieId);
+        }
+
+        public MovieHistory MostRecentForMovieInEventCollection(int movieId, ReadOnlyCollection<MovieHistoryEventType> eventTypes)
+        {
+            return _historyRepository.MostRecentForMovieInEventCollection(movieId, eventTypes);
         }
 
         public MovieHistory MostRecentForDownloadId(string downloadId)
