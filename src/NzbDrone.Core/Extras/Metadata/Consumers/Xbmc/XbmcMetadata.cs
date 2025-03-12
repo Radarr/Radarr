@@ -355,41 +355,21 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                             video.Add(new XElement("durationinseconds", Math.Round(movieFile.MediaInfo.RunTime.TotalSeconds)));
                         }
 
-                        // hdrtype attribute - if hybrid DV + something else, default to dolbyvision
-                        //
-                        // Possible values:
-                        // None,
-                        // Pq10,
-                        // Hdr10,
-                        // Hdr10Plus,
-                        // Hlg10,
-                        // DolbyVision,
-                        // DolbyVisionHdr10,
-                        // DolbyVisionSdr,
-                        // DolbyVisionHlg,
-                        // DolbyVisionHdr10Plus
-
-                        if (movieFile.MediaInfo.VideoHdrFormat == HdrFormat.None)
-                        {
-                            video.Add(new XElement("hdrtype", ""));
-                        }
-                        else if (movieFile.MediaInfo.VideoHdrFormat == HdrFormat.Hdr10 ||
-                            movieFile.MediaInfo.VideoHdrFormat == HdrFormat.Hdr10Plus ||
-                            movieFile.MediaInfo.VideoHdrFormat == HdrFormat.Pq10)
-                        {
-                            video.Add(new XElement("hdrtype", "hdr10"));
-                        }
-                        else if (movieFile.MediaInfo.VideoHdrFormat == HdrFormat.DolbyVision ||
-                            movieFile.MediaInfo.VideoHdrFormat == HdrFormat.DolbyVisionHdr10 ||
-                            movieFile.MediaInfo.VideoHdrFormat == HdrFormat.DolbyVisionHdr10Plus ||
-                            movieFile.MediaInfo.VideoHdrFormat == HdrFormat.DolbyVisionHlg ||
-                            movieFile.MediaInfo.VideoHdrFormat == HdrFormat.DolbyVisionSdr)
+                        if (movieFile.MediaInfo.VideoHdrFormat is HdrFormat.DolbyVision or HdrFormat.DolbyVisionHdr10 or HdrFormat.DolbyVisionHdr10Plus or HdrFormat.DolbyVisionHlg or HdrFormat.DolbyVisionSdr)
                         {
                             video.Add(new XElement("hdrtype", "dolbyvision"));
+                        }
+                        else if (movieFile.MediaInfo.VideoHdrFormat is HdrFormat.Hdr10 or HdrFormat.Hdr10Plus or HdrFormat.Pq10)
+                        {
+                            video.Add(new XElement("hdrtype", "hdr10"));
                         }
                         else if (movieFile.MediaInfo.VideoHdrFormat == HdrFormat.Hlg10)
                         {
                             video.Add(new XElement("hdrtype", "hlg"));
+                        }
+                        else if (movieFile.MediaInfo.VideoHdrFormat == HdrFormat.None)
+                        {
+                            video.Add(new XElement("hdrtype", ""));
                         }
 
                         streamDetails.Add(video);
