@@ -1278,5 +1278,7 @@
     "ImportListsTraktSettingsCertification": "Certificação",
     "ImportListsTraktSettingsGenres": "Gêneros",
     "ImportListsTraktSettingsRating": "Classificação",
-    "AutoTaggingSpecificationGenre": "Gênero(s)"
+    "AutoTaggingSpecificationGenre": "Gênero(s)",
+    "AddANewPath": "Adicionar um novo caminho",
+    "AddCustomFilter": "Adicionar Filtro Personalizado"
 }

@@ -1108,5 +1108,8 @@
     "Mixed": "Fast",
     "ImportListsTraktSettingsCertification": "Certifikation",
     "ImportListsTraktSettingsGenres": "Genrer",
-    "ImportListsTraktSettingsRating": "Bedømmelse"
+    "ImportListsTraktSettingsRating": "Bedømmelse",
+    "AddANewPath": "Tilføj en ny sti",
+    "AddCustomFilter": "Tilføj tilpasset filter",
+    "Tba": "Afventer"
 }

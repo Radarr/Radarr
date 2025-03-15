@@ -1311,5 +1311,7 @@
     "Mixed": "Виправлено",
     "ImportListsTraktSettingsRating": "Рейтинг",
     "ImportListsTraktSettingsCertification": "Віковий рейтинг",
-    "ImportListsTraktSettingsGenres": "Жанри"
+    "ImportListsTraktSettingsGenres": "Жанри",
+    "AddANewPath": "Додати новий шлях",
+    "AddCustomFilter": "Додати власний фільтр"
 }

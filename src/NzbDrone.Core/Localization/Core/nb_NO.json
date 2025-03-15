@@ -334,5 +334,7 @@
     "AddDownloadClientImplementation": "Ny Nedlastingsklient - {implementationName}",
     "AddImportListImplementation": "Legg til importliste - {implementationName}",
     "ImportListsTraktSettingsCertification": "Sertifisering",
-    "ImportListsTraktSettingsRating": "Vurdering"
+    "ImportListsTraktSettingsRating": "Vurdering",
+    "AddANewPath": "Legg til ny filsti",
+    "AddCustomFilter": "Legg til eget filter"
 }

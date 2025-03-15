@@ -1244,5 +1244,7 @@
     "Mixed": "Σταθερός",
     "ImportListsTraktSettingsCertification": "Πιστοποιητικό",
     "ImportListsTraktSettingsGenres": "Είδη",
-    "ImportListsTraktSettingsRating": "Ακροαματικότητα"
+    "ImportListsTraktSettingsRating": "Ακροαματικότητα",
+    "ErrorLoadingContent": "Υπήρξε ένα σφάλμα κατά τη φόρτωση του αρχείου",
+    "Tba": "TBA"
 }

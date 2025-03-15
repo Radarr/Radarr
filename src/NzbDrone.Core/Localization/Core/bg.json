@@ -1197,5 +1197,8 @@
     "Theme": "Тема",
     "ImportListsTraktSettingsCertification": "Сертифициране",
     "ImportListsTraktSettingsGenres": "Жанрове",
-    "ImportListsTraktSettingsRating": "Оценки"
+    "ImportListsTraktSettingsRating": "Оценки",
+    "AddCustomFilter": "Добави персонализиран филтър",
+    "AddANewPath": "Добави нов път",
+    "Tba": "TBA"
 }

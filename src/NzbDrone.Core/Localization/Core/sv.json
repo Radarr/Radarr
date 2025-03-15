@@ -1110,5 +1110,8 @@
     "Mixed": "Fast",
     "ImportListsTraktSettingsGenres": "Genrer",
     "ImportListsTraktSettingsCertification": "Certifikation",
-    "ImportListsTraktSettingsRating": "Betyg"
+    "ImportListsTraktSettingsRating": "Betyg",
+    "AddCustomFilter": "Lägg till anpassat filter",
+    "AddANewPath": "Lägg till ny sökväg",
+    "Tba": "TBA"
 }
