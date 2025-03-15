@@ -1256,5 +1256,9 @@
     "Mixed": "Opgelost",
     "ImportListsTraktSettingsCertification": "Certificatie",
     "ImportListsTraktSettingsRating": "Score",
-    "ImportListsTraktSettingsGenres": "Genres"
+    "ImportListsTraktSettingsGenres": "Genres",
+    "AddANewPath": "Voeg een nieuw pad toe",
+    "AddCustomFilter": "Aangepaste Filter Toevoegen",
+    "ErrorLoadingContent": "Er ging iets fout bij het laden van dit item",
+    "Tba": "NNB"
 }

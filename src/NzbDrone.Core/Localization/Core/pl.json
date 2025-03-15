@@ -1201,5 +1201,8 @@
     "ImportListsTraktSettingsGenres": "Gatunki",
     "True": "Prawda",
     "Umask": "Umask",
-    "Or": "lub"
+    "Or": "lub",
+    "AddANewPath": "Dodaj nową ścieżkę",
+    "AddCustomFilter": "Dodaj niestandardowy filtr",
+    "Tba": "Do ogłoszenia"
 }

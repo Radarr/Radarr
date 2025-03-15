@@ -1168,5 +1168,6 @@
     "ApiKeyValidationHealthCheckMessage": "Te rugăm să actualizezi cheia API astfel încât să aibă cel puțin {length} caractere. Poți face acest lucru din setări sau din fișierul de configurare",
     "ImportListsTraktSettingsCertification": "Certificare",
     "ImportListsTraktSettingsGenres": "Genuri",
-    "ImportListsTraktSettingsRating": "Recenzii"
+    "ImportListsTraktSettingsRating": "Recenzii",
+    "AddCustomFilter": "Adaugă filtru personalizat"
 }

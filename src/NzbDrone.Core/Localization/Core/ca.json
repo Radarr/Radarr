@@ -1428,5 +1428,11 @@
     "DownloadClientSettingsAddPaused": "Afegeix pausats",
     "ImportListsTraktSettingsCertification": "Certificació",
     "ImportListsTraktSettingsRating": "Valoració",
-    "ImportListsTraktSettingsGenres": "Gèneres"
+    "ImportListsTraktSettingsGenres": "Gèneres",
+    "AddANewPath": "Afegeix una nova ruta",
+    "AddCustomFilter": "Afegeix un filtre personalitzat",
+    "FilterContains": "conté",
+    "FilterEqual": "igual",
+    "FilterIs": "és",
+    "Tba": "Pendent el seu anunci"
 }

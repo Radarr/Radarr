@@ -1129,5 +1129,7 @@
     "Mixed": "תוקן",
     "ImportListsTraktSettingsCertification": "תעודה",
     "ImportListsTraktSettingsGenres": "ז'אנרים",
-    "ImportListsTraktSettingsRating": "דירוגים"
+    "ImportListsTraktSettingsRating": "דירוגים",
+    "AddANewPath": "הוסף נתיב חדש",
+    "AddCustomFilter": "הוספת פילטר מותאם"
 }

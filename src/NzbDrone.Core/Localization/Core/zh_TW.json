@@ -288,5 +288,8 @@
     "AutoTaggingSpecificationRootFolder": "根目錄資料夾",
     "CustomFormatsSpecificationLanguage": "語言",
     "CustomFormatsSpecificationResolution": "解析度",
-    "ImportListsTraktSettingsRating": "評分"
+    "ImportListsTraktSettingsRating": "評分",
+    "AddANewPath": "新增新的路徑",
+    "AddCustomFilter": "新增自定義過濾器",
+    "Tba": "待確定"
 }
