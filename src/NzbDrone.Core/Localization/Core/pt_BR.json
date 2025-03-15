@@ -1928,7 +1928,7 @@
     "ImportListsTraktSettingsUserListTypeWatched": "Lista de Assistidos do Usuário",
     "ImportListsTraktSettingsUserListUsernameHelpText": "Nome de usuário da lista a importar (deixe em branco para usar o Usuário autenticado)",
     "ImportListsTraktSettingsWatchListSorting": "Classificação da Lista para Assistir",
-    "DownloadClientUTorrentProviderMessage": "Como o uTorrent é conhecido por CryptoWare, malware e anúncios, sugerimos mudar para um cliente melhor como Qbittorrent, Deluge ou ruTorrent.",
+    "DownloadClientUTorrentProviderMessage": "O uTorrent tem um histórico de incluir criptos mineradores, malware e anúncios. Recomendamos fortemente que você escolha um cliente diferente.",
     "BlocklistedAt": "Lista de bloqueio em {date}",
     "FailedAt": "Falhou em {date}",
     "GrabbedAt": "Obtido em {date}",

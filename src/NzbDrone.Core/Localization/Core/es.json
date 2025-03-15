@@ -1931,6 +1931,6 @@
     "FailedAt": "Error el {date}",
     "GrabbedAt": "Capturado el {date}",
     "ReleaseSource": "Origen del lanzamiento",
-    "DownloadClientUTorrentProviderMessage": "Debido a que uTorrent es conocido por el cryptoware, el malware y la publicidad, sugerimos cambiar a un cliente mejor como qBittorrent, Deluge o ruTorrent.",
+    "DownloadClientUTorrentProviderMessage": "uTorrent tiene un amplio historial de incluir criptomineros, malware y publicidad, por lo que recomendamos encarecidamente que elijas un cliente diferente.",
     "EditMovieModalHeader": "Editar - {title}"
 }
