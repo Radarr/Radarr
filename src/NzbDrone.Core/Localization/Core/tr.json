@@ -1928,7 +1928,7 @@
     "ImportListsTraktSettingsUserListUsernameHelpText": "İçe aktarılacak Liste için Kullanıcı Adı (Yetkili Kullanıcı için boş bırakın)",
     "ImportListsTraktSettingsWatchListSorting": "İzleme Listesi Sıralaması",
     "ImportListsTraktSettingsWatchListSortingHelpText": "Liste Türü İzleme ise, listeyi sıralama sırasını seçin",
-    "DownloadClientUTorrentProviderMessage": "uTorrent, kripto yazılımlar, kötü amaçlı yazılımlar ve reklamlarla tanındığı için qBittorrent, Deluge veya ruTorrent gibi daha iyi bir istemciye geçmenizi öneririz.",
+    "DownloadClientUTorrentProviderMessage": "uTorrent'in kripto para madenciliği, kötü amaçlı yazılım ve reklamlar içerme geçmişi vardır, bu nedenle farklı bir istemci seçmenizi önemle tavsiye ederiz.",
     "BlocklistedAt": "{date} tarihinde engellendi",
     "FailedAt": "{date} tarihinde başarısız oldu",
     "GrabbedAt": "{date} tarihinde yakalandı",

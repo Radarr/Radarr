@@ -1927,7 +1927,7 @@
     "ImportListsTraktSettingsUserListTypeWatched": "Käyttäjän katseltujen lista",
     "ImportListsTraktSettingsUserListUsernameHelpText": "Listan tuontiin käytettävä käyttäjänimi. Käytä tunnistautunutta käyttäjää jättämällä tyhjäksi.",
     "ImportListsTraktSettingsWatchListSorting": "Katselulistan järjestys",
-    "DownloadClientUTorrentProviderMessage": "Koska uTorrent on tunnettu crypto-, haitta- and mainossisällöstä ja sovelluksista, suosittelemme esimerkiksi qBittorrentin, Delugen ja ruTorrentin kaltaisia parempia sovelluksia.",
+    "DownloadClientUTorrentProviderMessage": "Koska uTorrent on tunnettu crypto-, haitta- and mainossisällöstä ja sovelluksista, suosittelemme qBittorrentin, Delugen ja ruTorrentin kaltaisten vaihtoehtojen käyttämistä.",
     "ImportListsTraktSettingsWatchListSortingHelpText": "Jos \"Listan tyyppi\" on \"Katselu\", valitse listan järjestysperuste.",
     "BlocklistedAt": "Estetty {date}",
     "FailedAt": "Epäonnistui {date}",
