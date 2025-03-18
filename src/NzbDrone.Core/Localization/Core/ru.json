@@ -1894,7 +1894,7 @@
     "ShowTraktRating": "Показывать рейтинг в Trakt",
     "MovieRequested": "Фильм запрошен",
     "NoCustomFormatsFound": "Нет пользовательских форматов",
-    "DownloadClientUTorrentProviderMessage": "Мы советуем использовать клиенты вроде qBittorrent, Deluge или ruTorrent, т.к. uTorrent известен как программа-шифровальщик и в целом вредоносное ПО.",
+    "DownloadClientUTorrentProviderMessage": "Мы настоятельно советуем не использовать uTorrent, т.к. он известен как программа-шифровальщик и в целом вредоносное ПО.",
     "ExistsInLibrary": "Существует в библиотеке",
     "Fallback": "Резервный",
     "FavoriteFolderAdd": "Добавить избранную папку",
@@ -1960,5 +1960,9 @@
     "Umask750Description": "{octal} - Владелец (запись), Группы (чтение)",
     "Umask755Description": "{octal} - Владелец (запись), остальные (чтение)",
     "Umask770Description": "{octal} - Владелец и группа - запись",
-    "Umask775Description": "{octal} - Владелец и группа - запись, другое - чтение"
+    "Umask775Description": "{octal} - Владелец и группа - запись, другое - чтение",
+    "GrabbedAt": "Получено {date}",
+    "BlocklistedAt": "Заблокировано {date}",
+    "FailedAt": "Ошибка {date}",
+    "SelectMovieModalTitle": "{modalTitle} - выберите фильм"
 }
