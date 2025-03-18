@@ -1964,5 +1964,6 @@
     "Umask750Description": "{octal} - gravação do proprietário, leitura do grupo",
     "Umask755Description": "{octal} - Escrita do proprietário, todos os outros lêem",
     "Umask770Description": "{octal} - proprietário e gravação do grupo",
-    "Umask777Description": "{octal} - Todo mundo escreve"
+    "Umask777Description": "{octal} - Todo mundo escreve",
+    "SelectMovieModalTitle": "{modalTitle} - Selecionar filme"
 }

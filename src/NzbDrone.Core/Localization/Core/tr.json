@@ -1964,5 +1964,6 @@
     "Umask755Description": "{octal} Sahip yazma , Diğer kullanıcılar okuma yetkisi",
     "Umask770Description": "{octal} - Sahip ve Grup yazma yetkisi",
     "Umask775Description": "{octal} - Sahip ve Grup yazma, Diğerleri okuma yetkisi",
-    "Umask777Description": "{octal} - Herkese yazma yetkisi"
+    "Umask777Description": "{octal} - Herkese yazma yetkisi",
+    "SelectMovieModalTitle": "{modalTitle} - Film Seç"
 }
