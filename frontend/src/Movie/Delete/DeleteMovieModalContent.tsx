@@ -60,7 +60,16 @@ function DeleteMovieModalContent({
         addImportExclusion,
       })
     );
-  }, [movieId, collection, addImportExclusion, deleteFiles, dispatch]);
+
+    onModalClose();
+  }, [
+    movieId,
+    collection,
+    addImportExclusion,
+    deleteFiles,
+    dispatch,
+    onModalClose,
+  ]);
 
   const handleDeleteOptionChange = useCallback(
     ({ name, value }: CheckInputChanged) => {
