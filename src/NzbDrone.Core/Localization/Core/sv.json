@@ -1113,5 +1113,6 @@
     "ImportListsTraktSettingsRating": "Betyg",
     "AddCustomFilter": "Lägg till anpassat filter",
     "AddANewPath": "Lägg till ny sökväg",
-    "Tba": "TBA"
+    "Tba": "TBA",
+    "IndexerHDBitsSettingsMediums": "Medium"
 }

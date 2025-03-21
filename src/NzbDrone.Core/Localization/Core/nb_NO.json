@@ -336,5 +336,8 @@
     "ImportListsTraktSettingsCertification": "Sertifisering",
     "ImportListsTraktSettingsRating": "Vurdering",
     "AddANewPath": "Legg til ny filsti",
-    "AddCustomFilter": "Legg til eget filter"
+    "AddCustomFilter": "Legg til eget filter",
+    "IndexerHDBitsSettingsCategories": "Kategorier",
+    "IndexerHDBitsSettingsCodecs": "Kodek",
+    "IndexerSettingsCategories": "Kategorier"
 }

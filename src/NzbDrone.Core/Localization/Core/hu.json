@@ -1496,5 +1496,10 @@
     "FilterIsNot": "nem",
     "FilterLessThanOrEqual": "kisebb vagy egyenlő",
     "FilterNotInNext": "nem a következőben",
-    "Tba": "TBA"
+    "Tba": "TBA",
+    "IndexerHDBitsSettingsCategories": "Kategóriák",
+    "IndexerSettingsCategories": "Kategóriák",
+    "IndexerSettingsMinimumSeeders": "Minimális Seederek Száma",
+    "IndexerHDBitsSettingsCodecs": "Kodek",
+    "IndexerHDBitsSettingsMediums": "Közepes"
 }

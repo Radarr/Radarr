@@ -1246,5 +1246,9 @@
     "ImportListsTraktSettingsGenres": "Είδη",
     "ImportListsTraktSettingsRating": "Ακροαματικότητα",
     "ErrorLoadingContent": "Υπήρξε ένα σφάλμα κατά τη φόρτωση του αρχείου",
-    "Tba": "TBA"
+    "Tba": "TBA",
+    "IndexerSettingsCategories": "Κατηγορίες",
+    "IndexerHDBitsSettingsCategories": "Κατηγορίες",
+    "IndexerHDBitsSettingsMediums": "Μεσαίο",
+    "IndexerSettingsMinimumSeeders": "Ελάχιστοι σπαρτήρες"
 }

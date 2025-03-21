@@ -1280,5 +1280,7 @@
     "ImportListsTraktSettingsRating": "Classificação",
     "AutoTaggingSpecificationGenre": "Gênero(s)",
     "AddANewPath": "Adicionar um novo caminho",
-    "AddCustomFilter": "Adicionar Filtro Personalizado"
+    "AddCustomFilter": "Adicionar Filtro Personalizado",
+    "IndexerHDBitsSettingsCodecs": "Codificador",
+    "IndexerHDBitsSettingsMediums": "Médio"
 }

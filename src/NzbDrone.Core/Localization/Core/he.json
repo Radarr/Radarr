@@ -1131,5 +1131,8 @@
     "ImportListsTraktSettingsGenres": "ז'אנרים",
     "ImportListsTraktSettingsRating": "דירוגים",
     "AddANewPath": "הוסף נתיב חדש",
-    "AddCustomFilter": "הוספת פילטר מותאם"
+    "AddCustomFilter": "הוספת פילטר מותאם",
+    "IndexerHDBitsSettingsCategories": "קטגוריות",
+    "IndexerHDBitsSettingsMediums": "בינוני",
+    "IndexerSettingsCategories": "קטגוריות"
 }

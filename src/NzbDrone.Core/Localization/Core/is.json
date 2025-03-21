@@ -1083,5 +1083,6 @@
     "Mixed": "Fastur",
     "ImportListsTraktSettingsCertification": "Vottun",
     "ImportListsTraktSettingsGenres": "Tegundir",
-    "ImportListsTraktSettingsRating": "Einkunnir"
+    "ImportListsTraktSettingsRating": "Einkunnir",
+    "IndexerHDBitsSettingsMediums": "Miðlungs"
 }

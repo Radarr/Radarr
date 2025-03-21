@@ -1169,5 +1169,8 @@
     "ImportListsTraktSettingsCertification": "Certificare",
     "ImportListsTraktSettingsGenres": "Genuri",
     "ImportListsTraktSettingsRating": "Recenzii",
-    "AddCustomFilter": "Adaugă filtru personalizat"
+    "AddCustomFilter": "Adaugă filtru personalizat",
+    "IndexerHDBitsSettingsCategories": "Categorii",
+    "IndexerHDBitsSettingsMediums": "Mediu",
+    "IndexerSettingsCategories": "Categorii"
 }

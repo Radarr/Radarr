@@ -1434,5 +1434,10 @@
     "FilterContains": "conté",
     "FilterEqual": "igual",
     "FilterIs": "és",
-    "Tba": "Pendent el seu anunci"
+    "Tba": "Pendent el seu anunci",
+    "IndexerHDBitsSettingsCategories": "Categories",
+    "IndexerSettingsApiUrl": "URL de l'API",
+    "IndexerSettingsCategories": "Categories",
+    "IndexerHDBitsSettingsCodecs": "Còdecs",
+    "IndexerHDBitsSettingsMediums": "Mitjans"
 }

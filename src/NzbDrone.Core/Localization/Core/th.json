@@ -1081,5 +1081,6 @@
     "Mixed": "แก้ไขแล้ว",
     "ImportListsTraktSettingsCertification": "การรับรอง",
     "ImportListsTraktSettingsGenres": "ประเภท",
-    "ImportListsTraktSettingsRating": "การให้คะแนน"
+    "ImportListsTraktSettingsRating": "การให้คะแนน",
+    "IndexerHDBitsSettingsMediums": "ปานกลาง"
 }

@@ -291,5 +291,8 @@
     "ImportListsTraktSettingsRating": "評分",
     "AddANewPath": "新增新的路徑",
     "AddCustomFilter": "新增自定義過濾器",
-    "Tba": "待確定"
+    "Tba": "待確定",
+    "IndexerHDBitsSettingsCategories": "類別",
+    "IndexerHDBitsSettingsCodecs": "編解碼器",
+    "IndexerSettingsCategories": "類別"
 }
