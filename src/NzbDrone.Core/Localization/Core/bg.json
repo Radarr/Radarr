@@ -1200,5 +1200,8 @@
     "ImportListsTraktSettingsRating": "Оценки",
     "AddCustomFilter": "Добави персонализиран филтър",
     "AddANewPath": "Добави нов път",
-    "Tba": "TBA"
+    "Tba": "TBA",
+    "IndexerHDBitsSettingsCategories": "Категории",
+    "IndexerHDBitsSettingsMediums": "Среден",
+    "IndexerSettingsCategories": "Категории"
 }

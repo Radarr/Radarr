@@ -306,5 +306,6 @@
     "CustomFormatsSpecificationResolution": "Rozlíšenie",
     "CustomFormatsSpecificationLanguage": "jazyk",
     "ImportListsTraktSettingsRating": "Hodnotenie",
-    "ImportListsTraktSettingsCertification": "Certifikácia"
+    "ImportListsTraktSettingsCertification": "Certifikácia",
+    "IndexerHDBitsSettingsCodecs": "Kodek"
 }

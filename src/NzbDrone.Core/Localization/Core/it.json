@@ -1522,5 +1522,20 @@
     "FilterNotEqual": "non uguale",
     "FilterStartsWith": "inizia con",
     "RootFolderSelectFreeSpace": "{freeSpace} Libero",
-    "Tba": "TBA"
+    "Tba": "TBA",
+    "IndexerHDBitsSettingsCategories": "Categorie",
+    "IndexerHDBitsSettingsCategoriesHelpText": "Se non specificato, saranno utilizzate tutte le opzioni.",
+    "IndexerHDBitsSettingsCodecs": "Codec",
+    "IndexerHDBitsSettingsCodecsHelpText": "Se non specificato, saranno utilizzate tutte le opzioni.",
+    "IndexerHDBitsSettingsMediums": "medio",
+    "IndexerHDBitsSettingsMediumsHelpText": "Se non specificato, saranno utilizzate tutte le opzioni.",
+    "IndexerNewznabSettingsAdditionalParametersHelpText": "Parametri Newznab addizionali",
+    "IndexerSettingsAdditionalParameters": "Parametri Addizionali",
+    "IndexerSettingsApiPath": "Percorso API",
+    "IndexerSettingsApiPathHelpText": "Percorso API, solitamente {url}",
+    "IndexerSettingsApiUrl": "API URL",
+    "IndexerSettingsApiUser": "Utente API",
+    "IndexerSettingsCategories": "Categorie",
+    "IndexerSettingsCookie": "Cookie",
+    "IndexerSettingsMinimumSeeders": "Seeder Minimi"
 }

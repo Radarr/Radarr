@@ -1921,5 +1921,13 @@
     "RootFolderSelectFreeSpace": "{freeSpace} 남음",
     "Umask750Description": "{octal} - 소유자 쓰기, 그룹 읽기",
     "Umask755Description": "{octal} - 소유자 쓰기, 나머지 읽기",
-    "Umask770Description": "{octal} - 소유자 및 그룹 쓰기"
+    "Umask770Description": "{octal} - 소유자 및 그룹 쓰기",
+    "IndexerHDBitsSettingsCategories": "카테고리",
+    "IndexerHDBitsSettingsCodecs": "코덱",
+    "IndexerHDBitsSettingsMediums": "Mediums",
+    "IndexerSettingsAdditionalParameters": "매개 변수 추가",
+    "IndexerSettingsApiUrl": "API 주소",
+    "IndexerSettingsCategories": "카테고리",
+    "IndexerSettingsRssUrl": "RSS URL",
+    "IndexerIPTorrentsSettingsFeedUrlHelpText": "IPTorrents가 선택한 카테고리(HD, SD, x264 등)만을 사용하여 생성한 전체 RSS 피드 URL"
 }

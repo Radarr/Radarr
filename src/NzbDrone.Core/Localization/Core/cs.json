@@ -1309,5 +1309,19 @@
     "DownloadClientUTorrentProviderMessage": "uTorrent má historii zahrnování kryptoměnových těžařů, malwaru a reklam, důrazně vám doporučujeme zvolit jiného klienta.",
     "AddANewPath": "Přidat novou cestu",
     "AddCustomFilter": "Přidat vlastní filtr",
-    "Tba": "TBA"
+    "Tba": "TBA",
+    "IndexerHDBitsSettingsCategories": "Kategorie",
+    "IndexerHDBitsSettingsCategoriesHelpText": "Pokud není zadáno, použijí se všechny možnosti.",
+    "IndexerHDBitsSettingsCodecs": "Kodeky",
+    "IndexerHDBitsSettingsCodecsHelpText": "Pokud není zadáno, použijí se všechny možnosti.",
+    "IndexerHDBitsSettingsMediums": "Střední",
+    "IndexerHDBitsSettingsMediumsHelpText": "Pokud není zadáno, použijí se všechny možnosti.",
+    "IndexerNewznabSettingsAdditionalParametersHelpText": "Dodatečné parametry Newznab",
+    "IndexerPassThePopcornSettingsApiUserHelpText": "Tato nastavení naleznete v nastavení zabezpečení PassThePopcorn (Upravit profil > Zabezpečení).",
+    "IndexerSettingsAdditionalParameters": "Dodatečné parametry",
+    "IndexerSettingsApiPath": "Cesta k API",
+    "IndexerSettingsApiPathHelpText": "Cesta k api, obvykle {url}",
+    "IndexerSettingsApiUrl": "URL API",
+    "IndexerSettingsApiUser": "Uživatel API",
+    "IndexerSettingsCategories": "Kategorie"
 }

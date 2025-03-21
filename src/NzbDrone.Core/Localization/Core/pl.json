@@ -1204,5 +1204,9 @@
     "Or": "lub",
     "AddANewPath": "Dodaj nową ścieżkę",
     "AddCustomFilter": "Dodaj niestandardowy filtr",
-    "Tba": "Do ogłoszenia"
+    "Tba": "Do ogłoszenia",
+    "IndexerHDBitsSettingsCategories": "Kategorie",
+    "IndexerHDBitsSettingsCodecs": "Kodek",
+    "IndexerHDBitsSettingsMediums": "Średni",
+    "IndexerSettingsCategories": "Kategorie"
 }

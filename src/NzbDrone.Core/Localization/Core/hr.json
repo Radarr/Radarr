@@ -376,5 +376,8 @@
     "CustomFormatsSpecificationSource": "Izvor",
     "ImportListsTraktSettingsRating": "Ocjena",
     "ImportListsTraktSettingsCertification": "Certifikacija",
-    "ImportListsTraktSettingsGenres": "Žanr"
+    "ImportListsTraktSettingsGenres": "Žanr",
+    "IndexerSettingsCategories": "Kategorije",
+    "IndexerHDBitsSettingsCategories": "Kategorije",
+    "IndexerHDBitsSettingsCodecs": "Kodek"
 }

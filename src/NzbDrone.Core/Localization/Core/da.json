@@ -1111,5 +1111,9 @@
     "ImportListsTraktSettingsRating": "Bedømmelse",
     "AddANewPath": "Tilføj en ny sti",
     "AddCustomFilter": "Tilføj tilpasset filter",
-    "Tba": "Afventer"
+    "Tba": "Afventer",
+    "IndexerHDBitsSettingsCategories": "Kategorier",
+    "IndexerHDBitsSettingsCodecs": "codec",
+    "IndexerHDBitsSettingsMediums": "Medium",
+    "IndexerSettingsCategories": "Kategorier"
 }

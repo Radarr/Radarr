@@ -179,5 +179,8 @@
     "AddDelayProfile": "Tambah Delay Profile",
     "AutoTaggingSpecificationOriginalLanguage": "Bahasa",
     "AutoTaggingSpecificationQualityProfile": "Profil Kualitas",
-    "CustomFormatsSpecificationLanguage": "Bahasa"
+    "CustomFormatsSpecificationLanguage": "Bahasa",
+    "IndexerHDBitsSettingsCategories": "Kategori",
+    "IndexerHDBitsSettingsCodecs": "Codec",
+    "IndexerSettingsCategories": "Kategori"
 }
