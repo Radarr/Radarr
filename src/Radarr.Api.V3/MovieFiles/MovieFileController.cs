@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore.Events;
@@ -29,21 +30,21 @@ namespace Radarr.Api.V3.MovieFiles
         private readonly IDeleteMediaFiles _mediaFileDeletionService;
         private readonly IMovieService _movieService;
         private readonly ICustomFormatCalculationService _formatCalculator;
-        private readonly IUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly IUpgradableSpecification _upgradableSpecification;
 
         public MovieFileController(IBroadcastSignalRMessage signalRBroadcaster,
                                IMediaFileService mediaFileService,
                                IDeleteMediaFiles mediaFileDeletionService,
                                IMovieService movieService,
                                ICustomFormatCalculationService formatCalculator,
-                               IUpgradableSpecification qualityUpgradableSpecification)
+                               IUpgradableSpecification upgradableSpecification)
             : base(signalRBroadcaster)
         {
             _mediaFileService = mediaFileService;
             _mediaFileDeletionService = mediaFileDeletionService;
             _movieService = movieService;
             _formatCalculator = formatCalculator;
-            _qualityUpgradableSpecification = qualityUpgradableSpecification;
+            _upgradableSpecification = upgradableSpecification;
         }
 
         protected override MovieFileResource GetResourceById(int id)
@@ -51,7 +52,7 @@ namespace Radarr.Api.V3.MovieFiles
             var movieFile = _mediaFileService.GetMovie(id);
             var movie = _movieService.GetMovie(movieFile.MovieId);
 
-            var resource = movieFile.ToResource(movie, _qualityUpgradableSpecification, _formatCalculator);
+            var resource = movieFile.ToResource(movie, _upgradableSpecification, _formatCalculator);
 
             return resource;
         }
@@ -76,7 +77,7 @@ namespace Radarr.Api.V3.MovieFiles
 
             return movieFiles.GroupBy(e => e.MovieId)
                 .SelectMany(f => f.ToList()
-                    .ConvertAll(e => e.ToResource(_movieService.GetMovie(f.Key), _qualityUpgradableSpecification, _formatCalculator)))
+                    .ConvertAll(e => e.ToResource(_movieService.GetMovie(f.Key), _upgradableSpecification, _formatCalculator)))
                 .ToList();
         }
 
@@ -118,8 +119,8 @@ namespace Radarr.Api.V3.MovieFiles
 
                 if (resource.Languages != null)
                 {
-                    // Don't allow user to set movieFile with 'Any' or 'Original' language
-                    movieFile.Languages = resource.Languages.Where(l => l != Language.Any || l != Language.Original || l != null).ToList();
+                    // Don't allow user to set files with 'Any' or 'Original' language
+                    movieFile.Languages = resource.Languages.Where(l => l != null && l != Language.Any && l != Language.Original).ToList();
                 }
 
                 if (resource.IndexerFlags != null)
@@ -144,8 +145,10 @@ namespace Radarr.Api.V3.MovieFiles
             }
 
             _mediaFileService.Update(movieFiles);
+
             var movie = _movieService.GetMovie(movieFiles.First().MovieId);
-            return Accepted(movieFiles.ConvertAll(f => f.ToResource(movie, _qualityUpgradableSpecification, _formatCalculator)));
+
+            return Accepted(movieFiles.ConvertAll(f => f.ToResource(movie, _upgradableSpecification, _formatCalculator)));
         }
 
         [RestDeleteById]
@@ -155,7 +158,7 @@ namespace Radarr.Api.V3.MovieFiles
 
             if (movieFile == null)
             {
-                throw new NzbDroneClientException(global::System.Net.HttpStatusCode.NotFound, "Movie file not found");
+                throw new NzbDroneClientException(HttpStatusCode.NotFound, "Movie file not found");
             }
 
             var movie = _movieService.GetMovie(movieFile.MovieId);
