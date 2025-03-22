@@ -29,6 +29,7 @@ export const defaultState = {
   isReprocessing: false,
   error: null,
   items: [],
+  originalItems: [],
   sortKey: 'relativePath',
   sortDirection: sortDirections.ASCENDING,
   favoriteFolders: [],
@@ -119,7 +120,8 @@ export const actionHandlers = handleThunks({
           section,
           isFetching: false,
           isPopulated: true,
-          error: null
+          error: null,
+          originalItems: data
         })
       ]));
     });
@@ -228,13 +230,13 @@ export const reducers = createHandleActions({
   },
 
   [UPDATE_INTERACTIVE_IMPORT_ITEMS]: (state, { payload }) => {
-    const ids = payload.ids;
+    const { ids, ...otherPayload } = payload;
     const newState = Object.assign({}, state);
     const items = [...newState.items];
 
     ids.forEach((id) => {
       const index = items.findIndex((item) => item.id === id);
-      const item = Object.assign({}, items[index], payload);
+      const item = Object.assign({}, items[index], otherPayload);
 
       items.splice(index, 1, item);
     });
