@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -104,6 +105,7 @@ namespace Radarr.Api.V3.MovieFiles
             return Accepted(movieFile.Id);
         }
 
+        [Obsolete("Use bulk endpoint instead")]
         [HttpPut("editor")]
         [Consumes("application/json")]
         public object SetMovieFile([FromBody] MovieFileListResource resource)
