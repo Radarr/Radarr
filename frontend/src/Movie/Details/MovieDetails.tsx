@@ -49,6 +49,7 @@ import MovieCollectionLabel from 'Movie/MovieCollectionLabel';
 import MovieGenres from 'Movie/MovieGenres';
 import MoviePoster from 'Movie/MoviePoster';
 import MovieInteractiveSearchModal from 'Movie/Search/MovieInteractiveSearchModal';
+import useMovie from 'Movie/useMovie';
 import MovieFileEditorTable from 'MovieFile/Editor/MovieFileEditorTable';
 import ExtraFileTable from 'MovieFile/Extras/ExtraFileTable';
 import OrganizePreviewModal from 'Organize/OrganizePreviewModal';
@@ -151,38 +152,6 @@ function createMovieCreditsSelector() {
   );
 }
 
-function createMovieSelector(movieId: number) {
-  return createSelector(createAllMoviesSelector(), (allMovies) => {
-    const sortedMovies = [...allMovies].sort(sortByProp('sortTitle'));
-    const movieIndex = sortedMovies.findIndex((movie) => movie.id === movieId);
-
-    if (movieIndex === -1) {
-      return {
-        movie: undefined,
-        nextMovie: undefined,
-        previousMovie: undefined,
-      };
-    }
-
-    const movie = sortedMovies[movieIndex];
-    const nextMovie = sortedMovies[movieIndex + 1] ?? sortedMovies[0];
-    const previousMovie =
-      sortedMovies[movieIndex - 1] ?? sortedMovies[sortedMovies.length - 1];
-
-    return {
-      movie,
-      nextMovie: {
-        title: nextMovie.title,
-        titleSlug: nextMovie.titleSlug,
-      },
-      previousMovie: {
-        title: previousMovie.title,
-        titleSlug: previousMovie.titleSlug,
-      },
-    };
-  });
-}
-
 interface MovieDetailsProps {
   movieId: number;
 }
@@ -191,9 +160,9 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { movie, nextMovie, previousMovie } = useSelector(
-    createMovieSelector(movieId)
-  );
+  const movie = useMovie(movieId);
+  const allMovies = useSelector(createAllMoviesSelector());
+
   const { isMovieFilesFetching, movieFilesError, hasMovieFiles } = useSelector(
     createMovieFilesSelector()
   );
@@ -256,6 +225,33 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
       isSearching: isSearchingExecuting,
     };
   }, [movieId, commands]);
+
+  const { nextMovie, previousMovie } = useMemo(() => {
+    const sortedMovies = [...allMovies].sort(sortByProp('sortTitle'));
+    const movieIndex = sortedMovies.findIndex((movie) => movie.id === movieId);
+
+    if (movieIndex === -1) {
+      return {
+        nextMovie: undefined,
+        previousMovie: undefined,
+      };
+    }
+
+    const nextMovie = sortedMovies[movieIndex + 1] ?? sortedMovies[0];
+    const previousMovie =
+      sortedMovies[movieIndex - 1] ?? sortedMovies[sortedMovies.length - 1];
+
+    return {
+      nextMovie: {
+        title: nextMovie.title,
+        titleSlug: nextMovie.titleSlug,
+      },
+      previousMovie: {
+        title: previousMovie.title,
+        titleSlug: previousMovie.titleSlug,
+      },
+    };
+  }, [movieId, allMovies]);
 
   const touchStart = useRef<number | null>(null);
   const [isOrganizeModalOpen, setIsOrganizeModalOpen] = useState(false);
@@ -669,25 +665,29 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
                 </div>
 
                 <div className={styles.movieNavigationButtons}>
-                  <IconButton
-                    className={styles.movieNavigationButton}
-                    name={icons.ARROW_LEFT}
-                    size={30}
-                    title={translate('MovieDetailsGoTo', {
-                      title: previousMovie.title,
-                    })}
-                    to={`/movie/${previousMovie.titleSlug}`}
-                  />
+                  {previousMovie ? (
+                    <IconButton
+                      className={styles.movieNavigationButton}
+                      name={icons.ARROW_LEFT}
+                      size={30}
+                      title={translate('MovieDetailsGoTo', {
+                        title: previousMovie.title,
+                      })}
+                      to={`/movie/${previousMovie.titleSlug}`}
+                    />
+                  ) : null}
 
-                  <IconButton
-                    className={styles.movieNavigationButton}
-                    name={icons.ARROW_RIGHT}
-                    size={30}
-                    title={translate('MovieDetailsGoTo', {
-                      title: nextMovie.title,
-                    })}
-                    to={`/movie/${nextMovie.titleSlug}`}
-                  />
+                  {nextMovie ? (
+                    <IconButton
+                      className={styles.movieNavigationButton}
+                      name={icons.ARROW_RIGHT}
+                      size={30}
+                      title={translate('MovieDetailsGoTo', {
+                        title: nextMovie.title,
+                      })}
+                      to={`/movie/${nextMovie.titleSlug}`}
+                    />
+                  ) : null}
                 </div>
               </div>
 
