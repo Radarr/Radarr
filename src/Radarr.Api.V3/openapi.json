@@ -5327,7 +5327,8 @@
           "200": {
             "description": "OK"
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/api/v3/moviefile/bulk": {
@@ -5340,6 +5341,28 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/MovieFileListResource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "MovieFile"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MovieFileResource"
+                }
               }
             }
           }
