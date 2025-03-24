@@ -1,7 +1,6 @@
 using NLog;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Download.Pending;
-using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
@@ -32,9 +31,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
         public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Temporary;
 
-        public virtual DownloadSpecDecision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public virtual DownloadSpecDecision IsSatisfiedBy(RemoteMovie subject, ReleaseDecisionInformation information)
         {
-            if (searchCriteria != null && searchCriteria.UserInvokedSearch)
+            if (information.SearchCriteria is { UserInvokedSearch: true })
             {
                 _logger.Debug("Ignoring delay for user invoked search");
                 return DownloadSpecDecision.Accept();

@@ -41,10 +41,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeTrue();
+            Subject.IsSatisfiedBy(remoteMovie, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -57,10 +54,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeTrue();
+            Subject.IsSatisfiedBy(remoteMovie, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -78,10 +72,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeTrue();
+            Subject.IsSatisfiedBy(remoteMovie, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -99,10 +90,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeTrue();
+            Subject.IsSatisfiedBy(remoteMovie, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -120,10 +108,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeFalse();
+            Subject.IsSatisfiedBy(remoteMovie, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -141,10 +126,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeFalse();
+            Subject.IsSatisfiedBy(remoteMovie, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -164,10 +146,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeFalse();
+            Subject.IsSatisfiedBy(remoteMovie, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -189,10 +168,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeFalse();
+            Subject.IsSatisfiedBy(remoteMovie, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -214,10 +190,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeTrue();
+            Subject.IsSatisfiedBy(remoteMovie, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -239,10 +212,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeTrue();
+            Subject.IsSatisfiedBy(remoteMovie, new()).Accepted.Should().BeTrue();
         }
     }
 }

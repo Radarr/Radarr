@@ -9,6 +9,7 @@ public enum DownloadRejectionReason
     DecisionError,
     Availability,
     MinimumAgeDelay,
+    MinimumAgeDelayPushed,
     MovieNotMonitored,
     HistoryRecentCutoffMet,
     HistoryCdhDisabledCutoffMet,
