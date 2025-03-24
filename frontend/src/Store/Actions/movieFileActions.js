@@ -271,11 +271,11 @@ export const actionHandlers = handleThunks({
           props.qualityCutoffNotMet = movieFile.qualityCutoffNotMet;
           props.customFormats = movieFile.customFormats;
           props.customFormatScore = movieFile.customFormatScore;
+          props.languages = movieFile.languages;
+          props.quality = movieFile.quality;
           props.edition = movieFile.edition;
-          props.languages = file.languages;
-          props.quality = file.quality;
-          props.releaseGroup = file.releaseGroup;
-          props.indexerFlags = file.indexerFlags;
+          props.releaseGroup = movieFile.releaseGroup;
+          props.indexerFlags = movieFile.indexerFlags;
 
           return updateItem({
             section,
