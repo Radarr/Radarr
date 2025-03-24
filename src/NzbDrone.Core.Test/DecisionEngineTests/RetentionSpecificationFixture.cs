@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             WithRetention(0);
             WithAge(100);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             WithRetention(1000);
             WithAge(100);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             WithRetention(100);
             WithAge(100);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             WithRetention(10);
             WithAge(100);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             WithRetention(0);
             WithAge(100);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             WithRetention(10);
             WithAge(100);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, new()).Accepted.Should().BeTrue();
         }
     }
 }

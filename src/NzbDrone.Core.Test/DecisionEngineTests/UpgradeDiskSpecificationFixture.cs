@@ -104,14 +104,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_true_if_movie_has_no_existing_file()
         {
             _parseResultSingle.Movie.MovieFile = null;
-            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_be_upgradable_if_only_movie_is_upgradable()
         {
             WithFirstFileUpgradable();
-            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _firstFile.Quality = new QualityModel(Quality.WEBDL1080p);
             _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p);
-            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -131,7 +131,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _firstFile.Quality = new QualityModel(Quality.WEBDL1080p, new Revision(2));
             _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p);
-            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -145,7 +145,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             });
 
             GivenFileQuality(new QualityModel(Quality.HDTV720p, new Revision(version: 2)));
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -159,7 +159,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             });
 
             GivenFileQuality(new QualityModel(Quality.Bluray1080p, new Revision(version: 2)));
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -174,7 +174,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             GivenFileQuality(new QualityModel(Quality.HDTV720p, new Revision(version: 1)));
             GivenNewQuality(new QualityModel(Quality.HDTV720p, new Revision(version: 2)));
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -189,7 +189,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             GivenFileQuality(new QualityModel(Quality.HDTV720p, new Revision(version: 2)));
             GivenNewQuality(new QualityModel(Quality.Bluray1080p, new Revision(version: 2)));
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -204,7 +204,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             GivenFileQuality(new QualityModel(Quality.HDTV720p, new Revision(version: 2)));
             GivenNewQuality(new QualityModel(Quality.Bluray1080p, new Revision(version: 2)));
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -219,7 +219,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             GivenFileQuality(new QualityModel(Quality.HDTV720p, new Revision(version: 2)));
             GivenNewQuality(new QualityModel(Quality.Bluray1080p, new Revision(version: 2)));
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -234,7 +234,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             GivenFileQuality(new QualityModel(Quality.SDTV, new Revision(version: 2)));
             GivenNewQuality(new QualityModel(Quality.Bluray1080p, new Revision(version: 2)));
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -248,7 +248,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             });
 
             GivenFileQuality(new QualityModel(Quality.SDTV, new Revision(version: 2)));
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -271,7 +271,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenOldCustomFormats(new List<CustomFormat>());
             GivenNewCustomFormats(new List<CustomFormat> { customFormat });
 
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -287,7 +287,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenFileQuality(new QualityModel(Quality.WEBDL1080p, new Revision(version: 1)));
             GivenNewQuality(new QualityModel(Quality.WEBDL1080p, new Revision(version: 2)));
 
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -303,7 +303,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenFileQuality(new QualityModel(Quality.WEBDL1080p));
             GivenNewQuality(new QualityModel(Quality.Bluray1080p));
 
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -336,7 +336,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenOldCustomFormats(new List<CustomFormat>());
             GivenNewCustomFormats(new List<CustomFormat> { customFormat });
 
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -373,7 +373,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenOldCustomFormats(new List<CustomFormat>());
             GivenNewCustomFormats(new List<CustomFormat> { customFormat });
 
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeFalse();
         }
     }
 }

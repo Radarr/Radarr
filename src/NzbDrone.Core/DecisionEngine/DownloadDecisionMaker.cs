@@ -5,7 +5,6 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.Serializer;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Download.Aggregation;
@@ -25,21 +24,18 @@ namespace NzbDrone.Core.DecisionEngine
     {
         private readonly IEnumerable<IDownloadDecisionEngineSpecification> _specifications;
         private readonly IParsingService _parsingService;
-        private readonly IConfigService _configService;
         private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly IRemoteMovieAggregationService _aggregationService;
         private readonly Logger _logger;
 
         public DownloadDecisionMaker(IEnumerable<IDownloadDecisionEngineSpecification> specifications,
                                      IParsingService parsingService,
-                                     IConfigService configService,
                                      ICustomFormatCalculationService formatCalculator,
                                      IRemoteMovieAggregationService aggregationService,
                                      Logger logger)
         {
             _specifications = specifications;
             _parsingService = parsingService;
-            _configService = configService;
             _formatCalculator = formatCalculator;
             _aggregationService = aggregationService;
             _logger = logger;
@@ -82,6 +78,7 @@ namespace NzbDrone.Core.DecisionEngine
                     {
                         var remoteMovie = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), report.TmdbId, searchCriteria);
                         remoteMovie.Release = report;
+                        remoteMovie.ReleaseSource = GetReleaseSource(pushedRelease, searchCriteria);
 
                         if (remoteMovie.Movie == null)
                         {
@@ -97,7 +94,7 @@ namespace NzbDrone.Core.DecisionEngine
                             _logger.Trace("Custom Format Score of '{0}' [{1}] calculated for '{2}'", remoteMovie.CustomFormatScore, remoteMovie.CustomFormats?.ConcatToString(), report.Title);
 
                             remoteMovie.DownloadAllowed = remoteMovie.Movie != null;
-                            decision = GetDecisionForReport(remoteMovie, searchCriteria);
+                            decision = GetDecisionForReport(remoteMovie, new ReleaseDecisionInformation(pushedRelease, searchCriteria));
                         }
                     }
 
@@ -117,8 +114,9 @@ namespace NzbDrone.Core.DecisionEngine
                             var remoteMovie = new RemoteMovie
                             {
                                 Release = report,
+                                ReleaseSource = GetReleaseSource(pushedRelease, searchCriteria),
                                 ParsedMovieInfo = parsedMovieInfo,
-                                Languages = parsedMovieInfo.Languages
+                                Languages = parsedMovieInfo.Languages,
                             };
 
                             decision = new DownloadDecision(remoteMovie, new DownloadRejection(DownloadRejectionReason.UnableToParse, "Unable to parse release"));
@@ -129,7 +127,7 @@ namespace NzbDrone.Core.DecisionEngine
                 {
                     _logger.Error(e, "Couldn't process release.");
 
-                    var remoteMovie = new RemoteMovie { Release = report };
+                    var remoteMovie = new RemoteMovie { Release = report, ReleaseSource = GetReleaseSource(pushedRelease, searchCriteria) };
                     decision = new DownloadDecision(remoteMovie, new DownloadRejection(DownloadRejectionReason.Error, "Unexpected error processing release"));
                 }
 
@@ -137,26 +135,6 @@ namespace NzbDrone.Core.DecisionEngine
 
                 if (decision != null)
                 {
-                    var source = pushedRelease ? ReleaseSourceType.ReleasePush : ReleaseSourceType.Rss;
-
-                    if (searchCriteria != null)
-                    {
-                        if (searchCriteria.InteractiveSearch)
-                        {
-                            source = ReleaseSourceType.InteractiveSearch;
-                        }
-                        else if (searchCriteria.UserInvokedSearch)
-                        {
-                            source = ReleaseSourceType.UserInvokedSearch;
-                        }
-                        else
-                        {
-                            source = ReleaseSourceType.Search;
-                        }
-                    }
-
-                    decision.RemoteMovie.ReleaseSource = source;
-
                     if (decision.Rejections.Any())
                     {
                         _logger.Debug("Release '{0}' from '{1}' rejected for the following reasons: {2}", report.Title, report.Indexer, string.Join(", ", decision.Rejections));
@@ -171,13 +149,13 @@ namespace NzbDrone.Core.DecisionEngine
             }
         }
 
-        private DownloadDecision GetDecisionForReport(RemoteMovie remoteMovie, SearchCriteriaBase searchCriteria = null)
+        private DownloadDecision GetDecisionForReport(RemoteMovie remoteMovie, ReleaseDecisionInformation information)
         {
             var reasons = Array.Empty<DownloadRejection>();
 
             foreach (var specifications in _specifications.GroupBy(v => v.Priority).OrderBy(v => v.Key))
             {
-                reasons = specifications.Select(c => EvaluateSpec(c, remoteMovie, searchCriteria))
+                reasons = specifications.Select(c => EvaluateSpec(c, remoteMovie, information))
                                         .Where(c => c != null)
                                         .ToArray();
 
@@ -190,11 +168,11 @@ namespace NzbDrone.Core.DecisionEngine
             return new DownloadDecision(remoteMovie, reasons.ToArray());
         }
 
-        private DownloadRejection EvaluateSpec(IDownloadDecisionEngineSpecification spec, RemoteMovie remoteMovie, SearchCriteriaBase searchCriteriaBase = null)
+        private DownloadRejection EvaluateSpec(IDownloadDecisionEngineSpecification spec, RemoteMovie remoteMovie, ReleaseDecisionInformation information)
         {
             try
             {
-                var result = spec.IsSatisfiedBy(remoteMovie, searchCriteriaBase);
+                var result = spec.IsSatisfiedBy(remoteMovie, information);
 
                 if (!result.Accepted)
                 {
@@ -214,6 +192,27 @@ namespace NzbDrone.Core.DecisionEngine
             }
 
             return null;
+        }
+
+        private ReleaseSourceType GetReleaseSource(bool pushedRelease, SearchCriteriaBase searchCriteria = null)
+        {
+            if (searchCriteria == null)
+            {
+                return pushedRelease ? ReleaseSourceType.ReleasePush : ReleaseSourceType.Rss;
+            }
+
+            if (searchCriteria.InteractiveSearch)
+            {
+                return ReleaseSourceType.InteractiveSearch;
+            }
+            else if (searchCriteria.UserInvokedSearch)
+            {
+                return ReleaseSourceType.UserInvokedSearch;
+            }
+            else
+            {
+                return ReleaseSourceType.Search;
+            }
         }
     }
 }

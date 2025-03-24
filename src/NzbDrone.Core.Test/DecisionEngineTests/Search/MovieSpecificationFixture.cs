@@ -1,6 +1,7 @@
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.DecisionEngine.Specifications.Search;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Movies;
@@ -14,8 +15,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
     {
         private Movie _movie1;
         private Movie _movie2;
-        private RemoteMovie _remoteEpisode = new RemoteMovie();
+        private RemoteMovie _remoteMovie = new();
         private SearchCriteriaBase _searchCriteria = new MovieSearchCriteria();
+        private ReleaseDecisionInformation _information;
 
         [SetUp]
         public void Setup()
@@ -23,7 +25,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
             _movie1 = Builder<Movie>.CreateNew().With(s => s.Id = 1).Build();
             _movie2 = Builder<Movie>.CreateNew().With(s => s.Id = 2).Build();
 
-            _remoteEpisode.Movie = _movie1;
+            _remoteMovie.Movie = _movie1;
+            _information = new ReleaseDecisionInformation(false, _searchCriteria);
         }
 
         [Test]
@@ -31,7 +34,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
         {
             _searchCriteria.Movie = _movie2;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, _searchCriteria).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, _information).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -39,7 +42,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
         {
             _searchCriteria.Movie = _movie1;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, _searchCriteria).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, _information).Accepted.Should().BeTrue();
         }
     }
 }
