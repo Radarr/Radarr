@@ -970,7 +970,7 @@
     "Blocklist": "Liste noire",
     "BlocklistRelease": "Version sur liste noire",
     "RemoveFromBlocklist": "Supprimer de la liste noire",
-    "Blocklisted": "Dans le liste noire",
+    "Blocklisted": "Dans la liste noire",
     "BlocklistReleases": "Publications de la liste de blocage",
     "RemotePathMappingCheckGenericPermissions": "Le client de téléchargement {downloadClientName} met les téléchargements dans {path} mais {appName} ne peut voir ce répertoire.  Il est possible que vous ayez besoin d'ajuster les permissions de ce dossier.",
     "RemotePathMappingCheckLocalWrongOSPath": "Le client de téléchargement {downloadClientName} met les téléchargements dans {path} mais il ne s'agit pas d'un chemin {osName} valide.  Vérifiez les paramètres de votre client de téléchargement.",
@@ -1966,5 +1966,7 @@
     "IndexerPassThePopcornSettingsApiUserHelpText": "Ces paramètres se trouvent dans les paramètres de sécurité de PassThePopcorn (Modifier le profil > Sécurité).",
     "IndexerSettingsAllowZeroSizeHelpText": "L'activation de cette option vous permettra d'utiliser des flux qui ne spécifient pas la taille de la version, mais soyez prudent, les vérifications liées à la taille ne seront pas effectuées.",
     "IndexerSettingsApiUrl": "URL DE L'API",
-    "IndexerSettingsCookieHelpText": "Si votre site nécessite un cookie de connexion pour accéder au flux RSS, vous devrez le récupérer via un navigateur."
+    "IndexerSettingsCookieHelpText": "Si votre site nécessite un cookie de connexion pour accéder au flux RSS, vous devrez le récupérer via un navigateur.",
+    "BlocklistedAt": "Mis sur liste noire le {date}",
+    "FailedAt": "Échoué le {date}"
 }
