@@ -49,7 +49,9 @@ namespace NzbDrone.Core.ImportLists.Trakt.Popular
                 case (int)TraktPopularListType.TopWatchedByMonth:
                     link += "movies/watched/monthly";
                     break;
+#pragma warning disable CS0612
                 case (int)TraktPopularListType.TopWatchedByYear:
+#pragma warning restore CS0612
                     link += "movies/watched/yearly";
                     break;
                 case (int)TraktPopularListType.TopWatchedByAllTime:
@@ -61,11 +63,13 @@ namespace NzbDrone.Core.ImportLists.Trakt.Popular
                 case (int)TraktPopularListType.RecommendedByMonth:
                     link += "movies/recommended/monthly";
                     break;
+#pragma warning disable CS0612
                 case (int)TraktPopularListType.RecommendedByYear:
+#pragma warning restore CS0612
                     link += "movies/recommended/yearly";
                     break;
                 case (int)TraktPopularListType.RecommendedByAllTime:
-                    link += "movies/recommended/yearly";
+                    link += "movies/recommended/all";
                     break;
             }
 
