@@ -143,7 +143,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("Age", message.Movie.Release.Age.ToString());
             history.Data.Add("AgeHours", message.Movie.Release.AgeHours.ToString());
             history.Data.Add("AgeMinutes", message.Movie.Release.AgeMinutes.ToString());
-            history.Data.Add("PublishedDate", message.Movie.Release.PublishDate.ToString("s") + "Z");
+            history.Data.Add("PublishedDate", message.Movie.Release.PublishDate.ToUniversalTime().ToString("s") + "Z");
             history.Data.Add("DownloadClient", message.DownloadClient);
             history.Data.Add("DownloadClientName", message.DownloadClientName);
             history.Data.Add("Size", message.Movie.Release.Size.ToString());
