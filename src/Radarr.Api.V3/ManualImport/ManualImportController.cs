@@ -25,7 +25,7 @@ namespace Radarr.Api.V3.ManualImport
         [Produces("application/json")]
         public List<ManualImportResource> GetMediaFiles(string folder, string downloadId, int? movieId, bool filterExistingFiles = true)
         {
-            if (movieId.HasValue)
+            if (movieId.HasValue && downloadId.IsNullOrWhiteSpace())
             {
                 return _manualImportService.GetMediaFiles(movieId.Value).ToResource().Select(AddQualityWeight).ToList();
             }
