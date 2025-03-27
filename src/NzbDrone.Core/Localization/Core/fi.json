@@ -1989,5 +1989,7 @@
     "IndexerSettingsCookie": "Eväste",
     "IndexerSettingsCookieHelpText": "Jos sivusto vaatii RSS-syötteen käyttöön kirjautumisevästeen, on se noudettava selaimen avulla.",
     "IndexerSettingsMinimumSeeders": "Jakajien vähimmäismäärä",
-    "IndexerSettingsMinimumSeedersHelpText": "Kaappaukseen vaadittava jakajien vähimmäismäärä."
+    "IndexerSettingsMinimumSeedersHelpText": "Kaappaukseen vaadittava jakajien vähimmäismäärä.",
+    "IndexerSettingsFailDownloads": "Hylättävät lataukset",
+    "FileSize": "Tiedostokoko"
 }

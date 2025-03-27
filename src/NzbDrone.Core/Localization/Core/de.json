@@ -1966,5 +1966,6 @@
     "IndexerSettingsMinimumSeeders": "Minimale Seeder",
     "IndexerSettingsMinimumSeedersHelpText": "Minimale Anzahl an Seedern, die erforderlich ist.",
     "IndexerSettingsPasskey": "Passkey",
-    "IndexerSettingsRssUrl": "RSS-URL"
+    "IndexerSettingsRssUrl": "RSS-URL",
+    "IndexerSettingsFailDownloads": "Fehlgeschlagene Downloads"
 }

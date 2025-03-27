@@ -1997,5 +1997,8 @@
     "IndexerSettingsCategories": "Kategoriler",
     "IndexerSettingsCookieHelpText": "Sitenizin rss'e erişmek için bir giriş çerezine ihtiyacı varsa, bunu bir tarayıcı aracılığıyla almanız gerekecektir.",
     "IndexerSettingsMinimumSeeders": "Minimum Seeder",
-    "IndexerSettingsMinimumSeedersHelpText": "Minimum seeder(kaynak) sayısı gereklidir."
+    "IndexerSettingsMinimumSeedersHelpText": "Minimum seeder(kaynak) sayısı gereklidir.",
+    "IndexerSettingsFailDownloads": "Başarısız İndirmeler",
+    "IndexerSettingsFailDownloadsHelpText": "Tamamlanan indirmeler işlenirken {appName}, içe aktarmayı engelleyen seçili hataları başarısız indirmeler olarak değerlendirecektir.",
+    "FileSize": "Dosya Boyutu"
 }
