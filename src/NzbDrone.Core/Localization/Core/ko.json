@@ -1929,5 +1929,6 @@
     "IndexerSettingsApiUrl": "API 주소",
     "IndexerSettingsCategories": "카테고리",
     "IndexerSettingsRssUrl": "RSS URL",
-    "IndexerIPTorrentsSettingsFeedUrlHelpText": "IPTorrents가 선택한 카테고리(HD, SD, x264 등)만을 사용하여 생성한 전체 RSS 피드 URL"
+    "IndexerIPTorrentsSettingsFeedUrlHelpText": "IPTorrents가 선택한 카테고리(HD, SD, x264 등)만을 사용하여 생성한 전체 RSS 피드 URL",
+    "FileSize": "파일 크기"
 }

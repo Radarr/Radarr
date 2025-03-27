@@ -1968,5 +1968,6 @@
     "IndexerSettingsApiUrl": "URL DE L'API",
     "IndexerSettingsCookieHelpText": "Si votre site nécessite un cookie de connexion pour accéder au flux RSS, vous devrez le récupérer via un navigateur.",
     "BlocklistedAt": "Mis sur liste noire le {date}",
-    "FailedAt": "Échoué le {date}"
+    "FailedAt": "Échoué le {date}",
+    "IndexerSettingsFailDownloads": "Échec des téléchargements"
 }
