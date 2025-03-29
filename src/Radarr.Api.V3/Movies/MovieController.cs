@@ -5,14 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
@@ -33,8 +31,6 @@ namespace Radarr.Api.V3.Movies
 {
     [V3ApiController]
     public class MovieController : RestControllerWithSignalR<MovieResource, Movie>,
-                                IHandle<MovieFileImportedEvent>,
-                                IHandle<MovieFileDeletedEvent>,
                                 IHandle<MovieUpdatedEvent>,
                                 IHandle<MovieEditedEvent>,
                                 IHandle<MoviesDeletedEvent>,
@@ -51,7 +47,6 @@ namespace Radarr.Api.V3.Movies
         private readonly IRootFolderService _rootFolderService;
         private readonly IUpgradableSpecification _qualityUpgradableSpecification;
         private readonly IConfigService _configService;
-        private readonly Logger _logger;
 
         public MovieController(IBroadcastSignalRMessage signalRBroadcaster,
                            IMovieService moviesService,
@@ -72,8 +67,7 @@ namespace Radarr.Api.V3.Movies
                            SystemFolderValidator systemFolderValidator,
                            QualityProfileExistsValidator qualityProfileExistsValidator,
                            RootFolderExistsValidator rootFolderExistsValidator,
-                           MovieFolderAsRootFolderValidator movieFolderAsRootFolderValidator,
-                           Logger logger)
+                           MovieFolderAsRootFolderValidator movieFolderAsRootFolderValidator)
             : base(signalRBroadcaster)
         {
             _moviesService = moviesService;
@@ -85,7 +79,6 @@ namespace Radarr.Api.V3.Movies
             _coverMapper = coverMapper;
             _commandQueueManager = commandQueueManager;
             _rootFolderService = rootFolderService;
-            _logger = logger;
 
             SharedValidator.RuleFor(s => s.Path).Cascade(CascadeMode.Stop)
                 .IsValidPath()
@@ -325,23 +318,6 @@ namespace Radarr.Api.V3.Movies
             resource.Statistics = movieStatistics.ToResource();
             resource.HasFile = movieStatistics.MovieFileCount > 0;
             resource.SizeOnDisk = movieStatistics.SizeOnDisk;
-        }
-
-        [NonAction]
-        public void Handle(MovieFileImportedEvent message)
-        {
-            BroadcastResourceChange(ModelAction.Updated, message.MovieInfo.Movie.Id);
-        }
-
-        [NonAction]
-        public void Handle(MovieFileDeletedEvent message)
-        {
-            if (message.Reason == DeleteMediaFileReason.Upgrade)
-            {
-                return;
-            }
-
-            BroadcastResourceChange(ModelAction.Updated, message.MovieFile.MovieId);
         }
 
         [NonAction]
