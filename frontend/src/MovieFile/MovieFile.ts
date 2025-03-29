@@ -15,6 +15,7 @@ export interface MovieFile extends ModelBase {
   languages: Language[];
   quality: QualityModel;
   customFormats: CustomFormat[];
+  customFormatScore: number;
   indexerFlags: number;
   mediaInfo: MediaInfo;
   qualityCutoffNotMet: boolean;
