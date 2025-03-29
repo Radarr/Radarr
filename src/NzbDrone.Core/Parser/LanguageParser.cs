@@ -252,6 +252,11 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Tagalog);
             }
 
+            if (lowerTitle.Contains("urdu"))
+            {
+                languages.Add(Language.Urdu);
+            }
+
             // Case sensitive
             var caseSensitiveMatches = CaseSensitiveLanguageRegex.Matches(title);
 

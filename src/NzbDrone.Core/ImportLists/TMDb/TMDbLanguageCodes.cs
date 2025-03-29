@@ -70,5 +70,7 @@ namespace NzbDrone.Core.ImportLists.TMDb
         mr,
         [FieldOption(Hint = "Tagalog")]
         tl,
+        [FieldOption(Hint = "Urdu")]
+        ur
     }
 }
