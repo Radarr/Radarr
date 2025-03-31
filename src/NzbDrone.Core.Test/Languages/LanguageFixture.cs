@@ -66,6 +66,7 @@ namespace NzbDrone.Core.Test.Languages
                 new object[] { 51, Language.Afrikaans },
                 new object[] { 52, Language.Marathi },
                 new object[] { 53, Language.Tagalog },
+                new object[] { 54, Language.Urdu }
             };
 
         public static object[] ToIntCases =
@@ -126,6 +127,7 @@ namespace NzbDrone.Core.Test.Languages
                 new object[] { Language.Afrikaans, 51 },
                 new object[] { Language.Marathi, 52 },
                 new object[] { Language.Tagalog, 53 },
+                new object[] { Language.Urdu, 54 }
             };
 
         [Test]

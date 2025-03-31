@@ -492,6 +492,14 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Should().Contain(Language.Tagalog);
         }
 
+        [TestCase("Movie Title 2024 1080p Urdu WEB-DL HEVC x265 BONE")]
+        [TestCase("Movie.Title.2022.720p.Urdu.WEB-DL.AAC.x264-Mkvking")]
+        public void should_parse_language_urdu(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Urdu);
+        }
+
         [TestCase("Movie.Title.en.sub")]
         [TestCase("Movie Title.eng.sub")]
         [TestCase("Movie.Title.eng.forced.sub")]
