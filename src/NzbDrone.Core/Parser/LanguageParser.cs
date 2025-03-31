@@ -252,7 +252,7 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Tagalog);
             }
 
-            if (lowerTitle.Contains("urdu"))
+            if (Regex.IsMatch(lowerTitle, @"\b(urdu)\b"))
             {
                 languages.Add(Language.Urdu);
             }
