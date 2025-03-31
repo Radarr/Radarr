@@ -1042,6 +1042,7 @@
   "MetadataKometaDeprecated": "Kometa files will no longer be created, support will be removed completely in v6",
   "MetadataKometaDeprecatedSetting": "Deprecated",
   "MetadataLoadError": "Unable to load Metadata",
+  "MetadataMediaBrowserDeprecated": "Media Browser metadata is deprecated, support will be removed completely in {version}.",
   "MetadataSettings": "Metadata Settings",
   "MetadataSettingsMovieImages": "Movie Images",
   "MetadataSettingsMovieMetadata": "Movie Metadata",
