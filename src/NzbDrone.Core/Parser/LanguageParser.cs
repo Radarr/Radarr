@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<vietnamese>\bVIE\b)|
                                                                             (?<japanese>\bJPN\b)|
                                                                             (?<korean>\bKOR\b)|
-                                                                            (?<urdu>\b(urdu)\b)",
+                                                                            (?<urdu>\burdu\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?:(?i)(?<!SUB[\W|_|^]))(?:(?<lithuanian>\bLT\b)|
