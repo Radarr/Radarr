@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<telugu>\btel\b)|
                                                                             (?<vietnamese>\bVIE\b)|
                                                                             (?<japanese>\bJPN\b)|
-                                                                            (?<korean>\bKOR\b)
+                                                                            (?<korean>\bKOR\b)|
                                                                             (?<urdu>\b(urdu)\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
