@@ -36,7 +36,8 @@ namespace NzbDrone.Core.Parser
                                                                             (?<telugu>\btel\b)|
                                                                             (?<vietnamese>\bVIE\b)|
                                                                             (?<japanese>\bJPN\b)|
-                                                                            (?<korean>\bKOR\b)",
+                                                                            (?<korean>\bKOR\b)
+                                                                            (?<urdu>\b(urdu)\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?:(?i)(?<!SUB[\W|_|^]))(?:(?<lithuanian>\bLT\b)|
@@ -252,11 +253,6 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Tagalog);
             }
 
-            if (Regex.IsMatch(lowerTitle, @"\b(urdu)\b"))
-            {
-                languages.Add(Language.Urdu);
-            }
-
             // Case sensitive
             var caseSensitiveMatches = CaseSensitiveLanguageRegex.Matches(title);
 
@@ -415,6 +411,11 @@ namespace NzbDrone.Core.Parser
                 if (match.Groups["korean"].Success)
                 {
                     languages.Add(Language.Korean);
+                }
+
+                if (match.Groups["urdu"].Success)
+                {
+                    languages.Add(Language.Urdu);
                 }
             }
 
