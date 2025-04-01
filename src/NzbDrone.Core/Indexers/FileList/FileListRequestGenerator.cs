@@ -42,6 +42,11 @@ namespace NzbDrone.Core.Indexers.FileList
 
         private IEnumerable<IndexerRequest> GetRequest(string searchType, string parameters)
         {
+            if (Settings.Categories.Empty())
+            {
+                yield break;
+            }
+
             var categoriesQuery = string.Join(",", Settings.Categories.Distinct());
 
             var baseUrl = $"{Settings.BaseUrl.TrimEnd('/')}/api.php?action={searchType}&category={categoriesQuery}{parameters}";
