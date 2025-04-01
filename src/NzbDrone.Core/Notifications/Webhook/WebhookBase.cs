@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Notifications.Webhook
                 {
                     SourcePath = message.SourcePath
                 },
-                Release = new WebhookGrabbedRelease(message.Release),
+                Release = new WebhookGrabbedRelease(message.Release, movieFile.IndexerFlags),
                 IsUpgrade = message.OldMovieFiles.Any(),
                 DownloadClient = message.DownloadClientInfo?.Name,
                 DownloadClientType = message.DownloadClientInfo?.Type,
