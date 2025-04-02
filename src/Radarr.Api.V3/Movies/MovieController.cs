@@ -118,8 +118,6 @@ namespace Radarr.Api.V3.Movies
         {
             var moviesResources = new List<MovieResource>();
 
-            Dictionary<string, FileInfo> coverFileInfos = null;
-
             var translationLanguage = languageId is > 0
                 ? Language.All.Single(l => l.Id == languageId.Value)
                 : (Language)_configService.MovieInfoLanguage;
@@ -146,11 +144,6 @@ namespace Radarr.Api.V3.Movies
                 var tdict = translations.ToDictionaryIgnoreDuplicates(x => x.MovieMetadataId);
                 var sdict = movieStats.ToDictionary(x => x.MovieId);
 
-                if (!excludeLocalCovers)
-                {
-                    coverFileInfos = _coverMapper.GetCoverFileInfos();
-                }
-
                 var movies = movieTask.GetAwaiter().GetResult();
 
                 moviesResources = new List<MovieResource>(movies.Count);
@@ -163,6 +156,8 @@ namespace Radarr.Api.V3.Movies
 
                 if (!excludeLocalCovers)
                 {
+                    var coverFileInfos = _coverMapper.GetCoverFileInfos();
+
                     MapCoversToLocal(moviesResources, coverFileInfos);
                 }
 
