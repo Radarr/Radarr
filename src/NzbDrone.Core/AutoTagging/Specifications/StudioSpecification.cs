@@ -28,7 +28,7 @@ namespace NzbDrone.Core.AutoTagging.Specifications
 
         protected override bool IsSatisfiedByWithoutNegate(Movie movie)
         {
-            return Value.Any(network => movie.MovieMetadata?.Value?.Studio?.EqualsIgnoreCase(network) == true);
+            return Value.Any(studio => movie.MovieMetadata?.Value?.Studio?.EqualsIgnoreCase(studio) ?? false);
         }
 
         public override NzbDroneValidationResult Validate()

@@ -126,7 +126,7 @@
   "AutoTaggingSpecificationQualityProfile": "Quality Profile",
   "AutoTaggingSpecificationRootFolder": "Root Folder",
   "AutoTaggingSpecificationStatus": "Status",
-  "AutoTaggingSpecificationStudio": "Studio",
+  "AutoTaggingSpecificationStudio": "Studio(s)",
   "AutoTaggingSpecificationTag": "Tag",
   "AutoUnmonitorPreviouslyDownloadedMoviesHelpText": "Movies deleted from the disk are automatically unmonitored in {appName}",
   "Automatic": "Automatic",
