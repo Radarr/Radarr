@@ -62,6 +62,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                     switch (torrent.FreeleechType?.ToUpperInvariant())
                     {
                         case "FREELEECH":
+                        case "NEUTRAL LEECH":
                             flags |= IndexerFlags.G_Freeleech;
                             break;
                         case "HALF LEECH":
