@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
@@ -156,9 +155,9 @@ namespace Radarr.Api.V3.Movies
 
                 if (!excludeLocalCovers)
                 {
-                    var coverFileInfos = _coverMapper.GetCoverFileInfos();
+                    var coverLastWrites = _coverMapper.GetCoverFileLastWrites();
 
-                    MapCoversToLocal(moviesResources, coverFileInfos);
+                    MapCoversToLocal(moviesResources, coverLastWrites);
                 }
 
                 LinkMovieStatistics(moviesResources, sdict);
@@ -287,7 +286,7 @@ namespace Radarr.Api.V3.Movies
             _coverMapper.ConvertToLocalUrls(movie.Id, movie.Images);
         }
 
-        private void MapCoversToLocal(IEnumerable<MovieResource> movies, Dictionary<string, FileInfo> coverFileInfos)
+        private void MapCoversToLocal(IEnumerable<MovieResource> movies, Dictionary<string, DateTime> coverFileInfos)
         {
             _coverMapper.ConvertToLocalUrls(movies.Select(x => Tuple.Create(x.Id, x.Images.AsEnumerable())), coverFileInfos);
         }

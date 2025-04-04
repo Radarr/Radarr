@@ -19,9 +19,9 @@ namespace NzbDrone.Core.MediaCover
 {
     public interface IMapCoversToLocal
     {
-        Dictionary<string, FileInfo> GetCoverFileInfos();
-        void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers, Dictionary<string, FileInfo> fileInfos = null);
-        void ConvertToLocalUrls(IEnumerable<Tuple<int, IEnumerable<MediaCover>>> items, Dictionary<string, FileInfo> coverFileInfos);
+        Dictionary<string, DateTime> GetCoverFileLastWrites();
+        void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers, Dictionary<string, DateTime> fileLastWrites = null);
+        void ConvertToLocalUrls(IEnumerable<Tuple<int, IEnumerable<MediaCover>>> items, Dictionary<string, DateTime> fileLastWrites);
         string GetCoverPath(int movieId, MediaCoverTypes coverType, int? height = null);
     }
 
@@ -74,23 +74,23 @@ namespace NzbDrone.Core.MediaCover
             return Path.Combine(GetMovieCoverPath(movieId), coverType.ToString().ToLower() + heightSuffix + GetExtension(coverType));
         }
 
-        public Dictionary<string, FileInfo> GetCoverFileInfos()
+        public Dictionary<string, DateTime> GetCoverFileLastWrites()
         {
             if (!_diskProvider.FolderExists(_coverRootFolder))
             {
-                return new Dictionary<string, FileInfo>();
+                return new Dictionary<string, DateTime>();
             }
 
             return _diskProvider
                 .GetFileInfos(_coverRootFolder, true)
-                .ToDictionary(x => x.FullName, PathEqualityComparer.Instance);
+                .ToDictionary(x => x.FullName, x => x.LastWriteTimeUtc, PathEqualityComparer.Instance);
         }
 
-        public void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers, Dictionary<string, FileInfo> fileInfos = null)
+        public void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers, Dictionary<string, DateTime> fileLastWrites = null)
         {
             if (movieId == 0)
             {
-                // Movie isn't in Radarr yet, map via a proxy to circument referrer issues
+                // Movie isn't in Radarr yet, map via a proxy to circumvent referrer issues
                 foreach (var mediaCover in covers)
                 {
                     mediaCover.Url = _mediaCoverProxy.RegisterUrl(mediaCover.RemoteUrl);
@@ -111,9 +111,9 @@ namespace NzbDrone.Core.MediaCover
 
                     DateTime? lastWrite = null;
 
-                    if (fileInfos != null && fileInfos.TryGetValue(filePath, out var file))
+                    if (fileLastWrites != null && fileLastWrites.TryGetValue(filePath, out var fileLastWrite))
                     {
-                        lastWrite = file.LastWriteTimeUtc;
+                        lastWrite = fileLastWrite;
                     }
                     else if (_diskProvider.FileExists(filePath))
                     {
@@ -128,11 +128,11 @@ namespace NzbDrone.Core.MediaCover
             }
         }
 
-        public void ConvertToLocalUrls(IEnumerable<Tuple<int, IEnumerable<MediaCover>>> items, Dictionary<string, FileInfo> coverFileInfos)
+        public void ConvertToLocalUrls(IEnumerable<Tuple<int, IEnumerable<MediaCover>>> items, Dictionary<string, DateTime> fileLastWrites)
         {
             foreach (var movie in items)
             {
-                ConvertToLocalUrls(movie.Item1, movie.Item2, coverFileInfos);
+                ConvertToLocalUrls(movie.Item1, movie.Item2, fileLastWrites);
             }
         }
 
