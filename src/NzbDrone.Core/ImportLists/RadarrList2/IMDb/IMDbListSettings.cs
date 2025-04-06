@@ -10,7 +10,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
         {
             RuleFor(c => c.ListId)
                 .Matches(@"^top250$|^popular$|^ls\d+$|^ur\d+$")
-                .WithMessage("List ID mist be 'top250', 'popular', an IMDb List ID of the form 'ls12345678' or an IMDb user watchlist of the form 'ur12345678'");
+                .WithMessage("List ID must be 'top250', 'popular', an IMDb List ID of the form 'ls12345678' or an IMDb user watchlist of the form 'ur12345678'");
         }
     }
 
