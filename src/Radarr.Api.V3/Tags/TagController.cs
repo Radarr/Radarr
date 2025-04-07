@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.AutoTagging;
 using NzbDrone.Core.Datastore.Events;
@@ -23,6 +24,8 @@ namespace Radarr.Api.V3.Tags
             : base(signalRBroadcaster)
         {
             _tagService = tagService;
+
+            SharedValidator.RuleFor(c => c.Label).NotEmpty();
         }
 
         protected override TagResource GetResourceById(int id)
