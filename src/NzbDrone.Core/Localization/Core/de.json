@@ -1967,5 +1967,6 @@
     "IndexerSettingsMinimumSeedersHelpText": "Minimale Anzahl an Seedern, die erforderlich ist.",
     "IndexerSettingsPasskey": "Passkey",
     "IndexerSettingsRssUrl": "RSS-URL",
-    "IndexerSettingsFailDownloads": "Fehlgeschlagene Downloads"
+    "IndexerSettingsFailDownloads": "Fehlgeschlagene Downloads",
+    "IndexerSettingsFailDownloadsHelpText": "Beim Verarbeiten abgeschlossener Downloads behandelt {appName} diese ausgewählten Dateitypen als fehlgeschlagene Downloads."
 }

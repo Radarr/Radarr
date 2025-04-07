@@ -1930,5 +1930,6 @@
     "IndexerSettingsCategories": "카테고리",
     "IndexerSettingsRssUrl": "RSS URL",
     "IndexerIPTorrentsSettingsFeedUrlHelpText": "IPTorrents가 선택한 카테고리(HD, SD, x264 등)만을 사용하여 생성한 전체 RSS 피드 URL",
-    "FileSize": "파일 크기"
+    "FileSize": "파일 크기",
+    "IndexerSettingsFailDownloadsHelpText": "완료된 다운로드를 처리하는 동안 {appName}는 선택된 파일 유형을 실패한 다운로드로 처리합니다."
 }

@@ -1969,5 +1969,10 @@
     "IndexerSettingsCookieHelpText": "Si votre site nécessite un cookie de connexion pour accéder au flux RSS, vous devrez le récupérer via un navigateur.",
     "BlocklistedAt": "Mis sur liste noire le {date}",
     "FailedAt": "Échoué le {date}",
-    "IndexerSettingsFailDownloads": "Échec des téléchargements"
+    "IndexerSettingsFailDownloads": "Échec des téléchargements",
+    "FileSize": "Taille de fichier",
+    "DownloadClientItemErrorMessage": "{clientName} signale une erreur : {message}",
+    "GrabbedAt": "Capturé le {date}",
+    "IndexerSettingsFailDownloadsHelpText": "Lors du traitement des téléchargements terminés, {appName} traitera ces types de fichiers sélectionnés comme des téléchargements ayant échoué.",
+    "DownloadClientUTorrentProviderMessage": "uTorrent a un historique d'inclusion de cryptomineurs, de logiciels malveillants et de publicités. Nous vous recommandons fortement de choisir un autre client."
 }

@@ -1282,5 +1282,11 @@
     "AddANewPath": "Adicionar um novo caminho",
     "AddCustomFilter": "Adicionar Filtro Personalizado",
     "IndexerHDBitsSettingsCodecs": "Codificador",
-    "IndexerHDBitsSettingsMediums": "Médio"
+    "IndexerHDBitsSettingsMediums": "Médio",
+    "CustomFormatsSpecificationMaximumYear": "Ano Máximo",
+    "CustomFormatsSpecificationMinimumYear": "Ano Mínimo",
+    "AutoTaggingSpecificationMaximumYear": "Ano Máximo",
+    "AutoTaggingSpecificationMinimumYear": "Ano Mínimo",
+    "BlackholeWatchFolder": "Pasta Vigiada",
+    "BlocklistFilterHasNoItems": "O filtro de lista de bloqueios selecionado não contem entradas"
 }

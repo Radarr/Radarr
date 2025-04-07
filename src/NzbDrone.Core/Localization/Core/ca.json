@@ -2000,5 +2000,8 @@
     "MetadataXmbcSettingsMovieMetadataCollectionNameHelpText": "Inclou el nom de la col·lecció a .nfo",
     "FileSize": "Mida del fitxer",
     "IndexerSettingsFailDownloads": "Baixades fallides",
-    "IndexerSettingsFailDownloadsHelpText": "Mentre es processen les baixades completades, {appName} tractarà els errors seleccionats que impedeixen la importació com a baixades fallides."
+    "IndexerSettingsFailDownloadsHelpText": "Mentre es processen les baixades completades, {appName} tractarà aquests tipus de fitxers seleccionats com a baixades fallides.",
+    "MetadataMediaBrowserDeprecated": "Les metadades del navegador multimèdia estan en desús, el suport s'eliminarà completament a {version}.",
+    "AutoTaggingSpecificationStudio": "Estudi(s)",
+    "DownloadClientItemErrorMessage": "{clientName} está informant d'un error: {message}"
 }
