@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
             Subject.UpdateCredits(titles, _movie);
 
             Mocker.GetMock<ICreditRepository>().Verify(r => r.InsertMany(inserts), Times.Once());
-            Mocker.GetMock<ICreditRepository>().Verify(r => r.UpdateMany(updates), Times.Once());
+            Mocker.GetMock<ICreditRepository>().Verify(r => r.UpdateMany(new List<Credit>()), Times.Once());
             Mocker.GetMock<ICreditRepository>().Verify(r => r.DeleteMany(deletes), Times.Once());
         }
 
@@ -91,9 +91,12 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
             var updateCredit = existingCredit.JsonClone();
             updateCredit.Id = 0;
 
-            Subject.UpdateCredits(new List<Credit> { updateCredit }, _movie);
+            var result = Subject.UpdateCredits(new List<Credit> { updateCredit }, _movie);
 
-            Mocker.GetMock<ICreditRepository>().Verify(r => r.UpdateMany(It.Is<IList<Credit>>(list => list.First().Id == existingCredit.Id)), Times.Once());
+            result.Should().HaveCount(1);
+            result.First().Id.Should().Be(existingCredit.Id);
+
+            Mocker.GetMock<ICreditRepository>().Verify(r => r.UpdateMany(It.Is<IList<Credit>>(l => l.Count == 0)), Times.Once());
         }
     }
 }

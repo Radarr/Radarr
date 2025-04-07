@@ -32,11 +32,16 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
                 .With(m => m.CleanTitle = "myothertitle")
                 .With(m => m.Id = 1)
                 .Build();
+
+            Mocker.GetMock<IAlternativeTitleRepository>()
+                .Setup(x => x.FindByCleanTitles(It.IsAny<List<string>>()))
+                .Returns(new List<AlternativeTitle>());
         }
 
         private void GivenExistingTitles(params AlternativeTitle[] titles)
         {
-            Mocker.GetMock<IAlternativeTitleRepository>().Setup(r => r.FindByMovieMetadataId(_movie.Id))
+            Mocker.GetMock<IAlternativeTitleRepository>()
+                .Setup(r => r.FindByMovieMetadataId(_movie.Id))
                 .Returns(titles.ToList());
         }
 
@@ -52,7 +57,7 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
             Subject.UpdateTitles(titles, _movie);
 
             Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.InsertMany(inserts), Times.Once());
-            Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.UpdateMany(updates), Times.Once());
+            Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.UpdateMany(new List<AlternativeTitle>()), Times.Once());
             Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.DeleteMany(deletes), Times.Once());
         }
 
@@ -96,13 +101,18 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
         public void should_update_with_correct_id()
         {
             var existingTitle = Builder<AlternativeTitle>.CreateNew().With(t => t.Id = 2).Build();
+
             GivenExistingTitles(existingTitle);
+
             var updateTitle = existingTitle.JsonClone();
             updateTitle.Id = 0;
 
-            Subject.UpdateTitles(new List<AlternativeTitle> { updateTitle }, _movie);
+            var result = Subject.UpdateTitles(new List<AlternativeTitle> { updateTitle }, _movie);
 
-            Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.UpdateMany(It.Is<IList<AlternativeTitle>>(list => list.First().Id == existingTitle.Id)), Times.Once());
+            result.Should().HaveCount(1);
+            result.First().Id.Should().Be(existingTitle.Id);
+
+            Mocker.GetMock<IAlternativeTitleRepository>().Verify(r => r.UpdateMany(It.Is<IList<AlternativeTitle>>(l => l.Count == 0)), Times.Once());
         }
     }
 }
