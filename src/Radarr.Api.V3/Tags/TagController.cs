@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.AutoTagging;
@@ -25,7 +26,10 @@ namespace Radarr.Api.V3.Tags
         {
             _tagService = tagService;
 
-            SharedValidator.RuleFor(c => c.Label).NotEmpty();
+            SharedValidator.RuleFor(c => c.Label).Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .Matches("^[a-z0-9-]+$", RegexOptions.IgnoreCase)
+                .WithMessage("Allowed characters a-z, 0-9 and -");
         }
 
         protected override TagResource GetResourceById(int id)
