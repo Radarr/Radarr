@@ -77,6 +77,7 @@ namespace NzbDrone.Core.Movies.Credits
             ChangeDetector<Credit>.DetectChanges(dupeFreeCredits, existingCredits, t => t.CreditTmdbId, out var insert, out var update, out var delete);
 
             _logger.Debug("CreditService({0}): [{1}] inserts, [{2}] updates, [{3}] deletes", credits.Count, insert.Count, update.Count, delete.Count);
+
             _creditRepo.DeleteMany(delete);
             _creditRepo.UpdateMany(update);
             _creditRepo.InsertMany(insert);

@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Equ;
-using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.ChangeDetector
 {
     internal static class ChangeDetector<TSource>
-        where TSource : ModelBase
+        where TSource : Entity<TSource>
     {
         private static MemberwiseEqualityComparer<TSource> _comparer;
 
@@ -37,6 +37,7 @@ namespace NzbDrone.Core.ChangeDetector
             insert = new List<TSource>();
             update = new List<TSource>();
             var existingClean = existing.ToList();
+
             foreach (var src in source)
             {
                 // Try to find from current DB stored entities if one match
@@ -56,12 +57,11 @@ namespace NzbDrone.Core.ChangeDetector
                     // Remove to only keep MovieTranslation that should be removed
                     existingClean.Remove(foundDb);
 
+                    src.UseDbFieldsFrom(foundDb);
+
                     // Exists, deep comparison to check if a property change
                     if (!_comparer.Equals(src, foundDb))
                     {
-                        // At least one property changed, update
-                        // Set the Id to the entity to update
-                        src.Id = foundDb.Id;
                         update.Add(src);
                     }
                 }

@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             // Now find titles to delete, update and insert.
             var existingTitles = _titleRepo.FindByMovieMetadataId(movieMetadataId);
 
-            ChangeDetector<AlternativeTitle>.DetectChanges(titles, existingTitles, t => t, out var insert, out var update, out var delete);
+            ChangeDetector<AlternativeTitle>.DetectChanges(titles, existingTitles, t => t.CleanTitle, out var insert, out var update, out var delete);
 
             _logger.Debug("UpdateTitles({0}): [{1}] inserts, [{2}] updates, [{3}] deletes", titles.Count, insert.Count, update.Count, delete.Count);
 

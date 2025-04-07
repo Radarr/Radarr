@@ -61,6 +61,7 @@ namespace NzbDrone.Core.Movies.Translations
             ChangeDetector<MovieTranslation>.DetectChanges(translations, existingTranslations, t => t.Language, out var insert, out var update, out var delete);
 
             _logger.Debug("UpdateTranslation({0}): [{1}] inserts, [{2}] updates, [{3}] deletes", translations.Count, insert.Count, update.Count, delete.Count);
+
             _translationRepo.DeleteMany(delete);
             _translationRepo.UpdateMany(update);
             _translationRepo.InsertMany(insert);

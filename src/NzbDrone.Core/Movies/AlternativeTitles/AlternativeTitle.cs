@@ -1,9 +1,8 @@
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Movies.AlternativeTitles
 {
-    public class AlternativeTitle : ModelBase
+    public class AlternativeTitle : Entity<AlternativeTitle>
     {
         public SourceType SourceType { get; set; }
         public int MovieMetadataId { get; set; }
@@ -23,9 +22,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
 
         public override bool Equals(object obj)
         {
-            var item = obj as AlternativeTitle;
-
-            if (item == null)
+            if (obj is not AlternativeTitle item)
             {
                 return false;
             }
