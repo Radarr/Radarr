@@ -41,7 +41,8 @@ namespace NzbDrone.Core.Parser
                                                                             (?<original>\b(?:orig|original)\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?:(?i)(?<!SUB[\W|_|^]))(?:(?<lithuanian>\bLT\b)|
+        private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?:(?i)(?<!SUB[\W|_|^]))(?:(?<english>\bEN\b)|
+                                                                                                          (?<lithuanian>\bLT\b)|
                                                                                                           (?<czech>\bCZ\b)|
                                                                                                           (?<polish>\bPL\b)|
                                                                                                           (?<bulgarian>\bBG\b)|
@@ -259,6 +260,11 @@ namespace NzbDrone.Core.Parser
 
             foreach (Match match in caseSensitiveMatches)
             {
+                if (match.Groups["english"].Captures.Any())
+                {
+                    languages.Add(Language.English);
+                }
+
                 if (match.Groups["lithuanian"].Captures.Any())
                 {
                     languages.Add(Language.Lithuanian);
