@@ -1999,6 +1999,9 @@
     "IndexerSettingsMinimumSeeders": "Minimum Seeder",
     "IndexerSettingsMinimumSeedersHelpText": "Minimum seeder(kaynak) sayısı gereklidir.",
     "IndexerSettingsFailDownloads": "Başarısız İndirmeler",
-    "IndexerSettingsFailDownloadsHelpText": "Tamamlanan indirmeler işlenirken {appName}, içe aktarmayı engelleyen seçili hataları başarısız indirmeler olarak değerlendirecektir.",
-    "FileSize": "Dosya Boyutu"
+    "IndexerSettingsFailDownloadsHelpText": "Tamamlanan indirmeler işlenirken {appName} bu seçili dosya türlerini başarısız indirmeler olarak değerlendirecektir.",
+    "FileSize": "Dosya Boyutu",
+    "AutoTaggingSpecificationStudio": "Stüdyo(lar)",
+    "MetadataMediaBrowserDeprecated": "Medya Tarayıcısı meta verileri kullanım dışı bırakıldı, destek {version} sürümünde tamamen kaldırılacak.",
+    "DownloadClientItemErrorMessage": "{clientName} bir hata bildirdi: {message}"
 }

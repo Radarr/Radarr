@@ -2000,5 +2000,8 @@
     "IndexerFileListSettingsCategoriesHelpText": "Categorías a usar en la búsqueda y los canales. Si no se especifica, se usarán todas las opciones.",
     "IndexerSettingsFailDownloads": "Fallo de Descargas",
     "FileSize": "Tamaño de archivo",
-    "IndexerSettingsFailDownloadsHelpText": "Mientras se procesan las descargas completadas, {appName} tratará los errores seleccionados evitando que sean importados como descargas fallidas."
+    "IndexerSettingsFailDownloadsHelpText": "Mientras se procesan las descargas completadas, {appName} tratará aquellos tipos de archivo seleccionados como descargas fallidas.",
+    "MetadataMediaBrowserDeprecated": "Los metadatos de Media Browser están obsoletos, el soporte será eliminado completamente en {version}.",
+    "DownloadClientItemErrorMessage": "{clientName} está informando de un error: {message}",
+    "AutoTaggingSpecificationStudio": "Estudio(s)"
 }
