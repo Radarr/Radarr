@@ -8,13 +8,13 @@ import {
   cancelFetchReleases,
   clearReleases,
 } from 'Store/Actions/releaseActions';
-import MovieInteractiveSearchModalContent from './MovieInteractiveSearchModalContent';
+import MovieInteractiveSearchModalContent, {
+  MovieInteractiveSearchModalContentProps,
+} from './MovieInteractiveSearchModalContent';
 
-interface MovieInteractiveSearchModalProps {
+interface MovieInteractiveSearchModalProps
+  extends MovieInteractiveSearchModalContentProps {
   isOpen: boolean;
-  movieId: number;
-  movieTitle?: string;
-  onModalClose(): void;
 }
 
 function MovieInteractiveSearchModal(props: MovieInteractiveSearchModalProps) {

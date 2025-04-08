@@ -15,17 +15,17 @@ import {
 } from 'Store/Actions/releaseActions';
 import translate from 'Utilities/String/translate';
 
-interface MovieInteractiveSearchModalContentProps {
+export interface MovieInteractiveSearchModalContentProps {
   movieId: number;
   movieTitle?: string;
   onModalClose(): void;
 }
 
-function MovieInteractiveSearchModalContent(
-  props: MovieInteractiveSearchModalContentProps
-) {
-  const { movieId, movieTitle, onModalClose } = props;
-
+function MovieInteractiveSearchModalContent({
+  movieId,
+  movieTitle,
+  onModalClose,
+}: MovieInteractiveSearchModalContentProps) {
   const dispatch = useDispatch();
 
   useEffect(() => {
