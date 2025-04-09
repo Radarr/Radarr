@@ -80,7 +80,7 @@ class QualityDefinition extends Component {
     } = this.props;
 
     this.setState({
-      sliderMiSize: getSliderValue(minSize, slider.min),
+      sliderMinSize: getSliderValue(minSize, slider.min),
       sliderMaxSize: getSliderValue(maxSize, slider.max),
       sliderPreferredSize: getSliderValue(preferredSize, (slider.max - 3)) // fix
     });
