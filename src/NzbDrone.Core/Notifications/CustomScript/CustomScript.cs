@@ -390,7 +390,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
         {
             if (movie == null)
             {
-                return null;
+                return new List<string>();
             }
 
             return _tagRepository.GetTags(movie.Tags)
