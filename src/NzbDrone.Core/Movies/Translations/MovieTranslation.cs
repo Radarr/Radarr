@@ -1,9 +1,8 @@
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Movies.Translations
 {
-    public class MovieTranslation : ModelBase
+    public class MovieTranslation : Entity<MovieTranslation>
     {
         public int MovieMetadataId { get; set; }
         public string Title { get; set; }

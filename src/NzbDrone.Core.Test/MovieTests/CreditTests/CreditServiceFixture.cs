@@ -43,8 +43,11 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
         [Test]
         public void should_update_insert_remove_titles()
         {
-            var titles = new List<Credit> { _credit2, _credit3 };
-            var updates = new List<Credit> { _credit2 };
+            var updatedCredit2 = _credit2.JsonClone();
+            updatedCredit2.Character = updatedCredit2.Character + "TEST";
+
+            var titles = new List<Credit> { updatedCredit2, _credit3 };
+            var updates = new List<Credit> { updatedCredit2 };
             var deletes = new List<Credit> { _credit1 };
             var inserts = new List<Credit> { _credit3 };
 
@@ -89,11 +92,36 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
             GivenExistingCredits(existingCredit);
 
             var updateCredit = existingCredit.JsonClone();
+            updateCredit.Character = updateCredit.Character + "TEST";
             updateCredit.Id = 0;
 
             Subject.UpdateCredits(new List<Credit> { updateCredit }, _movie);
 
             Mocker.GetMock<ICreditRepository>().Verify(r => r.UpdateMany(It.Is<IList<Credit>>(list => list.First().Id == existingCredit.Id)), Times.Once());
+        }
+
+        [Test]
+        public void should_remove_existing_duplicates()
+        {
+            var duplicated = _credit1.JsonClone();
+            duplicated.Id = 2;
+            GivenExistingCredits(_credit1, duplicated);
+            var translations = new List<Credit> { _credit1 };
+            var deleted = new List<Credit> { duplicated };
+
+            Subject.UpdateCredits(translations, _movie);
+
+            Mocker.GetMock<ICreditRepository>().Verify(r => r.DeleteMany(deleted), Times.Once());
+        }
+
+        [Test]
+        public void should_not_update_same_credits()
+        {
+            GivenExistingCredits(_credit1);
+
+            Subject.UpdateCredits(new List<Credit> { _credit1 }, _movie);
+
+            Mocker.GetMock<ICreditRepository>().Verify(r => r.UpdateMany(new List<Credit>()), Times.Once());
         }
     }
 }
