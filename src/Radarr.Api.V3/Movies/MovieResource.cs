@@ -80,7 +80,6 @@ namespace Radarr.Api.V3.Movies
         public DateTime Added { get; set; }
         public AddMovieOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
-        public MovieFileResource MovieFile { get; set; }
         public MovieCollectionResource Collection { get; set; }
         public float Popularity { get; set; }
         public DateTime? LastSearchTime { get; set; }
@@ -95,6 +94,9 @@ namespace Radarr.Api.V3.Movies
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [SwaggerIgnore]
         public bool IsExcluded { get; set; }
+
+        [Obsolete("Deprecated")]
+        public MovieFileResource MovieFile { get; set; }
     }
 
     public static class MovieResourceMapper
@@ -158,12 +160,15 @@ namespace Radarr.Api.V3.Movies
                 AddOptions = model.AddOptions,
                 AlternateTitles = model.MovieMetadata.Value.AlternativeTitles.ToResource(),
                 Ratings = model.MovieMetadata.Value.Ratings,
-                MovieFile = movieFile,
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
                 Studio = model.MovieMetadata.Value.Studio,
                 Collection = collection,
                 Popularity = model.MovieMetadata.Value.Popularity,
                 LastSearchTime = model.LastSearchTime,
+
+#pragma warning disable CS0618
+                MovieFile = movieFile,
+#pragma warning restore CS0618
             };
         }
 
