@@ -327,7 +327,7 @@ namespace NzbDrone.Core.Movies
         {
             var recommendations = new List<int>();
 
-            if (_database.Version < new Version("3.9.0"))
+            if (_database.DatabaseType == DatabaseType.SQLite && _database.Version < new Version("3.9.0"))
             {
                 return recommendations;
             }
