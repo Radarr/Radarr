@@ -25,9 +25,7 @@ namespace NzbDrone.Core.ImportLists.ImportListMovies
 
         public bool ExistsByMetadataId(int metadataId)
         {
-            var movies = Query(x => x.MovieMetadataId == metadataId);
-
-            return movies.Any();
+            return Query(x => x.MovieMetadataId == metadataId).Any();
         }
     }
 }
