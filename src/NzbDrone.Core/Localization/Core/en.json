@@ -1162,6 +1162,7 @@
   "MustContainHelpText": "The release must contain at least one of these terms (case insensitive)",
   "MustNotContain": "Must Not Contain",
   "MustNotContainHelpText": "The release will be rejected if it contains one or more of terms (case insensitive)",
+  "MyComputer": "My Computer",
   "Name": "Name",
   "NamingSettings": "Naming Settings",
   "NamingSettingsLoadError": "Unable to load Naming settings",

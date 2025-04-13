@@ -1,5 +1,6 @@
 import BlocklistAppState from './BlocklistAppState';
 import CalendarAppState from './CalendarAppState';
+import CaptchaAppState from './CaptchaAppState';
 import CommandAppState from './CommandAppState';
 import ExtraFilesAppState from './ExtraFilesAppState';
 import HistoryAppState, { MovieHistoryAppState } from './HistoryAppState';
@@ -9,9 +10,11 @@ import MovieCollectionAppState from './MovieCollectionAppState';
 import MovieCreditAppState from './MovieCreditAppState';
 import MovieFilesAppState from './MovieFilesAppState';
 import MoviesAppState, { MovieIndexAppState } from './MoviesAppState';
+import OAuthAppState from './OAuthAppState';
 import OrganizePreviewAppState from './OrganizePreviewAppState';
 import ParseAppState from './ParseAppState';
 import PathsAppState from './PathsAppState';
+import ProviderOptionsAppState from './ProviderOptionsAppState';
 import QueueAppState from './QueueAppState';
 import ReleasesAppState from './ReleasesAppState';
 import RootFolderAppState from './RootFolderAppState';
@@ -68,6 +71,7 @@ interface AppState {
   app: AppSectionState;
   blocklist: BlocklistAppState;
   calendar: CalendarAppState;
+  captcha: CaptchaAppState;
   commands: CommandAppState;
   extraFiles: ExtraFilesAppState;
   history: HistoryAppState;
@@ -79,9 +83,11 @@ interface AppState {
   movieHistory: MovieHistoryAppState;
   movieIndex: MovieIndexAppState;
   movies: MoviesAppState;
+  oAuth: OAuthAppState;
   organizePreview: OrganizePreviewAppState;
   parse: ParseAppState;
   paths: PathsAppState;
+  providerOptions: ProviderOptionsAppState;
   queue: QueueAppState;
   releases: ReleasesAppState;
   rootFolders: RootFolderAppState;

@@ -21,6 +21,7 @@ import { scrollDirections } from 'Helpers/Props';
 import Movie from 'Movie/Movie';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import dimensions from 'Styles/Variables/dimensions';
+import { InputChanged } from 'typings/inputs';
 import sortByProp from 'Utilities/Array/sortByProp';
 import translate from 'Utilities/String/translate';
 import SelectMovieModalTableHeader from './SelectMovieModalTableHeader';
@@ -146,7 +147,7 @@ function SelectMovieModalContent(props: SelectMovieModalContentProps) {
   }, [listRef, scrollerRef]);
 
   const onFilterChange = useCallback(
-    ({ value }: { value: string }) => {
+    ({ value }: InputChanged<string>) => {
       setFilter(value);
     },
     [setFilter]

@@ -15,9 +15,8 @@ function MovieIndexPosterSelect(props: MovieIndexPosterSelectProps) {
   const isSelected = selectState.selectedState[movieId];
 
   const onSelectPress = useCallback(
-    (event: SyntheticEvent) => {
-      const nativeEvent = event.nativeEvent as PointerEvent;
-      const shiftKey = nativeEvent.shiftKey;
+    (event: SyntheticEvent<HTMLElement, PointerEvent>) => {
+      const shiftKey = event.nativeEvent.shiftKey;
 
       selectDispatch({
         type: 'toggleSelected',

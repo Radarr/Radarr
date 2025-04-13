@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import AvailabilitySelectInput from 'Components/Form/AvailabilitySelectInput';
-import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSelectInputConnector';
-import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
+import AvailabilitySelectInput from 'Components/Form/Select/AvailabilitySelectInput';
+import QualityProfileSelectInput from 'Components/Form/Select/QualityProfileSelectInput';
+import RootFolderSelectInput from 'Components/Form/Select/RootFolderSelectInput';
 import SelectInput from 'Components/Form/SelectInput';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
@@ -203,7 +203,7 @@ class CollectionFooter extends Component {
             isSaving={isSaving && qualityProfileId !== NO_CHANGE}
           />
 
-          <QualityProfileSelectInputConnector
+          <QualityProfileSelectInput
             name="qualityProfileId"
             value={qualityProfileId}
             includeNoChange={true}
@@ -233,7 +233,7 @@ class CollectionFooter extends Component {
             isSaving={isSaving && rootFolderPath !== NO_CHANGE}
           />
 
-          <RootFolderSelectInputConnector
+          <RootFolderSelectInput
             name="rootFolderPath"
             value={rootFolderPath}
             includeNoChange={true}
