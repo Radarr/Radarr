@@ -135,8 +135,8 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Japanese.1080p.XviD-LOL")]
-        [TestCase("Movie.Title (1988) 2160p HDR 5.1 Eng - Jpn x265 10bit")]
-        [TestCase("Movie Title (1985) (1080p.AC3 ITA-ENG-JPN)")]
+        [TestCase("Movie.Title (1988) 2160p HDR 5.1 Eng - Jap x265 10bit")]
+        [TestCase("Movie Title (1985) (1080p.AC3 ITA-ENG-JAP)")]
         public void should_parse_language_japanese(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
