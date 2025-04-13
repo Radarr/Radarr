@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import AvailabilitySelectInput from 'Components/Form/AvailabilitySelectInput';
 import CheckInput from 'Components/Form/CheckInput';
-import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSelectInputConnector';
-import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
+import AvailabilitySelectInput from 'Components/Form/Select/AvailabilitySelectInput';
+import QualityProfileSelectInput from 'Components/Form/Select/QualityProfileSelectInput';
+import RootFolderSelectInput from 'Components/Form/Select/RootFolderSelectInput';
 import SelectInput from 'Components/Form/SelectInput';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
@@ -161,7 +161,7 @@ class DiscoverMovieFooter extends Component {
             isSaving={isAdding}
           />
 
-          <QualityProfileSelectInputConnector
+          <QualityProfileSelectInput
             name="qualityProfileId"
             value={qualityProfileId}
             isDisabled={!selectedCount}
@@ -189,7 +189,7 @@ class DiscoverMovieFooter extends Component {
             isSaving={isAdding}
           />
 
-          <RootFolderSelectInputConnector
+          <RootFolderSelectInput
             name="rootFolderPath"
             value={rootFolderPath}
             isDisabled={!selectedCount}
