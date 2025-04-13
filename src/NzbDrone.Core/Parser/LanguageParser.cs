@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<latvian>\b(?:lat|lav|lv)\b)|
                                                                             (?<telugu>\btel\b)|
                                                                             (?<vietnamese>\bVIE\b)|
-                                                                            (?<japanese>\bJPN\b)|
+                                                                            (?<japanese>\bJAP\b)|
                                                                             (?<korean>\bKOR\b)|
                                                                             (?<urdu>\burdu\b)|
                                                                             (?<original>\b(?:orig|original)\b)",
