@@ -76,7 +76,6 @@ import {
   cancelFetchReleases,
   clearReleases,
 } from 'Store/Actions/releaseActions';
-import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import { fetchImportListSchema } from 'Store/Actions/Settings/importLists';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
@@ -466,7 +465,6 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
     dispatch(fetchMovieCredits({ movieId }));
     dispatch(fetchQueueDetails({ movieId }));
     dispatch(fetchImportListSchema());
-    dispatch(fetchRootFolders());
   }, [movieId, dispatch]);
 
   useEffect(() => {
