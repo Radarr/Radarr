@@ -27,7 +27,6 @@ function EditImportListModalContent(props) {
     advancedSettings,
     isFetching,
     error,
-    rootFolderError,
     isSaving,
     isTesting,
     saveError,
@@ -67,12 +66,13 @@ function EditImportListModalContent(props) {
 
       <ModalBody>
         {
-          isFetching &&
-            <LoadingIndicator />
+          isFetching ?
+            <LoadingIndicator /> :
+            null
         }
 
         {
-          !isFetching && (!!error || !!rootFolderError) ?
+          !isFetching && !!error ?
             <Alert kind={kinds.DANGER}>
               {translate('AddListError')}
             </Alert> :
@@ -80,7 +80,7 @@ function EditImportListModalContent(props) {
         }
 
         {
-          !isFetching && !error && !rootFolderError &&
+          !isFetching && !error ?
             <Form
               {...otherProps}
             >
@@ -240,7 +240,8 @@ function EditImportListModalContent(props) {
                 })
               }
 
-            </Form>
+            </Form> :
+            null
         }
       </ModalBody>
       <ModalFooter>
@@ -291,7 +292,6 @@ EditImportListModalContent.propTypes = {
   advancedSettings: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
   error: PropTypes.object,
-  rootFolderError: PropTypes.object,
   isSaving: PropTypes.bool.isRequired,
   isTesting: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
