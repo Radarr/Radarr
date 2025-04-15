@@ -18,18 +18,16 @@ interface RootFolderSelectInputOptionProps
   isWindows?: boolean;
 }
 
-function RootFolderSelectInputOption(props: RootFolderSelectInputOptionProps) {
-  const {
-    id,
-    value,
-    freeSpace,
-    isMissing,
-    movieFolder,
-    isMobile,
-    isWindows,
-    ...otherProps
-  } = props;
-
+function RootFolderSelectInputOption({
+  id,
+  value,
+  freeSpace,
+  isMissing,
+  movieFolder,
+  isMobile,
+  isWindows,
+  ...otherProps
+}: RootFolderSelectInputOptionProps) {
   const slashCharacter = isWindows ? '\\' : '/';
 
   return (
