@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Datastore.Migration
                                             .FirstOrDefault();
                 }
 
-                // If all the movie profiles are bad or there are no movies, just use the first profile for bad movies and lsits
+                // If all the movie profiles are bad or there are no movies, just use the first profile for bad movies and lists
                 if (mostCommonProfileId == 0)
                 {
                     mostCommonProfileId = profiles.First();
