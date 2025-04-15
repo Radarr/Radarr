@@ -5374,6 +5374,29 @@
         }
       }
     },
+    "/api/v3/movie/{id}/folder": {
+      "get": {
+        "tags": [
+          "MovieFolder"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v3/movie/import": {
       "post": {
         "tags": [
