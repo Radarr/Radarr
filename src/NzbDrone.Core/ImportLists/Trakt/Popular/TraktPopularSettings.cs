@@ -29,7 +29,7 @@ namespace NzbDrone.Core.ImportLists.Trakt.Popular
             RuleFor(c => c.Certification)
                 .Matches(@"^\bNR\b|\bG\b|\bPG\b|\bPG\-13\b|\bR\b|\bNC\-17\b$", RegexOptions.IgnoreCase)
                 .When(c => c.Certification.IsNotNullOrWhiteSpace())
-                .WithMessage("Not a valid cerification");
+                .WithMessage("Not a valid certification");
 
             // Loose validation @TODO
             RuleFor(c => c.Years)

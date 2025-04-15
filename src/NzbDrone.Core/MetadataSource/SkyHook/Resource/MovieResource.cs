@@ -12,7 +12,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public string OriginalTitle { get; set; }
         public string TitleSlug { get; set; }
 
-        // Depricated but left in place until cache fills new object (MovieRatings)
+        // Deprecated but left in place until cache fills new object (MovieRatings)
         public List<RatingItem> Ratings { get; set; }
         public RatingResource MovieRatings { get; set; }
         public int? Runtime { get; set; }

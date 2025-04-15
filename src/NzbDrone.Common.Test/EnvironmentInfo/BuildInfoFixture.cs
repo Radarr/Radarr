@@ -16,7 +16,7 @@ namespace NzbDrone.Common.Test.EnvironmentInfo
         [Test]
         public void should_get_branch()
         {
-            BuildInfo.Branch.Should().NotBe("unknow");
+            BuildInfo.Branch.Should().NotBe("unknown");
             BuildInfo.Branch.Should().NotBeNullOrWhiteSpace();
         }
     }

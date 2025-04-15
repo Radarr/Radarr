@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Datastore.Migration
             // Trim dashes from end
             value = value.Trim('-', '_');
 
-            // Replace double occurences of - or _
+            // Replace double occurrences of - or _
             value = Regex.Replace(value, @"([-_]){2,}", "$1", RegexOptions.Compiled);
 
             return value;
