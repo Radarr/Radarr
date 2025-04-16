@@ -22,9 +22,9 @@ function RootFolderSelectInputSelectedValue({
   ...otherProps
 }: RootFolderSelectInputSelectedValueProps) {
   const slashCharacter = isWindows ? '\\' : '/';
-  const { value, freeSpace, isMissing } = values.find(
-    (v) => v.key === selectedValue
-  ) as RootFolderSelectInputValue;
+  const { value, freeSpace, isMissing } =
+    values.find((v) => v.key === selectedValue) ||
+    ({} as RootFolderSelectInputValue);
 
   return (
     <EnhancedSelectInputSelectedValue
