@@ -1984,5 +1984,6 @@
     "IndexerSettingsAllowZeroSizeHelpText": "启用此选项将允许您使用不指定发布大小的订阅源，但请注意，也将不会执行与大小相关的检查。",
     "IndexerSettingsApiPath": "API 路径",
     "IndexerSettingsApiPathHelpText": "API 的路径，通常是 {url}",
-    "IndexerSettingsPasskey": "通行密钥"
+    "IndexerSettingsPasskey": "通行密钥",
+    "MyComputer": "我的电脑"
 }

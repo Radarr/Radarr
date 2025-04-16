@@ -2003,5 +2003,11 @@
     "IndexerSettingsFailDownloadsHelpText": "Mentre es processen les baixades completades, {appName} tractarà aquests tipus de fitxers seleccionats com a baixades fallides.",
     "MetadataMediaBrowserDeprecated": "Les metadades del navegador multimèdia estan en desús, el suport s'eliminarà completament a {version}.",
     "AutoTaggingSpecificationStudio": "Estudi(s)",
-    "DownloadClientItemErrorMessage": "{clientName} está informant d'un error: {message}"
+    "DownloadClientItemErrorMessage": "{clientName} está informant d'un error: {message}",
+    "MyComputer": "El meu ordinador",
+    "UpdatePath": "Actualitza el camí",
+    "ImportListsRadarrSettingsQualityProfilesHelpText": "Perfils de qualitat de la instància de la font de la qual importar",
+    "ImportListsRadarrSettingsRootFoldersHelpText": "Carpetes arrel de la instància de la font de la qual importar",
+    "ImportListsRadarrSettingsTagsHelpText": "Etiquetes de la instància de la font de la qual importar",
+    "ImportListsRadarrSettingsFullUrl": "URL completa"
 }

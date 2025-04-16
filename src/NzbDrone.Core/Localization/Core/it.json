@@ -1537,5 +1537,7 @@
     "IndexerSettingsApiUser": "Utente API",
     "IndexerSettingsCategories": "Categorie",
     "IndexerSettingsCookie": "Cookie",
-    "IndexerSettingsMinimumSeeders": "Seeder Minimi"
+    "IndexerSettingsMinimumSeeders": "Seeder Minimi",
+    "MyComputer": "Mio Computer",
+    "ImportListsRadarrSettingsFullUrl": "URL Completo"
 }

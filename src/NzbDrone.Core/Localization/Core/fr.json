@@ -1974,5 +1974,11 @@
     "DownloadClientItemErrorMessage": "{clientName} signale une erreur : {message}",
     "GrabbedAt": "Capturé le {date}",
     "IndexerSettingsFailDownloadsHelpText": "Lors du traitement des téléchargements terminés, {appName} traitera ces types de fichiers sélectionnés comme des téléchargements ayant échoué.",
-    "DownloadClientUTorrentProviderMessage": "uTorrent a un historique d'inclusion de cryptomineurs, de logiciels malveillants et de publicités. Nous vous recommandons fortement de choisir un autre client."
+    "DownloadClientUTorrentProviderMessage": "uTorrent a un historique d'inclusion de cryptomineurs, de logiciels malveillants et de publicités. Nous vous recommandons fortement de choisir un autre client.",
+    "MyComputer": "Mon ordinateur",
+    "UpdatePath": "Chemin de mise à jour",
+    "ImportListsRadarrSettingsFullUrl": "URL complète",
+    "ImportListsRadarrSettingsRootFoldersHelpText": "Dossiers racine de l'instance source à partir de laquelle l'importation doit être effectuée",
+    "ImportListsRadarrSettingsTagsHelpText": "Tags de l'instance source à importer",
+    "ImportListsRadarrSettingsQualityProfilesHelpText": "Profils de qualité de l'instance source à importer"
 }
