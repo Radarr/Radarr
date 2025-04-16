@@ -27,19 +27,19 @@ namespace NzbDrone.Core.ImportLists.Radarr
             RootFolderPaths = Array.Empty<string>();
         }
 
-        [FieldDefinition(0, Label = "Full URL", HelpText = "URL, including port, of the Radarr instance to import from (Radarr 3.0 or higher)")]
+        [FieldDefinition(0, Label = "ImportListsRadarrSettingsFullUrl", HelpText = "ImportListsRadarrSettingsFullUrlHelpText")]
         public string BaseUrl { get; set; } = string.Empty;
 
-        [FieldDefinition(1, Label = "API Key", Privacy = PrivacyLevel.ApiKey, HelpText = "Apikey of the Radarr instance to import from (Radarr 3.0 or higher)")]
+        [FieldDefinition(1, Label = "ApiKey", Privacy = PrivacyLevel.ApiKey, HelpText = "ImportListsRadarrSettingsApiKeyHelpText")]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(2, Type = FieldType.Select, SelectOptionsProviderAction = "getProfiles", Label = "Profiles", HelpText = "Profiles from the source instance to import from")]
+        [FieldDefinition(2, Type = FieldType.Select, SelectOptionsProviderAction = "getProfiles", Label = "QualityProfiles", HelpText = "ImportListsRadarrSettingsQualityProfilesHelpText")]
         public IEnumerable<int> ProfileIds { get; set; }
 
-        [FieldDefinition(3, Type = FieldType.Select, SelectOptionsProviderAction = "getTags", Label = "Tags", HelpText = "Tags from the source instance to import from")]
+        [FieldDefinition(3, Type = FieldType.Select, SelectOptionsProviderAction = "getTags", Label = "Tags", HelpText = "ImportListsRadarrSettingsTagsHelpText")]
         public IEnumerable<int> TagIds { get; set; }
 
-        [FieldDefinition(4, Type = FieldType.Select, SelectOptionsProviderAction = "getRootFolders", Label = "Root Folders", HelpText = "Root Folders from the source instance to import from")]
+        [FieldDefinition(4, Type = FieldType.Select, SelectOptionsProviderAction = "getRootFolders", Label = "RootFolders", HelpText = "ImportListsRadarrSettingsRootFoldersHelpText")]
         public IEnumerable<string> RootFolderPaths { get; set; }
 
         public override NzbDroneValidationResult Validate()
