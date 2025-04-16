@@ -2003,5 +2003,15 @@
     "FileSize": "Dosya Boyutu",
     "AutoTaggingSpecificationStudio": "Stüdyo(lar)",
     "MetadataMediaBrowserDeprecated": "Medya Tarayıcısı meta verileri kullanım dışı bırakıldı, destek {version} sürümünde tamamen kaldırılacak.",
-    "DownloadClientItemErrorMessage": "{clientName} bir hata bildirdi: {message}"
+    "DownloadClientItemErrorMessage": "{clientName} bir hata bildirdi: {message}",
+    "MyComputer": "Bilgisayarım",
+    "UpdatePath": "Güncelleme Yolu",
+    "ImportListsRadarrSettingsFullUrl": "Tam URL",
+    "ImportListsRadarrSettingsQualityProfilesHelpText": "Kaynak örneğinden içe aktarılacak Kalite Profilleri",
+    "ImportListsRadarrSettingsRootFoldersHelpText": "Kaynak örneğinden içe aktarılacak Kök Klasörler",
+    "ImportListsRadarrSettingsTagsHelpText": "İçe aktarılacak kaynak örneğinden etiketler",
+    "ImportListsRadarrSettingsApiKeyHelpText": "İçe aktarmak istediğiniz {appName} örneğinin API Anahtarı (Radarr 3.0 veya üzeri)",
+    "ImportListsRadarrSettingsFullUrlHelpText": "İçe aktarmak istediğiniz {appName} örneğinin bağlantı noktası da dahil olmak üzere URL'si (Radarr 3.0 veya üzeri)",
+    "MovieEditRootFolderHelpText": "Filmleri aynı kök klasöre taşımak, film klasörlerinin güncellenen başlığa veya adlandırma biçimine uyacak şekilde yeniden adlandırılmasında kullanılabilir",
+    "UpdateMoviePath": "Film Yolunu Güncelle"
 }

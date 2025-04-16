@@ -1968,5 +1968,11 @@
     "IndexerSettingsPasskey": "Passkey",
     "IndexerSettingsRssUrl": "RSS-URL",
     "IndexerSettingsFailDownloads": "Fehlgeschlagene Downloads",
-    "IndexerSettingsFailDownloadsHelpText": "Beim Verarbeiten abgeschlossener Downloads behandelt {appName} diese ausgewählten Dateitypen als fehlgeschlagene Downloads."
+    "IndexerSettingsFailDownloadsHelpText": "Beim Verarbeiten abgeschlossener Downloads behandelt {appName} diese ausgewählten Dateitypen als fehlgeschlagene Downloads.",
+    "MyComputer": "Mein Computer",
+    "UpdatePath": "Update-Pfad",
+    "ImportListsRadarrSettingsQualityProfilesHelpText": "Qualitätsprofile von der Quellinstanz, von der importiert werden soll",
+    "ImportListsRadarrSettingsRootFoldersHelpText": "Root-Ordner von der Quellinstanz, von der importiert werden soll",
+    "ImportListsRadarrSettingsFullUrl": "Vollständige URL",
+    "ImportListsRadarrSettingsTagsHelpText": "Tags von der Quellinstanz zum Importieren"
 }

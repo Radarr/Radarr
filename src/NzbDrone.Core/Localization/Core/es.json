@@ -2003,5 +2003,15 @@
     "IndexerSettingsFailDownloadsHelpText": "Mientras se procesan las descargas completadas, {appName} tratará aquellos tipos de archivo seleccionados como descargas fallidas.",
     "MetadataMediaBrowserDeprecated": "Los metadatos de Media Browser están obsoletos, el soporte será eliminado completamente en {version}.",
     "DownloadClientItemErrorMessage": "{clientName} está informando de un error: {message}",
-    "AutoTaggingSpecificationStudio": "Estudio(s)"
+    "AutoTaggingSpecificationStudio": "Estudio(s)",
+    "MyComputer": "Mi ordenador",
+    "UpdatePath": "Actualizar Ruta",
+    "UpdateMoviePath": "Actualizar ruta de película",
+    "MovieEditRootFolderHelpText": "Mover películas a la misma carpeta raíz se puede usar para renombrar carpetas de películas para hacer coincidir títulos actualizados o formato de nombrado",
+    "ImportListsRadarrSettingsFullUrl": "URL completa",
+    "ImportListsRadarrSettingsQualityProfilesHelpText": "Perfiles de calidad de la instancia de la fuente de la que importar",
+    "ImportListsRadarrSettingsRootFoldersHelpText": "Carpetas raíz de la instancia de la fuente de la que importar",
+    "ImportListsRadarrSettingsTagsHelpText": "Etiquetas de la instancia de la fuente de la que importar",
+    "ImportListsRadarrSettingsApiKeyHelpText": "Clave API de la instancia de {appName} desde la que importar (Radarr 3.0 o superior)",
+    "ImportListsRadarrSettingsFullUrlHelpText": "URL, incluyendo puerto, de la instancia de {appName} desde la que importar (Radarr 3.0 o superior)"
 }

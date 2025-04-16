@@ -1501,5 +1501,6 @@
     "IndexerSettingsCategories": "Kategóriák",
     "IndexerSettingsMinimumSeeders": "Minimális Seederek Száma",
     "IndexerHDBitsSettingsCodecs": "Kodek",
-    "IndexerHDBitsSettingsMediums": "Közepes"
+    "IndexerHDBitsSettingsMediums": "Közepes",
+    "MyComputer": "A számítógépem"
 }

@@ -2000,5 +2000,11 @@
     "RemoveQueueItem": "Видалити - {sourceTitle}",
     "MonitorSelected": "Відстеження вибрано",
     "RemoveQueueItemsRemovalMethodHelpTextWarning": "«Видалення з завантажувального клієнта» видалить завантаження та файли з завантажувального клієнта.",
-    "IndexerSettingsFailDownloadsHelpText": "Під час обробки завершених завантажень {appName} буде розглядати вибрані помилки, що заважають імпортуванню, як невдалі завантаження."
+    "IndexerSettingsFailDownloadsHelpText": "Під час обробки завершених завантажень {appName} буде розглядати вибрані помилки, що заважають імпортуванню, як невдалі завантаження.",
+    "MyComputer": "Мій комп'ютер",
+    "UpdatePath": "Оновити шлях",
+    "ImportListsRadarrSettingsQualityProfilesHelpText": "Профілі якості з вихідного екземпляра для імпорту з",
+    "ImportListsRadarrSettingsRootFoldersHelpText": "Кореневі теки вихідного екземпляра для імпорту",
+    "ImportListsRadarrSettingsTagsHelpText": "Теги з вихідного екземпляра для імпорту",
+    "ImportListsRadarrSettingsFullUrl": "Повний URL-адрес"
 }

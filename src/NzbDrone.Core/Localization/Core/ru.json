@@ -2003,5 +2003,11 @@
     "IndexerSettingsFailDownloadsHelpText": "При обработке завершённых загрузок {appName} будет считать выбранные типы файлов признаком не успешной загрузки.",
     "DownloadClientItemErrorMessage": "{clientName} сообщил об ошибке: {message}",
     "MetadataMediaBrowserDeprecated": "Метаданные Media Browser не поддерживаются и будут полностью удалены в {version}.",
-    "AutoTaggingSpecificationStudio": "Студии"
+    "AutoTaggingSpecificationStudio": "Студии",
+    "MyComputer": "Мой компьютер",
+    "UpdatePath": "Обновить путь",
+    "ImportListsRadarrSettingsFullUrl": "Полный URL-адрес",
+    "ImportListsRadarrSettingsQualityProfilesHelpText": "Профили качества из исходного экземпляра для импорта из",
+    "ImportListsRadarrSettingsRootFoldersHelpText": "Корневые папки исходного экземпляра для импорта",
+    "ImportListsRadarrSettingsTagsHelpText": "Теги из исходного экземпляра для импорта из"
 }

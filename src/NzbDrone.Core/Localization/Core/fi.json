@@ -2003,5 +2003,11 @@
     "IndexerSettingsRemoveYear": "Poista vuosi hakulauseesta",
     "IndexerSettingsRequiredFlags": "Pakolliset liput",
     "IndexerSettingsRequiredFlagsHelpText": "Valitse hakupalvelulle pakolliset liput. Käytä kaikkia jättämällä tyhjäksi.",
-    "DownloadClientItemErrorMessage": "{clientName} ilmoittaa virheestä: {message}"
+    "DownloadClientItemErrorMessage": "{clientName} ilmoittaa virheestä: {message}",
+    "MyComputer": "Oma tietokone",
+    "UpdatePath": "Muuta sijaintia",
+    "ImportListsRadarrSettingsFullUrl": "Täysi URL",
+    "ImportListsRadarrSettingsQualityProfilesHelpText": "Lähdeinstanssin laatuprofiilit, joilla tuodaan.",
+    "ImportListsRadarrSettingsRootFoldersHelpText": "Lähdeinstanssin juurikansiot, joista tuodaan.",
+    "ImportListsRadarrSettingsTagsHelpText": "Lähdeinstanssin tunnisteet, joilla tuodaan."
 }
