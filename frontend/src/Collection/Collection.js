@@ -20,7 +20,7 @@ import toggleSelected from 'Utilities/Table/toggleSelected';
 import CollectionFooter from './CollectionFooter';
 import CollectionFilterMenu from './Menus/CollectionFilterMenu';
 import CollectionSortMenu from './Menus/CollectionSortMenu';
-import NoCollection from './NoCollection';
+import NoCollections from './NoCollections';
 import CollectionOverviewsConnector from './Overview/CollectionOverviewsConnector';
 import CollectionOverviewOptionsModal from './Overview/Options/CollectionOverviewOptionsModal';
 
@@ -341,7 +341,7 @@ class Collection extends Component {
 
             {
               !error && isPopulated && !items.length &&
-                <NoCollection totalItems={totalItems} />
+                <NoCollections totalItems={totalItems} />
             }
           </PageContentBody>
 
