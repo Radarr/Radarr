@@ -9,6 +9,8 @@ export type MovieStatus =
   | 'released'
   | 'deleted';
 
+export type MovieAvailability = 'announced' | 'inCinemas' | 'released';
+
 export type CoverType = 'poster' | 'fanart' | 'headshot';
 
 export interface Image {
@@ -70,7 +72,7 @@ interface Movie extends ModelBase {
   releaseDate?: string;
   rootFolderPath: string;
   runtime: number;
-  minimumAvailability: string;
+  minimumAvailability: MovieAvailability;
   path: string;
   genres: string[];
   ratings: Ratings;

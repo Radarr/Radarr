@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
 import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import EditCollectionModalConnector from 'Collection/Edit/EditCollectionModalConnector';
+import EditMovieCollectionModal from 'Collection/Edit/EditMovieCollectionModal';
 import CheckInput from 'Components/Form/CheckInput';
 import Icon from 'Components/Icon';
 import Label from 'Components/Label';
@@ -311,7 +311,7 @@ class CollectionOverview extends Component {
           </div>
         </div>
 
-        <EditCollectionModalConnector
+        <EditMovieCollectionModal
           isOpen={isEditCollectionModalOpen}
           collectionId={id}
           onModalClose={this.onEditCollectionModalClose}

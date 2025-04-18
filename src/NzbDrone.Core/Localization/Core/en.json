@@ -593,6 +593,7 @@
   "EditIndexerImplementation": "Edit Indexer - {implementationName}",
   "EditMetadata": "Edit {metadataType} Metadata",
   "EditMovie": "Edit Movie",
+  "EditMovieCollectionModalHeader": "Edit - {title}",
   "EditMovieFile": "Edit Movie File",
   "EditMovieModalHeader": "Edit - {title}",
   "EditMovies": "Edit Movies",

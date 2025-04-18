@@ -7,6 +7,8 @@ interface MovieCollectionAppState
   extends AppSectionState<MovieCollection>,
     AppSectionSaveState {
   itemMap: Record<number, number>;
+
+  pendingChanges: Partial<MovieCollection>;
 }
 
 export default MovieCollectionAppState;
