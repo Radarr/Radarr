@@ -1,13 +1,10 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import AvailabilitySelectInput from 'Components/Form/Select/AvailabilitySelectInput';
-import QualityProfileSelectInput from 'Components/Form/Select/QualityProfileSelectInput';
-import RootFolderSelectInput from 'Components/Form/Select/RootFolderSelectInput';
-import SelectInput from 'Components/Form/SelectInput';
+import FormInputGroup from 'Components/Form/FormInputGroup';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
-import { kinds } from 'Helpers/Props';
+import { inputTypes, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import CollectionFooterLabel from './CollectionFooterLabel';
 import styles from './CollectionFooter.css';
@@ -19,8 +16,7 @@ const monitoredOptions = [
     key: NO_CHANGE,
     get value() {
       return translate('NoChange');
-    },
-    isDisabled: true
+    }
   },
   {
     key: 'monitored',
@@ -41,8 +37,7 @@ const searchOnAddOptions = [
     key: NO_CHANGE,
     get value() {
       return translate('NoChange');
-    },
-    isDisabled: true
+    }
   },
   {
     key: 'yes',
@@ -173,7 +168,8 @@ class CollectionFooter extends Component {
             isSaving={isSaving && monitored !== NO_CHANGE}
           />
 
-          <SelectInput
+          <FormInputGroup
+            type={inputTypes.SELECT}
             name="monitored"
             value={monitored}
             values={monitoredOptions}
@@ -188,7 +184,8 @@ class CollectionFooter extends Component {
             isSaving={isSaving && monitor !== NO_CHANGE}
           />
 
-          <SelectInput
+          <FormInputGroup
+            type={inputTypes.SELECT}
             name="monitor"
             value={monitor}
             values={monitoredOptions}
@@ -203,10 +200,12 @@ class CollectionFooter extends Component {
             isSaving={isSaving && qualityProfileId !== NO_CHANGE}
           />
 
-          <QualityProfileSelectInput
+          <FormInputGroup
+            type={inputTypes.QUALITY_PROFILE_SELECT}
             name="qualityProfileId"
             value={qualityProfileId}
             includeNoChange={true}
+            includeNoChangeDisabled={false}
             isDisabled={!selectedCount}
             onChange={this.onInputChange}
           />
@@ -218,10 +217,12 @@ class CollectionFooter extends Component {
             isSaving={isSaving && minimumAvailability !== NO_CHANGE}
           />
 
-          <AvailabilitySelectInput
+          <FormInputGroup
+            type={inputTypes.AVAILABILITY_SELECT}
             name="minimumAvailability"
             value={minimumAvailability}
             includeNoChange={true}
+            includeNoChangeDisabled={false}
             isDisabled={!selectedCount}
             onChange={this.onInputChange}
           />
@@ -233,12 +234,14 @@ class CollectionFooter extends Component {
             isSaving={isSaving && rootFolderPath !== NO_CHANGE}
           />
 
-          <RootFolderSelectInput
+          <FormInputGroup
+            type={inputTypes.ROOT_FOLDER_SELECT}
             name="rootFolderPath"
             value={rootFolderPath}
             includeNoChange={true}
-            isDisabled={!selectedCount}
+            includeNoChangeDisabled={false}
             selectedValueOptions={{ includeFreeSpace: false }}
+            isDisabled={!selectedCount}
             onChange={this.onInputChange}
           />
         </div>
@@ -249,7 +252,8 @@ class CollectionFooter extends Component {
             isSaving={isSaving && searchOnAdd !== NO_CHANGE}
           />
 
-          <SelectInput
+          <FormInputGroup
+            type={inputTypes.SELECT}
             name="searchOnAdd"
             value={searchOnAdd}
             values={searchOnAddOptions}
