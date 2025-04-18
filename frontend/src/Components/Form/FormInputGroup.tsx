@@ -120,7 +120,7 @@ type PickProps<V, C extends InputType> = C extends 'text'
   : C extends 'monitorMoviesSelect'
   ? MonitorMoviesSelectInputProps
   : C extends 'movieTag'
-  ? MovieTagInputProps
+  ? MovieTagInputProps<V>
   : C extends 'number'
   ? NumberInputProps
   : C extends 'oauth'
@@ -137,7 +137,7 @@ type PickProps<V, C extends InputType> = C extends 'text'
   ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
     EnhancedSelectInputProps<any, V>
   : C extends 'tag'
-  ? MovieTagInputProps
+  ? MovieTagInputProps<V>
   : C extends 'tagSelect'
   ? TagSelectInputProps
   : C extends 'text'

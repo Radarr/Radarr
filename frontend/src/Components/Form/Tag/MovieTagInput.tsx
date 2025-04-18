@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import { addTag } from 'Store/Actions/tagActions';
@@ -12,10 +12,10 @@ interface MovieTag extends TagBase {
   name: string;
 }
 
-export interface MovieTagInputProps {
+export interface MovieTagInputProps<V> {
   name: string;
-  value: number[];
-  onChange: (change: InputChanged<number[]>) => void;
+  value: V;
+  onChange: (change: InputChanged<V>) => void;
 }
 
 const VALID_TAG_REGEX = new RegExp('[^-_a-z0-9]', 'i');
@@ -59,28 +59,48 @@ function createMovieTagsSelector(tags: number[]) {
   });
 }
 
-export default function MovieTagInput({
+export default function MovieTagInput<V>({
   name,
   value,
   onChange,
-}: MovieTagInputProps) {
+}: MovieTagInputProps<V>) {
   const dispatch = useDispatch();
+  const isArray = Array.isArray(value);
+
+  const arrayValue = useMemo(() => {
+    if (isArray) {
+      return value as number[];
+    }
+
+    return value === 0 ? [] : [value as number];
+  }, [isArray, value]);
 
   const { tags, tagList, allTags } = useSelector(
-    createMovieTagsSelector(value)
+    createMovieTagsSelector(arrayValue)
   );
 
   const handleTagCreated = useCallback(
     (tag: MovieTag) => {
-      onChange({ name, value: [...value, tag.id] });
+      if (isArray) {
+        onChange({ name, value: [...value, tag.id] as V });
+      } else {
+        onChange({
+          name,
+          value: tag.id as V,
+        });
+      }
     },
-    [name, value, onChange]
+    [name, value, isArray, onChange]
   );
 
   const handleTagAdd = useCallback(
     (newTag: MovieTag) => {
       if (newTag.id) {
-        onChange({ name, value: [...value, newTag.id] });
+        if (isArray) {
+          onChange({ name, value: [...value, newTag.id] as V });
+        } else {
+          onChange({ name, value: newTag.id as V });
+        }
 
         return;
       }
@@ -96,17 +116,21 @@ export default function MovieTagInput({
         );
       }
     },
-    [name, value, allTags, handleTagCreated, onChange, dispatch]
+    [name, value, isArray, allTags, handleTagCreated, onChange, dispatch]
   );
 
   const handleTagDelete = useCallback(
     ({ index }: { index: number }) => {
-      const newValue = value.slice();
-      newValue.splice(index, 1);
+      if (isArray) {
+        const newValue = value.slice();
+        newValue.splice(index, 1);
 
-      onChange({ name, value: newValue });
+        onChange({ name, value: newValue as V });
+      } else {
+        onChange({ name, value: 0 as V });
+      }
     },
-    [name, value, onChange]
+    [name, value, isArray, onChange]
   );
 
   return (
