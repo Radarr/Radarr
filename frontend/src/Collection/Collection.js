@@ -18,9 +18,9 @@ import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
 import CollectionFooter from './CollectionFooter';
-import CollectionFilterMenu from './Menus/CollectionFilterMenu';
-import CollectionSortMenu from './Menus/CollectionSortMenu';
-import NoCollections from './NoCollections';
+import MovieCollectionFilterMenu from './Menus/MovieCollectionFilterMenu';
+import MovieCollectionSortMenu from './Menus/MovieCollectionSortMenu';
+import NoMovieCollections from './NoMovieCollections';
 import CollectionOverviewsConnector from './Overview/CollectionOverviewsConnector';
 import CollectionOverviewOptionsModal from './Overview/Options/CollectionOverviewOptionsModal';
 
@@ -284,14 +284,14 @@ class Collection extends Component {
                 <PageToolbarSeparator />
             }
 
-            <CollectionSortMenu
+            <MovieCollectionSortMenu
               sortKey={sortKey}
               sortDirection={sortDirection}
               isDisabled={hasNoCollection}
               onSortSelect={onSortSelect}
             />
 
-            <CollectionFilterMenu
+            <MovieCollectionFilterMenu
               selectedFilterKey={selectedFilterKey}
               filters={filters}
               customFilters={customFilters}
@@ -341,7 +341,7 @@ class Collection extends Component {
 
             {
               !error && isPopulated && !items.length &&
-                <NoCollections totalItems={totalItems} />
+                <NoMovieCollections totalItems={totalItems} />
             }
           </PageContentBody>
 

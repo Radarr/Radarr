@@ -1,24 +1,26 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import MenuContent from 'Components/Menu/MenuContent';
 import SortMenu from 'Components/Menu/SortMenu';
 import SortMenuItem from 'Components/Menu/SortMenuItem';
-import { align, sortDirections } from 'Helpers/Props';
+import { align } from 'Helpers/Props';
+import { SortDirection } from 'Helpers/Props/sortDirections';
 import translate from 'Utilities/String/translate';
 
-function CollectionSortMenu(props) {
-  const {
-    sortKey,
-    sortDirection,
-    isDisabled,
-    onSortSelect
-  } = props;
+interface MovieCollectionSortMenuProps {
+  sortKey?: string;
+  sortDirection?: SortDirection;
+  isDisabled: boolean;
+  onSortSelect(sortKey: string): void;
+}
 
+function MovieCollectionSortMenu({
+  sortKey,
+  sortDirection,
+  isDisabled,
+  onSortSelect,
+}: MovieCollectionSortMenuProps) {
   return (
-    <SortMenu
-      isDisabled={isDisabled}
-      alignMenu={align.RIGHT}
-    >
+    <SortMenu isDisabled={isDisabled} alignMenu={align.RIGHT}>
       <MenuContent>
         <SortMenuItem
           name="sortTitle"
@@ -28,6 +30,7 @@ function CollectionSortMenu(props) {
         >
           {translate('Title')}
         </SortMenuItem>
+
         <SortMenuItem
           name="missingMovies"
           sortKey={sortKey}
@@ -41,11 +44,4 @@ function CollectionSortMenu(props) {
   );
 }
 
-CollectionSortMenu.propTypes = {
-  sortKey: PropTypes.string,
-  sortDirection: PropTypes.oneOf(sortDirections.all),
-  isDisabled: PropTypes.bool.isRequired,
-  onSortSelect: PropTypes.func.isRequired
-};
-
-export default CollectionSortMenu;
+export default MovieCollectionSortMenu;

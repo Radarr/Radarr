@@ -2,13 +2,13 @@ import React from 'react';
 import Button from 'Components/Link/Button';
 import { kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
-import styles from './NoCollection.css';
+import styles from './NoMovieCollections.css';
 
-interface NoCollectionsProps {
+interface NoMovieCollectionsProps {
   totalItems: number;
 }
 
-function NoCollections({ totalItems }: NoCollectionsProps) {
+function NoMovieCollections({ totalItems }: NoMovieCollectionsProps) {
   if (totalItems > 0) {
     return (
       <div>
@@ -38,4 +38,4 @@ function NoCollections({ totalItems }: NoCollectionsProps) {
   );
 }
 
-export default NoCollections;
+export default NoMovieCollections;
