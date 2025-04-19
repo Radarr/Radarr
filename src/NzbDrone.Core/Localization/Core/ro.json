@@ -866,7 +866,7 @@
     "StartImport": "Porniți importul",
     "StartProcessing": "Începeți procesarea",
     "StartSearchForMissingMovie": "Începeți căutarea filmului lipsă",
-    "SubfolderWillBeCreatedAutomaticallyInterp": "Subfolderul „{0}” va fi creat automat",
+    "AddNewMovieRootFolderHelpText": "Subfolderul „{0}” va fi creat automat",
     "Sunday": "duminică",
     "Table": "Tabel",
     "TagDetails": "Detalii etichetă - {0}",

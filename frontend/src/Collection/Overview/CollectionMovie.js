@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import AddNewMovieCollectionMovieModal from 'Collection/AddNewMovieCollectionMovieModal';
 import Link from 'Components/Link/Link';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
 import EditMovieModal from 'Movie/Edit/EditMovieModal';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MoviePoster from 'Movie/MoviePoster';
 import translate from 'Utilities/String/translate';
-import AddNewCollectionMovieModal from './../AddNewCollectionMovieModal';
 import styles from './CollectionMovie.css';
 
 class CollectionMovie extends Component {
@@ -160,7 +160,7 @@ class CollectionMovie extends Component {
           </Link>
         </div>
 
-        <AddNewCollectionMovieModal
+        <AddNewMovieCollectionMovieModal
           isOpen={isNewAddMovieModalOpen && !isExistingMovie}
           tmdbId={tmdbId}
           title={title}
@@ -188,7 +188,7 @@ CollectionMovie.propTypes = {
   title: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
-  overview: PropTypes.string.isRequired,
+  overview: PropTypes.string,
   monitored: PropTypes.bool,
   collectionId: PropTypes.number.isRequired,
   hasFile: PropTypes.bool,

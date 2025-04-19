@@ -596,7 +596,7 @@
     "TestAllClients": "Tester tous les clients",
     "TagCannotBeDeletedWhileInUse": "Ne peut pas être supprimé pendant l'utilisation",
     "SuggestTranslationChange": "Suggérer un changement de traduction",
-    "SubfolderWillBeCreatedAutomaticallyInterp": "'{0}' le sous-dossier sera créé automatiquement",
+    "AddNewMovieRootFolderHelpText": "'{0}' le sous-dossier sera créé automatiquement",
     "StartupDirectory": "Répertoire de démarrage",
     "StandardMovieFormat": "Format de film standard",
     "SslPort": "Port SSL",

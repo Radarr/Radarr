@@ -79,9 +79,9 @@ class AddNewMovieModalContent extends Component {
             }
 
             <div className={styles.info}>
-              <div className={styles.overview}>
-                {overview}
-              </div>
+              {overview ? (
+                <div className={styles.overview}>{overview}</div>
+              ) : null}
 
               <Form>
                 <FormGroup>
@@ -98,7 +98,9 @@ class AddNewMovieModalContent extends Component {
                       movieFolder: folder,
                       isWindows
                     }}
-                    helpText={translate('SubfolderWillBeCreatedAutomaticallyInterp', [folder])}
+                    helpText={translate('AddNewMovieRootFolderHelpText', {
+                      folder
+                    })}
                     onChange={onInputChange}
                     {...rootFolderPath}
                   />

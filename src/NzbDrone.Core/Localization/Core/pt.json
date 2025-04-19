@@ -611,7 +611,7 @@
     "TestAllClients": "Testar todos os clientes",
     "ICalTagsMoviesHelpText": "Aplica-se a filmes com pelo menos uma etiqueta correspondente",
     "TagIsNotUsedAndCanBeDeleted": "A etiqueta não é utilizada e pode ser eliminada",
-    "SubfolderWillBeCreatedAutomaticallyInterp": "A subpasta \"{0}\" será criada automaticamente",
+    "AddNewMovieRootFolderHelpText": "A subpasta \"{0}\" será criada automaticamente",
     "FileBrowserPlaceholderText": "Começa a digitar ou seleciona um caminho abaixo",
     "StandardMovieFormat": "Formato padrão de filme",
     "SslCertPathHelpText": "Caminho para o ficheiro PFX",

@@ -888,7 +888,7 @@
     "SslCertPath": "SSL-certifierad sökväg",
     "SslPort": "SSL-port",
     "StandardMovieFormat": "Standardfilmformat",
-    "SubfolderWillBeCreatedAutomaticallyInterp": "Undermappen \"{0}\" skapas automatiskt",
+    "AddNewMovieRootFolderHelpText": "Undermappen \"{0}\" skapas automatiskt",
     "TagDetails": "Taggdetaljer - {0}",
     "TagIsNotUsedAndCanBeDeleted": "Taggen används inte och kan raderas",
     "ICalTagsMoviesHelpText": "Gäller filmer med minst en matchande tagg",

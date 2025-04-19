@@ -848,7 +848,7 @@
     "Status": "Статус",
     "Studio": "Студія",
     "Style": "Стиль",
-    "SubfolderWillBeCreatedAutomaticallyInterp": "Вкладена папка \"{0}\" буде створена автоматично",
+    "AddNewMovieRootFolderHelpText": "Вкладена папка \"{0}\" буде створена автоматично",
     "SuggestTranslationChange": "Запропонуйте зміну перекладу",
     "SystemTimeHealthCheckMessage": "Системний час вимкнено більш ніж на 1 день. Заплановані завдання можуть не працювати належним чином, доки час не буде виправлено",
     "Table": "Таблиця",

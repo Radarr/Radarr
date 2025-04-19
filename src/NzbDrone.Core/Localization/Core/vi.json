@@ -868,7 +868,7 @@
     "StartImport": "Bắt đầu nhập",
     "Status": "Trạng thái",
     "Style": "Phong cách",
-    "SubfolderWillBeCreatedAutomaticallyInterp": "Thư mục con '{0}' sẽ được tạo tự động",
+    "AddNewMovieRootFolderHelpText": "Thư mục con '{0}' sẽ được tạo tự động",
     "Sunday": "chủ nhật",
     "Table": "Bàn",
     "TableOptions": "Tùy chọn bảng",

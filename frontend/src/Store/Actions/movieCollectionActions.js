@@ -250,8 +250,7 @@ export const actionHandlers = handleThunks({
   [ADD_MOVIE]: function(getState, payload, dispatch) {
     dispatch(set({ section, isAdding: true }));
 
-    const tmdbId = payload.tmdbId;
-    const title = payload.title;
+    const { tmdbId, title } = payload;
 
     const newMovie = getNewMovie({ tmdbId, title }, payload);
     newMovie.id = 0;

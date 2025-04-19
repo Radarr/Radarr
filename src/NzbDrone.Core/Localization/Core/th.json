@@ -855,7 +855,7 @@
     "Status": "สถานะ",
     "Studio": "สตูดิโอ",
     "Style": "สไตล์",
-    "SubfolderWillBeCreatedAutomaticallyInterp": "โฟลเดอร์ย่อย \"{0}\" จะถูกสร้างขึ้นโดยอัตโนมัติ",
+    "AddNewMovieRootFolderHelpText": "โฟลเดอร์ย่อย \"{0}\" จะถูกสร้างขึ้นโดยอัตโนมัติ",
     "Sunday": "วันอาทิตย์",
     "TableOptions": "ตัวเลือกตาราง",
     "TagDetails": "รายละเอียดแท็ก - {0}",

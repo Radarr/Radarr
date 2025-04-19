@@ -587,7 +587,7 @@
     "WaitingToImport": "Wachten tot Importeren",
     "UpgradeUntilThisQualityIsMetOrExceeded": "Bijwerken totdat deze kwaliteit is behaald of overschreden",
     "TagCannotBeDeletedWhileInUse": "Kan niet verwijderd worden terwijl in gebruik",
-    "SubfolderWillBeCreatedAutomaticallyInterp": "'{0}' submap zal automatisch worden aangemaakt",
+    "AddNewMovieRootFolderHelpText": "'{0}' submap zal automatisch worden aangemaakt",
     "SslCertPathHelpText": "Pad naar pfx bestand",
     "SslCertPasswordHelpText": "Wachtwoord voor pfx bestand",
     "ShowYear": "Toon Jaar",

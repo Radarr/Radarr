@@ -277,7 +277,7 @@
     "DeleteQualityProfileMessageText": "Naozaj chcete zmazať tento profil oneskorenia?",
     "DeleteReleaseProfileMessageText": "Naozaj chcete zmazať tento profil oneskorenia?",
     "EditIndexerImplementation": "Pridať Indexer - {implementationName}",
-    "SubfolderWillBeCreatedAutomaticallyInterp": "'{folder}' podpriečinok sa vytvorí automaticky",
+    "AddNewMovieRootFolderHelpText": "'{folder}' podpriečinok sa vytvorí automaticky",
     "DeleteFormatMessageText": "Naozaj chcete zmazať značku formátu {0} ?",
     "DownloadClientSettingsRecentPriority": "Priorita klienta",
     "EditReleaseProfile": "Pridať profil vydania",

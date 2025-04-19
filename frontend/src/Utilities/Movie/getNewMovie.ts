@@ -1,17 +1,27 @@
+import Movie, { MovieAvailability, MovieMonitor } from 'Movie/Movie';
 
-function getNewMovie(movie, payload) {
+interface NewMoviePayload {
+  rootFolderPath: string;
+  monitor: MovieMonitor;
+  qualityProfileId: number;
+  minimumAvailability: MovieAvailability;
+  tags: number[];
+  searchForMovie?: boolean;
+}
+
+function getNewMovie(movie: Movie, payload: NewMoviePayload) {
   const {
     rootFolderPath,
     monitor,
     qualityProfileId,
     minimumAvailability,
     tags,
-    searchForMovie = false
+    searchForMovie = false,
   } = payload;
 
   const addOptions = {
     monitor,
-    searchForMovie
+    searchForMovie,
   };
 
   movie.addOptions = addOptions;

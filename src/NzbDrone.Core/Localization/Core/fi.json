@@ -828,7 +828,7 @@
     "Status": "Tila",
     "Studio": "Studio",
     "Style": "Ulkoasu",
-    "SubfolderWillBeCreatedAutomaticallyInterp": "Alikansio '{0}' luodaan automaattisesti",
+    "AddNewMovieRootFolderHelpText": "Alikansio '{0}' luodaan automaattisesti",
     "Sunday": "Sunnuntai",
     "Table": "Taulukko",
     "TableOptions": "Taulukkonäkymän asetukset",

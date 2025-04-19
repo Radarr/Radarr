@@ -2,6 +2,8 @@ import ModelBase from 'App/ModelBase';
 import Language from 'Language/Language';
 import { MovieFile } from 'MovieFile/MovieFile';
 
+export type MovieMonitor = 'movieOnly' | 'movieAndCollection' | 'none';
+
 export type MovieStatus =
   | 'tba'
   | 'announced'
@@ -48,6 +50,11 @@ export interface AlternativeTitle extends ModelBase {
   title: string;
 }
 
+export interface MovieAddOptions {
+  monitor: MovieMonitor;
+  searchForMovie: boolean;
+}
+
 interface Movie extends ModelBase {
   tmdbId: number;
   imdbId?: string;
@@ -87,6 +94,7 @@ interface Movie extends ModelBase {
   lastSearchTime?: string;
   isAvailable: boolean;
   isSaving?: boolean;
+  addOptions: MovieAddOptions;
 }
 
 export default Movie;

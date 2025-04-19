@@ -664,7 +664,7 @@
     "TagCannotBeDeletedWhileInUse": "Non può essere cancellato mentre è in uso",
     "Table": "Tabella",
     "SuggestTranslationChange": "Suggerisci un cambio nella traduzione",
-    "SubfolderWillBeCreatedAutomaticallyInterp": "La sottocartella '{0}' verrà creata automaticamente",
+    "AddNewMovieRootFolderHelpText": "La sottocartella '{0}' verrà creata automaticamente",
     "StartupDirectory": "Cartella di Avvio",
     "FileBrowserPlaceholderText": "Comincia a digitare o seleziona un percorso sotto",
     "StandardMovieFormat": "Formato Film Standard",

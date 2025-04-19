@@ -211,7 +211,7 @@
     "SslCertPath": "एसएसएल सर्टिफिकेट पाथ",
     "StandardMovieFormat": "मानक मूवी प्रारूप",
     "StartSearchForMissingMovie": "लापता फिल्म की खोज शुरू करें",
-    "SubfolderWillBeCreatedAutomaticallyInterp": "'{0}' सबफ़ोल्डर स्वचालित रूप से बनाया जाएगा",
+    "AddNewMovieRootFolderHelpText": "'{0}' सबफ़ोल्डर स्वचालित रूप से बनाया जाएगा",
     "TableColumnsHelpText": "चुनें कि कौन से कॉलम दिखाई दे रहे हैं और वे किस क्रम में दिखाई देते हैं",
     "TagDetails": "टैग विवरण - {0}",
     "TagIsNotUsedAndCanBeDeleted": "टैग का उपयोग नहीं किया जाता है और इसे हटाया जा सकता है",

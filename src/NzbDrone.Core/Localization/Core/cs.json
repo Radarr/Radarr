@@ -107,7 +107,7 @@
     "StartImport": "Spusťte import",
     "Status": "Postavení",
     "Studio": "Studio",
-    "SubfolderWillBeCreatedAutomaticallyInterp": "Podsložka „{0}“ bude vytvořena automaticky",
+    "AddNewMovieRootFolderHelpText": "Podsložka „{0}“ bude vytvořena automaticky",
     "ICalTagsMoviesHelpText": "Platí pro filmy s alespoň jednou shodnou značkou",
     "TorrentDelayTime": "Torrent Delay: {0}",
     "Trakt": "Trakt",
