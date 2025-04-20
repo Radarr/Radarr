@@ -24,7 +24,7 @@ namespace Radarr.Api.V3.MovieFiles
         public List<Language> Languages { get; set; }
         public QualityModel Quality { get; set; }
         public List<CustomFormatResource> CustomFormats { get; set; }
-        public int CustomFormatScore { get; set; }
+        public int? CustomFormatScore { get; set; }
         public int? IndexerFlags { get; set; }
         public MediaInfoResource MediaInfo { get; set; }
 
