@@ -16,7 +16,6 @@ import scrollPositions from 'Store/scrollPositions';
 import createCollectionClientSideCollectionItemsSelector from 'Store/Selectors/createCollectionClientSideCollectionItemsSelector';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
-import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import Collection from './Collection';
 
 function createMapStateToProps() {
