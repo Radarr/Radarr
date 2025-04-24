@@ -248,7 +248,7 @@ class Collection extends Component {
     const hasNoCollection = !totalItems;
 
     return (
-      <PageContent>
+      <PageContent title={translate('Collections')}>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton

@@ -283,7 +283,7 @@ class DiscoverMovie extends Component {
     const hasNoMovie = !totalItems;
 
     return (
-      <PageContent>
+      <PageContent title={translate('Discover')}>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
