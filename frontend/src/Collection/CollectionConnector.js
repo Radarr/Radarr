@@ -5,9 +5,13 @@ import { createSelector } from 'reselect';
 import * as commandNames from 'Commands/commandNames';
 import withScrollPosition from 'Components/withScrollPosition';
 import { executeCommand } from 'Store/Actions/commandActions';
-import { saveMovieCollections, setMovieCollectionsFilter, setMovieCollectionsSort } from 'Store/Actions/movieCollectionActions';
+import {
+  fetchMovieCollections,
+  saveMovieCollections,
+  setMovieCollectionsFilter,
+  setMovieCollectionsSort
+} from 'Store/Actions/movieCollectionActions';
 import { clearQueueDetails, fetchQueueDetails } from 'Store/Actions/queueActions';
-import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import scrollPositions from 'Store/scrollPositions';
 import createCollectionClientSideCollectionItemsSelector from 'Store/Selectors/createCollectionClientSideCollectionItemsSelector';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
@@ -36,8 +40,8 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    dispatchFetchRootFolders() {
-      dispatch(fetchRootFolders());
+    dispatchFetchMovieCollections() {
+      dispatch(fetchMovieCollections());
     },
     dispatchFetchQueueDetails() {
       dispatch(fetchQueueDetails());
@@ -68,13 +72,11 @@ class CollectionConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    registerPagePopulator(this.repopulate);
-    this.props.dispatchFetchRootFolders();
+    this.props.dispatchFetchMovieCollections();
     this.props.dispatchFetchQueueDetails();
   }
 
   componentWillUnmount() {
-    unregisterPagePopulator(this.repopulate);
     this.props.dispatchClearQueueDetails();
   }
 
@@ -93,9 +95,16 @@ class CollectionConnector extends Component {
   // Render
 
   render() {
+    const {
+      dispatchFetchMovieCollections,
+      dispatchFetchQueueDetails,
+      dispatchClearQueueDetails,
+      ...otherProps
+    } = this.props;
+
     return (
       <Collection
-        {...this.props}
+        {...otherProps}
         onViewSelect={this.onViewSelect}
         onScroll={this.onScroll}
         onUpdateSelectedPress={this.onUpdateSelectedPress}
@@ -108,7 +117,7 @@ CollectionConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   view: PropTypes.string.isRequired,
   onUpdateSelectedPress: PropTypes.func.isRequired,
-  dispatchFetchRootFolders: PropTypes.func.isRequired,
+  dispatchFetchMovieCollections: PropTypes.func.isRequired,
   dispatchFetchQueueDetails: PropTypes.func.isRequired,
   dispatchClearQueueDetails: PropTypes.func.isRequired
 };
