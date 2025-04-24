@@ -22,12 +22,12 @@ const additionalColumnCount = {
 };
 
 function calculateColumnWidth(width, posterSize, isSmallScreen) {
-  const maxiumColumnWidth = isSmallScreen ? 172 : 182;
-  const columns = Math.floor(width / maxiumColumnWidth);
-  const remainder = width % maxiumColumnWidth;
+  const maximumColumnWidth = isSmallScreen ? 172 : 182;
+  const columns = Math.floor(width / maximumColumnWidth);
+  const remainder = width % maximumColumnWidth;
 
   if (remainder === 0 && posterSize === 'large') {
-    return maxiumColumnWidth;
+    return maximumColumnWidth;
   }
 
   return Math.floor(width / (columns + additionalColumnCount[posterSize]));
