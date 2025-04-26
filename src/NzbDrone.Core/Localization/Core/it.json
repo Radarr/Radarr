@@ -1539,5 +1539,6 @@
     "IndexerSettingsCookie": "Cookie",
     "IndexerSettingsMinimumSeeders": "Seeder Minimi",
     "MyComputer": "Mio Computer",
-    "ImportListsRadarrSettingsFullUrl": "URL Completo"
+    "ImportListsRadarrSettingsFullUrl": "URL Completo",
+    "EditMovieCollectionModalHeader": "Modifica - {title}"
 }

@@ -1985,5 +1985,6 @@
     "IndexerSettingsApiPath": "API 路径",
     "IndexerSettingsApiPathHelpText": "API 的路径，通常是 {url}",
     "IndexerSettingsPasskey": "通行密钥",
-    "MyComputer": "我的电脑"
+    "MyComputer": "我的电脑",
+    "EditMovieCollectionModalHeader": "编辑 - {title}"
 }

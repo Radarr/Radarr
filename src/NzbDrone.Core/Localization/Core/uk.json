@@ -2006,5 +2006,6 @@
     "ImportListsRadarrSettingsQualityProfilesHelpText": "Профілі якості з вихідного екземпляра для імпорту з",
     "ImportListsRadarrSettingsRootFoldersHelpText": "Кореневі теки вихідного екземпляра для імпорту",
     "ImportListsRadarrSettingsTagsHelpText": "Теги з вихідного екземпляра для імпорту",
-    "ImportListsRadarrSettingsFullUrl": "Повний URL-адрес"
+    "ImportListsRadarrSettingsFullUrl": "Повний URL-адрес",
+    "EditMovieCollectionModalHeader": "Редагувати - {title}"
 }
