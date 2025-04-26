@@ -1974,5 +1974,6 @@
     "ImportListsRadarrSettingsQualityProfilesHelpText": "Qualitätsprofile von der Quellinstanz, von der importiert werden soll",
     "ImportListsRadarrSettingsRootFoldersHelpText": "Root-Ordner von der Quellinstanz, von der importiert werden soll",
     "ImportListsRadarrSettingsFullUrl": "Vollständige URL",
-    "ImportListsRadarrSettingsTagsHelpText": "Tags von der Quellinstanz zum Importieren"
+    "ImportListsRadarrSettingsTagsHelpText": "Tags von der Quellinstanz zum Importieren",
+    "EditMovieCollectionModalHeader": "Bearbeiten - {title}"
 }

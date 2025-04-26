@@ -1502,5 +1502,6 @@
     "IndexerSettingsMinimumSeeders": "Minimális Seederek Száma",
     "IndexerHDBitsSettingsCodecs": "Kodek",
     "IndexerHDBitsSettingsMediums": "Közepes",
-    "MyComputer": "A számítógépem"
+    "MyComputer": "A számítógépem",
+    "EditMovieCollectionModalHeader": "Szerkesztés – {title}"
 }

@@ -581,7 +581,7 @@
     "WaitingToImport": "Esperar para importar",
     "UpgradeUntilThisQualityIsMetOrExceeded": "Actualizar hasta que esta calidad sea alcanzada o excedida",
     "TagCannotBeDeletedWhileInUse": "No se puede eliminar estando en uso",
-    "AddNewMovieRootFolderHelpText": "La subcarpeta '{0}' se creará automáticamente",
+    "AddNewMovieRootFolderHelpText": "La subcarpeta '{folder}' se creará automáticamente",
     "SslCertPathHelpText": "Ruta del archivo pfx",
     "SslCertPasswordHelpText": "Contraseña para archivo pfx",
     "ShowYear": "Mostrar Año",
@@ -2013,5 +2013,6 @@
     "ImportListsRadarrSettingsRootFoldersHelpText": "Carpetas raíz de la instancia de la fuente de la que importar",
     "ImportListsRadarrSettingsTagsHelpText": "Etiquetas de la instancia de la fuente de la que importar",
     "ImportListsRadarrSettingsApiKeyHelpText": "Clave API de la instancia de {appName} desde la que importar (Radarr 3.0 o superior)",
-    "ImportListsRadarrSettingsFullUrlHelpText": "URL, incluyendo puerto, de la instancia de {appName} desde la que importar (Radarr 3.0 o superior)"
+    "ImportListsRadarrSettingsFullUrlHelpText": "URL, incluyendo puerto, de la instancia de {appName} desde la que importar (Radarr 3.0 o superior)",
+    "EditMovieCollectionModalHeader": "Editar - {title}"
 }

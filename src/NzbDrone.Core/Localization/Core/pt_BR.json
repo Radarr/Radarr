@@ -2013,5 +2013,6 @@
     "MovieEditRootFolderHelpText": "Mover filmes para a mesma pasta raiz pode ser usado para renomear pastas de filmes para corresponder ao título atualizado ou formato de nomenclatura",
     "ImportListsRadarrSettingsApiKeyHelpText": "Chave de API da instância {appName} para importar (Radarr 3.0 ou superior)",
     "ImportListsRadarrSettingsFullUrlHelpText": "URL , incluindo porta da instância {appName} para importar (Radarr 3.0 ou superior)",
-    "UpdateMoviePath": "Atualizar Caminho do Filme"
+    "UpdateMoviePath": "Atualizar Caminho do Filme",
+    "EditMovieCollectionModalHeader": "Editar - {title}"
 }

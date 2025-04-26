@@ -2013,5 +2013,6 @@
     "ImportListsRadarrSettingsApiKeyHelpText": "İçe aktarmak istediğiniz {appName} örneğinin API Anahtarı (Radarr 3.0 veya üzeri)",
     "ImportListsRadarrSettingsFullUrlHelpText": "İçe aktarmak istediğiniz {appName} örneğinin bağlantı noktası da dahil olmak üzere URL'si (Radarr 3.0 veya üzeri)",
     "MovieEditRootFolderHelpText": "Filmleri aynı kök klasöre taşımak, film klasörlerinin güncellenen başlığa veya adlandırma biçimine uyacak şekilde yeniden adlandırılmasında kullanılabilir",
-    "UpdateMoviePath": "Film Yolunu Güncelle"
+    "UpdateMoviePath": "Film Yolunu Güncelle",
+    "EditMovieCollectionModalHeader": "Düzenle - {title}"
 }

@@ -339,5 +339,8 @@
     "AddCustomFilter": "Legg til eget filter",
     "IndexerHDBitsSettingsCategories": "Kategorier",
     "IndexerHDBitsSettingsCodecs": "Kodek",
-    "IndexerSettingsCategories": "Kategorier"
+    "IndexerSettingsCategories": "Kategorier",
+    "History": "Historikk",
+    "Tba": "Venter",
+    "AddNewMovieRootFolderHelpText": "Undermappa \"{folder}\" vil bli automatisk laget"
 }

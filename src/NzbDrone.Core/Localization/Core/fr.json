@@ -1980,5 +1980,6 @@
     "ImportListsRadarrSettingsFullUrl": "URL complète",
     "ImportListsRadarrSettingsRootFoldersHelpText": "Dossiers racine de l'instance source à partir de laquelle l'importation doit être effectuée",
     "ImportListsRadarrSettingsTagsHelpText": "Tags de l'instance source à importer",
-    "ImportListsRadarrSettingsQualityProfilesHelpText": "Profils de qualité de l'instance source à importer"
+    "ImportListsRadarrSettingsQualityProfilesHelpText": "Profils de qualité de l'instance source à importer",
+    "EditMovieCollectionModalHeader": "Modifier - {title}"
 }

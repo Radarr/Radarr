@@ -2009,5 +2009,6 @@
     "ImportListsRadarrSettingsFullUrl": "Täysi URL",
     "ImportListsRadarrSettingsQualityProfilesHelpText": "Lähdeinstanssin laatuprofiilit, joilla tuodaan.",
     "ImportListsRadarrSettingsRootFoldersHelpText": "Lähdeinstanssin juurikansiot, joista tuodaan.",
-    "ImportListsRadarrSettingsTagsHelpText": "Lähdeinstanssin tunnisteet, joilla tuodaan."
+    "ImportListsRadarrSettingsTagsHelpText": "Lähdeinstanssin tunnisteet, joilla tuodaan.",
+    "EditMovieCollectionModalHeader": "Muokataan – {title}"
 }
