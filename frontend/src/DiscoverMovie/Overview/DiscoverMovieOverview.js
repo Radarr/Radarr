@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
 import CheckInput from 'Components/Form/CheckInput';
 import Icon from 'Components/Icon';
-import ImportListListConnector from 'Components/ImportListListConnector';
+import ImportListList from 'Components/ImportListList';
 import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
@@ -242,7 +242,7 @@ class DiscoverMovieOverview extends Component {
                   null
               }
 
-              <ImportListListConnector
+              <ImportListList
                 lists={lists}
               />
             </div>

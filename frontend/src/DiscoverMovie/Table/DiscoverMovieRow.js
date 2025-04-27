@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Icon from 'Components/Icon';
 import ImdbRating from 'Components/ImdbRating';
-import ImportListListConnector from 'Components/ImportListListConnector';
+import ImportListList from 'Components/ImportListList';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import RottenTomatoRating from 'Components/RottenTomatoRating';
@@ -328,7 +328,7 @@ class DiscoverMovieRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
-                  <ImportListListConnector
+                  <ImportListList
                     lists={lists}
                   />
                 </VirtualTableRowCell>
