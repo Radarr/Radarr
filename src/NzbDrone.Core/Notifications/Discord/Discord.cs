@@ -644,9 +644,9 @@ namespace NzbDrone.Core.Notifications.Discord
                 return null;
             }
 
-            var title = movie.MovieMetadata.Value.Year > 0 ? $"{movie.MovieMetadata.Value.Title} ({movie.MovieMetadata.Value.Year})" : movie.MovieMetadata.Value.Title;
+            var title = (movie.MovieMetadata.Value.Year > 0 ? $"{movie.MovieMetadata.Value.Title} ({movie.MovieMetadata.Value.Year})" : movie.MovieMetadata.Value.Title).Replace("`", "\\`");
 
-            return title.Length > 256 ? $"{title.AsSpan(0, 253)}..." : title;
+            return title.Length > 256 ? $"{title.AsSpan(0, 253).TrimEnd('\\')}..." : title;
         }
 
         private List<string> GetTagLabels(Movie movie)
