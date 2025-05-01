@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         {
             var request =
                 new IndexerRequest(
-                    $"{_settings.BaseUrl.Trim().TrimEnd('/')}/torrents.php?action=advanced&json=noredirect&grouping=0&searchstr={searchParameters}",
+                    $"{_settings.BaseUrl.Trim().TrimEnd('/')}/torrents.php?action=advanced&json=noredirect&grouping=0&order_by=time&order_way=desc&searchstr={searchParameters}",
                     HttpAccept.Json);
 
             request.HttpRequest.Headers.Add("ApiUser", _settings.APIUser);
