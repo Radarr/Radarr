@@ -828,7 +828,7 @@
     "Status": "Tila",
     "Studio": "Studio",
     "Style": "Ulkoasu",
-    "AddNewMovieRootFolderHelpText": "Alikansio '{0}' luodaan automaattisesti",
+    "AddNewMovieRootFolderHelpText": "Alikansio \"{folder}\" luodaan automaattisesti.",
     "Sunday": "Sunnuntai",
     "Table": "Taulukko",
     "TableOptions": "Taulukkonäkymän asetukset",
@@ -2010,5 +2010,9 @@
     "ImportListsRadarrSettingsQualityProfilesHelpText": "Lähdeinstanssin laatuprofiilit, joilla tuodaan.",
     "ImportListsRadarrSettingsRootFoldersHelpText": "Lähdeinstanssin juurikansiot, joista tuodaan.",
     "ImportListsRadarrSettingsTagsHelpText": "Lähdeinstanssin tunnisteet, joilla tuodaan.",
-    "EditMovieCollectionModalHeader": "Muokataan – {title}"
+    "EditMovieCollectionModalHeader": "Muokataan – {title}",
+    "MovieEditRootFolderHelpText": "Siirtämällä elokuvat niiden nykyiseen juurikansioon voidaan niiden kansioiden nimet päivittää vastaamaan päivittynyttä nimikettä tai nimeämiskaavaa.",
+    "ImportListsRadarrSettingsFullUrlHelpText": "Tuotavan {appName}-instanssin URL-osoite portti mukaan lukien (Radarr 3.0 tai uudempi).",
+    "ImportListsRadarrSettingsApiKeyHelpText": "Tuotavan {appName}-instanssin rajapinnan avain (Radarr 3.0 tai uudempi).",
+    "UpdateMoviePath": "Muuta elokuvan sijaintia"
 }
