@@ -506,7 +506,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The.Movie.Name.2016.Romansh.WEB-DL.h264-RlsGrp")]
         [TestCase("The.Movie.Name.2016.Rumantsch.WEB.DL.h264-RlsGrp")]
         [TestCase("The Movie Name 2016 Romansch WEB DL h264-RlsGrp")]
-        public void should_parse_language_urdu(string postTitle)
+        public void should_parse_language_romansh(string postTitle)
         {
             var result = LanguageParser.ParseLanguages(postTitle);
             result.Should().Contain(Language.Romansh);
