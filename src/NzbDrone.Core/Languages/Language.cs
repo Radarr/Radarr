@@ -125,6 +125,7 @@ namespace NzbDrone.Core.Languages
         public static Language Marathi => new Language(52, "Marathi");
         public static Language Tagalog => new Language(53, "Tagalog");
         public static Language Urdu => new Language(54, "Urdu");
+        public static Language Romansh => new Language(55, "Romansh");
         public static Language Any => new Language(-1, "Any");
         public static Language Original => new Language(-2, "Original");
 
@@ -189,6 +190,7 @@ namespace NzbDrone.Core.Languages
                     Marathi,
                     Tagalog,
                     Urdu,
+                    Romansh,
                     Any,
                     Original
                 };
