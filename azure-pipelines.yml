@@ -26,6 +26,7 @@ trigger:
   branches:
     include:
     - develop
+    - v6-develop
     - master
   paths:
     exclude:
@@ -36,6 +37,7 @@ pr:
   branches:
     include:
     - develop
+    - v6-develop
   paths:
     exclude:
     - .github
