@@ -260,7 +260,7 @@ namespace NzbDrone.Core.Profiles.Qualities
                 Name = name,
                 Cutoff = profileCutoff,
                 Items = items,
-                Language = Language.English,
+                Language = Language.Original,
                 MinFormatScore = 0,
                 CutoffFormatScore = 0,
                 MinUpgradeFormatScore = 1,
