@@ -503,6 +503,15 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Should().Contain(Language.Urdu);
         }
 
+        [TestCase("The.Movie.Name.2016.Romansh.WEB-DL.h264-RlsGrp")]
+        [TestCase("The.Movie.Name.2016.Rumantsch.WEB.DL.h264-RlsGrp")]
+        [TestCase("The Movie Name 2016 Romansch WEB DL h264-RlsGrp")]
+        public void should_parse_language_romansh(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Romansh);
+        }
+
         [TestCase("Movie.Title.en.sub")]
         [TestCase("Movie Title.eng.sub")]
         [TestCase("Movie.Title.eng.forced.sub")]
