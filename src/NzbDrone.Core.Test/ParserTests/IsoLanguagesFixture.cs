@@ -98,13 +98,5 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = IsoLanguages.Find(isoCode);
             result.Language.Should().Be(Language.Romansh);
         }
-
-        [TestCase("gsw")]
-        [TestCase("gsw-CH")]
-        public void should_return_swiss_german(string isoCode)
-        {
-            var result = IsoLanguages.Find(isoCode);
-            result.Language.Should().Be(Language.SwissGerman);
-        }
     }
 }

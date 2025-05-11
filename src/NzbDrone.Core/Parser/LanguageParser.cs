@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex LanguageRegex = new Regex(@"(?:\W|_|^)(?<english>\beng\b)|
                                                                             (?<italian>\b(?:ita|italian)\b)|
-                                                                            (?<german>german\b|videomann|ger[. ]dub|\bger\b)|
+                                                                            (?<german>german\b|videomann|ger[. ]dub|\bger\b|\bswissgerman\b)|
                                                                             (?<flemish>flemish)|
                                                                             (?<bulgarian>bgaudio)|
                                                                             (?<romanian>rodubbed)|
@@ -39,7 +39,6 @@ namespace NzbDrone.Core.Parser
                                                                             (?<korean>\bKOR\b)|
                                                                             (?<urdu>\burdu\b)|
                                                                             (?<romansh>\b(?:romansh|rumantsch|romansch)\b)|
-                                                                            (?<swissgerman>\bswissgerman\b)|
                                                                             (?<original>\b(?:orig|original)\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
@@ -431,11 +430,6 @@ namespace NzbDrone.Core.Parser
                 if (match.Groups["romansh"].Success)
                 {
                     languages.Add(Language.Romansh);
-                }
-
-                if (match.Groups["swissgerman"].Success)
-                {
-                    languages.Add(Language.SwissGerman);
                 }
 
                 if (match.Groups["original"].Success)
