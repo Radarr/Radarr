@@ -512,6 +512,15 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Should().Contain(Language.Romansh);
         }
 
+        [TestCase("The.Movie.Name.2016.SwissGerman.WEB-DL.h264-RlsGrp")]
+        [TestCase("The.Movie.Name.2016.SWISSGERMAN.WEB.DL.h264-RlsGrp")]
+        [TestCase("The Movie Name 2016 Swissgerman WEB DL h264-RlsGrp")]
+        public void should_parse_language_swiss_german(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.SwissGerman);
+        }
+
         [TestCase("Movie.Title.en.sub")]
         [TestCase("Movie Title.eng.sub")]
         [TestCase("Movie.Title.eng.forced.sub")]
