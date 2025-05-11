@@ -1221,6 +1221,8 @@
   "NotificationTriggersHelpText": "Select which events should trigger this notification",
   "NotificationsAppriseSettingsConfigurationKey": "Apprise Configuration Key",
   "NotificationsAppriseSettingsConfigurationKeyHelpText": "Configuration Key for the Persistent Storage Solution. Leave empty if Stateless URLs is used.",
+  "NotificationsAppriseSettingsIncludePoster": "Include Poster",
+  "NotificationsAppriseSettingsIncludePosterHelpText": "Include poster in message",
   "NotificationsAppriseSettingsNotificationType": "Apprise Notification Type",
   "NotificationsAppriseSettingsPasswordHelpText": "HTTP Basic Auth Password",
   "NotificationsAppriseSettingsServerUrl": "Apprise Server URL",
