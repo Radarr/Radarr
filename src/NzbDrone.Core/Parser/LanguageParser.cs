@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex LanguageRegex = new Regex(@"(?:\W|_|^)(?<english>\beng\b)|
                                                                             (?<italian>\b(?:ita|italian)\b)|
-                                                                            (?<german>german\b|videomann|ger[. ]dub|\bger\b|\bswissgerman\b)|
+                                                                            (?<german>german\b|videomann|swissgerman|ger[. ]dub|\bger\b)
                                                                             (?<flemish>flemish)|
                                                                             (?<bulgarian>bgaudio)|
                                                                             (?<romanian>rodubbed)|
