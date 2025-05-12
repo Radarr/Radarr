@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Notifications.Apprise
 
         public override void OnDownload(DownloadMessage message)
         {
-            _proxy.SendNotification(MOVIE_DOWNLOADED_TITLE, message.Message, GetPosterUrl(message.Movie), Settings);
+            _proxy.SendNotification(message.OldMovieFiles.Any() ? MOVIE_UPGRADED_TITLE : MOVIE_DOWNLOADED_TITLE, message.Message, GetPosterUrl(message.Movie), Settings);
         }
 
         public override void OnMovieAdded(Movie movie)
