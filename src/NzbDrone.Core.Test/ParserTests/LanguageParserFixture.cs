@@ -101,7 +101,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.2016.Hun/Ger/Ita.AAC.1080p.WebDL.x264-TKP21")]
         [TestCase("Movie.Title.2016.1080p.10Bit.HEVC.WEBRip.HIN-ENG-GER.DD5.1.H.265")]
         [TestCase("Movie.Title.2016.HU-IT-DE.AAC.1080p.WebDL.x264")]
-        [TestCase("The.Movie.Name.2016.SwissGerman.WEB-DL.h264-RlsGrp")]
+        [TestCase("Movie.Title.2016.SwissGerman.WEB-DL.h264-RlsGrp")]
         public void should_parse_language_german(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
