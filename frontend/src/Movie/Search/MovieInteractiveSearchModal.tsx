@@ -17,9 +17,11 @@ interface MovieInteractiveSearchModalProps
   isOpen: boolean;
 }
 
-function MovieInteractiveSearchModal(props: MovieInteractiveSearchModalProps) {
-  const { isOpen, movieId, movieTitle, onModalClose } = props;
-
+function MovieInteractiveSearchModal({
+  isOpen,
+  movieId,
+  onModalClose,
+}: MovieInteractiveSearchModalProps) {
   const dispatch = useDispatch();
 
   const handleModalClose = useCallback(() => {
@@ -41,7 +43,6 @@ function MovieInteractiveSearchModal(props: MovieInteractiveSearchModalProps) {
     >
       <MovieInteractiveSearchModalContent
         movieId={movieId}
-        movieTitle={movieTitle}
         onModalClose={handleModalClose}
       />
     </Modal>

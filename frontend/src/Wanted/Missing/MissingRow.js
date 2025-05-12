@@ -131,7 +131,6 @@ function MissingRow(props) {
               <MovieSearchCell
                 key={name}
                 movieId={id}
-                movieTitle={title}
                 movieEntity={movieEntities.WANTED_MISSING}
               />
             );

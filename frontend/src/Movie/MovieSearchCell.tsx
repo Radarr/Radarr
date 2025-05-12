@@ -14,12 +14,9 @@ import styles from './MovieSearchCell.css';
 
 interface MovieSearchCellProps {
   movieId: number;
-  movieTitle: string;
 }
 
-function MovieSearchCell(props: MovieSearchCellProps) {
-  const { movieId, movieTitle } = props;
-
+function MovieSearchCell({ movieId }: MovieSearchCellProps) {
   const executingCommands = useSelector(createExecutingCommandsSelector());
   const isSearching = executingCommands.some(({ name, body }) => {
     const { movieIds = [] } = body;
@@ -61,7 +58,6 @@ function MovieSearchCell(props: MovieSearchCellProps) {
       <MovieInteractiveSearchModal
         isOpen={isInteractiveSearchModalOpen}
         movieId={movieId}
-        movieTitle={movieTitle}
         onModalClose={setInteractiveSearchModalClosed}
       />
     </TableRowCell>

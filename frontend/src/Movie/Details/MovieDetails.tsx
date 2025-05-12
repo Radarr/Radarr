@@ -968,7 +968,6 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
         <MovieInteractiveSearchModal
           isOpen={isInteractiveSearchModalOpen}
           movieId={id}
-          movieTitle={title}
           onModalClose={handleInteractiveSearchModalClose}
         />
       </PageContentBody>

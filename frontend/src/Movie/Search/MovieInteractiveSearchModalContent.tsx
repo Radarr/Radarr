@@ -7,6 +7,8 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { scrollDirections } from 'Helpers/Props';
 import InteractiveSearch from 'InteractiveSearch/InteractiveSearch';
+import Movie from 'Movie/Movie';
+import useMovie from 'Movie/useMovie';
 import { clearMovieBlocklist } from 'Store/Actions/movieBlocklistActions';
 import { clearMovieHistory } from 'Store/Actions/movieHistoryActions';
 import {
@@ -17,16 +19,16 @@ import translate from 'Utilities/String/translate';
 
 export interface MovieInteractiveSearchModalContentProps {
   movieId: number;
-  movieTitle?: string;
   onModalClose(): void;
 }
 
 function MovieInteractiveSearchModalContent({
   movieId,
-  movieTitle,
   onModalClose,
 }: MovieInteractiveSearchModalContentProps) {
   const dispatch = useDispatch();
+
+  const { title, year } = useMovie(movieId) as Movie;
 
   useEffect(() => {
     return () => {
@@ -37,6 +39,8 @@ function MovieInteractiveSearchModalContent({
       dispatch(clearMovieHistory());
     };
   }, [dispatch]);
+
+  const movieTitle = `${title}${year > 0 ? ` (${year})` : ''}`;
 
   return (
     <ModalContent onModalClose={onModalClose}>

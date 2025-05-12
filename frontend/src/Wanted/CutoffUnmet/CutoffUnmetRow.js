@@ -141,7 +141,6 @@ function CutoffUnmetRow(props) {
               <MovieSearchCell
                 key={name}
                 movieId={id}
-                movieTitle={title}
                 movieEntity={movieEntities.WANTED_CUTOFF_UNMET}
               />
             );
