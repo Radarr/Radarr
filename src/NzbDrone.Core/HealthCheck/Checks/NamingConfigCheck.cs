@@ -30,7 +30,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 {
                     return new HealthCheck(
                         GetType(),
-                        HealthCheckResult.Warning,
+                        HealthCheckResult.Error,
                         _localizationService.GetLocalizedString(
                             "NamingConfigMovieFolderFormatDeprecatedHealthCheckMessage", new Dictionary<string, object>
                             {

@@ -60,9 +60,7 @@ namespace NzbDrone.Core.Organizer
                 return false;
             }
 
-            // TODO: Deprecate OriginalTokenRegex use for Movie Folder Format
-            return FileNameBuilder.MovieTitleRegex.IsMatch(value) ||
-                   FileNameValidation.OriginalTokenRegex.IsMatch(value);
+            return FileNameBuilder.MovieTitleRegex.IsMatch(value);
         }
     }
 
