@@ -512,7 +512,7 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = LanguageParser.ParseLanguages(postTitle);
             result.Should().Contain(Language.Romansh);
         }
-        
+
         [TestCase("The.Movie.Name.2025.Khalkha.WEB-DL.h264")]
         [TestCase("The.Movie.Name.2025.Mongolian.WEB-DL.h264")]
         public void should_parse_language_mongolian(string postTitle)
