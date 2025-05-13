@@ -98,9 +98,11 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = IsoLanguages.Find(isoCode);
             result.Language.Should().Be(Language.Romansh);
         }
-        
+
         [TestCase("mn")]
         [TestCase("mon")]
+        [TestCase("khk")]
+        [TestCase("mvf")]
         [TestCase("mn-Cyrl")]
         public void should_return_mongolian(string isoCode)
         {
