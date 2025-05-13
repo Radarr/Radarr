@@ -92,11 +92,20 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("rm")]
         [TestCase("roh")]
-        [TestCase("rm-CH")]
+        [TestCase("mn-Cyrl")]
         public void should_return_romansh(string isoCode)
         {
             var result = IsoLanguages.Find(isoCode);
             result.Language.Should().Be(Language.Romansh);
+        }
+        
+        [TestCase("mn")]
+        [TestCase("mon")]
+        [TestCase("mn-Cyrl")]
+        public void should_return_mongolian(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Language.Should().Be(Language.Mongolian);
         }
     }
 }
