@@ -75,7 +75,6 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                         flags |= IndexerFlags.G_Scene;
                     }
 
-                    // Only add approved torrents
                     try
                     {
                         torrentInfos.Add(new PassThePopcornInfo
@@ -83,7 +82,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                             Guid = $"PassThePopcorn-{id}",
                             Title = torrent.ReleaseName,
                             Size = long.Parse(torrent.Size),
-                            DownloadUrl = GetDownloadUrl(id, jsonResponse.AuthKey, jsonResponse.PassKey),
+                            DownloadUrl = GetDownloadUrl(id),
                             InfoUrl = GetInfoUrl(result.GroupId, id),
                             Seeders = int.Parse(torrent.Seeders),
                             Peers = int.Parse(torrent.Leechers) + int.Parse(torrent.Seeders),
@@ -118,16 +117,12 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 torrentInfos;
         }
 
-        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
-
-        private string GetDownloadUrl(int torrentId, string authKey, string passKey)
+        private string GetDownloadUrl(int torrentId)
         {
             var url = new HttpUri(_settings.BaseUrl)
                 .CombinePath("/torrents.php")
                 .AddQueryParam("action", "download")
-                .AddQueryParam("id", torrentId)
-                .AddQueryParam("authkey", authKey)
-                .AddQueryParam("torrent_pass", passKey);
+                .AddQueryParam("id", torrentId);
 
             return url.FullUri;
         }
@@ -141,5 +136,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
             return url.FullUri;
         }
+
+        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }
 }

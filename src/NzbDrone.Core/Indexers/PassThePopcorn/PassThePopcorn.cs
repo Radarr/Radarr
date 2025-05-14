@@ -33,5 +33,15 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         {
             return new PassThePopcornParser(Settings, _logger);
         }
+
+        public override HttpRequest GetDownloadRequest(string link)
+        {
+            var request = new HttpRequest(link);
+
+            request.Headers.Set("ApiUser", Settings.APIUser);
+            request.Headers.Set("ApiKey", Settings.APIKey);
+
+            return request;
+        }
     }
 }
