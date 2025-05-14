@@ -2007,5 +2007,6 @@
     "ImportListsRadarrSettingsRootFoldersHelpText": "Кореневі теки вихідного екземпляра для імпорту",
     "ImportListsRadarrSettingsTagsHelpText": "Теги з вихідного екземпляра для імпорту",
     "ImportListsRadarrSettingsFullUrl": "Повний URL-адрес",
-    "EditMovieCollectionModalHeader": "Редагувати - {title}"
+    "EditMovieCollectionModalHeader": "Редагувати - {title}",
+    "NotificationsAppriseSettingsIncludePoster": "Включити постер"
 }

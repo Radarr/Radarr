@@ -1289,7 +1289,7 @@
     "ReleaseProfiles": "Julkaisuprofiilit",
     "UnknownEventTooltip": "Tuntematon tapahtuma",
     "DeleteSelectedMovieFilesHelpText": "Haluatko varmasti poistaa valitut elokuvatiedostot?",
-    "ApplyTagsHelpTextHowToApplyMovies": "Tunnisteiden käyttö valituille elokuville:",
+    "ApplyTagsHelpTextHowToApplyMovies": "Miten tunnisteita käytetään valituille elokuville:",
     "Popularity": "Suosio",
     "IgnoreDownloadsHint": "Estää {appName}ia käsittelemästä näitä latauksia jatkossa.",
     "NotificationsAppriseSettingsConfigurationKey": "Apprise-määritysavain",
@@ -2014,5 +2014,6 @@
     "MovieEditRootFolderHelpText": "Siirtämällä elokuvat niiden nykyiseen juurikansioon voidaan niiden kansioiden nimet päivittää vastaamaan päivittynyttä nimikettä tai nimeämiskaavaa.",
     "ImportListsRadarrSettingsFullUrlHelpText": "Tuotavan {appName}-instanssin URL-osoite portti mukaan lukien (Radarr 3.0 tai uudempi).",
     "ImportListsRadarrSettingsApiKeyHelpText": "Tuotavan {appName}-instanssin rajapinnan avain (Radarr 3.0 tai uudempi).",
-    "UpdateMoviePath": "Muuta elokuvan sijaintia"
+    "UpdateMoviePath": "Muuta elokuvan sijaintia",
+    "NotificationsAppriseSettingsIncludePoster": "Sisällytä juliste"
 }

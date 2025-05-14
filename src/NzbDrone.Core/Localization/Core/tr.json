@@ -2014,5 +2014,6 @@
     "ImportListsRadarrSettingsFullUrlHelpText": "İçe aktarmak istediğiniz {appName} örneğinin bağlantı noktası da dahil olmak üzere URL'si (Radarr 3.0 veya üzeri)",
     "MovieEditRootFolderHelpText": "Filmleri aynı kök klasöre taşımak, film klasörlerinin güncellenen başlığa veya adlandırma biçimine uyacak şekilde yeniden adlandırılmasında kullanılabilir",
     "UpdateMoviePath": "Film Yolunu Güncelle",
-    "EditMovieCollectionModalHeader": "Düzenle - {title}"
+    "EditMovieCollectionModalHeader": "Düzenle - {title}",
+    "NotificationsAppriseSettingsIncludePoster": "Posteri Dahil Et"
 }

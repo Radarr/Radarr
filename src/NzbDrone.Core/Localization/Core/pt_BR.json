@@ -2014,5 +2014,9 @@
     "ImportListsRadarrSettingsApiKeyHelpText": "Chave de API da instância {appName} para importar (Radarr 3.0 ou superior)",
     "ImportListsRadarrSettingsFullUrlHelpText": "URL , incluindo porta da instância {appName} para importar (Radarr 3.0 ou superior)",
     "UpdateMoviePath": "Atualizar Caminho do Filme",
-    "EditMovieCollectionModalHeader": "Editar - {title}"
+    "EditMovieCollectionModalHeader": "Editar - {title}",
+    "NotificationsAppriseSettingsIncludePosterHelpText": "Incluir pôster na mensagem",
+    "NotificationsAppriseSettingsIncludePoster": "Incluir pôster",
+    "MovieFolderFormatHelpTextDeprecatedWarning": "Os tokens associados às propriedades do arquivo de filme foram descontinuados e não terão mais suporte nas principais versões futuras.",
+    "NamingConfigMovieFolderFormatDeprecatedHealthCheckMessage": "O formato de pasta do filme não deve conter tokens relacionados a arquivos obsoletos: {tokens}"
 }

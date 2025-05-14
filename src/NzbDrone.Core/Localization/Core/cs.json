@@ -1323,5 +1323,20 @@
     "IndexerSettingsApiPathHelpText": "Cesta k api, obvykle {url}",
     "IndexerSettingsApiUrl": "URL API",
     "IndexerSettingsApiUser": "Uživatel API",
-    "IndexerSettingsCategories": "Kategorie"
+    "IndexerSettingsCategories": "Kategorie",
+    "DownloadClientFloodSettingsPostImportTags": "Tagy po importu",
+    "DownloadClientDownloadStationValidationSharedFolderMissing": "Sdílená složka neexistuje",
+    "DownloadClientFreeboxNotLoggedIn": "Nepřihlášeno",
+    "DownloadClientFreeboxUnableToReachFreebox": "Nelze se připojit k Freebox API. Zkontrolujte nastavení 'Host', 'Port' nebo 'Použít SSL'. (Chyba: {exceptionMessage})",
+    "DownloadClientFloodSettingsStartOnAdd": "Spustit po přidání",
+    "DownloadClientFloodSettingsPostImportTagsHelpText": "Přiřadí tagy po dokončení importu.",
+    "DownloadClientFreeboxApiError": "Chyba z Freebox API: {errorDescription}",
+    "DownloadClientDownloadStationValidationApiVersion": "Verze API Download Station není podporována. Požadovaná verze je alespoň {requiredVersion}. Podporovaný rozsah je od {minVersion} do {maxVersion}",
+    "DownloadClientDownloadStationValidationFolderMissing": "Složka neexistuje",
+    "DownloadClientDownloadStationValidationNoDefaultDestination": "Chybí výchozí cílová složka",
+    "DownloadClientFloodSettingsRemovalInfo": "{appName} se postará o automatické mazání torrentů podle aktuálních kritérií seedování v Nastavení -> Indexery",
+    "DownloadClientFreeboxAuthenticationError": "Přihlášení k Freebox API se nezdařilo. Důvod: {errorDescription}",
+    "DownloadClientDownloadStationValidationFolderMissingDetail": "Složka '{downloadDir}' neexistuje, musí být vytvořená ručně ve Sdílené složce '{sharedFolder}'.",
+    "DownloadClientDownloadStationValidationNoDefaultDestinationDetail": "Přihlaste se do vaší DiskStation jako {username} a ručně to nastavte v nastavení DownloadStation pod BT/HTTP/FTP/NZB -> Umístění.",
+    "DownloadClientDownloadStationValidationSharedFolderMissingDetail": "DiskStation nemá sdílenou složku s názvem '{sharedFolder}', jste si jisti, že jste ji zadali správně?"
 }

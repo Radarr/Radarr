@@ -2014,5 +2014,9 @@
     "MovieEditRootFolderHelpText": "Перемещение фильмов в ту же корневую директорию может быть полезно для переименования папок для соответствия обновленным названиям или форматам именования",
     "UpdateMoviePath": "Обновить путь к фильму",
     "ImportListsRadarrSettingsApiKeyHelpText": "API ключ экземпляра {appName}, откуда импортируются данные (Radarr 3.0 или выше)",
-    "ImportListsRadarrSettingsFullUrlHelpText": "URL {appName}, включая порт, откуда импортируются данные (Radarr 3.0 или выше)"
+    "ImportListsRadarrSettingsFullUrlHelpText": "URL {appName}, включая порт, откуда импортируются данные (Radarr 3.0 или выше)",
+    "NotificationsAppriseSettingsIncludePoster": "Добавить постер",
+    "MovieFolderFormatHelpTextDeprecatedWarning": "Токены, связанные с параметрами файла фильма, устарели и не будут поддерживаться в грядущих мажорных версиях.",
+    "NotificationsAppriseSettingsIncludePosterHelpText": "Добавлять постер в сообщение",
+    "NamingConfigMovieFolderFormatDeprecatedHealthCheckMessage": "Формат папки фильма не должен содержать устаревшие токены, связанные с файлом фильма: {tokens}"
 }
