@@ -129,7 +129,6 @@ function VirtualTable<T extends ModelBase>({
             >
               {header}
 
-              {/* @ts-expect-error - ref type is incompatible */}
               <div ref={registerChild}>
                 <Grid
                   {...otherProps}
