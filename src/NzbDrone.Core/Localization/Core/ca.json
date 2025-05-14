@@ -1471,7 +1471,7 @@
     "NotificationsEmailSettingsServerHelpText": "Nom d'amfitrió o IP del servidor de correu electrònic",
     "NotificationsJoinValidationInvalidDeviceId": "Els ID del dispositiu no són vàlids.",
     "NotificationsSignalSettingsGroupIdPhoneNumber": "ID del grup / número de telèfon",
-    "ParseModalUnableToParse": "No s'ha pogut analitzar el títol proporcionat. Torna-ho a provar.",
+    "ParseModalUnableToParse": "No s'ha pogut analitzar el títol proporcionat. Torneu-ho a provar.",
     "ReleaseSource": "Origen del llançament",
     "RemotePathMappingsInfo": "Les mapes de camins remots poques vegades són necessaris, si {appName} i el vostre client de baixada són al mateix sistema, és millor que coincideixin amb els vostres camins. Per a més informació, vés al [wiki]({wikiLink}).",
     "RemoveQueueItem": "Elimina - {sourceTitle}",
@@ -2014,5 +2014,9 @@
     "MovieEditRootFolderHelpText": "Moure pel·lícules a la mateixa carpeta arrel es pot utilitzar per a canviar de nom carpetes de pel·lícules per a fer coincidir títols actualitzats o format de noms",
     "UpdateMoviePath": "Actualitzar ruta de pel·lícula",
     "ImportListsRadarrSettingsApiKeyHelpText": "Clau API de la instància de {appName} des de la qual importar (Radarr 3.0 o superior)",
-    "ImportListsRadarrSettingsFullUrlHelpText": "URL, incloent-hi port, de la instància de {appName} des de la qual importar (Radarr 3.0 o superior)"
+    "ImportListsRadarrSettingsFullUrlHelpText": "URL, incloent-hi port, de la instància de {appName} des de la qual importar (Radarr 3.0 o superior)",
+    "NotificationsAppriseSettingsIncludePoster": "Inclou el cartell",
+    "MovieFolderFormatHelpTextDeprecatedWarning": "Els tokens associats amb les propietats dels arxius de pel·lícula han quedat obsolets i no seran suportats en futures versions majors.",
+    "NamingConfigMovieFolderFormatDeprecatedHealthCheckMessage": "El format de carpeta de pel·lícules no ha de contenir tokens obsolets relacionats amb els arxius: {tokens}",
+    "NotificationsAppriseSettingsIncludePosterHelpText": "Inclou el pòster al missatge"
 }
