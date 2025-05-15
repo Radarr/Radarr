@@ -85,7 +85,8 @@
     "reselect": "4.1.8",
     "stacktrace-js": "2.0.2",
     "swiper": "8.3.2",
-    "typescript": "5.7.2"
+    "typescript": "5.7.2",
+    "use-debounce": "10.0.4"
   },
   "devDependencies": {
     "@babel/core": "7.27.1",
