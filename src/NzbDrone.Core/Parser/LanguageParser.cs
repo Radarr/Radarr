@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<korean>\bKOR\b)|
                                                                             (?<urdu>\burdu\b)|
                                                                             (?<romansh>\b(?:romansh|rumantsch|romansch)\b)|
-                                                                            (?<catalan>\b(?:mongol|mongolian|khalkha)\b)|
+                                                                            (?<mongolian>\b(?:mongol|mongolian|khalkha)\b)|
                                                                             (?<original>\b(?:orig|original)\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
