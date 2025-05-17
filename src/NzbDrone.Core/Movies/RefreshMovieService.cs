@@ -230,7 +230,11 @@ namespace NzbDrone.Core.Movies
                     try
                     {
                         movie = RefreshMovieInfo(movieId);
-                        UpdateTags(movie);
+                        if (!isNew)
+                        {
+                            UpdateTags(movie);
+                        }
+
                         RescanMovie(movie, isNew, trigger);
                     }
                     catch (MovieNotFoundException)
