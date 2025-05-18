@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using Radarr.Api.V3.AutoTagging;
+using Radarr.Http.ClientSchema;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {
@@ -27,6 +29,53 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             result.Should().NotBeNull();
             result.Tags.Should().Equal(tag.Id);
+        }
+
+        [Test]
+        [Order(0)]
+        public void add_movie_should_trigger_autotag()
+        {
+            var tag = EnsureTag("autotag-test");
+            var movie = Movies.Lookup("imdb:tt0110912").Single();
+            movie.Genres = new List<string> { "Thriller" };
+
+            var item = AutoTagging.Post(new AutoTaggingResource
+            {
+                Name = "Test",
+                RemoveTagsAutomatically = false,
+                Tags = new HashSet<int> { tag.Id },
+                Specifications = new List<AutoTaggingSpecificationSchema>
+                {
+                    new AutoTaggingSpecificationSchema
+                    {
+                        Name = "Test",
+                        Implementation = "GenreSpecification",
+                        ImplementationName = "Genre",
+                        Negate = false,
+                        Required = false,
+                        Fields = new List<Field>
+                        {
+                            new Field
+                            {
+                                Name = "value",
+                                Label = "Genre(s)",
+                                Type = "tag",
+                                Value = new List<string> { "Thriller" }
+                            }
+                        }
+                    }
+                }
+            });
+
+            EnsureNoMovie(680, "Pulp Fiction");
+
+            movie.QualityProfileId = 1;
+            movie.Path = Path.Combine(MovieRootFolder, movie.Title);
+
+            var result = Movies.Post(movie);
+
+            result.Should().NotBeNull();
+            result.Tags.Should().Contain(tag.Id);
         }
 
         [Test]
