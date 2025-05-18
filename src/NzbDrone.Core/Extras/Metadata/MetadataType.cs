@@ -4,6 +4,7 @@ namespace NzbDrone.Core.Extras.Metadata
     {
         Unknown = 0,
         MovieMetadata = 1,
-        MovieImage = 2
+        MovieImage = 2,
+        MovieTheme = 3
     }
 }
