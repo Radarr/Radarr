@@ -64,7 +64,8 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("mr", "", "mar", "Marathi", Language.Marathi),
                                                                new IsoLanguage("tl", "", "tgl", "Tagalog", Language.Tagalog),
                                                                new IsoLanguage("ur", "", "urd", "Urdu", Language.Urdu),
-                                                               new IsoLanguage("rm", "", "roh", "Romansh", Language.Romansh)
+                                                               new IsoLanguage("rm", "", "roh", "Romansh", Language.Romansh),
+                                                               new IsoLanguage("mn", "", "mon", "Mongolian", Language.Mongolian)
                                                            };
 
         private static readonly Dictionary<string, Language> AlternateIsoCodeMappings = new ()
