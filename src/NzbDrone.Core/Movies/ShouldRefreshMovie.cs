@@ -19,38 +19,48 @@ namespace NzbDrone.Core.Movies
 
         public bool ShouldRefresh(MovieMetadata movie)
         {
-            if (movie == null)
+            try
             {
-                _logger.Warn("Movie metadata does not exist, should not be refreshed.");
+                if (movie == null)
+                {
+                    _logger.Warn("Movie metadata does not exist, should not be refreshed.");
+                    return false;
+                }
+
+                if (movie.LastInfoSync < DateTime.UtcNow.AddDays(-180))
+                {
+                    _logger.Trace("Movie {0} last updated more than 180 days ago, should refresh.", movie.Title);
+                    return true;
+                }
+
+                if (movie.LastInfoSync >= DateTime.UtcNow.AddHours(-12))
+                {
+                    _logger.Trace("Movie {0} last updated less than 12 hours ago, should not be refreshed.",
+                        movie.Title);
+                    return false;
+                }
+
+                if (movie.Status is MovieStatusType.Announced or MovieStatusType.InCinemas)
+                {
+                    _logger.Trace("Movie {0} is announced or in cinemas, should refresh.", movie.Title);
+                    return true;
+                }
+
+                if (movie.Status == MovieStatusType.Released &&
+                    movie.PhysicalReleaseDate() >= DateTime.UtcNow.AddDays(-30))
+                {
+                    _logger.Trace("Movie {0} is released since less than 30 days, should refresh", movie.Title);
+                    return true;
+                }
+
+                _logger.Trace("Movie {0} came out long ago, should not be refreshed.", movie.Title);
                 return false;
             }
-
-            if (movie.LastInfoSync < DateTime.UtcNow.AddDays(-180))
+            catch (Exception e)
             {
-                _logger.Trace("Movie {0} last updated more than 180 days ago, should refresh.", movie.Title);
+                _logger.Error(e, "Unable to determine if movie metadata should refresh, will try to refresh.");
                 return true;
             }
-
-            if (movie.LastInfoSync >= DateTime.UtcNow.AddHours(-12))
-            {
-                _logger.Trace("Movie {0} last updated less than 12 hours ago, should not be refreshed.", movie.Title);
-                return false;
-            }
-
-            if (movie.Status == MovieStatusType.Announced || movie.Status == MovieStatusType.InCinemas)
-            {
-                _logger.Trace("Movie {0} is announced or in cinemas, should refresh.", movie.Title);
-                return true;
-            }
-
-            if (movie.Status == MovieStatusType.Released && movie.PhysicalReleaseDate() >= DateTime.UtcNow.AddDays(-30))
-            {
-                _logger.Trace("Movie {0} is released since less than 30 days, should refresh", movie.Title);
-                return true;
-            }
-
-            _logger.Trace("Movie {0} came out long ago, should not be refreshed.", movie.Title);
-            return false;
         }
     }
 }
