@@ -170,7 +170,7 @@ class DiscoverMoviePosters extends Component {
       if (this._grid && index != null) {
         const row = Math.floor(index / columnCount);
 
-        this._grid.scrollToCell({
+        this._gridScrollToCell({
           rowIndex: row,
           columnIndex: 0
         });
@@ -269,6 +269,19 @@ class DiscoverMoviePosters extends Component {
         />
       </div>
     );
+  };
+
+  _gridScrollToCell = ({ rowIndex = 0, columnIndex = 0 }) => {
+    const scrollOffset = this._grid.getOffsetForCell({
+      rowIndex,
+      columnIndex
+    });
+
+    this._gridScrollToPosition(scrollOffset);
+  };
+
+  _gridScrollToPosition = ({ scrollTop = 0, scrollLeft = 0 }) => {
+    this.props.scroller?.scrollTo({ top: scrollTop, left: scrollLeft });
   };
 
   //

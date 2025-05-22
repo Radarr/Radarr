@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useRef } from 'react';
+import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 import { Grid, GridCellProps, WindowScroller } from 'react-virtualized';
 import ModelBase from 'App/ModelBase';
 import Scroller from 'Components/Scroller/Scroller';
@@ -79,6 +79,39 @@ function VirtualTable<T extends ModelBase>({
     position: undefined,
   };
 
+  const handleScrollToPosition = useCallback(
+    ({
+      scrollTop = 0,
+      scrollLeft = 0,
+    }: {
+      scrollTop: number;
+      scrollLeft: number;
+    }) => {
+      scroller?.scrollTo({ top: scrollTop, left: scrollLeft });
+    },
+    [scroller]
+  );
+
+  const handleScrollToCell = useCallback(
+    ({
+      rowIndex = 0,
+      columnIndex = 0,
+    }: {
+      rowIndex: number;
+      columnIndex: number;
+    }) => {
+      if (gridRef.current) {
+        const scrollOffset = gridRef.current.getOffsetForCell({
+          rowIndex,
+          columnIndex,
+        });
+
+        handleScrollToPosition(scrollOffset);
+      }
+    },
+    [gridRef, handleScrollToPosition]
+  );
+
   useEffect(() => {
     if (gridRef.current && width > 0) {
       gridRef.current.recomputeGridSize();
@@ -97,10 +130,10 @@ function VirtualTable<T extends ModelBase>({
 
   useEffect(() => {
     if (gridRef.current && scrollTop && !scrollRestored.current) {
-      gridRef.current.scrollToPosition({ scrollLeft: 0, scrollTop });
+      handleScrollToPosition({ scrollLeft: 0, scrollTop });
       scrollRestored.current = true;
     }
-  }, [scrollTop]);
+  }, [scrollTop, handleScrollToPosition]);
 
   useEffect(() => {
     if (
@@ -108,12 +141,12 @@ function VirtualTable<T extends ModelBase>({
       scrollIndex != null &&
       scrollIndex !== previousScrollIndex
     ) {
-      gridRef.current.scrollToCell({
+      handleScrollToCell({
         rowIndex: scrollIndex,
         columnIndex: 0,
       });
     }
-  }, [scrollIndex, previousScrollIndex]);
+  }, [scrollIndex, previousScrollIndex, handleScrollToCell]);
 
   return (
     <WindowScroller scrollElement={isSmallScreen ? undefined : scroller}>
