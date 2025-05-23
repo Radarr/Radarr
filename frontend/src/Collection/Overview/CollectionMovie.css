@@ -9,12 +9,13 @@ $hoverScale: 1.05;
     box-shadow: 0 0 10px var(--black);
     transition: all 200ms ease-in;
 
-    .poster {
+    .poster,
+    .overlayTitle {
       opacity: 0.5;
       transition: opacity 100ms linear 100ms;
     }
 
-    .overlayTitle {
+    .overlayHoverTitle {
       opacity: 1;
       transition: opacity 100ms linear 100ms;
     }
@@ -31,7 +32,22 @@ $hoverScale: 1.05;
   background-color: var(--defaultColor);
 }
 
-.overlay {
+.overlayTitle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  width: 100%;
+  height: 100%;
+  color: var(--offWhite);
+  text-align: center;
+  font-size: 20px;
+}
+
+.overlayHover {
   position: absolute;
   top: 0;
   left: 0;
@@ -42,10 +58,10 @@ $hoverScale: 1.05;
   height: 100%;
 }
 
-.overlayTitle {
+.overlayHoverTitle {
   padding: 5px;
   color: var(--offWhite);
-  text-align: left;
+  text-align: center;
   font-weight: bold;
   font-size: 15px;
   opacity: 0;

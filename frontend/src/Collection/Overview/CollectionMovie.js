@@ -82,6 +82,7 @@ class CollectionMovie extends Component {
     } = this.props;
 
     const {
+      hasPosterError,
       isEditMovieModalOpen,
       isNewAddMovieModalOpen
     } = this.state;
@@ -134,26 +135,31 @@ class CollectionMovie extends Component {
               onLoad={this.onPosterLoad}
             />
 
-            <div className={styles.overlay}>
-              <div className={styles.overlayTitle}>
+            {
+              hasPosterError &&
+                <div className={styles.overlayTitle}>
+                  {title}
+                </div>
+            }
+
+            <div className={styles.overlayHover}>
+              <div className={styles.overlayHoverTitle}>
                 {title} {year > 0 ? `(${year})` : ''}
               </div>
 
               {
                 id ?
-                  <div className={styles.overlayStatus}>
-                    <MovieIndexProgressBar
-                      movieId={id}
-                      movieFile={movieFile}
-                      monitored={monitored}
-                      hasFile={hasFile}
-                      status={status}
-                      bottomRadius={true}
-                      width={posterWidth}
-                      detailedProgressBar={detailedProgressBar}
-                      isAvailable={isAvailable}
-                    />
-                  </div> :
+                  <MovieIndexProgressBar
+                    movieId={id}
+                    movieFile={movieFile}
+                    monitored={monitored}
+                    hasFile={hasFile}
+                    status={status}
+                    bottomRadius={true}
+                    width={posterWidth}
+                    detailedProgressBar={detailedProgressBar}
+                    isAvailable={isAvailable}
+                  /> :
                   null
               }
             </div>
