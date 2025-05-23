@@ -205,8 +205,14 @@ namespace NzbDrone.Core.Movies
             }
         }
 
-        private void UpdateTags(Movie movie)
+        private void UpdateTags(Movie movie, bool isNew)
         {
+            if (isNew)
+            {
+                _logger.Trace("Skipping tag update for {0}. Reason: New movie", movie);
+                return;
+            }
+
             var tagsUpdated = _movieService.UpdateTags(movie);
 
             if (tagsUpdated)
@@ -230,7 +236,7 @@ namespace NzbDrone.Core.Movies
                     try
                     {
                         movie = RefreshMovieInfo(movieId);
-                        UpdateTags(movie);
+                        UpdateTags(movie, isNew);
                         RescanMovie(movie, isNew, trigger);
                     }
                     catch (MovieNotFoundException)
@@ -240,7 +246,7 @@ namespace NzbDrone.Core.Movies
                     catch (Exception e)
                     {
                         _logger.Error(e, "Couldn't refresh info for {0}", movie);
-                        UpdateTags(movie);
+                        UpdateTags(movie, isNew);
                         RescanMovie(movie, isNew, trigger);
                         throw;
                     }
@@ -277,13 +283,13 @@ namespace NzbDrone.Core.Movies
                             _logger.Error(e, "Couldn't refresh info for {0}", movieLocal);
                         }
 
-                        UpdateTags(movie);
+                        UpdateTags(movie, false);
                         RescanMovie(movieLocal, false, trigger);
                     }
                     else
                     {
                         _logger.Debug("Skipping refresh of movie: {0}", movieLocal.Title);
-                        UpdateTags(movie);
+                        UpdateTags(movie, false);
                         RescanMovie(movieLocal, false, trigger);
                     }
                 }
