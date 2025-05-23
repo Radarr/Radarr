@@ -40,9 +40,10 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
             var excludeCompanyIds = Settings.FilterCriteria.ExcludeCompanyIds;
             var languageCode = Settings.FilterCriteria.LanguageCode;
 
-            var todaysDate = DateTime.Now.ToString("yyyy-MM-dd");
-            var threeMonthsAgo = DateTime.Parse(todaysDate).AddMonths(-3).ToString("yyyy-MM-dd");
-            var threeMonthsFromNow = DateTime.Parse(todaysDate).AddMonths(3).ToString("yyyy-MM-dd");
+            var now = DateTime.UtcNow;
+            var todaysDate = now.ToString("yyyy-MM-dd");
+            var threeMonthsAgo = now.AddMonths(-3).ToString("yyyy-MM-dd");
+            var threeMonthsFromNow = now.AddMonths(3).ToString("yyyy-MM-dd");
 
             var requestBuilder = RequestBuilder.Create()
                 .SetSegment("api", "3")
@@ -54,8 +55,9 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
             switch (Settings.TMDbListType)
             {
                 case (int)TMDbPopularListType.Theaters:
-                    requestBuilder.AddQueryParam("primary_release_date.gte", threeMonthsAgo)
-                                  .AddQueryParam("primary_release_date.lte", todaysDate);
+                    requestBuilder
+                        .AddQueryParam("primary_release_date.gte", threeMonthsAgo)
+                        .AddQueryParam("primary_release_date.lte", todaysDate);
                     break;
                 case (int)TMDbPopularListType.Popular:
                     requestBuilder.AddQueryParam("sort_by", "popularity.desc");
@@ -64,8 +66,9 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
                     requestBuilder.AddQueryParam("sort_by", "vote_average.desc");
                     break;
                 case (int)TMDbPopularListType.Upcoming:
-                    requestBuilder.AddQueryParam("primary_release_date.gte", todaysDate)
-                                  .AddQueryParam("primary_release_date.lte", threeMonthsFromNow);
+                    requestBuilder
+                        .AddQueryParam("primary_release_date.gte", todaysDate)
+                        .AddQueryParam("primary_release_date.lte", threeMonthsFromNow);
                     break;
             }
 
