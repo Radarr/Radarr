@@ -172,6 +172,11 @@ namespace Radarr.Api.V3.MovieFiles
         [Consumes("application/json")]
         public object DeleteMovieFiles([FromBody] MovieFileListResource resource)
         {
+            if (!resource.MovieFileIds.Any())
+            {
+                throw new BadRequestException("movieFileIds must be provided");
+            }
+
             var movieFiles = _mediaFileService.GetMovies(resource.MovieFileIds);
             var movie = _movieService.GetMovie(movieFiles.First().MovieId);
 
