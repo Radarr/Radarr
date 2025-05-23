@@ -72,6 +72,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     minimumAvailability,
     path,
     genres = [],
+    keywords = [],
     ratings,
     popularity,
     certification,
@@ -335,6 +336,20 @@ function MovieIndexRow(props: MovieIndexRowProps) {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
               <span title={joinedGenres}>{joinedGenres}</span>
+            </VirtualTableRowCell>
+          );
+        }
+
+        if (name === 'keywords') {
+          const joinedKeywords = keywords.join(', ');
+          const truncatedKeywords =
+            keywords.length > 3
+              ? `${keywords.slice(0, 3).join(', ')}...`
+              : joinedKeywords;
+
+          return (
+            <VirtualTableRowCell key={name} className={styles[name]}>
+              <span title={joinedKeywords}>{truncatedKeywords}</span>
             </VirtualTableRowCell>
           );
         }

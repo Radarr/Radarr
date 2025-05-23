@@ -8,27 +8,27 @@ using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.AutoTagging.Specifications
 {
-    public class GenreSpecificationValidator : AbstractValidator<GenreSpecification>
+    public class KeywordSpecificationValidator : AbstractValidator<KeywordSpecification>
     {
-        public GenreSpecificationValidator()
+        public KeywordSpecificationValidator()
         {
             RuleFor(c => c.Value).NotEmpty();
         }
     }
 
-    public class GenreSpecification : AutoTaggingSpecificationBase
+    public class KeywordSpecification : AutoTaggingSpecificationBase
     {
-        private static readonly GenreSpecificationValidator Validator = new ();
+        private static readonly KeywordSpecificationValidator Validator = new ();
 
         public override int Order => 2;
-        public override string ImplementationName => "Genre";
+        public override string ImplementationName => "Keyword";
 
-        [FieldDefinition(1, Label = "AutoTaggingSpecificationGenre", Type = FieldType.Tag)]
+        [FieldDefinition(1, Label = "AutoTaggingSpecificationKeyword", Type = FieldType.Tag)]
         public IEnumerable<string> Value { get; set; }
 
         protected override bool IsSatisfiedByWithoutNegate(Movie movie)
         {
-            return movie?.MovieMetadata?.Value?.Genres.Any(genre => Value.ContainsIgnoreCase(genre)) ?? false;
+            return movie?.MovieMetadata?.Value?.Keywords.Any(keyword => Value.ContainsIgnoreCase(keyword)) ?? false;
         }
 
         public override NzbDroneValidationResult Validate()

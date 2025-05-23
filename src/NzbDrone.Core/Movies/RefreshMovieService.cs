@@ -114,6 +114,7 @@ namespace NzbDrone.Core.Movies
             movieMetadata.Runtime = movieInfo.Runtime;
             movieMetadata.Ratings = movieInfo.Ratings;
             movieMetadata.Genres = movieInfo.Genres;
+            movieMetadata.Keywords = movieInfo.Keywords;
             movieMetadata.Certification = movieInfo.Certification;
             movieMetadata.InCinemas = movieInfo.InCinemas;
             movieMetadata.Website = movieInfo.Website;

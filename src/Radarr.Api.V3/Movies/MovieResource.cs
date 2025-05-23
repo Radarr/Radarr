@@ -76,6 +76,7 @@ namespace Radarr.Api.V3.Movies
         public string Folder { get; set; }
         public string Certification { get; set; }
         public List<string> Genres { get; set; }
+        public List<string> Keywords { get; set; }
         public HashSet<int> Tags { get; set; }
         public DateTime Added { get; set; }
         public AddMovieOptions AddOptions { get; set; }
@@ -153,6 +154,7 @@ namespace Radarr.Api.V3.Movies
                 Certification = model.MovieMetadata.Value.Certification,
                 Website = model.MovieMetadata.Value.Website,
                 Genres = model.MovieMetadata.Value.Genres,
+                Keywords = model.MovieMetadata.Value.Keywords,
                 Tags = model.Tags,
                 Added = model.Added,
                 AddOptions = model.AddOptions,
