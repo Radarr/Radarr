@@ -14,5 +14,8 @@
     "Yesterday": "昨天",
     "Updates": "更新",
     "Warn": "警告",
-    "BackupNow": "立即备份"
+    "BackupNow": "立即备份",
+    "AddANewPath": "新建",
+    "Actions": "Actions",
+    "AddAutoTagError": "添加"
 }
