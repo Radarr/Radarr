@@ -2015,5 +2015,8 @@
     "MovieEditRootFolderHelpText": "Filmleri aynı kök klasöre taşımak, film klasörlerinin güncellenen başlığa veya adlandırma biçimine uyacak şekilde yeniden adlandırılmasında kullanılabilir",
     "UpdateMoviePath": "Film Yolunu Güncelle",
     "EditMovieCollectionModalHeader": "Düzenle - {title}",
-    "NotificationsAppriseSettingsIncludePoster": "Posteri Dahil Et"
+    "NotificationsAppriseSettingsIncludePoster": "Posteri Dahil Et",
+    "MovieFolderFormatHelpTextDeprecatedWarning": "Film dosyası özellikleriyle ilişkili token'lar artık kullanımdan kaldırılmıştır ve gelecek ana sürümlerde desteklenmeyecektir.",
+    "NamingConfigMovieFolderFormatDeprecatedHealthCheckMessage": "Film Klasör Formatı, artık kullanılmayan dosya ilişkili token'lar içermemelidir: {tokens}",
+    "NotificationsAppriseSettingsIncludePosterHelpText": "Mesaja poster ekle"
 }
