@@ -172,10 +172,10 @@ namespace Radarr.Api.V3.Queue
             var filteredQueue = includeUnknownMovieItems ? queue : queue.Where(q => q.Movie != null);
             var pending = _pendingReleaseService.GetPendingQueue();
 
-            var hasMovieIdFilter = movieIds.Any();
-            var hasLanguageFilter = languages.Any();
-            var hasQualityFilter = quality.Any();
-            var hasStatusFilter = status.Any();
+            var hasMovieIdFilter = movieIds is { Count: > 0 };
+            var hasLanguageFilter = languages is { Count: > 0 };
+            var hasQualityFilter = quality is { Count: > 0 };
+            var hasStatusFilter = status is { Count: > 0 };
 
             var fullQueue = filteredQueue.Concat(pending).Where(q =>
             {
