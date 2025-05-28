@@ -235,6 +235,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Name 2020 WEB-DL 4K H265 10bit HDR DDP5.1 Atmos-PTerWEB", false)]
         [TestCase("The.Movie.2022.NORDiC.2160p.DV.HDR.WEB.H.265-NiDHUG", false)]
         [TestCase("Movie.Name.2024.German.Dubbed.DL.AAC.2160p.DV.HDR.WEB.HEVC-GROUP", false)]
+        [TestCase("Movie.Name.2024.German.AC3D.DL.2160p.Hybrid.WEB.DV.HDR10Plus.HEVC-GROUP", false)]
+        [TestCase("Movie.Name.2024.German.Atmos.Dubbed.DL.2160p.Hybrid.WEB.DV.HDR10Plus.HEVC-GROUP", false)]
+        [TestCase("Movie.Name.2024.German.EAC3D.DL.2160p.Hybrid.WEB.DV.HDR10Plus.HEVC-GROUP", false)]
         public void should_parse_webdl2160p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, QualitySource.WEBDL, proper, Resolution.R2160p);
