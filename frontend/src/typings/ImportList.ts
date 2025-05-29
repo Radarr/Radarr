@@ -8,6 +8,7 @@ interface ImportList extends Provider {
   minimumAvailability: string;
   rootFolderPath: string;
   tags: number[];
+  retroApplyTags: boolean;
 }
 
 export default ImportList;
