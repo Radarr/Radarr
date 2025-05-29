@@ -43,6 +43,9 @@ export const defaultState = {
 
   options: {
     showMovieInformation: true,
+    showCinemaRelease: true,
+    showDigitalRelease: true,
+    showPhysicalRelease: true,
     showCutoffUnmetIcon: false,
     fullColorEvents: false
   },

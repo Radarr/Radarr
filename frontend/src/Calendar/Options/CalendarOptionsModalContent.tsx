@@ -33,8 +33,14 @@ function CalendarOptionsModalContent({
 }: CalendarOptionsModalContentProps) {
   const dispatch = useDispatch();
 
-  const { showMovieInformation, showCutoffUnmetIcon, fullColorEvents } =
-    useSelector((state: AppState) => state.calendar.options);
+  const {
+    showMovieInformation,
+    showCinemaRelease,
+    showDigitalRelease,
+    showPhysicalRelease,
+    showCutoffUnmetIcon,
+    fullColorEvents,
+  } = useSelector((state: AppState) => state.calendar.options);
 
   const uiSettings = useSelector(createUISettingsSelector());
 
@@ -92,6 +98,57 @@ function CalendarOptionsModalContent({
                 name="showMovieInformation"
                 value={showMovieInformation}
                 helpText={translate('ShowMovieInformationHelpText')}
+                onChange={handleOptionInputChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>{translate('ShowCinemaRelease')}</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="showCinemaRelease"
+                value={showCinemaRelease}
+                helpText={translate('ShowCinemaReleaseCalendarHelpText')}
+                isDisabled={
+                  showCinemaRelease &&
+                  !showDigitalRelease &&
+                  !showPhysicalRelease
+                }
+                onChange={handleOptionInputChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>{translate('ShowDigitalRelease')}</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="showDigitalRelease"
+                value={showDigitalRelease}
+                helpText={translate('ShowDigitalReleaseCalendarHelpText')}
+                isDisabled={
+                  !showCinemaRelease &&
+                  showDigitalRelease &&
+                  !showPhysicalRelease
+                }
+                onChange={handleOptionInputChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>{translate('ShowPhysicalRelease')}</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="showPhysicalRelease"
+                value={showPhysicalRelease}
+                helpText={translate('ShowPhysicalReleaseCalendarHelpText')}
+                isDisabled={
+                  !showCinemaRelease &&
+                  !showDigitalRelease &&
+                  showPhysicalRelease
+                }
                 onChange={handleOptionInputChange}
               />
             </FormGroup>

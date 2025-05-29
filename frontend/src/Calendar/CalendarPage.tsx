@@ -48,9 +48,10 @@ function createMissingMovieIdsSelector() {
 
         if (
           !movie.movieFileId &&
+          inCinemas &&
           moment(inCinemas).isAfter(start) &&
           moment(inCinemas).isBefore(end) &&
-          isBefore(movie.inCinemas) &&
+          isBefore(inCinemas) &&
           !queueDetails.some(
             (details) => !!details.movie && details.movie.id === movie.id
           )
