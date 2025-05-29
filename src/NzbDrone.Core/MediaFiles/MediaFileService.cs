@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NzbDrone.Common;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
@@ -30,7 +31,8 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IMovieRepository _movieRepository;
         private readonly IEventAggregator _eventAggregator;
 
-        public MediaFileService(IMediaFileRepository mediaFileRepository,
+        public MediaFileService(IConfigService configService,
+                                IMediaFileRepository mediaFileRepository,
                                 IMovieRepository movieRepository,
                                 IEventAggregator eventAggregator)
         {

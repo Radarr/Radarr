@@ -417,6 +417,59 @@ class MediaManagement extends Component {
                 </FieldSet>
 
                 {
+                  advancedSettings ?
+                    <FieldSet legend={translate('UpgradeManagement')}>
+                      <FormGroup
+                        advancedSettings={advancedSettings}
+                        isAdvanced={true}
+                        size={sizes.MEDIUM}
+                      >
+                        <FormLabel>{translate('UpgradeKeepSubtitlesFiles')}</FormLabel>
+
+                        <FormInputGroup
+                          type={inputTypes.CHECK}
+                          name="upgradeKeepSubtitlesFiles"
+                          helpText={translate('UpgradeKeepSubtitlesFilesHelpText')}
+                          onChange={onInputChange}
+                          {...settings.upgradeKeepSubtitlesFiles}
+                        />
+                      </FormGroup>
+
+                      <FormGroup
+                        advancedSettings={advancedSettings}
+                        isAdvanced={true}
+                        size={sizes.MEDIUM}
+                      >
+                        <FormLabel>{translate('UpgradeKeepMetadataFiles')}</FormLabel>
+
+                        <FormInputGroup
+                          type={inputTypes.CHECK}
+                          name="upgradeKeepMetadataFiles"
+                          helpText={translate('UpgradeKeepMetadataFilesHelpText')}
+                          onChange={onInputChange}
+                          {...settings.upgradeKeepMetadataFiles}
+                        />
+                      </FormGroup>
+
+                      <FormGroup
+                        advancedSettings={advancedSettings}
+                        isAdvanced={true}
+                        size={sizes.MEDIUM}
+                      >
+                        <FormLabel>{translate('UpgradeKeepOtherFiles')}</FormLabel>
+
+                        <FormInputGroup
+                          type={inputTypes.CHECK}
+                          name="upgradeKeepOtherFiles"
+                          helpText={translate('UpgradeKeepOtherFilesHelpText')}
+                          onChange={onInputChange}
+                          {...settings.upgradeKeepOtherFiles}
+                        />
+                      </FormGroup>
+                    </FieldSet> : null
+                }
+
+                {
                   advancedSettings && !isWindows ?
                     <FieldSet
                       legend={translate('Permissions')}

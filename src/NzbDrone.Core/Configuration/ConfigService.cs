@@ -302,6 +302,27 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("AutoRenameFolders", value); }
         }
 
+        public bool UpgradeKeepSubtitlesFiles
+        {
+            get { return GetValueBoolean("UpgradeKeepSubtitlesFiles"); }
+
+            set { SetValue("UpgradeKeepSubtitlesFiles", value); }
+        }
+
+        public bool UpgradeKeepMetadataFiles
+        {
+            get { return GetValueBoolean("UpgradeKeepMetadataFiles", true); }
+
+            set { SetValue("UpgradeKeepMetadataFiles", value); }
+        }
+
+        public bool UpgradeKeepOtherFiles
+        {
+            get { return GetValueBoolean("UpgradeKeepOtherFiles", true); }
+
+            set { SetValue("UpgradeKeepOtherFiles", value); }
+        }
+
         public RescanAfterRefreshType RescanAfterRefresh
         {
             get { return GetValueEnum("RescanAfterRefresh", RescanAfterRefreshType.Always); }

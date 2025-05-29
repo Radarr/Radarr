@@ -5,6 +5,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
@@ -27,21 +28,25 @@ namespace NzbDrone.Core.Extras.Files
 
     public abstract class ExtraFileService<TExtraFile> : IExtraFileService<TExtraFile>,
                                                          IHandleAsync<MovieFileDeletedEvent>,
-                                                         IHandleAsync<MoviesDeletedEvent>
+                                                         IHandleAsync<MoviesDeletedEvent>,
+                                                         IHandleAsync<MovieFileImportedEvent>
         where TExtraFile : ExtraFile, new()
     {
+        private readonly IConfigService _configService;
         private readonly IExtraFileRepository<TExtraFile> _repository;
         private readonly IMovieService _movieService;
         private readonly IDiskProvider _diskProvider;
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly Logger _logger;
 
-        public ExtraFileService(IExtraFileRepository<TExtraFile> repository,
+        public ExtraFileService(IConfigService configService,
+                                IExtraFileRepository<TExtraFile> repository,
                                 IMovieService movieService,
                                 IDiskProvider diskProvider,
                                 IRecycleBinProvider recycleBinProvider,
                                 Logger logger)
         {
+            _configService = configService;
             _repository = repository;
             _movieService = movieService;
             _diskProvider = diskProvider;
@@ -103,14 +108,23 @@ namespace NzbDrone.Core.Extras.Files
         public void HandleAsync(MovieFileDeletedEvent message)
         {
             var movieFile = message.MovieFile;
+            var cleanDisk = true;
+            var cleanDb = true;
 
             if (message.Reason == DeleteMediaFileReason.NoLinkedEpisodes)
             {
                 _logger.Debug("Removing movie file from DB as part of cleanup routine, not deleting extra files from disk.");
+                cleanDisk = false;
             }
-            else
+            else if (message.Reason == DeleteMediaFileReason.Upgrade)
             {
-                var movie = _movieService.GetMovie(message.MovieFile.MovieId);
+                cleanDb = cleanDisk = CleanDuringUpgrade(_configService);
+            }
+
+            if (cleanDisk)
+            {
+                _logger.Debug("Deleting Extras from disk for movie file: {0}", movieFile);
+                var movie = _movieService.GetMovie(movieFile.MovieId);
 
                 foreach (var extra in _repository.GetFilesByMovieFile(movieFile.Id))
                 {
@@ -125,8 +139,31 @@ namespace NzbDrone.Core.Extras.Files
                 }
             }
 
-            _logger.Debug("Deleting Extra from database for movie file: {0}", movieFile);
-            _repository.DeleteForMovieFile(movieFile.Id);
+            if (cleanDb)
+            {
+                _logger.Debug("Deleting Extras from database for movie file: {0}", movieFile);
+                _repository.DeleteForMovieFile(movieFile.Id);
+            }
         }
+
+        public void HandleAsync(MovieFileImportedEvent message)
+        {
+            var extrasToMigrate = _repository.GetFilesByMovie(message.ImportedMovie.MovieId)
+                .FindAll(extra => extra.MovieFileId != message.ImportedMovie.Id)
+                .Select(extra =>
+                {
+                    extra.MovieFileId = message.ImportedMovie.Id;
+                    return extra;
+                })
+                .ToList();
+
+            _logger.Debug("Handling {0} dangling extra(s) after upgrade", extrasToMigrate.Count);
+            if (extrasToMigrate.Count > 0)
+            {
+                Upsert(extrasToMigrate);
+            }
+        }
+
+        protected abstract bool CleanDuringUpgrade(IConfigService configService);
     }
 }
