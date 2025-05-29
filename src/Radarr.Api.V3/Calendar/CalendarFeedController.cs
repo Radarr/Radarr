@@ -26,7 +26,7 @@ namespace Radarr.Api.V3.Calendar
         }
 
         [HttpGet("Radarr.ics")]
-        public IActionResult GetCalendarFeed(int pastDays = 7, int futureDays = 28, string tags = "", bool unmonitored = false)
+        public IActionResult GetCalendarFeed(int pastDays = 7, int futureDays = 28, string tags = "", bool unmonitored = false, IReadOnlyCollection<CalendarReleaseType> releaseTypes = null)
         {
             var start = DateTime.Today.AddDays(-pastDays);
             var end = DateTime.Today.AddDays(futureDays);
@@ -54,9 +54,20 @@ namespace Radarr.Api.V3.Calendar
                     continue;
                 }
 
-                CreateEvent(calendar, movie.MovieMetadata, "cinematic");
-                CreateEvent(calendar, movie.MovieMetadata, "digital");
-                CreateEvent(calendar, movie.MovieMetadata, "physical");
+                if (releaseTypes is not { Count: not 0 } || releaseTypes.Contains(CalendarReleaseType.CinemaRelease))
+                {
+                    CreateEvent(calendar, movie.MovieMetadata, "cinematic");
+                }
+
+                if (releaseTypes is not { Count: not 0 } || releaseTypes.Contains(CalendarReleaseType.DigitalRelease))
+                {
+                    CreateEvent(calendar, movie.MovieMetadata, "digital");
+                }
+
+                if (releaseTypes is not { Count: not 0 } || releaseTypes.Contains(CalendarReleaseType.PhysicalRelease))
+                {
+                    CreateEvent(calendar, movie.MovieMetadata, "physical");
+                }
             }
 
             var serializer = (IStringSerializer)new SerializerFactory().Build(calendar.GetType(), new SerializationContext());
@@ -98,9 +109,9 @@ namespace Radarr.Api.V3.Calendar
             occurrence.IsAllDay = true;
 
             occurrence.Description = movie.Overview;
-            occurrence.Categories = new List<string>() { movie.Studio };
+            occurrence.Categories = new List<string> { movie.Studio };
 
-            occurrence.Summary = $"{movie.Title} " + summaryText;
+            occurrence.Summary = $"{movie.Title} {summaryText}";
         }
     }
 }
