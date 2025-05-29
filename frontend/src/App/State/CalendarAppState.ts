@@ -7,6 +7,9 @@ import { CalendarItem } from 'typings/Calendar';
 
 interface CalendarOptions {
   showMovieInformation: boolean;
+  showCinemaRelease: boolean;
+  showDigitalRelease: boolean;
+  showPhysicalRelease: boolean;
   showCutoffUnmetIcon: boolean;
   fullColorEvents: boolean;
 }

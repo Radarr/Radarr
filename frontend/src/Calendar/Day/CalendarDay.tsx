@@ -21,27 +21,29 @@ function sort(items: CalendarEventModel[]) {
 function createCalendarEventsConnector(date: string) {
   return createSelector(
     (state: AppState) => state.calendar.items,
-    (items) => {
+    (state: AppState) => state.calendar.options,
+    (items, options) => {
+      const { showCinemaRelease, showDigitalRelease, showPhysicalRelease } =
+        options;
       const momentDate = moment(date);
 
       const filtered = items.filter(
         ({ inCinemas, digitalRelease, physicalRelease }) => {
           return (
-            (inCinemas && momentDate.isSame(moment(inCinemas), 'day')) ||
-            (digitalRelease &&
+            (showCinemaRelease &&
+              inCinemas &&
+              momentDate.isSame(moment(inCinemas), 'day')) ||
+            (showDigitalRelease &&
+              digitalRelease &&
               momentDate.isSame(moment(digitalRelease), 'day')) ||
-            (physicalRelease &&
+            (showPhysicalRelease &&
+              physicalRelease &&
               momentDate.isSame(moment(physicalRelease), 'day'))
           );
         }
       );
 
-      return sort(
-        filtered.map((item) => ({
-          isGroup: false,
-          ...item,
-        }))
-      );
+      return sort(filtered);
     }
   );
 }

@@ -52,8 +52,14 @@ function CalendarEvent({
 
   const { enableColorImpairedMode } = useSelector(createUISettingsSelector());
 
-  const { showMovieInformation, showCutoffUnmetIcon, fullColorEvents } =
-    useSelector((state: AppState) => state.calendar.options);
+  const {
+    showMovieInformation,
+    showCinemaRelease,
+    showDigitalRelease,
+    showPhysicalRelease,
+    showCutoffUnmetIcon,
+    fullColorEvents,
+  } = useSelector((state: AppState) => state.calendar.options);
 
   const isDownloading = !!(queueItem || grabbed);
   const statusStyle = getStatusStyle(
@@ -70,20 +76,40 @@ function CalendarEvent({
 
     const types = [];
 
-    if (inCinemas && momentDate.isSame(moment(inCinemas), 'day')) {
+    if (
+      showCinemaRelease &&
+      inCinemas &&
+      momentDate.isSame(moment(inCinemas), 'day')
+    ) {
       types.push('Cinemas');
     }
 
-    if (digitalRelease && momentDate.isSame(moment(digitalRelease), 'day')) {
+    if (
+      showDigitalRelease &&
+      digitalRelease &&
+      momentDate.isSame(moment(digitalRelease), 'day')
+    ) {
       types.push('Digital');
     }
 
-    if (physicalRelease && momentDate.isSame(moment(physicalRelease), 'day')) {
+    if (
+      showPhysicalRelease &&
+      physicalRelease &&
+      momentDate.isSame(moment(physicalRelease), 'day')
+    ) {
       types.push('Physical');
     }
 
     return types;
-  }, [date, inCinemas, digitalRelease, physicalRelease]);
+  }, [
+    date,
+    showCinemaRelease,
+    showDigitalRelease,
+    showPhysicalRelease,
+    inCinemas,
+    digitalRelease,
+    physicalRelease,
+  ]);
 
   return (
     <div
