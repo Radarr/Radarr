@@ -109,5 +109,15 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = IsoLanguages.Find(isoCode);
             result.Language.Should().Be(Language.Mongolian);
         }
+
+        [TestCase("bn")]
+        [TestCase("ben")]
+        [TestCase("bn-BD")]
+        [TestCase("bn-IN")]
+        public void should_return_bengali(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Language.Should().Be(Language.Bengali);
+        }
     }
 }
