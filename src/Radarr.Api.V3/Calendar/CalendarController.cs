@@ -76,7 +76,11 @@ namespace Radarr.Api.V3.Calendar
 
             var resources = MapToResource(results);
 
-            return resources.OrderBy(e => e.InCinemas).ToList();
+            return resources
+                .OrderBy(m => m.InCinemas)
+                .ThenBy(m => m.DigitalRelease)
+                .ThenBy(m => m.PhysicalRelease)
+                .ToList();
         }
     }
 }
