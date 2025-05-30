@@ -165,5 +165,15 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             Subject.BuildFileName(_movie, _movieFile)
                    .Should().Be("Movie Title {Uncut}");
         }
+
+        [TestCase("{Movie Title} {{Edition Tags}}")]
+        public void should_handle_curly_brackets_empty_edition(string movieFormat)
+        {
+            _movieFile.Edition = "";
+            _namingConfig.StandardMovieFormat = movieFormat;
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().Be("Movie Title");
+        }
     }
 }
