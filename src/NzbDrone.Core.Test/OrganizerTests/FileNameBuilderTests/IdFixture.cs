@@ -57,7 +57,9 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         }
 
         [TestCase("{Movie Title} {imdb-{ImdbId}}")]
+        [TestCase("{Movie Title} {imdbid-{ImdbId}}")]
         [TestCase("{Movie Title} {{imdb-{ImdbId}}}")]
+        [TestCase("{Movie Title} {{imdbid-{ImdbId}}}")]
         public void should_skip_imdb_tag_if_null(string movieFormat)
         {
             _namingConfig.MovieFolderFormat = movieFormat;
