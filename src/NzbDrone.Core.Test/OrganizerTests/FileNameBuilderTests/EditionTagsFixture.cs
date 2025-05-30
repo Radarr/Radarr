@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                 .With(m => m.Title = "Movie Title")
                 .Build();
 
-            _movieFile = new MovieFile { Quality = new QualityModel(), ReleaseGroup = "RadarrTest" };
+            _movieFile = new MovieFile { Quality = new QualityModel(), ReleaseGroup = "RadarrTest", Edition = "Uncut" };
 
             _namingConfig = NamingConfig.Default;
             _namingConfig.RenameMovies = true;
@@ -47,17 +47,19 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [Test]
         public void should_add_edition_tag()
         {
-            _movieFile.Edition = "Uncut";
             _namingConfig.StandardMovieFormat = "{Movie Title} [{Edition Tags}]";
 
             Subject.BuildFileName(_movie, _movieFile)
                    .Should().Be("Movie Title [Uncut]");
         }
 
+        [TestCase("{Movie Title} {Edition Tags}")]
+        [TestCase("{Movie Title} {{Edition Tags}}")]
         [TestCase("{Movie Title} {edition-{Edition Tags}}")]
-        public void should_conditional_hide_edition_tags_in_plex_format(string movieFormat)
+        [TestCase("{Movie Title} {{edition-{Edition Tags}}}")]
+        public void should_conditional_hide_edition_tags(string movieFormat)
         {
-            _movieFile.Edition = "";
+            _movieFile.Edition = null;
             _namingConfig.StandardMovieFormat = movieFormat;
 
             Subject.BuildFileName(_movie, _movieFile)
@@ -157,23 +159,21 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         }
 
         [TestCase("{Movie Title} {{Edition Tags}}")]
-        public void should_handle_curly_brackets(string movieFormat)
+        public void should_handle_edition_curly_brackets(string movieFormat)
         {
-            _movieFile.Edition = "Uncut";
             _namingConfig.StandardMovieFormat = movieFormat;
 
             Subject.BuildFileName(_movie, _movieFile)
                    .Should().Be("Movie Title {Uncut}");
         }
 
-        [TestCase("{Movie Title} {{Edition Tags}}")]
-        public void should_handle_curly_brackets_empty_edition(string movieFormat)
+        [TestCase("{Movie Title} {{edition-{Edition Tags}}}")]
+        public void should_handle_edition_tag_curly_brackets(string movieFormat)
         {
-            _movieFile.Edition = "";
             _namingConfig.StandardMovieFormat = movieFormat;
 
             Subject.BuildFileName(_movie, _movieFile)
-                   .Should().Be("Movie Title");
+                   .Should().Be("Movie Title {{edition-Uncut}}");
         }
     }
 }
