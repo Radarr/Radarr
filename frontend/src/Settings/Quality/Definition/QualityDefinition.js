@@ -204,6 +204,7 @@ class QualityDefinition extends Component {
             withTracks={true}
             allowCross={false}
             snapDragDisabled={true}
+            pearling={true}
             renderThumb={this.thumbRenderer}
             renderTrack={this.trackRenderer}
             onChange={this.onSliderChange}
