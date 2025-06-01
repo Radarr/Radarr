@@ -760,6 +760,16 @@
               "type": "boolean",
               "default": false
             }
+          },
+          {
+            "name": "releaseTypes",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CalendarReleaseType"
+              }
+            }
           }
         ],
         "responses": {
@@ -8455,6 +8465,14 @@
         },
         "additionalProperties": false
       },
+      "CalendarReleaseType": {
+        "enum": [
+          "cinemaRelease",
+          "digitalRelease",
+          "physicalRelease"
+        ],
+        "type": "string"
+      },
       "CertificateValidationType": {
         "enum": [
           "enabled",
@@ -11021,6 +11039,13 @@
             "nullable": true
           },
           "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "keywords": {
             "type": "array",
             "items": {
               "type": "string"

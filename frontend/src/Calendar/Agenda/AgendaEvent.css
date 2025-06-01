@@ -53,6 +53,13 @@
   margin-right: 10px;
 }
 
+.releaseIcon {
+  margin-right: 20px;
+  width: 25px;
+  cursor: default;
+  pointer-events: all;
+}
+
 .statusIcon {
   margin-left: 3px;
   cursor: default;
@@ -106,9 +113,4 @@
   .movieTitle {
     flex: 0 0 100%;
   }
-}
-
-.releaseIcon {
-  margin-right: 20px;
-  width: 25px;
 }

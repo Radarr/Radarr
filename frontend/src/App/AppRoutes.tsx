@@ -5,7 +5,7 @@ import History from 'Activity/History/History';
 import Queue from 'Activity/Queue/Queue';
 import AddNewMovieConnector from 'AddMovie/AddNewMovie/AddNewMovieConnector';
 import ImportMovies from 'AddMovie/ImportMovie/ImportMovies';
-import CalendarPageConnector from 'Calendar/CalendarPageConnector';
+import CalendarPage from 'Calendar/CalendarPage';
 import CollectionConnector from 'Collection/CollectionConnector';
 import NotFound from 'Components/NotFound';
 import Switch from 'Components/Router/Switch';
@@ -73,7 +73,7 @@ function AppRoutes() {
         Calendar
       */}
 
-      <Route path="/calendar" component={CalendarPageConnector} />
+      <Route path="/calendar" component={CalendarPage} />
 
       {/*
         Activity

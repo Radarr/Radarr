@@ -1,4 +1,9 @@
-function getStatusStyle(hasFile, downloading, isMonitored, isAvailable) {
+function getStatusStyle(
+  hasFile: boolean,
+  downloading: boolean,
+  isMonitored: boolean,
+  isAvailable: boolean
+) {
   if (downloading) {
     return 'queue';
   }

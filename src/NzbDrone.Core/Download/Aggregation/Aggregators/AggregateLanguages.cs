@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
             var languages = parsedMovieInfo.Languages;
             var movie = remoteMovie.Movie;
             var releaseTokens = parsedMovieInfo.SimpleReleaseTitle ?? parsedMovieInfo.ReleaseTitle;
-            var normalizedReleaseTokens = Parser.Parser.NormalizeEpisodeTitle(releaseTokens);
+            var normalizedReleaseTokens = Parser.Parser.NormalizeMovieTitle(releaseTokens);
             var languagesToRemove = new List<Language>();
 
             if (movie == null)
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
 
                 if (!movieTitleLanguage.Contains(Language.Unknown))
                 {
-                    var normalizedEpisodeTitle = Parser.Parser.NormalizeEpisodeTitle(movie.Title);
+                    var normalizedEpisodeTitle = Parser.Parser.NormalizeMovieTitle(movie.Title);
                     var movieTitleIndex = normalizedReleaseTokens.IndexOf(normalizedEpisodeTitle, StringComparison.CurrentCultureIgnoreCase);
 
                     if (movieTitleIndex >= 0)

@@ -82,12 +82,14 @@ interface Movie extends ModelBase {
   minimumAvailability: MovieAvailability;
   path: string;
   genres: string[];
+  keywords: string[];
   ratings: Ratings;
   popularity: number;
   certification: string;
   statistics?: Statistics;
   tags: number[];
   images: Image[];
+  movieFileId: number;
   movieFile?: MovieFile;
   hasFile: boolean;
   grabbed?: boolean;

@@ -34,7 +34,8 @@ $fullColorGradient: rgba(244, 245, 246, 0.2);
 }
 
 .movieTitle,
-.genres {
+.genres,
+.eventType {
   @add-mixin truncate;
   flex: 1 0 1px;
   margin-right: 10px;
