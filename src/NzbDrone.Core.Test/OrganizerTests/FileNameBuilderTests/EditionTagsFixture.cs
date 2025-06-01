@@ -54,12 +54,14 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         }
 
         [TestCase("{Movie Title} {Edition Tags}")]
+        [TestCase("{Movie Title} {- Edition Tags}")]
         [TestCase("{Movie Title} {{Edition Tags}}")]
+        [TestCase("{Movie Title} edition-{Edition Tags}")]
         [TestCase("{Movie Title} {edition-{Edition Tags}}")]
         [TestCase("{Movie Title} {{edition-{Edition Tags}}}")]
         public void should_conditional_hide_edition_tags(string movieFormat)
         {
-            _movieFile.Edition = null;
+            _movieFile.Edition = "";
             _namingConfig.StandardMovieFormat = movieFormat;
 
             Subject.BuildFileName(_movie, _movieFile)
