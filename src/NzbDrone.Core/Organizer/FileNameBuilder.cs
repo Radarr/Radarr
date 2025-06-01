@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Organizer
         private readonly Logger _logger;
 
         private static readonly Regex TokenRegex = new Regex(
-            @"(?<tagPrefix>[-{ ._\[(]*)(?<tag>(?:imdb(?:id)?[-=]|edition-))?(?<tokenPrefix>[-{ ._\[(]*){(?<insidePrefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?<insideSuffix>[- ._)\]]*)(?::(?<customFormat>[ ,a-z0-9|+-]+(?<![- ]))(?<customFormatSuffix>[-} ._)\]]*))?}(?<tokenSuffix>[-} ._)\]]*)",
+            @"(?<tagPrefix>[{\[(]*)(?<tag>(?:imdb(?:id)?[-=]|edition-))?(?<tokenPrefix>[{\[(]*){(?<insidePrefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?<insideSuffix>[- ._)\]]*)(?::(?<customFormat>[ ,a-z0-9|+-]+(?<![- ]))(?<customFormatSuffix>[- ._})\]]*))?}(?<tokenSuffix>[})\]]*)",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         public static readonly Regex ReleaseYearRegex = new Regex(@"\{[\[\(]?Release[- ._]Year[\]\)]?\}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
