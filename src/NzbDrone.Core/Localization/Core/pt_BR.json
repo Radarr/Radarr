@@ -907,7 +907,7 @@
     "UiSettingsLoadError": "Não foi possível carregar as configurações da interface",
     "CalendarLoadError": "Não foi possível carregar o calendário",
     "TagsLoadError": "Não foi possível carregar as tags",
-    "UnableToLoadRootFolders": "Não foi possível carregar as pastas raiz",
+    "RootFoldersLoadError": "Não foi possível carregar as pastas raiz",
     "UnableToLoadRestrictions": "Não foi possível carregar as restrições",
     "RemotePathMappingsLoadError": "Não foi possível carregar os mapeamentos de caminho remoto",
     "QualityProfilesLoadError": "Não foi possível carregar os perfis de qualidade",

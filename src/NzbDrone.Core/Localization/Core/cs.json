@@ -896,7 +896,7 @@
     "NotificationsLoadError": "Nelze načíst oznámení",
     "QualityDefinitionsLoadError": "Nelze načíst definice kvality",
     "QualityProfilesLoadError": "Nelze načíst profily kvality",
-    "UnableToLoadRootFolders": "Nelze načíst kořenové složky",
+    "RootFoldersLoadError": "Nelze načíst kořenové složky",
     "CalendarLoadError": "Kalendář nelze načíst",
     "UpdateAppDirectlyLoadError": "{appName} nelze aktualizovat přímo,",
     "UnmappedFilesOnly": "Pouze nezmapované soubory",

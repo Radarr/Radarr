@@ -640,7 +640,7 @@
     "Unreleased": "Sin estrenar",
     "UiSettingsLoadError": "No se pudo cargar las opciones de interfaz",
     "CalendarLoadError": "No se ha podido cargar el calendario",
-    "UnableToLoadRootFolders": "No se han podido cargar las carpetas raiz",
+    "RootFoldersLoadError": "No se han podido cargar las carpetas raiz",
     "NamingSettingsLoadError": "No se pudo cargar las opciones de nombrado",
     "UnableToLoadMovies": "No se han podido cargar las películas",
     "MediaManagementSettingsLoadError": "No se puede cargar las opciones de gestión de medios",

@@ -616,7 +616,7 @@
     "UiSettingsLoadError": "Impossibile caricare le impostazioni interfaccia",
     "CalendarLoadError": "Non riesco a caricare il calendario",
     "TagsLoadError": "Impossibile caricare le Etichette",
-    "UnableToLoadRootFolders": "Non riesco a caricare la cartella root",
+    "RootFoldersLoadError": "Non riesco a caricare la cartella root",
     "UnableToLoadRestrictions": "Non riesco a caricare le restrizioni",
     "RemotePathMappingsLoadError": "Non riesco a caricare le mappature del percorso remoto",
     "QualityProfilesLoadError": "Impossibile caricare Profili Qualità",

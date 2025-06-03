@@ -890,7 +890,7 @@
     "QualityProfilesLoadError": "Laatuprofiilien lataus epäonnistui",
     "RemotePathMappingsLoadError": "Etäsijaintien kohdistusten lataus epäonnistui",
     "UnableToLoadRestrictions": "Rajoitusten lataus epäonnistui",
-    "UnableToLoadRootFolders": "Juurikansioiden lataus epäonnistui",
+    "RootFoldersLoadError": "Juurikansioiden lataus epäonnistui",
     "TagsLoadError": "Tunnisteiden lataus epäonnistui",
     "CalendarLoadError": "Kalenterin lataus epäonnistui",
     "UpdateAppDirectlyLoadError": "{appName}ia ei voida päivittää suoraan,",

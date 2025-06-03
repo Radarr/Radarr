@@ -893,7 +893,7 @@
     "QualityDefinitionsLoadError": "Ekki er hægt að hlaða gæðaskilgreiningar",
     "QualityProfilesLoadError": "Ekki er hægt að hlaða gæðasnið",
     "RemotePathMappingsLoadError": "Ekki er hægt að hlaða fjarstígakort",
-    "UnableToLoadRootFolders": "Ekki er hægt að hlaða rótarmöppum",
+    "RootFoldersLoadError": "Ekki er hægt að hlaða rótarmöppum",
     "TagsLoadError": "Ekki er hægt að hlaða merkin",
     "CalendarLoadError": "Ekki er hægt að hlaða dagatalið",
     "UpdateAppDirectlyLoadError": "Ekki er hægt að uppfæra {appName} beint,",

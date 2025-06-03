@@ -336,7 +336,7 @@
     "QualityProfilesLoadError": "Kalite Profilleri yüklenemiyor",
     "RemotePathMappingsLoadError": "Uzak Yol Eşlemeleri yüklenemiyor",
     "UnableToLoadRestrictions": "Kısıtlamalar yüklenemiyor",
-    "UnableToLoadRootFolders": "Kök klasörler yüklenemiyor",
+    "RootFoldersLoadError": "Kök klasörler yüklenemiyor",
     "TagsLoadError": "Etiketler yüklenemiyor",
     "UpdateAppDirectlyLoadError": "{appName} doğrudan güncellenemiyor,",
     "Ungroup": "Grubu çöz",

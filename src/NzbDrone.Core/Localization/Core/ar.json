@@ -60,7 +60,7 @@
     "UiSettingsLoadError": "تعذر تحميل إعدادات واجهة المستخدم",
     "CalendarLoadError": "تعذر تحميل التقويم",
     "TagsLoadError": "تعذر تحميل العلامات",
-    "UnableToLoadRootFolders": "تعذر تحميل مجلدات الجذر",
+    "RootFoldersLoadError": "تعذر تحميل مجلدات الجذر",
     "UnableToLoadRestrictions": "تعذر تحميل القيود",
     "RemotePathMappingsLoadError": "تعذر تحميل تعيينات المسار البعيد",
     "QualityProfilesLoadError": "تعذر تحميل ملفات تعريف الجودة",

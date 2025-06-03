@@ -721,7 +721,7 @@
     "UiSettingsLoadError": "Не удалось загрузить настройки пользовательского интерфейса",
     "CalendarLoadError": "Не удалось загрузить календарь",
     "TagsLoadError": "Невозможно загрузить теги",
-    "UnableToLoadRootFolders": "Невозможно загрузить корневые папки",
+    "RootFoldersLoadError": "Невозможно загрузить корневые папки",
     "UnableToLoadRestrictions": "Невозможно загрузить ограничения",
     "RemotePathMappingsLoadError": "Не удалось загрузить сопоставления удаленного пути",
     "QualityProfilesLoadError": "Невозможно загрузить профили качества",

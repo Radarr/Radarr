@@ -236,7 +236,7 @@
     "DelayProfiles": "延遲配置",
     "Ratings": "評分",
     "EditConditionImplementation": "新增連接 - {implementationName}",
-    "UnableToLoadRootFolders": "無法加進根目錄",
+    "RootFoldersLoadError": "無法加進根目錄",
     "Collections": "蒐藏",
     "ApplyTagsHelpTextHowToApplyMovies": "如何套用標籤在所選擇的輸入清單",
     "YouCanAlsoSearch": "您也可以使用該電影的TMDbID來搜尋。例如「tmdb:71663」",

@@ -887,7 +887,7 @@
     "NotificationsLoadError": "Не вдалося завантажити сповіщення",
     "QualityDefinitionsLoadError": "Не вдалося завантажити визначення якості",
     "RemotePathMappingsLoadError": "Неможливо завантажити віддалені відображення шляхів",
-    "UnableToLoadRootFolders": "Не вдалося завантажити кореневі папки",
+    "RootFoldersLoadError": "Не вдалося завантажити кореневі папки",
     "UpdateAppDirectlyLoadError": "Неможливо оновити {appName} безпосередньо,",
     "Unavailable": "Недоступний",
     "Unlimited": "Необмежений",

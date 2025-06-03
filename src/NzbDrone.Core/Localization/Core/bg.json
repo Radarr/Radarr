@@ -615,7 +615,7 @@
     "QualityProfilesLoadError": "Не може да се заредят качествени профили",
     "RemotePathMappingsLoadError": "Не може да се зареди съпоставяне на отдалечени пътища",
     "UnableToLoadRestrictions": "Ограниченията не могат да се заредят",
-    "UnableToLoadRootFolders": "Не може да се заредят коренови папки",
+    "RootFoldersLoadError": "Не може да се заредят коренови папки",
     "TagsLoadError": "Не може да се заредят маркери",
     "CalendarLoadError": "Календарът не може да се зареди",
     "UpdateAppDirectlyLoadError": "Не може да се актуализира {appName} директно,",

@@ -638,7 +638,7 @@
     "Unreleased": "Unveröffentlicht",
     "UiSettingsLoadError": "Oberflächen Einstellungen konnten nicht geladen werden",
     "CalendarLoadError": "Kalender konnte nicht geladen werden",
-    "UnableToLoadRootFolders": "Stammordner können nicht geladen werden",
+    "RootFoldersLoadError": "Stammordner können nicht geladen werden",
     "MediaManagementSettingsLoadError": "Kann die Einstellungen zur Medienverwaltung nicht laden",
     "NamingSettingsLoadError": "Benennungseinstellungen konnten nicht geladen werden",
     "UnableToLoadMovies": "Filme konnten nicht geladen werden",

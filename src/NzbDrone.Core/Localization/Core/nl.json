@@ -645,7 +645,7 @@
     "Unreleased": "Niet Beschikbaar",
     "UiSettingsLoadError": "Kon gebruikersinterface instellingen niet inladen",
     "CalendarLoadError": "Kon kalender niet inladen",
-    "UnableToLoadRootFolders": "Kon hoofdmappen niet inladen",
+    "RootFoldersLoadError": "Kon hoofdmappen niet inladen",
     "NamingSettingsLoadError": "Kon Naamgevingsinstellingen niet inladen",
     "UnableToLoadMovies": "Kon films niet inladen",
     "MediaManagementSettingsLoadError": "Kon Mediabeheer instellingen niet inladen",

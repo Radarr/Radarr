@@ -355,7 +355,7 @@
     "AddDownloadClientError": "Nesupješno dodavanje klijenta za preuzimanje, molimo pokušaj ponovno.",
     "Any": "BIlo koji",
     "AppUpdatedVersion": "{appName} je ažuriran na verziju '{version}', kako bi najnovije promjene bile aktivne potrebno je ponovno učitati {appName}",
-    "UnableToLoadRootFolders": "Neuspješno dodavanje korijenske mape",
+    "RootFoldersLoadError": "Neuspješno dodavanje korijenske mape",
     "EditReleaseProfile": "Dodaj profil verzije",
     "EditDownloadClientImplementation": "Dodaj Klijenta za Preuzimanje- {implementationName}",
     "EditImportListImplementation": "Dodaj Listu Za Uvoz - {implementationName}",

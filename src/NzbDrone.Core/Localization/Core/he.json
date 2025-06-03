@@ -892,7 +892,7 @@
     "QualityProfilesLoadError": "לא ניתן לטעון פרופילי איכות",
     "RemotePathMappingsLoadError": "לא ניתן לטעון מיפוי נתיבים מרוחק",
     "UnableToLoadRestrictions": "לא ניתן לטעון את ההגבלות",
-    "UnableToLoadRootFolders": "לא ניתן לטעון תיקיות שורש",
+    "RootFoldersLoadError": "לא ניתן לטעון תיקיות שורש",
     "CalendarLoadError": "לא ניתן לטעון את היומן",
     "Unlimited": "ללא הגבלה",
     "UpdateAppDirectlyLoadError": "לא ניתן לעדכן את {appName} ישירות,",
