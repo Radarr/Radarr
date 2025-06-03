@@ -2018,5 +2018,16 @@
     "NotificationsAppriseSettingsIncludePoster": "Posteri Dahil Et",
     "MovieFolderFormatHelpTextDeprecatedWarning": "Film dosyası özellikleriyle ilişkili token'lar artık kullanımdan kaldırılmıştır ve gelecek ana sürümlerde desteklenmeyecektir.",
     "NamingConfigMovieFolderFormatDeprecatedHealthCheckMessage": "Film Klasör Formatı, artık kullanılmayan dosya ilişkili token'lar içermemelidir: {tokens}",
-    "NotificationsAppriseSettingsIncludePosterHelpText": "Mesaja poster ekle"
+    "NotificationsAppriseSettingsIncludePosterHelpText": "Mesaja poster ekle",
+    "Keywords": "Anahtar kelimeler",
+    "AutoTaggingSpecificationKeyword": "Anahtar Kelime(ler)",
+    "CinemaRelease": "Sinema Gösterimi",
+    "ShowCinemaRelease": "Vizyon Bilgisini Göster",
+    "ShowDigitalRelease": "Dijital Yayını Göster",
+    "ShowDigitalReleaseCalendarHelpText": "Takvim etkinliklerinde dijital yayınları göster",
+    "ShowPhysicalRelease": "Fiziksel Yayını Göster",
+    "ICalReleaseTypes": "Gösterim Türleri",
+    "ICalReleaseTypesMoviesHelpText": "iCal akışına yalnızca belirli gösterim türlerine sahip filmleri dahil et. Belirtilmezse, tüm seçenekler kullanılır.",
+    "ShowPhysicalReleaseCalendarHelpText": "Takvim etkinliklerinde fiziksel yayınları göster",
+    "ShowCinemaReleaseCalendarHelpText": "Takvim etkinliklerinde sinema gösterimlerini göster"
 }

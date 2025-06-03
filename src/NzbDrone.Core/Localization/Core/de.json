@@ -1975,5 +1975,6 @@
     "ImportListsRadarrSettingsRootFoldersHelpText": "Root-Ordner von der Quellinstanz, von der importiert werden soll",
     "ImportListsRadarrSettingsFullUrl": "Vollständige URL",
     "ImportListsRadarrSettingsTagsHelpText": "Tags von der Quellinstanz zum Importieren",
-    "EditMovieCollectionModalHeader": "Bearbeiten - {title}"
+    "EditMovieCollectionModalHeader": "Bearbeiten - {title}",
+    "DownloadClientUTorrentProviderMessage": "uTorrent ist dafür bekannt, dass es Kryptominer, Malware und Werbung enthält. Wir empfehlen dringend einen anderen Client zu wählen."
 }
