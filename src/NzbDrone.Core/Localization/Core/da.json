@@ -887,7 +887,7 @@
     "QualityProfilesLoadError": "Kunne ikke indlæse kvalitetsprofiler",
     "RemotePathMappingsLoadError": "Kan ikke indlæse Remote Path Mappings",
     "UnableToLoadRestrictions": "Kunne ikke indlæse begrænsninger",
-    "UnableToLoadRootFolders": "Kan ikke indlæse rodmapper",
+    "RootFoldersLoadError": "Kan ikke indlæse rodmapper",
     "TagsLoadError": "Kan ikke indlæse tags",
     "CalendarLoadError": "Kan ikke indlæse kalenderen",
     "Ungroup": "Fjern gruppe",

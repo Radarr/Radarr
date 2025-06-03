@@ -896,7 +896,7 @@
     "NotificationsLoadError": "Nelze načíst oznámení",
     "QualityDefinitionsLoadError": "Nelze načíst definice kvality",
     "QualityProfilesLoadError": "Nelze načíst profily kvality",
-    "UnableToLoadRootFolders": "Nelze načíst kořenové složky",
+    "RootFoldersLoadError": "Nelze načíst kořenové složky",
     "CalendarLoadError": "Kalendář nelze načíst",
     "UpdateAppDirectlyLoadError": "{appName} nelze aktualizovat přímo,",
     "UnmappedFilesOnly": "Pouze nezmapované soubory",
@@ -1364,5 +1364,6 @@
     "AnnouncedMovieAvailabilityDescription": "Filmy jsou považovány za dostupné, jakmile jsou přidány do {appName}.",
     "CustomFormatsSpecificationQualityModifier": "Modifikátor kvality",
     "NotificationsAppriseSettingsServerUrlHelpText": "URL serveru Apprise, včetně http(s):// a portu, pokud je potřeba",
-    "Disposition": "Dispozice"
+    "Disposition": "Dispozice",
+    "DownloadClientItemErrorMessage": "{clientName} hlásí chybu: {message}"
 }

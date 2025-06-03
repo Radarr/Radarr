@@ -445,7 +445,7 @@
     "Collection": "集",
     "ClickToChangeQuality": "点击更改质量",
     "ClickToChangeMovie": "点击修改电影",
-    "UnableToLoadRootFolders": "无法加载根目录",
+    "RootFoldersLoadError": "无法加载根目录",
     "RemotePathMappingsLoadError": "无法加载远程路径映射",
     "NamingSettingsLoadError": "无法加载命名设置",
     "UnableToLoadMovies": "无法加载电影",

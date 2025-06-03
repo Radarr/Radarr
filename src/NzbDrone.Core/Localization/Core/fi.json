@@ -890,7 +890,7 @@
     "QualityProfilesLoadError": "Laatuprofiilien lataus epäonnistui",
     "RemotePathMappingsLoadError": "Etäsijaintien kohdistusten lataus epäonnistui",
     "UnableToLoadRestrictions": "Rajoitusten lataus epäonnistui",
-    "UnableToLoadRootFolders": "Juurikansioiden lataus epäonnistui",
+    "RootFoldersLoadError": "Juurikansioiden lataus epäonnistui",
     "TagsLoadError": "Tunnisteiden lataus epäonnistui",
     "CalendarLoadError": "Kalenterin lataus epäonnistui",
     "UpdateAppDirectlyLoadError": "{appName}ia ei voida päivittää suoraan,",
@@ -2015,5 +2015,10 @@
     "ImportListsRadarrSettingsFullUrlHelpText": "Tuotavan {appName}-instanssin URL-osoite portti mukaan lukien (Radarr 3.0 tai uudempi).",
     "ImportListsRadarrSettingsApiKeyHelpText": "Tuotavan {appName}-instanssin rajapinnan avain (Radarr 3.0 tai uudempi).",
     "UpdateMoviePath": "Muuta elokuvan sijaintia",
-    "NotificationsAppriseSettingsIncludePoster": "Sisällytä juliste"
+    "NotificationsAppriseSettingsIncludePoster": "Sisällytä juliste",
+    "NotificationsAppriseSettingsIncludePosterHelpText": "Sisällytä julisteet viesteihin.",
+    "MovieFolderFormatHelpTextDeprecatedWarning": "Elokuvatiedostojen ominaisuuksiin liittyvät muuttujat ovat vanhentuneet, eikä niitä enää tueta tulevissa pääversioissa.",
+    "NamingConfigMovieFolderFormatDeprecatedHealthCheckMessage": "Elokuvakansioiden kaava ei saa sisältää vanhentuneita tiedostoihin liittyviä muuttujia: {tokens}.",
+    "AutoTaggingSpecificationKeyword": "Avainsana(t)",
+    "Keywords": "Avainsanat"
 }

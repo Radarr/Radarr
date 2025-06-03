@@ -895,7 +895,7 @@
     "QualityDefinitionsLoadError": "Nie można załadować definicji jakości",
     "QualityProfilesLoadError": "Nie można załadować profili jakości",
     "RemotePathMappingsLoadError": "Nie można załadować mapowania ścieżki zdalnej",
-    "UnableToLoadRootFolders": "Nie można załadować folderów głównych",
+    "RootFoldersLoadError": "Nie można załadować folderów głównych",
     "TagsLoadError": "Nie można załadować tagów",
     "CalendarLoadError": "Nie można załadować kalendarza",
     "UpdateAppDirectlyLoadError": "Nie można bezpośrednio zaktualizować {appName},",

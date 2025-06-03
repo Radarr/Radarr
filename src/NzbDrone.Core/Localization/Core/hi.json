@@ -912,7 +912,7 @@
     "NamingSettingsLoadError": "नाम सेटिंग को लोड करने में असमर्थ",
     "QualityDefinitionsLoadError": "गुणवत्ता परिभाषाएँ लोड करने में असमर्थ",
     "UnableToLoadRestrictions": "प्रतिबंधों को लोड करने में असमर्थ",
-    "UnableToLoadRootFolders": "रूट फ़ोल्डर लोड करने में असमर्थ",
+    "RootFoldersLoadError": "रूट फ़ोल्डर लोड करने में असमर्थ",
     "TagsLoadError": "टैग लोड करने में असमर्थ",
     "Ungroup": "असमूहीकृत",
     "Unlimited": "असीमित",

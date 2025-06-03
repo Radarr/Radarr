@@ -907,7 +907,7 @@
     "UiSettingsLoadError": "Não foi possível carregar as configurações da interface",
     "CalendarLoadError": "Não foi possível carregar o calendário",
     "TagsLoadError": "Não foi possível carregar as tags",
-    "UnableToLoadRootFolders": "Não foi possível carregar as pastas raiz",
+    "RootFoldersLoadError": "Não foi possível carregar as pastas raiz",
     "UnableToLoadRestrictions": "Não foi possível carregar as restrições",
     "RemotePathMappingsLoadError": "Não foi possível carregar os mapeamentos de caminho remoto",
     "QualityProfilesLoadError": "Não foi possível carregar os perfis de qualidade",
@@ -2018,5 +2018,16 @@
     "NotificationsAppriseSettingsIncludePosterHelpText": "Incluir pôster na mensagem",
     "NotificationsAppriseSettingsIncludePoster": "Incluir pôster",
     "MovieFolderFormatHelpTextDeprecatedWarning": "Os tokens associados às propriedades do arquivo de filme foram descontinuados e não terão mais suporte nas principais versões futuras.",
-    "NamingConfigMovieFolderFormatDeprecatedHealthCheckMessage": "O formato de pasta do filme não deve conter tokens relacionados a arquivos obsoletos: {tokens}"
+    "NamingConfigMovieFolderFormatDeprecatedHealthCheckMessage": "O formato de pasta do filme não deve conter tokens relacionados a arquivos obsoletos: {tokens}",
+    "AutoTaggingSpecificationKeyword": "Palavra(s)-chave(s)",
+    "Keywords": "Palavras-chave",
+    "CinemaRelease": "Lançamento no Cinema",
+    "ICalReleaseTypes": "Tipos de Lançamento",
+    "ICalReleaseTypesMoviesHelpText": "Inclua apenas filmes com tipos de lançamento específicos no feed do iCal. Se não for especificado, todas as opções serão usadas.",
+    "ShowCinemaRelease": "Mostrar o Lançamento no Cinema",
+    "ShowCinemaReleaseCalendarHelpText": "Mostrar lançamentos no cinema nos eventos do calendário",
+    "ShowDigitalRelease": "Mostrar Lançamentos Digitais",
+    "ShowDigitalReleaseCalendarHelpText": "Mostrar lançamentos digitais nos eventos do calendário",
+    "ShowPhysicalRelease": "Mostrar Lançamento Físico",
+    "ShowPhysicalReleaseCalendarHelpText": "Mostrar lançamentos físicos nos eventos do calendário"
 }

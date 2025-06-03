@@ -906,7 +906,7 @@
     "QualityDefinitionsLoadError": "Nu se pot încărca definițiile de calitate",
     "QualityProfilesLoadError": "Nu se pot încărca profilurile de calitate",
     "RemotePathMappingsLoadError": "Imposibil de încărcat mapări de cale la distanță",
-    "UnableToLoadRootFolders": "Imposibil de încărcat folderele rădăcină",
+    "RootFoldersLoadError": "Imposibil de încărcat folderele rădăcină",
     "TagsLoadError": "Nu se pot încărca etichete",
     "CalendarLoadError": "Calendarul nu poate fi încărcat",
     "UpdateAppDirectlyLoadError": "Imposibil de actualizat direct {appName},",

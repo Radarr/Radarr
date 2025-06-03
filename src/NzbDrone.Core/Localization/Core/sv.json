@@ -930,7 +930,7 @@
     "QualityProfilesLoadError": "Det gick inte att ladda kvalitetsprofiler",
     "RemotePathMappingsLoadError": "Det gick inte att läsa in fjärrvägskartläggningar",
     "UnableToLoadRestrictions": "Det gick inte att ladda begränsningar",
-    "UnableToLoadRootFolders": "Det gick inte att ladda rotmappar",
+    "RootFoldersLoadError": "Det gick inte att ladda rotmappar",
     "CalendarLoadError": "Det gick inte att ladda kalendern",
     "UpdateAppDirectlyLoadError": "Det går inte att uppdatera {appName} direkt,",
     "UpgradeUntilCustomFormatScore": "Uppgradera tills anpassat formatpoäng",

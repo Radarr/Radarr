@@ -68,6 +68,24 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                    .Should().Be("Movie Title");
         }
 
+        [TestCase("{Movie Title} {{Edition Tags}}")]
+        public void should_handle_edition_curly_brackets(string movieFormat)
+        {
+            _namingConfig.StandardMovieFormat = movieFormat;
+
+            Subject.BuildFileName(_movie, _movieFile)
+                .Should().Be("Movie Title {Uncut}");
+        }
+
+        [TestCase("{Movie Title} {{edition-{Edition Tags}}}")]
+        public void should_handle_edition_tag_curly_brackets(string movieFormat)
+        {
+            _namingConfig.StandardMovieFormat = movieFormat;
+
+            Subject.BuildFileName(_movie, _movieFile)
+                .Should().Be("Movie Title {{edition-Uncut}}");
+        }
+
         [TestCase("1st anniversary edition", "{Movie Title} [{Edition Tags}]", "Movie Title [1st Anniversary Edition]")]
         [TestCase("2nd Anniversary edition", "{Movie Title} [{Edition Tags}]", "Movie Title [2nd Anniversary Edition]")]
         [TestCase("3rd anniversary Edition", "{Movie Title} [{Edition Tags}]", "Movie Title [3rd Anniversary Edition]")]

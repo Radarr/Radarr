@@ -41,7 +41,7 @@
     "SelectMovie": "Seleccioneu Pel·lícula",
     "SelectQuality": "Seleccioneu Qualitat",
     "TimeFormat": "Format horari",
-    "UnableToLoadRootFolders": "No es poden carregar les carpetes arrel",
+    "RootFoldersLoadError": "No es poden carregar les carpetes arrel",
     "Waiting": "S’està esperant",
     "MovieFiles": "Fitxers de pel·lícula",
     "Tasks": "Tasques",

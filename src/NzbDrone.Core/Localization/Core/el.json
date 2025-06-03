@@ -887,7 +887,7 @@
     "QualityProfilesLoadError": "Δεν είναι δυνατή η φόρτωση των προφίλ ποιότητας",
     "RemotePathMappingsLoadError": "Δεν είναι δυνατή η φόρτωση αντιστοιχίσεων απομακρυσμένης διαδρομής",
     "UnableToLoadRestrictions": "Δεν είναι δυνατή η φόρτωση των περιορισμών",
-    "UnableToLoadRootFolders": "Δεν είναι δυνατή η φόρτωση ριζικών φακέλων",
+    "RootFoldersLoadError": "Δεν είναι δυνατή η φόρτωση ριζικών φακέλων",
     "TagsLoadError": "Δεν είναι δυνατή η φόρτωση ετικετών",
     "CalendarLoadError": "Δεν είναι δυνατή η φόρτωση του ημερολογίου",
     "UpdateAppDirectlyLoadError": "Δεν είναι δυνατή η απευθείας ενημέρωση του {appName},",

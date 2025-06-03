@@ -463,7 +463,7 @@
     "CustomFormatUnknownConditionOption": "Option inconnue '{key}' pour la condition '{implementation}'",
     "CustomFormatUnknownCondition": "Condition de format personnalisé inconnue '{implementation}'",
     "CloneCustomFormat": "Dupliqué le format personnalisé",
-    "UnableToLoadRootFolders": "Impossible de charger les dossiers racine",
+    "RootFoldersLoadError": "Impossible de charger les dossiers racine",
     "UnableToLoadRestrictions": "Impossible de charger les restrictions",
     "RemotePathMappingsLoadError": "Impossible de charger les mappages de chemins distants",
     "QualityProfilesLoadError": "Impossible de charger les profils de qualité",
@@ -1981,5 +1981,6 @@
     "ImportListsRadarrSettingsRootFoldersHelpText": "Dossiers racine de l'instance source à partir de laquelle l'importation doit être effectuée",
     "ImportListsRadarrSettingsTagsHelpText": "Tags de l'instance source à importer",
     "ImportListsRadarrSettingsQualityProfilesHelpText": "Profils de qualité de l'instance source à importer",
-    "EditMovieCollectionModalHeader": "Modifier - {title}"
+    "EditMovieCollectionModalHeader": "Modifier - {title}",
+    "AutoTaggingSpecificationKeyword": "clavier"
 }

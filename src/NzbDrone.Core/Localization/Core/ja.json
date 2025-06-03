@@ -890,7 +890,7 @@
     "QualityProfilesLoadError": "品質プロファイルを読み込めません",
     "RemotePathMappingsLoadError": "リモートパスマッピングを読み込めません",
     "UnableToLoadRestrictions": "制限を読み込めません",
-    "UnableToLoadRootFolders": "ルートフォルダを読み込めません",
+    "RootFoldersLoadError": "ルートフォルダを読み込めません",
     "TagsLoadError": "タグを読み込めません",
     "CalendarLoadError": "カレンダーを読み込めません",
     "UpdateAppDirectlyLoadError": "{appName}を直接更新できません。",

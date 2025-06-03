@@ -908,7 +908,7 @@
     "NotificationsLoadError": "Không thể tải thông báo",
     "QualityProfilesLoadError": "Không thể tải Hồ sơ chất lượng",
     "RemotePathMappingsLoadError": "Không thể tải Ánh xạ đường dẫn từ xa",
-    "UnableToLoadRootFolders": "Không thể tải các thư mục gốc",
+    "RootFoldersLoadError": "Không thể tải các thư mục gốc",
     "UpdateAppDirectlyLoadError": "Không thể cập nhật {appName} trực tiếp,",
     "Ungroup": "Bỏ nhóm",
     "Unlimited": "Vô hạn",

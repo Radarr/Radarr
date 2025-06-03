@@ -728,7 +728,7 @@
     "UiSettingsLoadError": "Nem sikerült betölteni a felhasználói felület beállításait",
     "CalendarLoadError": "Nem sikerült betölteni a naptárat",
     "TagsLoadError": "Nem sikerült betölteni a címkéket",
-    "UnableToLoadRootFolders": "Nem lehet betölteni a gyökérmappákat",
+    "RootFoldersLoadError": "Nem lehet betölteni a gyökérmappákat",
     "UnableToLoadRestrictions": "Nem lehet betölteni a korlátozásokat",
     "RemotePathMappingsLoadError": "Nem sikerült betölteni a távoli útvonal-leképezéseket",
     "QualityProfilesLoadError": "Nem sikerült betölteni a minőségi profilokat",

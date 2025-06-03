@@ -697,7 +697,7 @@
     "UiSettingsLoadError": "Não foi possível carregar as definições da IU",
     "CalendarLoadError": "Não foi possível carregar o calendário",
     "TagsLoadError": "Não foi possível carregar as etiquetas",
-    "UnableToLoadRootFolders": "Não foi possível carregar as pastas raiz",
+    "RootFoldersLoadError": "Não foi possível carregar as pastas raiz",
     "UnableToLoadRestrictions": "Não foi possível carregar as restrições",
     "RemotePathMappingsLoadError": "Não foi possível carregar os mapeamentos de caminhos remoto",
     "QualityProfilesLoadError": "Não foi possível carregar os perfis de qualidade",

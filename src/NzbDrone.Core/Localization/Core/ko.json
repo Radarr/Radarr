@@ -894,7 +894,7 @@
     "QualityProfilesLoadError": "품질 프로필을 로드할 수 없음",
     "RemotePathMappingsLoadError": "원격 경로 매핑을 로드할 수 없음",
     "UnableToLoadRestrictions": "제한을 로드할 수 없습니다",
-    "UnableToLoadRootFolders": "루트 폴더를 로드할 수 없습니다",
+    "RootFoldersLoadError": "루트 폴더를 로드할 수 없습니다",
     "CalendarLoadError": "캘린더를 로드할 수 없음",
     "UpdateAppDirectlyLoadError": "{appName}을(를) 직접 업데이트 할 수 없음",
     "Ungroup": "그룹 해제",
