@@ -196,7 +196,7 @@ class CollectionOverview extends Component {
                       size={13}
                     />
                     <span className={styles.status}>
-                      {`${missingMovies} missing movie(s)`}
+                      {translate('CountMissingMoviesFromLibrary', { count: missingMovies })}
                     </span>
                   </Label>
 

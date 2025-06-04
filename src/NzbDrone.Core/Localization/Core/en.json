@@ -260,6 +260,7 @@
   "CountDownloadClientsSelected": "{count} download client(s) selected",
   "CountImportListsSelected": "{count} import list(s) selected",
   "CountIndexersSelected": "{count} indexer(s) selected",
+  "CountMissingMoviesFromLibrary": "{count} missing movie(s) from library",
   "CountVotes": "{votes} votes",
   "CreateEmptyMovieFolders": "Create empty movie folders",
   "CreateEmptyMovieFoldersHelpText": "Create missing movie folders during disk scan",
