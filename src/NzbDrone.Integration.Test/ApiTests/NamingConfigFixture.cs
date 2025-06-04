@@ -23,6 +23,11 @@ namespace NzbDrone.Integration.Test.ApiTests
         [TestCase("{Movie Title} {Release Year}")]
         [TestCase("{Movie Title} {(Release Year)}")]
         [TestCase("{Movie Title} {[Release Year]}")]
+        [TestCase("{Movie Title} {{Release Year}}")]
+        [TestCase("{Movie Title}{ Release Year }")]
+        [TestCase("{Movie-Title}{-Release-Year-}")]
+        [TestCase("{Movie_Title}{_Release_Year_}")]
+        [TestCase("{Movie.Title}{.Release.Year.}")]
         public void should_be_able_to_update(string standardMovieFormat)
         {
             var config = NamingConfig.GetSingle();
