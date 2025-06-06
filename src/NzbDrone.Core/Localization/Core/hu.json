@@ -1503,5 +1503,7 @@
     "IndexerHDBitsSettingsCodecs": "Kodek",
     "IndexerHDBitsSettingsMediums": "Közepes",
     "MyComputer": "A számítógépem",
-    "EditMovieCollectionModalHeader": "Szerkesztés – {title}"
+    "EditMovieCollectionModalHeader": "Szerkesztés – {title}",
+    "DefaultNameCopiedImportList": "{name} - Másolat",
+    "ReleaseProfile": "Release profil"
 }

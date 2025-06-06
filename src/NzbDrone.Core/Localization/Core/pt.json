@@ -1332,5 +1332,8 @@
     "FormatShortTimeSpanMinutes": "{minutes} minuto(s)",
     "FullColorEvents": "Eventos de Cor Total",
     "FormatAgeDay": "dia",
-    "FormatShortTimeSpanSeconds": "{seconds} secondo(s)"
+    "FormatShortTimeSpanSeconds": "{seconds} secondo(s)",
+    "CloneImportList": "Clonar Lista de Importação",
+    "DefaultNameCopiedImportList": "{name} - Copiar",
+    "ReleaseProfile": "Perfis de versão"
 }

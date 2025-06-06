@@ -1172,5 +1172,6 @@
     "AddCustomFilter": "Adaugă filtru personalizat",
     "IndexerHDBitsSettingsCategories": "Categorii",
     "IndexerHDBitsSettingsMediums": "Mediu",
-    "IndexerSettingsCategories": "Categorii"
+    "IndexerSettingsCategories": "Categorii",
+    "DefaultNameCopiedImportList": "{name} - Copie"
 }

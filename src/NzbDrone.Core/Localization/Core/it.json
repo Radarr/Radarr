@@ -1540,5 +1540,8 @@
     "IndexerSettingsMinimumSeeders": "Seeder Minimi",
     "MyComputer": "Mio Computer",
     "ImportListsRadarrSettingsFullUrl": "URL Completo",
-    "EditMovieCollectionModalHeader": "Modifica - {title}"
+    "EditMovieCollectionModalHeader": "Modifica - {title}",
+    "IndexerSettingsRejectBlocklistedTorrentHashesHelpText": "Se un torrent è bloccato tramite hash, potrebbe non essere correttamente rifiutato durante l’uso di RSS/Ricerca con alcuni indexer. Abilitando questa opzione, il torrent verrà rifiutato dopo essere stato acquisito, ma prima di essere inviato al client.",
+    "DefaultNameCopiedImportList": "{name} - Copia",
+    "ReleaseProfile": "profilo release"
 }

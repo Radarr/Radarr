@@ -2018,5 +2018,8 @@
     "NotificationsAppriseSettingsIncludePoster": "Inclou el cartell",
     "MovieFolderFormatHelpTextDeprecatedWarning": "Els tokens associats amb les propietats dels arxius de pel·lícula han quedat obsolets i no seran suportats en futures versions majors.",
     "NamingConfigMovieFolderFormatDeprecatedHealthCheckMessage": "El format de carpeta de pel·lícules no ha de contenir tokens obsolets relacionats amb els arxius: {tokens}",
-    "NotificationsAppriseSettingsIncludePosterHelpText": "Inclou el pòster al missatge"
+    "NotificationsAppriseSettingsIncludePosterHelpText": "Inclou el pòster al missatge",
+    "CloneImportList": "Clonar llista d'importació",
+    "DefaultNameCopiedImportList": "{name} - Còpia",
+    "ReleaseProfile": "Perfil de llançament"
 }

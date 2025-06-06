@@ -1115,5 +1115,6 @@
     "IndexerHDBitsSettingsCategories": "Kategorier",
     "IndexerHDBitsSettingsCodecs": "codec",
     "IndexerHDBitsSettingsMediums": "Medium",
-    "IndexerSettingsCategories": "Kategorier"
+    "IndexerSettingsCategories": "Kategorier",
+    "ReleaseProfile": "udgivelsesprofil"
 }

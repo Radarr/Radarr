@@ -1264,5 +1264,6 @@
     "IndexerHDBitsSettingsCategories": "Categorieën",
     "IndexerHDBitsSettingsCodecs": "Codec",
     "IndexerHDBitsSettingsMediums": "Gemiddeld",
-    "IndexerSettingsCategories": "Categorieën"
+    "IndexerSettingsCategories": "Categorieën",
+    "ReleaseProfile": "releaseprofiel"
 }

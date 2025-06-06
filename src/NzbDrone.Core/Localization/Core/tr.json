@@ -62,7 +62,7 @@
     "View": "Görünüm",
     "UpdateSelected": "Seçilmişleri güncelle",
     "Updates": "Güncellemeler",
-    "UpdateCheckUINotWritableMessage": "'{startupFolder}' arayüzü klasörü '{userName}' kullanıcısı tarafından yazılamadığından güncelleme yüklenemiyor.",
+    "UpdateCheckUINotWritableMessage": "Güncelleme yüklenemiyor çünkü '{userName}' kullanıcısının '{uiFolder}' klasörüne yazma izni yok.",
     "UpdateCheckStartupTranslocationMessage": "Başlangıç klasörü '{startupFolder}' bir Uygulama Yer Değiştirme klasöründe olduğu için güncelleme yüklenemiyor.",
     "UpdateCheckStartupNotWritableMessage": "'{startupFolder}' başlangıç klasörü '{userName}' kullanıcısı tarafından yazılamadığından güncelleme yüklenemiyor.",
     "UpdateAll": "Tümünü Güncelle",
@@ -287,7 +287,7 @@
     "StandardMovieFormat": "Standart Film Formatı",
     "StartImport": "İçe Aktarmayı Başlat",
     "StartSearchForMissingMovie": "Kayıp filmi aramaya başlayın",
-    "AddNewMovieRootFolderHelpText": "'{0}' alt klasörü otomatik olarak oluşturulacak",
+    "AddNewMovieRootFolderHelpText": "'{folder}' alt klasörü otomatik olarak oluşturulacak",
     "Sunday": "Pazar",
     "Table": "Tablo",
     "TableOptions": "Tablo Seçenekleri",
@@ -295,7 +295,7 @@
     "TagIsNotUsedAndCanBeDeleted": "Etiket kullanılmaz ve silinebilir",
     "TestAll": "Tümünü Test Et",
     "TheLogLevelDefault": "Log seviyesi varsayılan olarak 'Bilgi' şeklindedir ve [Genel Ayarlar](/ayarlar/genel) bölümünden değiştirilebilir",
-    "ThisCannotBeCancelled": "Bu, {appName} yeniden başlatılmadan başlatıldıktan sonra iptal edilemez.",
+    "ThisCannotBeCancelled": "Başladıktan sonra, tüm indeksleyicileri devre dışı bırakmadıkça iptal edilemez.",
     "Title": "Başlık",
     "TMDBId": "TMDb Kimliği",
     "TmdbIdExcludeHelpText": "Hariç tutulacak filmin TMDb Kimliği",
@@ -2029,5 +2029,9 @@
     "ICalReleaseTypes": "Gösterim Türleri",
     "ICalReleaseTypesMoviesHelpText": "iCal akışına yalnızca belirli gösterim türlerine sahip filmleri dahil et. Belirtilmezse, tüm seçenekler kullanılır.",
     "ShowPhysicalReleaseCalendarHelpText": "Takvim etkinliklerinde fiziksel yayınları göster",
-    "ShowCinemaReleaseCalendarHelpText": "Takvim etkinliklerinde sinema gösterimlerini göster"
+    "ShowCinemaReleaseCalendarHelpText": "Takvim etkinliklerinde sinema gösterimlerini göster",
+    "CloneImportList": "İçe Aktarma Listesini Klonla",
+    "DefaultNameCopiedImportList": "{name} - Kopyala",
+    "ReleaseProfile": "Sürüm Profili",
+    "CountMissingMoviesFromLibrary": "{count} kitaplıkta eksik film"
 }

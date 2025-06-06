@@ -1250,5 +1250,6 @@
     "IndexerSettingsCategories": "Κατηγορίες",
     "IndexerHDBitsSettingsCategories": "Κατηγορίες",
     "IndexerHDBitsSettingsMediums": "Μεσαίο",
-    "IndexerSettingsMinimumSeeders": "Ελάχιστοι σπαρτήρες"
+    "IndexerSettingsMinimumSeeders": "Ελάχιστοι σπαρτήρες",
+    "ReleaseProfile": "Προφίλ έκδοσης"
 }
