@@ -2029,5 +2029,9 @@
     "ShowDigitalRelease": "Mostrar Lançamentos Digitais",
     "ShowDigitalReleaseCalendarHelpText": "Mostrar lançamentos digitais nos eventos do calendário",
     "ShowPhysicalRelease": "Mostrar Lançamento Físico",
-    "ShowPhysicalReleaseCalendarHelpText": "Mostrar lançamentos físicos nos eventos do calendário"
+    "ShowPhysicalReleaseCalendarHelpText": "Mostrar lançamentos físicos nos eventos do calendário",
+    "CloneImportList": "Clonar Lista de Importação",
+    "DefaultNameCopiedImportList": "{name} - Cópia",
+    "ReleaseProfile": "Perfil de Lançamento",
+    "CountMissingMoviesFromLibrary": "{count} filme(s) faltando na biblioteca"
 }

@@ -1982,5 +1982,7 @@
     "ImportListsRadarrSettingsTagsHelpText": "Tags de l'instance source à importer",
     "ImportListsRadarrSettingsQualityProfilesHelpText": "Profils de qualité de l'instance source à importer",
     "EditMovieCollectionModalHeader": "Modifier - {title}",
-    "AutoTaggingSpecificationKeyword": "clavier"
+    "AutoTaggingSpecificationKeyword": "clavier",
+    "DefaultNameCopiedImportList": "{name} - Copier",
+    "ReleaseProfile": "Profil de version"
 }

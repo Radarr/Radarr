@@ -1365,5 +1365,8 @@
     "CustomFormatsSpecificationQualityModifier": "Modifikátor kvality",
     "NotificationsAppriseSettingsServerUrlHelpText": "URL serveru Apprise, včetně http(s):// a portu, pokud je potřeba",
     "Disposition": "Dispozice",
-    "DownloadClientItemErrorMessage": "{clientName} hlásí chybu: {message}"
+    "DownloadClientItemErrorMessage": "{clientName} hlásí chybu: {message}",
+    "CloneImportList": "Klonovat seznam Importu",
+    "DefaultNameCopiedImportList": "{name} - Kopírovat",
+    "ReleaseProfile": "profil vydání"
 }

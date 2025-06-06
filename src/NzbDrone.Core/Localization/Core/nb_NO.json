@@ -342,5 +342,6 @@
     "IndexerSettingsCategories": "Kategorier",
     "History": "Historikk",
     "Tba": "Venter",
-    "AddNewMovieRootFolderHelpText": "Undermappa \"{folder}\" vil bli automatisk laget"
+    "AddNewMovieRootFolderHelpText": "Undermappa \"{folder}\" vil bli automatisk laget",
+    "ReleaseProfile": "utgivelseprofil"
 }

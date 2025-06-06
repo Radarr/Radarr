@@ -2029,5 +2029,9 @@
     "ShowPhysicalRelease": "Mostrar lanzamientos físicos",
     "ShowDigitalRelease": "Mostrar lanzamientos digitales",
     "ShowPhysicalReleaseCalendarHelpText": "Muestra los lanzamientos físicos en los eventos del calendario",
-    "ICalReleaseTypesMoviesHelpText": "Incluye solo las películas con los tipos de lanzamiento específicos en la fuente de iCal. Si no se especifica, se usan todas las opciones."
+    "ICalReleaseTypesMoviesHelpText": "Incluye solo las películas con los tipos de lanzamiento específicos en la fuente de iCal. Si no se especifica, se usan todas las opciones.",
+    "CloneImportList": "Clonar lista de importación",
+    "DefaultNameCopiedImportList": "{name} - Copia",
+    "ReleaseProfile": "Perfil de lanzamiento",
+    "CountMissingMoviesFromLibrary": "{count} película(s) faltante(s) en la biblioteca"
 }

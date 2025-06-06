@@ -2008,5 +2008,7 @@
     "ImportListsRadarrSettingsTagsHelpText": "Теги з вихідного екземпляра для імпорту",
     "ImportListsRadarrSettingsFullUrl": "Повний URL-адрес",
     "EditMovieCollectionModalHeader": "Редагувати - {title}",
-    "NotificationsAppriseSettingsIncludePoster": "Включити постер"
+    "NotificationsAppriseSettingsIncludePoster": "Включити постер",
+    "DefaultNameCopiedImportList": "{name} - Копіювати",
+    "ReleaseProfile": "Профіль релізу"
 }

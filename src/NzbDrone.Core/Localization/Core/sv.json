@@ -1114,5 +1114,6 @@
     "AddCustomFilter": "Lägg till anpassat filter",
     "AddANewPath": "Lägg till ny sökväg",
     "Tba": "TBA",
-    "IndexerHDBitsSettingsMediums": "Medium"
+    "IndexerHDBitsSettingsMediums": "Medium",
+    "ReleaseProfile": "Utgåvo-Profiler"
 }

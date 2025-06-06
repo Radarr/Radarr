@@ -2029,5 +2029,8 @@
     "ShowDigitalRelease": "Показывать цифровые релизы",
     "ICalReleaseTypesMoviesHelpText": "Добавляет в iCal-ленту только фильмы с выбранными типами релизов. Если не указано, используется все варианты.",
     "ShowDigitalReleaseCalendarHelpText": "Показывать цифровые релизы в событиях календаря",
-    "ShowPhysicalReleaseCalendarHelpText": "Показывать события с физическими релизами в событиях календаря"
+    "ShowPhysicalReleaseCalendarHelpText": "Показывать события с физическими релизами в событиях календаря",
+    "CloneImportList": "Копировать список импорта",
+    "DefaultNameCopiedImportList": "{name} - Копировать",
+    "ReleaseProfile": "Профиль релиза"
 }

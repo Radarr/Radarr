@@ -1208,5 +1208,6 @@
     "IndexerHDBitsSettingsCategories": "Kategorie",
     "IndexerHDBitsSettingsCodecs": "Kodek",
     "IndexerHDBitsSettingsMediums": "Średni",
-    "IndexerSettingsCategories": "Kategorie"
+    "IndexerSettingsCategories": "Kategorie",
+    "ReleaseProfile": "profil wydania"
 }

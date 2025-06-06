@@ -1976,5 +1976,7 @@
     "ImportListsRadarrSettingsFullUrl": "Vollständige URL",
     "ImportListsRadarrSettingsTagsHelpText": "Tags von der Quellinstanz zum Importieren",
     "EditMovieCollectionModalHeader": "Bearbeiten - {title}",
-    "DownloadClientUTorrentProviderMessage": "uTorrent ist dafür bekannt, dass es Kryptominer, Malware und Werbung enthält. Wir empfehlen dringend einen anderen Client zu wählen."
+    "DownloadClientUTorrentProviderMessage": "uTorrent ist dafür bekannt, dass es Kryptominer, Malware und Werbung enthält. Wir empfehlen dringend einen anderen Client zu wählen.",
+    "DefaultNameCopiedImportList": "{name} – Kopieren",
+    "ReleaseProfile": "Release-Profil"
 }

@@ -2020,5 +2020,8 @@
     "MovieFolderFormatHelpTextDeprecatedWarning": "Elokuvatiedostojen ominaisuuksiin liittyvät muuttujat ovat vanhentuneet, eikä niitä enää tueta tulevissa pääversioissa.",
     "NamingConfigMovieFolderFormatDeprecatedHealthCheckMessage": "Elokuvakansioiden kaava ei saa sisältää vanhentuneita tiedostoihin liittyviä muuttujia: {tokens}.",
     "AutoTaggingSpecificationKeyword": "Avainsana(t)",
-    "Keywords": "Avainsanat"
+    "Keywords": "Avainsanat",
+    "CloneImportList": "Monista tuontilista",
+    "DefaultNameCopiedImportList": "{name} (kopio)",
+    "ReleaseProfile": "Julkaisuprofiili"
 }
