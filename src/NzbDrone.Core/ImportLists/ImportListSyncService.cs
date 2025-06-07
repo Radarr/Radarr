@@ -196,7 +196,9 @@ namespace NzbDrone.Core.ImportLists
 
             foreach (var movie in moviesInLibrary)
             {
-                var movieExists = listMovies.Any(c => c.TmdbId == movie.TmdbId || c.ImdbId == movie.ImdbId);
+                var movieExists = listMovies.Any(c =>
+                    c.TmdbId == movie.TmdbId ||
+                    (c.ImdbId.IsNotNullOrWhiteSpace() && movie.ImdbId.IsNotNullOrWhiteSpace() && c.ImdbId == movie.ImdbId));
 
                 if (!movieExists)
                 {
