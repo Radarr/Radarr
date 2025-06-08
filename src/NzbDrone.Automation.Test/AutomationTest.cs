@@ -40,15 +40,16 @@ namespace NzbDrone.Automation.Test
             var service = ChromeDriverService.CreateDefaultService();
 
             // Timeout as windows automation tests seem to take alot longer to get going
-            driver = new ChromeDriver(service, options, new TimeSpan(0, 3, 0));
+            driver = new ChromeDriver(service, options, TimeSpan.FromMinutes(3));
 
             driver.Manage().Window.Size = new System.Drawing.Size(1920, 1080);
+            driver.Manage().Window.FullScreen();
 
             _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger(), null);
             _runner.KillAll();
             _runner.Start(true);
 
-            driver.Url = "http://localhost:7878";
+            driver.Navigate().GoToUrl("http://localhost:7878");
 
             var page = new PageBase(driver);
             page.WaitForNoSpinner();
@@ -68,7 +69,7 @@ namespace NzbDrone.Automation.Test
         {
             try
             {
-                var image = ((ITakesScreenshot)driver).GetScreenshot();
+                var image = (driver as ITakesScreenshot).GetScreenshot();
                 image.SaveAsFile($"./{name}_test_screenshot.png", ScreenshotImageFormat.Png);
             }
             catch (Exception ex)
