@@ -17,6 +17,7 @@ namespace NzbDrone.Core.MediaFiles
 {
     public interface IRenameMovieFileService
     {
+        List<RenameMovieFilePreview> GetRenamePreviews();
         List<RenameMovieFilePreview> GetRenamePreviews(int movieId);
     }
 
@@ -47,6 +48,21 @@ namespace NzbDrone.Core.MediaFiles
             _filenameBuilder = filenameBuilder;
             _diskProvider = diskProvider;
             _logger = logger;
+        }
+
+        public List<RenameMovieFilePreview> GetRenamePreviews()
+        {
+            var movies = _movieService.GetAllMovies();
+            var filesList = new List<RenameMovieFilePreview>();
+
+            foreach (var movie in movies)
+            {
+                var files = _mediaFileService.GetFilesByMovie(movie.Id);
+
+                filesList.AddRange(GetPreviews(movie, files).ToList());
+            }
+
+            return filesList.OrderByDescending(m => m.MovieId).ToList();
         }
 
         public List<RenameMovieFilePreview> GetRenamePreviews(int movieId)
