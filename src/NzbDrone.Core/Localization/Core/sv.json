@@ -985,7 +985,6 @@
     "DeletedReasonUpgrade": "Filen raderades för att importera en uppgradering",
     "DeleteSpecification": "Radera avisering",
     "NotificationsSimplepushSettingsEvent": "Händelse",
-    "DeleteRootFolder": "Radera Rotmapp",
     "DeleteSelectedDownloadClients": "Radera nedladdningsklient",
     "InteractiveSearchModalHeader": "Interaktiv sökning",
     "ReleaseProfilesLoadError": "Det går inte att ladda fördröjningsprofiler",

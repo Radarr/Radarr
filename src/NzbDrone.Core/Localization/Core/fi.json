@@ -1160,8 +1160,6 @@
     "OverrideGrabModalTitle": "Ohitetaan ja kaapataan – {title}",
     "OverrideAndAddToDownloadQueue": "Ohita ja lisää latausjonoon",
     "TestParsing": "Koesta jäsennys",
-    "DeleteRootFolder": "Poista juurikansio",
-    "DeleteRootFolderMessageText": "Haluatko varmasti poistaa juurikansion \"{path}\"?",
     "DisabledForLocalAddresses": "Ei käytössä paikallisissa osoitteissa",
     "NoDownloadClientsFound": "Latauspalveluita ei löytynyt",
     "ManageFiles": "Hallitse tiedostoja",

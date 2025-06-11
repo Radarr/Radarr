@@ -1109,8 +1109,6 @@
     "IndexerDownloadClientHealthCheckMessage": "Indexadores con clientes de descarga inválidos: {indexerNames}.",
     "CountImportListsSelected": "{count} lista(s) de importación seleccionada(s)",
     "CountDownloadClientsSelected": "{count} cliente(s) de descarga seleccionado(s)",
-    "DeleteRootFolder": "Eliminar Carpeta Raíz",
-    "DeleteRootFolderMessageText": "¿Estás seguro que quieres eliminar la carpeta raíz '{path}'?",
     "DeleteSelectedImportLists": "Eliminar Lista(s) de Importación",
     "ListWillRefreshEveryInterval": "La lista se actualizará cada {refreshInterval}",
     "VideoDynamicRange": "Video de Rango Dinámico",
@@ -2033,5 +2031,6 @@
     "CloneImportList": "Clonar lista de importación",
     "DefaultNameCopiedImportList": "{name} - Copia",
     "ReleaseProfile": "Perfil de lanzamiento",
-    "CountMissingMoviesFromLibrary": "{count} película(s) faltante(s) en la biblioteca"
+    "CountMissingMoviesFromLibrary": "{count} película(s) faltante(s) en la biblioteca",
+    "RemoveRootFolderMoviesMessageText": "¿Estás seguro que quieres eliminar la carpeta raíz '{path}'? Los archivos y carpetas no serán borrados del disco, y las películas en esta carpeta raíz no serán eliminadas de {appName}."
 }

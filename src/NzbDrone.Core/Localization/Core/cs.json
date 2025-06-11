@@ -1080,8 +1080,6 @@
     "AutoTaggingNegateHelpText": "Pokud je zaškrtnuto, pravidlo automatického označování se nepoužije, pokud odpovídá této podmínce {implementationName}.",
     "DownloadClientSortingCheckMessage": "Klient pro stahování {downloadClientName} má nastaveno třídění {sortingMode} pro kategorii {appName}. Ve svém klientovi pro stahování byste měli třídění zakázat, abyste se vyhnuli problémům s importem.",
     "EditSelectedImportLists": "Upravit vybrané seznamy k importu",
-    "DeleteRootFolder": "Smazat kořenový adresář",
-    "DeleteRootFolderMessageText": "Opravdu chcete smazat kořenový adresář s cestou '{path}'?",
     "EditSelectedIndexers": "Upravit vybrané indexery",
     "DisabledForLocalAddresses": "Zakázáno pro místní adresy",
     "BlocklistLoadError": "Nelze načíst černou listinu",
