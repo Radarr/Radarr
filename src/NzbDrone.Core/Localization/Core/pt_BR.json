@@ -1146,8 +1146,6 @@
     "EditAutoTag": "Editar etiqueta automática",
     "RemoveTagsAutomaticallyHelpText": "Remover tags automaticamente se as condições não forem encontradas",
     "AutoTaggingLoadError": "Não foi possível carregar as etiquetas automáticas",
-    "DeleteRootFolder": "Excluir pasta raiz",
-    "DeleteRootFolderMessageText": "Tem certeza de que deseja excluir a pasta raiz '{path}'?",
     "RootFolderPath": "Caminho da Pasta Raiz",
     "IndexerDownloadClientHealthCheckMessage": "Indexadores com clientes de download inválidos: {indexerNames}.",
     "DeleteImportList": "Excluir lista de importação",
@@ -2033,5 +2031,6 @@
     "CloneImportList": "Clonar Lista de Importação",
     "DefaultNameCopiedImportList": "{name} - Cópia",
     "ReleaseProfile": "Perfil de Lançamento",
-    "CountMissingMoviesFromLibrary": "{count} filme(s) faltando na biblioteca"
+    "CountMissingMoviesFromLibrary": "{count} filme(s) faltando na biblioteca",
+    "RemoveRootFolderMoviesMessageText": "Tem certeza de que deseja remover a pasta raiz '{path}'? Arquivos e pastas não serão excluídos do disco, e os filmes nesta pasta raiz não serão removidos de {appName} ."
 }

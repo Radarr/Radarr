@@ -1125,8 +1125,6 @@
     "ManageLists": "Управление листами",
     "CountDownloadClientsSelected": "Выбрано загрузчиков: {count}",
     "CountImportListsSelected": "{count} выбранных списков импорта",
-    "DeleteRootFolder": "Удалить корневую папку",
-    "DeleteRootFolderMessageText": "Вы уверены, что хотите удалить корневую папку '{path}'?",
     "ListRefreshInterval": "Интервал обновления списка",
     "EditDownloadClientImplementation": "Редактировать загрузчик - {implementationName}",
     "DeleteAutoTag": "Удалить автоматическую маркировку",
@@ -2032,5 +2030,6 @@
     "ShowPhysicalReleaseCalendarHelpText": "Показывать события с физическими релизами в событиях календаря",
     "CloneImportList": "Копировать список импорта",
     "DefaultNameCopiedImportList": "{name} - Копировать",
-    "ReleaseProfile": "Профиль релиза"
+    "ReleaseProfile": "Профиль релиза",
+    "CountMissingMoviesFromLibrary": "{count} отсутствующих фильмов в библиотеке"
 }
