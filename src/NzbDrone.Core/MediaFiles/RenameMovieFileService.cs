@@ -17,8 +17,7 @@ namespace NzbDrone.Core.MediaFiles
 {
     public interface IRenameMovieFileService
     {
-        List<RenameMovieFilePreview> GetRenamePreviews();
-        List<RenameMovieFilePreview> GetRenamePreviews(int movieId);
+        List<RenameMovieFilePreview> GetRenamePreviews(List<int> movieIds);
     }
 
     public class RenameMovieFileService : IRenameMovieFileService,
@@ -50,27 +49,23 @@ namespace NzbDrone.Core.MediaFiles
             _logger = logger;
         }
 
-        public List<RenameMovieFilePreview> GetRenamePreviews()
+        public List<RenameMovieFilePreview> GetRenamePreviews(List<int> movieIds)
         {
-            var movies = _movieService.GetAllMovies();
-            var filesList = new List<RenameMovieFilePreview>();
+            var moviesById = _movieService.GetMovies(movieIds).ToDictionary(m => m.Id);
+            var filesById = _mediaFileService.GetFilesByMovies(movieIds).ToLookup(f => f.MovieId);
 
-            foreach (var movie in movies)
+            var filesList = movieIds.SelectMany(id =>
             {
-                var files = _mediaFileService.GetFilesByMovie(movie.Id);
+                if (!moviesById.TryGetValue(id, out var movie))
+                {
+                    return Enumerable.Empty<RenameMovieFilePreview>();
+                }
 
-                filesList.AddRange(GetPreviews(movie, files).ToList());
-            }
+                var files = filesById[id].ToList();
+                return GetPreviews(movie, files);
+            });
 
             return filesList.OrderByDescending(m => m.MovieId).ToList();
-        }
-
-        public List<RenameMovieFilePreview> GetRenamePreviews(int movieId)
-        {
-            var movie = _movieService.GetMovie(movieId);
-            var file = _mediaFileService.GetFilesByMovie(movieId);
-
-            return GetPreviews(movie, file).OrderByDescending(m => m.MovieId).ToList(); // TODO: Would really like to not have these be lists
         }
 
         private IEnumerable<RenameMovieFilePreview> GetPreviews(Movie movie, List<MovieFile> files)

@@ -16,14 +16,9 @@ namespace Radarr.Api.V3.Movies
         }
 
         [HttpGet]
-        public List<RenameMovieResource> GetMovies(int? movieId)
+        public List<RenameMovieResource> GetMovies([FromQuery(Name = "movieId")] List<int> movieIds)
         {
-            if (movieId.HasValue)
-            {
-                return _renameMovieFileService.GetRenamePreviews(movieId.Value).ToResource();
-            }
-
-            return _renameMovieFileService.GetRenamePreviews().ToResource();
+            return _renameMovieFileService.GetRenamePreviews(movieIds).ToResource();
         }
     }
 }
