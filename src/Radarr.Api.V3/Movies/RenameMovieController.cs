@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.MediaFiles;
 using Radarr.Http;
+using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Movies
 {
