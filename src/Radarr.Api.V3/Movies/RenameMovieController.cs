@@ -18,6 +18,11 @@ namespace Radarr.Api.V3.Movies
         [HttpGet]
         public List<RenameMovieResource> GetMovies([FromQuery(Name = "movieId")] List<int> movieIds)
         {
+            if (movieIds is not { Count: not 0 })
+            {
+                throw new BadRequestException("movieId must be provided");
+            }
+
             return _renameMovieFileService.GetRenamePreviews(movieIds).ToResource();
         }
     }
