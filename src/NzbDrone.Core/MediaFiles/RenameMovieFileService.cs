@@ -52,12 +52,15 @@ namespace NzbDrone.Core.MediaFiles
         public List<RenameMovieFilePreview> GetRenamePreviews(List<int> movieIds)
         {
             var movies = _movieService.GetMovies(movieIds);
+            var movieFiles = _mediaFileService.GetFilesByMovies(movieIds).ToLookup(f => f.MovieId);
 
             return movies.SelectMany(m =>
             {
-                var files = _mediaFileService.GetFilesByMovie(m.Id);
+                var files = movieFiles[m.Id].ToList();
+
                 return GetPreviews(m, files);
-            }).OrderByDescending(r => r.MovieId).ToList();
+            })
+                .ToList();
         }
 
         private IEnumerable<RenameMovieFilePreview> GetPreviews(Movie movie, List<MovieFile> files)
