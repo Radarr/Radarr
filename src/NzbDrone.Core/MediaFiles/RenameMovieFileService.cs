@@ -54,12 +54,12 @@ namespace NzbDrone.Core.MediaFiles
             var movies = _movieService.GetMovies(movieIds);
             var movieFiles = _mediaFileService.GetFilesByMovies(movieIds).ToLookup(f => f.MovieId);
 
-            return movies.SelectMany(m =>
-            {
-                var files = movieFiles[m.Id].ToList();
+            return movies.SelectMany(movie =>
+                {
+                    var files = movieFiles[movie.Id].ToList();
 
-                return GetPreviews(m, files);
-            })
+                    return GetPreviews(movie, files);
+                })
                 .ToList();
         }
 
