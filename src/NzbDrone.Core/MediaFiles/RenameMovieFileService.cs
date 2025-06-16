@@ -17,7 +17,7 @@ namespace NzbDrone.Core.MediaFiles
 {
     public interface IRenameMovieFileService
     {
-        List<RenameMovieFilePreview> GetRenamePreviews(int movieId);
+        List<RenameMovieFilePreview> GetRenamePreviews(List<int> movieIds);
     }
 
     public class RenameMovieFileService : IRenameMovieFileService,
@@ -49,12 +49,18 @@ namespace NzbDrone.Core.MediaFiles
             _logger = logger;
         }
 
-        public List<RenameMovieFilePreview> GetRenamePreviews(int movieId)
+        public List<RenameMovieFilePreview> GetRenamePreviews(List<int> movieIds)
         {
-            var movie = _movieService.GetMovie(movieId);
-            var file = _mediaFileService.GetFilesByMovie(movieId);
+            var movies = _movieService.GetMovies(movieIds);
+            var movieFiles = _mediaFileService.GetFilesByMovies(movieIds).ToLookup(f => f.MovieId);
 
-            return GetPreviews(movie, file).OrderByDescending(m => m.MovieId).ToList(); // TODO: Would really like to not have these be lists
+            return movies.SelectMany(movie =>
+                {
+                    var files = movieFiles[movie.Id].ToList();
+
+                    return GetPreviews(movie, files);
+                })
+                .ToList();
         }
 
         private IEnumerable<RenameMovieFilePreview> GetPreviews(Movie movie, List<MovieFile> files)

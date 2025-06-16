@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.MediaFiles;
 using Radarr.Http;
+using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Movies
 {
@@ -16,9 +17,14 @@ namespace Radarr.Api.V3.Movies
         }
 
         [HttpGet]
-        public List<RenameMovieResource> GetMovies(int movieId)
+        public List<RenameMovieResource> GetMovies([FromQuery(Name = "movieId")] List<int> movieIds)
         {
-            return _renameMovieFileService.GetRenamePreviews(movieId).ToResource();
+            if (movieIds is not { Count: not 0 })
+            {
+                throw new BadRequestException("movieId must be provided");
+            }
+
+            return _renameMovieFileService.GetRenamePreviews(movieIds).ToResource();
         }
     }
 }
