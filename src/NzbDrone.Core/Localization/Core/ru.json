@@ -2031,5 +2031,6 @@
     "CloneImportList": "Копировать список импорта",
     "DefaultNameCopiedImportList": "{name} - Копировать",
     "ReleaseProfile": "Профиль релиза",
-    "CountMissingMoviesFromLibrary": "{count} отсутствующих фильмов в библиотеке"
+    "CountMissingMoviesFromLibrary": "{count} отсутствующих фильмов в библиотеке",
+    "RemoveRootFolderMoviesMessageText": "Вы уверены, что хотите удалить корневой каталог '{path}'? Файлы и папки не будут удалены с диска, а фильмы в этом корневом каталоге не будут удалены из {appName}."
 }
