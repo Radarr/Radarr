@@ -2031,5 +2031,6 @@
     "CloneImportList": "İçe Aktarma Listesini Klonla",
     "DefaultNameCopiedImportList": "{name} - Kopyala",
     "ReleaseProfile": "Sürüm Profili",
-    "CountMissingMoviesFromLibrary": "{count} kitaplıkta eksik film"
+    "CountMissingMoviesFromLibrary": "{count} kitaplıkta eksik film",
+    "RemoveRootFolderMoviesMessageText": "'{path}' kök klasörünü kaldırmak istediğinizden emin misiniz? Dosya ve klasörler diskten silinmez ve bu kök klasördeki filmler {appName} 'dan kaldırılmaz."
 }
