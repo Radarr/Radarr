@@ -27,7 +27,7 @@ namespace Radarr.Api.V3.ImportLists
                 .SetValidator(importListExclusionExistsValidator);
 
             SharedValidator.RuleFor(c => c.MovieTitle).NotEmpty();
-            SharedValidator.RuleFor(c => c.MovieYear).GreaterThan(0);
+            SharedValidator.RuleFor(c => c.MovieYear).GreaterThanOrEqualTo(0);
         }
 
         [HttpGet]
