@@ -221,7 +221,7 @@ namespace NzbDrone.Core.Download
 
             try
             {
-                hash = MagnetLink.Parse(magnetUrl).InfoHash.ToHex();
+                hash = MagnetLink.Parse(magnetUrl).InfoHashes.V1OrV2.ToHex();
             }
             catch (FormatException ex)
             {
