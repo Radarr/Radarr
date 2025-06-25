@@ -647,6 +647,16 @@ namespace NzbDrone.Core.Organizer
 
         private string GetOriginalTitle(MovieFile movieFile, bool multipleTokens)
         {
+            // If we're using {Original Title} as the format, we should use the movie's original title
+            // instead of the current filename to avoid circular references
+            if (movieFile.Movie != null &&
+                _namingConfigService.GetConfig().StandardMovieFormat?.Trim() == "{Original Title}")
+            {
+                return movieFile.Movie.MovieMetadata.Value.OriginalTitle ??
+                       movieFile.Movie.Title ??
+                       GetOriginalFileName(movieFile, multipleTokens);
+            }
+
             if (movieFile.SceneName.IsNullOrWhiteSpace())
             {
                 return CleanFileName(GetOriginalFileName(movieFile, multipleTokens));

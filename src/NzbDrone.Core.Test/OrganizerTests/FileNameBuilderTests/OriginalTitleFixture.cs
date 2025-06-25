@@ -84,5 +84,22 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             Subject.BuildFileName(_movie, _movieFile)
                    .Should().Be("My Movie");
         }
+        
+        [Test]
+        public void should_use_movie_title_when_changing_to_original_title_format()
+        {
+            // Given a movie with a title and an existing filename
+            _movie.Title = "The Matrix";
+            _movie.MovieMetadata.Value.OriginalTitle = "The Matrix (1999)";
+            _movieFile.RelativePath = "The.Matrix.1999.1080p.BluRay.x264-RELEASE";
+            _movieFile.Movie = _movie;
+
+            // When changing the format to {Original Title}
+            _namingConfig.StandardMovieFormat = "{Original Title}";
+
+            // Then it should use the movie's original title, not the current filename
+            var result = Subject.BuildFileName(_movie, _movieFile);
+            result.Should().Be("The Matrix (1999)");
+        }
     }
 }
