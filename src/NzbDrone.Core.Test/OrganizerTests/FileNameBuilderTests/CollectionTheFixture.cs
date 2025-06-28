@@ -44,10 +44,11 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                 .Returns(new List<CustomFormat>());
         }
 
-        [TestCase("The Mist", "Mist, The")]
-        [TestCase("A Place to Call Home", "Place to Call Home, A")]
-        [TestCase("An Adventure in Space and Time", "Adventure in Space and Time, An")]
-        [TestCase("The Flash (2010)", "Flash, The (2010)")]
+        [TestCase("The Wolverine Collection", "Wolverine Collection, The")]
+        [TestCase("The Transporter Collection", "Transporter Collection, The")]
+        [TestCase("A Stupid Collection", "Stupid Collection, A")]
+        [TestCase("An Inconvenient Collection", "Inconvenient Collection, An")]
+        [TestCase("The Amazing Spider-Man Collection (Garfield)", "Amazing Spider-Man Collection, The (Garfield)")]
         [TestCase("A League Of Their Own (AU)", "League Of Their Own, A (AU)")]
         [TestCase("The Fixer (ZH) (2015)", "Fixer, The (ZH) (2015)")]
         [TestCase("The Sixth Sense 2 (Thai)", "Sixth Sense 2, The (Thai)")]
