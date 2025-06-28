@@ -14,7 +14,12 @@ function createMapStateToProps() {
       movieId,
       extraFiles
     ) => {
-      const filesForMovie = extraFiles.items.filter((file) => file.movieId === movieId);
+      const filesForMovie = extraFiles.items.filter((file) => file.movieId === movieId).reduce((acc, file) => {
+        if (!acc.some(f => f.relativePath === file.relativePath)) {
+          acc.push(file);
+        }
+        return acc;
+      }, []);
 
       return {
         items: filesForMovie,

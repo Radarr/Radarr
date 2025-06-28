@@ -61,5 +61,16 @@ namespace NzbDrone.Core.Test.Extras.Metadata.Consumers.Xbmc
             Mocker.GetMock<IDetectXbmcNfo>()
                   .Verify(v => v.IsXbmcNfoFile(It.IsAny<string>()), Times.Once());
         }
+
+        [TestCase("poster.jpg")]
+        [TestCase("background.jpg")]
+        [TestCase("fanart-1.jpg")]
+        [TestCase("the.move.2017-poster.jpg")]
+        public void should_return_movie_image_for_images_in_movie_folder(string filename)
+        {
+            var path = Path.Combine(_movie.Path, filename);
+
+            Subject.FindMetadataFile(_movie, path).Type.Should().Be(MetadataType.MovieImage);
+        }
     }
 }
