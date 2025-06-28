@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _movie = Builder<Movie>
                     .CreateNew()
-                    .With(e => e.Title = "Batman")
+                    .With(e => e.Title = "Movie Title")
                     .Build();
 
             _movieFile = new MovieFile { Quality = new QualityModel(Quality.HDTV720p), ReleaseGroup = "RadarrTest" };
@@ -44,17 +44,17 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                 .Returns(new List<CustomFormat>());
         }
 
-        [TestCase("The Wolverine Collection", "Wolverine Collection, The")]
-        [TestCase("The Transporter Collection", "Transporter Collection, The")]
+        [TestCase("The Badger Collection", "Badger Collection, The")]
+        [TestCase("The Mover Collection", "Mover Collection, The")]
         [TestCase("A Stupid Collection", "Stupid Collection, A")]
-        [TestCase("An Inconvenient Collection", "Inconvenient Collection, An")]
-        [TestCase("The Amazing Spider-Man Collection (Garfield)", "Amazing Spider-Man Collection, The (Garfield)")]
-        [TestCase("A League Of Their Own (AU)", "League Of Their Own, A (AU)")]
-        [TestCase("The Fixer (ZH) (2015)", "Fixer, The (ZH) (2015)")]
-        [TestCase("The Sixth Sense 2 (Thai)", "Sixth Sense 2, The (Thai)")]
-        [TestCase("The Amazing Race (Latin America)", "Amazing Race, The (Latin America)")]
-        [TestCase("The Rat Pack (A&E)", "Rat Pack, The (A&E)")]
-        [TestCase("The Climax: I (Almost) Got Away With It (2016)", "Climax - I (Almost) Got Away With It, The (2016)")]
+        [TestCase("An Astounding Collection", "Astounding Collection, An")]
+        [TestCase("The Amazing Animal-Hero Collection (2001)", "Amazing Animal-Hero Collection, The (2001)")]
+        [TestCase("A Different Movie (AU)", "Different Movie, A (AU)")]
+        [TestCase("The Repairer (ZH) (2015)", "Repairer, The (ZH) (2015)")]
+        [TestCase("The Eighth Sense 2 (Thai)", "Eighth Sense 2, The (Thai)")]
+        [TestCase("The Astonishing Jog (Latin America)", "Astonishing Jog, The (Latin America)")]
+        [TestCase("The Hampster Pack (B&F)", "Hampster Pack, The (B&F)")]
+        [TestCase("The Gasm: I (Almost) Got Away With It (1900)", "Gasm - I (Almost) Got Away With It, The (1900)")]
         public void should_get_expected_title_back(string collection, string expected)
         {
             SetCollectionName(_movie, collection);
