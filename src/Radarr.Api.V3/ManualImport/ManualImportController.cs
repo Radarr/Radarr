@@ -8,6 +8,7 @@ using NzbDrone.Core.Qualities;
 using Radarr.Api.V3.CustomFormats;
 using Radarr.Api.V3.Movies;
 using Radarr.Http;
+using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.ManualImport
 {
@@ -37,6 +38,11 @@ namespace Radarr.Api.V3.ManualImport
         [Consumes("application/json")]
         public object ReprocessItems([FromBody] List<ManualImportReprocessResource> items)
         {
+            if (items is { Count: 0 })
+            {
+                throw new BadRequestException("items must be provided");
+            }
+
             foreach (var item in items)
             {
                 var processedItem = _manualImportService.ReprocessItem(item.Path, item.DownloadId, item.MovieId, item.ReleaseGroup, item.Quality, item.Languages, item.IndexerFlags);
