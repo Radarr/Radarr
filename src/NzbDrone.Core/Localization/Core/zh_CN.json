@@ -1878,7 +1878,7 @@
     "CustomFormatsSpecificationMinimumSizeHelpText": "必须大于该尺寸才会发布",
     "CustomFormatsSpecificationMinimumYear": "最小年份",
     "CustomFormatsSpecificationResolution": "分辨率",
-    "CustomFormatsSpecificationSource": "代码",
+    "CustomFormatsSpecificationSource": "源",
     "AutoTaggingSpecificationGenre": "类型",
     "AutoTaggingSpecificationMaximumYear": "最大年份",
     "Mixed": "混合",

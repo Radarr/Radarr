@@ -2019,5 +2019,18 @@
     "NotificationsAppriseSettingsIncludePosterHelpText": "Inclou el pòster al missatge",
     "CloneImportList": "Clonar llista d'importació",
     "DefaultNameCopiedImportList": "{name} - Còpia",
-    "ReleaseProfile": "Perfil de llançament"
+    "ReleaseProfile": "Perfil de llançament",
+    "CountMissingMoviesFromLibrary": "{count} pel·lícules que manquen de la biblioteca",
+    "ShowPhysicalReleaseCalendarHelpText": "Mostra els llançaments físics en els esdeveniments del calendari",
+    "CinemaRelease": "Llançament en cinemes",
+    "ShowDigitalRelease": "Mostra la versió digital",
+    "ICalReleaseTypesMoviesHelpText": "Inclou només pel·lícules amb tipus de llançament específics al canal iCal. Si no s'especifica, s'utilitzen totes les opcions.",
+    "ShowDigitalReleaseCalendarHelpText": "Mostra els llançaments digitals en els esdeveniments del calendari",
+    "RemoveRootFolderMoviesMessageText": "Esteu segur que voleu eliminar la carpeta arrel '{path}'? Els fitxers i carpetes no s'eliminaran del disc, i les pel·lícules d'aquesta carpeta arrel no s'eliminaran de {appName}.",
+    "ICalReleaseTypes": "Tipus de llançament",
+    "Keywords": "Paraules clau",
+    "ShowPhysicalRelease": "Mostra la versió física",
+    "ShowCinemaRelease": "Mostra el llançament del cinema",
+    "ShowCinemaReleaseCalendarHelpText": "Mostra els llançaments de cinema en els esdeveniments del calendari",
+    "AutoTaggingSpecificationKeyword": "Paraula(es) clau"
 }
