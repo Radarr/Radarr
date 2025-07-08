@@ -210,7 +210,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             if (videoFormat == "mpeg4" || videoFormat.Contains("msmpeg4"))
             {
-                if (videoCodecID == "XVID")
+                if (videoCodecID.ToUpperInvariant() == "XVID")
                 {
                     return "XviD";
                 }
