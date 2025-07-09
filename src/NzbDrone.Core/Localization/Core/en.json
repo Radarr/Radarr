@@ -2032,5 +2032,10 @@
   "YesCancel": "Yes, Cancel",
   "Yesterday": "Yesterday",
   "YesterdayAt": "Yesterday at {time}",
-  "YouCanAlsoSearch": "You can also search using TMDb ID or IMDb ID of a movie. e.g. `tmdb:71663`"
+  "YouCanAlsoSearch": "You can also search using TMDb ID or IMDb ID of a movie. e.g. `tmdb:71663`",
+  "SearchForMovieDefault": "Default: Start search for missing movie after adding",
+  "SearchForMovieDefaultHelpText": "Controls the default for the 'search for missing movie' checkbox when adding a movie. 'Default' remembers your last choice.",
+  "SearchForMovieDefaultOptionDefault": "Default (remembers last used)",
+  "SearchForMovieDefaultOptionAlways": "Always search",
+  "SearchForMovieDefaultOptionNever": "Never search"
 }

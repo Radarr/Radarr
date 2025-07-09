@@ -167,6 +167,36 @@ function MediaManagement() {
             validationWarnings={validationWarnings}
           >
             {showAdvancedSettings ? (
+              <FormGroup
+                advancedSettings={showAdvancedSettings}
+                isAdvanced={true}
+                size={sizes.MEDIUM}
+              >
+                <FormLabel>{translate('SearchForMovieDefault')}</FormLabel>
+                <FormInputGroup
+                  type={inputTypes.SELECT}
+                  name="searchForMovieDefaultOverride"
+                  values={[
+                    {
+                      key: 'default',
+                      value: translate('SearchForMovieDefaultOptionDefault'),
+                    },
+                    {
+                      key: 'always',
+                      value: translate('SearchForMovieDefaultOptionAlways'),
+                    },
+                    {
+                      key: 'never',
+                      value: translate('SearchForMovieDefaultOptionNever'),
+                    },
+                  ]}
+                  helpText={translate('SearchForMovieDefaultHelpText')}
+                  onChange={handleInputChange}
+                  {...settings.searchForMovieDefaultOverride}
+                />
+              </FormGroup>
+            ) : null}
+            {showAdvancedSettings ? (
               <FieldSet legend={translate('Folders')}>
                 <FormGroup
                   advancedSettings={showAdvancedSettings}

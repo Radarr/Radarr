@@ -32,7 +32,6 @@ export const setMediaManagementSettingsValue = createAction(SET_MEDIA_MANAGEMENT
 // Details
 
 export default {
-
   //
   // State
 
@@ -43,7 +42,9 @@ export default {
     pendingChanges: {},
     isSaving: false,
     saveError: null,
-    item: {}
+    item: {
+      searchForMovieDefaultOverride: 'default'
+    }
   },
 
   //
