@@ -20,4 +20,6 @@
     "typescript",
     "typescriptreact"
   ],
+
+  "biome.enabled": false
 }
