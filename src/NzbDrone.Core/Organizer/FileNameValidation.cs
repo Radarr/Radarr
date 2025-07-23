@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Organizer
                 return false;
             }
 
-            return (FileNameBuilder.MovieTitleRegex.IsMatch(value) && FileNameBuilder.ReleaseYearRegex.IsMatch(value)) && !FileNameValidation.OriginalTokenRegex.IsMatch(value); ||
+            return (FileNameBuilder.MovieTitleRegex.IsMatch(value) && FileNameBuilder.ReleaseYearRegex.IsMatch(value)) && !FileNameValidation.OriginalTokenRegex.IsMatch(value) ||
                    FileNameValidation.OriginalTokenRegex.IsMatch(value);
         }
     }
