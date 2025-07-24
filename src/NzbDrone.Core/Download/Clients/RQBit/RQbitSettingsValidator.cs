@@ -1,7 +1,7 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Validation;
 
-namespace NzbDrone.Core.Download.Clients.RQbit;
+namespace NzbDrone.Core.Download.Clients.RQBit;
 
 public class RQbitSettingsValidator : AbstractValidator<RQbitSettings>
 {

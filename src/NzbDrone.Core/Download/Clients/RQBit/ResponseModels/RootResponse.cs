@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace NzbDrone.Core.Download.Clients.rQbit;
+namespace NzbDrone.Core.Download.Clients.RQBit.ResponseModels;
 
 public class RootResponse
 {
