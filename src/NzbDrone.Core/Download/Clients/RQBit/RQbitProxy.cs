@@ -1,218 +1,234 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
-using System.Text;
+using System.Linq;
 using Newtonsoft.Json;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.Download.Clients.RQbit;
 using NzbDrone.Core.Download.Clients.RQBit;
 using NzbDrone.Core.Download.Clients.RQBit.ResponseModels;
 
-namespace NzbDrone.Core.Download.Clients.rQbit;
-
-public interface IRQbitProxy
+namespace NzbDrone.Core.Download.Clients.RQBit
 {
-    string GetVersion(RQbitSettings settings);
-    List<RQBitTorrent> GetTorrents(RQbitSettings settings);
-    void RemoveTorrent(string hash, bool removeData, RQbitSettings settings);
-
-    string AddTorrentFromUrl(string torrentUrl, RQbitSettings settings);
-
-    string AddTorrentFromFile(string fileName, byte[] fileContent, RQbitSettings settings);
-
-    void SetTorrentLabel(string hash, string label, RQbitSettings settings);
-    bool HasHashTorrent(string hash, RQbitSettings settings);
-}
-
-public class RQbitProxy : IRQbitProxy
-{
-    private readonly IHttpClient _httpClient;
-    private readonly Logger _logger;
-
-    public RQbitProxy(IHttpClient httpClient, ICacheManager cacheManager, Logger logger)
+    public interface IRQbitProxy
     {
-        _httpClient = httpClient;
-        _logger = logger;
+        bool IsApiSupported(RQbitSettings settings);
+        string GetVersion(RQbitSettings settings);
+        List<RQBitTorrent> GetTorrents(RQbitSettings settings);
+        void RemoveTorrent(string hash, bool removeData, RQbitSettings settings);
+        string AddTorrentFromUrl(string torrentUrl, RQbitSettings settings);
+        string AddTorrentFromFile(string fileName, byte[] fileContent, RQbitSettings settings);
+        void SetTorrentLabel(string hash, string label, RQbitSettings settings);
+        bool HasHashTorrent(string hash, RQbitSettings settings);
     }
 
-    public string GetVersion(RQbitSettings settings)
+    public class RQbitProxy : IRQbitProxy
     {
-        var version = "";
-        var request = BuildRequest(settings).Resource("");
-        var response = _httpClient.Get(request.Build());
-        if (response.StatusCode == HttpStatusCode.OK)
+        private readonly IHttpClient _httpClient;
+        private readonly Logger _logger;
+
+        public RQbitProxy(IHttpClient httpClient, Logger logger)
         {
-            var jsonStr = Encoding.UTF8.GetString(response.ResponseData);
-            var rootResponse = JsonConvert.DeserializeObject<RootResponse>(jsonStr);
-            version = rootResponse.Version;
-        }
-        else
-        {
-            _logger.Error("Failed to get torrent version");
+            _httpClient = httpClient;
+            _logger = logger;
         }
 
-        return version;
-    }
+        public bool IsApiSupported(RQbitSettings settings)
+        {
+            var request = BuildRequest(settings).Resource("");
+            request.SuppressHttpError = true;
 
-    public List<RQBitTorrent> GetTorrents(RQbitSettings settings)
-    {
-        List<RQBitTorrent> result = null;
-        var request = BuildRequest(settings).Resource("/torrents");
-        var response = _httpClient.Get(request.Build());
-        TorrentListResponse torrentList = null;
-        if (response.StatusCode == HttpStatusCode.OK)
-        {
-            var jsonStr = Encoding.UTF8.GetString(response.ResponseData);
-            torrentList = JsonConvert.DeserializeObject<TorrentListResponse>(jsonStr);
-        }
-        else
-        {
-            _logger.Error("Failed to get torrent version");
-        }
-
-        if (torrentList != null)
-        {
-            result = new List<RQBitTorrent>();
-            foreach (var torrentListItem in torrentList.torrents)
+            try
             {
-                var torrentResponse = getTorrent(torrentListItem.InfoHash, settings);
-                var torrentStatsResponse = getTorrentStats(torrentListItem.InfoHash, settings);
-                var torrent = new RQBitTorrent();
+                var response = _httpClient.Get(request.Build());
 
-                torrent.id = torrentListItem.Id;
-                torrent.Name = torrentResponse.Name;
-                torrent.Hash = torrentResponse.InfoHash;
-                torrent.TotalSize = torrentStatsResponse.TotalBytes;
-                torrent.Path = torrentResponse.OutputFolder + torrentResponse.Name;
-
-                var statsLive = torrentStatsResponse.Live;
-                if (statsLive != null && statsLive.Snapshot != null)
+                // Check if we can connect and get a valid response
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    torrent.DownRate = statsLive.DownloadSpeed.Mbps * 1048576; // mib/sec -> bytes per second
+                    var rootResponse = JsonConvert.DeserializeObject<RootResponse>(response.Content);
+                    return !string.IsNullOrWhiteSpace(rootResponse?.Version);
                 }
 
-                torrent.RemainingSize = torrentStatsResponse.TotalBytes - torrentStatsResponse.ProgressBytes;
-                torrent.Ratio = torrentStatsResponse.UploadedBytes / torrentStatsResponse.ProgressBytes;
-                torrent.IsFinished = torrentStatsResponse.Finished;
-                torrent.IsActive = torrentStatsResponse.State != "paused";
-
-                result.Add(torrent);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "RQBit API not supported or not reachable");
+                return false;
             }
         }
 
-        return result;
-    }
-
-    public void RemoveTorrent(string info_hash, bool removeData, RQbitSettings settings)
-    {
-        var endpoint = removeData ? "/delete" :  "/forget";
-        var itemRequest = BuildRequest(settings).Resource("/torrents/" + info_hash + endpoint);
-        _httpClient.Post(itemRequest.Build());
-    }
-
-    public string AddTorrentFromUrl(string torrentUrl, RQbitSettings settings)
-    {
-        string info_hash = null;
-        var itemRequest = BuildRequest(settings).Resource("/torrents?overwrite=true").Post().Build();
-        itemRequest.SetContent(torrentUrl);
-        var httpResponse = _httpClient.Post(itemRequest);
-        if (httpResponse.StatusCode != HttpStatusCode.OK)
+        public string GetVersion(RQbitSettings settings)
         {
-            return info_hash;
+            var version = "";
+            var request = BuildRequest(settings).Resource("");
+            var response = _httpClient.Get(request.Build());
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var rootResponse = JsonConvert.DeserializeObject<RootResponse>(response.Content);
+                version = rootResponse.Version;
+            }
+            else
+            {
+                _logger.Error("Failed to get torrent version");
+            }
+
+            return version;
         }
 
-        var jsonStr = Encoding.UTF8.GetString(httpResponse.ResponseData);
-        var response = JsonConvert.DeserializeObject<PostTorrentResponse>(jsonStr);
-
-        if (response.Details != null)
+        public List<RQBitTorrent> GetTorrents(RQbitSettings settings)
         {
-            info_hash = response.Details.InfoHash;
-        }
+            var result = new List<RQBitTorrent>();
+            var request = BuildRequest(settings).Resource("/torrents?with_stats=true");
+            var response = _httpClient.Get(request.Build());
 
-        return info_hash;
-    }
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                _logger.Error("Failed to get torrent list with stats");
+                return result;
+            }
 
-    public string AddTorrentFromFile(string fileName, byte[] fileContent, RQbitSettings settings)
-    {
-        string info_hash = null;
-        var itemRequest = BuildRequest(settings)
-            .Post()
-            .Resource("/torrents?overwrite=true")
-            .Build();
-        itemRequest.SetContent(fileContent);
-        var httpResponse = _httpClient.Post(itemRequest);
-        if (httpResponse.StatusCode != HttpStatusCode.OK)
-        {
-            return info_hash;
-        }
+            var torrentListWithStats = JsonConvert.DeserializeObject<TorrentWithStatsListResponse>(response.Content);
 
-        var jsonStr = Encoding.UTF8.GetString(httpResponse.ResponseData);
-        var response = JsonConvert.DeserializeObject<PostTorrentResponse>(jsonStr);
+            if (torrentListWithStats?.Torrents != null)
+            {
+                foreach (var torrentWithStats in torrentListWithStats.Torrents)
+                {
+                    try
+                    {
+                        var torrent = new RQBitTorrent();
+                        torrent.Id = torrentWithStats.Id;
+                        torrent.Name = torrentWithStats.Name;
+                        torrent.Hash = torrentWithStats.InfoHash;
+                        torrent.TotalSize = torrentWithStats.Stats.TotalBytes;
+                        torrent.Path = torrentWithStats.OutputFolder + torrentWithStats.Name;
 
-        if (response.Details != null)
-        {
-            info_hash = response.Details.InfoHash;
-        }
+                        var statsLive = torrentWithStats.Stats.Live;
+                        if (statsLive?.DownloadSpeed != null)
+                        {
+                            // Convert mib/sec to bytes per second
+                            torrent.DownRate = (long)(statsLive.DownloadSpeed.Mbps * 1048576);
+                        }
 
-        return info_hash;
-    }
+                        torrent.RemainingSize = torrentWithStats.Stats.TotalBytes - torrentWithStats.Stats.ProgressBytes;
 
-    public void SetTorrentLabel(string hash, string label, RQbitSettings settings)
-    {
-        _logger.Warn("Torrent labels currently unsupported by RQBit");
-    }
+                        // Avoid division by zero
+                        if (torrentWithStats.Stats.ProgressBytes > 0)
+                        {
+                            torrent.Ratio = (double)torrentWithStats.Stats.UploadedBytes / torrentWithStats.Stats.ProgressBytes;
+                        }
+                        else
+                        {
+                            torrent.Ratio = 0;
+                        }
 
-    public bool HasHashTorrent(string hash, RQbitSettings settings)
-    {
-        var result = true;
-        var rqBitTorrentResponse = getTorrent(hash, settings);
-        if (rqBitTorrentResponse == null || string.IsNullOrWhiteSpace(rqBitTorrentResponse.InfoHash))
-        {
-            result = false;
-        }
+                        torrent.IsFinished = torrentWithStats.Stats.Finished;
+                        torrent.IsActive = torrentWithStats.Stats.State != "paused";
 
-        return result;
-    }
+                        result.Add(torrent);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error(ex, "Failed to process torrent {0}", torrentWithStats.InfoHash);
+                    }
+                }
+            }
 
-    private TorrentResponse getTorrent(string info_hash, RQbitSettings settings)
-    {
-        TorrentResponse result = null;
-        var itemRequest = BuildRequest(settings).Resource("/torrents/" + info_hash);
-        var itemResponse = _httpClient.Get(itemRequest.Build());
-        if (itemResponse.StatusCode != HttpStatusCode.OK)
-        {
             return result;
         }
 
-        var jsonStr = Encoding.UTF8.GetString(itemResponse.ResponseData);
-        result = JsonConvert.DeserializeObject<TorrentResponse>(jsonStr);
-
-        return result;
-    }
-
-    private TorrentV1StatResponse getTorrentStats(string info_hash, RQbitSettings settings)
-    {
-        TorrentV1StatResponse result = null;
-        var itemRequest = BuildRequest(settings).Resource("/torrents/" + info_hash + "/stats/v1");
-        var itemResponse = _httpClient.Get(itemRequest.Build());
-        if (itemResponse.StatusCode != HttpStatusCode.OK)
+        public void RemoveTorrent(string infoHash, bool removeData, RQbitSettings settings)
         {
+            var endpoint = removeData ? "/delete" : "/forget";
+            var itemRequest = BuildRequest(settings).Resource("/torrents/" + infoHash + endpoint);
+            _httpClient.Post(itemRequest.Build());
+        }
+
+        public string AddTorrentFromUrl(string torrentUrl, RQbitSettings settings)
+        {
+            string infoHash = null;
+            var itemRequest = BuildRequest(settings).Resource("/torrents?overwrite=true").Post().Build();
+            itemRequest.SetContent(torrentUrl);
+            var httpResponse = _httpClient.Post(itemRequest);
+            if (httpResponse.StatusCode != HttpStatusCode.OK)
+            {
+                return infoHash;
+            }
+
+            var response = JsonConvert.DeserializeObject<PostTorrentResponse>(httpResponse.Content);
+
+            if (response.Details != null)
+            {
+                infoHash = response.Details.InfoHash;
+            }
+
+            return infoHash;
+        }
+
+        public string AddTorrentFromFile(string fileName, byte[] fileContent, RQbitSettings settings)
+        {
+            string infoHash = null;
+            var itemRequest = BuildRequest(settings)
+                .Post()
+                .Resource("/torrents?overwrite=true")
+                .Build();
+            itemRequest.SetContent(fileContent);
+            var httpResponse = _httpClient.Post(itemRequest);
+            if (httpResponse.StatusCode != HttpStatusCode.OK)
+            {
+                return infoHash;
+            }
+
+            var response = JsonConvert.DeserializeObject<PostTorrentResponse>(httpResponse.Content);
+
+            if (response.Details != null)
+            {
+                infoHash = response.Details.InfoHash;
+            }
+
+            return infoHash;
+        }
+
+        public void SetTorrentLabel(string hash, string label, RQbitSettings settings)
+        {
+            _logger.Warn("Torrent labels currently unsupported by RQBit");
+        }
+
+        public bool HasHashTorrent(string hash, RQbitSettings settings)
+        {
+            var result = true;
+            var rqBitTorrentResponse = GetTorrent(hash, settings);
+            if (rqBitTorrentResponse == null || string.IsNullOrWhiteSpace(rqBitTorrentResponse.InfoHash))
+            {
+                result = false;
+            }
+
             return result;
         }
 
-        var jsonStr = Encoding.UTF8.GetString(itemResponse.ResponseData);
-        result = JsonConvert.DeserializeObject<TorrentV1StatResponse>(jsonStr);
-
-        return result;
-    }
-
-    private HttpRequestBuilder BuildRequest(RQbitSettings settings)
-    {
-        var requestBuilder = new HttpRequestBuilder(settings.UseSsl, settings.Host, settings.Port, settings.UrlBase)
+        private TorrentResponse GetTorrent(string infoHash, RQbitSettings settings)
         {
-            LogResponseContent = true,
-        };
-        return requestBuilder;
+            TorrentResponse result = null;
+            var itemRequest = BuildRequest(settings).Resource("/torrents/" + infoHash);
+            var itemResponse = _httpClient.Get(itemRequest.Build());
+            if (itemResponse.StatusCode != HttpStatusCode.OK)
+            {
+                return result;
+            }
+
+            result = JsonConvert.DeserializeObject<TorrentResponse>(itemResponse.Content);
+
+            return result;
+        }
+
+        private HttpRequestBuilder BuildRequest(RQbitSettings settings)
+        {
+            var requestBuilder = new HttpRequestBuilder(settings.UseSsl, settings.Host, settings.Port, settings.UrlBase)
+            {
+                LogResponseContent = true,
+            };
+            return requestBuilder;
+        }
     }
 }
