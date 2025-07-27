@@ -7,37 +7,37 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Download.Clients.RQbit;
-using NzbDrone.Core.Download.Clients.rTorrent;
+using NzbDrone.Core.Download.Clients.RQBit;
 using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Validation;
 
-namespace NzbDrone.Core.Download.Clients.rQbit
+namespace NzbDrone.Core.Download.Clients.RQBit
 {
     public class RQBit : TorrentClientBase<RQbitSettings>
     {
-        private readonly IRQbitProxy _proxy;
+        private readonly IRQbitProxySelector _proxySelector;
         private readonly IDownloadSeedConfigProvider _downloadSeedConfigProvider;
 
-        public RQBit(IRQbitProxy proxy,
+        public RQBit(IRQbitProxySelector proxySelector,
             ITorrentFileInfoReader torrentFileInfoReader,
             IHttpClient httpClient,
             IConfigService configService,
             IDiskProvider diskProvider,
             IRemotePathMappingService remotePathMappingService,
             IDownloadSeedConfigProvider downloadSeedConfigProvider,
-            IRTorrentDirectoryValidator rTorrentDirectoryValidator,
             ILocalizationService localizationService,
             IBlocklistService blocklistService,
             Logger logger)
             : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, localizationService, blocklistService, logger)
         {
-            _proxy = proxy;
+            _proxySelector = proxySelector;
             _downloadSeedConfigProvider = downloadSeedConfigProvider;
         }
+
+        private IRQbitProxy _proxy => _proxySelector.GetProxy(Settings);
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
@@ -48,18 +48,18 @@ namespace NzbDrone.Core.Download.Clients.rQbit
             var items = new List<DownloadClientItem>();
             foreach (var torrent in torrents)
             {
-                // // Ignore torrents with an empty path
-                // if (torrent.Path.IsNullOrWhiteSpace())
-                // {
-                //     _logger.Warn("Torrent '{0}' has an empty download path and will not be processed. Adjust this to an absolute path in rTorrent", torrent.Name);
-                //     continue;
-                // }
-                //
-                // if (torrent.Path.StartsWith("."))
-                // {
-                //     _logger.Warn("Torrent '{0}' has a download path starting with '.' and will not be processed. Adjust this to an absolute path in rTorrent", torrent.Name);
-                //     continue;
-                // }
+                // Ignore torrents with an empty path
+                if (torrent.Path.IsNullOrWhiteSpace())
+                {
+                    _logger.Warn("Torrent '{0}' has an empty download path and will not be processed", torrent.Name);
+                    continue;
+                }
+
+                if (torrent.Path.StartsWith("."))
+                {
+                    _logger.Warn("Torrent '{0}' has a download path starting with '.' and will not be processed", torrent.Name);
+                    continue;
+                }
 
                 var item = new DownloadClientItem();
                 item.DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this, false);
@@ -148,14 +148,34 @@ namespace NzbDrone.Core.Download.Clients.rQbit
                 return;
             }
 
-            // failures.AddIfNotNull(TestGetTorrents());
-            // failures.AddIfNotNull(TestDirectory());
+            failures.AddIfNotNull(TestVersion());
         }
 
         private ValidationFailure TestConnection()
         {
            var version = _proxy.GetVersion(Settings);
            return null;
+        }
+
+        private ValidationFailure TestVersion()
+        {
+            try
+            {
+                var apiVersion = _proxySelector.GetApiVersion(Settings);
+                var minimumVersion = new Version(8, 0, 0);
+
+                if (apiVersion < minimumVersion)
+                {
+                    return new ValidationFailure("", $"RQBit version {apiVersion} is not supported. Please upgrade to version {minimumVersion} or higher.");
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Failed to determine RQBit version");
+                return new ValidationFailure("", "Unable to determine RQBit version. Please check that RQBit is running and accessible.");
+            }
         }
 
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
