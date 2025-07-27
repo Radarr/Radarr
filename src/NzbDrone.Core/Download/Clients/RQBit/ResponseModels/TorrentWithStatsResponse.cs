@@ -134,4 +134,4 @@ namespace NzbDrone.Core.Download.Clients.RQBit.ResponseModels
         [JsonProperty("steals")]
         public int Steals { get; set; }
     }
-} 
+}

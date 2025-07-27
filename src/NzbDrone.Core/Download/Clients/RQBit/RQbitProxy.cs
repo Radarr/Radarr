@@ -1,12 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Linq;
 using Newtonsoft.Json;
 using NLog;
-using NzbDrone.Common.Cache;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.Download.Clients.RQBit;
 using NzbDrone.Core.Download.Clients.RQBit.ResponseModels;
 
 namespace NzbDrone.Core.Download.Clients.RQBit

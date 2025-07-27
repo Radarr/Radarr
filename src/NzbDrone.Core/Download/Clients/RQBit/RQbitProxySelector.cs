@@ -1,9 +1,9 @@
+using System;
+using NLog;
+using NzbDrone.Common.Cache;
+
 namespace NzbDrone.Core.Download.Clients.RQBit
 {
-    using System;
-    using NLog;
-    using NzbDrone.Common.Cache;
-
     public interface IRQbitProxySelector
     {
         IRQbitProxy GetProxy(RQbitSettings settings, bool force = false);
