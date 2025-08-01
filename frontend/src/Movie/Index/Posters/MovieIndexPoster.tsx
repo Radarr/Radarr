@@ -1,5 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { SyntheticEvent, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSelect } from 'App/SelectContext';
 import { MOVIE_SEARCH, REFRESH_MOVIE } from 'Commands/commandNames';
 import Icon from 'Components/Icon';
 import ImdbRating from 'Components/ImdbRating';
@@ -141,7 +142,30 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     setIsDeleteMovieModalOpen(false);
   }, [setIsDeleteMovieModalOpen]);
 
+  const [selectState, selectDispatch] = useSelect();
+
+  const onSelectPress = useCallback(
+    (event: SyntheticEvent<HTMLElement, MouseEvent>) => {
+      if (event.nativeEvent.ctrlKey || event.nativeEvent.metaKey) {
+        window.open(`/movie/${tmdbId}`, '_blank');
+        return;
+      }
+
+      const shiftKey = event.nativeEvent.shiftKey;
+
+      selectDispatch({
+        type: 'toggleSelected',
+        id: movieId,
+        isSelected: !selectState.selectedState[movieId],
+        shiftKey,
+      });
+    },
+    [movieId, selectState.selectedState, selectDispatch, tmdbId]
+  );
+
   const link = `/movie/${tmdbId}`;
+
+  const linkProps = isSelectMode ? { onPress: onSelectPress } : { to: link };
 
   const elementStyle = {
     width: `${posterWidth}px`,
@@ -196,7 +220,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
           <div className={styles.deleted} title={translate('Deleted')} />
         ) : null}
 
-        <Link className={styles.link} style={elementStyle} to={link}>
+        <Link className={styles.link} style={elementStyle} {...linkProps}>
           <MoviePoster
             style={elementStyle}
             images={images}
