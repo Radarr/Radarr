@@ -134,6 +134,12 @@ export const defaultState = {
       isVisible: true
     },
     {
+      name: 'year',
+      label: () => translate('Year'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'inCinemas',
       label: () => translate('InCinemas'),
       isSortable: true,
