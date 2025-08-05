@@ -167,6 +167,14 @@ class DiscoverMovieRow extends Component {
               );
             }
 
+            if (name === 'year') {
+              return (
+                <VirtualTableRowCell key={name} className={styles[name]}>
+                  {year}
+                </VirtualTableRowCell>
+              );
+            }
+
             if (name === 'collection') {
               return (
                 <VirtualTableRowCell
