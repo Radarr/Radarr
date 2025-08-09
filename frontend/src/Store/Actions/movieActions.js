@@ -128,6 +128,14 @@ export const filterPredicates = {
     return predicate(originalLanguage ? originalLanguage.name : '', filterValue);
   },
 
+  quality: function(item, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+    const { movieFile = {} } = item;
+    const { quality: { quality = {} } = {} } = movieFile;
+
+    return predicate(quality.id, filterValue);
+  },
+
   releaseGroups: function(item, filterValue, type) {
     const predicate = filterTypePredicates[type];
     const { statistics = {} } = item;
