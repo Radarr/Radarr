@@ -418,6 +418,12 @@ export const defaultState = {
       }
     },
     {
+      name: 'quality',
+      label: () => translate('Quality'),
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.QUALITY
+    },
+    {
       name: 'qualityProfileId',
       label: () => translate('QualityProfile'),
       type: filterBuilderTypes.EXACT,
