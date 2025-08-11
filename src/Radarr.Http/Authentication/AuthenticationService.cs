@@ -77,7 +77,7 @@ namespace Radarr.Http.Authentication
 
         private void LogSuccess(HttpRequest context, string username)
         {
-            _authLogger.Info("Auth-Success ip {0} username '{1}'", context.GetRemoteIP(), username);
+            _authLogger.Debug("Auth-Success ip {0} username '{1}'", context.GetRemoteIP(), username);
         }
 
         private void LogLogout(HttpRequest context, string username)
