@@ -2032,5 +2032,9 @@
     "DefaultNameCopiedImportList": "{name} - Cópia",
     "ReleaseProfile": "Perfil de Lançamento",
     "CountMissingMoviesFromLibrary": "{count} filme(s) faltando na biblioteca",
-    "RemoveRootFolderMoviesMessageText": "Tem certeza de que deseja remover a pasta raiz '{path}'? Arquivos e pastas não serão excluídos do disco, e os filmes nesta pasta raiz não serão removidos de {appName} ."
+    "RemoveRootFolderMoviesMessageText": "Tem certeza de que deseja remover a pasta raiz '{path}'? Arquivos e pastas não serão excluídos do disco, e os filmes nesta pasta raiz não serão removidos de {appName} .",
+    "NotificationsPushcutSettingsIncludePoster": "Incluir Pôster",
+    "NotificationsPushcutSettingsIncludePosterHelpText": "Incluir pôster com notificação",
+    "NotificationsPushcutSettingsMetadataLinks": "Links de metadados",
+    "NotificationsPushcutSettingsMetadataLinksHelpText": "Adicionar links para os metadados da série ao enviar notificações"
 }

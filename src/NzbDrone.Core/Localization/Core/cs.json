@@ -1366,5 +1366,6 @@
     "DownloadClientItemErrorMessage": "{clientName} hlásí chybu: {message}",
     "CloneImportList": "Klonovat seznam Importu",
     "DefaultNameCopiedImportList": "{name} - Kopírovat",
-    "ReleaseProfile": "profil vydání"
+    "ReleaseProfile": "profil vydání",
+    "NotificationsPushcutSettingsIncludePoster": "Zahrnout plakát"
 }

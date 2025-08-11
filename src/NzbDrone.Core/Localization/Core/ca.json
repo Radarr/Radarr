@@ -2032,5 +2032,9 @@
     "ShowPhysicalRelease": "Mostra la versió física",
     "ShowCinemaRelease": "Mostra el llançament del cinema",
     "ShowCinemaReleaseCalendarHelpText": "Mostra els llançaments de cinema en els esdeveniments del calendari",
-    "AutoTaggingSpecificationKeyword": "Paraula(es) clau"
+    "AutoTaggingSpecificationKeyword": "Paraula(es) clau",
+    "NotificationsPushcutSettingsIncludePoster": "Inclou el cartell",
+    "NotificationsPushcutSettingsIncludePosterHelpText": "Inclou el cartell amb notificació",
+    "NotificationsPushcutSettingsMetadataLinks": "Enllaços de metadades",
+    "NotificationsPushcutSettingsMetadataLinksHelpText": "Afegeix un enllaç a les metadades de les sèries quan s'enviïn notificacions"
 }

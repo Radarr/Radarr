@@ -2032,5 +2032,9 @@
     "DefaultNameCopiedImportList": "{name} - Копировать",
     "ReleaseProfile": "Профиль релиза",
     "CountMissingMoviesFromLibrary": "{count} отсутствующих фильмов в библиотеке",
-    "RemoveRootFolderMoviesMessageText": "Вы уверены, что хотите удалить корневой каталог '{path}'? Файлы и папки не будут удалены с диска, а фильмы в этом корневом каталоге не будут удалены из {appName}."
+    "RemoveRootFolderMoviesMessageText": "Вы уверены, что хотите удалить корневой каталог '{path}'? Файлы и папки не будут удалены с диска, а фильмы в этом корневом каталоге не будут удалены из {appName}.",
+    "NotificationsPushcutSettingsIncludePoster": "Добавить постер",
+    "NotificationsPushcutSettingsIncludePosterHelpText": "Добавляет постер в уведомление",
+    "NotificationsPushcutSettingsMetadataLinks": "Ссылки на метаданные",
+    "NotificationsPushcutSettingsMetadataLinksHelpText": "Добавляет ссылки на метаданные сериала при отправке уведомлений"
 }
