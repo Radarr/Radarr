@@ -1541,5 +1541,9 @@
     "EditMovieCollectionModalHeader": "Modifica - {title}",
     "IndexerSettingsRejectBlocklistedTorrentHashesHelpText": "Se un torrent è bloccato tramite hash, potrebbe non essere correttamente rifiutato durante l’uso di RSS/Ricerca con alcuni indexer. Abilitando questa opzione, il torrent verrà rifiutato dopo essere stato acquisito, ma prima di essere inviato al client.",
     "DefaultNameCopiedImportList": "{name} - Copia",
-    "ReleaseProfile": "profilo release"
+    "ReleaseProfile": "profilo release",
+    "BlocklistAndSearchHint": "Inizia una ricerca per sostituzioni dopo l'aggiunta alla lista dei blocchi",
+    "BlocklistMultipleOnlyHint": "Aggiungi alla blocklist senza ricerca di sostituti",
+    "BlocklistOnly": "Solo blocklist",
+    "AutomaticUpdatesDisabledDocker": "Gli aggiornamenti automatici non sono supportati direttamente quando si utilizza il meccanismo di aggiornamento Docker. Sarà necessario aggiornare l'immagine del contenitore al di fuori di {appName} o utilizzare uno script"
 }

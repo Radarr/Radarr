@@ -2003,5 +2003,15 @@
     "AutoTaggingSpecificationKeyword": "Schlüsselwort(e)",
     "BlocklistedAt": "Zur Sperrliste hinzugefügt am {date}",
     "CloneImportList": "Import Liste importieren",
-    "FileSize": "Dateigröße"
+    "FileSize": "Dateigröße",
+    "NotificationsPushcutSettingsMetadataLinks": "Metadaten-Links",
+    "NotificationsPushcutSettingsMetadataLinksHelpText": "Füge Links zu den Serienmetadaten hinzu, wenn Benachrichtigungen gesendet werden",
+    "DownloadClientItemErrorMessage": "{clientName} meldet einen Fehler: {message}",
+    "ImportListsTraktSettingsPopularListTypeTopBoxOfficeMovies": "Top-Kinokassenfilme",
+    "ImportListsTraktSettingsPopularListTypeTopAnticipatedMovies": "Meist erwartete Filme",
+    "CountMissingMoviesFromLibrary": "{count} fehlende(r) Film(e) in der Bibliothek",
+    "ICalReleaseTypes": "Veröffentlichungstypen",
+    "ICalReleaseTypesMoviesHelpText": "Nur Filme mit bestimmten Veröffentlichungstypen im iCal-Feed einbeziehen. Wenn nicht angegeben, werden alle Optionen verwendet.",
+    "IndexerFileListSettingsCategoriesHelpText": "Kategorien zur Verwendung in Suche und Feeds. Wenn nicht angegeben, werden alle Optionen verwendet.",
+    "ImportListsTraktSettingsGenresMovieHelpText": "Filme nach Trakt-Genre-Slug filtern (durch Kommas getrennt) – nur für beliebte Listen"
 }

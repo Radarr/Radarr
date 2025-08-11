@@ -1503,5 +1503,7 @@
     "MyComputer": "A számítógépem",
     "EditMovieCollectionModalHeader": "Szerkesztés – {title}",
     "DefaultNameCopiedImportList": "{name} - Másolat",
-    "ReleaseProfile": "Release profil"
+    "ReleaseProfile": "Release profil",
+    "AutoTaggingSpecificationKeyword": "Kulcsszavak",
+    "AutoTaggingSpecificationStudio": "Stúdió(k)"
 }

@@ -182,5 +182,14 @@
     "CustomFormatsSpecificationLanguage": "Bahasa",
     "IndexerHDBitsSettingsCategories": "Kategori",
     "IndexerHDBitsSettingsCodecs": "Codec",
-    "IndexerSettingsCategories": "Kategori"
+    "IndexerSettingsCategories": "Kategori",
+    "AddConditionError": "tidak dapat menambahkan persyaratan baru, coba lagi..",
+    "AddAutoTagError": "tidak dapat menambahkan label otomatis, coba lagi..",
+    "AddANewPath": "tambah path baru",
+    "AddCustomFilter": "tambah filter khusus",
+    "AddAutoTag": "tambah label otomatis",
+    "AddCondition": "tambah persyaratan",
+    "AddConditionImplementation": "tambah persyaratan {implementationName}",
+    "AddConnection": "tambah koneksi",
+    "AddConnectionImplementation": "tambah koneksi - {implementationName}"
 }

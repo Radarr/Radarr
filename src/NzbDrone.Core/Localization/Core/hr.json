@@ -379,5 +379,7 @@
     "IndexerSettingsCategories": "Kategorije",
     "IndexerHDBitsSettingsCategories": "Kategorije",
     "IndexerHDBitsSettingsCodecs": "Kodek",
-    "ReleaseProfile": "profil verzije"
+    "ReleaseProfile": "profil verzije",
+    "AddANewPath": "Dodaj novu putanju",
+    "AddCustomFilter": "Dodaj proizvoljan filter"
 }
