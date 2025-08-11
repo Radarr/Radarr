@@ -2032,5 +2032,9 @@
     "DefaultNameCopiedImportList": "{name} - Kopyala",
     "ReleaseProfile": "Sürüm Profili",
     "CountMissingMoviesFromLibrary": "{count} kitaplıkta eksik film",
-    "RemoveRootFolderMoviesMessageText": "'{path}' kök klasörünü kaldırmak istediğinizden emin misiniz? Dosya ve klasörler diskten silinmez ve bu kök klasördeki filmler {appName} 'dan kaldırılmaz."
+    "RemoveRootFolderMoviesMessageText": "'{path}' kök klasörünü kaldırmak istediğinizden emin misiniz? Dosya ve klasörler diskten silinmez ve bu kök klasördeki filmler {appName} 'dan kaldırılmaz.",
+    "NotificationsPushcutSettingsIncludePosterHelpText": "Bildirim içeriğine poster ekleyin",
+    "NotificationsPushcutSettingsMetadataLinks": "Meta Veri Bağlantıları",
+    "NotificationsPushcutSettingsIncludePoster": "Poster'i ekle",
+    "NotificationsPushcutSettingsMetadataLinksHelpText": "Bildirim gönderirken dizi meta verilerine bağlantılar ekleyin"
 }

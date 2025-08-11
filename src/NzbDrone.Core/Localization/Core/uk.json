@@ -2008,5 +2008,10 @@
     "EditMovieCollectionModalHeader": "Редагувати - {title}",
     "NotificationsAppriseSettingsIncludePoster": "Включити постер",
     "DefaultNameCopiedImportList": "{name} - Копіювати",
-    "ReleaseProfile": "Профіль релізу"
+    "ReleaseProfile": "Профіль релізу",
+    "DownloadClientItemErrorMessage": "{clientName} повертає помилку: {message}",
+    "NotificationsPushcutSettingsIncludePoster": "Включити постер",
+    "NotificationsPushcutSettingsIncludePosterHelpText": "Включити постер з сповіщенням",
+    "NotificationsPushcutSettingsMetadataLinks": "Посилання на метадані",
+    "NotificationsPushcutSettingsMetadataLinksHelpText": "Додати посилання на метадані серіалу при надсиланні сповіщень"
 }

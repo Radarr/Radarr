@@ -1173,5 +1173,7 @@
     "IndexerHDBitsSettingsCategories": "Categorii",
     "IndexerHDBitsSettingsMediums": "Mediu",
     "IndexerSettingsCategories": "Categorii",
-    "DefaultNameCopiedImportList": "{name} - Copie"
+    "DefaultNameCopiedImportList": "{name} - Copie",
+    "Warning": "Avertisment",
+    "YesterdayAt": "Ieri la {time}"
 }

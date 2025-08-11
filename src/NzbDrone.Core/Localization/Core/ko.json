@@ -1931,5 +1931,6 @@
     "FileSize": "파일 크기",
     "IndexerSettingsFailDownloadsHelpText": "완료된 다운로드를 처리하는 동안 {appName}는 선택된 파일 유형을 실패한 다운로드로 처리합니다.",
     "ImportListsRadarrSettingsFullUrl": "전체 URL",
-    "DefaultNameCopiedImportList": "{name} - 복사"
+    "DefaultNameCopiedImportList": "{name} - 복사",
+    "NotificationsPushcutSettingsMetadataLinksHelpText": "알림을 보낼 때 시리즈 메타데이터에 대한 링크를 추가"
 }

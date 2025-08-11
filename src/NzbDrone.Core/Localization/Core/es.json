@@ -997,7 +997,7 @@
     "OriginalTitle": "Título original",
     "OriginalLanguage": "Idioma original",
     "Rating": "Valoración",
-    "RemoveFailed": "Fallo al eliminar",
+    "RemoveFailed": "Eliminar Fallidas",
     "RemotePathMappingCheckFolderPermissions": "{appName} puede ver pero no acceder al directorio de descarga {path}.  Probablemente sea un error de permisos.",
     "RemotePathMappingCheckGenericPermissions": "El cliente de descarga {downloadClientName} coloca las descargas en {path} pero {appName} no puede ver este directorio.  Es posible que tengas que ajustar los permisos de la carpeta.",
     "RemoveDownloadsAlert": "Las opciones de eliminación fueron trasladadas a las opciones del cliente de descarga individual en la tabla anterior.",
@@ -2032,5 +2032,9 @@
     "DefaultNameCopiedImportList": "{name} - Copia",
     "ReleaseProfile": "Perfil de lanzamiento",
     "CountMissingMoviesFromLibrary": "{count} película(s) faltante(s) en la biblioteca",
-    "RemoveRootFolderMoviesMessageText": "¿Estás seguro que quieres eliminar la carpeta raíz '{path}'? Los archivos y carpetas no serán borrados del disco, y las películas en esta carpeta raíz no serán eliminadas de {appName}."
+    "RemoveRootFolderMoviesMessageText": "¿Estás seguro que quieres eliminar la carpeta raíz '{path}'? Los archivos y carpetas no serán borrados del disco, y las películas en esta carpeta raíz no serán eliminadas de {appName}.",
+    "NotificationsPushcutSettingsIncludePoster": "Incluir póster",
+    "NotificationsPushcutSettingsIncludePosterHelpText": "Incluir póster con notificación",
+    "NotificationsPushcutSettingsMetadataLinks": "Enlaces de metadatos",
+    "NotificationsPushcutSettingsMetadataLinksHelpText": "Añade un enlace a los metadatos de las series cuando se envían notificaciones"
 }
