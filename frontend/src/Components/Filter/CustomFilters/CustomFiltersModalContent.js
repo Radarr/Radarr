@@ -52,6 +52,8 @@ function CustomFiltersModalContent(props) {
           <Button onPress={onAddCustomFilter}>
             Add Custom Filter
           </Button>
+		  <br />
+		  {translate('FilterWarning')}
         </div>
       </ModalBody>
 

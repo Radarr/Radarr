@@ -344,6 +344,7 @@
   "Filter": "Filter",
   "FilterPlaceHolder": "Search movies",
   "Filters": "Filters",
+  "FilterWarning": "Filters are available only for the properties of a movie, they are not available for properties of the file(s) you may have for that movie.",
   "FirstDayOfWeek": "First Day of Week",
   "Fixed": "Fixed",
   "FocusSearchBox": "Focus Search Box",
