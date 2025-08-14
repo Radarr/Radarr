@@ -38,7 +38,7 @@ function PageHeaderActionsMenu(props: PageHeaderActionsMenuProps) {
   return (
     <div>
       <Menu alignMenu={align.RIGHT}>
-        <MenuButton className={styles.menuButton} aria-label="Menu Button">
+        <MenuButton className={styles.menuButton} aria-label={translate('MenuButton')}>
           <Icon name={icons.INTERACTIVE} title={translate('Menu')} />
         </MenuButton>
 
