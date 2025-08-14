@@ -32,11 +32,16 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
                 .SetSegment("id", Settings.ListId)
                 .SetSegment("secondaryRoute", "");
 
-            Logger.Debug("Getting total pages that TMDb List: {0} consists of", Settings.ListId);
+            Logger.Debug("Getting total pages for TMDb List: {0}", Settings.ListId);
 
             var jsonResponse = JsonConvert.DeserializeObject<MovieSearchResource>(HttpClient.Execute(requestBuilder.Build()).Content);
 
             MaxPages = jsonResponse.TotalPages;
+
+            if (jsonResponse.TotalPages > 1)
+            {
+                Logger.Debug("TMDb List {0}: processing {1} pages", Settings.ListId, MaxPages);
+            }
 
             for (var pageNumber = 1; pageNumber <= MaxPages; pageNumber++)
             {
@@ -44,7 +49,10 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
 
                 var request = requestBuilder.Build();
 
-                Logger.Debug("Importing TMDb movies from: {0}", request.Url);
+                if (pageNumber == 1 || pageNumber == MaxPages)
+                {
+                    Logger.Debug("Processing TMDb List page {0} of {1}", pageNumber, MaxPages);
+                }
 
                 yield return new ImportListRequest(request);
             }
