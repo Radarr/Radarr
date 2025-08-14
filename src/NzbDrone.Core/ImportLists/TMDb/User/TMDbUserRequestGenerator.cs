@@ -52,7 +52,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.User
 
             requestBuilder.Method = HttpMethod.Get;
 
-            Logger.Trace("Getting total pages for TMDb User {0}", (TMDbUserListType)Settings.ListType);
+            Logger.Trace("TMDb User {0}: Getting total pages", (TMDbUserListType)Settings.ListType);
 
             var jsonResponse = JsonConvert.DeserializeObject<MovieSearchResource>(HttpClient.Execute(requestBuilder.Build()).Content);
 
@@ -69,10 +69,8 @@ namespace NzbDrone.Core.ImportLists.TMDb.User
 
                 var request = requestBuilder.Build();
 
-                if (pageNumber == 1 || pageNumber == MaxPages)
-                {
-                    Logger.Debug("Processing TMDb User page {0} of {1}", pageNumber, MaxPages);
-                }
+                Logger.Debug("TMDb User {0}: Processing page {1} of {2}", (TMDbUserListType)Settings.ListType, pageNumber, MaxPages);
+                Logger.Trace("TMDb User {0}: Request URL: {1}", (TMDbUserListType)Settings.ListType, request.Url);
 
                 yield return new ImportListRequest(request);
             }
