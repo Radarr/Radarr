@@ -667,6 +667,7 @@
   "FavoriteFolders": "Favorite Folders",
   "FeatureRequests": "Feature Requests",
   "File": "File",
+  "FiltersAreForMoviePropertiesNotFileProperties": "Filters are for the properties of a movie, not for the properties of a file you have for that movie.",
   "FileBrowser": "File Browser",
   "FileBrowserPlaceholderText": "Start typing or select a path below",
   "FileManagement": "File Management",
@@ -2036,5 +2037,7 @@
   "YesCancel": "Yes, Cancel",
   "Yesterday": "Yesterday",
   "YesterdayAt": "Yesterday at {time}",
-  "YouCanAlsoSearch": "You can also search using TMDb ID or IMDb ID of a movie. e.g. `tmdb:71663`"
+  "YouCanAlsoSearch": "You can also search using TMDb ID or IMDb ID of a movie. e.g. `tmdb:71663`",
+  "MenuButton": "Menu Button",
+  "SearchMoviePlaceholder": "e.g. The Dark Knight, tmdb:155, imdb:tt0468569"
 }
