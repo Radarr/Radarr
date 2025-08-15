@@ -29,7 +29,7 @@ namespace NzbDrone.Core.ImportLists
 
         public virtual int PageSize => 0;
         public virtual TimeSpan RateLimit => TimeSpan.FromSeconds(2);
-        
+
         protected virtual bool UsePreGeneratedPages => false;
 
         public abstract IImportListRequestGenerator GetRequestGenerator();
