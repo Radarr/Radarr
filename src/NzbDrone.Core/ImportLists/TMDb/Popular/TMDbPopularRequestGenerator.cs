@@ -119,7 +119,8 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
 
                 var request = requestBuilder.Build();
 
-                Logger.Debug("Importing TMDb movies from: {0}", request.Url);
+                Logger.Debug("TMDb Popular: Processing page {0} of {1}", pageNumber, MaxPages);
+                Logger.Trace("TMDb Popular: Request URL: {0}", request.Url);
 
                 yield return new ImportListRequest(request);
             }
