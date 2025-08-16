@@ -6,6 +6,7 @@ import createAjaxRequest from 'Utilities/createAjaxRequest';
 import getNewMovie from 'Utilities/Movie/getNewMovie';
 import getSectionState from 'Utilities/State/getSectionState';
 import updateSectionState from 'Utilities/State/updateSectionState';
+import translate from 'Utilities/String/translate';
 import { removeItem, set, updateItem } from './baseActions';
 import createHandleActions from './Creators/createHandleActions';
 import { fetchRootFolders } from './rootFolderActions';
@@ -17,6 +18,7 @@ export const section = 'importMovie';
 let concurrentLookups = 0;
 let abortCurrentLookup = null;
 const queue = [];
+const COMPLETION_DISPLAY_TIMEOUT = 1500;
 
 //
 // State
@@ -26,6 +28,8 @@ export const defaultState = {
   isImporting: false,
   isImported: false,
   importError: null,
+  importingCount: 0,
+  importedCount: 0,
   items: []
 };
 
@@ -209,8 +213,6 @@ export const actionHandlers = handleThunks({
   },
 
   [IMPORT_MOVIE]: function(getState, payload, dispatch) {
-    dispatch(set({ section, isImporting: true }));
-
     const ids = payload.ids;
     const items = getState().importMovie.items;
     const addedIds = [];
@@ -232,45 +234,82 @@ export const actionHandlers = handleThunks({
       return acc;
     }, []);
 
-    const promise = createAjaxRequest({
-      url: '/movie/import',
-      method: 'POST',
-      contentType: 'application/json',
-      data: JSON.stringify(allNewMovies)
-    }).request;
+    dispatch(set({
+      section,
+      isImporting: true,
+      importingCount: allNewMovies.length,
+      importedCount: 0
+    }));
 
-    promise.done((data) => {
-      dispatch(batchActions([
-        set({
+    let importedCount = 0;
+    const importedMovies = [];
+    let hasError = false;
+
+    const importNextMovie = (index) => {
+      if (index >= allNewMovies.length || hasError) {
+        setTimeout(() => {
+          dispatch(batchActions([
+            set({
+              section,
+              isImporting: false,
+              isImported: true,
+              importError: hasError ? { message: translate('ImportErrors') } : null,
+              importedCount
+            }),
+
+            ...importedMovies.map((movie) => updateItem({ section: 'movies', ...movie })),
+
+            ...addedIds.slice(0, importedCount).map((id) => removeItem({ section, id }))
+          ]));
+
+          dispatch(fetchRootFolders());
+        }, COMPLETION_DISPLAY_TIMEOUT);
+        return;
+      }
+
+      const movieToImport = allNewMovies[index];
+
+      const promise = createAjaxRequest({
+        url: '/movie/import',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify([movieToImport])
+      }).request;
+
+      promise.done((data) => {
+        importedCount++;
+        if (data && data.length > 0) {
+          importedMovies.push(...data);
+        }
+
+        dispatch(set({
           section,
-          isImporting: false,
-          isImported: true,
-          importError: null
-        }),
+          importedCount
+        }));
 
-        ...data.map((movie) => updateItem({ section: 'movies', ...movie })),
+        importNextMovie(index + 1);
+      });
 
-        ...addedIds.map((id) => removeItem({ section, id }))
-      ]));
+      promise.fail(() => {
+        hasError = true;
 
-      dispatch(fetchRootFolders());
-    });
+        setTimeout(() => {
+          dispatch(batchActions([
+            set({
+              section,
+              isImporting: false,
+              isImported: true,
+              importError: { message: translate('ImportErrors') },
+              importedCount
+            }),
 
-    promise.fail((xhr) => {
-      dispatch(batchActions([
-        set({
-          section,
-          isImporting: false,
-          isImported: true,
-          importError: xhr
-        }),
+            ...importedMovies.map((movie) => updateItem({ section: 'movies', ...movie }))
+          ]));
+        }, COMPLETION_DISPLAY_TIMEOUT);
+      });
+    };
 
-        ...addedIds.map((id) => updateItem({
-          section,
-          id
-        }))
-      ]));
-    });
+    importNextMovie(0);
   }
 });
 

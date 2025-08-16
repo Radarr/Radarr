@@ -8,6 +8,7 @@ import Button from 'Components/Link/Button';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContentFooter from 'Components/Page/PageContentFooter';
+import ProgressBar from 'Components/ProgressBar';
 import Popover from 'Components/Tooltip/Popover';
 import { icons, inputTypes, kinds, tooltipPositions } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
@@ -98,6 +99,10 @@ class ImportMovieFooter extends Component {
       isMinimumAvailabilityMixed,
       hasUnsearchedItems,
       importError,
+      totalItems,
+      populatedItems,
+      importingCount,
+      importedCount,
       onImportPress,
       onLookupPress,
       onCancelLookupPress
@@ -108,6 +113,21 @@ class ImportMovieFooter extends Component {
       qualityProfileId,
       minimumAvailability
     } = this.state;
+
+    let importProgress = 0;
+    let importText = '';
+    let importKind = kinds.INFO;
+
+    if (isImporting && importingCount > 0) {
+      importProgress = (importedCount / importingCount) * 100;
+
+      if (importedCount === importingCount) {
+        importText = translate('ImportCompleted', { imported: importedCount, total: importingCount });
+        importKind = kinds.SUCCESS;
+      } else {
+        importText = translate('ImportMoviesProgress', { imported: importedCount, total: importingCount });
+      }
+    }
 
     return (
       <PageContentFooter>
@@ -207,7 +227,24 @@ class ImportMovieFooter extends Component {
 
             {
               isLookingUpMovie ?
-                translate('ProcessingFolders') :
+                translate('ProcessingFolders', { populatedItems, totalItems }) :
+                null
+            }
+
+            {
+              isImporting && importingCount > 0 ?
+                <div className={styles.importProgress}>
+                  <div className={styles.importProgressText}>
+                    {importText}
+                  </div>
+                  <ProgressBar
+                    progress={importProgress}
+                    showText={true}
+                    kind={importKind}
+                    title={`${importProgress.toFixed(1)}%`}
+                    size="medium"
+                  />
+                </div> :
                 null
             }
 
@@ -263,6 +300,10 @@ ImportMovieFooter.propTypes = {
   isQualityProfileIdMixed: PropTypes.bool.isRequired,
   isMinimumAvailabilityMixed: PropTypes.bool.isRequired,
   hasUnsearchedItems: PropTypes.bool.isRequired,
+  totalItems: PropTypes.number.isRequired,
+  populatedItems: PropTypes.number.isRequired,
+  importingCount: PropTypes.number.isRequired,
+  importedCount: PropTypes.number.isRequired,
   importError: PropTypes.object,
   onInputChange: PropTypes.func.isRequired,
   onImportPress: PropTypes.func.isRequired,

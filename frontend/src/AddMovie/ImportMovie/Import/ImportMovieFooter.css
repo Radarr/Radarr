@@ -36,6 +36,18 @@
   margin-left: 10px;
 }
 
+.importProgress {
+  margin-left: 10px;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.importProgressText {
+  margin-bottom: 5px;
+  color: var(--defaultColor);
+  font-size: 12px;
+}
+
 @media only screen and (max-width: $breakpointSmall) {
   .inputContainer {
     margin-top: 10px;

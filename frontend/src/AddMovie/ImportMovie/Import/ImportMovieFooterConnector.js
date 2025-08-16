@@ -26,13 +26,17 @@ function createMapStateToProps() {
         isLookingUpMovie,
         isImporting,
         items,
-        importError
+        importError,
+        importingCount,
+        importedCount
       } = importMovie;
 
       const isMonitorMixed = isMixed(items, selectedIds, defaultMonitor, 'monitor');
       const isQualityProfileIdMixed = isMixed(items, selectedIds, defaultQualityProfileId, 'qualityProfileId');
       const isMinimumAvailabilityMixed = isMixed(items, selectedIds, defaultMinimumAvailability, 'minimumAvailability');
       const hasUnsearchedItems = !isLookingUpMovie && items.some((item) => !item.isPopulated);
+      const totalItems = items.length;
+      const populatedItems = items.filter((item) => item.isPopulated).length;
 
       return {
         selectedCount: selectedIds.length,
@@ -45,7 +49,11 @@ function createMapStateToProps() {
         isQualityProfileIdMixed,
         isMinimumAvailabilityMixed,
         importError,
-        hasUnsearchedItems
+        hasUnsearchedItems,
+        totalItems,
+        populatedItems,
+        importingCount,
+        importedCount
       };
     }
   );
