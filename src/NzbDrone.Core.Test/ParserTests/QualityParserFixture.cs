@@ -295,6 +295,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.2021.1080p.BDLight.x265-AVCDVD", false)]
         [TestCase("Movie.Title.2012.German.DL.1080p.UHD2BD.x264-QfG", false)]
         [TestCase("Movie.Title.2005.1080p.HDDVDRip.x264", false)]
+        [TestCase("Movie.Title.2019.German.DL.1080p.HDR.UHDBDRip.AV1-GROUP", false)]
+        [TestCase("Movie.Title.2014.German.OPUS.DL.1080p.UHDBDRiP.HDR.AV1-GROUP", false)]
+        [TestCase("Movie.Title.1999.German.DL.1080p.HDR.UHDBDRip.AV1-GROUP", false)]
+        [TestCase("Movie.Title.1993.Uncut.German.DL.1080p.HDR.UHDBDRip.h265-GROUP", false)]
         public void should_parse_bluray1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, QualitySource.BLURAY, proper, Resolution.R1080p);
@@ -313,6 +317,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.2020.German.UHDBD.2160p.HDR10.HEVC.EAC3.DL-pmHD.mkv", false)]
         [TestCase("Movie.Title.2014.2160p.UHD.BluRay.X265-IAMABLE.mkv", false)]
         [TestCase("Movie.Title.2014.2160p.BDRip.AAC.7.1.HDR10.x265.10bit-Markll", false)]
+        [TestCase("Movie.Title.1956.German.DL.2160p.HDR.UHDBDRip.h266-GROUP", false)]
+        [TestCase("Movie.Title.2021.4K.HDR.2160P.UHDBDRip.HEVC-10bit.GROUP", false)]
         public void should_parse_bluray2160p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, QualitySource.BLURAY, proper, Resolution.R2160p);
