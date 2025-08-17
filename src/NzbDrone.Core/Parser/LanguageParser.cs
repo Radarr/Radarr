@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<urdu>\burdu\b)|
                                                                             (?<romansh>\b(?:romansh|rumantsch|romansch)\b)|
                                                                             (?<mongolian>\b(?:mongolian|khalkha)\b)|
-                                                                            (?<georgian>\b(?:geo|ka|kat)\b)|
+                                                                            (?<georgian>\b(?:georgian|geo|ka|kat)\b)|
                                                                             (?<original>\b(?:orig|original)\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
