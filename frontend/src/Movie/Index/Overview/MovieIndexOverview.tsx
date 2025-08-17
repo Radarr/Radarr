@@ -67,6 +67,7 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
     monitored,
     status,
     path,
+    titleSlug,
     overview,
     statistics = {} as Statistics,
     images,
@@ -141,7 +142,9 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
       <div className={styles.content}>
         <div className={styles.poster}>
           <div className={styles.posterContainer}>
-            {isSelectMode ? <MovieIndexPosterSelect movieId={movieId} /> : null}
+            {isSelectMode ? (
+              <MovieIndexPosterSelect movieId={movieId} titleSlug={titleSlug} />
+            ) : null}
 
             {status === 'deleted' ? (
               <div className={styles.deleted} title={translate('Deleted')} />
