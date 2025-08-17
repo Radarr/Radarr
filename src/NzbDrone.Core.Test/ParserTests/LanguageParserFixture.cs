@@ -521,6 +521,16 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Should().Contain(Language.Mongolian);
         }
 
+        [TestCase("Movie.Title.1994.Georgian.WEB-DL.h264")]
+        [TestCase("Movie.Title.2016.Geo.WEB-DL.h264")]
+        [TestCase("Movie.Title.2016.KA.WEB-DL.h264")]
+        [TestCase("Movie.Title.2016.RU-KA.WEB-DL.h264")]
+        public void should_parse_language_georgian(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Georgian);
+        }
+
         [TestCase("Movie.Title.en.sub")]
         [TestCase("Movie Title.eng.sub")]
         [TestCase("Movie.Title.eng.forced.sub")]

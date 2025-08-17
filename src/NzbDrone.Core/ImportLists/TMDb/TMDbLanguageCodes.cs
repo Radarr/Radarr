@@ -75,6 +75,8 @@ namespace NzbDrone.Core.ImportLists.TMDb
         [FieldOption(Hint = "Raeto-Romance")]
         rm,
         [FieldOption(Hint = "Mongolian")]
-        mn
+        mn,
+        [FieldOption(Hint = "Georgian")]
+        ka
     }
 }

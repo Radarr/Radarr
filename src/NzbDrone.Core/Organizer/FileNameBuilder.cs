@@ -81,7 +81,8 @@ namespace NzbDrone.Core.Organizer
             { "tib", "bod" },
             { "wel", "cym" },
             { "khk", "mon" },
-            { "mvf", "mon" }
+            { "mvf", "mon" },
+            { "geo", "kat" },
         }.ToImmutableDictionary();
 
         public static readonly ImmutableArray<string> BadCharacters = ImmutableArray.Create("\\", "/", "<", ">", "?", "*", "|", "\"");
