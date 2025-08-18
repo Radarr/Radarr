@@ -407,6 +407,8 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [TestCase("nor", "NO")]
         [TestCase("khk", "MN")]
         [TestCase("mvf", "MN")]
+        [TestCase("geo", "KA")]
+        [TestCase("kat", "KA")]
         public void should_format_languagecodes_properly(string language, string code)
         {
             _namingConfig.StandardMovieFormat = "{Movie.Title}.{MEDIAINFO.FULL}";
