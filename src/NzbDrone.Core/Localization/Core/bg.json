@@ -1204,5 +1204,19 @@
     "IndexerHDBitsSettingsCategories": "Категории",
     "IndexerHDBitsSettingsMediums": "Среден",
     "IndexerSettingsCategories": "Категории",
-    "ReleaseProfile": "Профил за издания"
+    "ReleaseProfile": "Профил за издания",
+    "CinemaRelease": "Пуснат по кината",
+    "BlocklistedAt": "Блокиран на {date}",
+    "Complete": "Завърши",
+    "DeleteSelected": "Изтрийте избраните",
+    "CollectionShowDetailsHelpText": "Покажи статуса и свойствата на колекцията",
+    "AutoTaggingSpecificationStudio": "Студио(я)",
+    "Completed": "Завършено",
+    "DelayMinutes": "{delay} Минути",
+    "Category": "Категория",
+    "AutoTaggingSpecificationKeyword": "Ключова(и) дума(и)",
+    "ChangeCategory": "Промени категорията",
+    "DefaultNotFoundMessage": "Трябва да сте се изгубили, няма какво да видите тук.",
+    "ClearBlocklist": "Изчисти списъка с блокирани",
+    "CountMissingMoviesFromLibrary": "Липсващи филми от библеотеката : {count}"
 }
