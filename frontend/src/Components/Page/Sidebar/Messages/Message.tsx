@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { MessageType } from 'App/State/MessagesAppState';
 import Icon, { IconName } from 'Components/Icon';
@@ -13,48 +13,67 @@ interface MessageProps {
   name: string;
   message: string;
   type: Extract<MessageType, keyof typeof styles>;
+  count?: number;
+  originalIds?: number[];
 }
 
-function Message({ id, hideAfter, name, message, type }: MessageProps) {
+function getMessageIcon(name: string): IconName {
+  switch (name) {
+    case 'ApplicationUpdate':
+      return icons.RESTART;
+    case 'Backup':
+      return icons.BACKUP;
+    case 'CheckHealth':
+      return icons.HEALTH;
+    case 'Housekeeping':
+      return icons.HOUSEKEEPING;
+    case 'MoviesSearch':
+      return icons.SEARCH;
+    case 'RefreshMovie':
+      return icons.REFRESH;
+    case 'RssSync':
+      return icons.RSS;
+    default:
+      return icons.SPINNER;
+  }
+}
+
+function Message({
+  id,
+  hideAfter,
+  name,
+  message,
+  type,
+  count = 1,
+  originalIds = [id],
+}: MessageProps) {
   const dispatch = useDispatch();
   const dismissTimeout = useRef<ReturnType<typeof setTimeout>>();
 
-  const icon: IconName = useMemo(() => {
-    switch (name) {
-      case 'ApplicationUpdate':
-        return icons.RESTART;
-      case 'Backup':
-        return icons.BACKUP;
-      case 'CheckHealth':
-        return icons.HEALTH;
-      case 'Housekeeping':
-        return icons.HOUSEKEEPING;
-      case 'MoviesSearch':
-        return icons.SEARCH;
-      case 'RefreshMovie':
-        return icons.REFRESH;
-      case 'RssSync':
-        return icons.RSS;
-      default:
-        return icons.SPINNER;
-    }
-  }, [name]);
+  const icon = useMemo(() => getMessageIcon(name), [name]);
+
+  const hideAllGroupedMessages = useCallback(() => {
+    originalIds.forEach((messageId) => {
+      dispatch(hideMessage({ id: messageId }));
+    });
+  }, [originalIds, dispatch]);
 
   useEffect(() => {
-    if (hideAfter) {
-      dismissTimeout.current = setTimeout(() => {
-        dispatch(hideMessage({ id }));
-
-        dismissTimeout.current = undefined;
-      }, hideAfter * 1000);
+    if (!hideAfter) {
+      return;
     }
+
+    dismissTimeout.current = setTimeout(() => {
+      hideAllGroupedMessages();
+      dismissTimeout.current = undefined;
+    }, hideAfter * 1000);
 
     return () => {
       if (dismissTimeout.current) {
         clearTimeout(dismissTimeout.current);
       }
     };
-  }, [id, hideAfter, message, type, dispatch]);
+  }, [hideAfter, hideAllGroupedMessages]);
 
   return (
     <div className={classNames(styles.message, styles[type])}>
@@ -63,6 +82,8 @@ function Message({ id, hideAfter, name, message, type }: MessageProps) {
       </div>
 
       <div className={styles.text}>{message}</div>
+
+      {count > 1 && <div className={styles.countBadge}>{count}</div>}
     </div>
   );
 }

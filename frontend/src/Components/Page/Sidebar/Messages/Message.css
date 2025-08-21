@@ -1,26 +1,43 @@
 .message {
   display: flex;
+  align-items: center;
   border-left: 3px solid var(--infoColor);
 }
 
-.iconContainer,
-.text {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  padding: 2px 0;
-  color: var(--sidebarColor);
-}
-
 .iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex: 0 0 25px;
   margin-left: 24px;
   padding: 10px 0;
+  color: var(--sidebarColor);
 }
 
 .text {
+  display: flex;
+  align-items: center;
+  flex: 1;
   margin-right: 24px;
+  padding: 2px 0;
+  color: var(--sidebarColor);
   font-size: 13px;
+}
+
+.countBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  margin-right: 12px;
+  height: 18px;
+  padding: 2px 6px;
+  border-radius: 9px;
+  background-color: var(--primaryColor);
+  color: var(--white);
+  font-weight: bold;
+  font-size: 11px;
+  line-height: 1;
 }
 
 /* Types */

@@ -5,21 +5,90 @@ import { Message as MessageModel } from 'App/State/MessagesAppState';
 import Message from './Message';
 import styles from './Messages.css';
 
+interface GroupedMessage extends MessageModel {
+  count: number;
+  originalIds: number[];
+}
+
+function createMessageGroupKey(message: MessageModel): string {
+  return `${message.message}|${message.type}|${message.name}`;
+}
+
+function groupMessages(messages: MessageModel[]): GroupedMessage[] {
+  const messageMap = new Map<string, GroupedMessage>();
+
+  messages.forEach((message) => {
+    const key = createMessageGroupKey(message);
+    const existingGroup = messageMap.get(key);
+
+    if (existingGroup) {
+      existingGroup.count += 1;
+      existingGroup.originalIds.push(message.id);
+      if (message.hideAfter > 0) {
+        existingGroup.hideAfter = message.hideAfter;
+      }
+    } else {
+      messageMap.set(key, {
+        ...message,
+        count: 1,
+        originalIds: [message.id],
+      });
+    }
+  });
+
+  return Array.from(messageMap.values());
+}
+
+function sortGroupedMessages(
+  groupedMessages: GroupedMessage[]
+): GroupedMessage[] {
+  return groupedMessages.sort((a, b) => {
+    const aIsGrouped = a.count > 1;
+    const bIsGrouped = b.count > 1;
+
+    if (aIsGrouped && !bIsGrouped) {
+      return 1;
+    }
+    if (!aIsGrouped && bIsGrouped) {
+      return -1;
+    }
+
+    if (!aIsGrouped && !bIsGrouped) {
+      const maxIdA = Math.max(...a.originalIds);
+      const maxIdB = Math.max(...b.originalIds);
+      return maxIdB - maxIdA;
+    }
+
+    return a.count - b.count;
+  });
+}
+
 function Messages() {
-  const items = useSelector((state: AppState) => state.app.messages.items);
+  const messages = useSelector((state: AppState) => state.app.messages.items);
 
-  const messages = useMemo(() => {
-    return items.reduce<MessageModel[]>((acc, item) => {
-      acc.unshift(item);
+  const sortedGroupedMessages = useMemo(() => {
+    if (!messages.length) {
+      return [];
+    }
 
-      return acc;
-    }, []);
-  }, [items]);
+    const grouped = groupMessages(messages);
+    return sortGroupedMessages(grouped);
+  }, [messages]);
 
   return (
     <div className={styles.messages}>
-      {messages.map((message) => {
-        return <Message key={message.id} {...message} />;
+      {sortedGroupedMessages.map((message) => {
+        const messageKey = `grouped-${message.originalIds.join('-')}`;
+        const mostRecentId = Math.max(...message.originalIds);
+
+        return (
+          <Message
+            key={messageKey}
+            {...message}
+            id={mostRecentId}
+            originalIds={message.originalIds}
+          />
+        );
       })}
     </div>
   );
