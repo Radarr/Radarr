@@ -1290,7 +1290,7 @@
     "DownloadClientNzbgetValidationKeepHistoryOverMax": "Для параметра NzbGet KeepHistory должно быть меньше 25000",
     "DownloadClientQbittorrentSettingsFirstAndLastFirstHelpText": "Загружать первые и последние части сначала (qBittorrent 4.1.0+)",
     "DownloadClientRTorrentSettingsDirectoryHelpText": "Необязательное место для сохранения загрузок, оставьте поле пустым, чтобы использовать расположение rTorrent по умолчанию",
-    "DownloadClientQbittorrentTorrentStateStalled": "Загрузка останавливается без подключения",
+    "DownloadClientQbittorrentTorrentStateStalled": "Загрузка не активна, т.к. нет соединений",
     "DownloadClientSabnzbdValidationUnknownVersion": "Неизвестная версия: {rawVersion}",
     "DownloadClientSettingsInitialState": "Начальное состояние",
     "DownloadClientValidationUnableToConnect": "Невозможно подключиться к {clientName}",
