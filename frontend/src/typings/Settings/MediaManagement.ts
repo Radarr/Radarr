@@ -18,4 +18,5 @@ export default interface MediaManagement {
   importExtraFiles: boolean;
   extraFileExtensions: string;
   enableMediaInfo: boolean;
+  searchForMovieDefaultOverride: string;
 }

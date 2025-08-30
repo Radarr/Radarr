@@ -4,27 +4,27 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { addMovie, setAddMovieDefault } from 'Store/Actions/addMovieActions';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
+import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
 import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import selectSettings from 'Store/Selectors/selectSettings';
 import AddNewMovieModalContent from './AddNewMovieModalContent';
 
 function createMapStateToProps() {
+  const selectMediaManagementSettings =
+    createSettingsSectionSelector('mediaManagement');
   return createSelector(
     (state) => state.addMovie,
     createDimensionsSelector(),
     createSystemStatusSelector(),
-    (addMovieState, dimensions, systemStatus) => {
-      const {
-        isAdding,
-        addError,
-        defaults
-      } = addMovieState;
+    selectMediaManagementSettings,
+    (addMovieState, dimensions, systemStatus, mediaManagementSettings) => {
+      const { isAdding, addError, defaults } = addMovieState;
 
-      const {
-        settings,
-        validationErrors,
-        validationWarnings
-      } = selectSettings(defaults, {}, addError);
+      const { settings, validationErrors, validationWarnings } = selectSettings(
+        defaults,
+        {},
+        addError
+      );
 
       return {
         isAdding,
@@ -33,6 +33,9 @@ function createMapStateToProps() {
         validationErrors,
         validationWarnings,
         isWindows: systemStatus.isWindows,
+        searchForMovieDefaultOverride:
+          mediaManagementSettings.settings.searchForMovieDefaultOverride
+            ?.value || 'default',
         ...settings
       };
     }
@@ -45,7 +48,6 @@ const mapDispatchToProps = {
 };
 
 class AddNewMovieModalContentConnector extends Component {
-
   //
   // Listeners
 
@@ -82,6 +84,7 @@ class AddNewMovieModalContentConnector extends Component {
     return (
       <AddNewMovieModalContent
         {...this.props}
+        searchForMovieDefaultOverride={this.props.searchForMovieDefaultOverride}
         onInputChange={this.onInputChange}
         onAddMoviePress={this.onAddMoviePress}
       />
@@ -99,7 +102,11 @@ AddNewMovieModalContentConnector.propTypes = {
   tags: PropTypes.object.isRequired,
   onModalClose: PropTypes.func.isRequired,
   setAddMovieDefault: PropTypes.func.isRequired,
-  addMovie: PropTypes.func.isRequired
+  addMovie: PropTypes.func.isRequired,
+  searchForMovieDefaultOverride: PropTypes.string.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(AddNewMovieModalContentConnector);
+export default connect(
+  createMapStateToProps,
+  mapDispatchToProps
+)(AddNewMovieModalContentConnector);
