@@ -26,6 +26,10 @@
   color: var(--warningColor);
 }
 
+.primary {
+  color: var(--primaryColor);
+}
+
 .purple {
   color: var(--purple);
 }
