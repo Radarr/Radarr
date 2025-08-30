@@ -90,7 +90,7 @@ function QueueStatus(props: QueueStatusProps) {
 
     if (trackedDownloadState === 'importing') {
       title += ` - ${translate('Importing')}`;
-      iconKind = kinds.PURPLE;
+      iconKind = kinds.PRIMARY;
     }
 
     if (trackedDownloadState === 'failedPending') {

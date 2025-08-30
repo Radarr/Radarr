@@ -6,6 +6,7 @@ interface CssExports {
   'disabled': string;
   'info': string;
   'pink': string;
+  'primary': string;
   'purple': string;
   'success': string;
   'warning': string;
