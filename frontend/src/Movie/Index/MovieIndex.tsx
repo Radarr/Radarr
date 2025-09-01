@@ -284,7 +284,7 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
             />
 
             <MovieIndexSelectAllButton
-              label="SelectAll"
+              label={translate('SelectAll')}
               isSelectMode={isSelectMode}
               overflowComponent={MovieIndexSelectAllMenuItem}
             />
