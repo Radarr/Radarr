@@ -56,6 +56,8 @@ function CustomFiltersModalContent(props) {
             {translate('AddCustomFilter')}
           </Button>
         </div>
+        <br />
+        {translate('FilterMoviePropertiesOnlyNotFileWarning')}
       </ModalBody>
 
       <ModalFooter>
