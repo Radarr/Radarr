@@ -100,7 +100,7 @@ function ImportList({
       <TagList tags={tags} tagList={tagList} />
 
       <div className={styles.enabled}>
-        <Label kind={kinds.DEFAULT} title="List Refresh Interval">
+        <Label kind={kinds.DEFAULT} title={translate('ListRefreshInterval')}>
           {`${translate('Refresh')}: ${formatShortTimeSpan(
             minRefreshInterval
           )}`}

@@ -304,7 +304,7 @@ function Queue() {
       <PageToolbar>
         <PageToolbarSection>
           <PageToolbarButton
-            label="Refresh"
+            label={translate('Refresh')}
             iconName={icons.REFRESH}
             isSpinning={isRefreshing}
             onPress={handleRefreshPress}
