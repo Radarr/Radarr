@@ -101,6 +101,16 @@ namespace Radarr.Api.V3.MovieFiles
                 movieFile.SceneName = movieFileResource.SceneName;
             }
 
+            if (movieFileResource.CustomFormats != null)
+            {
+                movieFile.CustomFormats = movieFileResource.CustomFormats;
+            }
+
+            if (movieFileResource.CustomFormatScore.HasValue)
+            {
+                movieFile.CustomFormatScore = (CustomFormatScore)movieFileResource.CustomFormatScore;
+            }
+
             _mediaFileService.Update(movieFile);
             return Accepted(movieFile.Id);
         }
@@ -227,6 +237,16 @@ namespace Radarr.Api.V3.MovieFiles
                 if (resourceMovieFile.IndexerFlags.HasValue)
                 {
                     movieFile.IndexerFlags = (IndexerFlags)resourceMovieFile.IndexerFlags;
+                }
+
+                if (resourceMovieFile.CustomFormats != null)
+                {
+                    movieFile.CustomFormats = resourceMovieFile.CustomFormats;
+                }
+
+                if (resourceMovieFile.CustomFormatScore.HasValue)
+                {
+                    movieFile.CustomFormatScore = (CustomFormatScore)resourceMovieFile.CustomFormatScore;
                 }
             }
 
