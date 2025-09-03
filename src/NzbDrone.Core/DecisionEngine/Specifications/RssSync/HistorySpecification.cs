@@ -1,4 +1,6 @@
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -49,7 +51,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             _logger.Debug("Checking current status of movie [{0}] in history", subject.Movie.Id);
             var mostRecent = _historyService.MostRecentForMovie(subject.Movie.Id);
 
-            if (mostRecent != null && mostRecent.EventType == MovieHistoryEventType.Grabbed)
+            if (mostRecent == null)
+            {
+                return DownloadSpecDecision.Accept();
+            }
+
+            if (mostRecent.EventType == MovieHistoryEventType.Grabbed)
             {
                 var recent = mostRecent.Date.After(DateTime.UtcNow.AddHours(-12));
 
@@ -110,6 +117,41 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
                     case UpgradeableRejectReason.UpgradesNotAllowed:
                         return DownloadSpecDecision.Reject(DownloadRejectionReason.HistoryUpgradesNotAllowed, "{0} grab event in history and Quality Profile '{1}' does not allow upgrades", rejectionSubject, qualityProfile.Name);
+                }
+            }
+
+            if (subject.Movie is { HasFile: true })
+            {
+                MovieHistory availableUsableMovieHistoryForCustomFormatScore;
+
+                var movieHistoryEventTypeForHistoryComparison = new[]
+                {
+                    MovieHistoryEventType.Grabbed,
+                    MovieHistoryEventType.MovieFolderImported
+                };
+
+                if (movieHistoryEventTypeForHistoryComparison.Contains(mostRecent.EventType))
+                {
+                    availableUsableMovieHistoryForCustomFormatScore = mostRecent;
+                }
+                else
+                {
+                    availableUsableMovieHistoryForCustomFormatScore = _historyService.MostRecentForMovieInEventCollection(
+                        subject.Movie.Id,
+                        new ReadOnlyCollection<MovieHistoryEventType>(movieHistoryEventTypeForHistoryComparison));
+                }
+
+                if (availableUsableMovieHistoryForCustomFormatScore == null)
+                {
+                    return DownloadSpecDecision.Accept();
+                }
+
+                var mostRecentCustomFormat = _formatService.ParseCustomFormat(availableUsableMovieHistoryForCustomFormatScore, subject.Movie);
+                var mostRecentCustomFormatScore = qualityProfile.CalculateCustomFormatScore(mostRecentCustomFormat);
+
+                if (mostRecentCustomFormatScore > subject.CustomFormatScore)
+                {
+                    return DownloadSpecDecision.Reject(DownloadRejectionReason.HistoryCustomFormatScore, "Quality Profile '{0}' has a higher Custom Format score than the report: {1}", qualityProfile.Name, subject.CustomFormatScore);
                 }
             }
 
