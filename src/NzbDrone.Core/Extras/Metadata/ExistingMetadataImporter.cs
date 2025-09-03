@@ -67,7 +67,11 @@ namespace NzbDrone.Core.Extras.Metadata
                             continue;
                         }
 
-                        metadata.MovieFileId = movie.MovieFileId;
+                        // Don't associate MovieImage files with the MovieFileId, as they're generally not specific to the quality
+                        if (metadata.Type == MetadataType.MovieMetadata)
+                        {
+                            metadata.MovieFileId = movie.MovieFileId;
+                        }
                     }
 
                     metadata.Extension = Path.GetExtension(possibleMetadataFile);

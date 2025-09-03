@@ -49,8 +49,8 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             _movieTranslationsService = movieTranslationsService;
         }
 
-        private static readonly Regex MovieImagesRegex = new Regex(@"^(?<type>poster|banner|fanart|clearart|discart|keyart|landscape|logo|backdrop|clearlogo)\.(?:png|jpe?g)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex MovieFileImageRegex = new Regex(@"(?<type>-thumb|-poster|-banner|-fanart|-clearart|-discart|-keyart|-landscape|-logo|-backdrop|-clearlogo)\.(?:png|jpe?g)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex MovieImagesRegex = new Regex(@"^((folder|poster|cover|default|movie|clearart|backdrop|fanart|background|art)(-\d+)?|(banner|disc|cdart|logo|thumb|landscape|discart|keyart|clearlogo))\.(png|jpe?g|tbn|gif)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex MovieFileImageRegex = new Regex(@"(-poster|-cover|-default|-movie|-clearart|-banner|-disc|-cdart|-logo|-thumb|-landscape|-discart|-keyart|-clearlogo|-fanart|-logo|-backdrop)\.(png|jpe?g|tbn|gif)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public override string Name => "Kodi (XBMC) / Emby";
 
