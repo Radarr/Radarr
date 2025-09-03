@@ -203,6 +203,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("DownloadClient", message.DownloadClientInfo?.Type);
             history.Data.Add("DownloadClientName", message.DownloadClientInfo?.Name);
             history.Data.Add("ReleaseGroup", message.MovieInfo.ReleaseGroup);
+            history.Data.Add("Protocol", ((int)message.MovieInfo.DownloadItem?.DownloadClientInfo?.Protocol).ToString());
             history.Data.Add("CustomFormatScore", message.MovieInfo.CustomFormatScore.ToString());
             history.Data.Add("Size", message.MovieInfo.Size.ToString());
             history.Data.Add("IndexerFlags", message.ImportedMovie.IndexerFlags.ToString());
