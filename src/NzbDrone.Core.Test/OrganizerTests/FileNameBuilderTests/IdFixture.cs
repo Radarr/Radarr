@@ -70,6 +70,18 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                    .Should().Be("Movie Title");
         }
 
+        [TestCase("{Movie Title} [imdb={ImdbId}]")]
+        [TestCase("{Movie Title} {[imdb={ImdbId}]}")]
+        public void should_skip_imdb_tag_if_null_emby_format(string movieFormat)
+        {
+            _namingConfig.MovieFolderFormat = movieFormat;
+
+            _movie.ImdbId = null;
+
+            Subject.GetMovieFolder(_movie)
+                   .Should().Be("Movie Title");
+        }
+
         [TestCase("{Movie Title} {{imdb-{ImdbId}}}")]
         public void should_handle_imdb_tag_curly_brackets(string movieFormat)
         {
@@ -77,6 +89,24 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             Subject.GetMovieFolder(_movie)
                 .Should().Be($"Movie Title {{{{imdb-{_movie.ImdbId}}}}}");
+        }
+
+        [TestCase("{Movie Title} {[imdb-{ImdbId}]}")]
+        public void should_handle_imdb_tag_curly_brackets2(string movieFormat)
+        {
+            _namingConfig.MovieFolderFormat = movieFormat;
+
+            Subject.GetMovieFolder(_movie)
+                .Should().Be($"Movie Title {{[imdb-{_movie.ImdbId}]}}");
+        }
+
+        [TestCase("{Movie Title} [imdb={ImdbId}]")]
+        public void should_handle_imdb_tag_emby_format(string movieFormat)
+        {
+            _namingConfig.MovieFolderFormat = movieFormat;
+
+            Subject.GetMovieFolder(_movie)
+                .Should().Be($"Movie Title [imdb={_movie.ImdbId}]");
         }
 
         [TestCase("{Movie Title} {{tmdb-{TmdbId}}}")]

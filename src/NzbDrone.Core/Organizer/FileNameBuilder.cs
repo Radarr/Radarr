@@ -38,8 +38,10 @@ namespace NzbDrone.Core.Organizer
         private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly Logger _logger;
 
-        private static readonly Regex TitleRegex = new Regex(@"(?<tag>\{(?<prefix>[-{ ._\[(]*)(?:imdb(?:id)?-|edition-))?\{(?<prefix>[-{ ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[ ,a-z0-9|+-]+(?<![- ])))?(?<suffix>[-} ._)\]]*)\}",
-                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private static readonly Regex TokenRegex = new Regex(
+            @"(?<tagPrefix>[{\[(]*)(?<tag>(?:imdb(?:id)?[-=]|edition-))?(?<tokenPrefix>[{\[(]*){(?<insidePrefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?<insideSuffix>[- ._)\]]*)(?::(?<customFormat>[ ,a-z0-9|+-]+(?<![- ]))(?<customFormatSuffix>[- ._})\]]*))?}(?<tokenSuffix>[})\]]*)",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
 
         public static readonly Regex ReleaseYearRegex = new Regex(@"\{[-{ ._\[(]*Release[- ._]Year[-} ._)\]]*\}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -122,7 +124,7 @@ namespace NzbDrone.Core.Organizer
             var pattern = namingConfig.StandardMovieFormat;
 
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
-            var multipleTokens = TitleRegex.Matches(pattern).Count > 1;
+            var multipleTokens = TokenRegex.Matches(pattern).Count > 1;
 
             UpdateMediaInfoIfNeeded(pattern, movieFile, movie);
 
@@ -175,7 +177,7 @@ namespace NzbDrone.Core.Organizer
             }
 
             var pattern = namingConfig.MovieFolderFormat;
-            var multipleTokens = TitleRegex.Matches(pattern).Count > 1;
+            var multipleTokens = TokenRegex.Matches(pattern).Count > 1;
 
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
@@ -551,7 +553,7 @@ namespace NzbDrone.Core.Organizer
             }
 
             var schemaRevision = movieFile.MediaInfo != null ? movieFile.MediaInfo.SchemaRevision : 0;
-            var matches = TitleRegex.Matches(pattern);
+            var matches = TokenRegex.Matches(pattern);
 
             var shouldUpdateMediaInfo = matches.Cast<Match>()
                 .Select(m => MinimumMediaInfoSchemaRevisions.GetValueOrDefault(m.Value, -1))
@@ -565,7 +567,7 @@ namespace NzbDrone.Core.Organizer
 
         private string ReplaceTokens(string pattern, Dictionary<string, Func<TokenMatch, string>> tokenHandlers, NamingConfig namingConfig)
         {
-            return TitleRegex.Replace(pattern, match => ReplaceToken(match, tokenHandlers, namingConfig));
+            return TokenRegex.Replace(pattern, match => ReplaceToken(match, tokenHandlers, namingConfig));
         }
 
         private string ReplaceToken(Match match, Dictionary<string, Func<TokenMatch, string>> tokenHandlers, NamingConfig namingConfig)
@@ -573,12 +575,16 @@ namespace NzbDrone.Core.Organizer
             var tokenMatch = new TokenMatch
             {
                 RegexMatch = match,
+                TagPrefix = match.Groups["tagPrefix"].Value,
                 Tag = match.Groups["tag"].Value,
-                Prefix = match.Groups["prefix"].Value,
-                Separator = match.Groups["separator"].Value,
-                Suffix = match.Groups["suffix"].Value,
+                TokenPrefix = match.Groups["tokenPrefix"].Value,
+                InsidePrefix = match.Groups["insidePrefix"].Value,
                 Token = match.Groups["token"].Value,
-                CustomFormat = match.Groups["customFormat"].Value
+                Separator = match.Groups["separator"].Value,
+                InsideSuffix = match.Groups["insideSuffix"].Value,
+                CustomFormat = match.Groups["customFormat"].Value,
+                CustomFormatSuffix = match.Groups["customFormatSuffix"].Value,
+                TokenSuffix = match.Groups["tokenSuffix"].Value
             };
 
             if (tokenMatch.CustomFormat.IsNullOrWhiteSpace())
@@ -608,7 +614,7 @@ namespace NzbDrone.Core.Organizer
 
             if (!replacementText.IsNullOrWhiteSpace())
             {
-                replacementText = tokenMatch.Tag + tokenMatch.Prefix + replacementText + tokenMatch.Suffix;
+                replacementText = tokenMatch.TagPrefix + tokenMatch.Tag + tokenMatch.TokenPrefix + tokenMatch.InsidePrefix + replacementText + tokenMatch.InsideSuffix + tokenMatch.CustomFormatSuffix + tokenMatch.TokenSuffix;
             }
 
             return replacementText;
@@ -754,16 +760,20 @@ namespace NzbDrone.Core.Organizer
     internal sealed class TokenMatch
     {
         public Match RegexMatch { get; set; }
+        public string TagPrefix { get; set; }
         public string Tag { get; set; }
-        public string Prefix { get; set; }
-        public string Separator { get; set; }
-        public string Suffix { get; set; }
+        public string TokenPrefix { get; set; }
+        public string InsidePrefix { get; set; }
         public string Token { get; set; }
+        public string Separator { get; set; }
+        public string InsideSuffix { get; set; }
         public string CustomFormat { get; set; }
+        public string CustomFormatSuffix { get; set; }
+        public string TokenSuffix { get; set; }
 
         public string DefaultValue(string defaultValue)
         {
-            if (string.IsNullOrEmpty(Prefix) && string.IsNullOrEmpty(Suffix))
+            if (string.IsNullOrEmpty(InsidePrefix) && string.IsNullOrEmpty(InsideSuffix))
             {
                 return defaultValue;
             }
