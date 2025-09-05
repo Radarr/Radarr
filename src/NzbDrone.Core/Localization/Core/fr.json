@@ -2036,5 +2036,6 @@
     "NotificationsPushcutSettingsMetadataLinks": "Lien de métadonnées",
     "NotificationsPushcutSettingsMetadataLinksHelpText": "Ajouter un lien vers les métadonnées de la série lors de l'envoi de notifications",
     "ImportListsTraktSettingsGenresMovieHelpText": "Filtrer les films par genre Trakt (séparés par des virgules) Uniquement pour les listes populaires",
-    "ReleasePush": "Poussée de version"
+    "ReleasePush": "Poussée de version",
+    "FilterMoviePropertiesOnlyNotFileWarning": "Les filtres sont seulement disponibles pour les propriétés d'un film, ils ne sont pas disponibles pour les propriétés du ou des fichiers que vous pouvez avoir pour ce film."
 }
