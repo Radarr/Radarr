@@ -2036,5 +2036,6 @@
     "NotificationsPushcutSettingsIncludePoster": "Incluir póster",
     "NotificationsPushcutSettingsIncludePosterHelpText": "Incluir póster con notificación",
     "NotificationsPushcutSettingsMetadataLinks": "Enlaces de metadatos",
-    "NotificationsPushcutSettingsMetadataLinksHelpText": "Añade un enlace a los metadatos de las series cuando se envían notificaciones"
+    "NotificationsPushcutSettingsMetadataLinksHelpText": "Añade un enlace a los metadatos de las series cuando se envían notificaciones",
+    "FilterMoviePropertiesOnlyNotFileWarning": "Los filtros están disponibles solo para las propiedades de una película, no para las propiedades del archivo(s) que puedas tener para esa película."
 }
