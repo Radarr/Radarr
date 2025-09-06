@@ -280,6 +280,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 {
                     var setElement = new XElement("set");
 
+                    setElement.SetAttributeValue("tmdbcolid", movie.MovieMetadata.Value.CollectionTmdbId);
                     setElement.Add(new XElement("name", movie.MovieMetadata.Value.CollectionTitle));
                     setElement.Add(new XElement("overview"));
 
