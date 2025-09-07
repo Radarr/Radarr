@@ -6,9 +6,9 @@
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="Diacritical.Net" Version="1.0.4" />
     <PackageReference Include="Equ" Version="2.3.0" />
-    <PackageReference Include="MailKit" Version="4.12.1" />
+    <PackageReference Include="MailKit" Version="4.13.0" />
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="8.0.17" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
     <PackageReference Include="Npgsql" Version="9.0.3" />
     <PackageReference Include="Polly" Version="8.6.0" />
     <PackageReference Include="Servarr.FFMpegCore" Version="4.7.0-26" />
