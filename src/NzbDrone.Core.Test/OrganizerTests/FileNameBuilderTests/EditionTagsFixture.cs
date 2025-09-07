@@ -54,7 +54,9 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         }
 
         [TestCase("{Movie Title} {Edition Tags}")]
+        [TestCase("{Movie Title} {- Edition Tags}")]
         [TestCase("{Movie Title} {{Edition Tags}}")]
+        [TestCase("{Movie Title} edition-{Edition Tags}")]
         [TestCase("{Movie Title} {edition-{Edition Tags}}")]
         [TestCase("{Movie Title} {{edition-{Edition Tags}}}")]
         public void should_conditional_hide_edition_tags(string movieFormat)
@@ -174,6 +176,24 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             Subject.BuildFileName(_movie, _movieFile)
                    .Should().Be(expected);
+        }
+
+        [TestCase("{Movie Title} {{Edition Tags}}")]
+        public void should_handle_edition_curly_brackets(string movieFormat)
+        {
+            _namingConfig.StandardMovieFormat = movieFormat;
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().Be("Movie Title {Uncut}");
+        }
+
+        [TestCase("{Movie Title} {{edition-{Edition Tags}}}")]
+        public void should_handle_edition_tag_curly_brackets(string movieFormat)
+        {
+            _namingConfig.StandardMovieFormat = movieFormat;
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().Be("Movie Title {{edition-Uncut}}");
         }
     }
 }
