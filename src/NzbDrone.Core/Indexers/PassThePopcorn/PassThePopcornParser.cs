@@ -51,12 +51,12 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
                     if (torrent.GoldenPopcorn)
                     {
-                        flags |= IndexerFlags.PTP_Golden;
+                        flags |= IndexerFlags.G_Golden;
                     }
 
                     if (torrent.Checked)
                     {
-                        flags |= IndexerFlags.PTP_Approved;
+                        flags |= IndexerFlags.G_Approved;
                     }
 
                     switch (torrent.FreeleechType?.ToUpperInvariant())

@@ -200,8 +200,8 @@ namespace NzbDrone.Core.DecisionEngine
                     {
                         case IndexerFlags.G_DoubleUpload:
                         case IndexerFlags.G_Freeleech:
-                        case IndexerFlags.PTP_Approved:
-                        case IndexerFlags.PTP_Golden:
+                        case IndexerFlags.G_Approved:
+                        case IndexerFlags.G_Golden:
                         case IndexerFlags.G_Internal:
                             score += 2;
                             break;

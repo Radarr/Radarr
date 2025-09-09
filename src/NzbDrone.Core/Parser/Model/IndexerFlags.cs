@@ -21,14 +21,14 @@ namespace NzbDrone.Core.Parser.Model
         G_DoubleUpload = 4,
 
         /// <summary>
-        /// Torrent is a very high quality encode, as applied manually by the PTP staff
+        /// Torrent is a very high quality encode
         /// </summary>
-        PTP_Golden = 8,
+        G_Golden = 8,
 
         /// <summary>
-        /// Torrent from PTP that has been checked (by staff or torrent checkers) for release description requirements
+        /// Torrent that has been checked for release description requirements
         /// </summary>
-        PTP_Approved = 16,
+        G_Approved = 16,
 
         /// <summary>
         /// Uploader is an internal release group

@@ -263,6 +263,16 @@ namespace NzbDrone.Core.Indexers.Torznab
                 flags |= IndexerFlags.G_Scene;
             }
 
+            if (tags.Any(t => t.EqualsIgnoreCase("approved")))
+            {
+                flags |= IndexerFlags.G_Approved;
+            }
+
+            if (tags.Any(t => t.EqualsIgnoreCase("golden")))
+            {
+                flags |= IndexerFlags.G_Golden;
+            }
+
             return flags;
         }
 
