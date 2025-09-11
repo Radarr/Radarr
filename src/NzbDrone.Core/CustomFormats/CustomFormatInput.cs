@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
@@ -13,6 +14,7 @@ namespace NzbDrone.Core.CustomFormats
         public IndexerFlags IndexerFlags { get; set; }
         public List<Language> Languages { get; set; }
         public string Filename { get; set; }
+        public DownloadProtocol DownloadProtocol { get; set; }
 
         public CustomFormatInput()
         {
