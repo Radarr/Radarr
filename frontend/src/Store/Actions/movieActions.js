@@ -152,6 +152,14 @@ export const filterPredicates = {
     return dateFilterPredicate(item.physicalRelease, filterValue, type);
   },
 
+  dateConsideredAvailable: function(item, filterValue, type) {
+    return dateFilterPredicate(item.dateConsideredAvailable, filterValue, type);
+  },
+
+  minimumAvailabilityDate: function(item, filterValue, type) {
+    return dateFilterPredicate(item.minimumAvailabilityDate, filterValue, type);
+  },
+
   digitalRelease: function(item, filterValue, type) {
     return dateFilterPredicate(item.digitalRelease, filterValue, type);
   },

@@ -80,6 +80,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     tmdbId,
     imdbId,
     isAvailable,
+    dateConsideredAvailable,
     hasFile,
     movieFile,
     youTubeTrailerId,
@@ -363,6 +364,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
                 monitored={monitored}
                 hasFile={hasFile}
                 isAvailable={isAvailable}
+                dateConsideredAvailable={dateConsideredAvailable}
                 status={status}
                 width={125}
                 detailedProgressBar={true}
