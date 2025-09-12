@@ -2036,5 +2036,6 @@
     "NotificationsPushcutSettingsIncludePosterHelpText": "Bildirim içeriğine poster ekleyin",
     "NotificationsPushcutSettingsMetadataLinks": "Meta Veri Bağlantıları",
     "NotificationsPushcutSettingsIncludePoster": "Poster'i ekle",
-    "NotificationsPushcutSettingsMetadataLinksHelpText": "Bildirim gönderirken dizi meta verilerine bağlantılar ekleyin"
+    "NotificationsPushcutSettingsMetadataLinksHelpText": "Bildirim gönderirken dizi meta verilerine bağlantılar ekleyin",
+    "FilterMoviePropertiesOnlyNotFileWarning": "Filtreler yalnızca bir filmin özellikleri için kullanılabilir, o filme ait sahip olduğunuz dosyanın/dosyaların özellikleri için kullanılamaz."
 }
