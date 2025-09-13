@@ -25,5 +25,6 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
             Logger.Trace("IMDb List {0}: Request URL: {1}", Settings.ListId, request.Url);
 
             return request;
+        }
     }
 }
