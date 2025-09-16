@@ -544,6 +544,8 @@
   "DownloadClientTransmissionSettingsUrlBaseHelpText": "Adds a prefix to the {clientName} rpc url, eg {url}, defaults to '{defaultUrl}'",
   "DownloadClientUTorrentProviderMessage": "uTorrent has a history of including cryptominers, malware and ads, we strongly encourage you to choose a different client.",
   "DownloadClientUTorrentTorrentStateError": "uTorrent is reporting an error",
+  "DownloadClientRQbitSettingsUseSslHelpText": "Use SSL when connecting to RQBit",
+  "DownloadClientRQbitSettingsUrlBaseHelpText": "Adds a prefix to the RQBit API, such as /rqbit",
   "DownloadClientUnavailable": "Download Client Unavailable",
   "DownloadClientValidationApiKeyIncorrect": "API Key Incorrect",
   "DownloadClientValidationApiKeyRequired": "API Key Required",
