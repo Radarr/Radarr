@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Name (2017) (Showtime) (1080p.BD.DD5.1.x265-TheSickle[TAoE])", "TheSickle")]
         public void should_parse_release_group(string title, string expected)
         {
-            Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
+            Parser.ReleaseGroupParser.ParseReleaseGroup(title).Should().Be(expected);
         }
 
         [TestCase("Movie Name (2020) [2160p x265 10bit S82 Joy]", "Joy")]
@@ -128,13 +128,13 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Title (2024) (1080p BluRay x265 SDR DDP 5.1 English -BEN THE MEN", "BEN THE MEN")]
         public void should_parse_exception_release_group(string title, string expected)
         {
-            Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
+            Parser.ReleaseGroupParser.ParseReleaseGroup(title).Should().Be(expected);
         }
 
         [TestCase(@"C:\Test\Doctor.Series.2005.s01e01.internal.bdrip.x264-archivist.mkv", "archivist")]
         public void should_not_include_extension_in_release_group(string title, string expected)
         {
-            Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
+            Parser.ReleaseGroupParser.ParseReleaseGroup(title).Should().Be(expected);
         }
 
         [TestCase("Some.Movie.S02E04.720p.WEBRip.x264-SKGTV English", "SKGTV")]
@@ -143,7 +143,7 @@ namespace NzbDrone.Core.Test.ParserTests
 
         public void should_not_include_language_in_release_group(string title, string expected)
         {
-            Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
+            Parser.ReleaseGroupParser.ParseReleaseGroup(title).Should().Be(expected);
         }
 
         [TestCase("Some.Movie.2019.1080p.BDRip.X264.AC3-EVO-RP", "EVO")]
@@ -173,7 +173,7 @@ namespace NzbDrone.Core.Test.ParserTests
 
         public void should_not_include_bad_suffix_in_release_group(string title, string expected)
         {
-            Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
+            Parser.ReleaseGroupParser.ParseReleaseGroup(title).Should().Be(expected);
         }
 
         [TestCase("[FFF] Invaders of the Movies!! - S01E11 - Someday, With Movies", "FFF")]
@@ -184,13 +184,13 @@ namespace NzbDrone.Core.Test.ParserTests
 
         public void should_parse_anime_release_groups(string title, string expected)
         {
-            Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
+            Parser.ReleaseGroupParser.ParseReleaseGroup(title).Should().Be(expected);
         }
 
         [TestCase("Terrible.Anime.Title.2020.DBOX.480p.x264-iKaos [v3] [6AFFEF6B]")]
         public void should_not_parse_anime_hash_as_release_group(string title)
         {
-            Parser.Parser.ParseReleaseGroup(title).Should().BeNull();
+            Parser.ReleaseGroupParser.ParseReleaseGroup(title).Should().BeNull();
         }
     }
 }
