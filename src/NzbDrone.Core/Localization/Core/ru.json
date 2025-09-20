@@ -2036,5 +2036,6 @@
     "NotificationsPushcutSettingsIncludePoster": "Добавить постер",
     "NotificationsPushcutSettingsIncludePosterHelpText": "Добавляет постер в уведомление",
     "NotificationsPushcutSettingsMetadataLinks": "Ссылки на метаданные",
-    "NotificationsPushcutSettingsMetadataLinksHelpText": "Добавляет ссылки на метаданные сериала при отправке уведомлений"
+    "NotificationsPushcutSettingsMetadataLinksHelpText": "Добавляет ссылки на метаданные сериала при отправке уведомлений",
+    "FilterMoviePropertiesOnlyNotFileWarning": "Фильтры доступны только для свойств фильма, они недоступны для свойств файл(ов), которые могут быть у вас для этого фильма."
 }
