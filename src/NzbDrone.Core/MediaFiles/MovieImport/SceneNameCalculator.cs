@@ -14,7 +14,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
             if (!otherVideoFiles && downloadClientInfo != null)
             {
-                return Parser.Parser.RemoveFileExtension(downloadClientInfo.ReleaseTitle);
+                return FileExtensions.RemoveFileExtension(downloadClientInfo.ReleaseTitle);
             }
 
             var fileName = Path.GetFileNameWithoutExtension(localMovie.Path.CleanFilePath());
