@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Title Future 2023 DVDRip XviD RUNNER[www.allstate.net]", null)]
         public void should_not_parse_url_in_group(string title, string expected)
         {
-            Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
+            Parser.ReleaseGroupParser.ParseReleaseGroup(title).Should().Be(expected);
         }
     }
 }

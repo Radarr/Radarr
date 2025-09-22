@@ -12,6 +12,7 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration.Framework;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 
 namespace NzbDrone.Core.Datastore.Migration
@@ -809,7 +810,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private static string GetSceneNameMatch(string sceneName, params string[] tokens)
         {
-            sceneName = sceneName.IsNotNullOrWhiteSpace() ? Parser.Parser.RemoveFileExtension(sceneName) : string.Empty;
+            sceneName = sceneName.IsNotNullOrWhiteSpace() ? FileExtensions.RemoveFileExtension(sceneName) : string.Empty;
 
             foreach (var token in tokens)
             {
