@@ -49,18 +49,18 @@ public static class ReleaseGroupParser
 
         title = CleanReleaseGroupRegex.Replace(title);
 
-        var exceptionReleaseGroupRegex = ExceptionReleaseGroupRegex.Matches(title);
-
-        if (exceptionReleaseGroupRegex.Count != 0)
-        {
-            return exceptionReleaseGroupRegex.OfType<Match>().Last().Groups["releasegroup"].Value;
-        }
-
         var exceptionExactMatch = ExceptionReleaseGroupRegexExact.Matches(title);
 
         if (exceptionExactMatch.Count != 0)
         {
             return exceptionExactMatch.OfType<Match>().Last().Groups["releasegroup"].Value;
+        }
+
+        var exceptionReleaseGroupRegex = ExceptionReleaseGroupRegex.Matches(title);
+
+        if (exceptionReleaseGroupRegex.Count != 0)
+        {
+            return exceptionReleaseGroupRegex.OfType<Match>().Last().Groups["releasegroup"].Value;
         }
 
         var matches = ReleaseGroupRegex.Matches(title);
