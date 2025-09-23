@@ -23,6 +23,8 @@ namespace NzbDrone.Core.Parser
 
         private static readonly RegexReplace[] PreSubstitutionRegex = Array.Empty<RegexReplace>();
 
+        private static readonly Regex PostTitleParametersRegex = new Regex(@"(?<additional>.+)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+
         private static readonly Regex[] ReportMovieTitleRegex = new[]
         {
             // Anime [Subgroup] and Year
@@ -49,7 +51,7 @@ namespace NzbDrone.Core.Parser
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),*/
 
             // Normal movie format, e.g: Mission.Impossible.3.2011
-            new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|(1(8|9)|20)\d{2}|\]|\W(1(8|9)|20)\d{2})))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|(1(8|9)|20)\d{2}|\]|\W(1(8|9)|20)\d{2})))+(\W+|_|$)(?!\\)" + PostTitleParametersRegex, RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
             // PassThePopcorn Torrent names: Star.Wars[PassThePopcorn]
             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(\[\w *\])))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
@@ -223,10 +225,8 @@ namespace NzbDrone.Core.Parser
                     Logger.Debug("Reversed name detected. Converted to '{0}'", title);
                 }
 
-                var releaseTitle = RemoveFileExtension(title);
-
                 // Trim dashes from end
-                releaseTitle = releaseTitle.Trim('-', '_');
+                var releaseTitle = title.Trim('-', '_');
 
                 releaseTitle = releaseTitle.Replace("【", "[").Replace("】", "]");
 
@@ -268,78 +268,84 @@ namespace NzbDrone.Core.Parser
                 {
                     var match = regex.Matches(simpleTitle);
 
-                    if (match.Count != 0)
+                    if (match.Count == 0)
                     {
-                        Logger.Trace(regex);
-                        try
+                        continue;
+                    }
+
+                    Logger.Trace(regex);
+                    try
+                    {
+                        var result = ParseMovieMatchCollection(match);
+
+                        if (result == null)
                         {
-                            var result = ParseMovieMatchCollection(match);
+                            continue;
+                        }
 
-                            if (result != null)
+                        releaseTitle = RemoveFileExtension(releaseTitle);
+
+                        // TODO: Add tests for this!
+                        var simpleReleaseTitle = SimpleReleaseTitleRegex.Replace(releaseTitle, string.Empty);
+
+                        var simpleTitleReplaceString = match[0].Groups["title"].Success ? match[0].Groups["title"].Value : result.PrimaryMovieTitle;
+
+                        if (simpleTitleReplaceString.IsNotNullOrWhiteSpace())
+                        {
+                            if (match[0].Groups["title"].Success)
                             {
-                                // TODO: Add tests for this!
-                                var simpleReleaseTitle = SimpleReleaseTitleRegex.Replace(releaseTitle, string.Empty);
-
-                                var simpleTitleReplaceString = match[0].Groups["title"].Success ? match[0].Groups["title"].Value : result.PrimaryMovieTitle;
-
-                                if (simpleTitleReplaceString.IsNotNullOrWhiteSpace())
-                                {
-                                    if (match[0].Groups["title"].Success)
-                                    {
-                                        simpleReleaseTitle = simpleReleaseTitle.Remove(match[0].Groups["title"].Index, match[0].Groups["title"].Length)
-                                                                               .Insert(match[0].Groups["title"].Index, simpleTitleReplaceString.Contains('.') ? "A.Movie" : "A Movie");
-                                    }
-                                    else
-                                    {
-                                        simpleReleaseTitle = simpleReleaseTitle.Replace(simpleTitleReplaceString, simpleTitleReplaceString.Contains('.') ? "A.Movie" : "A Movie");
-                                    }
-                                }
-
-                                result.ReleaseGroup = ParseReleaseGroup(simpleReleaseTitle);
-
-                                var subGroup = GetSubGroup(match);
-                                if (!subGroup.IsNullOrWhiteSpace())
-                                {
-                                    result.ReleaseGroup = subGroup;
-                                }
-
-                                result.HardcodedSubs = ParseHardcodeSubs(title);
-
-                                Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
-
-                                result.Languages = LanguageParser.ParseLanguages(result.ReleaseGroup.IsNotNullOrWhiteSpace() ? simpleReleaseTitle.Replace(result.ReleaseGroup, "RlsGrp") : simpleReleaseTitle);
-                                Logger.Debug("Languages parsed: {0}", string.Join(", ", result.Languages));
-
-                                result.Quality = QualityParser.ParseQuality(title);
-                                Logger.Debug("Quality parsed: {0}", result.Quality);
-
-                                if (result.Edition.IsNullOrWhiteSpace())
-                                {
-                                    result.Edition = ParseEdition(simpleReleaseTitle);
-                                    Logger.Debug("Edition parsed: {0}", result.Edition);
-                                }
-
-                                result.ReleaseHash = GetReleaseHash(match);
-                                if (!result.ReleaseHash.IsNullOrWhiteSpace())
-                                {
-                                    Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
-                                }
-
-                                result.OriginalTitle = originalTitle;
-                                result.ReleaseTitle = releaseTitle;
-                                result.SimpleReleaseTitle = simpleReleaseTitle;
-
-                                result.ImdbId = ParseImdbId(simpleReleaseTitle);
-                                result.TmdbId = ParseTmdbId(simpleReleaseTitle);
-
-                                return result;
+                                simpleReleaseTitle = simpleReleaseTitle.Remove(match[0].Groups["title"].Index, match[0].Groups["title"].Length)
+                                    .Insert(match[0].Groups["title"].Index, simpleTitleReplaceString.Contains('.') ? "A.Movie" : "A Movie");
+                            }
+                            else
+                            {
+                                simpleReleaseTitle = simpleReleaseTitle.Replace(simpleTitleReplaceString, simpleTitleReplaceString.Contains('.') ? "A.Movie" : "A Movie");
                             }
                         }
-                        catch (InvalidDateException ex)
+
+                        result.ReleaseGroup = ParseReleaseGroup(simpleReleaseTitle);
+
+                        var subGroup = GetSubGroup(match);
+                        if (!subGroup.IsNullOrWhiteSpace())
                         {
-                            Logger.Debug(ex, ex.Message);
-                            break;
+                            result.ReleaseGroup = subGroup;
                         }
+
+                        result.HardcodedSubs = ParseHardcodeSubs(title);
+
+                        Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
+
+                        result.Languages = LanguageParser.ParseLanguages(result.ReleaseGroup.IsNotNullOrWhiteSpace() ? simpleReleaseTitle.Replace(result.ReleaseGroup, "RlsGrp") : simpleReleaseTitle);
+                        Logger.Debug("Languages parsed: {0}", string.Join(", ", result.Languages));
+
+                        result.Quality = QualityParser.ParseQuality(title);
+                        Logger.Debug("Quality parsed: {0}", result.Quality);
+
+                        if (result.Edition.IsNullOrWhiteSpace())
+                        {
+                            result.Edition = ParseEdition(simpleReleaseTitle);
+                            Logger.Debug("Edition parsed: {0}", result.Edition);
+                        }
+
+                        result.ReleaseHash = GetReleaseHash(match);
+                        if (!result.ReleaseHash.IsNullOrWhiteSpace())
+                        {
+                            Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
+                        }
+
+                        result.OriginalTitle = originalTitle;
+                        result.ReleaseTitle = releaseTitle;
+                        result.SimpleReleaseTitle = simpleReleaseTitle;
+
+                        result.ImdbId = ParseImdbId(simpleReleaseTitle);
+                        result.TmdbId = ParseTmdbId(simpleReleaseTitle);
+
+                        return result;
+                    }
+                    catch (InvalidDateException ex)
+                    {
+                        Logger.Debug(ex, ex.Message);
+                        break;
                     }
                 }
             }
@@ -663,6 +669,11 @@ namespace NzbDrone.Core.Parser
             if (matchCollection[0].Groups["edition"].Success)
             {
                 result.Edition = matchCollection[0].Groups["edition"].Value.Replace(".", " ");
+            }
+
+            if (matchCollection[0].Groups["additional"].Success)
+            {
+                result.PostTitleParameters = matchCollection[0].Groups["additional"].Value.Replace(".", " ");
             }
 
             var movieTitles = new List<string>();

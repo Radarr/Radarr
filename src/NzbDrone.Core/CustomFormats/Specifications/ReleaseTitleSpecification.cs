@@ -8,7 +8,7 @@ namespace NzbDrone.Core.CustomFormats
 
         protected override bool IsSatisfiedByWithoutNegate(CustomFormatInput input)
         {
-            return MatchString(input.MovieInfo?.SimpleReleaseTitle) || MatchString(input.Filename);
+            return MatchString(input.MovieInfo?.SimpleReleaseTitle) || MatchString(input.Filename) || MatchString(input.MovieInfo?.PostTitleParameters);
         }
     }
 }
