@@ -137,7 +137,7 @@ PackageLinux()
 
     echo "Adding Radarr.Mono to UpdatePackage"
     cp $folder/Radarr.Mono.* $folder/Radarr.Update
-    if [ "$framework" = "net8.0" ]; then
+    if [ "$framework" = "net10.0" ]; then
         cp $folder/Mono.Posix.NETStandard.* $folder/Radarr.Update
         cp $folder/libMonoPosixHelper.* $folder/Radarr.Update
     fi
@@ -165,7 +165,7 @@ PackageMacOS()
 
     echo "Adding Radarr.Mono to UpdatePackage"
     cp $folder/Radarr.Mono.* $folder/Radarr.Update
-    if [ "$framework" = "net8.0" ]; then
+    if [ "$framework" = "net10.0" ]; then
         cp $folder/Mono.Posix.NETStandard.* $folder/Radarr.Update
         cp $folder/libMonoPosixHelper.* $folder/Radarr.Update
     fi
@@ -377,14 +377,14 @@ then
     Build
     if [[ -z "$RID" || -z "$FRAMEWORK" ]];
     then
-        PackageTests "net8.0" "win-x64"
-        PackageTests "net8.0" "win-x86"
-        PackageTests "net8.0" "linux-x64"
-        PackageTests "net8.0" "linux-musl-x64"
-        PackageTests "net8.0" "osx-x64"
+        PackageTests "net10.0" "win-x64"
+        PackageTests "net10.0" "win-x86"
+        PackageTests "net10.0" "linux-x64"
+        PackageTests "net10.0" "linux-musl-x64"
+        PackageTests "net10.0" "osx-x64"
         if [ "$ENABLE_EXTRA_PLATFORMS" = "YES" ];
         then
-            PackageTests "net8.0" "freebsd-x64"
+            PackageTests "net10.0" "freebsd-x64"
         fi
     else
         PackageTests "$FRAMEWORK" "$RID"
@@ -412,19 +412,19 @@ then
 
     if [[ -z "$RID" || -z "$FRAMEWORK" ]];
     then
-        Package "net8.0" "win-x64"
-        Package "net8.0" "win-x86"
-        Package "net8.0" "linux-x64"
-        Package "net8.0" "linux-musl-x64"
-        Package "net8.0" "linux-arm64"
-        Package "net8.0" "linux-musl-arm64"
-        Package "net8.0" "linux-arm"
-        Package "net8.0" "linux-musl-arm"
-        Package "net8.0" "osx-x64"
-        Package "net8.0" "osx-arm64"
+        Package "net10.0" "win-x64"
+        Package "net10.0" "win-x86"
+        Package "net10.0" "linux-x64"
+        Package "net10.0" "linux-musl-x64"
+        Package "net10.0" "linux-arm64"
+        Package "net10.0" "linux-musl-arm64"
+        Package "net10.0" "linux-arm"
+        Package "net10.0" "linux-musl-arm"
+        Package "net10.0" "osx-x64"
+        Package "net10.0" "osx-arm64"
         if [ "$ENABLE_EXTRA_PLATFORMS" = "YES" ];
         then
-            Package "net8.0" "freebsd-x64"
+            Package "net10.0" "freebsd-x64"
         fi
     else
         Package "$FRAMEWORK" "$RID"
@@ -434,7 +434,7 @@ fi
 if [ "$INSTALLER" = "YES" ];
 then
     InstallInno
-    BuildInstaller "net8.0" "win-x64"
-    BuildInstaller "net8.0" "win-x86"
+    BuildInstaller "net10.0" "win-x64"
+    BuildInstaller "net10.0" "win-x86"
     RemoveInno
 fi

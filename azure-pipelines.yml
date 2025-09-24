@@ -15,7 +15,7 @@ variables:
   buildName: '$(Build.SourceBranchName).$(radarrVersion)'
   sentryOrg: 'servarr'
   sentryUrl: 'https://sentry.servarr.com'
-  dotnetVersion: '8.0.421'
+  dotnetVersion: '10.0.401'
   nodeVersion: '20.X'
   innoVersion: '6.7.1'
   windowsImage: 'windows-2025'
@@ -129,23 +129,23 @@ stages:
         artifact: '$(osName)Backend'
         displayName: Publish Backend
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net8.0/win-x64/publish'
+      - publish: '$(testsFolder)/net10.0/win-x64/publish'
         artifact: win-x64-tests
         displayName: Publish win-x64 Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net8.0/linux-x64/publish'
+      - publish: '$(testsFolder)/net10.0/linux-x64/publish'
         artifact: linux-x64-tests
         displayName: Publish linux-x64 Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net8.0/linux-musl-x64/publish'
+      - publish: '$(testsFolder)/net10.0/linux-musl-x64/publish'
         artifact: linux-musl-x64-tests
         displayName: Publish linux-musl-x64 Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net8.0/freebsd-x64/publish'
+      - publish: '$(testsFolder)/net10.0/freebsd-x64/publish'
         artifact: freebsd-x64-tests
         displayName: Publish freebsd-x64 Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net8.0/osx-x64/publish'
+      - publish: '$(testsFolder)/net10.0/osx-x64/publish'
         artifact: osx-x64-tests
         displayName: Publish osx-x64 Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
@@ -263,21 +263,21 @@ stages:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).windows-core-x64.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/win-x64/net8.0
+          rootFolderOrFile: $(artifactsFolder)/win-x64/net10.0
       - task: ArchiveFiles@2
         displayName: Create win-x86 zip
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).windows-core-x86.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/win-x86/net8.0
+          rootFolderOrFile: $(artifactsFolder)/win-x86/net10.0
       - task: ArchiveFiles@2
         displayName: Create osx-x64 app
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).osx-app-core-x64.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/osx-x64-app/net8.0
+          rootFolderOrFile: $(artifactsFolder)/osx-x64-app/net10.0
       - task: ArchiveFiles@2
         displayName: Create osx-x64 tar
         inputs:
@@ -285,14 +285,14 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/osx-x64/net8.0
+          rootFolderOrFile: $(artifactsFolder)/osx-x64/net10.0
       - task: ArchiveFiles@2
         displayName: Create osx-arm64 app
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).osx-app-core-arm64.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/osx-arm64-app/net8.0
+          rootFolderOrFile: $(artifactsFolder)/osx-arm64-app/net10.0
       - task: ArchiveFiles@2
         displayName: Create osx-arm64 tar
         inputs:
@@ -300,7 +300,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/osx-arm64/net8.0
+          rootFolderOrFile: $(artifactsFolder)/osx-arm64/net10.0
       - task: ArchiveFiles@2
         displayName: Create linux-x64 tar
         inputs:
@@ -308,7 +308,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-x64/net8.0
+          rootFolderOrFile: $(artifactsFolder)/linux-x64/net10.0
       - task: ArchiveFiles@2
         displayName: Create linux-musl-x64 tar
         inputs:
@@ -316,7 +316,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-musl-x64/net8.0
+          rootFolderOrFile: $(artifactsFolder)/linux-musl-x64/net10.0
       - task: ArchiveFiles@2
         displayName: Create linux-arm tar
         inputs:
@@ -324,7 +324,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-arm/net8.0
+          rootFolderOrFile: $(artifactsFolder)/linux-arm/net10.0
       - task: ArchiveFiles@2
         displayName: Create linux-musl-arm tar
         inputs:
@@ -332,7 +332,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-musl-arm/net8.0
+          rootFolderOrFile: $(artifactsFolder)/linux-musl-arm/net10.0
       - task: ArchiveFiles@2
         displayName: Create linux-arm64 tar
         inputs:
@@ -340,7 +340,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-arm64/net8.0
+          rootFolderOrFile: $(artifactsFolder)/linux-arm64/net10.0
       - task: ArchiveFiles@2
         displayName: Create linux-musl-arm64 tar
         inputs:
@@ -348,7 +348,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-musl-arm64/net8.0
+          rootFolderOrFile: $(artifactsFolder)/linux-musl-arm64/net10.0
       - task: ArchiveFiles@2
         displayName: Create freebsd-x64 tar
         inputs:
@@ -356,7 +356,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/freebsd-x64/net8.0
+          rootFolderOrFile: $(artifactsFolder)/freebsd-x64/net10.0
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'Packages'
         displayName: Publish Packages
@@ -1204,8 +1204,8 @@ stages:
             sonar.cs.cobertura.reportsPaths=$(Build.SourcesDirectory)/CoverageResults/**/coverage.cobertura.xml
             sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResult.xml
       - bash: |
-          ./build.sh --backend -f net8.0 -r win-x64
-          TEST_DIR=_tests/net8.0/win-x64/publish/ ./test.sh Windows Unit Coverage
+          ./build.sh --backend -f net10.0 -r win-x64
+          TEST_DIR=_tests/net10.0/win-x64/publish/ ./test.sh Windows Unit Coverage
         displayName: Coverage Unit Tests
       - task: SonarCloudAnalyze@4
         condition: eq(variables['System.PullRequest.IsFork'], 'False')

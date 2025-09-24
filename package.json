@@ -29,7 +29,7 @@
     "@fortawesome/free-solid-svg-icons": "7.3.1",
     "@fortawesome/react-fontawesome": "3.5.0",
     "@juggle/resize-observer": "3.4.0",
-    "@microsoft/signalr": "8.0.17",
+    "@microsoft/signalr": "10.0.11",
     "@sentry/browser": "7.119.1",
     "@sentry/integrations": "7.119.1",
     "@tanstack/react-query": "5.74.3",

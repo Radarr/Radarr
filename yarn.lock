@@ -1115,10 +1115,10 @@
   resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
   integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
 
-"@microsoft/signalr@8.0.17":
-  version "8.0.17"
-  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-8.0.17.tgz#6eac218beac38e4e4ba4a3577ed39ac33711b2ed"
-  integrity sha512-5pM6xPtKZNJLO0Tq5nQasVyPFwi/WBY3QB5uc/v3dIPTpS1JXQbaXAQAPxFoQ5rTBFE094w8bbqkp17F9ReQvA==
+"@microsoft/signalr@10.0.11":
+  version "10.0.11"
+  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-10.0.11.tgz#2b96b016ed38f9754178d389ca1d7fd89666f471"
+  integrity sha512-FulOJ2EEtKvLQcswe/U7v8pzyXyk7Jua5xgWJPPwyQU/2Z9ORvKcVjyO75VvLsem+CJ1ORRexJ+7Bz1FCei2aw==
   dependencies:
     abort-controller "^3.0.0"
     eventsource "^2.0.2"

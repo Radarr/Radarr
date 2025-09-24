@@ -5,6 +5,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Common.Network;
 using NzbDrone.Core.Configuration;
+using IPNetwork = System.Net.IPNetwork;
 
 namespace NzbDrone.Host
 {
@@ -33,7 +34,7 @@ namespace NzbDrone.Host
 
                 if (IPNetworkParser.TryParse(entry, out var address, out var prefixLength))
                 {
-                    options.KnownNetworks.Add(new IPNetwork(address, prefixLength));
+                    options.KnownIPNetworks.Add(new IPNetwork(address, prefixLength));
 
                     Logger.Info("Trusting forwarded headers from {0}/{1}", address, prefixLength);
                 }
