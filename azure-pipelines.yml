@@ -1194,7 +1194,7 @@ stages:
           extraProperties: |
             sonar.exclusions=**/obj/**,**/*.dll,**/NzbDrone.Core.Test/Files/**/*,./frontend/**,**/ExternalModules/**,./src/Libraries/**
             sonar.coverage.exclusions=**/Radarr.Api.V3/**/*
-            sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/CoverageResults/**/coverage.opencover.xml
+            sonar.cs.cobertura.reportsPaths=$(Build.SourcesDirectory)/CoverageResults/**/coverage.cobertura.xml
             sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResult.xml
       - bash: |
           ./build.sh --backend -f net8.0 -r win-x64
@@ -1206,10 +1206,11 @@ stages:
       - task: reportgenerator@5
         displayName: Generate Coverage Report
         inputs:
-          reports: '$(Build.SourcesDirectory)/CoverageResults/**/coverage.opencover.xml'
+          reports: '$(Build.SourcesDirectory)/CoverageResults/**/coverage.cobertura.xml'
           targetdir: '$(Build.SourcesDirectory)/CoverageResults/combined'
           reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
           publishCodeCoverageResults: true
+          sourcedirs: src
 
   - stage: Report_Out
     dependsOn:
