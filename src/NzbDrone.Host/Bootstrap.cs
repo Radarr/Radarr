@@ -150,6 +150,7 @@ namespace NzbDrone.Host
             var sslPort = config.GetValue<int?>($"Radarr:Server:{nameof(ServerOptions.SslPort)}") ?? config.GetValue(nameof(ConfigFileProvider.SslPort), 8787);
             var enableSsl = config.GetValue<bool?>($"Radarr:Server:{nameof(ServerOptions.EnableSsl)}") ?? config.GetValue(nameof(ConfigFileProvider.EnableSsl), false);
             var sslCertPath = config.GetValue<string>($"Radarr:Server:{nameof(ServerOptions.SslCertPath)}") ?? config.GetValue<string>(nameof(ConfigFileProvider.SslCertPath));
+            var sslKeyPath = config.GetValue<string>($"Radarr:Server:{nameof(ServerOptions.SslKeyPath)}") ?? config.GetValue<string>(nameof(ConfigFileProvider.SslKeyPath));
             var sslCertPassword = config.GetValue<string>($"Radarr:Server:{nameof(ServerOptions.SslCertPassword)}") ?? config.GetValue<string>(nameof(ConfigFileProvider.SslCertPassword));
             var logDbEnabled = config.GetValue<bool?>($"Radarr:Log:{nameof(LogOptions.DbEnabled)}") ?? config.GetValue(nameof(ConfigFileProvider.LogDbEnabled), true);
 
@@ -198,7 +199,7 @@ namespace NzbDrone.Host
                         {
                             options.ConfigureHttpsDefaults(configureOptions =>
                             {
-                                configureOptions.ServerCertificate = ValidateSslCertificate(sslCertPath, sslCertPassword);
+                                configureOptions.ServerCertificate = ValidateSslCertificate(sslCertPath, sslKeyPath, sslCertPassword);
                             });
                         }
                     });
@@ -278,13 +279,26 @@ namespace NzbDrone.Host
             return $"{scheme}://{bindAddress}:{port}";
         }
 
-        private static X509Certificate2 ValidateSslCertificate(string cert, string password)
+        private static X509Certificate2 ValidateSslCertificate(string cert, string key, string password)
         {
             X509Certificate2 certificate;
 
             try
             {
-                certificate = X509CertificateLoader.LoadPkcs12FromFile(cert, password, X509KeyStorageFlags.DefaultKeySet);
+                var type = X509Certificate2.GetCertContentType(cert);
+
+                if (type == X509ContentType.Cert)
+                {
+                    certificate = X509Certificate2.CreateFromPemFile(cert, key.IsNullOrWhiteSpace() ? null : key);
+                }
+                else if (type == X509ContentType.Pkcs12)
+                {
+                    certificate = X509CertificateLoader.LoadPkcs12FromFile(cert, password, X509KeyStorageFlags.DefaultKeySet);
+                }
+                else
+                {
+                    throw new RadarrStartupException($"Invalid certificate type: {type}");
+                }
             }
             catch (CryptographicException ex)
             {
@@ -294,6 +308,10 @@ namespace NzbDrone.Host
                         $"The SSL certificate file {cert} does not exist");
                 }
 
+                throw new RadarrStartupException(ex);
+            }
+            catch (Exception ex)
+            {
                 throw new RadarrStartupException(ex);
             }
 

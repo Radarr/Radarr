@@ -24,6 +24,7 @@ export default interface General {
   branch: string;
   apiKey: string;
   sslCertPath: string;
+  sslKeyPath: string;
   sslCertPassword: string;
   urlBase: string;
   trustedNetworks: string;
