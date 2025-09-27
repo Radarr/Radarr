@@ -28,8 +28,8 @@ namespace Radarr.Api.V3.Tags
 
             SharedValidator.RuleFor(c => c.Label).Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .Matches("^[a-z0-9-]+$", RegexOptions.IgnoreCase)
-                .WithMessage("Allowed characters a-z, 0-9 and -");
+                .Matches("^[ a-z0-9-]+$", RegexOptions.IgnoreCase)
+                .WithMessage("Allowed characters space, a-z, 0-9, and -");
         }
 
         protected override TagResource GetResourceById(int id)
