@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
             // Change List Interval from Min to Hour
             IfDatabase("sqlite").Execute.Sql("UPDATE \"Config\" SET \"Value\" = max((\"Value\" / 60) + 1, 6) WHERE \"Key\" = 'importlistsyncinterval'");
-            IfDatabase("postgres").Execute.Sql("UPDATE \"Config\" SET \"Value\" = greatest((\"Value\"::int / 60) + 1, 6) WHERE \"Key\" = 'importlistsyncinterval'");
+            IfDatabase("postgresql").Execute.Sql("UPDATE \"Config\" SET \"Value\" = greatest((\"Value\"::int / 60) + 1, 6) WHERE \"Key\" = 'importlistsyncinterval'");
         }
     }
 }
