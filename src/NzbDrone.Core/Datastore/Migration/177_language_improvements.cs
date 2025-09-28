@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 "\"Language\" INTEGER NOT NULL, " +
                 "Unique(\"MovieId\", \"Language\"));");
 
-            IfDatabase("postgres").Execute.Sql("CREATE TABLE \"MovieTranslations\"(" +
+            IfDatabase("postgresql").Execute.Sql("CREATE TABLE \"MovieTranslations\"(" +
                 "\"Id\" SERIAL PRIMARY KEY , " +
                 "\"MovieId\" INTEGER NOT NULL, " +
                 "\"Title\" TEXT, " +
