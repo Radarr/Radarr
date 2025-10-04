@@ -13,12 +13,13 @@ Radarr is written in C# (backend) and TypeScript (frontend). The backend is buil
 
 ## Tools required
 
-- Visual Studio 2022 or higher is recommended (<https://www.visualstudio.com/vs/>). The community version is free and works (<https://www.visualstudio.com/downloads/>).
+- Visual Studio 2022 or higher (<https://www.visualstudio.com/vs/>). The community version is free and works (<https://www.visualstudio.com/downloads/>).
+- JetBrains Rider 2024.3 or higher (<https://www.jetbrains.com/rider/>)
 
 > VS 2022 V17.8 or higher is recommended as it includes the .NET8 SDK
 {.is-info}
 
-- HTML/Javascript editor of choice (VS Code/Sublime Text/Webstorm/Atom/etc)
+- TypeScript editor of choice (VS Code/Sublime Text/Webstorm/etc)
 - [Git](https://git-scm.com/downloads)
 - The [Node.js](https://nodejs.org/) runtime is required. The following versions are supported:
   - **20** (any minor or patch version within this)
@@ -58,13 +59,13 @@ For css changes `yarn stylelint-windows --fix` {.is-info}
 
 The backend solution is most easily built and ran in Visual Studio or Rider, however if the only priority is working on the frontend UI it can be built easily from command line as well when the correct SDK is installed.
 
-#### Visual Studio
+#### Visual Studio / Rider
 
 > Ensure startup project is set to `Radarr.Console` and framework to `net8.0`
 {.is-info}
 
-1. First `Build` the solution in Visual Studio, this will ensure all projects are correctly built and dependencies restored
-1. Next `Debug/Run` the project in Visual Studio to start Radarr
+1. First `Build` the solution in Visual Studio or Rider, this will ensure all projects are correctly built and dependencies restored
+1. Next `Debug/Run` the project in Visual Studio or Rider to start Radarr
 1. Open <http://localhost:7878>
 
 #### Command line
