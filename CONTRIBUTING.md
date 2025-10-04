@@ -9,7 +9,7 @@ Setup guides, [FAQ](/radarr/faq), the more information we have on the [wiki](htt
 
 # Development
 
-Radarr is written in C# (backend) and JS (frontend). The backend is built on the .NET8 framework, while the frontend utilizes Reactjs.
+Radarr is written in C# (backend) and TypeScript (frontend). The backend is built on the .NET8 framework, while the frontend utilizes Reactjs.
 
 ## Tools required
 
