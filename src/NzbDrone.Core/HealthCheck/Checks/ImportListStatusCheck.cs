@@ -38,11 +38,16 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (backOffProviders.Count == enabledProviders.Count)
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Error, _localizationService.GetLocalizedString("ImportListStatusCheckAllClientMessage"), "#lists-are-unavailable-due-to-failures");
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Error,
+                    HealthCheckReason.ImportListStatusAllUnavailable,
+                    _localizationService.GetLocalizedString("ImportListStatusCheckAllClientMessage"),
+                    "#import-lists-are-unavailable-due-to-failures");
             }
 
             return new HealthCheck(GetType(),
                 HealthCheckResult.Warning,
+                HealthCheckReason.ImportListStatusUnavailable,
                 _localizationService.GetLocalizedString("ImportListStatusCheckSingleClientMessage", new Dictionary<string, object>
                 {
                     { "importListNames", string.Join(", ", backOffProviders.Select(v => v.ImportList.Definition.Name)) }

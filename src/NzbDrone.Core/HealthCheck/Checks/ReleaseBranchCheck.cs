@@ -19,11 +19,15 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public override HealthCheck Check()
         {
-            var currentBranch = _configFileService.Branch.ToLower();
+            var currentBranch = _configFileService.Branch.ToLowerInvariant();
 
-            if (!Enum.GetNames(typeof(ReleaseBranches)).Any(x => x.ToLower() == currentBranch))
+            if (Enum.GetNames(typeof(ReleaseBranches)).All(x => x.ToLowerInvariant() != currentBranch))
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("ReleaseBranchCheckOfficialBranchMessage"), _configFileService.Branch), "#branch-is-not-a-valid-release-branch");
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Warning,
+                    HealthCheckReason.ReleaseBranch,
+                    string.Format(_localizationService.GetLocalizedString("ReleaseBranchCheckOfficialBranchMessage"), _configFileService.Branch),
+                    "#branch-is-not-a-valid-release-branch");
             }
 
             return new HealthCheck(GetType());

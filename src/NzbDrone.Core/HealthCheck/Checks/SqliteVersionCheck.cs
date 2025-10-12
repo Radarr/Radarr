@@ -1,5 +1,4 @@
 using System;
-using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Localization;
@@ -9,13 +8,11 @@ namespace NzbDrone.Core.HealthCheck.Checks
     public class SqliteVersionCheck : HealthCheckBase
     {
         private readonly IDatabase _database;
-        private readonly Logger _logger;
 
-        public SqliteVersionCheck(IMainDatabase database, ILocalizationService localizationService, Logger logger)
+        public SqliteVersionCheck(IMainDatabase database, ILocalizationService localizationService)
             : base(localizationService)
         {
             _database = database;
-            _logger = logger;
         }
 
         public override HealthCheck Check()
@@ -35,6 +32,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             return new HealthCheck(GetType(),
                 HealthCheckResult.Error,
+                HealthCheckReason.SqliteVersion,
                 string.Format(_localizationService.GetLocalizedString("SqliteVersionCheckUpgradeRequiredMessage"), sqliteVersion, supportedVersion),
                 "#currently-installed-sqlite-version-is-not-supported");
         }

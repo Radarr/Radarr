@@ -73,6 +73,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                                 return new HealthCheck(
                                     GetType(),
                                     HealthCheckResult.Error,
+                                    HealthCheckReason.RemotePathMappingWrongOSPath,
                                     _localizationService.GetLocalizedString(
                                         "RemotePathMappingCheckWrongOSPath", new Dictionary<string, object>
                                         {
@@ -88,6 +89,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                                 return new HealthCheck(
                                     GetType(),
                                     HealthCheckResult.Error,
+                                    HealthCheckReason.RemotePathMappingBadDockerPath,
                                     _localizationService.GetLocalizedString(
                                         "RemotePathMappingCheckBadDockerPath",
                                         new Dictionary<string, object>
@@ -102,6 +104,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                             return new HealthCheck(
                                 GetType(),
                                 HealthCheckResult.Error,
+                                HealthCheckReason.RemotePathMappingLocalWrongOSPath,
                                 _localizationService.GetLocalizedString(
                                     "RemotePathMappingCheckLocalWrongOSPath",
                                     new Dictionary<string, object>
@@ -120,6 +123,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                                 return new HealthCheck(
                                     GetType(),
                                     HealthCheckResult.Error,
+                                    HealthCheckReason.RemotePathMappingDockerFolderMissing,
                                     _localizationService.GetLocalizedString(
                                         "RemotePathMappingCheckDockerFolderMissing",
                                         new Dictionary<string, object>
@@ -135,6 +139,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                                 return new HealthCheck(
                                     GetType(),
                                     HealthCheckResult.Error,
+                                    HealthCheckReason.RemotePathMappingLocalFolderMissing,
                                     _localizationService.GetLocalizedString(
                                         "RemotePathMappingCheckLocalFolderMissing",
                                         new Dictionary<string, object>
@@ -148,6 +153,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                             return new HealthCheck(
                                 GetType(),
                                 HealthCheckResult.Error,
+                                HealthCheckReason.RemotePathMappingGenericPermissions,
                                 _localizationService.GetLocalizedString(
                                     "RemotePathMappingCheckGenericPermissions",
                                     new Dictionary<string, object>
@@ -195,6 +201,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     {
                         return new HealthCheck(GetType(),
                             HealthCheckResult.Error,
+                            HealthCheckReason.RemotePathMappingDownloadPermissionsMovie,
                             _localizationService.GetLocalizedString(
                                 "RemotePathMappingCheckDownloadPermissions",
                                 new Dictionary<string, object>
@@ -208,6 +215,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     // ImportApprovedMovies and the file must have been removed part way through processing
                     return new HealthCheck(GetType(),
                         HealthCheckResult.Error,
+                        HealthCheckReason.RemotePathMappingFileRemoved,
                         _localizationService.GetLocalizedString(
                             "RemotePathMappingCheckFileRemoved",
                             new Dictionary<string, object>
@@ -239,6 +247,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                         return new HealthCheck(
                             GetType(),
                             HealthCheckResult.Error,
+                            HealthCheckReason.RemotePathMappingImportMovieFailed,
                             _localizationService.GetLocalizedString("RemotePathMappingCheckImportFailed"),
                             "#remote-path-import-failed");
                     }
@@ -250,6 +259,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                             return new HealthCheck(
                                 GetType(),
                                 HealthCheckResult.Error,
+                                HealthCheckReason.RemotePathMappingFilesWrongOSPath,
                                 _localizationService.GetLocalizedString(
                                     "RemotePathMappingCheckFilesWrongOSPath",
                                     new Dictionary<string, object>
@@ -266,6 +276,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                             return new HealthCheck(
                                 GetType(),
                                 HealthCheckResult.Error,
+                                HealthCheckReason.RemotePathMappingFilesBadDockerPath,
                                 _localizationService.GetLocalizedString(
                                     "RemotePathMappingCheckFilesBadDockerPath",
                                     new Dictionary<string, object>
@@ -280,6 +291,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                         return new HealthCheck(
                             GetType(),
                             HealthCheckResult.Error,
+                            HealthCheckReason.RemotePathMappingFilesLocalWrongOSPath,
                             _localizationService.GetLocalizedString(
                                 "RemotePathMappingCheckFilesLocalWrongOSPath",
                                 new Dictionary<string, object>
@@ -296,6 +308,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                         return new HealthCheck(
                             GetType(),
                             HealthCheckResult.Error,
+                            HealthCheckReason.RemotePathMappingFolderPermissions,
                             _localizationService.GetLocalizedString(
                                 "RemotePathMappingCheckFolderPermissions",
                                 new Dictionary<string, object>
@@ -311,6 +324,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                         return new HealthCheck(
                             GetType(),
                             HealthCheckResult.Error,
+                            HealthCheckReason.RemotePathMappingFolderPermissions,
                             _localizationService.GetLocalizedString(
                                 "RemotePathMappingCheckFolderPermissions",
                                 new Dictionary<string, object>
@@ -326,6 +340,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                         return new HealthCheck(
                             GetType(),
                             HealthCheckResult.Error,
+                            HealthCheckReason.RemotePathMappingRemoteDownloadClient,
                             _localizationService.GetLocalizedString(
                                 "RemotePathMappingCheckRemoteDownloadClient",
                                 new Dictionary<string, object>
@@ -341,6 +356,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     return new HealthCheck(
                         GetType(),
                         HealthCheckResult.Error,
+                        HealthCheckReason.RemotePathMappingFilesGenericPermissions,
                         _localizationService.GetLocalizedString(
                             "RemotePathMappingCheckFilesGenericPermissions",
                             new Dictionary<string, object>

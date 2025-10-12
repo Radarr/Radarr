@@ -68,6 +68,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
                     return new HealthCheck(GetType(),
                         HealthCheckResult.Error,
+                        HealthCheckReason.ImportListRootFolderMissing,
                         _localizationService.GetLocalizedString("ImportListMissingRoot", new Dictionary<string, object>
                         {
                             { "rootFolderInfo", FormatRootFolder(missingRootFolder.Key, missingRootFolder.Value) }
@@ -77,6 +78,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
                 return new HealthCheck(GetType(),
                     HealthCheckResult.Error,
+                    HealthCheckReason.ImportListRootFolderMultipleMissing,
                     _localizationService.GetLocalizedString("ImportListMultipleMissingRoots", new Dictionary<string, object>
                     {
                         { "rootFoldersInfo", string.Join(" | ", missingRootFolders.Select(m => FormatRootFolder(m.Key, m.Value))) }

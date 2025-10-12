@@ -25,6 +25,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             {
                 return new HealthCheck(GetType(),
                     HealthCheckResult.Warning,
+                    HealthCheckReason.MetadataKometaDeprecated,
                     $"{_localizationService.GetLocalizedString("MetadataKometaDeprecated")}");
             }
 
