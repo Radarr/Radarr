@@ -63,6 +63,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
                     return new HealthCheck(GetType(),
                         HealthCheckResult.Error,
+                        HealthCheckReason.RootFolderMissing,
                         _localizationService.GetLocalizedString("MovieCollectionRootFolderMissingRootHealthCheckMessage", new Dictionary<string, object>
                         {
                             { "rootFolderInfo", FormatRootFolder(missingRootFolder.Key, missingRootFolder.Value) }
@@ -72,6 +73,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
                 return new HealthCheck(GetType(),
                     HealthCheckResult.Error,
+                    HealthCheckReason.RootFolderMultipleMissing,
                     _localizationService.GetLocalizedString("MovieCollectionFolderMultipleMissingRootsHealthCheckMessage", new Dictionary<string, object>
                     {
                         { "rootFoldersInfo", string.Join(" | ", missingRootFolders.Select(m => FormatRootFolder(m.Key, m.Value))) }

@@ -35,6 +35,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             {
                 return new HealthCheck(GetType(),
                     HealthCheckResult.Error,
+                    HealthCheckReason.RemovedMovieSingle,
                     _localizationService.GetLocalizedString("RemovedMovieCheckSingleMessage", new Dictionary<string, object>
                     {
                         { "movie", movieText }
@@ -44,6 +45,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             return new HealthCheck(GetType(),
                 HealthCheckResult.Error,
+                HealthCheckReason.RemovedMovieMultiple,
                 _localizationService.GetLocalizedString("RemovedMovieCheckMultipleMessage", new Dictionary<string, object>
                 {
                     { "movies", movieText }

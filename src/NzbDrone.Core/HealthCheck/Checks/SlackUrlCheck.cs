@@ -33,6 +33,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             return new HealthCheck(GetType(),
                 HealthCheckResult.Warning,
+                HealthCheckReason.SlackUrl,
                 string.Format(_localizationService.GetLocalizedString("DiscordUrlInSlackNotification"), string.Join(", ", discordSlackNotifications.Select(n => n.Name))),
                 "#discord-as-slack-notification");
         }

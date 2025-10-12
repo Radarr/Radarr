@@ -38,11 +38,16 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (backOffProviders.Count == enabledProviders.Count)
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Error, _localizationService.GetLocalizedString("DownloadClientStatusCheckAllClientMessage"), "#download-clients-are-unavailable-due-to-failures");
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Error,
+                    HealthCheckReason.DownloadClientStatusAllClients,
+                    _localizationService.GetLocalizedString("DownloadClientStatusCheckAllClientMessage"),
+                    "#download-clients-are-unavailable-due-to-failures");
             }
 
             return new HealthCheck(GetType(),
                 HealthCheckResult.Warning,
+                HealthCheckReason.DownloadClientStatusSingleClient,
                 _localizationService.GetLocalizedString("DownloadClientStatusCheckSingleClientMessage", new Dictionary<string, object>
                 {
                     { "downloadClientNames", string.Join(", ", backOffProviders.Select(v => v.Provider.Definition.Name)) }

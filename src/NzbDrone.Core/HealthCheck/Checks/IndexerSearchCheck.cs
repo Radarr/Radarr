@@ -25,21 +25,33 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (automaticSearchEnabled.Empty())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("IndexerSearchCheckNoAutomaticMessage"), "#no-indexers-available-with-automatic-search-enabled-radarr-will-not-provide-any-automatic-search-results");
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Warning,
+                    HealthCheckReason.IndexerSearchNoAutomatic,
+                    _localizationService.GetLocalizedString("IndexerSearchCheckNoAutomaticMessage"),
+                    "#no-indexers-available-with-automatic-search-enabled-radarr-will-not-provide-any-automatic-search-results");
             }
 
             var interactiveSearchEnabled = _indexerFactory.InteractiveSearchEnabled(false);
 
             if (interactiveSearchEnabled.Empty())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("IndexerSearchCheckNoInteractiveMessage"), "#no-indexers-available-with-interactive-search-enabled");
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Warning,
+                    HealthCheckReason.IndexerSearchNoInteractive,
+                    _localizationService.GetLocalizedString("IndexerSearchCheckNoInteractiveMessage"),
+                    "#no-indexers-available-with-interactive-search-enabled");
             }
 
             var active = _indexerFactory.AutomaticSearchEnabled(true);
 
             if (active.Empty())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("IndexerSearchCheckNoAvailableIndexersMessage"), "#indexers-are-unavailable-due-to-failures");
+                return new HealthCheck(GetType(),
+                    HealthCheckResult.Warning,
+                    HealthCheckReason.IndexerSearchNoAvailableIndexers,
+                    _localizationService.GetLocalizedString("IndexerSearchCheckNoAvailableIndexersMessage"),
+                    "#indexers-are-unavailable-due-to-failures");
             }
 
             return new HealthCheck(GetType());
