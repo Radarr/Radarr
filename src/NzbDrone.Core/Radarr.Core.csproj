@@ -9,9 +9,9 @@
     <PackageReference Include="MailKit" Version="4.18.1" />
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="10.0.13" />
     <PackageReference Include="Npgsql" Version="10.0.3" />
+    <PackageReference Include="Openur.FFMpegCore" Version="5.4.0.31" />
+    <PackageReference Include="Openur.FFprobeStatic" Version="8.0.1.289" />
     <PackageReference Include="Polly" Version="8.8.0" />
-    <PackageReference Include="Servarr.FFMpegCore" Version="4.7.0-26" />
-    <PackageReference Include="Servarr.FFprobe" Version="5.1.10.124" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.13" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.13" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.13" />
