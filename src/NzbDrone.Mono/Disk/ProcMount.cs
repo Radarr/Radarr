@@ -1,12 +1,16 @@
+using System;
 using System.IO;
 using Mono.Unix;
+using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Instrumentation;
 
 namespace NzbDrone.Mono.Disk
 {
     public class ProcMount : IMount
     {
+        private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(ProcMount));
         private readonly UnixDriveInfo _unixDriveInfo;
 
         public ProcMount(DriveType driveType, string name, string mount, string type, MountOptions mountOptions)
@@ -34,9 +38,37 @@ namespace NzbDrone.Mono.Disk
 
         public string RootDirectory { get; private set; }
 
-        public long TotalFreeSpace => _unixDriveInfo.TotalFreeSpace;
+        public long TotalFreeSpace
+        {
+            get
+            {
+                try
+                {
+                    return _unixDriveInfo.TotalFreeSpace;
+                }
+                catch (OverflowException ex)
+                {
+                    Logger.Warn(ex, "Failed to get total free space");
+                    return long.MaxValue;
+                }
+            }
+        }
 
-        public long TotalSize => _unixDriveInfo.TotalSize;
+        public long TotalSize
+        {
+            get
+            {
+                try
+                {
+                    return _unixDriveInfo.TotalSize;
+                }
+                catch (OverflowException ex)
+                {
+                    Logger.Warn(ex, "Failed to get total size");
+                    return long.MaxValue;
+                }
+            }
+        }
 
         public string VolumeLabel => _unixDriveInfo.VolumeLabel;
 
