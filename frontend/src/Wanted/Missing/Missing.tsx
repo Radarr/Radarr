@@ -18,10 +18,16 @@ import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptions
 import TablePager from 'Components/Table/TablePager';
 import usePaging from 'Components/Table/usePaging';
 import useCurrentPage from 'Helpers/Hooks/useCurrentPage';
+import usePrevious from 'Helpers/Hooks/usePrevious';
 import useSelectState from 'Helpers/Hooks/useSelectState';
 import { align, icons, kinds } from 'Helpers/Props';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
+import Movie from 'Movie/Movie';
 import { executeCommand } from 'Store/Actions/commandActions';
+import {
+  clearQueueDetails,
+  fetchQueueDetails,
+} from 'Store/Actions/queueActions';
 import {
   batchToggleMissingMovies,
   clearMissing,
@@ -36,6 +42,8 @@ import { CheckInputChanged } from 'typings/inputs';
 import { SelectStateInputProps } from 'typings/props';
 import { TableOptionsChangePayload } from 'typings/Table';
 import getFilterValue from 'Utilities/Filter/getFilterValue';
+import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
+import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import {
   registerPagePopulator,
   unregisterPagePopulator,
@@ -111,6 +119,8 @@ function Missing() {
   const isShowingMonitored = getMonitoredValue(filters, selectedFilterKey);
   const isSearchingForMovies =
     isSearchingForAllMovies || isSearchingForSelectedMovies;
+
+  const previousItems = usePrevious(items);
 
   const handleSelectAllChange = useCallback(
     ({ value }: CheckInputChanged) => {
@@ -216,6 +226,7 @@ function Missing() {
 
     return () => {
       dispatch(clearMissing());
+      dispatch(clearQueueDetails());
     };
   }, [requestCurrentPage, dispatch]);
 
@@ -234,6 +245,16 @@ function Missing() {
       unregisterPagePopulator(repopulate);
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!previousItems || hasDifferentItems(items, previousItems)) {
+      const movieIds = selectUniqueIds<Movie, number>(items, 'id');
+
+      if (movieIds.length) {
+        dispatch(fetchQueueDetails({ movieIds }));
+      }
+    }
+  }, [items, previousItems, dispatch]);
 
   return (
     <PageContent title={translate('Missing')}>
