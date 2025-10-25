@@ -18,9 +18,19 @@ import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptions
 import TablePager from 'Components/Table/TablePager';
 import usePaging from 'Components/Table/usePaging';
 import useCurrentPage from 'Helpers/Hooks/useCurrentPage';
+import usePrevious from 'Helpers/Hooks/usePrevious';
 import useSelectState from 'Helpers/Hooks/useSelectState';
 import { align, icons, kinds } from 'Helpers/Props';
+import Movie from 'Movie/Movie';
 import { executeCommand } from 'Store/Actions/commandActions';
+import {
+  clearMovieFiles,
+  fetchMovieFiles,
+} from 'Store/Actions/movieFileActions';
+import {
+  clearQueueDetails,
+  fetchQueueDetails,
+} from 'Store/Actions/queueActions';
 import {
   batchToggleCutoffUnmetMovies,
   clearCutoffUnmet,
@@ -35,6 +45,8 @@ import { CheckInputChanged } from 'typings/inputs';
 import { SelectStateInputProps } from 'typings/props';
 import { TableOptionsChangePayload } from 'typings/Table';
 import getFilterValue from 'Utilities/Filter/getFilterValue';
+import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
+import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import {
   registerPagePopulator,
   unregisterPagePopulator,
@@ -107,6 +119,8 @@ function CutoffUnmet() {
   const isShowingMonitored = getMonitoredValue(filters, selectedFilterKey);
   const isSearchingForMovies =
     isSearchingForAllMovies || isSearchingForSelectedMovies;
+
+  const previousItems = usePrevious(items);
 
   const handleSelectAllChange = useCallback(
     ({ value }: CheckInputChanged) => {
@@ -204,6 +218,8 @@ function CutoffUnmet() {
 
     return () => {
       dispatch(clearCutoffUnmet());
+      dispatch(clearQueueDetails());
+      dispatch(clearMovieFiles());
     };
   }, [requestCurrentPage, dispatch]);
 
@@ -222,6 +238,21 @@ function CutoffUnmet() {
       unregisterPagePopulator(repopulate);
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!previousItems || hasDifferentItems(items, previousItems)) {
+      const movieIds = selectUniqueIds<Movie, number>(items, 'id');
+      const movieFileIds = selectUniqueIds<Movie, number>(items, 'movieFileId');
+
+      if (movieIds.length) {
+        dispatch(fetchQueueDetails({ movieIds }));
+      }
+
+      if (movieFileIds.length) {
+        dispatch(fetchMovieFiles({ movieFileIds }));
+      }
+    }
+  }, [items, previousItems, dispatch]);
 
   return (
     <PageContent title={translate('CutoffUnmet')}>
