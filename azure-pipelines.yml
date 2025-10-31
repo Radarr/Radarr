@@ -88,6 +88,8 @@ stages:
 
       pool:
         vmImage: $(imageName)
+      workspace:
+        clean: all
       variables:
         # Disable stylecop here - linting errors get caught by the analyze task
         EnableAnalyzers: $(enableAnalysis)
@@ -95,6 +97,15 @@ stages:
       - checkout: self
         submodules: true
         fetchDepth: 1
+      - task: Cache@2
+        inputs:
+          key: 'nuget | "$(osName)" | global.json'
+          restoreKeys: |
+            nuget | "$(osName)"
+            nuget
+          path: $(nugetCacheFolder)
+        displayName: Cache NuGet packages
+
       - task: UseDotNet@2
         displayName: 'Install .net core'
         inputs:
@@ -112,11 +123,13 @@ stages:
       - bash: ./build.sh --backend --enable-extra-platforms
         displayName: Build Radarr Backend
       - bash: |
-          find ${OUTPUTFOLDER} -type f ! -path "*/publish/*" -exec rm -rf {} \;
-          find ${OUTPUTFOLDER} -depth -empty -type d -exec rm -r "{}" \;
-          find ${TESTSFOLDER} -type f ! -path "*/publish/*" -exec rm -rf {} \;
-          find ${TESTSFOLDER} -depth -empty -type d -exec rm -r "{}" \;
-        displayName: Clean up intermediate output
+          find ${OUTPUTFOLDER} -type f ! -path "*/publish/*" -delete 2>/dev/null || true
+          find ${OUTPUTFOLDER} -depth -empty -type d -delete 2>/dev/null || true
+          find ${TESTSFOLDER} -type f ! -path "*/publish/*" -delete 2>/dev/null || true
+          find ${TESTSFOLDER} -depth -empty -type d -delete 2>/dev/null || true
+          rm -rf _temp/obj _temp/bin 2>/dev/null || true
+          dotnet nuget locals temp --clear 2>/dev/null || true
+        displayName: Clean up build artifacts
         condition: and(succeeded(), ne(variables['osName'], 'Windows'))
       - publish: $(outputFolder)
         artifact: '$(osName)Backend'
@@ -161,6 +174,8 @@ stages:
             imageName: ${{ variables.windowsImage }}
       pool:
         vmImage: $(imageName)
+      workspace:
+        clean: all
       steps:
       - task: UseNode@1
         displayName: Set Node.js version
@@ -181,6 +196,13 @@ stages:
         env:
           FORCE_COLOR: 0
           YARN_CACHE_FOLDER: $(yarnCacheFolder)
+      - bash: |
+          if [ "$(osName)" != "Windows" ]; then
+            rm -rf node_modules 2>/dev/null || true
+          fi
+          rm -rf _temp 2>/dev/null || true
+        displayName: Clean up frontend build artifacts
+        condition: and(succeeded(), ne(variables['osName'], 'Windows'))
       - publish: $(outputFolder)
         artifact: '$(osName)Frontend'
         displayName: Publish Frontend
@@ -250,6 +272,11 @@ stages:
           find . -name "Radarr" -exec chmod a+x {} \;
           find . -name "Radarr.Update" -exec chmod a+x {} \;
         displayName: Set executable bits
+      - bash: |
+          rm -rf _artifacts _output _temp 2>/dev/null || true
+          dotnet nuget locals temp --clear 2>/dev/null || true
+        displayName: Clean up source artifacts
+        condition: succeeded()
       - task: ArchiveFiles@2
         displayName: Create win-x64 zip
         inputs:
@@ -470,6 +497,13 @@ stages:
           testRunTitle: '$(testName) Unit Tests'
           failTaskOnFailedTests: true
           failTaskOnMissingResultsFile: ne(variables['testName'], 'freebsd-x64')
+      - bash: |
+          if [ "$(osName)" != "Windows" ]; then
+            rm -rf ${TESTSFOLDER} 2>/dev/null || true
+            dotnet nuget locals temp --clear 2>/dev/null || true
+          fi
+        displayName: Clean up test artifacts
+        condition: always()
 
     - job: Unit_Docker
       displayName: Unit Docker
