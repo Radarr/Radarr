@@ -65,6 +65,8 @@ namespace NzbDrone.Host
                 options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("10.0.0.0"), 8));
                 options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("172.16.0.0"), 12));
                 options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("192.168.0.0"), 16));
+                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("fc00::"), 7));
+                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("fe80::"), 10));
             });
 
             services.AddRouting(options => options.LowercaseUrls = true);
