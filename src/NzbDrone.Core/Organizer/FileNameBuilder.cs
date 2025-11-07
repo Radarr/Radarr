@@ -227,6 +227,33 @@ namespace NzbDrone.Core.Organizer
             return CleanTitle(title);
         }
 
+        public static string TitleFirstCharacterOctothorpe(string title)
+        {
+            if (char.IsLetter(title[0]))
+            {
+                return title.Substring(0, 1).ToUpper().RemoveDiacritics()[0].ToString();
+            }
+
+            if (char.IsDigit(title[0]))
+            {
+                return "#";
+            }
+
+            // Try the second character if the first was non alphanumeric
+            if (char.IsLetter(title[1]))
+            {
+                return title.Substring(1, 1).ToUpper().RemoveDiacritics()[0].ToString();
+            }
+
+            if (char.IsDigit(title[1]))
+            {
+                return "#";
+            }
+
+            // Default to "_" if no alphanumeric character can be found in the first 2 positions
+            return "_";
+        }
+
         public static string TitleFirstCharacter(string title)
         {
             if (char.IsLetterOrDigit(title[0]))
@@ -263,6 +290,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Movie TitleThe}"] = m => Truncate(TitleThe(movie.Title), m.CustomFormat);
             tokenHandlers["{Movie CleanTitleThe}"] = m => Truncate(CleanTitleThe(movie.Title), m.CustomFormat);
             tokenHandlers["{Movie TitleFirstCharacter}"] = m => TitleFirstCharacter(TitleThe(GetLanguageTitle(movie, m.CustomFormat)));
+            tokenHandlers["{Movie TitleFirstCharacterOctothorpe}"] = m => TitleFirstCharacterOctothorpe(TitleThe(GetLanguageTitle(movie, m.CustomFormat)));
             tokenHandlers["{Movie OriginalTitle}"] = m => Truncate(movie.MovieMetadata.Value.OriginalTitle, m.CustomFormat) ?? string.Empty;
             tokenHandlers["{Movie CleanOriginalTitle}"] = m => Truncate(CleanTitle(movie.MovieMetadata.Value.OriginalTitle ?? string.Empty), m.CustomFormat);
 
