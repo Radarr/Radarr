@@ -994,5 +994,170 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             Mocker.GetMock<IQBittorrentProxySelector>()
                   .Verify(v => v.GetProxy(It.IsAny<QBittorrentSettings>(), true), Times.Once());
         }
+
+        [Test]
+        public async Task Download_should_not_use_savepath_when_preimport_disabled()
+        {
+            // Arrange
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Movie.Path = "/movies/My Movie (2024)";
+
+            // Ensure PreImportToDestination is false (default)
+            Subject.Definition.Settings.As<QBittorrentSettings>().PreImportToDestination = false;
+
+            // Act
+            await Subject.Download(remoteMovie, CreateIndexer());
+
+            // Assert - savePath parameter should be null
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Verify(v => v.AddTorrentFromFile(
+                      It.IsAny<string>(),
+                      It.IsAny<byte[]>(),
+                      It.IsAny<TorrentSeedConfiguration>(),
+                      It.IsAny<QBittorrentSettings>(),
+                      null), Times.Once());
+        }
+
+        [Test]
+        public async Task Download_should_use_savepath_when_preimport_enabled_with_valid_movie_path()
+        {
+            // Arrange
+            var moviePath = "/movies/My Movie (2024)";
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Movie.Path = moviePath;
+
+            // Enable PreImportToDestination
+            Subject.Definition.Settings.As<QBittorrentSettings>().PreImportToDestination = true;
+
+            // Act
+            await Subject.Download(remoteMovie, CreateIndexer());
+
+            // Assert - savePath parameter should be the movie path
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Verify(v => v.AddTorrentFromFile(
+                      It.IsAny<string>(),
+                      It.IsAny<byte[]>(),
+                      It.IsAny<TorrentSeedConfiguration>(),
+                      It.IsAny<QBittorrentSettings>(),
+                      moviePath), Times.Once());
+        }
+
+        [Test]
+        public async Task Download_should_not_use_savepath_when_preimport_enabled_but_movie_path_is_null()
+        {
+            // Arrange
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Movie.Path = null;
+
+            // Enable PreImportToDestination
+            Subject.Definition.Settings.As<QBittorrentSettings>().PreImportToDestination = true;
+
+            // Act
+            await Subject.Download(remoteMovie, CreateIndexer());
+
+            // Assert - savePath parameter should be null due to null movie path
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Verify(v => v.AddTorrentFromFile(
+                      It.IsAny<string>(),
+                      It.IsAny<byte[]>(),
+                      It.IsAny<TorrentSeedConfiguration>(),
+                      It.IsAny<QBittorrentSettings>(),
+                      null), Times.Once());
+        }
+
+        [Test]
+        public async Task Download_should_not_use_savepath_when_preimport_enabled_but_movie_path_is_empty()
+        {
+            // Arrange
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Movie.Path = "";
+
+            // Enable PreImportToDestination
+            Subject.Definition.Settings.As<QBittorrentSettings>().PreImportToDestination = true;
+
+            // Act
+            await Subject.Download(remoteMovie, CreateIndexer());
+
+            // Assert - savePath parameter should be null due to empty movie path
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Verify(v => v.AddTorrentFromFile(
+                      It.IsAny<string>(),
+                      It.IsAny<byte[]>(),
+                      It.IsAny<TorrentSeedConfiguration>(),
+                      It.IsAny<QBittorrentSettings>(),
+                      null), Times.Once());
+        }
+
+        [Test]
+        public async Task Download_from_magnet_should_use_savepath_when_preimport_enabled()
+        {
+            // Arrange
+            var moviePath = "/movies/My Movie (2024)";
+            var magnetUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR&tr=udp";
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Movie.Path = moviePath;
+            remoteMovie.Release.DownloadUrl = magnetUrl;
+
+            // Enable PreImportToDestination
+            Subject.Definition.Settings.As<QBittorrentSettings>().PreImportToDestination = true;
+
+            // Act
+            await Subject.Download(remoteMovie, CreateIndexer());
+
+            // Assert - savePath parameter should be the movie path for magnet links
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Verify(v => v.AddTorrentFromUrl(
+                      magnetUrl,
+                      It.IsAny<TorrentSeedConfiguration>(),
+                      It.IsAny<QBittorrentSettings>(),
+                      moviePath), Times.Once());
+        }
+
+        [Test]
+        public async Task Download_from_magnet_should_not_use_savepath_when_preimport_disabled()
+        {
+            // Arrange
+            var magnetUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR&tr=udp";
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Movie.Path = "/movies/My Movie (2024)";
+            remoteMovie.Release.DownloadUrl = magnetUrl;
+
+            // Ensure PreImportToDestination is false (default)
+            Subject.Definition.Settings.As<QBittorrentSettings>().PreImportToDestination = false;
+
+            // Act
+            await Subject.Download(remoteMovie, CreateIndexer());
+
+            // Assert - savePath parameter should be null
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Verify(v => v.AddTorrentFromUrl(
+                      magnetUrl,
+                      It.IsAny<TorrentSeedConfiguration>(),
+                      It.IsAny<QBittorrentSettings>(),
+                      null), Times.Once());
+        }
+
+        [Test]
+        public async Task Download_should_not_use_savepath_when_movie_is_null()
+        {
+            // Arrange
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Movie = null;
+
+            // Enable PreImportToDestination
+            Subject.Definition.Settings.As<QBittorrentSettings>().PreImportToDestination = true;
+
+            // Act
+            await Subject.Download(remoteMovie, CreateIndexer());
+
+            // Assert - savePath parameter should be null due to null movie
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Verify(v => v.AddTorrentFromFile(
+                      It.IsAny<string>(),
+                      It.IsAny<byte[]>(),
+                      It.IsAny<TorrentSeedConfiguration>(),
+                      It.IsAny<QBittorrentSettings>(),
+                      null), Times.Once());
+        }
     }
 }

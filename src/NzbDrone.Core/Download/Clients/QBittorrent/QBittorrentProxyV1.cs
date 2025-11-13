@@ -136,6 +136,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                                 .Post()
                                                 .AddFormParameter("urls", torrentUrl);
 
+            // Set custom save path for Pre-Import feature to download directly to destination folder
             if (savePath.IsNotNullOrWhiteSpace())
             {
                 request.AddFormParameter("savepath", savePath);
@@ -171,6 +172,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                                 .Post()
                                                 .AddFormUpload("torrents", fileName, fileContent);
 
+            // Set custom save path for Pre-Import feature to download directly to destination folder
             if (savePath.IsNotNullOrWhiteSpace())
             {
                 request.AddFormParameter("savepath", savePath);

@@ -81,6 +81,9 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             var moveToTop = (isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First) || (!isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First);
             var forceStart = (QBittorrentState)Settings.InitialState == QBittorrentState.ForceStart;
 
+            // Pre-Import: Download directly to the movie's final destination folder to avoid
+            // unnecessary file moves between download directory and media library.
+            // This is particularly beneficial when they are on different physical drives.
             string savePath = null;
             if (Settings.PreImportToDestination && remoteMovie.Movie != null && remoteMovie.Movie.Path.IsNotNullOrWhiteSpace())
             {
@@ -145,6 +148,9 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             var moveToTop = (isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First) || (!isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First);
             var forceStart = (QBittorrentState)Settings.InitialState == QBittorrentState.ForceStart;
 
+            // Pre-Import: Download directly to the movie's final destination folder to avoid
+            // unnecessary file moves between download directory and media library.
+            // This is particularly beneficial when they are on different physical drives.
             string savePath = null;
             if (Settings.PreImportToDestination && remoteMovie.Movie != null && remoteMovie.Movie.Path.IsNotNullOrWhiteSpace())
             {
