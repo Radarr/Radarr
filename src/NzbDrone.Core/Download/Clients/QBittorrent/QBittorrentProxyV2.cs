@@ -142,11 +142,16 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             return response;
         }
 
-        public void AddTorrentFromUrl(string torrentUrl, TorrentSeedConfiguration seedConfiguration, QBittorrentSettings settings)
+        public void AddTorrentFromUrl(string torrentUrl, TorrentSeedConfiguration seedConfiguration, QBittorrentSettings settings, string savePath = null)
         {
             var request = BuildRequest(settings).Resource("/api/v2/torrents/add")
                                                 .Post()
                                                 .AddFormParameter("urls", torrentUrl);
+
+            if (savePath.IsNotNullOrWhiteSpace())
+            {
+                request.AddFormParameter("savepath", savePath);
+            }
 
             AddTorrentDownloadFormParameters(request, settings);
 
@@ -164,11 +169,16 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             }
         }
 
-        public void AddTorrentFromFile(string fileName, byte[] fileContent, TorrentSeedConfiguration seedConfiguration, QBittorrentSettings settings)
+        public void AddTorrentFromFile(string fileName, byte[] fileContent, TorrentSeedConfiguration seedConfiguration, QBittorrentSettings settings, string savePath = null)
         {
             var request = BuildRequest(settings).Resource("/api/v2/torrents/add")
                                                 .Post()
                                                 .AddFormUpload("torrents", fileName, fileContent);
+
+            if (savePath.IsNotNullOrWhiteSpace())
+            {
+                request.AddFormParameter("savepath", savePath);
+            }
 
             AddTorrentDownloadFormParameters(request, settings);
 

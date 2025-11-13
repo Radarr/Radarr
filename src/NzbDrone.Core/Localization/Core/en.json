@@ -482,6 +482,8 @@
   "DownloadClientQbittorrentSettingsFirstAndLastFirst": "First and Last First",
   "DownloadClientQbittorrentSettingsFirstAndLastFirstHelpText": "Download first and last pieces first (qBittorrent 4.1.0+)",
   "DownloadClientQbittorrentSettingsInitialStateHelpText": "Initial state for torrents added to qBittorrent. Note that Forced Torrents do not abide by seed restrictions",
+  "DownloadClientQbittorrentSettingsPreImport": "Pre-Import",
+  "DownloadClientQbittorrentSettingsPreImportHelpText": "Set the save path to the movie's destination folder so downloads occur directly in the final location. This eliminates file moves between download and media folders, which is useful when they are on different physical drives. Requires qBittorrent to have write access to movie library folders.",
   "DownloadClientQbittorrentSettingsSequentialOrder": "Sequential Order",
   "DownloadClientQbittorrentSettingsSequentialOrderHelpText": "Download in sequential order (qBittorrent 4.1.0+)",
   "DownloadClientQbittorrentSettingsUseSslHelpText": "Use a secure connection. See Options -> Web UI -> 'Use HTTPS instead of HTTP' in qBittorrent.",

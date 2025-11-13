@@ -81,7 +81,14 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             var moveToTop = (isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First) || (!isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First);
             var forceStart = (QBittorrentState)Settings.InitialState == QBittorrentState.ForceStart;
 
-            Proxy.AddTorrentFromUrl(magnetLink, addHasSetShareLimits && setShareLimits ? remoteMovie.SeedConfiguration : null, Settings);
+            string savePath = null;
+            if (Settings.PreImportToDestination && remoteMovie.Movie != null && remoteMovie.Movie.Path.IsNotNullOrWhiteSpace())
+            {
+                savePath = remoteMovie.Movie.Path;
+                _logger.Debug("Pre-import enabled, setting save path to: {0}", savePath);
+            }
+
+            Proxy.AddTorrentFromUrl(magnetLink, addHasSetShareLimits && setShareLimits ? remoteMovie.SeedConfiguration : null, Settings, savePath);
 
             if ((!addHasSetShareLimits && setShareLimits) || moveToTop || forceStart)
             {
@@ -138,7 +145,14 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             var moveToTop = (isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First) || (!isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First);
             var forceStart = (QBittorrentState)Settings.InitialState == QBittorrentState.ForceStart;
 
-            Proxy.AddTorrentFromFile(filename, fileContent, addHasSetShareLimits ? remoteMovie.SeedConfiguration : null, Settings);
+            string savePath = null;
+            if (Settings.PreImportToDestination && remoteMovie.Movie != null && remoteMovie.Movie.Path.IsNotNullOrWhiteSpace())
+            {
+                savePath = remoteMovie.Movie.Path;
+                _logger.Debug("Pre-import enabled, setting save path to: {0}", savePath);
+            }
+
+            Proxy.AddTorrentFromFile(filename, fileContent, addHasSetShareLimits ? remoteMovie.SeedConfiguration : null, Settings, savePath);
 
             if ((!addHasSetShareLimits && setShareLimits) || moveToTop || forceStart)
             {

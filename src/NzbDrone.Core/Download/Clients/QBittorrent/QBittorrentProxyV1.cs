@@ -130,11 +130,16 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             return response;
         }
 
-        public void AddTorrentFromUrl(string torrentUrl, TorrentSeedConfiguration seedConfiguration, QBittorrentSettings settings)
+        public void AddTorrentFromUrl(string torrentUrl, TorrentSeedConfiguration seedConfiguration, QBittorrentSettings settings, string savePath = null)
         {
             var request = BuildRequest(settings).Resource("/command/download")
                                                 .Post()
                                                 .AddFormParameter("urls", torrentUrl);
+
+            if (savePath.IsNotNullOrWhiteSpace())
+            {
+                request.AddFormParameter("savepath", savePath);
+            }
 
             if (settings.MovieCategory.IsNotNullOrWhiteSpace())
             {
@@ -160,11 +165,16 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             }
         }
 
-        public void AddTorrentFromFile(string fileName, byte[] fileContent, TorrentSeedConfiguration seedConfiguration, QBittorrentSettings settings)
+        public void AddTorrentFromFile(string fileName, byte[] fileContent, TorrentSeedConfiguration seedConfiguration, QBittorrentSettings settings, string savePath = null)
         {
             var request = BuildRequest(settings).Resource("/command/upload")
                                                 .Post()
                                                 .AddFormUpload("torrents", fileName, fileContent);
+
+            if (savePath.IsNotNullOrWhiteSpace())
+            {
+                request.AddFormParameter("savepath", savePath);
+            }
 
             if (settings.MovieCategory.IsNotNullOrWhiteSpace())
             {
