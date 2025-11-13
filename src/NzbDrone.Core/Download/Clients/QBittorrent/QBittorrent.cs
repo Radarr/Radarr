@@ -151,11 +151,19 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             // Pre-Import: Download directly to the movie's final destination folder to avoid
             // unnecessary file moves between download directory and media library.
             // This is particularly beneficial when they are on different physical drives.
+            // Only attempt if torrent is suitable (single video file, no archives, etc.)
             string savePath = null;
             if (Settings.PreImportToDestination && remoteMovie.Movie != null && remoteMovie.Movie.Path.IsNotNullOrWhiteSpace())
             {
-                savePath = remoteMovie.Movie.Path;
-                _logger.Debug("Pre-import enabled, setting save path to: {0}", savePath);
+                if (IsSuitableForPreImport(fileContent))
+                {
+                    savePath = remoteMovie.Movie.Path;
+                    _logger.Debug("Pre-import enabled, torrent is suitable. Setting save path to: {0}", savePath);
+                }
+                else
+                {
+                    _logger.Debug("Pre-import enabled but torrent is not suitable (multiple files, archives, etc.). Using default download location.");
+                }
             }
 
             Proxy.AddTorrentFromFile(filename, fileContent, addHasSetShareLimits ? remoteMovie.SeedConfiguration : null, Settings, savePath);
@@ -760,6 +768,62 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             var torrentProperties = Proxy.GetTorrentProperties(torrent.Hash, Settings);
 
             torrent.SeedingTime = torrentProperties.SeedingTime;
+        }
+
+        /// <summary>
+        /// Determines if a torrent is suitable for Pre-Import feature.
+        /// Pre-Import only works reliably with single video file torrents.
+        /// Multi-file torrents, archived content, or torrents with samples should use normal download flow.
+        /// </summary>
+        private bool IsSuitableForPreImport(byte[] torrentFileContent)
+        {
+            try
+            {
+                var torrentInfo = _torrentFileInfoReader.GetTorrentInfo(torrentFileContent);
+
+                // Must be a single file
+                if (!torrentInfo.IsSingleFile)
+                {
+                    _logger.Trace("Torrent contains {0} files, Pre-Import requires single file", torrentInfo.FileCount);
+                    return false;
+                }
+
+                // Must not contain archives
+                if (torrentInfo.ContainsArchives)
+                {
+                    _logger.Trace("Torrent contains archived files, Pre-Import not suitable");
+                    return false;
+                }
+
+                // Must contain a video file
+                if (!torrentInfo.ContainsVideoFile)
+                {
+                    _logger.Trace("Torrent does not contain a video file, Pre-Import not suitable");
+                    return false;
+                }
+
+                // File must have a valid name (no illegal characters)
+                var videoFileName = torrentInfo.VideoFileName;
+                if (videoFileName.IsNullOrWhiteSpace() || HasIllegalCharacters(videoFileName))
+                {
+                    _logger.Trace("Torrent filename contains illegal characters or is invalid, Pre-Import not suitable");
+                    return false;
+                }
+
+                _logger.Debug("Torrent is suitable for Pre-Import: single video file '{0}'", videoFileName);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "Failed to analyze torrent for Pre-Import suitability, using default download location");
+                return false;
+            }
+        }
+
+        private bool HasIllegalCharacters(string filename)
+        {
+            var invalidChars = Path.GetInvalidFileNameChars();
+            return filename.IndexOfAny(invalidChars) >= 0;
         }
     }
 }

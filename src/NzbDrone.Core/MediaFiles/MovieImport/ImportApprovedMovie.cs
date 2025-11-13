@@ -194,6 +194,33 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
                     importResults.Add(new ImportResult(importDecision, "Failed to import movie, unable to move existing file to the Recycle Bin."));
                 }
+                catch (SameFilenameException e)
+                {
+                    // File is already in the correct location (likely from Pre-Import feature)
+                    // This is not an error - just need to register the file in the database
+                    _logger.Debug("File already in destination, completing import: {0}", e.Filename);
+
+                    movieFile.RelativePath = localMovie.Movie.Path.GetRelativePath(movieFile.Path);
+
+                    // Delete any existing DB entries for this path to avoid conflicts
+                    var previousFiles = _mediaFileService.GetFilesWithRelativePath(localMovie.Movie.Id, movieFile.RelativePath);
+                    foreach (var previousFile in previousFiles)
+                    {
+                        _mediaFileService.Delete(previousFile, DeleteMediaFileReason.ManualOverride);
+                    }
+
+                    movieFile = _mediaFileService.Add(movieFile);
+                    importResults.Add(new ImportResult(importDecision));
+
+                    localMovie.Movie.MovieFile = movieFile;
+
+                    if (newDownload)
+                    {
+                        _extraService.ImportMovie(localMovie, movieFile, copyOnly);
+                    }
+
+                    _eventAggregator.PublishEvent(new MovieFileImportedEvent(localMovie, movieFile, oldFiles, newDownload, downloadClientItem));
+                }
                 catch (Exception e)
                 {
                     _logger.Warn(e, "Couldn't import movie " + localMovie);
