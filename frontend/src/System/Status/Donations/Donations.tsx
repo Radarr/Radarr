@@ -23,14 +23,6 @@ function Donations() {
           />
         </Link>
       </div>
-      <div className={styles.logoContainer} title="Readarr">
-        <Link to="https://readarr.com/donate">
-          <img
-            className={styles.logo}
-            src={`${window.Radarr.urlBase}/Content/Images/Icons/logo-readarr.png`}
-          />
-        </Link>
-      </div>
       <div className={styles.logoContainer} title="Prowlarr">
         <Link to="https://prowlarr.com/donate">
           <img
