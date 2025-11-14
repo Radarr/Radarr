@@ -13,6 +13,7 @@ using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Download.Clients.QBittorrent;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
+using NzbDrone.Core.Organizer;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
@@ -48,6 +49,11 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             Mocker.GetMock<IQBittorrentProxySelector>()
                   .Setup(s => s.GetProxy(It.IsAny<QBittorrentSettings>(), It.IsAny<bool>()))
                   .Returns(Mocker.GetMock<IQBittorrentProxy>().Object);
+
+            // Mock INamingConfigService - default to RenameMovies = false
+            Mocker.GetMock<INamingConfigService>()
+                  .Setup(s => s.GetConfig())
+                  .Returns(new NamingConfig { RenameMovies = false });
         }
 
         protected void GivenRedirectToMagnet()
@@ -1343,6 +1349,152 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
                       It.IsAny<TorrentSeedConfiguration>(),
                       It.IsAny<QBittorrentSettings>(),
                       null), Times.Once());
+        }
+
+        [Test]
+        public async Task Download_should_not_use_savepath_when_rename_movies_is_enabled()
+        {
+            // Arrange
+            var moviePath = "/movies/My Movie (2024)";
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Movie.Path = moviePath;
+
+            // Mock suitable torrent
+            var torrentInfo = new NzbDrone.Core.MediaFiles.TorrentInfo.TorrentFileInfo
+            {
+                IsSingleFile = true,
+                ContainsArchives = false,
+                ContainsVideoFile = true,
+                VideoFileName = "movie.mkv",
+                FileCount = 1
+            };
+
+            Mocker.GetMock<ITorrentFileInfoReader>()
+                  .Setup(r => r.GetTorrentInfo(It.IsAny<byte[]>()))
+                  .Returns(torrentInfo);
+
+            // Enable RenameMovies
+            Mocker.GetMock<INamingConfigService>()
+                  .Setup(s => s.GetConfig())
+                  .Returns(new NamingConfig { RenameMovies = true });
+
+            // Enable PreImportToDestination
+            Subject.Definition.Settings.As<QBittorrentSettings>().PreImportToDestination = true;
+
+            // Act
+            await Subject.Download(remoteMovie, CreateIndexer());
+
+            // Assert - Should NOT use savePath because RenameMovies is enabled
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Verify(v => v.AddTorrentFromFile(
+                      It.IsAny<string>(),
+                      It.IsAny<byte[]>(),
+                      It.IsAny<TorrentSeedConfiguration>(),
+                      It.IsAny<QBittorrentSettings>(),
+                      null), Times.Once());
+        }
+
+        [Test]
+        public async Task Download_from_magnet_should_not_use_savepath_when_rename_movies_is_enabled()
+        {
+            // Arrange
+            var moviePath = "/movies/My Movie (2024)";
+            var magnetUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR&tr=udp";
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Movie.Path = moviePath;
+            remoteMovie.Release.DownloadUrl = magnetUrl;
+
+            // Enable RenameMovies
+            Mocker.GetMock<INamingConfigService>()
+                  .Setup(s => s.GetConfig())
+                  .Returns(new NamingConfig { RenameMovies = true });
+
+            // Enable PreImportToDestination
+            Subject.Definition.Settings.As<QBittorrentSettings>().PreImportToDestination = true;
+
+            // Act
+            await Subject.Download(remoteMovie, CreateIndexer());
+
+            // Assert - Should NOT use savePath because RenameMovies is enabled
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Verify(v => v.AddTorrentFromUrl(
+                      magnetUrl,
+                      It.IsAny<TorrentSeedConfiguration>(),
+                      It.IsAny<QBittorrentSettings>(),
+                      null), Times.Once());
+        }
+
+        [Test]
+        public async Task Download_should_use_savepath_when_rename_movies_is_disabled_and_torrent_suitable()
+        {
+            // Arrange
+            var moviePath = "/movies/My Movie (2024)";
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Movie.Path = moviePath;
+
+            // Mock suitable torrent
+            var torrentInfo = new NzbDrone.Core.MediaFiles.TorrentInfo.TorrentFileInfo
+            {
+                IsSingleFile = true,
+                ContainsArchives = false,
+                ContainsVideoFile = true,
+                VideoFileName = "movie.mkv",
+                FileCount = 1
+            };
+
+            Mocker.GetMock<ITorrentFileInfoReader>()
+                  .Setup(r => r.GetTorrentInfo(It.IsAny<byte[]>()))
+                  .Returns(torrentInfo);
+
+            // RenameMovies is false by default in Setup
+            Mocker.GetMock<INamingConfigService>()
+                  .Setup(s => s.GetConfig())
+                  .Returns(new NamingConfig { RenameMovies = false });
+
+            // Enable PreImportToDestination
+            Subject.Definition.Settings.As<QBittorrentSettings>().PreImportToDestination = true;
+
+            // Act
+            await Subject.Download(remoteMovie, CreateIndexer());
+
+            // Assert - Should use savePath because RenameMovies is disabled and torrent is suitable
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Verify(v => v.AddTorrentFromFile(
+                      It.IsAny<string>(),
+                      It.IsAny<byte[]>(),
+                      It.IsAny<TorrentSeedConfiguration>(),
+                      It.IsAny<QBittorrentSettings>(),
+                      moviePath), Times.Once());
+        }
+
+        [Test]
+        public async Task Download_from_magnet_should_use_savepath_when_rename_movies_is_disabled()
+        {
+            // Arrange
+            var moviePath = "/movies/My Movie (2024)";
+            var magnetUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR&tr=udp";
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Movie.Path = moviePath;
+            remoteMovie.Release.DownloadUrl = magnetUrl;
+
+            // RenameMovies is false by default in Setup
+            Mocker.GetMock<INamingConfigService>()
+                  .Setup(s => s.GetConfig())
+                  .Returns(new NamingConfig { RenameMovies = false });
+
+            // Enable PreImportToDestination
+            Subject.Definition.Settings.As<QBittorrentSettings>().PreImportToDestination = true;
+
+            // Act
+            await Subject.Download(remoteMovie, CreateIndexer());
+
+            // Assert - Should use savePath because RenameMovies is disabled
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Verify(v => v.AddTorrentFromUrl(
+                      magnetUrl,
+                      It.IsAny<TorrentSeedConfiguration>(),
+                      It.IsAny<QBittorrentSettings>(),
+                      moviePath), Times.Once());
         }
     }
 }
