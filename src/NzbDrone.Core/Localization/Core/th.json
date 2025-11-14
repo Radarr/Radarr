@@ -1083,5 +1083,6 @@
     "ImportListsTraktSettingsGenres": "ประเภท",
     "ImportListsTraktSettingsRating": "การให้คะแนน",
     "IndexerHDBitsSettingsMediums": "ปานกลาง",
-    "AddANewPath": "เพิ่มเส้นทางใหม่"
+    "AddANewPath": "เพิ่มเส้นทางใหม่",
+    "AutoTaggingSpecificationTag": "แท็ก"
 }

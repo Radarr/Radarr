@@ -819,7 +819,7 @@
     "SslCertPassword": "SSL-varmenteen salasana",
     "SslCertPasswordHelpText": "PFX-tiedoston salasana",
     "SslCertPath": "SSL-varmenteen sijainti",
-    "SslCertPathHelpText": "Pfx-tiedoston sijainti",
+    "SslCertPathHelpText": "Pfx- tai pem-tiedoston sijainti.",
     "SslPort": "SSL-portti",
     "StandardMovieFormat": "Tavallisten elokuvien kaava",
     "StartImport": "Aloita tuonti",
@@ -2036,5 +2036,6 @@
     "NotificationsPushcutSettingsIncludePoster": "Sisällytä juliste",
     "NotificationsPushcutSettingsIncludePosterHelpText": "Näytä juliste ilmoituksessa.",
     "NotificationsPushcutSettingsMetadataLinks": "Metatietolinkit",
-    "NotificationsPushcutSettingsMetadataLinksHelpText": "Lisää lähetettäviin ilmoituksiin linkit median metatietoihin."
+    "NotificationsPushcutSettingsMetadataLinksHelpText": "Lisää lähetettäviin ilmoituksiin linkit median metatietoihin.",
+    "FilterMoviePropertiesOnlyNotFileWarning": "Suodattimet koskevat vain itse elokuvan ominaisuuksia, eivät siihen liittyviä tiedostoja."
 }

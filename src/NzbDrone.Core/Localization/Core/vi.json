@@ -1123,5 +1123,6 @@
     "ImportListsTraktSettingsCertification": "Chứng chỉ",
     "ImportListsTraktSettingsGenres": "Thể loại",
     "ImportListsTraktSettingsRating": "Xếp hạng",
-    "IndexerHDBitsSettingsMediums": "Trung bình"
+    "IndexerHDBitsSettingsMediums": "Trung bình",
+    "AutoTaggingSpecificationTag": "Thẻ"
 }
