@@ -73,18 +73,18 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         protected void GivenFailedDownload()
         {
             Mocker.GetMock<IQBittorrentProxy>()
-                .Setup(s => s.AddTorrentFromUrl(It.IsAny<string>(), It.IsAny<TorrentSeedConfiguration>(), It.IsAny<QBittorrentSettings>()))
+                .Setup(s => s.AddTorrentFromUrl(It.IsAny<string>(), It.IsAny<TorrentSeedConfiguration>(), It.IsAny<QBittorrentSettings>(), It.IsAny<string>()))
                 .Throws<InvalidOperationException>();
 
             Mocker.GetMock<IQBittorrentProxy>()
-                .Setup(s => s.AddTorrentFromFile(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<TorrentSeedConfiguration>(), It.IsAny<QBittorrentSettings>()))
+                .Setup(s => s.AddTorrentFromFile(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<TorrentSeedConfiguration>(), It.IsAny<QBittorrentSettings>(), It.IsAny<string>()))
                 .Throws<InvalidOperationException>();
         }
 
         protected void GivenSuccessfulDownload()
         {
             Mocker.GetMock<IQBittorrentProxy>()
-                .Setup(s => s.AddTorrentFromFile(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<TorrentSeedConfiguration>(), It.IsAny<QBittorrentSettings>()))
+                .Setup(s => s.AddTorrentFromFile(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<TorrentSeedConfiguration>(), It.IsAny<QBittorrentSettings>(), It.IsAny<string>()))
                 .Callback(() =>
                 {
                     var torrent = new QBittorrentTorrent
@@ -504,7 +504,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             Assert.DoesNotThrowAsync(async () => await Subject.Download(remoteMovie, CreateIndexer()));
 
             Mocker.GetMock<IQBittorrentProxy>()
-                  .Verify(s => s.AddTorrentFromUrl(It.IsAny<string>(), It.IsAny<TorrentSeedConfiguration>(), It.IsAny<QBittorrentSettings>()), Times.Once());
+                  .Verify(s => s.AddTorrentFromUrl(It.IsAny<string>(), It.IsAny<TorrentSeedConfiguration>(), It.IsAny<QBittorrentSettings>(), It.IsAny<string>()), Times.Once());
         }
 
         [Test]

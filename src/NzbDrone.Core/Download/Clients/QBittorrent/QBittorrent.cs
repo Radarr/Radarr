@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using FluentValidation.Results;
@@ -77,7 +78,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
             var setShareLimits = remoteMovie.SeedConfiguration != null && (remoteMovie.SeedConfiguration.Ratio.HasValue || remoteMovie.SeedConfiguration.SeedTime.HasValue);
             var addHasSetShareLimits = setShareLimits && ProxyApiVersion >= new Version(2, 8, 1);
-            var isRecentMovie = remoteMovie.Movie.MovieMetadata.Value.IsRecentMovie;
+            var isRecentMovie = remoteMovie.Movie?.MovieMetadata?.Value?.IsRecentMovie ?? false;
             var moveToTop = (isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First) || (!isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First);
             var forceStart = (QBittorrentState)Settings.InitialState == QBittorrentState.ForceStart;
 
@@ -144,7 +145,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         {
             var setShareLimits = remoteMovie.SeedConfiguration != null && (remoteMovie.SeedConfiguration.Ratio.HasValue || remoteMovie.SeedConfiguration.SeedTime.HasValue);
             var addHasSetShareLimits = setShareLimits && ProxyApiVersion >= new Version(2, 8, 1);
-            var isRecentMovie = remoteMovie.Movie.MovieMetadata.Value.IsRecentMovie;
+            var isRecentMovie = remoteMovie.Movie?.MovieMetadata?.Value?.IsRecentMovie ?? false;
             var moveToTop = (isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First) || (!isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First);
             var forceStart = (QBittorrentState)Settings.InitialState == QBittorrentState.ForceStart;
 

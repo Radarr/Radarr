@@ -74,6 +74,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             {
                 var localMovie = importDecision.LocalMovie;
                 var oldFiles = new List<DeletedMovieFile>();
+                MovieFile movieFile = default;
+                var copyOnly = false;
 
                 try
                 {
@@ -85,7 +87,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                         continue;
                     }
 
-                    var movieFile = new MovieFile();
+                    movieFile = new MovieFile();
                     movieFile.DateAdded = DateTime.UtcNow;
                     movieFile.MovieId = localMovie.Movie.Id;
                     movieFile.Path = localMovie.Path.CleanFilePath();
@@ -113,7 +115,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                         movieFile.IndexerFlags = localMovie.IndexerFlags;
                     }
 
-                    bool copyOnly;
                     switch (importMode)
                     {
                         default:
