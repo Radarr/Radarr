@@ -1087,5 +1087,6 @@
     "ImportListsTraktSettingsCertification": "شهادة",
     "ImportListsTraktSettingsGenres": "الأنواع",
     "ImportListsTraktSettingsRating": "التقييمات",
-    "IndexerHDBitsSettingsMediums": "متوسط"
+    "IndexerHDBitsSettingsMediums": "متوسط",
+    "AutoTaggingSpecificationTag": "العلامات"
 }

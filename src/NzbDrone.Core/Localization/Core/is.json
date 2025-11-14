@@ -1084,5 +1084,6 @@
     "ImportListsTraktSettingsCertification": "Vottun",
     "ImportListsTraktSettingsGenres": "Tegundir",
     "ImportListsTraktSettingsRating": "Einkunnir",
-    "IndexerHDBitsSettingsMediums": "Miðlungs"
+    "IndexerHDBitsSettingsMediums": "Miðlungs",
+    "AutoTaggingSpecificationTag": "Merkimiðar"
 }

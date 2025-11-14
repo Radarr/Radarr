@@ -802,13 +802,13 @@
     "SetPermissionsLinuxHelpText": "Měl by se chmod spustit při importu / přejmenování souborů?",
     "SetTags": "Nastavit značky",
     "Settings": "Nastavení",
-    "LongDateFormat": "Long Date Format",
+    "LongDateFormat": "Dlouhý formát data",
     "RemotePathMappingLocalPathHelpText": "Cesta, kterou by {appName} měl použít pro místní přístup ke vzdálené cestě",
     "RemotePathMappingRemotePathHelpText": "Kořenová cesta k adresáři, do kterého stahovací klient přistupuje",
     "RuntimeFormat": "Runtime Format",
     "ShortDateFormat": "Formát krátkého data",
-    "ShowRelativeDates": "Zobrazit relativní data",
-    "ShowRelativeDatesHelpText": "Zobrazit relativní (dnes / včera / atd.) Nebo absolutní data",
+    "ShowRelativeDates": "Zobrazit aktuální datum",
+    "ShowRelativeDatesHelpText": "Zobrazit relevantní",
     "WeekColumnHeaderHelpText": "Zobrazuje se nad každým sloupcem, když je aktivní zobrazení týden",
     "ListMonitorMovieHelpText": "Pokud je povoleno, budou přidány a sledovány filmy přidané tímto seznamem",
     "ICalShowAsAllDayEvents": "Zobrazit jako celodenní události",
@@ -1522,5 +1522,10 @@
     "InstallMajorVersionUpdateMessageLink": "Pro více informací prosím navštivte [{domain}]({url}).",
     "InstanceNameHelpText": "Jméno instance v záložce a v syslogu",
     "SetIndexerFlags": "Nastavit příznaky indexeru",
-    "ReleaseProfileIndexerHelpText": "Výběr, jakých indexerů se profil týká"
+    "ReleaseProfileIndexerHelpText": "Výběr, jakých indexerů se profil týká",
+    "DownloadClientQbittorrentValidationCategoryRecommended": "Kategorie je doporučená",
+    "DownloadClientQbittorrentValidationCategoryUnsupported": "Kategorie není podporována",
+    "DownloadClientNzbVortexMultipleFilesMessage": "Stažení obsahuje více souborů a nenachází se ve složce úlohy: {outputPath}",
+    "DownloadClientNzbgetValidationKeepHistoryOverMax": "Nastavení KeepHistory pro NzbGet by mělo být menší než 25000",
+    "DownloadClientNzbgetValidationKeepHistoryZero": "Nastavení NzbGet pro KeepHistory by mělo být větší než 0"
 }

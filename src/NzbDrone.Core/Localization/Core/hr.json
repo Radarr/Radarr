@@ -381,5 +381,6 @@
     "IndexerHDBitsSettingsCodecs": "Kodek",
     "ReleaseProfile": "profil verzije",
     "AddANewPath": "Dodaj novu putanju",
-    "AddCustomFilter": "Dodaj proizvoljan filter"
+    "AddCustomFilter": "Dodaj proizvoljan filter",
+    "FormatAgeDay": "dani"
 }

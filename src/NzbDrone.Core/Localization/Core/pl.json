@@ -1311,5 +1311,6 @@
     "DelayProfileProtocol": "Protokół: {preferredProtocol}",
     "DeleteMovieFolderCountConfirmation": "Czy na pewno chcesz usunąć {count} wybranych filmów?",
     "DeleteMovieFolderMovieCount": "{movieFileCount} plików filmu o rozmiarze {size}",
-    "DeleteSelected": "Usuń wybrane"
+    "DeleteSelected": "Usuń wybrane",
+    "FormatAgeDay": "dni"
 }

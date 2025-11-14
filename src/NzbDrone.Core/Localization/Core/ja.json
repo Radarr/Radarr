@@ -1085,5 +1085,6 @@
     "ImportListsTraktSettingsGenres": "ジャンル",
     "ImportListsTraktSettingsRating": "評価",
     "AddANewPath": "新しいパスを追加",
-    "IndexerHDBitsSettingsMediums": "中"
+    "IndexerHDBitsSettingsMediums": "中",
+    "AutoTaggingSpecificationTag": "タグ"
 }

@@ -1175,5 +1175,6 @@
     "IndexerSettingsCategories": "Categorii",
     "DefaultNameCopiedImportList": "{name} - Copie",
     "Warning": "Avertisment",
-    "YesterdayAt": "Ieri la {time}"
+    "YesterdayAt": "Ieri la {time}",
+    "AutoTaggingSpecificationTag": "Etichete"
 }

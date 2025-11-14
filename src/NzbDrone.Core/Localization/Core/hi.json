@@ -1082,5 +1082,6 @@
     "ImportListsTraktSettingsCertification": "प्रमाणीकरण",
     "ImportListsTraktSettingsGenres": "शैलियां",
     "ImportListsTraktSettingsRating": "रेटिंग्स",
-    "IndexerHDBitsSettingsMediums": "मध्यम"
+    "IndexerHDBitsSettingsMediums": "मध्यम",
+    "AutoTaggingSpecificationTag": "टैग"
 }
