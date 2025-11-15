@@ -59,5 +59,25 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             Subject.GetMovieFolder(_movie).Should().Be(Path.Combine("w", "westworld"));
         }
+
+        [TestCase("The Mist", "M", "The Mist")]
+        [TestCase("30 Rock", "#", "30 Rock")]
+        public void should_get_expected_folder_name_back_octo(string title, string parent, string child)
+        {
+            _movie.Title = title;
+            _namingConfig.MovieFolderFormat = "{Movie TitleFirstCharacterOctothorpe}\\{Movie Title}";
+
+            Subject.GetMovieFolder(_movie).Should().Be(Path.Combine(parent, child));
+        }
+
+        [TestCase("The Mist", "m", "the mist")]
+        [TestCase("30 Rock", "#", "30 rock")]
+        public void should_be_able_to_use_lower_case_first_character_octo(string title, string parent, string child)
+        {
+            _movie.Title = title;
+            _namingConfig.MovieFolderFormat = "{movie titlefirstcharacteroctothorpe}\\{movie title}";
+
+            Subject.GetMovieFolder(_movie).Should().Be(Path.Combine(parent, child));
+        }
     }
 }
