@@ -63,7 +63,9 @@ namespace Radarr.Api.V3.Movies
         // Editing Only
         public bool Monitored { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
+        public DateTime? MinimumAvailabilityDate { get; set; }
         public bool IsAvailable { get; set; }
+        public DateTime? DateConsideredAvailable { get; set; }
         public string FolderName { get; set; }
 
         public int Runtime { get; set; }
@@ -143,6 +145,8 @@ namespace Radarr.Api.V3.Movies
                 MinimumAvailability = model.MinimumAvailability,
 
                 IsAvailable = model.IsAvailable(availDelay),
+                DateConsideredAvailable = model.GetReleaseDate(availDelay),
+                MinimumAvailabilityDate = model.GetReleaseDate(),
                 FolderName = model.FolderName(),
 
                 Runtime = model.MovieMetadata.Value.Runtime,

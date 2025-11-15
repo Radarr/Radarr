@@ -62,7 +62,8 @@ export const possibleFilterTypes = {
     {
       key: filterTypes.NOT_IN_NEXT,
       value: () => translate('FilterNotInNext')
-    }
+    },
+    { key: filterTypes.IN_PAST, value: 'before today' }
   ],
 
   [EQUAL]: [
