@@ -31,6 +31,7 @@ namespace NzbDrone.Core.Configuration
         void EnsureDefaultConfigFile();
 
         string BindAddress { get; }
+        string AllowedCORSOrigins { get; }
         int Port { get; }
         int SslPort { get; }
         bool EnableSsl { get; }
@@ -173,6 +174,8 @@ namespace NzbDrone.Core.Configuration
                 return bindAddress;
             }
         }
+
+        public string AllowedCORSOrigins => _serverOptions.AllowedCORSOrigins ?? GetValue("AllowedCORSOrigins", "*");
 
         public int Port => _serverOptions.Port ?? GetValueInt("Port", 7878);
 
