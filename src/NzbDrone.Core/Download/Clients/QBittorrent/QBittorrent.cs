@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using FluentValidation.Results;
@@ -12,6 +13,7 @@ using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
+using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Validation;
@@ -21,6 +23,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
     public class QBittorrent : TorrentClientBase<QBittorrentSettings>
     {
         private readonly IQBittorrentProxySelector _proxySelector;
+        private readonly INamingConfigService _namingConfigService;
         private readonly ICached<SeedingTimeCacheEntry> _seedingTimeCache;
 
         private class SeedingTimeCacheEntry
@@ -33,6 +36,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                            ITorrentFileInfoReader torrentFileInfoReader,
                            IHttpClient httpClient,
                            IConfigService configService,
+                           INamingConfigService namingConfigService,
                            IDiskProvider diskProvider,
                            IRemotePathMappingService remotePathMappingService,
                            ICacheManager cacheManager,
@@ -42,6 +46,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, localizationService, blocklistService, logger)
         {
             _proxySelector = proxySelector;
+            _namingConfigService = namingConfigService;
 
             _seedingTimeCache = cacheManager.GetCache<SeedingTimeCacheEntry>(GetType(), "seedingTime");
         }
@@ -77,11 +82,33 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
             var setShareLimits = remoteMovie.SeedConfiguration != null && (remoteMovie.SeedConfiguration.Ratio.HasValue || remoteMovie.SeedConfiguration.SeedTime.HasValue);
             var addHasSetShareLimits = setShareLimits && ProxyApiVersion >= new Version(2, 8, 1);
-            var isRecentMovie = remoteMovie.Movie.MovieMetadata.Value.IsRecentMovie;
+            var isRecentMovie = remoteMovie.Movie?.MovieMetadata?.Value?.IsRecentMovie ?? false;
             var moveToTop = (isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First) || (!isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First);
             var forceStart = (QBittorrentState)Settings.InitialState == QBittorrentState.ForceStart;
 
-            Proxy.AddTorrentFromUrl(magnetLink, addHasSetShareLimits && setShareLimits ? remoteMovie.SeedConfiguration : null, Settings);
+            // Pre-Import: Download directly to the movie's final destination folder to avoid
+            // unnecessary file moves between download directory and media library.
+            // This is particularly beneficial when they are on different physical drives.
+            // Only works when file renaming is disabled in Radarr settings.
+            string savePath = null;
+            if (Settings.PreImportToDestination)
+            {
+                if (remoteMovie.Movie == null || remoteMovie.Movie.Path.IsNullOrWhiteSpace())
+                {
+                    _logger.Trace("Pre-Import skipped: Movie path not available");
+                }
+                else if (_namingConfigService.GetConfig().RenameMovies)
+                {
+                    _logger.Debug("Pre-Import skipped: File renaming is enabled in Radarr. Disable 'Rename Movies' in Settings > Media Management to use Pre-Import.");
+                }
+                else
+                {
+                    savePath = remoteMovie.Movie.Path;
+                    _logger.Debug("Pre-Import enabled for magnet link, setting save path to: {0}", savePath);
+                }
+            }
+
+            Proxy.AddTorrentFromUrl(magnetLink, addHasSetShareLimits && setShareLimits ? remoteMovie.SeedConfiguration : null, Settings, savePath);
 
             if ((!addHasSetShareLimits && setShareLimits) || moveToTop || forceStart)
             {
@@ -134,11 +161,37 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         {
             var setShareLimits = remoteMovie.SeedConfiguration != null && (remoteMovie.SeedConfiguration.Ratio.HasValue || remoteMovie.SeedConfiguration.SeedTime.HasValue);
             var addHasSetShareLimits = setShareLimits && ProxyApiVersion >= new Version(2, 8, 1);
-            var isRecentMovie = remoteMovie.Movie.MovieMetadata.Value.IsRecentMovie;
+            var isRecentMovie = remoteMovie.Movie?.MovieMetadata?.Value?.IsRecentMovie ?? false;
             var moveToTop = (isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First) || (!isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First);
             var forceStart = (QBittorrentState)Settings.InitialState == QBittorrentState.ForceStart;
 
-            Proxy.AddTorrentFromFile(filename, fileContent, addHasSetShareLimits ? remoteMovie.SeedConfiguration : null, Settings);
+            // Pre-Import: Download directly to the movie's final destination folder to avoid
+            // unnecessary file moves between download directory and media library.
+            // This is particularly beneficial when they are on different physical drives.
+            // Only works when file renaming is disabled in Radarr settings and torrent is suitable.
+            string savePath = null;
+            if (Settings.PreImportToDestination)
+            {
+                if (remoteMovie.Movie == null || remoteMovie.Movie.Path.IsNullOrWhiteSpace())
+                {
+                    _logger.Trace("Pre-Import skipped: Movie path not available");
+                }
+                else if (_namingConfigService.GetConfig().RenameMovies)
+                {
+                    _logger.Debug("Pre-Import skipped: File renaming is enabled in Radarr. Disable 'Rename Movies' in Settings > Media Management to use Pre-Import.");
+                }
+                else if (!IsSuitableForPreImport(fileContent))
+                {
+                    _logger.Debug("Pre-Import skipped: Torrent is not suitable (see trace logs for details). Using default download location.");
+                }
+                else
+                {
+                    savePath = remoteMovie.Movie.Path;
+                    _logger.Debug("Pre-Import enabled for torrent file, setting save path to: {0}", savePath);
+                }
+            }
+
+            Proxy.AddTorrentFromFile(filename, fileContent, addHasSetShareLimits ? remoteMovie.SeedConfiguration : null, Settings, savePath);
 
             if ((!addHasSetShareLimits && setShareLimits) || moveToTop || forceStart)
             {
@@ -740,6 +793,62 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             var torrentProperties = Proxy.GetTorrentProperties(torrent.Hash, Settings);
 
             torrent.SeedingTime = torrentProperties.SeedingTime;
+        }
+
+        /// <summary>
+        /// Determines if a torrent is suitable for Pre-Import feature.
+        /// Pre-Import only works reliably with single video file torrents.
+        /// Multi-file torrents, archived content, or torrents with samples should use normal download flow.
+        /// </summary>
+        private bool IsSuitableForPreImport(byte[] torrentFileContent)
+        {
+            try
+            {
+                var torrentInfo = _torrentFileInfoReader.GetTorrentInfo(torrentFileContent);
+
+                // Must be a single file
+                if (!torrentInfo.IsSingleFile)
+                {
+                    _logger.Debug("Pre-Import skipped: Torrent contains {0} files, requires single file", torrentInfo.FileCount);
+                    return false;
+                }
+
+                // Must not contain archives
+                if (torrentInfo.ContainsArchives)
+                {
+                    _logger.Debug("Pre-Import skipped: Torrent contains archived files");
+                    return false;
+                }
+
+                // Must contain a video file
+                if (!torrentInfo.ContainsVideoFile)
+                {
+                    _logger.Debug("Pre-Import skipped: Torrent does not contain a video file");
+                    return false;
+                }
+
+                // File must have a valid name (no illegal characters)
+                var videoFileName = torrentInfo.VideoFileName;
+                if (videoFileName.IsNullOrWhiteSpace() || HasIllegalCharacters(videoFileName))
+                {
+                    _logger.Debug("Pre-Import skipped: Torrent filename contains illegal characters or is invalid");
+                    return false;
+                }
+
+                _logger.Debug("Torrent is suitable for Pre-Import: single video file '{0}'", videoFileName);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "Pre-Import skipped: Failed to analyze torrent, using default download location");
+                return false;
+            }
+        }
+
+        private bool HasIllegalCharacters(string filename)
+        {
+            var invalidChars = Path.GetInvalidFileNameChars();
+            return filename.IndexOfAny(invalidChars) >= 0;
         }
     }
 }
