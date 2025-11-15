@@ -644,7 +644,12 @@ namespace NzbDrone.Core.Organizer
         {
             if (multipleTokens)
             {
-                return string.Empty;
+                if (movieFile.OriginalFilePath.IsNullOrWhiteSpace())
+                {
+                    return string.Empty;
+                }
+
+                return Path.GetFileNameWithoutExtension(movieFile.OriginalFilePath);
             }
 
             if (movieFile.RelativePath.IsNullOrWhiteSpace())
