@@ -8,7 +8,6 @@ import ExtraFilesAppState from './ExtraFilesAppState';
 import HistoryAppState, { MovieHistoryAppState } from './HistoryAppState';
 import InteractiveImportAppState from './InteractiveImportAppState';
 import MessagesAppState from './MessagesAppState';
-import MovieBlocklistAppState from './MovieBlocklistAppState';
 import MovieCollectionAppState from './MovieCollectionAppState';
 import MovieCreditAppState from './MovieCreditAppState';
 import MovieFilesAppState from './MovieFilesAppState';
@@ -89,7 +88,6 @@ interface AppState {
   extraFiles: ExtraFilesAppState;
   history: HistoryAppState;
   interactiveImport: InteractiveImportAppState;
-  movieBlocklist: MovieBlocklistAppState;
   movieCollections: MovieCollectionAppState;
   movieCredits: MovieCreditAppState;
   movieFiles: MovieFilesAppState;

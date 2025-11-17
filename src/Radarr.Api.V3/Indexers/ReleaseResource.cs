@@ -19,6 +19,7 @@ namespace Radarr.Api.V3.Indexers
         public QualityModel Quality { get; set; }
         public List<CustomFormatResource> CustomFormats { get; set; }
         public int CustomFormatScore { get; set; }
+        public ReleaseHistoryResource History { get; set; }
         public int QualityWeight { get; set; }
         public int Age { get; set; }
         public double AgeHours { get; set; }
