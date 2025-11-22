@@ -150,7 +150,8 @@ namespace NzbDrone.Core.Movies
                         },
                         Monitored = true,
                         Tags = collection.Tags
-                    }).ToList(), true);
+                    }).ToList(),
+                        true);
                 }
             }
         }

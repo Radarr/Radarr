@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
 
     public class TorrentPotatoSettings : PropertywiseEquatable<TorrentPotatoSettings>, ITorrentIndexerSettings
     {
-        private static readonly TorrentPotatoSettingsValidator Validator = new ();
+        private static readonly TorrentPotatoSettingsValidator Validator = new();
 
         public TorrentPotatoSettings()
         {
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
         public int MinimumSeeders { get; set; }
 
         [FieldDefinition(4)]
-        public SeedCriteriaSettings SeedCriteria { get; set; } = new ();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new();
 
         [FieldDefinition(5, Type = FieldType.Checkbox, Label = "IndexerSettingsRejectBlocklistedTorrentHashes", HelpText = "IndexerSettingsRejectBlocklistedTorrentHashesHelpText", Advanced = true)]
         public bool RejectBlocklistedTorrentHashesWhileGrabbing { get; set; }

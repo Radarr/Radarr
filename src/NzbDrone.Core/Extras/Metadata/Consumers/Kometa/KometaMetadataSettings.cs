@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Kometa
 
     public class KometaMetadataSettings : IProviderConfig
     {
-        private static readonly KometaSettingsValidator Validator = new ();
+        private static readonly KometaSettingsValidator Validator = new();
 
         public KometaMetadataSettings()
         {

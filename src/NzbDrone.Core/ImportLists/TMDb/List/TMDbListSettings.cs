@@ -14,7 +14,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
 
     public class TMDbListSettings : TMDbSettingsBase<TMDbListSettings>
     {
-        private static readonly TMDbListSettingsValidator Validator = new ();
+        private static readonly TMDbListSettingsValidator Validator = new();
 
         public TMDbListSettings()
         {

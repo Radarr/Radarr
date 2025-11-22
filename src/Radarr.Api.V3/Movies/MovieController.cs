@@ -264,7 +264,8 @@ namespace Radarr.Api.V3.Movies
                     MovieId = movie.Id,
                     SourcePath = sourcePath,
                     DestinationPath = destinationPath
-                }, trigger: CommandTrigger.Manual);
+                },
+                    trigger: CommandTrigger.Manual);
             }
 
             var model = moviesResource.ToModel(movie);

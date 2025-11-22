@@ -15,7 +15,7 @@ namespace NzbDrone.Core.CustomFormats
 
     public class YearSpecification : CustomFormatSpecificationBase
     {
-        private static readonly YearSpecificationValidator Validator = new ();
+        private static readonly YearSpecificationValidator Validator = new();
 
         public override int Order => 10;
         public override string ImplementationName => "Year";

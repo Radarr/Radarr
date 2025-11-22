@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
 
         public override string Name => "Emby (Legacy)";
 
-        public override ProviderMessage Message => new (_localizationService.GetLocalizedString("MetadataMediaBrowserDeprecated", new Dictionary<string, object> { { "version", "v6" } }), ProviderMessageType.Warning);
+        public override ProviderMessage Message => new(_localizationService.GetLocalizedString("MetadataMediaBrowserDeprecated", new Dictionary<string, object> { { "version", "v6" } }), ProviderMessageType.Warning);
 
         public override MetadataFile FindMetadataFile(Movie movie, string path)
         {

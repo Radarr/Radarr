@@ -11,7 +11,7 @@ namespace NzbDrone.Core.ImportLists.TMDb
     public class TMDbSettingsBase<TSettings> : ImportListSettingsBase<TSettings>
         where TSettings : TMDbSettingsBase<TSettings>
     {
-        private static readonly TMDbSettingsBaseValidator<TSettings> Validator = new ();
+        private static readonly TMDbSettingsBaseValidator<TSettings> Validator = new();
 
         public override NzbDroneValidationResult Validate()
         {

@@ -12,13 +12,13 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Kometa
 {
     public class KometaMetadata : MetadataBase<KometaMetadataSettings>
     {
-        private static readonly Regex MovieImagesRegex = new (@"^(?:poster|background)\.(?:png|jpe?g)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex MovieImagesRegex = new(@"^(?:poster|background)\.(?:png|jpe?g)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private readonly ILocalizationService _localizationService;
 
         public override string Name => "Kometa";
 
-        public override ProviderMessage Message => new (_localizationService.GetLocalizedString("MetadataKometaDeprecated"), ProviderMessageType.Warning);
+        public override ProviderMessage Message => new(_localizationService.GetLocalizedString("MetadataKometaDeprecated"), ProviderMessageType.Warning);
 
         public KometaMetadata(ILocalizationService localizationService)
         {

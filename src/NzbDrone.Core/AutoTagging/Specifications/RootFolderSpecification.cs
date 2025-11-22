@@ -17,7 +17,7 @@ namespace NzbDrone.Core.AutoTagging.Specifications
 
     public class RootFolderSpecification : AutoTaggingSpecificationBase
     {
-        private static readonly RootFolderSpecificationValidator Validator = new ();
+        private static readonly RootFolderSpecificationValidator Validator = new();
 
         public override int Order => 1;
         public override string ImplementationName => "Root Folder";

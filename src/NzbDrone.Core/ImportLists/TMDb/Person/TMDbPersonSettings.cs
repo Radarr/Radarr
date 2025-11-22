@@ -36,7 +36,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.Person
 
     public class TMDbPersonSettings : TMDbSettingsBase<TMDbPersonSettings>
     {
-        private static readonly TMDbPersonSettingsValidator Validator = new ();
+        private static readonly TMDbPersonSettingsValidator Validator = new();
 
         public TMDbPersonSettings()
         {

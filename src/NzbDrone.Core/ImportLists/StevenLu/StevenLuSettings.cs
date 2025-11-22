@@ -14,7 +14,7 @@ namespace NzbDrone.Core.ImportLists.StevenLu
 
     public class StevenLuSettings : ImportListSettingsBase<StevenLuSettings>
     {
-        private static readonly StevenLuSettingsValidator Validator = new ();
+        private static readonly StevenLuSettingsValidator Validator = new();
 
         public StevenLuSettings()
         {

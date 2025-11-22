@@ -15,7 +15,7 @@ namespace NzbDrone.Core.ImportLists.Trakt.List
 
     public class TraktListSettings : TraktSettingsBase<TraktListSettings>
     {
-        private static readonly TraktListSettingsValidator Validator = new ();
+        private static readonly TraktListSettingsValidator Validator = new();
 
         [FieldDefinition(1, Label = "Username", Privacy = PrivacyLevel.UserName, HelpText = "Username for the List to import from")]
         public string Username { get; set; }

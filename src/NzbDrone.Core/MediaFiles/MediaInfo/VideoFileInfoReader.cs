@@ -118,14 +118,14 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 if (PqTransferFunctions.Contains(mediaInfoModel.VideoTransferCharacteristics))
                 {
                     var videoStreamIndex = analysis.VideoStreams.FindIndex(stream => stream.Index == primaryVideoStream?.Index);
-                    var frameOutput = FFProbe.GetFrameJson(filename, ffOptions: new () { ExtraArguments = $"-read_intervals \"%+#1\" -select_streams v:{(videoStreamIndex == -1 ? 0 : videoStreamIndex)}" });
+                    var frameOutput = FFProbe.GetFrameJson(filename, ffOptions: new() { ExtraArguments = $"-read_intervals \"%+#1\" -select_streams v:{(videoStreamIndex == -1 ? 0 : videoStreamIndex)}" });
                     mediaInfoModel.RawFrameData = frameOutput;
 
                     frames = FFProbe.AnalyseFrameJson(frameOutput);
                 }
 
-                var streamSideData = primaryVideoStream?.SideDataList ?? new ();
-                var framesSideData = frames?.Frames?.Count > 0 ? frames?.Frames[0]?.SideDataList ?? new () : new ();
+                var streamSideData = primaryVideoStream?.SideDataList ?? new();
+                var framesSideData = frames?.Frames?.Count > 0 ? frames?.Frames[0]?.SideDataList ?? new() : new();
 
                 var sideData = streamSideData.Concat(framesSideData).ToList();
                 mediaInfoModel.VideoHdrFormat = GetHdrFormat(mediaInfoModel.VideoBitDepth, mediaInfoModel.VideoColourPrimaries, mediaInfoModel.VideoTransferCharacteristics, sideData);
