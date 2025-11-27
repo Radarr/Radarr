@@ -8,6 +8,7 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Core.Test.Http
 {
     [TestFixture]
+    [Platform(Exclude = "MacOsX")]
     public class HttpProxySettingsProviderFixture : TestBase<HttpProxySettingsProvider>
     {
         private HttpProxySettings GetProxySettings()
