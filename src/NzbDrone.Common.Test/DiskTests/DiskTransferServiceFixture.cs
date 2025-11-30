@@ -541,6 +541,27 @@ namespace NzbDrone.Common.Test.DiskTests
         }
 
         [Test]
+        public void TransferFile_should_find_files_with_multiple_slashes_within_their_path()
+        {
+            WithRealDiskProvider();
+
+            var root = GetFilledTempFolder();
+            var rootDir = root.FullName;
+            var fromFileName = "source-file";
+            var from = Path.Combine(rootDir, fromFileName);
+            var to = Path.Combine(rootDir, "destination-file");
+
+            var oneSlash = new string(Path.DirectorySeparatorChar, 1);
+            var threeSlashes = new string(Path.DirectorySeparatorChar, 3);
+            var overSlashed = Path.Combine(rootDir.Replace(oneSlash, threeSlashes), fromFileName);
+
+            File.WriteAllText(from, "Source file");
+
+            var mode = Subject.TransferFile(overSlashed, to, TransferMode.Copy);
+            mode.Should().Be(TransferMode.Copy);
+        }
+
+        [Test]
         public void should_throw_if_destination_is_readonly()
         {
             Mocker.GetMock<IDiskProvider>()

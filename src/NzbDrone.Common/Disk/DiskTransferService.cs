@@ -28,15 +28,21 @@ namespace NzbDrone.Common.Disk
 
         private string ResolveRealParentPath(string path)
         {
-            var parentPath = path.GetParentPath();
-            if (!_diskProvider.FolderExists(parentPath))
+            var testExists = path.GetParentPath();
+            if (!_diskProvider.FolderExists(testExists))
             {
                 return path;
             }
 
-            var realParentPath = parentPath.GetActualCasing();
+            var cleanPath = path.GetCleanPath();
+            if (cleanPath != path)
+            {
+                _logger.Warn($"Path '{path}' is not clean, using '{cleanPath}' to resolve the parent path instead");
+            }
 
-            var partialChildPath = path.Substring(parentPath.Length);
+            var parentPath = cleanPath.GetParentPath();
+            var realParentPath = parentPath.GetActualCasing();
+            var partialChildPath = cleanPath.Substring(parentPath.Length);
 
             return realParentPath + partialChildPath;
         }
