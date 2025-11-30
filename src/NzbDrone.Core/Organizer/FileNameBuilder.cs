@@ -211,6 +211,18 @@ namespace NzbDrone.Core.Organizer
             return title.RemoveDiacritics();
         }
 
+        public static string CollectionTitleThe(string collectionTitle)
+        {
+            if (string.IsNullOrEmpty(collectionTitle))
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return TitleThe(collectionTitle);
+            }
+        }
+
         public static string TitleThe(string title)
         {
             return TitlePrefixRegex.Replace(title, "$2, $1$3");
@@ -268,7 +280,7 @@ namespace NzbDrone.Core.Organizer
 
             tokenHandlers["{Movie Certification}"] = m => movie.MovieMetadata.Value.Certification ?? string.Empty;
             tokenHandlers["{Movie Collection}"] = m => Truncate(movie.MovieMetadata.Value.CollectionTitle, m.CustomFormat) ?? string.Empty;
-            tokenHandlers["{Movie CollectionThe}"] = m => Truncate(TitleThe(movie.MovieMetadata.Value.CollectionTitle), m.CustomFormat) ?? string.Empty;
+            tokenHandlers["{Movie CollectionThe}"] = m => Truncate(CollectionTitleThe(movie.MovieMetadata.Value.CollectionTitle), m.CustomFormat) ?? string.Empty;
         }
 
         private string GetLanguageTitle(Movie movie, string isoCodes)
