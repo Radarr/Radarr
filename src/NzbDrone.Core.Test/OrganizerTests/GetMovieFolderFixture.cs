@@ -1,3 +1,4 @@
+using System.IO;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Movies;
@@ -31,6 +32,26 @@ namespace NzbDrone.Core.Test.OrganizerTests
             var movie = new Movie { Title = movieTitle, Year = year };
 
             Subject.GetMovieFolder(movie).Should().Be(expected);
+        }
+
+        [TestCase("The Y-Women Collection", "The Y-Women 14", 2005, "{Movie CollectionThe}/{Movie TitleThe} ({Release Year})", "Y-Women Collection, The", "Y-Women 14, The (2005)")]
+        public void should_use_movieFolderFormat_and_CollectionFormat_to_build_folder_name(string collectionTitle, string movieTitle, int year, string format, string expectedCollection, string expectedTitle)
+        {
+            _namingConfig.MovieFolderFormat = format;
+
+            var movie = new Movie
+            {
+                MovieMetadata = new MovieMetadata
+                {
+                    CollectionTitle = collectionTitle,
+                    Title = movieTitle,
+                    Year = year,
+                },
+            };
+
+            var result = Subject.GetMovieFolder(movie);
+            var expected = Path.Combine(expectedCollection, expectedTitle);
+            result.Should().Be(expected);
         }
     }
 }
