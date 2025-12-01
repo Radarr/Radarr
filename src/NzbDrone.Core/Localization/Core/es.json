@@ -1369,7 +1369,7 @@
     "TableOptionsButton": "Botón de opciones de tabla",
     "TorrentBlackholeSaveMagnetFilesExtension": "Guardar extensión de archivos magnet",
     "TorrentBlackholeTorrentFolder": "Carpeta de torrent",
-    "WantMoreControlAddACustomFormat": "¿Quieres más control sobre qué descargas son preferidas? Añade un [formato personalizado](/opciones/formatospersonalizados)",
+    "WantMoreControlAddACustomFormat": "¿Quieres más control sobre qué descargas son preferidas? Añade un [formato personalizado](/settings/customformats)",
     "RemoveQueueItem": "Eliminar - {sourceTitle}",
     "NotificationsGotifySettingsAppTokenHelpText": "El token de aplicación generado por Gotify",
     "NotificationsJoinSettingsDeviceNames": "Nombres de dispositivo",
