@@ -37,6 +37,7 @@ namespace NzbDrone.Core.Test.OrganizerTests
         [TestCase("The Y-Women Collection", "The Y-Women 14", 2005, "{Movie CollectionThe}/{Movie TitleThe} ({Release Year})", "Y-Women Collection, The", "Y-Women 14, The (2005)")]
         [TestCase("A Decade of Changes", "The First Year", 1980, "{Movie CollectionThe}/{Movie TitleThe} ({Release Year})", "Decade of Changes, A", "First Year, The (1980)")]
         [TestCase(null, "Just a Movie", 1999, "{Movie Title} ({Release Year})", null, "Just a Movie (1999)")]
+        [TestCase(null, "Collectionless Slop", 1949, "{Movie CollectionThe}/{Movie TitleThe} ({Release Year})", null, "Collectionless Slop (1949)")]
         public void should_use_movieFolderFormat_and_CollectionFormat_to_build_folder_name(string collectionTitle, string movieTitle, int year, string format, string expectedCollection, string expectedTitle)
         {
             _namingConfig.MovieFolderFormat = format;
