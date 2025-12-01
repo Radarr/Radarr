@@ -217,10 +217,8 @@ namespace NzbDrone.Core.Organizer
             {
                 return string.Empty;
             }
-            else
-            {
-                return TitlePrefixRegex.Replace(title, "$2, $1$3");
-            }
+
+            return TitlePrefixRegex.Replace(title, "$2, $1$3");
         }
 
         public static string CleanTitleThe(string title)
