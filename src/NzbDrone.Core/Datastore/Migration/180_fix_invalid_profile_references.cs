@@ -83,7 +83,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
                     if (conn.GetType().FullName == "Npgsql.NpgsqlConnection")
                     {
-                        insertNewLanguageProfileCmd.CommandText = "INSERT INTO \"Profiles\" (\"Id\", \"Name\", \"Cutoff\", \"Items\", \"Language\", \"FormatItems\", \"MinFormatScore\", \"CutoffFormatScore\", \"UpgradeAllowed\") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+                        insertNewLanguageProfileCmd.CommandText = "INSERT INTO \"Profiles\" (\"Id\", \"Name\", \"Cutoff\", \"Items\", \"Language\", \"FormatItems\", \"MinFormatScore\", \"CutoffFormatScore\", \"UpgradeAllowed\") OVERRIDING SYSTEM VALUE VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
                     }
                     else
                     {

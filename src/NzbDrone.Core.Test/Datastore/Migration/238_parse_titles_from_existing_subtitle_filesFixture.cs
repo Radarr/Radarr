@@ -59,7 +59,6 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
                 c.Insert.IntoTable("MovieFiles").Row(new
                 {
-                    Id = 1,
                     MovieId = 1,
                     RelativePath = moviePath,
                     Quality = new { }.ToJson(),

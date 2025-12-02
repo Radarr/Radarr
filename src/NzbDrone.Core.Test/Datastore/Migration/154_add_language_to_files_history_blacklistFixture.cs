@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
+using FluentMigrator;
+using FluentMigrator.Postgres;
 using NUnit.Framework;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration;
@@ -45,8 +47,17 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 TmdbId = 123456
             };
 
-            m.Insert.IntoTable("Profiles").Row(profile);
-            m.Insert.IntoTable("Movies").Row(movie);
+            m.IfDatabase(ProcessorIdConstants.PostgreSQL).Delegate(() =>
+            {
+                m.Insert.IntoTable("Profiles").WithOverridingSystemValue().Row(profile);
+                m.Insert.IntoTable("Movies").WithOverridingSystemValue().Row(movie);
+            });
+
+            m.IfDatabase(ProcessorIdConstants.SQLite).Delegate(() =>
+            {
+                m.Insert.IntoTable("Profiles").Row(profile);
+                m.Insert.IntoTable("Movies").Row(movie);
+            });
         }
 
         private void AddMovieFile(add_language_to_files_history_blacklist m, string sceneName, string mediaInfoLanugaes)
