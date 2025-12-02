@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         {
             var db = WithMigrationTestDb(c =>
             {
-                var rows = Builder<new_list_server.NetImportDefinition178>.CreateListOfSize(7)
+                var rows = Builder<NetImportDefinition178>.CreateListOfSize(7)
                     .All()
                     .With(x => x.Implementation = typeof(RadarrListImport).Name)
                     .With(x => x.ConfigContract = typeof(RadarrListSettings).Name)
@@ -93,17 +93,15 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                         Path = "/imdb/list?listId=ur002/"
                     },
                         _serializerSettings))
-                    .BuildListOfNew();
+                    .Build();
 
-                var i = 1;
                 foreach (var row in rows)
                 {
-                    row.Id = i++;
                     c.Insert.IntoTable("NetImport").Row(row);
                 }
             });
 
-            var items = db.Query<new_list_server.NetImportDefinition178>("SELECT * FROM \"NetImport\"");
+            var items = db.Query<NetImportDefinition178>("SELECT \"Name\", \"Implementation\", \"ConfigContract\", \"Settings\" FROM \"NetImport\"");
 
             items.Should().HaveCount(7);
 
@@ -118,7 +116,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
         public void should_switch_some_stevenlu_stevenlu2()
         {
-            var rows = Builder<new_list_server.NetImportDefinition178>.CreateListOfSize(6)
+            var rows = Builder<NetImportDefinition178>.CreateListOfSize(6)
                 .All()
                 .With(x => x.Implementation = typeof(StevenLuImport).Name)
                 .With(x => x.ConfigContract = typeof(StevenLuSettings).Name)
@@ -158,19 +156,17 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                         Link = "https://aapjeisbaas.nl/api/v1/popular-movies/imdb?fresh=True&max=20&rating=6&votes=50000"
                     },
                     _serializerSettings))
-                .BuildListOfNew();
+                .Build();
 
             var db = WithMigrationTestDb(c =>
             {
-                var i = 1;
                 foreach (var row in rows)
                 {
-                    row.Id = i++;
                     c.Insert.IntoTable("NetImport").Row(row);
                 }
             });
 
-            var items = db.Query<new_list_server.NetImportDefinition178>("SELECT * FROM \"NetImport\"");
+            var items = db.Query<NetImportDefinition178>("SELECT \"Name\", \"Implementation\", \"ConfigContract\", \"Settings\" FROM \"NetImport\"");
 
             items.Should().HaveCount(5);
 
@@ -184,11 +180,26 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             VerifyRow(items[5], rows[5].Implementation, rows[5].ConfigContract, rows[5].Settings);
         }
 
-        private void VerifyRow(new_list_server.NetImportDefinition178 row, string impl, string config, object settings)
+        private void VerifyRow(NetImportDefinition178 row, string impl, string config, object settings)
         {
             row.Implementation.Should().Be(impl);
             row.ConfigContract.Should().Be(config);
             row.Settings.Should().Be(JsonSerializer.Serialize(settings, _serializerSettings));
         }
+    }
+
+    internal sealed class NetImportDefinition178
+    {
+        public bool Enabled { get; set; }
+        public string Name { get; set; }
+        public string Implementation { get; set; }
+        public string ConfigContract { get; set; }
+        public string Settings { get; set; }
+        public bool EnableAuto { get; set; }
+        public string RootFolderPath { get; set; }
+        public bool ShouldMonitor { get; set; }
+        public int ProfileId { get; set; }
+        public int MinimumAvailability { get; set; }
+        public string Tags { get; set; }
     }
 }

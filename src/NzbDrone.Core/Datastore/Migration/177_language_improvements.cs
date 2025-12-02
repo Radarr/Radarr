@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Delete.Column("RenameEpisodes").FromTable("NamingConfig");
 
             // Manual SQL, Fluent Migrator doesn't support multi-column unique constraint on table creation, SQLite doesn't support adding it after creation
-            IfDatabase("sqlite").Execute.Sql("CREATE TABLE \"MovieTranslations\"(" +
+            IfDatabase(ProcessorIdConstants.SQLite).Execute.Sql("CREATE TABLE \"MovieTranslations\"(" +
                 "\"Id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "\"MovieId\" INTEGER NOT NULL, " +
                 "\"Title\" TEXT, " +
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 "\"Language\" INTEGER NOT NULL, " +
                 "Unique(\"MovieId\", \"Language\"));");
 
-            IfDatabase("postgresql").Execute.Sql("CREATE TABLE \"MovieTranslations\"(" +
+            IfDatabase(ProcessorIdConstants.PostgreSQL).Execute.Sql("CREATE TABLE \"MovieTranslations\"(" +
                 "\"Id\" SERIAL PRIMARY KEY , " +
                 "\"MovieId\" INTEGER NOT NULL, " +
                 "\"Title\" TEXT, " +

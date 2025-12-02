@@ -12,8 +12,8 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.Sql("UPDATE \"MovieFiles\" SET \"MediaInfo\" = Replace(\"MediaInfo\", '\"audioChannelPositionsText\"', '\"audioChannelPositionsTextContainer\"');");
 
             // Change List Interval from Min to Hour
-            IfDatabase("sqlite").Execute.Sql("UPDATE \"Config\" SET \"Value\" = max((\"Value\" / 60) + 1, 6) WHERE \"Key\" = 'importlistsyncinterval'");
-            IfDatabase("postgresql").Execute.Sql("UPDATE \"Config\" SET \"Value\" = greatest((\"Value\"::int / 60) + 1, 6) WHERE \"Key\" = 'importlistsyncinterval'");
+            IfDatabase(ProcessorIdConstants.SQLite).Execute.Sql("UPDATE \"Config\" SET \"Value\" = max((\"Value\" / 60) + 1, 6) WHERE \"Key\" = 'importlistsyncinterval'");
+            IfDatabase(ProcessorIdConstants.PostgreSQL).Execute.Sql("UPDATE \"Config\" SET \"Value\" = greatest((\"Value\"::int / 60) + 1, 6) WHERE \"Key\" = 'importlistsyncinterval'");
         }
     }
 }
