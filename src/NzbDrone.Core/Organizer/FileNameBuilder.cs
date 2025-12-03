@@ -223,6 +223,11 @@ namespace NzbDrone.Core.Organizer
 
         public static string CleanTitleThe(string title)
         {
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                return string.Empty;
+            }
+
             if (TitlePrefixRegex.IsMatch(title))
             {
                 var splitResult = TitlePrefixRegex.Split(title);
@@ -274,6 +279,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Movie Certification}"] = m => movie.MovieMetadata.Value.Certification ?? string.Empty;
             tokenHandlers["{Movie Collection}"] = m => Truncate(movie.MovieMetadata.Value.CollectionTitle, m.CustomFormat) ?? string.Empty;
             tokenHandlers["{Movie CollectionThe}"] = m => Truncate(TitleThe(movie.MovieMetadata.Value.CollectionTitle), m.CustomFormat) ?? string.Empty;
+            tokenHandlers["{Movie CleanCollectionThe}"] = m => Truncate(CleanTitleThe(movie.MovieMetadata.Value.CollectionTitle), m.CustomFormat) ?? string.Empty;
         }
 
         private string GetLanguageTitle(Movie movie, string isoCodes)
