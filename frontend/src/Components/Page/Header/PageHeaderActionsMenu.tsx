@@ -25,7 +25,7 @@ function PageHeaderActionsMenu(props: PageHeaderActionsMenuProps) {
     (state: AppState) => state.system.status.item
   );
 
-  const formsAuth = authentication === 'forms';
+  const showSignOut = authentication === 'forms' || authentication === 'oidc';
 
   const handleRestartPress = useCallback(() => {
     dispatch(restart());
@@ -66,7 +66,7 @@ function PageHeaderActionsMenu(props: PageHeaderActionsMenuProps) {
             </MenuItem>
           )}
 
-          {formsAuth ? (
+          {showSignOut ? (
             <>
               <MenuItemSeparator />
 

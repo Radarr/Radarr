@@ -18,6 +18,11 @@ export default interface General {
   username: string;
   password: string;
   passwordConfirmation: string;
+  oidcAuthority: string;
+  oidcClientId: string;
+  oidcClientSecret: string;
+  oidcUserIdentifier: string;
+  oidcScopes: string;
   logLevel: string;
   logSizeLimit: number;
   consoleLogLevel: string;
