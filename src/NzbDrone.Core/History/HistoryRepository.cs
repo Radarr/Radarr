@@ -17,6 +17,7 @@ namespace NzbDrone.Core.History
         List<MovieHistory> FindDownloadHistory(int movieId, QualityModel quality);
         List<MovieHistory> GetByMovieId(int movieId, MovieHistoryEventType? eventType);
         void DeleteForMovies(List<int> movieIds);
+        MovieHistory FirstForMovie(int movieId);
         MovieHistory MostRecentForMovie(int movieId);
         List<MovieHistory> Since(DateTime date, MovieHistoryEventType? eventType);
         PagingSpec<MovieHistory> GetPaged(PagingSpec<MovieHistory> pagingSpec, int[] languages, int[] qualities);
@@ -73,6 +74,11 @@ namespace NzbDrone.Core.History
         public void DeleteForMovies(List<int> movieIds)
         {
             Delete(c => movieIds.Contains(c.MovieId));
+        }
+
+        public MovieHistory FirstForMovie(int movieId)
+        {
+            return Query(x => x.MovieId == movieId).MinBy(h => h.Date);
         }
 
         public MovieHistory MostRecentForMovie(int movieId)
