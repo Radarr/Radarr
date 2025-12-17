@@ -1,0 +1,3 @@
+#!/usr/bin/with-contenv bash
+
+curl -fsSL http://localhost:7878/ping > /dev/null 2>&1

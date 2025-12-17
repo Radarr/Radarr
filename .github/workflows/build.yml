@@ -1,0 +1,138 @@
+name: CI
+
+permissions:
+  packages: write
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [develop, master]
+    paths-ignore:
+      - ".github/**"
+      - "src/Radarr.Api.*/openapi.json"
+  pull_request:
+    paths-ignore:
+      - ".github/**"
+      - "src/NzbDrone.Core/Localization/Core"
+      - "src/Radarr.Api.*/openapi.json"
+
+env:
+  DOTNET_VERSION: "8.0.405"
+  LOGARR_VERSION: 5.17.0
+  OUTPUT_FOLDER: ./_output
+  ARTIFACTS_FOLDER: ./_artifacts
+  TESTS_FOLDER: ./_tests
+  BUILD_SOURCEBRANCHNAME: ${{ github.head_ref || github.ref_name }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: jdx/mise-action@v3
+
+      - name: Setup Environment Variables
+        id: variables
+        shell: bash
+        run: |
+          echo "SDK_PATH=${{ env.DOTNET_ROOT }}/sdk/${DOTNET_VERSION}" >> "$GITHUB_ENV"
+          echo "DATE=$(date --rfc-3339=date)" >> "$GITHUB_ENV"
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: _cache/nuget
+          key: nuget-${{ runner.os }}-${{ hashFiles('src/Directory.Packages.props', 'src/**/*.csproj', 'global.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Cache Node modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            _cache/node
+            node_modules
+          key: node-${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
+          restore-keys: |
+            node-${{ runner.os }}-
+
+      - name: Cache MSBuild outputs
+        uses: actions/cache@v4
+        with:
+          path: _cache/msbuild
+          key: msbuild-${{ runner.os }}-${{ hashFiles('src/**/*.cs', 'src/**/*.csproj', 'src/**/*.targets', 'src/**/*.props') }}
+          restore-keys: |
+            msbuild-${{ runner.os }}-${{ hashFiles('src/**/*.cs', 'src/**/*.csproj', 'src/**/*.targets', 'src/**/*.props') }}
+            msbuild-${{ runner.os }}-
+
+      - name: Cache Webpack
+        uses: actions/cache@v4
+        with:
+          path: _cache/webpack
+          key: webpack-${{ runner.os }}-${{ hashFiles('frontend/src/**/*', 'yarn.lock') }}
+          restore-keys: |
+            webpack-${{ runner.os }}-${{ hashFiles('frontend/src/**/*', 'yarn.lock') }}
+            webpack-${{ runner.os }}-
+
+      - name: Build
+        shell: bash
+        run: ./build.sh --backend --frontend
+        env:
+          LOGARRVERSION: ${{ env.LOGARR_VERSION }}.${{ github.run_number }}
+
+      - name: Prepare tests
+        run: |
+          mkdir -p _tests/bin
+          cp _output/net8.0/linux-x64/publish/Radarr _tests/bin/
+          chmod +x _tests/bin/Radarr
+          find _tests -name "Radarr.Test.Dummy" -exec chmod a+x {} \;
+
+      - name: Test
+        shell: bash
+        continue-on-error: true
+        run: ./test.sh Linux Unit Test
+
+      - name: Report test results
+        uses: dorny/test-reporter@v2
+        if: always()
+        with:
+          name: Unit Test Results
+          path: "**/TestResult.xml"
+          list-tests: "failed"
+          reporter: dotnet-nunit
+          fail-on-error: false
+          fail-on-empty: false
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,value=latest
+            type=raw,value=v${{ env.LOGARR_VERSION }}
+            type=raw,value=v${{ env.LOGARR_VERSION }}.${{ github.run_number }}
+
+      - uses: docker/login-action@v3
+        if: ${{ github.event_name == 'push' }}
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./docker/Dockerfile
+          platforms: "linux/amd64,linux/arm64"
+          push: ${{ github.event_name == 'push' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            GIT_BRANCH=${{ env.BUILD_SOURCEBRANCHNAME }}
+            COMMIT_HASH=${{ github.event.pull_request.head.sha || github.sha }}
+            BUILD_DATE=${{ env.DATE }}
