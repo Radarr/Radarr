@@ -22,11 +22,6 @@ namespace Radarr.Api.V3.Queue
         public int CustomFormatScore { get; set; }
         public decimal Size { get; set; }
         public string Title { get; set; }
-
-        // Collides with existing properties due to case-insensitive deserialization
-        // public decimal SizeLeft { get; set; }
-        // public TimeSpan? TimeLeft { get; set; }
-
         public DateTime? EstimatedCompletionTime { get; set; }
         public DateTime? Added { get; set; }
         public QueueStatus Status { get; set; }
@@ -71,11 +66,6 @@ namespace Radarr.Api.V3.Queue
                 CustomFormatScore = customFormatScore,
                 Size = model.Size,
                 Title = model.Title,
-
-                // Collides with existing properties due to case-insensitive deserialization
-                // SizeLeft = model.SizeLeft,
-                // TimeLeft = model.TimeLeft,
-
                 EstimatedCompletionTime = model.EstimatedCompletionTime,
                 Added = model.Added,
                 Status = model.Status,
