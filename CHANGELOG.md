@@ -4,6 +4,22 @@ All notable changes to Logarr are documented in this file.
 
 ## [Unreleased]
 
+### Security
+- Fix SQL injection in CleanupUnusedTags.cs - use parameterized Dapper queries
+- Fix path traversal in ArchiveService.cs - validate ZIP entries stay within destination
+- Fix path traversal in StaticResourceMapper.cs - validate paths stay within UI folder
+- Fix path traversal in MediaCoverMapper.cs - validate paths stay within AppData folder
+- Fix command injection in ProcessProvider.cs - quote script paths for .bat/.ps1/.py
+
+### Changed
+- **UI Branding** - Radarr yellow (#ffc230) → Logarr teal (#0d9488)
+  - Updated dark.js and light.js theme files
+  - New logo.svg with teal gradient and lambda/L symbol
+  - Generated all PNG logos and favicons
+  - Updated manifest.json theme colors
+  - Updated page titles, meta descriptions, external links
+  - Changed appName token from 'Radarr' to 'Logarr' in translations
+
 ### Planned
 - Book management system with hierarchical structure (Authors, Series, Books)
 - Audiobook management and integration
