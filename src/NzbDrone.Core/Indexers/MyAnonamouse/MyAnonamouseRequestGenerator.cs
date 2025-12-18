@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
 {
     public class MyAnonamouseRequestGenerator : IIndexerRequestGenerator
     {
-        private static readonly Regex SanitizeSearchQueryRegex = new ("[^\\w]+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex SanitizeSearchQueryRegex = new ("[^\\w]+", RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         public MyAnonamouseSettings Settings { get; set; }
 
