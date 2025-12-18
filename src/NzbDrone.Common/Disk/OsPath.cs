@@ -42,7 +42,7 @@ namespace NzbDrone.Common.Disk
 
         private static OsPathKind DetectPathKind(string path)
         {
-            if (path.StartsWith("/"))
+            if (path.StartsWith('/'))
             {
                 return OsPathKind.Unix;
             }
@@ -141,7 +141,7 @@ namespace NzbDrone.Common.Disk
 
                 if (IsUnixPath)
                 {
-                    return _path.StartsWith("/");
+                    return _path.StartsWith('/');
                 }
 
                 return false;
@@ -246,7 +246,7 @@ namespace NzbDrone.Common.Disk
                 return -1;
             }
 
-            if (_path.StartsWith("/") && index == 0)
+            if (_path.StartsWith('/') && index == 0)
             {
                 index++;
             }
@@ -490,7 +490,7 @@ namespace NzbDrone.Common.Disk
                 newFragments.Add(leftFragments[j]);
             }
 
-            if (left.FullPath.EndsWith("\\") || left.FullPath.EndsWith("/"))
+            if (left.FullPath.EndsWith("\\") || left.FullPath.EndsWith('/'))
             {
                 newFragments.Add(string.Empty);
             }

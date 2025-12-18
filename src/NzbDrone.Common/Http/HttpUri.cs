@@ -43,7 +43,7 @@ namespace NzbDrone.Common.Http
 
             if (path.IsNotNullOrWhiteSpace())
             {
-                if (host.IsNotNullOrWhiteSpace() || path.StartsWith("/"))
+                if (host.IsNotNullOrWhiteSpace() || path.StartsWith('/'))
                 {
                     builder.Append('/');
                 }
@@ -161,7 +161,7 @@ namespace NzbDrone.Common.Http
                 return basePath;
             }
 
-            if (relativePath.StartsWith("/"))
+            if (relativePath.StartsWith('/'))
             {
                 return relativePath;
             }

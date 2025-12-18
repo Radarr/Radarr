@@ -55,7 +55,7 @@ namespace NzbDrone.Common.Http
         {
             var protocol = useHttps ? "https" : "http";
 
-            if (urlBase.IsNotNullOrWhiteSpace() && !urlBase.StartsWith("/"))
+            if (urlBase.IsNotNullOrWhiteSpace() && !urlBase.StartsWith('/'))
             {
                 urlBase = "/" + urlBase;
             }
@@ -239,7 +239,7 @@ namespace NzbDrone.Common.Http
 
         public virtual HttpRequestBuilder Resource(string resourceUrl)
         {
-            if (!ResourceUrl.IsNotNullOrWhiteSpace() || resourceUrl.StartsWith("/"))
+            if (!ResourceUrl.IsNotNullOrWhiteSpace() || resourceUrl.StartsWith('/'))
             {
                 ResourceUrl = resourceUrl.TrimStart('/');
             }
