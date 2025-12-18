@@ -32,14 +32,13 @@ Logarr (from Greek λόγος - "word, reason") is a unified media management sy
 
 ## Privacy
 
-Logarr is designed with privacy in mind. Telemetry and analytics are **disabled by default**:
+Telemetry and analytics are **disabled by default**:
 
 - No usage analytics or behavior tracking
 - No machine fingerprinting
-- Update checks send only version and platform info (no activity tracking)
-- Error reporting is opt-in only
+- Error reporting is opt-in
 
-To enable anonymous error reporting (helps development), toggle Analytics in Settings → General.
+To enable error reporting, toggle Analytics in Settings → General.
 
 ## Quick Start
 
