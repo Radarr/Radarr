@@ -11,7 +11,7 @@ interface SwitchProps {
   children: ReactNode;
 }
 
-function Switch({ children }: SwitchProps) {
+function Switch({ children }: Readonly<SwitchProps>) {
   return (
     <RouterSwitch>
       {Children.map(children, (child) => {

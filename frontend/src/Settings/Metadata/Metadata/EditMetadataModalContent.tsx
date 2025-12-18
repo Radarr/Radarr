@@ -35,7 +35,7 @@ function EditMetadataModalContent({
   id,
   advancedSettings,
   onModalClose,
-}: EditMetadataModalContentProps) {
+}: Readonly<EditMetadataModalContentProps>) {
   const dispatch = useDispatch();
 
   const { isSaving, saveError, pendingChanges, items } = useSelector(

@@ -15,7 +15,7 @@ export interface MonitorMoviesSelectInputProps
   includeMixed?: boolean;
 }
 
-function MonitorMoviesSelectInput(props: MonitorMoviesSelectInputProps) {
+function MonitorMoviesSelectInput(props: Readonly<MonitorMoviesSelectInputProps>) {
   const {
     includeNoChange = false,
     includeMixed = false,

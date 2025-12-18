@@ -24,7 +24,7 @@ function FilterMenuContent({
   onFilterSelect,
   onCustomFiltersPress,
   ...otherProps
-}: FilterMenuContentProps) {
+}: Readonly<FilterMenuContentProps>) {
   return (
     <MenuContent {...otherProps}>
       {filters.map((filter) => {

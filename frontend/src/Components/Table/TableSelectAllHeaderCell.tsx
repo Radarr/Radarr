@@ -14,7 +14,7 @@ function TableSelectAllHeaderCell({
   allSelected,
   allUnselected,
   onSelectAllChange,
-}: TableSelectAllHeaderCellProps) {
+}: Readonly<TableSelectAllHeaderCellProps>) {
   const value = useMemo(() => {
     if (allSelected) {
       return true;

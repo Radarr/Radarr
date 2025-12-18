@@ -16,7 +16,7 @@ function Form({
   children,
   validationErrors = [],
   validationWarnings = [],
-}: FormProps) {
+}: Readonly<FormProps>) {
   return (
     <div id={id}>
       {validationErrors.length || validationWarnings.length ? (

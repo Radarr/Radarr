@@ -14,7 +14,7 @@ interface DayOfWeekProps {
   showRelativeDates: boolean;
 }
 
-function DayOfWeek(props: DayOfWeekProps) {
+function DayOfWeek(props: Readonly<DayOfWeekProps>) {
   const {
     date,
     view,

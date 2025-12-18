@@ -23,7 +23,7 @@ interface AddSpecificationModalContentProps {
 
 export default function AddSpecificationModalContent({
   onModalClose,
-}: AddSpecificationModalContentProps) {
+}: Readonly<AddSpecificationModalContentProps>) {
   const { isSchemaFetching, isSchemaPopulated, schemaError, schema } =
     useSelector((state: AppState) => state.settings.autoTaggingSpecifications);
 

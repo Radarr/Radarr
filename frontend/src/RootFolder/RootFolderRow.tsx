@@ -20,7 +20,7 @@ interface RootFolderRowProps {
   unmappedFolders: object[];
 }
 
-function RootFolderRow(props: RootFolderRowProps) {
+function RootFolderRow(props: Readonly<RootFolderRowProps>) {
   const { id, path, accessible, freeSpace = 0, unmappedFolders = [] } = props;
 
   const isUnavailable = !accessible;

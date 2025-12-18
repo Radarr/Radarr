@@ -25,7 +25,7 @@ interface MovieIndexTableHeaderProps {
   isSelectMode: boolean;
 }
 
-function MovieIndexTableHeader(props: MovieIndexTableHeaderProps) {
+function MovieIndexTableHeader(props: Readonly<MovieIndexTableHeaderProps>) {
   const { columns, sortKey, sortDirection, isSelectMode } = props;
   const dispatch = useDispatch();
   const [selectState, selectDispatch] = useSelect();

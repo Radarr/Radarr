@@ -60,7 +60,7 @@ const statusTagList = [
   },
 ];
 
-function QueueStatusFilterBuilderRowValue(props: FilterBuilderRowValueProps) {
+function QueueStatusFilterBuilderRowValue(props: Readonly<FilterBuilderRowValueProps>) {
   return <FilterBuilderRowValue {...props} tagList={statusTagList} />;
 }
 

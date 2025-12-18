@@ -30,7 +30,7 @@ interface MovieFolder {
   folder: string;
 }
 
-function RootFolderModalContent(props: RootFolderModalContentProps) {
+function RootFolderModalContent(props: Readonly<RootFolderModalContentProps>) {
   const { movieId, onSavePress, onModalClose } = props;
   const { isWindows } = useSelector(createSystemStatusSelector());
 

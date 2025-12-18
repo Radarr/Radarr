@@ -8,7 +8,7 @@ interface NoMovieCollectionsProps {
   totalItems: number;
 }
 
-function NoMovieCollections({ totalItems }: NoMovieCollectionsProps) {
+function NoMovieCollections({ totalItems }: Readonly<NoMovieCollectionsProps>) {
   if (totalItems > 0) {
     return (
       <div>

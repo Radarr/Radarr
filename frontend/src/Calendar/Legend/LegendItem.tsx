@@ -17,7 +17,7 @@ function LegendItem({
   isAgendaView,
   fullColorEvents,
   colorImpairedMode,
-}: LegendItemProps) {
+}: Readonly<LegendItemProps>) {
   return (
     <div
       className={classNames(

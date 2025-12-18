@@ -17,7 +17,7 @@ interface InteractiveImportModalProps
   onModalClose(): void;
 }
 
-function InteractiveImportModal(props: InteractiveImportModalProps) {
+function InteractiveImportModal(props: Readonly<InteractiveImportModalProps>) {
   const {
     isOpen,
     folder,

@@ -74,7 +74,7 @@ interface HistoryEventTypeCellProps {
   data: HistoryData;
 }
 
-function HistoryEventTypeCell({ eventType, data }: HistoryEventTypeCellProps) {
+function HistoryEventTypeCell({ eventType, data }: Readonly<HistoryEventTypeCellProps>) {
   const iconName = getIconName(eventType, data);
   const iconKind = getIconKind(eventType);
   const tooltip = getTooltip(eventType, data);

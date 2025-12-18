@@ -18,7 +18,7 @@ interface MovieSearchCellProps {
   movieEntity?: MovieEntity;
 }
 
-function MovieSearchCell({ movieId }: MovieSearchCellProps) {
+function MovieSearchCell({ movieId }: Readonly<MovieSearchCellProps>) {
   const executingCommands = useSelector(createExecutingCommandsSelector());
   const isSearching = executingCommands.some(({ name, body }) => {
     const { movieIds = [] } = body;

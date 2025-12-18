@@ -33,7 +33,7 @@ export interface EditMovieCollectionModalContentProps {
 function EditMovieCollectionModalContent({
   collectionId,
   onModalClose,
-}: EditMovieCollectionModalContentProps) {
+}: Readonly<EditMovieCollectionModalContentProps>) {
   const dispatch = useDispatch();
 
   const {

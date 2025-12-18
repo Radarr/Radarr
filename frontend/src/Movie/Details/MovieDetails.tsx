@@ -155,7 +155,7 @@ interface MovieDetailsProps {
   movieId: number;
 }
 
-function MovieDetails({ movieId }: MovieDetailsProps) {
+function MovieDetails({ movieId }: Readonly<MovieDetailsProps>) {
   const dispatch = useDispatch();
   const history = useHistory();
 

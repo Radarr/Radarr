@@ -40,7 +40,7 @@ function EditIndexerModalContent({
   id,
   onModalClose,
   onDeleteIndexerPress,
-}: EditIndexerModalContentProps) {
+}: Readonly<EditIndexerModalContentProps>) {
   const dispatch = useDispatch();
   const showAdvancedSettings = useShowAdvancedSettings();
 

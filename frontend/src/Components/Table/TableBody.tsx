@@ -4,7 +4,7 @@ interface TableBodyProps {
   children?: React.ReactNode;
 }
 
-function TableBody({ children }: TableBodyProps) {
+function TableBody({ children }: Readonly<TableBodyProps>) {
   return <tbody>{children}</tbody>;
 }
 

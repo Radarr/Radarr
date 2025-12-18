@@ -25,7 +25,7 @@ function AddIndexerItem({
   infoLink,
   presets,
   onIndexerSelect,
-}: AddIndexerItemProps) {
+}: Readonly<AddIndexerItemProps>) {
   const dispatch = useDispatch();
   const hasPresets = !!presets && !!presets.length;
 

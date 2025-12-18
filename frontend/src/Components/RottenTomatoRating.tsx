@@ -9,7 +9,7 @@ interface RottenTomatoRatingProps {
   hideIcon?: boolean;
 }
 
-function RottenTomatoRating(props: RottenTomatoRatingProps) {
+function RottenTomatoRating(props: Readonly<RottenTomatoRatingProps>) {
   const { ratings, iconSize = 14, hideIcon = false } = props;
 
   const rtRotten =

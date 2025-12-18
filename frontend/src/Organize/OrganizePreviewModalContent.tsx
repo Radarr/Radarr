@@ -42,7 +42,7 @@ export interface OrganizePreviewModalContentProps {
 function OrganizePreviewModalContent({
   movieId,
   onModalClose,
-}: OrganizePreviewModalContentProps) {
+}: Readonly<OrganizePreviewModalContentProps>) {
   const dispatch = useDispatch();
   const {
     items,
@@ -77,7 +77,7 @@ function OrganizePreviewModalContent({
   );
 
   const handleSelectedChange = useCallback(
-    ({ id, value, shiftKey = false }: SelectStateInputProps) => {
+    ({ id, value, shiftKey = false }: Readonly<SelectStateInputProps>) => {
       setSelectState({
         type: 'toggleSelected',
         items,

@@ -84,7 +84,7 @@ interface ManageIndexersModalContentProps {
   onModalClose(): void;
 }
 
-function ManageIndexersModalContent(props: ManageIndexersModalContentProps) {
+function ManageIndexersModalContent(props: Readonly<ManageIndexersModalContentProps>) {
   const { onModalClose } = props;
 
   const {

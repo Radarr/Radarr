@@ -18,7 +18,7 @@ export default function AddSpecificationPresetMenuItem({
   implementation,
   onPress,
   ...otherProps
-}: AddSpecificationPresetMenuItemProps) {
+}: Readonly<AddSpecificationPresetMenuItemProps>) {
   const handlePress = useCallback(() => {
     onPress({
       name,

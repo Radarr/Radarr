@@ -7,7 +7,7 @@ interface UpdateChangesProps {
   changes: string[];
 }
 
-function UpdateChanges(props: UpdateChangesProps) {
+function UpdateChanges(props: Readonly<UpdateChangesProps>) {
   const { title, changes } = props;
 
   if (changes.length === 0) {

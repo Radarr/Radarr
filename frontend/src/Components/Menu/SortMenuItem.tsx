@@ -16,7 +16,7 @@ function SortMenuItem({
   sortKey,
   sortDirection,
   ...otherProps
-}: SortMenuItemProps) {
+}: Readonly<SortMenuItemProps>) {
   const isSelected = name === sortKey;
 
   return (

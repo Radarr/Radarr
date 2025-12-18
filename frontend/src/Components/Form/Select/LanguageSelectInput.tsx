@@ -15,7 +15,7 @@ function LanguageSelectInput({
   values,
   onChange,
   ...otherProps
-}: LanguageSelectInputProps) {
+}: Readonly<LanguageSelectInputProps>) {
   const mappedValues = useMemo(() => {
     const minId = values.reduce(
       (min: number, v) => (v.key < 1 ? v.key : min),

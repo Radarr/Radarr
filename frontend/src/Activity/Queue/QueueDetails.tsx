@@ -24,7 +24,7 @@ interface QueueDetailsProps {
   progressBar: React.ReactNode;
 }
 
-function QueueDetails(props: QueueDetailsProps) {
+function QueueDetails(props: Readonly<QueueDetailsProps>) {
   const {
     title,
     size,

@@ -11,7 +11,7 @@ interface ExtraFileDetailsPopoverProps {
   languageTags?: string[];
 }
 
-function ExtraFileDetailsPopover(props: ExtraFileDetailsPopoverProps) {
+function ExtraFileDetailsPopover(props: Readonly<ExtraFileDetailsPopoverProps>) {
   const { type, title, languageTags = [] } = props;
 
   const details = [];

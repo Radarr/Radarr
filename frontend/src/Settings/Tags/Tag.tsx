@@ -15,7 +15,7 @@ interface TagProps {
   label: string;
 }
 
-function Tag({ id, label }: TagProps) {
+function Tag({ id, label }: Readonly<TagProps>) {
   const dispatch = useDispatch();
   const {
     delayProfileIds = [],

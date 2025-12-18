@@ -19,7 +19,7 @@ interface ImportListExclusionRowProps extends ImportListExclusion {
   onSelectedChange: (options: SelectStateInputProps) => void;
 }
 
-function ImportListExclusionRow(props: ImportListExclusionRowProps) {
+function ImportListExclusionRow(props: Readonly<ImportListExclusionRowProps>) {
   const { id, tmdbId, movieTitle, movieYear, isSelected, onSelectedChange } =
     props;
 

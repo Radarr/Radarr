@@ -7,7 +7,7 @@ interface MovieFormatsProps {
   formats: CustomFormat[];
 }
 
-function MovieFormats({ formats }: MovieFormatsProps) {
+function MovieFormats({ formats }: Readonly<MovieFormatsProps>) {
   return (
     <div>
       {formats.map(({ id, name }) => (

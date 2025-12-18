@@ -44,7 +44,7 @@ interface QueueStatusProps {
   canFlip?: boolean;
 }
 
-function QueueStatus(props: QueueStatusProps) {
+function QueueStatus(props: Readonly<QueueStatusProps>) {
   const {
     sourceTitle,
     status,

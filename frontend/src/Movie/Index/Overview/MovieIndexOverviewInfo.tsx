@@ -148,7 +148,7 @@ function getInfoRowProps(
   return null;
 }
 
-function MovieIndexOverviewInfo(props: MovieIndexOverviewInfoProps) {
+function MovieIndexOverviewInfo(props: Readonly<MovieIndexOverviewInfoProps>) {
   const height = props.height;
 
   const uiSettings = useSelector(createUISettingsSelector());

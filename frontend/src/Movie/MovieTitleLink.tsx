@@ -12,7 +12,7 @@ function MovieTitleLink({
   title,
   year = 0,
   ...otherProps
-}: MovieTitleLinkProps) {
+}: Readonly<MovieTitleLinkProps>) {
   const link = `/movie/${titleSlug}`;
 
   return (

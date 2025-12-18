@@ -20,7 +20,7 @@ function PendingChangesModal({
   isOpen,
   onConfirm,
   onCancel,
-}: PendingChangesModalProps) {
+}: Readonly<PendingChangesModalProps>) {
   const { bindShortcut, unbindShortcut } = useKeyboardShortcuts();
 
   useEffect(() => {

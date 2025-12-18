@@ -62,7 +62,7 @@ function getWindowScrollTopPosition() {
   return document.documentElement.scrollTop || document.body.scrollTop || 0;
 }
 
-function MovieIndexOverviews(props: MovieIndexOverviewsProps) {
+function MovieIndexOverviews(props: Readonly<MovieIndexOverviewsProps>) {
   const {
     items,
     sortKey,

@@ -12,7 +12,7 @@ function LoadingIndicator({
   className = styles.loading,
   rippleClassName = styles.ripple,
   size = 50,
-}: LoadingIndicatorProps) {
+}: Readonly<LoadingIndicatorProps>) {
   const sizeInPx = `${size}px`;
   const width = sizeInPx;
   const height = sizeInPx;

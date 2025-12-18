@@ -8,7 +8,7 @@ interface TableRowCellButtonProps extends LinkProps {
   children: ReactNode;
 }
 
-function TableRowCellButton(props: TableRowCellButtonProps) {
+function TableRowCellButton(props: Readonly<TableRowCellButtonProps>) {
   const { className = styles.cell, ...otherProps } = props;
 
   return (

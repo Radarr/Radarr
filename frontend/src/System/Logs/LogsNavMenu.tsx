@@ -9,7 +9,7 @@ interface LogsNavMenuProps {
   current: string;
 }
 
-function LogsNavMenu({ current }: LogsNavMenuProps) {
+function LogsNavMenu({ current }: Readonly<LogsNavMenuProps>) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleMenuButtonPress = useCallback(() => {

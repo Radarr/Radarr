@@ -27,7 +27,7 @@ export default function AddSpecificationItem({
   infoLink,
   presets,
   onSpecificationSelect,
-}: AddSpecificationItemProps) {
+}: Readonly<AddSpecificationItemProps>) {
   const handleSpecificationSelect = useCallback(() => {
     onSpecificationSelect({ implementation });
   }, [implementation, onSpecificationSelect]);

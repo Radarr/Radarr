@@ -42,7 +42,7 @@ interface MediaInfoProps {
   type: MediaInfoType;
 }
 
-function MediaInfo({ movieFileId, type }: MediaInfoProps) {
+function MediaInfo({ movieFileId, type }: Readonly<MediaInfoProps>) {
   const movieFile = useMovieFile(movieFileId);
 
   if (!movieFile?.mediaInfo) {

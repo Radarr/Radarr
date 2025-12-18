@@ -8,7 +8,7 @@ interface SelectMovieModalTableHeaderProps {
   columns: Column[];
 }
 
-function SelectMovieModalTableHeader(props: SelectMovieModalTableHeaderProps) {
+function SelectMovieModalTableHeader(props: Readonly<SelectMovieModalTableHeaderProps>) {
   const { columns } = props;
 
   return (

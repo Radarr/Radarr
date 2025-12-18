@@ -9,7 +9,7 @@ interface MovieTagsProps {
   movieId: number;
 }
 
-function MovieTags({ movieId }: MovieTagsProps) {
+function MovieTags({ movieId }: Readonly<MovieTagsProps>) {
   const movie = useMovie(movieId)!;
   const tagList = useTags();
 

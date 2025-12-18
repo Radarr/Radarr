@@ -28,7 +28,7 @@ function KeyValueListInputItem({
   onRemove,
   onFocus,
   onBlur,
-}: KeyValueListInputItemProps): JSX.Element {
+}: Readonly<KeyValueListInputItemProps>): JSX.Element {
   const handleKeyChange = useCallback(
     ({ value: keyValue }: { value: string }) => {
       onChange(index, { key: keyValue, value });

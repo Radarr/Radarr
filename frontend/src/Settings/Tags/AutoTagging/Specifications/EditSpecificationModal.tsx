@@ -17,7 +17,7 @@ function EditSpecificationModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: EditSpecificationModalProps) {
+}: Readonly<EditSpecificationModalProps>) {
   const dispatch = useDispatch();
 
   const onWrappedModalClose = useCallback(() => {

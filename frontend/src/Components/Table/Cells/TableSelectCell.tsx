@@ -18,7 +18,7 @@ function TableSelectCell({
   isSelected = false,
   onSelectedChange,
   ...otherProps
-}: TableSelectCellProps) {
+}: Readonly<TableSelectCellProps>) {
   const initialIsSelected = useRef(isSelected);
   const handleSelectedChange = useRef(onSelectedChange);
 

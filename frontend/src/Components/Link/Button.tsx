@@ -20,7 +20,7 @@ export default function Button({
   kind = kinds.DEFAULT,
   size = sizes.MEDIUM,
   ...otherProps
-}: ButtonProps) {
+}: Readonly<ButtonProps>) {
   return (
     <Link
       className={classNames(

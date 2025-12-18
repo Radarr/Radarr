@@ -11,7 +11,7 @@ interface ImdbRatingProps {
   hideIcon?: boolean;
 }
 
-function ImdbRating(props: ImdbRatingProps) {
+function ImdbRating(props: Readonly<ImdbRatingProps>) {
   const { ratings, iconSize = 14, hideIcon = false } = props;
 
   const imdbImage =

@@ -8,7 +8,7 @@ interface MovieIndexOverviewInfoRowProps {
   label: string;
 }
 
-function MovieIndexOverviewInfoRow(props: MovieIndexOverviewInfoRowProps) {
+function MovieIndexOverviewInfoRow(props: Readonly<MovieIndexOverviewInfoRowProps>) {
   const { title, iconName, label } = props;
 
   return (

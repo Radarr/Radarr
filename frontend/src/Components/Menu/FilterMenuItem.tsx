@@ -13,7 +13,7 @@ function FilterMenuItem({
   selectedFilterKey,
   onPress,
   ...otherProps
-}: FilterMenuItemProps) {
+}: Readonly<FilterMenuItemProps>) {
   const handlePress = useCallback(() => {
     onPress(filterKey);
   }, [filterKey, onPress]);

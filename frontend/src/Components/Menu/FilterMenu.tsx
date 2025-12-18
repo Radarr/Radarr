@@ -31,7 +31,7 @@ function FilterMenu({
   filterModalConnectorComponentProps,
   onFilterSelect,
   ...otherProps
-}: FilterMenuProps) {
+}: Readonly<FilterMenuProps>) {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   const showCustomFilters = !!FilterModalConnectorComponent;

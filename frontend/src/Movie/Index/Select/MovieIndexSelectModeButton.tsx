@@ -9,7 +9,7 @@ interface MovieIndexSelectModeButtonProps extends PageToolbarButtonProps {
   onPress: () => void;
 }
 
-function MovieIndexSelectModeButton(props: MovieIndexSelectModeButtonProps) {
+function MovieIndexSelectModeButton(props: Readonly<MovieIndexSelectModeButtonProps>) {
   const { label, iconName, isSelectMode, overflowComponent, onPress } = props;
   const [, selectDispatch] = useSelect();
 

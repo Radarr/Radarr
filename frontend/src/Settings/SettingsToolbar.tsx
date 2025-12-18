@@ -32,7 +32,7 @@ function SettingsToolbar({
   hasPendingChanges,
   additionalButtons = null,
   onSavePress,
-}: SettingsToolbarProps) {
+}: Readonly<SettingsToolbarProps>) {
   const { bindShortcut, unbindShortcut } = useKeyboardShortcuts();
   const history = useHistory();
   const [nextLocation, setNextLocation] = useState<Location | null>(null);

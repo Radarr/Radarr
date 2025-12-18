@@ -8,7 +8,7 @@ interface MovieCastPostersProps {
   isSmallScreen: boolean;
 }
 
-function MovieCastPosters({ isSmallScreen }: MovieCastPostersProps) {
+function MovieCastPosters({ isSmallScreen }: Readonly<MovieCastPostersProps>) {
   const { items: castCredits } = useSelector(
     createMovieCreditsSelector('cast')
   );

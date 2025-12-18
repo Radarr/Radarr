@@ -23,7 +23,7 @@ function PageToolbarButton({
   isSpinning = false,
   overflowComponent,
   ...otherProps
-}: PageToolbarButtonProps) {
+}: Readonly<PageToolbarButtonProps>) {
   return (
     <Link
       className={classNames(

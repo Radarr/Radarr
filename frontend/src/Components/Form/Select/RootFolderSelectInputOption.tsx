@@ -27,7 +27,7 @@ function RootFolderSelectInputOption({
   isMobile,
   isWindows,
   ...otherProps
-}: RootFolderSelectInputOptionProps) {
+}: Readonly<RootFolderSelectInputOptionProps>) {
   const slashCharacter = isWindows ? '\\' : '/';
 
   return (

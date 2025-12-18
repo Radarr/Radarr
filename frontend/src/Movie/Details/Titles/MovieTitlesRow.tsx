@@ -8,7 +8,7 @@ interface MovieTitlesRowProps {
   sourceType: string;
 }
 
-function MovieTitlesRow({ title, sourceType }: MovieTitlesRowProps) {
+function MovieTitlesRow({ title, sourceType }: Readonly<MovieTitlesRowProps>) {
   return (
     <TableRow>
       <TableRowCell>{title}</TableRowCell>

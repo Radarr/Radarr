@@ -16,7 +16,7 @@ export default function EditAutoTaggingModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: EditAutoTaggingModalProps) {
+}: Readonly<EditAutoTaggingModalProps>) {
   const dispatch = useDispatch();
 
   const handleModalClose = useCallback(() => {

@@ -65,7 +65,7 @@ function DeviceInput({
   provider,
   providerData,
   onChange,
-}: DeviceInputProps) {
+}: Readonly<DeviceInputProps>) {
   const dispatch = useDispatch();
   const { items, selectedDevices, isFetching } = useSelector(
     createDeviceTagsSelector(value)

@@ -7,7 +7,7 @@ interface PopoverProps extends Omit<TooltipProps, 'tooltip' | 'bodyClassName'> {
   body: React.ReactNode;
 }
 
-function Popover({ title, body, ...otherProps }: PopoverProps) {
+function Popover({ title, body, ...otherProps }: Readonly<PopoverProps>) {
   return (
     <Tooltip
       {...otherProps}

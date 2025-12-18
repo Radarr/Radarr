@@ -17,7 +17,7 @@ function PageMenuButton({
   showIndicator = false,
   text,
   ...otherProps
-}: PageMenuButtonProps) {
+}: Readonly<PageMenuButtonProps>) {
   return (
     <MenuButton className={styles.menuButton} {...otherProps}>
       <Icon name={iconName} size={18} />

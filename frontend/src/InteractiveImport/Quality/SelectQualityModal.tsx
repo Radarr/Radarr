@@ -13,7 +13,7 @@ interface SelectQualityModalProps {
   onModalClose(): void;
 }
 
-function SelectQualityModal(props: SelectQualityModalProps) {
+function SelectQualityModal(props: Readonly<SelectQualityModalProps>) {
   const {
     isOpen,
     qualityId,

@@ -4,7 +4,7 @@ import createLanguagesSelector from 'Store/Selectors/createLanguagesSelector';
 import FilterBuilderRowValue from './FilterBuilderRowValue';
 import FilterBuilderRowValueProps from './FilterBuilderRowValueProps';
 
-function LanguageFilterBuilderRowValue(props: FilterBuilderRowValueProps) {
+function LanguageFilterBuilderRowValue(props: Readonly<FilterBuilderRowValueProps>) {
   const { items } = useSelector(createLanguagesSelector());
 
   return <FilterBuilderRowValue {...props} tagList={items} />;

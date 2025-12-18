@@ -46,7 +46,7 @@ export interface FileBrowserModalContentProps {
   onModalClose: () => void;
 }
 
-function FileBrowserModalContent(props: FileBrowserModalContentProps) {
+function FileBrowserModalContent(props: Readonly<FileBrowserModalContentProps>) {
   const { name, value, includeFiles = true, onChange, onModalClose } = props;
 
   const dispatch = useDispatch();

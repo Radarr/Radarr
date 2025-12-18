@@ -15,7 +15,7 @@ interface PageToolbarOverflowMenuItemProps {
   onPress?: (event: SyntheticEvent<Element, Event>) => void;
 }
 
-function PageToolbarOverflowMenuItem(props: PageToolbarOverflowMenuItemProps) {
+function PageToolbarOverflowMenuItem(props: Readonly<PageToolbarOverflowMenuItemProps>) {
   const {
     iconName,
     spinningName,

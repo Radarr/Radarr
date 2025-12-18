@@ -13,7 +13,7 @@ function SpinnerIconButton({
   isDisabled = false,
   isSpinning = false,
   ...otherProps
-}: SpinnerIconButtonProps) {
+}: Readonly<SpinnerIconButtonProps>) {
   return (
     <IconButton
       name={isSpinning ? spinningName || name : name}

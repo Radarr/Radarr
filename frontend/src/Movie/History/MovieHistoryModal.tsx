@@ -13,7 +13,7 @@ function MovieHistoryModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: MovieHistoryModalProps) {
+}: Readonly<MovieHistoryModalProps>) {
   return (
     <Modal
       isOpen={isOpen}

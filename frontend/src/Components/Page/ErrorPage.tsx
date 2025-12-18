@@ -16,7 +16,7 @@ interface ErrorPageProps {
   systemStatusError?: Error;
 }
 
-function ErrorPage(props: ErrorPageProps) {
+function ErrorPage(props: Readonly<ErrorPageProps>) {
   const {
     version,
     isLocalStorageSupported,

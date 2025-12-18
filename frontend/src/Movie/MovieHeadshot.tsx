@@ -9,7 +9,7 @@ interface MovieHeadshotProps
   size?: 250 | 500;
 }
 
-function MovieHeadshot({ size = 250, ...otherProps }: MovieHeadshotProps) {
+function MovieHeadshot({ size = 250, ...otherProps }: Readonly<MovieHeadshotProps>) {
   return (
     <MovieImage
       {...otherProps}

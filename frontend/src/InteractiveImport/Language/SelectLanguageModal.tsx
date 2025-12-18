@@ -12,7 +12,7 @@ interface SelectLanguageModalProps {
   onModalClose(): void;
 }
 
-function SelectLanguageModal(props: SelectLanguageModalProps) {
+function SelectLanguageModal(props: Readonly<SelectLanguageModalProps>) {
   const { isOpen, languageIds, modalTitle, onLanguagesSelect, onModalClose } =
     props;
 

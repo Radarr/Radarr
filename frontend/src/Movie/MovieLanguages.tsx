@@ -11,7 +11,7 @@ interface MovieLanguagesProps {
   isCutoffNotMet?: boolean;
 }
 
-function MovieLanguages(props: MovieLanguagesProps) {
+function MovieLanguages(props: Readonly<MovieLanguagesProps>) {
   const { className, languages, isCutoffNotMet = true } = props;
 
   // TODO: Typescript - Remove once everything is converted

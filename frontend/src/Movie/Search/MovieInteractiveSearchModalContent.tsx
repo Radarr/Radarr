@@ -25,7 +25,7 @@ export interface MovieInteractiveSearchModalContentProps {
 function MovieInteractiveSearchModalContent({
   movieId,
   onModalClose,
-}: MovieInteractiveSearchModalContentProps) {
+}: Readonly<MovieInteractiveSearchModalContentProps>) {
   const dispatch = useDispatch();
 
   const { title, year } = useMovie(movieId) as Movie;

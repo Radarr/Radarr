@@ -60,7 +60,7 @@ function SpinnerErrorButton({
   error,
   children,
   ...otherProps
-}: SpinnerErrorButtonProps) {
+}: Readonly<SpinnerErrorButtonProps>) {
   const wasSpinning = usePrevious(isSpinning);
   const updateTimeout = useRef<ReturnType<typeof setTimeout>>();
 

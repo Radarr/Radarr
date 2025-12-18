@@ -16,7 +16,7 @@ function withScrollPosition(
   WrappedComponent: React.FC<WrappedComponentProps>,
   scrollPositionKey: string
 ) {
-  function ScrollPosition(props: ScrollPositionProps) {
+  function ScrollPosition(props: Readonly<ScrollPositionProps>) {
     const { history } = props;
 
     const initialScrollTop =

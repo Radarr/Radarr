@@ -13,7 +13,7 @@ function DeleteMovieModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: DeleteMovieModalProps) {
+}: Readonly<DeleteMovieModalProps>) {
   return (
     <Modal isOpen={isOpen} size={sizes.MEDIUM} onModalClose={onModalClose}>
       <DeleteMovieModalContent {...otherProps} onModalClose={onModalClose} />

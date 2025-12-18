@@ -7,7 +7,7 @@ interface CalendarLinkModalProps {
   onModalClose: () => void;
 }
 
-function CalendarLinkModal(props: CalendarLinkModalProps) {
+function CalendarLinkModal(props: Readonly<CalendarLinkModalProps>) {
   const { isOpen, onModalClose } = props;
 
   return (

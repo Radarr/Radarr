@@ -30,7 +30,7 @@ function Indexer({
   priority,
   showPriority,
   onCloneIndexerPress,
-}: IndexerProps) {
+}: Readonly<IndexerProps>) {
   const dispatch = useDispatch();
   const tagList = useSelector(createTagsSelector());
 

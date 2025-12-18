@@ -37,7 +37,7 @@ function TextArea({
   onFocus,
   onChange,
   onSelectionChange,
-}: TextAreaProps) {
+}: Readonly<TextAreaProps>) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const selectionTimeout = useRef<ReturnType<typeof setTimeout>>();
   const selectionStart = useRef<number | null>();

@@ -24,7 +24,7 @@ interface ManageIndexersModalRowProps {
   onSelectedChange(result: SelectStateInputProps): void;
 }
 
-function ManageIndexersModalRow(props: ManageIndexersModalRowProps) {
+function ManageIndexersModalRow(props: Readonly<ManageIndexersModalRowProps>) {
   const {
     id,
     isSelected,

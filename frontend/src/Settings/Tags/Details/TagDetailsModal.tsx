@@ -14,7 +14,7 @@ function TagDetailsModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: TagDetailsModalProps) {
+}: Readonly<TagDetailsModalProps>) {
   return (
     <Modal size={sizes.SMALL} isOpen={isOpen} onModalClose={onModalClose}>
       <TagDetailsModalContent {...otherProps} onModalClose={onModalClose} />

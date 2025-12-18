@@ -191,7 +191,7 @@ interface NamingModalProps {
   onModalClose: () => void;
 }
 
-function NamingModal(props: NamingModalProps) {
+function NamingModal(props: Readonly<NamingModalProps>) {
   const {
     isOpen,
     name,

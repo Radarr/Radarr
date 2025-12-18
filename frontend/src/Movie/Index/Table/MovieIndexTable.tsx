@@ -75,7 +75,7 @@ function getWindowScrollTopPosition() {
   return document.documentElement.scrollTop || document.body.scrollTop || 0;
 }
 
-function MovieIndexTable(props: MovieIndexTableProps) {
+function MovieIndexTable(props: Readonly<MovieIndexTableProps>) {
   const {
     items,
     sortKey,

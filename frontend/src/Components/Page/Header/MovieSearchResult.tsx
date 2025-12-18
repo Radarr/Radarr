@@ -15,7 +15,7 @@ interface MovieSearchResultProps extends SuggestedMovie {
   match: Match;
 }
 
-function MovieSearchResult(props: MovieSearchResultProps) {
+function MovieSearchResult(props: Readonly<MovieSearchResultProps>) {
   const { match, title, year, images, alternateTitles, tmdbId, imdbId, tags } =
     props;
 

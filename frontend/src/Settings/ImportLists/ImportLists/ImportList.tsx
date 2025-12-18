@@ -31,7 +31,7 @@ function ImportList({
   tags,
   minRefreshInterval,
   onCloneImportListPress,
-}: ImportListProps) {
+}: Readonly<ImportListProps>) {
   const dispatch = useDispatch();
   const tagList = useTags();
 

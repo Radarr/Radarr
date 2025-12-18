@@ -10,7 +10,7 @@ interface SelectMovieRowProps {
   year: number;
 }
 
-function SelectMovieRow({ title, year, tmdbId, imdbId }: SelectMovieRowProps) {
+function SelectMovieRow({ title, year, tmdbId, imdbId }: Readonly<SelectMovieRowProps>) {
   return (
     <>
       <VirtualTableRowCell className={styles.title}>

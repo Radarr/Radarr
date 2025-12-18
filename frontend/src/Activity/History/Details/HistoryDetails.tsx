@@ -30,7 +30,7 @@ interface HistoryDetailsProps {
   downloadId?: string;
 }
 
-function HistoryDetails(props: HistoryDetailsProps) {
+function HistoryDetails(props: Readonly<HistoryDetailsProps>) {
   const { eventType, sourceTitle, data, downloadId } = props;
 
   const { shortDateFormat, timeFormat } = useSelector(

@@ -24,7 +24,7 @@ interface AddIndexerModalContentProps {
 function AddIndexerModalContent({
   onIndexerSelect,
   onModalClose,
-}: AddIndexerModalContentProps) {
+}: Readonly<AddIndexerModalContentProps>) {
   const dispatch = useDispatch();
 
   const { isSchemaFetching, isSchemaPopulated, schemaError, schema } =

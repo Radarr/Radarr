@@ -39,7 +39,7 @@ interface MovieIndexPosterProps {
   posterHeight: number;
 }
 
-function MovieIndexPoster(props: MovieIndexPosterProps) {
+function MovieIndexPoster(props: Readonly<MovieIndexPosterProps>) {
   const { movieId, sortKey, isSelectMode, posterWidth, posterHeight } = props;
 
   const { movie, qualityProfile, isRefreshingMovie, isSearchingMovie } =

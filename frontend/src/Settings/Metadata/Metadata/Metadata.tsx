@@ -14,7 +14,7 @@ interface MetadataProps {
   fields: Field[];
 }
 
-function Metadata({ id, name, enable, fields }: MetadataProps) {
+function Metadata({ id, name, enable, fields }: Readonly<MetadataProps>) {
   const [isEditMetadataModalOpen, setIsEditMetadataModalOpen] = useState(false);
 
   const { metadataFields, imageFields } = useMemo(() => {

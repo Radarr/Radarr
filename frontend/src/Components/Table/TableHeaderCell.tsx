@@ -34,7 +34,7 @@ function TableHeaderCell({
   children,
   onSortPress,
   ...otherProps
-}: TableHeaderCellProps) {
+}: Readonly<TableHeaderCellProps>) {
   const isSorting = isSortable && sortKey === name;
   const sortIcon =
     sortDirection === sortDirections.ASCENDING

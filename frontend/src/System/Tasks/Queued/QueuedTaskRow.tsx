@@ -103,7 +103,7 @@ export interface QueuedTaskRowProps {
   clientUserAgent?: string;
 }
 
-export default function QueuedTaskRow(props: QueuedTaskRowProps) {
+export default function QueuedTaskRow(props: Readonly<QueuedTaskRowProps>) {
   const {
     id,
     trigger,

@@ -27,7 +27,7 @@ function MoveMovieModal({
   onModalClose,
   onSavePress,
   onMoveMoviePress,
-}: MoveMovieModalProps) {
+}: Readonly<MoveMovieModalProps>) {
   if (isOpen && !originalPath && !destinationPath && !destinationRootFolder) {
     console.error(
       'originalPath and destinationPath OR destinationRootFolder must be provided'

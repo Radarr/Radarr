@@ -46,7 +46,7 @@ interface MovieIndexOverviewProps {
   isSmallScreen: boolean;
 }
 
-function MovieIndexOverview(props: MovieIndexOverviewProps) {
+function MovieIndexOverview(props: Readonly<MovieIndexOverviewProps>) {
   const {
     movieId,
     sortKey,

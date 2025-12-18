@@ -28,7 +28,7 @@ function PageToolbarSection({
   children,
   alignContent = 'left',
   collapseButtons = true,
-}: PageToolbarSectionProps) {
+}: Readonly<PageToolbarSectionProps>) {
   const [sectionRef, { width }] = useMeasure();
   const isMeasured = width > 0;
 

@@ -7,7 +7,7 @@ interface PortalProps {
 
 const defaultTarget = document.getElementById('portal-root');
 
-function Portal(props: PortalProps) {
+function Portal(props: Readonly<PortalProps>) {
   const { children, target = defaultTarget } = props;
 
   if (!target) {

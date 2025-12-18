@@ -41,7 +41,7 @@ function NumberInput({
   max,
   onChange,
   ...otherProps
-}: NumberInputProps) {
+}: Readonly<NumberInputProps>) {
   const [value, setValue] = useState(
     inputValue == null ? '' : inputValue.toString()
   );

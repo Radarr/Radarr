@@ -8,7 +8,7 @@ interface MovieGenresProps {
   genres: string[];
 }
 
-function MovieGenres({ className, genres }: MovieGenresProps) {
+function MovieGenres({ className, genres }: Readonly<MovieGenresProps>) {
   const firstGenres = genres.slice(0, 3);
   const otherGenres = genres.slice(3);
 

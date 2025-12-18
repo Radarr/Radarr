@@ -13,7 +13,7 @@ interface HintedSelectInputOptionProps
   isSelected?: boolean;
 }
 
-function HintedSelectInputOption(props: HintedSelectInputOptionProps) {
+function HintedSelectInputOption(props: Readonly<HintedSelectInputOptionProps>) {
   const {
     id,
     value,

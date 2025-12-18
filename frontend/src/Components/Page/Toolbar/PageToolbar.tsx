@@ -9,7 +9,7 @@ interface PageToolbarProps {
 function PageToolbar({
   className = styles.toolbar,
   children,
-}: PageToolbarProps) {
+}: Readonly<PageToolbarProps>) {
   return <div className={className}>{children}</div>;
 }
 

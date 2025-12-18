@@ -13,7 +13,7 @@ interface MovieIndexSortMenuProps {
   onSortSelect(sortKey: string): void;
 }
 
-function MovieIndexSortMenu(props: MovieIndexSortMenuProps) {
+function MovieIndexSortMenu(props: Readonly<MovieIndexSortMenuProps>) {
   const { sortKey, sortDirection, isDisabled, onSortSelect } = props;
 
   return (

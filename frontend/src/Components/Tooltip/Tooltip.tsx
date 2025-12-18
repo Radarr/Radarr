@@ -23,7 +23,7 @@ export interface TooltipProps {
   position?: (typeof tooltipPositions.all)[number];
   canFlip?: boolean;
 }
-function Tooltip(props: TooltipProps) {
+function Tooltip(props: Readonly<TooltipProps>) {
   const {
     className,
     bodyClassName = styles.body,

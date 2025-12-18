@@ -7,7 +7,7 @@ interface AppUpdatedModalProps {
   onModalClose: (...args: unknown[]) => unknown;
 }
 
-function AppUpdatedModal(props: AppUpdatedModalProps) {
+function AppUpdatedModal(props: Readonly<AppUpdatedModalProps>) {
   const { isOpen, onModalClose } = props;
 
   const handleModalClose = useCallback(() => {

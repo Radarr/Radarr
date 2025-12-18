@@ -30,7 +30,7 @@ interface CalendarOptionsModalContentProps {
 
 function CalendarOptionsModalContent({
   onModalClose,
-}: CalendarOptionsModalContentProps) {
+}: Readonly<CalendarOptionsModalContentProps>) {
   const dispatch = useDispatch();
 
   const {

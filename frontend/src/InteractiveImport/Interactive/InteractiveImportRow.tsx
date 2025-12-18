@@ -66,7 +66,7 @@ interface InteractiveImportRowProps {
   onValidRowChange(id: number, isValid: boolean): void;
 }
 
-function InteractiveImportRow(props: InteractiveImportRowProps) {
+function InteractiveImportRow(props: Readonly<InteractiveImportRowProps>) {
   const {
     id,
     allowMovieChange,

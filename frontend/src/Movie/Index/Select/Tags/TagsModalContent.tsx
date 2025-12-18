@@ -25,7 +25,7 @@ interface TagsModalContentProps {
   onModalClose: () => void;
 }
 
-function TagsModalContent(props: TagsModalContentProps) {
+function TagsModalContent(props: Readonly<TagsModalContentProps>) {
   const { movieIds, onModalClose, onApplyTagsPress } = props;
 
   const allMovies: Movie[] = useSelector(createAllMoviesSelector());

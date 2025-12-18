@@ -12,7 +12,7 @@ export default function SpinnerIcon({
   spinningName = icons.SPINNER,
   isSpinning,
   ...otherProps
-}: SpinnerIconProps) {
+}: Readonly<SpinnerIconProps>) {
   return (
     <Icon
       name={(isSpinning && spinningName) || name}

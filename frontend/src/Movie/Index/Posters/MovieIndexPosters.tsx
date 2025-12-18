@@ -100,7 +100,7 @@ function getWindowScrollTopPosition() {
   return document.documentElement.scrollTop || document.body.scrollTop || 0;
 }
 
-export default function MovieIndexPosters(props: MovieIndexPostersProps) {
+export default function MovieIndexPosters(props: Readonly<MovieIndexPostersProps>) {
   const {
     scrollerRef,
     items,

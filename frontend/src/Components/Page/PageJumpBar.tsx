@@ -21,7 +21,7 @@ function PageJumpBar({
   items,
   minimumItems = 5,
   onItemPress,
-}: PageJumpBarProps) {
+}: Readonly<PageJumpBarProps>) {
   const [jumpBarRef, { height }] = useMeasure();
 
   const visibleItems = useMemo(() => {

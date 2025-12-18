@@ -14,7 +14,7 @@ export interface ErrorBoundaryErrorProps {
   };
 }
 
-function ErrorBoundaryError(props: ErrorBoundaryErrorProps) {
+function ErrorBoundaryError(props: Readonly<ErrorBoundaryErrorProps>) {
   const {
     className = styles.container,
     messageClassName = styles.message,

@@ -8,7 +8,7 @@ interface KeyboardShortcutsModalProps {
   onModalClose: () => void;
 }
 
-function KeyboardShortcutsModal(props: KeyboardShortcutsModalProps) {
+function KeyboardShortcutsModal(props: Readonly<KeyboardShortcutsModalProps>) {
   const { isOpen, onModalClose } = props;
 
   return (

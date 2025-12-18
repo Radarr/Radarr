@@ -23,7 +23,7 @@ interface MovieCreditPostersProps {
   isSmallScreen: boolean;
 }
 
-function MovieCreditPosters(props: MovieCreditPostersProps) {
+function MovieCreditPosters(props: Readonly<MovieCreditPostersProps>) {
   const { items, itemComponent, isSmallScreen } = props;
 
   const posterWidth = 162;

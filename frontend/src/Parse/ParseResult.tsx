@@ -11,7 +11,7 @@ interface ParseResultProps {
   item: ParseModel;
 }
 
-function ParseResult(props: ParseResultProps) {
+function ParseResult(props: Readonly<ParseResultProps>) {
   const { item } = props;
   const {
     customFormats,

@@ -26,7 +26,7 @@ interface ManageImportListsModalRowProps {
   onSelectedChange(result: SelectStateInputProps): void;
 }
 
-function ManageImportListsModalRow(props: ManageImportListsModalRowProps) {
+function ManageImportListsModalRow(props: Readonly<ManageImportListsModalRowProps>) {
   const {
     id,
     isSelected,
