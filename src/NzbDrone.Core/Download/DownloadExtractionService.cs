@@ -5,7 +5,6 @@ using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.MediaFiles;
 
 namespace NzbDrone.Core.Download
 {
@@ -139,7 +138,7 @@ namespace NzbDrone.Core.Download
 
             if (extension.StartsWith(".r", StringComparison.OrdinalIgnoreCase) &&
                 extension.Length == 4 &&
-                int.TryParse(extension.Substring(2), out _))
+                int.TryParse(extension.AsSpan(2), out _))
             {
                 return true;
             }
