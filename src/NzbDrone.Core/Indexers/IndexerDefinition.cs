@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Equ;
+using NzbDrone.Core.MediaTypes;
 using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Indexers
@@ -13,6 +15,7 @@ namespace NzbDrone.Core.Indexers
         public IndexerDefinition()
         {
             Priority = DefaultPriority;
+            SupportedMediaTypes = new List<MediaType> { MediaType.Movie };
         }
 
         [MemberwiseEqualityIgnore]
@@ -29,6 +32,7 @@ namespace NzbDrone.Core.Indexers
         public bool EnableInteractiveSearch { get; set; }
         public int DownloadClientId { get; set; }
         public int Priority { get; set; }
+        public List<MediaType> SupportedMediaTypes { get; set; }
 
         [MemberwiseEqualityIgnore]
         public override bool Enable => EnableRss || EnableAutomaticSearch || EnableInteractiveSearch;

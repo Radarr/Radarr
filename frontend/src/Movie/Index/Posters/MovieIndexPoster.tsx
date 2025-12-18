@@ -7,6 +7,7 @@ import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import MediaTypeBadge from 'Components/MediaTypeBadge';
 import MovieTagList from 'Components/MovieTagList';
 import RottenTomatoRating from 'Components/RottenTomatoRating';
 import TmdbRating from 'Components/TmdbRating';
@@ -90,6 +91,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     originalTitle,
     originalLanguage,
     tags = [],
+    mediaType,
   } = movie;
 
   const { sizeOnDisk = 0 } = statistics;
@@ -231,6 +233,12 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
       {showTitle ? (
         <div className={styles.title} title={title}>
           {title}
+        </div>
+      ) : null}
+
+      {mediaType && mediaType !== 'movie' ? (
+        <div className={styles.title}>
+          <MediaTypeBadge mediaType={mediaType} />
         </div>
       ) : null}
 

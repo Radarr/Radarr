@@ -55,6 +55,7 @@ dotnet_diagnostic.IDE0018.severity = error
 
 # Stylecop Rules
 dotnet_diagnostic.SA0001.severity = none
+dotnet_diagnostic.SA1200.severity = none
 dotnet_diagnostic.SA1025.severity = none
 dotnet_diagnostic.SA1101.severity = none
 dotnet_diagnostic.SA1116.severity = none

@@ -74,6 +74,16 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
             return pageableRequests;
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(BookSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
+        public IndexerPageableRequestChain GetSearchRequests(AudiobookSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
         public Func<IDictionary<string, string>> GetCookies { get; set; }
         public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }

@@ -9,6 +9,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.MediaTypes;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
@@ -29,6 +30,7 @@ namespace NzbDrone.Core.Indexers
 
         public abstract bool SupportsRss { get; }
         public abstract bool SupportsSearch { get; }
+        public virtual IEnumerable<MediaType> SupportedMediaTypes => new[] { MediaType.Movie };
 
         public IndexerBase(IIndexerStatusService indexerStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
         {
