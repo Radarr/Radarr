@@ -31,9 +31,10 @@ Aletheia is written in C# (backend) and JS (frontend). The backend is built on .
 
 1. Clone the repository: `git clone https://github.com/cheir-mneme/aletheia.git`
 1. Install dependencies and build as described below
+1. (Optional) Install pre-commit hooks: `./scripts/setup-hooks.sh`
 
-> Be sure to run lint `yarn lint --fix` on your code for any front end changes before committing.
-For css changes `yarn stylelint-windows --fix` {.is-info}
+> The pre-commit hooks will automatically run lint checks before each commit.
+> You can also run lint manually: `yarn lint --fix` for JS/TS, `yarn stylelint-linux --fix` for CSS.
 
 ### Building the frontend
 

@@ -1,0 +1,37 @@
+#!/bin/bash
+# Pre-commit hook for Aletheia
+
+set -e
+
+echo "Running pre-commit checks..."
+
+# Check if there are any staged frontend files
+STAGED_JS=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$' | grep '^frontend/' || true)
+
+if [ -n "$STAGED_JS" ]; then
+    echo "Checking JavaScript/TypeScript lint..."
+    yarn lint --quiet 2>/dev/null || {
+        echo "ESLint errors found. Run 'yarn lint-fix' to auto-fix."
+        exit 1
+    }
+fi
+
+# Check if there are any staged CSS files
+STAGED_CSS=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.css$' | grep '^frontend/' || true)
+
+if [ -n "$STAGED_CSS" ]; then
+    echo "Checking CSS lint..."
+    if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+        yarn stylelint-windows --quiet 2>/dev/null || {
+            echo "Stylelint errors found."
+            exit 1
+        }
+    else
+        yarn stylelint-linux --quiet 2>/dev/null || {
+            echo "Stylelint errors found."
+            exit 1
+        }
+    fi
+fi
+
+echo "Pre-commit checks passed."
