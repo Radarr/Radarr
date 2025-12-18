@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Indexers.Torznab
                 Name = name,
                 Implementation = GetType().Name,
                 Settings = settings,
-                Protocol = DownloadProtocol.Usenet,
+                Protocol = DownloadProtocol.Torrent,
                 SupportsRss = SupportsRss,
                 SupportsSearch = SupportsSearch
             };

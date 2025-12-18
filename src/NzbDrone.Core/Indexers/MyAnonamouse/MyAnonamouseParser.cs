@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
+using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers.Exceptions;
@@ -14,10 +15,12 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
     public class MyAnonamouseParser : IParseIndexerResponse
     {
         private readonly MyAnonamouseSettings _settings;
+        private readonly Logger _logger;
 
-        public MyAnonamouseParser(MyAnonamouseSettings settings)
+        public MyAnonamouseParser(MyAnonamouseSettings settings, Logger logger = null)
         {
             _settings = settings;
+            _logger = logger ?? LogManager.GetCurrentClassLogger();
         }
 
         public IList<ReleaseInfo> ParseResponse(IndexerResponse indexerResponse)
@@ -36,7 +39,21 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
                     indexerResponse.HttpResponse.StatusCode);
             }
 
-            var jsonResponse = JsonConvert.DeserializeObject<MyAnonamouseResponse>(indexerResponse.Content);
+            MyAnonamouseResponse jsonResponse;
+
+            try
+            {
+                jsonResponse = JsonConvert.DeserializeObject<MyAnonamouseResponse>(indexerResponse.Content);
+            }
+            catch (JsonException ex)
+            {
+                throw new IndexerException(indexerResponse, "Failed to parse JSON response from MyAnonamouse: {0}", ex.Message);
+            }
+
+            if (jsonResponse == null)
+            {
+                throw new IndexerException(indexerResponse, "Empty response from MyAnonamouse");
+            }
 
             if (jsonResponse.Error.IsNotNullOrWhiteSpace() && jsonResponse.Error.StartsWithIgnoreCase("Nothing returned, out of"))
             {
@@ -67,8 +84,9 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
                             title += " by " + author;
                         }
                     }
-                    catch
+                    catch (JsonException ex)
                     {
+                        _logger.Debug(ex, "Failed to parse author info for torrent {0}", id);
                     }
                 }
 

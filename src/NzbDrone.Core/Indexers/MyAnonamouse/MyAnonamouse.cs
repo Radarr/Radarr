@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
 
         public override IParseIndexerResponse GetParser()
         {
-            return new MyAnonamouseParser(Settings);
+            return new MyAnonamouseParser(Settings, _logger);
         }
     }
 }
