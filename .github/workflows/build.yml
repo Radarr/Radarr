@@ -88,12 +88,15 @@ jobs:
           mkdir -p _tests/bin
           cp _output/net8.0/linux-x64/publish/Radarr _tests/bin/
           chmod +x _tests/bin/Radarr
+          # Copy test DLLs to where test.sh expects them
+          cp _tests/net8.0/linux-x64/publish/*.dll _tests/
+          cp _tests/net8.0/linux-x64/publish/*.json _tests/ 2>/dev/null || true
           find _tests -name "Radarr.Test.Dummy" -exec chmod a+x {} \;
 
-      - name: Test
+      - name: Test with coverage
         shell: bash
         continue-on-error: true
-        run: ./test.sh Linux Unit Test
+        run: ./test.sh Linux Unit Coverage
 
       - name: Report test results
         uses: dorny/test-reporter@v2
@@ -105,6 +108,36 @@ jobs:
           reporter: dotnet-nunit
           fail-on-error: false
           fail-on-empty: false
+
+      - name: Generate coverage report
+        uses: danielpalme/ReportGenerator-GitHub-Action@5
+        if: always()
+        with:
+          reports: "**/coverage.cobertura.xml"
+          targetdir: CoverageReport
+          reporttypes: "HtmlInline;Cobertura;TextSummary"
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: always()
+        continue-on-error: true
+        with:
+          files: "**/coverage.cobertura.xml"
+          fail_ci_if_error: false
+
+      - name: Check coverage threshold
+        if: always()
+        shell: bash
+        run: |
+          if [ -f CoverageReport/Summary.txt ]; then
+            COVERAGE=$(grep -oP 'Line coverage: \K[\d.]+' CoverageReport/Summary.txt || echo "0")
+            echo "Line coverage: ${COVERAGE}%"
+            if (( $(echo "$COVERAGE < 60" | bc -l) )); then
+              echo "::warning::Coverage is below 60% threshold (${COVERAGE}%)"
+            fi
+          else
+            echo "::warning::Coverage report not found"
+          fi
 
       - name: Free disk space
         run: |
