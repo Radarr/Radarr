@@ -284,8 +284,8 @@ function Updates() {
               <div>
                 <InlineMarkdown
                   data={translate('InstallMajorVersionUpdateMessageLink', {
-                    domain: 'radarr.video',
-                    url: 'https://radarr.video/#downloads',
+                    domain: 'github.com',
+                    url: 'https://github.com/Cody-k/logarr/releases',
                   })}
                 />
               </div>
