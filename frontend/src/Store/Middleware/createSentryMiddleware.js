@@ -92,7 +92,6 @@ export default function createSentryMiddleware() {
     branch,
     version,
     release,
-    userHash,
     isProduction
   } = window.Radarr;
 
@@ -107,7 +106,7 @@ export default function createSentryMiddleware() {
     dsn,
     environment: branch,
     release,
-    sendDefaultPii: true,
+    sendDefaultPii: false,
     beforeSend: cleanseData,
     integrations: [
       new Integrations.RewriteFrames({ iteratee: stripUrlBase }),
@@ -116,7 +115,6 @@ export default function createSentryMiddleware() {
   });
 
   sentry.configureScope((scope) => {
-    scope.setUser({ username: userHash });
     scope.setTag('version', version);
     scope.setTag('production', isProduction);
   });

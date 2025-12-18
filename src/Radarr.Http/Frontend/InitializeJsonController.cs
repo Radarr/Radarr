@@ -1,7 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NzbDrone.Common;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Analytics;
 using NzbDrone.Core.Configuration;
@@ -53,7 +52,6 @@ namespace Radarr.Http.Frontend
             builder.AppendLine($"  \"theme\": \"{_configFileProvider.Theme.ToString()}\",");
             builder.AppendLine($"  \"branch\": \"{_configFileProvider.Branch.ToLower()}\",");
             builder.AppendLine($"  \"analytics\": {_analyticsService.IsEnabled.ToString().ToLowerInvariant()},");
-            builder.AppendLine($"  \"userHash\": \"{HashUtil.AnonymousToken()}\",");
             builder.AppendLine($"  \"urlBase\": \"{_urlBase}\",");
             builder.AppendLine($"  \"isProduction\": {RuntimeInfo.IsProduction.ToString().ToLowerInvariant()}");
             builder.AppendLine("}");
