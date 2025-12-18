@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Datastore.Converters
 {
     public class CustomFormatSpecificationListConverter : JsonConverter<List<ICustomFormatSpecification>>
     {
-        private static readonly HashSet<string> AllowedSpecificationTypes = new(StringComparer.Ordinal)
+        private static readonly HashSet<string> AllowedSpecificationTypes = new HashSet<string>(StringComparer.Ordinal)
         {
             "YearSpecification",
             "SourceSpecification",
