@@ -65,22 +65,22 @@ namespace Radarr.Http.Authentication
             _authLogger.Info("Auth-Unauthorized ip {0} url '{1}'", context.GetRemoteIP(), context.Path);
         }
 
-        private void LogInvalidated(HttpRequest context)
+        private static void LogInvalidated(HttpRequest context)
         {
             _authLogger.Info("Auth-Invalidated ip {0}", context.GetRemoteIP());
         }
 
-        private void LogFailure(HttpRequest context, string username)
+        private static void LogFailure(HttpRequest context, string username)
         {
             _authLogger.Warn("Auth-Failure ip {0} username '{1}'", context.GetRemoteIP(), username);
         }
 
-        private void LogSuccess(HttpRequest context, string username)
+        private static void LogSuccess(HttpRequest context, string username)
         {
             _authLogger.Debug("Auth-Success ip {0} username '{1}'", context.GetRemoteIP(), username);
         }
 
-        private void LogLogout(HttpRequest context, string username)
+        private static void LogLogout(HttpRequest context, string username)
         {
             _authLogger.Info("Auth-Logout ip {0} username '{1}'", context.GetRemoteIP(), username);
         }

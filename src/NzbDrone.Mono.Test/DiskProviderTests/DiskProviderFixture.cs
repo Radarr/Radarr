@@ -54,7 +54,7 @@ namespace NzbDrone.Mono.Test.DiskProviderTests
             SetWritePermissionsInternal(path, writable, false);
         }
 
-        protected void SetWritePermissionsInternal(string path, bool writable, bool setgid)
+        protected static void SetWritePermissionsInternal(string path, bool writable, bool setgid)
         {
             // Remove Write permissions, we're still owner so we can clean it up, but we'll have to do that explicitly.
             Syscall.stat(path, out var stat);

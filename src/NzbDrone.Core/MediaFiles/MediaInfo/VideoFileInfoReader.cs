@@ -176,7 +176,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             return 0;
         }
 
-        private VideoStream GetPrimaryVideoStream(IMediaAnalysis mediaAnalysis)
+        private static VideoStream GetPrimaryVideoStream(IMediaAnalysis mediaAnalysis)
         {
             if (mediaAnalysis.VideoStreams.Count <= 1)
             {

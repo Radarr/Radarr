@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(RenameUrlToBaseUrl);
         }
 
-        private void RenameUrlToBaseUrl(IDbConnection conn, IDbTransaction tran)
+        private static void RenameUrlToBaseUrl(IDbConnection conn, IDbTransaction tran)
         {
             using (var cmd = conn.CreateCommand())
             {

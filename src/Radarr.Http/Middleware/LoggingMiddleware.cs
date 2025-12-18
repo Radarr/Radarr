@@ -35,7 +35,7 @@ namespace Radarr.Http.Middleware
             LogEnd(context);
         }
 
-        private void LogStart(HttpContext context)
+        private static void LogStart(HttpContext context)
         {
             var id = Interlocked.Increment(ref _requestSequenceID);
 
@@ -47,7 +47,7 @@ namespace Radarr.Http.Middleware
             _loggerHttp.Trace("Req: {0} [{1}] {2} (from {3})", id, context.Request.Method, reqPath, GetOrigin(context));
         }
 
-        private void LogEnd(HttpContext context)
+        private static void LogEnd(HttpContext context)
         {
             var id = (int)context.Items["ApiRequestSequenceID"];
             var startTime = (DateTime)context.Items["ApiRequestStartTime"];

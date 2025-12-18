@@ -433,7 +433,7 @@ namespace NzbDrone.Core.Datastore
             return pagingSpec;
         }
 
-        protected void AddFilters(SqlBuilder builder, PagingSpec<TModel> pagingSpec)
+        protected static void AddFilters(SqlBuilder builder, PagingSpec<TModel> pagingSpec)
         {
             var filters = pagingSpec.FilterExpressions;
 

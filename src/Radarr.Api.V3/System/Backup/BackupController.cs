@@ -129,7 +129,7 @@ namespace Radarr.Api.V3.System.Backup
             return Path.Combine(_backupService.GetBackupFolder(backup.Type), backup.Name);
         }
 
-        private int GetBackupId(NzbDrone.Core.Backup.Backup backup)
+        private static int GetBackupId(NzbDrone.Core.Backup.Backup backup)
         {
             return HashConverter.GetHashInt31($"backup-{backup.Type}-{backup.Name}");
         }

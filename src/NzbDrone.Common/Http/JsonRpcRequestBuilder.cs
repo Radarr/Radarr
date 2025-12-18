@@ -73,7 +73,7 @@ namespace NzbDrone.Common.Http
             }
         }
 
-        private void ConvertParameter(object value, out object data, out string summary)
+        private static void ConvertParameter(object value, out object data, out string summary)
         {
             if (value is byte[])
             {
@@ -92,7 +92,7 @@ namespace NzbDrone.Common.Http
             }
         }
 
-        public string CreateNextId()
+        public static string CreateNextId()
         {
             return Guid.NewGuid().ToString().Substring(0, 8);
         }

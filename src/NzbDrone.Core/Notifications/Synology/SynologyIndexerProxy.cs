@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Notifications.Synology
             }
         }
 
-        private string Escape(string arg)
+        private static string Escape(string arg)
         {
             return string.Format("\"{0}\"", arg.Replace("\"", "\\\""));
         }

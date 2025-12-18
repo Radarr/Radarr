@@ -43,7 +43,7 @@ namespace NzbDrone.Core.DecisionEngine
             return comparers.Select(comparer => comparer(x, y)).FirstOrDefault(result => result != 0);
         }
 
-        private int CompareBy<TSubject, TValue>(TSubject left, TSubject right, Func<TSubject, TValue> funcValue)
+        private static int CompareBy<TSubject, TValue>(TSubject left, TSubject right, Func<TSubject, TValue> funcValue)
             where TValue : IComparable<TValue>
         {
             var leftValue = funcValue(left);
@@ -58,7 +58,7 @@ namespace NzbDrone.Core.DecisionEngine
             return CompareBy(left, right, funcValue) * -1;
         }
 
-        private int CompareAll(params int[] comparers)
+        private static int CompareAll(params int[] comparers)
         {
             return comparers.Select(comparer => comparer).FirstOrDefault(result => result != 0);
         }
@@ -186,7 +186,7 @@ namespace NzbDrone.Core.DecisionEngine
             return sizeCompare;
         }
 
-        private int ScoreFlags(IndexerFlags flags)
+        private static int ScoreFlags(IndexerFlags flags)
         {
             var flagValues = Enum.GetValues(typeof(IndexerFlags));
 

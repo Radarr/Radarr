@@ -215,7 +215,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             failures.AddIfNotNull(TestGetTorrents());
         }
 
-        protected bool IsFinished(DownloadStationTask torrent)
+        protected static bool IsFinished(DownloadStationTask torrent)
         {
             return torrent.Status == DownloadStationTaskStatus.Finished;
         }
@@ -293,7 +293,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             return TimeSpan.FromSeconds(remainingSize / downloadSpeed);
         }
 
-        protected double? GetSeedRatio(DownloadStationTask torrent)
+        protected static double? GetSeedRatio(DownloadStationTask torrent)
         {
             var downloaded = torrent.Additional.Transfer["size_downloaded"].ParseInt64();
             var uploaded = torrent.Additional.Transfer["size_uploaded"].ParseInt64();
@@ -427,12 +427,12 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             }
         }
 
-        protected string ParseDownloadId(string id)
+        protected static string ParseDownloadId(string id)
         {
             return id.Split(':')[1];
         }
 
-        protected string CreateDownloadId(string id, string hashedSerialNumber)
+        protected static string CreateDownloadId(string id, string hashedSerialNumber)
         {
             return $"{hashedSerialNumber}:{id}";
         }

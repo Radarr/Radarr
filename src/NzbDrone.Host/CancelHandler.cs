@@ -57,7 +57,7 @@ namespace Radarr.Host
             _lifecycleService.Shutdown();
         }
 
-        private void UngracefulShutdown()
+        private static void UngracefulShutdown()
         {
             Console.WriteLine("Termination requested.");
 

@@ -382,7 +382,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             return Math.Max(downloadSpeed, 0);
         }
 
-        protected TimeSpan? GetRemainingTime(long remainingSize, long downloadSpeed)
+        protected static TimeSpan? GetRemainingTime(long remainingSize, long downloadSpeed)
         {
             if (downloadSpeed > 0)
             {
@@ -407,12 +407,12 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             }
         }
 
-        protected string ParseDownloadId(string id)
+        protected static string ParseDownloadId(string id)
         {
             return id.Split(':')[1];
         }
 
-        protected string CreateDownloadId(string id, string hashedSerialNumber)
+        protected static string CreateDownloadId(string id, string hashedSerialNumber)
         {
             return $"{hashedSerialNumber}:{id}";
         }

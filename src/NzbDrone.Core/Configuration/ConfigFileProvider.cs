@@ -477,7 +477,7 @@ namespace NzbDrone.Core.Configuration
             }
         }
 
-        private string GenerateApiKey()
+        private static string GenerateApiKey()
         {
             return Guid.NewGuid().ToString().Replace("-", "");
         }

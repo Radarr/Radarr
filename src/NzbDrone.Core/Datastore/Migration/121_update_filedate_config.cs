@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(SetTitleSlug);
         }
 
-        private void SetTitleSlug(IDbConnection conn, IDbTransaction tran)
+        private static void SetTitleSlug(IDbConnection conn, IDbTransaction tran)
         {
             using (var getSeriesCmd = conn.CreateCommand())
             {

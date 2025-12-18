@@ -184,7 +184,7 @@ namespace NzbDrone.Windows.Disk
             }
         }
 
-        private IMount GetReparsePoint(string path)
+        private static IMount GetReparsePoint(string path)
         {
             if (!Directory.Exists(path))
             {

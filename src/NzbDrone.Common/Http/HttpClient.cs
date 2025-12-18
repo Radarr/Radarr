@@ -377,7 +377,7 @@ namespace NzbDrone.Common.Http
             return Task.Run(() => PostAsync<T>(request)).GetAwaiter().GetResult();
         }
 
-        private void CheckResponseContentType(HttpResponse response)
+        private static void CheckResponseContentType(HttpResponse response)
         {
             if (response.Headers.ContentType != null && response.Headers.ContentType.Contains("text/html"))
             {

@@ -133,7 +133,7 @@ namespace NzbDrone.Core.Authentication
             return user;
         }
 
-        private byte[] GenerateSalt()
+        private static byte[] GenerateSalt()
         {
             var salt = new byte[SALT_SIZE];
             RandomNumberGenerator.Create().GetBytes(salt);
@@ -141,7 +141,7 @@ namespace NzbDrone.Core.Authentication
             return salt;
         }
 
-        private string GetHashedPassword(string password, byte[] salt, int iterations)
+        private static string GetHashedPassword(string password, byte[] salt, int iterations)
         {
             return Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: password,

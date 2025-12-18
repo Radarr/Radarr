@@ -175,7 +175,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
             });
         }
 
-        public void UpdateScope(IOsInfo osInfo)
+        public static void UpdateScope(IOsInfo osInfo)
         {
             SentrySdk.ConfigureScope(scope =>
             {
@@ -183,7 +183,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
             });
         }
 
-        public void UpdateScope(Version databaseVersion, int migration, string updateBranch, IPlatformInfo platformInfo)
+        public static void UpdateScope(Version databaseVersion, int migration, string updateBranch, IPlatformInfo platformInfo)
         {
             SentrySdk.ConfigureScope(scope =>
             {

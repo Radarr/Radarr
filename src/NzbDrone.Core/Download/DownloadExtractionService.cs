@@ -132,7 +132,7 @@ namespace NzbDrone.Core.Download
             return folderPath;
         }
 
-        private bool IsPartOfMultiVolumeArchive(string path)
+        private static bool IsPartOfMultiVolumeArchive(string path)
         {
             var extension = Path.GetExtension(path);
 
@@ -170,7 +170,7 @@ namespace NzbDrone.Core.Download
             _diskProvider.DeleteFile(archivePath);
         }
 
-        private bool IsArchivePartFile(string filePath, string baseName)
+        private static bool IsArchivePartFile(string filePath, string baseName)
         {
             var fileName = Path.GetFileNameWithoutExtension(filePath);
             var extension = Path.GetExtension(filePath);

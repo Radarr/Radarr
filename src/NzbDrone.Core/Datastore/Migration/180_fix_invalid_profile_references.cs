@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Datastore.Migration
             }
         }
 
-        private List<int> GetProfileIds(IDbConnection conn)
+        private static List<int> GetProfileIds(IDbConnection conn)
         {
             return conn.Query<QualityProfile180>("SELECT \"Id\" From \"Profiles\"").Select(p => p.Id).ToList();
         }

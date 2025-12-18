@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Notifications.Plex.PlexTv
             return new List<PlexTvResource>();
         }
 
-        private HttpRequestBuilder BuildRequest(string clientIdentifier)
+        private static HttpRequestBuilder BuildRequest(string clientIdentifier)
         {
             var requestBuilder = new HttpRequestBuilder("https://plex.tv")
                                  .Accept(HttpAccept.Json)

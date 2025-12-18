@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(DeleteUniqueIndex);
         }
 
-        private void DeleteUniqueIndex(IDbConnection conn, IDbTransaction tran)
+        private static void DeleteUniqueIndex(IDbConnection conn, IDbTransaction tran)
         {
             using (var getSeriesCmd = conn.CreateCommand())
             {

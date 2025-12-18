@@ -317,7 +317,7 @@ namespace NzbDrone.Core.Organizer
             }
         }
 
-        private void AddReleaseDateTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, int releaseYear)
+        private static void AddReleaseDateTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, int releaseYear)
         {
             if (releaseYear == 0)
             {
@@ -328,7 +328,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Release Year}"] = m => string.Format("{0}", releaseYear.ToString()); // Do I need m.CustomFormat?
         }
 
-        private void AddIdTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie)
+        private static void AddIdTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie)
         {
             tokenHandlers["{ImdbId}"] = m => movie.MovieMetadata.Value.ImdbId ?? string.Empty;
             tokenHandlers["{TmdbId}"] = m => movie.MovieMetadata.Value.TmdbId.ToString();
@@ -437,7 +437,7 @@ namespace NzbDrone.Core.Organizer
             };
         }
 
-        private string GetCustomFormatsToken(List<CustomFormat> customFormats, string filter)
+        private static string GetCustomFormatsToken(List<CustomFormat> customFormats, string filter)
         {
             var tokens = customFormats.Where(x => x.IncludeCustomFormatWhenRenaming).ToList();
 
@@ -460,7 +460,7 @@ namespace NzbDrone.Core.Organizer
             return string.Join(" ", filteredTokens);
         }
 
-        private string GetLanguagesToken(List<string> mediaInfoLanguages, string filter, bool skipEnglishOnly, bool quoted)
+        private static string GetLanguagesToken(List<string> mediaInfoLanguages, string filter, bool skipEnglishOnly, bool quoted)
         {
             var tokens = new List<string>();
             foreach (var item in mediaInfoLanguages)
@@ -529,7 +529,7 @@ namespace NzbDrone.Core.Organizer
             }
         }
 
-        private string GetEditionToken(MovieFile movieFile)
+        private static string GetEditionToken(MovieFile movieFile)
         {
             var edition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(movieFile.Edition.ToLowerInvariant());
 
@@ -610,7 +610,7 @@ namespace NzbDrone.Core.Organizer
             return replacementText;
         }
 
-        private string ReplaceNumberToken(string token, int value)
+        private static string ReplaceNumberToken(string token, int value)
         {
             var split = token.Trim('{', '}').Split(':');
             if (split.Length == 1)
@@ -621,7 +621,7 @@ namespace NzbDrone.Core.Organizer
             return value.ToString(split[1]);
         }
 
-        private string GetQualityProper(Movie movie, QualityModel quality)
+        private static string GetQualityProper(Movie movie, QualityModel quality)
         {
             if (quality.Revision.Version > 1)
             {
@@ -631,7 +631,7 @@ namespace NzbDrone.Core.Organizer
             return string.Empty;
         }
 
-        private string GetQualityReal(Movie movie, QualityModel quality)
+        private static string GetQualityReal(Movie movie, QualityModel quality)
         {
             if (quality.Revision.Real > 0)
             {
@@ -651,7 +651,7 @@ namespace NzbDrone.Core.Organizer
             return CleanFileName(movieFile.SceneName);
         }
 
-        private string GetOriginalFileName(MovieFile movieFile, bool multipleTokens)
+        private static string GetOriginalFileName(MovieFile movieFile, bool multipleTokens)
         {
             if (multipleTokens)
             {
@@ -666,7 +666,7 @@ namespace NzbDrone.Core.Organizer
             return Path.GetFileNameWithoutExtension(movieFile.RelativePath);
         }
 
-        private string ReplaceReservedDeviceNames(string input)
+        private static string ReplaceReservedDeviceNames(string input)
         {
             // Replace reserved windows device names with an alternative
             return ReservedDeviceNamesRegex.Replace(input, match => match.Value.Replace(".", "_"));
@@ -739,7 +739,7 @@ namespace NzbDrone.Core.Organizer
             return $"{input.Truncate(maxLength - 3).TrimEnd(' ', '.')}{{ellipsis}}";
         }
 
-        private int GetMaxLengthFromFormatter(string formatter)
+        private static int GetMaxLengthFromFormatter(string formatter)
         {
             int.TryParse(formatter, out var maxCustomLength);
 

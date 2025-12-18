@@ -75,7 +75,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             return DetectSampleResult.NotSample;
         }
 
-        private int GetMinimumAllowedRuntime(MovieMetadata movie)
+        private static int GetMinimumAllowedRuntime(MovieMetadata movie)
         {
             // Anime short - 15 seconds
             if (movie.Runtime <= 3)

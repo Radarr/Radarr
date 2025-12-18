@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Delete.Column("PreferredTags").FromTable("Profiles");
         }
 
-        private void SetMetadataFileExtension(IDbConnection conn, IDbTransaction tran)
+        private static void SetMetadataFileExtension(IDbConnection conn, IDbTransaction tran)
         {
             using (var cmd = conn.CreateCommand())
             {

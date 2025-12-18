@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(ConvertConfig);
         }
 
-        private void ConvertConfig(IDbConnection conn, IDbTransaction tran)
+        private static void ConvertConfig(IDbConnection conn, IDbTransaction tran)
         {
             using (var namingConfigCmd = conn.CreateCommand())
             {

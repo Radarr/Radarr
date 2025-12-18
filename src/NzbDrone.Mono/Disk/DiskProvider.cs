@@ -469,7 +469,7 @@ namespace NzbDrone.Mono.Disk
             return _createRefLink.TryCreateRefLink(source, destination);
         }
 
-        private uint GetUserId(string user)
+        private static uint GetUserId(string user)
         {
             if (user.IsNullOrWhiteSpace())
             {
@@ -491,7 +491,7 @@ namespace NzbDrone.Mono.Disk
             return u.pw_uid;
         }
 
-        private uint GetGroupId(string group)
+        private static uint GetGroupId(string group)
         {
             if (group.IsNullOrWhiteSpace())
             {

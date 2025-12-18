@@ -158,13 +158,13 @@ namespace NzbDrone.Core.Download
             return decisions.Where(IsQualifiedReport).ToList();
         }
 
-        internal bool IsQualifiedReport(DownloadDecision decision)
+        internal static bool IsQualifiedReport(DownloadDecision decision)
         {
             // Process both approved and temporarily rejected
             return (decision.Approved || decision.TemporarilyRejected) && decision.RemoteMovie.Movie != null;
         }
 
-        private bool IsMovieProcessed(List<DownloadDecision> decisions, DownloadDecision report)
+        private static bool IsMovieProcessed(List<DownloadDecision> decisions, DownloadDecision report)
         {
             var movieId = report.RemoteMovie.Movie.Id;
 

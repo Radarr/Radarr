@@ -146,7 +146,7 @@ namespace NzbDrone.Core.Download.Clients.Aria2
             return result == "OK";
         }
 
-        private string GetToken(Aria2Settings settings)
+        private static string GetToken(Aria2Settings settings)
         {
             return $"token:{settings?.SecretToken}";
         }

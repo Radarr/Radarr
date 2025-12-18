@@ -539,7 +539,7 @@ namespace NzbDrone.Common.Disk
             }
         }
 
-        protected List<DriveInfo> GetDriveInfoMounts()
+        protected static List<DriveInfo> GetDriveInfoMounts()
         {
             return DriveInfo.GetDrives()
                             .Where(d => d.IsReady)

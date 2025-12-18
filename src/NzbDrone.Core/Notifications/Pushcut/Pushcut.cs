@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Notifications.Pushcut
             _proxy.SendNotification(MANUAL_INTERACTION_REQUIRED_TITLE_BRANDED, manualInteractionRequiredMessage.Message, null, new List<NotificationMetadataLink>(), Settings);
         }
 
-        private string GetPosterUrl(Movie movie)
+        private static string GetPosterUrl(Movie movie)
         {
             return movie.MovieMetadata.Value.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Poster)?.RemoteUrl;
         }

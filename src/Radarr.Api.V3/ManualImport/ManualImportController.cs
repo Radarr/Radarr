@@ -73,7 +73,7 @@ namespace Radarr.Api.V3.ManualImport
             return items;
         }
 
-        private ManualImportResource AddQualityWeight(ManualImportResource item)
+        private static ManualImportResource AddQualityWeight(ManualImportResource item)
         {
             if (item.Quality != null)
             {

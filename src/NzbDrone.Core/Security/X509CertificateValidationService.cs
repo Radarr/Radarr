@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Security
             return false;
         }
 
-        private IPAddress[] GetIPAddresses(string host)
+        private static IPAddress[] GetIPAddresses(string host)
         {
             if (IPAddress.TryParse(host, out var ipAddress))
             {

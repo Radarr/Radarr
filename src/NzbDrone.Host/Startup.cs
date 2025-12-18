@@ -306,7 +306,7 @@ namespace NzbDrone.Host
             });
         }
 
-        private void EnsureSingleInstance(bool isService, IStartupContext startupContext, ISingleInstancePolicy instancePolicy)
+        private static void EnsureSingleInstance(bool isService, IStartupContext startupContext, ISingleInstancePolicy instancePolicy)
         {
             if (startupContext.Flags.Contains(StartupContext.NO_SINGLE_INSTANCE_CHECK))
             {

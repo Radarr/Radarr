@@ -152,7 +152,7 @@ namespace NzbDrone.Core.Notifications.PushBullet
             return null;
         }
 
-        private HttpRequestBuilder BuildDeviceRequest(string deviceId)
+        private static HttpRequestBuilder BuildDeviceRequest(string deviceId)
         {
             var requestBuilder = new HttpRequestBuilder(PUSH_URL).Post();
 
@@ -173,7 +173,7 @@ namespace NzbDrone.Core.Notifications.PushBullet
             return requestBuilder;
         }
 
-        private HttpRequestBuilder BuildChannelRequest(string channelTag)
+        private static HttpRequestBuilder BuildChannelRequest(string channelTag)
         {
             var requestBuilder = new HttpRequestBuilder(PUSH_URL).Post();
 

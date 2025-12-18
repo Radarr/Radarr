@@ -147,7 +147,7 @@ namespace NzbDrone.Mono.Disk
             return result;
         }
 
-        private string ExpandEscapes(string mount)
+        private static string ExpandEscapes(string mount)
         {
             return OctalRegex.Replace(mount, match => match.Captures[0].Value.FromOctalString());
         }

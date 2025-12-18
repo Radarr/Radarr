@@ -189,7 +189,7 @@ namespace NzbDrone.Common
             }
         }
 
-        private void ExtractTgz(string compressedFile, string destination)
+        private static void ExtractTgz(string compressedFile, string destination)
         {
             Stream inStream = File.OpenRead(compressedFile);
             Stream gzipStream = new GZipInputStream(inStream);

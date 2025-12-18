@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
         /// <summary>
         /// Code to quickly debug unit tests
         /// </summary>
-        private void SetupNLog()
+        private static void SetupNLog()
         {
             // Step 1. Create configuration object
             var config = new LoggingConfiguration();

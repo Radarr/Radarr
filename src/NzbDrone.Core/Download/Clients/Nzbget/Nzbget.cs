@@ -347,7 +347,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         // Javascript doesn't support 64 bit integers natively so json officially doesn't either.
         // NzbGet api thus sends it in two 32 bit chunks. Here we join the two chunks back together.
         // Simplified decimal example: "42" splits into "4" and "2". To join them I shift (<<) the "4" 1 digit to the left = "40". combine it with "2". which becomes "42" again.
-        private long MakeInt64(uint high, uint low)
+        private static long MakeInt64(uint high, uint low)
         {
             long result = high;
 

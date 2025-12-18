@@ -282,7 +282,7 @@ namespace NzbDrone.Core.Download
             trackedDownload.ImportItem = _provideImportItemService.ProvideImportItem(trackedDownload.DownloadItem, trackedDownload.ImportItem);
         }
 
-        private bool ValidatePath(TrackedDownload trackedDownload)
+        private static bool ValidatePath(TrackedDownload trackedDownload)
         {
             var downloadItemOutputPath = trackedDownload.ImportItem.OutputPath;
 

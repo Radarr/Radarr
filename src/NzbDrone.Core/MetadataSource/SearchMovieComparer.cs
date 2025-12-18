@@ -75,7 +75,7 @@ namespace NzbDrone.Core.MetadataSource
             return Compare(x, y, s => SearchQuery.LevenshteinDistanceClean(s.Title) - GetYearFactor(s));
         }
 
-        public int Compare<T>(Movie x, Movie y, Func<Movie, T> keySelector)
+        public static int Compare<T>(Movie x, Movie y, Func<Movie, T> keySelector)
             where T : IComparable<T>
         {
             var keyX = keySelector(x);
@@ -106,14 +106,14 @@ namespace NzbDrone.Core.MetadataSource
             return matchX.CompareTo(matchY);
         }
 
-        private string CleanPunctuation(string title)
+        private static string CleanPunctuation(string title)
         {
             title = RegexCleanPunctuation.Replace(title, "");
 
             return title.ToLowerInvariant();
         }
 
-        private string CleanTitle(string title)
+        private static string CleanTitle(string title)
         {
             title = RegexCleanPunctuation.Replace(title, "");
             title = RegexCleanCountryYearPostfix.Replace(title, "");
@@ -121,7 +121,7 @@ namespace NzbDrone.Core.MetadataSource
             return title.ToLowerInvariant();
         }
 
-        private string CleanArticles(string title)
+        private static string CleanArticles(string title)
         {
             title = ArticleRegex.Replace(title, "");
 

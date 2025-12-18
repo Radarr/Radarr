@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Test.Messaging.Commands
     [TestFixture]
     public class CommandEqualityComparerFixture
     {
-        private string GivenRandomPath()
+        private static string GivenRandomPath()
         {
             return Path.Combine(@"C:\Tesst\", Guid.NewGuid().ToString()).AsOsAgnostic();
         }

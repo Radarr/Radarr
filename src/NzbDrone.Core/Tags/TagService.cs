@@ -190,7 +190,7 @@ namespace NzbDrone.Core.Tags
             _eventAggregator.PublishEvent(new TagsUpdatedEvent());
         }
 
-        private List<int> GetAutoTagIds(Tag tag, List<AutoTag> autoTags)
+        private static List<int> GetAutoTagIds(Tag tag, List<AutoTag> autoTags)
         {
             var autoTagIds = autoTags.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList();
 

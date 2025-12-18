@@ -274,7 +274,7 @@ namespace NzbDrone.Core.Indexers.TorrentRss
             }
         }
 
-        private void ValidateReleaseSize(TorrentInfo[] releases, TorrentRssIndexerSettings indexerSettings)
+        private static void ValidateReleaseSize(TorrentInfo[] releases, TorrentRssIndexerSettings indexerSettings)
         {
             if (!indexerSettings.AllowZeroSize && releases.Any(r => r.Size == 0))
             {

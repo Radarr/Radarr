@@ -219,7 +219,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             return response.Content;
         }
 
-        private void CheckForError(HttpResponse response)
+        private static void CheckForError(HttpResponse response)
         {
             if (!Json.TryDeserialize<SabnzbdJsonError>(response.Content, out var result))
             {

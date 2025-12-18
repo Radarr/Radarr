@@ -142,7 +142,7 @@ namespace NzbDrone.Core.Instrumentation
             LogManager.Configuration.LoggingRules.Add(loggingRule);
         }
 
-        private List<LogLevel> GetLogLevels()
+        private static List<LogLevel> GetLogLevels()
         {
             return new List<LogLevel>
                        {

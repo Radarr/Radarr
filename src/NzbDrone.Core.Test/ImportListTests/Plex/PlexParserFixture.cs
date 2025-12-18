@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Test.ImportList.Plex
     [TestFixture]
     public class PlexParserFixture : CoreTest<PlexParser>
     {
-        private ImportListResponse CreateResponse(string url, string content)
+        private static ImportListResponse CreateResponse(string url, string content)
         {
             var httpRequest = new HttpRequest(url);
             var httpResponse = new HttpResponse(httpRequest, new HttpHeader(), Encoding.UTF8.GetBytes(content));

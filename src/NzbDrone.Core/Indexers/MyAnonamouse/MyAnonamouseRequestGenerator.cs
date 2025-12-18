@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
             return pageableRequests;
         }
 
-        private string BuildSearchTerm(SearchCriteriaBase searchCriteria)
+        private static string BuildSearchTerm(SearchCriteriaBase searchCriteria)
         {
             var terms = new List<string>();
 

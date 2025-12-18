@@ -46,7 +46,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             return schema;
         }
 
-        private Field GetCategoriesField(IndexerResource resource)
+        private static Field GetCategoriesField(IndexerResource resource)
         {
             var field = resource.Fields.First(v => v.Name == "categories");
 

@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Datastore.Migration
             conn.Execute(sql, newRows, transaction: tran);
         }
 
-        private void RemoveCustomFormatFromQuality(IDbConnection conn, IDbTransaction tran, string table)
+        private static void RemoveCustomFormatFromQuality(IDbConnection conn, IDbTransaction tran, string table)
         {
             var rows = conn.Query<QualityRow>($"SELECT \"Id\", \"Quality\" from \"{table}\"");
 

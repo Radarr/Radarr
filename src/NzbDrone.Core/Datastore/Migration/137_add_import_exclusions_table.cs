@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(AddExisting);
         }
 
-        private void AddExisting(IDbConnection conn, IDbTransaction tran)
+        private static void AddExisting(IDbConnection conn, IDbTransaction tran)
         {
             using (var getSeriesCmd = conn.CreateCommand())
             {

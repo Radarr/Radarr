@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Notifications
             _logger = logger;
         }
 
-        private string GetMessage(Movie movie, QualityModel quality)
+        private static string GetMessage(Movie movie, QualityModel quality)
         {
             var qualityString = quality.Quality.ToString();
             var imdbUrl = "https://www.imdb.com/title/" + movie.MovieMetadata.Value.ImdbId + "/";
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.Notifications
             return false;
         }
 
-        private bool ShouldHandleHealthFailure(HealthCheck.HealthCheck healthCheck, bool includeWarnings)
+        private static bool ShouldHandleHealthFailure(HealthCheck.HealthCheck healthCheck, bool includeWarnings)
         {
             if (healthCheck.Type == HealthCheckResult.Error)
             {

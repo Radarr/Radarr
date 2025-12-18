@@ -22,12 +22,12 @@ namespace NzbDrone.Core.Test.Datastore
             Mocker.Resolve<DbFactory>();
         }
 
-        private WhereBuilderSqlite Where(Expression<Func<Movie, bool>> filter)
+        private static WhereBuilderSqlite Where(Expression<Func<Movie, bool>> filter)
         {
             return new WhereBuilderSqlite(filter, true, 0);
         }
 
-        private WhereBuilderSqlite WhereMeta(Expression<Func<MovieMetadata, bool>> filter)
+        private static WhereBuilderSqlite WhereMeta(Expression<Func<MovieMetadata, bool>> filter)
         {
             return new WhereBuilderSqlite(filter, true, 0);
         }

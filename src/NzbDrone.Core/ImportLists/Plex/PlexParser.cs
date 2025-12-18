@@ -66,7 +66,7 @@ namespace NzbDrone.Core.ImportLists.Plex
             return true;
         }
 
-        private string FindGuid(List<PlexSectionItemGuid> guids, string prefix)
+        private static string FindGuid(List<PlexSectionItemGuid> guids, string prefix)
         {
             var scheme = $"{prefix}://";
 

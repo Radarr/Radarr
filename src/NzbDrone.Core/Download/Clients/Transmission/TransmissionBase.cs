@@ -142,7 +142,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             return items;
         }
 
-        protected bool HasReachedSeedLimit(TransmissionTorrent torrent, double? ratio, Lazy<TransmissionConfig> config)
+        protected static bool HasReachedSeedLimit(TransmissionTorrent torrent, double? ratio, Lazy<TransmissionConfig> config)
         {
             var isStopped = torrent.Status == TransmissionTorrentStatus.Stopped;
             var isSeeding = torrent.Status == TransmissionTorrentStatus.Seeding;
