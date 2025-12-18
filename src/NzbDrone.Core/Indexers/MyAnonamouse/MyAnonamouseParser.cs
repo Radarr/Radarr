@@ -72,47 +72,18 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
                 var id = item.Id;
                 var title = item.Title;
 
-                if (item.AuthorInfo != null)
+                var author = ParseAuthorInfo(item);
+                if (author != null)
                 {
-                    try
-                    {
-                        var authorInfo = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.AuthorInfo);
-                        var author = authorInfo?.Take(5).Select(v => v.Value).Join(", ");
-
-                        if (author.IsNotNullOrWhiteSpace())
-                        {
-                            title += " by " + author;
-                        }
-                    }
-                    catch (JsonException ex)
-                    {
-                        _logger.Debug(ex, "Failed to parse author info for torrent {0}", id);
-                    }
+                    title += " by " + author;
                 }
 
-                var flags = new List<string>();
-
-                if (item.LanguageCode.IsNotNullOrWhiteSpace())
-                {
-                    flags.Add(item.LanguageCode);
-                }
-
-                if (item.Filetype.IsNotNullOrWhiteSpace())
-                {
-                    flags.Add(item.Filetype.ToUpper());
-                }
-
-                if (flags.Count > 0)
-                {
-                    title += " [" + flags.Join(" / ") + "]";
-                }
+                title += BuildTitleFlags(item);
 
                 if (item.Vip)
                 {
                     title += " [VIP]";
                 }
-
-                var isFreeLeech = item.Free || item.PersonalFreeLeech || item.FreeVip;
 
                 torrentInfos.Add(new TorrentInfo
                 {
@@ -124,7 +95,7 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
                     Seeders = item.Seeders,
                     Peers = item.Leechers + item.Seeders,
                     PublishDate = ParseDate(item.Added),
-                    IndexerFlags = GetIndexerFlags(isFreeLeech)
+                    IndexerFlags = GetIndexerFlags(IsFreeLeech(item))
                 });
             }
 
@@ -202,5 +173,48 @@ namespace NzbDrone.Core.Indexers.MyAnonamouse
         }
 
         public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
+
+        private string ParseAuthorInfo(MyAnonamouseTorrent item)
+        {
+            if (item.AuthorInfo == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                var authorInfo = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.AuthorInfo);
+                var author = authorInfo?.Take(5).Select(v => v.Value).Join(", ");
+
+                return author.IsNotNullOrWhiteSpace() ? author : null;
+            }
+            catch (JsonException ex)
+            {
+                _logger.Debug(ex, "Failed to parse author info for torrent {0}", item.Id);
+                return null;
+            }
+        }
+
+        private static string BuildTitleFlags(MyAnonamouseTorrent item)
+        {
+            var flags = new List<string>();
+
+            if (item.LanguageCode.IsNotNullOrWhiteSpace())
+            {
+                flags.Add(item.LanguageCode);
+            }
+
+            if (item.Filetype.IsNotNullOrWhiteSpace())
+            {
+                flags.Add(item.Filetype.ToUpper());
+            }
+
+            return flags.Count > 0 ? " [" + flags.Join(" / ") + "]" : string.Empty;
+        }
+
+        private static bool IsFreeLeech(MyAnonamouseTorrent item)
+        {
+            return item.Free || item.PersonalFreeLeech || item.FreeVip;
+        }
     }
 }
