@@ -4,6 +4,8 @@ import { MovieFile } from 'MovieFile/MovieFile';
 
 export type MovieMonitor = 'movieOnly' | 'movieAndCollection' | 'none';
 
+export type MediaType = 'movie' | 'book' | 'audiobook';
+
 export type MovieStatus =
   | 'tba'
   | 'announced'
@@ -58,6 +60,7 @@ export interface MovieAddOptions {
 interface Movie extends ModelBase {
   tmdbId: number;
   imdbId?: string;
+  mediaType?: MediaType;
   sortTitle: string;
   overview: string;
   youTubeTrailerId?: string;
