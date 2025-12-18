@@ -5,7 +5,7 @@ This is a personal project forked from Radarr. We're not actively seeking contri
 
 # Development
 
-Logarr is written in C# (backend) and JS (frontend). The backend is built on .NET 8, while the frontend utilizes React.
+Aletheia is written in C# (backend) and JS (frontend). The backend is built on .NET 8, while the frontend utilizes React.
 
 ## Tools required
 
@@ -29,7 +29,7 @@ Logarr is written in C# (backend) and JS (frontend). The backend is built on .NE
 
 ## Getting started
 
-1. Clone the repository: `git clone https://github.com/cheir-mneme/logarr.git`
+1. Clone the repository: `git clone https://github.com/cheir-mneme/aletheia.git`
 1. Install dependencies and build as described below
 
 > Be sure to run lint `yarn lint --fix` on your code for any front end changes before committing.
@@ -60,7 +60,7 @@ The backend solution is most easily built and ran in Visual Studio or Rider, how
 {.is-info}
 
 1. First `Build` the solution in Visual Studio, this will ensure all projects are correctly built and dependencies restored
-1. Next `Debug/Run` the project in Visual Studio to start Logarr
+1. Next `Debug/Run` the project in Visual Studio to start Aletheia
 1. Open <http://localhost:7878>
 
 #### Command line
@@ -95,7 +95,7 @@ dotnet msbuild -restore src/Radarr.sln -p:Configuration=Debug -p:Platform=Posix 
 
 ## Unit Testing
 
-Logarr utilizes nunit for its unit, integration, and automation test suite.
+Aletheia utilizes nunit for its unit, integration, and automation test suite.
 
 ### Running Tests
 

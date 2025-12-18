@@ -1,10 +1,10 @@
-# Logarr
+# Aletheia
 
 All-in-one media manager for movies, books, and audiobooks.
 
 ## Overview
 
-Logarr (from Greek λόγος - "word, reason") is a unified media management system forked from Radarr. It provides automated monitoring, downloading, and library management for multiple media types through a single interface.
+Aletheia (from Greek ἀλήθεια - "truth, disclosure") is a unified media management system forked from Radarr. It provides automated monitoring, downloading, and library management for multiple media types through a single interface.
 
 **Current Status:** Early development. Movie functionality inherited from Radarr is working. Book and audiobook support is planned.
 
@@ -44,14 +44,14 @@ To enable error reporting, toggle Analytics in Settings → General.
 
 ```bash
 docker run -d \
-  --name=logarr \
+  --name=aletheia \
   -e PUID=1000 \
   -e PGID=1000 \
   -p 7878:7878 \
   -v /path/to/config:/config \
   -v /path/to/media:/media \
   --restart unless-stopped \
-  ghcr.io/cody-k/logarr:latest
+  ghcr.io/cheir-mneme/aletheia:latest
 ```
 
 Web interface: `http://localhost:7878`
@@ -61,8 +61,8 @@ Web interface: `http://localhost:7878`
 Requirements: .NET 8.0 SDK, Node.js 20+, Yarn
 
 ```bash
-git clone https://github.com/cheir-mneme/logarr.git
-cd logarr
+git clone https://github.com/cheir-mneme/aletheia.git
+cd aletheia
 ./build.sh --backend --frontend
 dotnet run --project src/Radarr
 ```
@@ -81,4 +81,4 @@ Early development phase. Not currently accepting contributions while core archit
 
 [GNU GPL v3](http://www.gnu.org/licenses/gpl.html)
 
-Logarr is a derivative of [Radarr](https://github.com/Radarr/Radarr). Copyright 2010-2025.
+Aletheia is a derivative of [Radarr](https://github.com/Radarr/Radarr). Copyright 2010-2025.

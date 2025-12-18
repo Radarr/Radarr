@@ -285,7 +285,7 @@ function Updates() {
                 <InlineMarkdown
                   data={translate('InstallMajorVersionUpdateMessageLink', {
                     domain: 'github.com',
-                    url: 'https://github.com/Cody-k/logarr/releases',
+                    url: 'https://github.com/cheir-mneme/aletheia/releases',
                   })}
                 />
               </div>

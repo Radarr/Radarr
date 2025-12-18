@@ -70,7 +70,7 @@ function CalendarLinkModalContent({
   );
 
   const { iCalHttpUrl, iCalWebCalUrl } = useMemo(() => {
-    let icalUrl = `${window.location.host}${window.Radarr.urlBase}/feed/v3/calendar/Logarr.ics?`;
+    let icalUrl = `${window.location.host}${window.Radarr.urlBase}/feed/v3/calendar/Aletheia.ics?`;
 
     if (unmonitored) {
       icalUrl += 'unmonitored=true&';

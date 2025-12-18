@@ -60,7 +60,7 @@ function PageHeader({ isSmallScreen }: PageHeaderProps) {
                 ? `${window.Radarr.urlBase}/Content/Images/logo.png`
                 : `${window.Radarr.urlBase}/Content/Images/logo-full.png`
             }
-            alt="Logarr Logo"
+            alt="Aletheia Logo"
           />
         </Link>
       </div>
@@ -80,7 +80,7 @@ function PageHeader({ isSmallScreen }: PageHeaderProps) {
           className={styles.translate}
           title={translate('SuggestTranslationChange')}
           name={icons.TRANSLATE}
-          to="https://github.com/Cody-k/logarr/issues"
+          to="https://github.com/cheir-mneme/aletheia/issues"
           size={24}
         />
 

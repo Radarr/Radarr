@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Logarr are documented in this file.
+All notable changes to Aletheia are documented in this file.
 
 ## [Unreleased]
 
@@ -12,13 +12,13 @@ All notable changes to Logarr are documented in this file.
 - Fix command injection in ProcessProvider.cs - quote script paths for .bat/.ps1/.py
 
 ### Changed
-- **UI Branding** - Radarr yellow (#ffc230) → Logarr teal (#0d9488)
+- **UI Branding** - Radarr yellow (#ffc230) → Aletheia teal (#0d9488)
   - Updated dark.js and light.js theme files
   - New logo.svg with teal gradient and lambda/L symbol
   - Generated all PNG logos and favicons
   - Updated manifest.json theme colors
   - Updated page titles, meta descriptions, external links
-  - Changed appName token from 'Radarr' to 'Logarr' in translations
+  - Changed appName token from 'Radarr' to 'Aletheia' in translations
 
 ### Planned
 - Book management system with hierarchical structure (Authors, Series, Books)
@@ -30,18 +30,18 @@ All notable changes to Logarr are documented in this file.
 
 ### Added
 - Fork of Radarr v5.x as foundation for unified media manager
-- Logarr branding throughout application
-  - BuildInfo.cs AppName property set to "Logarr"
-  - UI localization strings (en.json) updated with Logarr branding
-  - Docker labels and metadata identify as "Logarr"
+- Aletheia branding throughout application
+  - BuildInfo.cs AppName property set to "Aletheia"
+  - UI localization strings (en.json) updated with Aletheia branding
+  - Docker labels and metadata identify as "Aletheia"
 - GitHub Actions CI/CD workflow for continuous integration
 - Docker configuration with multi-architecture support (amd64, arm64)
 - Project documentation structure and contribution guidelines
 
 ### Changed
-- **Application Identity** - Radarr → Logarr
+- **Application Identity** - Radarr → Aletheia
   - Before: Application branded as "Radarr" throughout codebase
-  - After: Application branded as "Logarr" (λόγος - word, reason, unity)
+  - After: Application branded as "Aletheia" (ἀλήθεια - truth, disclosure)
   - Rationale: Fork establishes distinct identity while retaining proven Radarr architecture as foundation for multi-media manager
   - Alternative: Maintained Radarr branding (rejected - clarity and distinctness required)
   - Gotcha: Docker images and configuration references still contain "radarr" in internal paths; changes are UX-facing only to maintain upstream compatibility

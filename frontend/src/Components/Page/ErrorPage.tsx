@@ -30,7 +30,7 @@ function ErrorPage(props: ErrorPageProps) {
     systemStatusError,
   } = props;
 
-  let errorMessage = 'Failed to load Logarr';
+  let errorMessage = 'Failed to load Aletheia';
 
   if (!isLocalStorageSupported) {
     errorMessage =

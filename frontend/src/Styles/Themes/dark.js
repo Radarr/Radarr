@@ -1,6 +1,6 @@
-const logarrTeal = '#0d9488';
-const logarrAlternateTeal = '#14b8a6';
-const logarrDarkTeal = '#0f766e';
+const aletheiaTeal = '#0d9488';
+const aletheiaAlternateTeal = '#14b8a6';
+const aletheiaDarkTeal = '#0f766e';
 const darkGray = '#888';
 const mediumGray = '#999';
 const gray = '#adadad';
@@ -28,7 +28,7 @@ module.exports = {
   queueColor: '#7a43b6',
   purple,
   pink,
-  logarrTeal,
+  aletheiaTeal,
   helpTextColor: '#909293',
   darkGray,
   gray,
@@ -37,8 +37,8 @@ module.exports = {
 
   // Theme Colors
 
-  themeBlue: logarrTeal,
-  themeAlternateTeal: logarrAlternateTeal,
+  themeBlue: aletheiaTeal,
+  themeAlternateTeal: aletheiaAlternateTeal,
   themeRed: '#c4273c',
   themeDarkColor: '#494949',
   themeLightColor: '#595959',
@@ -135,14 +135,14 @@ module.exports = {
   //
   // Menu
   menuItemColor: '#e1e2e3',
-  menuItemHoverColor: logarrTeal,
+  menuItemHoverColor: aletheiaTeal,
   menuItemHoverBackgroundColor: '#606060',
 
   //
   // Toolbar
 
-  toobarButtonHoverColor: logarrTeal,
-  toobarButtonSelectedColor: logarrTeal,
+  toobarButtonHoverColor: aletheiaTeal,
+  toobarButtonSelectedColor: aletheiaTeal,
 
   //
   // Scroller

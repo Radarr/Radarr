@@ -15,10 +15,10 @@ ARG GIT_BRANCH
 ARG COMMIT_HASH
 ARG BUILD_DATE
 
-LABEL maintainer="cody-k" \
-      org.opencontainers.image.title="Logarr" \
+LABEL maintainer="cheir-mneme" \
+      org.opencontainers.image.title="Aletheia" \
       org.opencontainers.image.description="All-in-one media manager (Radarr fork)" \
-      org.opencontainers.image.source="https://github.com/Cody-k/logarr"
+      org.opencontainers.image.source="https://github.com/cheir-mneme/aletheia"
 
 RUN mkdir -p /app/radarr
 
@@ -33,7 +33,7 @@ RUN --mount=type=bind,source=_output,target=_output \
     esac; \
     cp -r /_output/UI /app/radarr/bin/UI
 
-RUN echo -e "UpdateMethod=docker\nBranch=${GIT_BRANCH}\nPackageVersion=${COMMIT_HASH}}\nPackageAuthor=cody-k" > /app/radarr/package_info && \
+RUN echo -e "UpdateMethod=docker\nBranch=${GIT_BRANCH}\nPackageVersion=${COMMIT_HASH}}\nPackageAuthor=cheir-mneme" > /app/radarr/package_info && \
     printf "version: ${COMMIT_HASH}}\nBuild-date: ${BUILD_DATE}" > /build_version
 
 COPY docker/root/ /

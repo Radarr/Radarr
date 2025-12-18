@@ -9,7 +9,7 @@ Comprehensive analysis of files and patterns that should be addressed in future 
 | Obsolete CI config | 1 | Delete |
 | Tracked IDE files | 10 | `git rm --cached` |
 | Empty localization files | 6 | Delete or populate |
-| Outdated documentation | 6 | Update for Logarr branding |
+| Outdated documentation | 6 | Update for Aletheia branding |
 | Unused methods | 3 | Remove |
 | Commented code blocks | 5+ | Remove or uncomment |
 | Commented test methods | 5+ | Remove or re-enable |
@@ -64,10 +64,10 @@ These contain only `{}` and serve no purpose:
 
 | File | Issue |
 |------|-------|
-| `README.md` | Still says "Radarr" - needs Logarr branding |
+| `README.md` | Still says "Radarr" - needs Aletheia branding |
 | `CONTRIBUTING.md` | Outdated .NET version info, Radarr references |
 | `CODE_OF_CONDUCT.md` | Uses `development@radarr.video` email |
-| `CLA.md` | Generic template, not customized for Logarr |
+| `CLA.md` | Generic template, not customized for Aletheia |
 | `.github/PULL_REQUEST_TEMPLATE.md` | References `Radarr.Console` and Radarr paths |
 | `.editorconfig` (line 281) | References non-existent `.travis.yml` |
 
