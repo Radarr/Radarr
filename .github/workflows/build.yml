@@ -88,6 +88,9 @@ jobs:
           mkdir -p _tests/bin
           cp _output/net8.0/linux-x64/publish/Radarr _tests/bin/
           chmod +x _tests/bin/Radarr
+          # Copy test DLLs to where test.sh expects them
+          cp _tests/net8.0/linux-x64/publish/*.dll _tests/
+          cp _tests/net8.0/linux-x64/publish/*.json _tests/ 2>/dev/null || true
           find _tests -name "Radarr.Test.Dummy" -exec chmod a+x {} \;
 
       - name: Test with coverage
