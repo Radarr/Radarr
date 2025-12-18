@@ -33,7 +33,7 @@ jobs:
 
       - name: Checkout
         if: steps.check-secret.outputs.available == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
