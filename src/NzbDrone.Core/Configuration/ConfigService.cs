@@ -162,6 +162,20 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("EnableCompletedDownloadHandling", value); }
         }
 
+        public bool AutoExtractArchives
+        {
+            get { return GetValueBoolean("AutoExtractArchives", false); }
+
+            set { SetValue("AutoExtractArchives", value); }
+        }
+
+        public bool DeleteArchiveAfterExtraction
+        {
+            get { return GetValueBoolean("DeleteArchiveAfterExtraction", true); }
+
+            set { SetValue("DeleteArchiveAfterExtraction", value); }
+        }
+
         public bool PreferIndexerFlags
         {
             get { return GetValueBoolean("PreferIndexerFlags", false); }

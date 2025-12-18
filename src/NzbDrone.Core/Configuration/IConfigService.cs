@@ -24,6 +24,10 @@ namespace NzbDrone.Core.Configuration
         bool AutoRedownloadFailed { get; set; }
         bool AutoRedownloadFailedFromInteractiveSearch { get; set; }
 
+        // Archive Extraction
+        bool AutoExtractArchives { get; set; }
+        bool DeleteArchiveAfterExtraction { get; set; }
+
         // Media Management
         bool AutoUnmonitorPreviouslyDownloadedMovies { get; set; }
         string RecycleBin { get; set; }
