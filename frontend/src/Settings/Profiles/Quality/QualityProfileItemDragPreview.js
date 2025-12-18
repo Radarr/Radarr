@@ -7,10 +7,10 @@ import dimensions from 'Styles/Variables/dimensions.js';
 import QualityProfileItem from './QualityProfileItem';
 import styles from './QualityProfileItemDragPreview.css';
 
-const formGroupExtraSmallWidth = parseInt(dimensions.formGroupExtraSmallWidth);
-const formLabelSmallWidth = parseInt(dimensions.formLabelSmallWidth);
-const formLabelRightMarginWidth = parseInt(dimensions.formLabelRightMarginWidth);
-const dragHandleWidth = parseInt(dimensions.dragHandleWidth);
+const formGroupExtraSmallWidth = Number.Number.parseInt(dimensions.formGroupExtraSmallWidth);
+const formLabelSmallWidth = Number.Number.parseInt(dimensions.formLabelSmallWidth);
+const formLabelRightMarginWidth = Number.Number.parseInt(dimensions.formLabelRightMarginWidth);
+const dragHandleWidth = Number.Number.parseInt(dimensions.dragHandleWidth);
 
 function collectDragLayer(monitor) {
   return {

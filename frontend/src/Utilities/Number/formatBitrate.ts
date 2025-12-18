@@ -3,7 +3,7 @@ import { filesize } from 'filesize';
 function formatBitrate(input: string | number) {
   const size = Number(input);
 
-  if (isNaN(size)) {
+  if (Number.Number.isNaN(size)) {
     return '';
   }
 

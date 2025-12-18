@@ -10,14 +10,14 @@ import MovieIndexOverview from './MovieIndexOverview';
 import selectOverviewOptions from './selectOverviewOptions';
 
 // Poster container dimensions
-const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
-const columnPaddingSmallScreen = parseInt(
+const columnPadding = Number.Number.parseInt(dimensions.movieIndexColumnPadding);
+const columnPaddingSmallScreen = Number.Number.parseInt(
   dimensions.movieIndexColumnPaddingSmallScreen
 );
-const progressBarHeight = parseInt(dimensions.progressBarSmallHeight);
-const detailedProgressBarHeight = parseInt(dimensions.progressBarMediumHeight);
-const bodyPadding = parseInt(dimensions.pageContentBodyPadding);
-const bodyPaddingSmallScreen = parseInt(
+const progressBarHeight = Number.Number.parseInt(dimensions.progressBarSmallHeight);
+const detailedProgressBarHeight = Number.Number.parseInt(dimensions.progressBarMediumHeight);
+const bodyPadding = Number.Number.parseInt(dimensions.pageContentBodyPadding);
+const bodyPaddingSmallScreen = Number.Number.parseInt(
   dimensions.pageContentBodyPaddingSmallScreen
 );
 

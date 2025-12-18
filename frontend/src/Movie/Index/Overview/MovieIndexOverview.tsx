@@ -25,12 +25,12 @@ import MovieIndexOverviewInfo from './MovieIndexOverviewInfo';
 import selectOverviewOptions from './selectOverviewOptions';
 import styles from './MovieIndexOverview.css';
 
-const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
-const columnPaddingSmallScreen = parseInt(
+const columnPadding = Number.Number.parseInt(dimensions.movieIndexColumnPadding);
+const columnPaddingSmallScreen = Number.Number.parseInt(
   dimensions.movieIndexColumnPaddingSmallScreen
 );
-const defaultFontSize = parseInt(fonts.defaultFontSize);
-const lineHeight = parseFloat(fonts.lineHeight);
+const defaultFontSize = Number.Number.parseInt(fonts.defaultFontSize);
+const lineHeight = Number.Number.parseFloat(fonts.lineHeight);
 
 // Hardcoded height beased on line-height of 32 + bottom margin of 10.
 // Less side-effecty than using react-measure.

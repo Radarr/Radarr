@@ -7,10 +7,10 @@ import dimensions from 'Styles/Variables/dimensions.js';
 import TableOptionsColumn from './TableOptionsColumn';
 import styles from './TableOptionsColumnDragPreview.css';
 
-const formGroupSmallWidth = parseInt(dimensions.formGroupSmallWidth);
-const formLabelLargeWidth = parseInt(dimensions.formLabelLargeWidth);
-const formLabelRightMarginWidth = parseInt(dimensions.formLabelRightMarginWidth);
-const dragHandleWidth = parseInt(dimensions.dragHandleWidth);
+const formGroupSmallWidth = Number.Number.parseInt(dimensions.formGroupSmallWidth);
+const formLabelLargeWidth = Number.Number.parseInt(dimensions.formLabelLargeWidth);
+const formLabelRightMarginWidth = Number.Number.parseInt(dimensions.formLabelRightMarginWidth);
+const dragHandleWidth = Number.Number.parseInt(dimensions.dragHandleWidth);
 
 function collectDragLayer(monitor) {
   return {

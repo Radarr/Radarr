@@ -138,7 +138,7 @@ class Collection extends Component {
     const characters = _.reduce(items, (acc, item) => {
       let char = item.sortTitle.charAt(0);
 
-      if (!isNaN(char)) {
+      if (!Number.Number.isNaN(char)) {
         char = '#';
       }
 

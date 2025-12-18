@@ -51,7 +51,7 @@ const columns = [
   },
 ];
 
-const bodyPadding = parseInt(dimensions.pageContentBodyPadding);
+const bodyPadding = Number.Number.parseInt(dimensions.pageContentBodyPadding);
 
 interface SelectMovieModalContentProps {
   modalTitle: string;

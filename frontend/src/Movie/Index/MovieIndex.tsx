@@ -206,7 +206,7 @@ const MovieIndex = withScrollPosition((props: Readonly<MovieIndexProps>) => {
     const characters = items.reduce((acc: Record<string, number>, item) => {
       let char = item.sortTitle.charAt(0);
 
-      if (!isNaN(Number(char))) {
+      if (!Number.Number.isNaN(Number(char))) {
         char = '#';
       }
 
