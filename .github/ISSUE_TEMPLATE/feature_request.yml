@@ -1,5 +1,5 @@
 name: Feature Request
-description: 'Suggest an idea for Radarr'
+description: 'Suggest an idea for Aletheia'
 labels: ['Type: Feature Request', 'Status: Needs Triage']
 body:
 - type: checkboxes

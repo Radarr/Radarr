@@ -75,7 +75,7 @@ dotnet run --project src/Radarr
 
 ## Contributing
 
-Early development phase. Not currently accepting contributions while core architecture is established.
+Early development phase. See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and code guidelines.
 
 ## License
 

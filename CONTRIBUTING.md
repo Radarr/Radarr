@@ -81,17 +81,44 @@ dotnet msbuild -restore src/Radarr.sln -p:Configuration=Debug -p:Platform=Posix 
 
 ## Contributing Code
 
-- Make meaningful commits
+- Make meaningful commits using conventional commit format
 - Add tests (unit/integration) for new features
 - Commit with \*nix line endings for consistency
 - Use 4 spaces instead of tabs
 - Match existing code patterns and style
 
+## Commit Format
+
+Use [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+type(scope): description
+```
+
+**Types:**
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation only
+- `refactor`: Code change (no behavior change)
+- `test`: Test additions/changes
+- `chore`: Build, deps, config
+
+**Scope (optional):** audiobook, metadata, ui, database, api, indexer
+
+**Examples:**
+```
+feat(audiobook): add narrator matching logic
+fix(metadata): handle API timeout gracefully
+refactor(database): extract MediaItem base class
+docs: update installation instructions
+```
+
 ## Pull Requesting
 
 - Only make pull requests to `develop`, never `master`
-- Use meaningful feature branch names (what is being added/fixed)
+- Use meaningful feature branch names: `feature/`, `fix/`, `refactor/`, `docs/`
 - Each PR should contain related changes (one feature/bug fix per PR)
+- Fill out the PR template completely
 
 ## Unit Testing
 
