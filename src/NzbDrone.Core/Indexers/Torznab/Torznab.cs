@@ -8,6 +8,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Indexers.Newznab;
+using NzbDrone.Core.MediaTypes;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -22,6 +23,7 @@ namespace NzbDrone.Core.Indexers.Torznab
 
         public override DownloadProtocol Protocol => DownloadProtocol.Torrent;
         public override int PageSize => GetProviderPageSize();
+        public override IEnumerable<MediaType> SupportedMediaTypes => new[] { MediaType.Movie, MediaType.Book, MediaType.Audiobook };
 
         public Torznab(INewznabCapabilitiesProvider capabilitiesProvider, IHttpClient httpClient, IIndexerStatusService indexerStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, indexerStatusService, configService, parsingService, logger)
