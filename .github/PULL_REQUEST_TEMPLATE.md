@@ -1,16 +1,25 @@
-#### Database Migration
-YES - XXXX | NO
+## Summary
+<!-- What does this PR do? 1-2 sentences. -->
 
-#### Description
-A few sentences describing the overall goals of the pull request's commits.
 
-#### Screenshot (if UI related)
+## Changes
+<!-- Key changes, bullet points. -->
+-
 
-#### Todos
-- [ ] Tests
-- [ ] Translation Keys (./src/NzbDrone.Core/Localization/Core/en.json)
-- [ ] [Wiki Updates](https://wiki.servarr.com)
+## Context
+<!-- Why? Link to issue, discussion, or brief rationale. -->
 
-#### Issues Fixed or Closed by this PR
 
-* Fixes #XXXX
+## Testing
+<!-- How was this tested? What should reviewers verify? -->
+- [ ] Tests pass (`./test.sh Linux Unit Test`)
+- [ ] Manual testing:
+
+## Migration
+<!-- Database migration included? Breaking changes? -->
+- [ ] No migration
+- [ ] Migration included (describe below)
+
+## Notes
+<!-- Anything reviewers should know? Edge cases, follow-up work, session context for AI continuity. -->
+
