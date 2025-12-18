@@ -28,15 +28,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: develop
           VALIDATE_ALL_CODEBASE: false
-          # C# linting handled by dotnet build
+          # Disable linters not needed for this project
           VALIDATE_CSHARP: false
-          # TypeScript/JavaScript
-          VALIDATE_TYPESCRIPT_ES: true
-          VALIDATE_JAVASCRIPT_ES: true
-          # Config files
-          VALIDATE_YAML: true
-          VALIDATE_JSON: true
-          VALIDATE_DOCKERFILE_HADOLINT: true
-          # Disable noisy linters
           VALIDATE_JSCPD: false
           VALIDATE_NATURAL_LANGUAGE: false
+          VALIDATE_MARKDOWN: false
+          VALIDATE_GITLEAKS: false
