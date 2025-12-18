@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Datastore
                 culture: null);
         }
 
-        private class LazyLoadedConverter<TChild> : JsonConverter<LazyLoaded<TChild>>
+        private sealed class LazyLoadedConverter<TChild> : JsonConverter<LazyLoaded<TChild>>
         {
             private readonly JsonConverter<TChild> _childConverter;
             private readonly Type _childType;

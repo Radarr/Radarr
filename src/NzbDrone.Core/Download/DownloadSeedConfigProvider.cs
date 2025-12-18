@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Download
         private readonly ISeedConfigProvider _indexerSeedConfigProvider;
         private readonly IDownloadHistoryService _downloadHistoryService;
 
-        private class CachedSeedConfiguration
+        private sealed class CachedSeedConfiguration
         {
             public int IndexerId { get; set; }
             public bool Movie { get; set; }

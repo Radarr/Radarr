@@ -171,14 +171,14 @@ namespace NzbDrone.Core.Datastore.Migration
             conn.Execute(updateSql, corrected, transaction: tran);
         }
 
-        private class ProviderDefinition166 : ModelBase
+        private sealed class ProviderDefinition166 : ModelBase
         {
             public string Implementation { get; set; }
             public string ConfigContract { get; set; }
             public string Settings { get; set; }
         }
 
-        private class TMDbSettings165
+        private sealed class TMDbSettings165
         {
             public string Link { get; set; }
             public int ListType { get; set; }
@@ -191,18 +191,18 @@ namespace NzbDrone.Core.Datastore.Migration
             public int LanguageCode { get; set; }
         }
 
-        private class TMDbListSettings166
+        private sealed class TMDbListSettings166
         {
             public string ListId { get; set; }
         }
 
-        private class TMDbPopularSettings165
+        private sealed class TMDbPopularSettings165
         {
             public int ListType { get; set; }
             public TMDbFilterSettings165 FilterCriteria { get; set; }
         }
 
-        private class TMDbFilterSettings165
+        private sealed class TMDbFilterSettings165
         {
             public string MinVoteAverage { get; set; }
             public string MinVotes { get; set; }
@@ -212,13 +212,13 @@ namespace NzbDrone.Core.Datastore.Migration
             public int LanguageCode { get; set; }
         }
 
-        private class TMDbPopularSettings166
+        private sealed class TMDbPopularSettings166
         {
             public int TMDbListType { get; set; }
             public TMDbFilterSettings166 FilterCriteria { get; set; }
         }
 
-        private class TMDbFilterSettings166
+        private sealed class TMDbFilterSettings166
         {
             public string MinVoteAverage { get; set; }
             public string MinVotes { get; set; }
@@ -228,7 +228,7 @@ namespace NzbDrone.Core.Datastore.Migration
             public int LanguageCode { get; set; }
         }
 
-        private class TraktSettings165
+        private sealed class TraktSettings165
         {
             public string AccessToken { get; set; }
             public string RefreshToken { get; set; }
@@ -246,7 +246,7 @@ namespace NzbDrone.Core.Datastore.Migration
             public string SignIn { get; set; }
         }
 
-        private class TraktSettings166
+        private sealed class TraktSettings166
         {
             public string AccessToken { get; set; }
             public string RefreshToken { get; set; }

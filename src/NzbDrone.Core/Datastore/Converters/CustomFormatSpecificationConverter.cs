@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Datastore.Converters
             }
         }
 
-        private class SpecificationWrapper
+        private sealed class SpecificationWrapper
         {
             public string Type { get; set; }
             public object Body { get; set; }

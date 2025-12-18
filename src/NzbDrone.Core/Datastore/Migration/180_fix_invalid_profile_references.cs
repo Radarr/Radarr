@@ -274,13 +274,13 @@ namespace NzbDrone.Core.Datastore.Migration
             return qualityProfile;
         }
 
-        private class ProfileEntity179
+        private sealed class ProfileEntity179
         {
             public int Id { get; set; }
             public int ProfileId { get; set; }
         }
 
-        private class QualityProfile180
+        private sealed class QualityProfile180
         {
             public int Id { get; set; }
             public string Name { get; set; }
@@ -293,7 +293,7 @@ namespace NzbDrone.Core.Datastore.Migration
             public List<QualityProfileItem111> Items { get; set; }
         }
 
-        private class QualityProfileItem111
+        private sealed class QualityProfileItem111
         {
             public int Id { get; set; }
             public string Name { get; set; }
@@ -302,14 +302,14 @@ namespace NzbDrone.Core.Datastore.Migration
             public bool Allowed { get; set; }
         }
 
-        private class ProfileFormatItem180
+        private sealed class ProfileFormatItem180
         {
             public int Id { get; set; }
             public int Format { get; set; }
             public int Score { get; set; }
         }
 
-        private class CustomFormat180
+        private sealed class CustomFormat180
         {
             public int Id { get; set; }
         }

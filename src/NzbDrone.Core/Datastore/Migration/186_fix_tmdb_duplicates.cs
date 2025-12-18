@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Datastore.Migration
             }
         }
 
-        private class MovieEntity185
+        private sealed class MovieEntity185
         {
             public int Id { get; set; }
             public int TmdbId { get; set; }

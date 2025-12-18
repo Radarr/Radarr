@@ -208,13 +208,13 @@ namespace NzbDrone.Core.Datastore.Migration
             return isRegex ? value : Regex.Escape(value);
         }
 
-        private class FormatTag167 : ModelBase
+        private sealed class FormatTag167 : ModelBase
         {
             public string Name { get; set; }
             public List<string> FormatTags { get; set; }
         }
 
-        private class Specification168 : ModelBase
+        private sealed class Specification168 : ModelBase
         {
             public List<ICustomFormatSpecification> Specifications { get; set; }
         }

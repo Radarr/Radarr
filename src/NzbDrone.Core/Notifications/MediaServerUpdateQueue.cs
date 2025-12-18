@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Notifications
     public class MediaServerUpdateQueue<TQueueHost, TItemInfo>
         where TQueueHost : class
     {
-        private class UpdateQueue
+        private sealed class UpdateQueue
         {
             public Dictionary<int, UpdateQueueItem<TItemInfo>> Pending { get; } = new ();
             public bool Refreshing { get; set; }

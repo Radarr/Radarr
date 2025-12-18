@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         private readonly IQBittorrentProxySelector _proxySelector;
         private readonly ICached<SeedingTimeCacheEntry> _seedingTimeCache;
 
-        private class SeedingTimeCacheEntry
+        private sealed class SeedingTimeCacheEntry
         {
             public DateTime LastFetched { get; set; }
             public long SeedingTime { get; set; }

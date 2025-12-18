@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Messaging.Events
         private readonly TaskFactory _taskFactory;
         private readonly Dictionary<string, object> _eventSubscribers;
 
-        private class EventSubscribers<TEvent>
+        private sealed class EventSubscribers<TEvent>
             where TEvent : class, IEvent
         {
             public IHandle<TEvent>[] _syncHandlers;
