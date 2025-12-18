@@ -27,6 +27,7 @@
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="8.0.1" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="System.Private.Uri" Version="4.3.2" />
     <Compile Update="EnsureThat\Resources\ExceptionMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
