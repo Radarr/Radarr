@@ -1,0 +1,50 @@
+# SonarCloud analysis for code quality and security
+#
+# Setup required:
+# 1. Create project at sonarcloud.io using your GitHub account
+# 2. Add SONAR_TOKEN secret to repository (Settings > Secrets > Actions)
+# 3. Update projectKey and organization below
+
+name: SonarCloud
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  pull-requests: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for SONAR_TOKEN
+        id: check-secret
+        run: |
+          if [ -n "${{ secrets.SONAR_TOKEN }}" ]; then
+            echo "available=true" >> $GITHUB_OUTPUT
+          else
+            echo "available=false" >> $GITHUB_OUTPUT
+            echo "::warning::SONAR_TOKEN not configured - skipping SonarCloud scan"
+          fi
+
+      - name: Checkout
+        if: steps.check-secret.outputs.available == 'true'
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: SonarCloud Scan
+        if: steps.check-secret.outputs.available == 'true'
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=cheir-mneme_aletheia
+            -Dsonar.organization=cheir-mneme
+            -Dsonar.sources=src
+            -Dsonar.exclusions=**/node_modules/**,**/bin/**,**/obj/**,**/*.min.js

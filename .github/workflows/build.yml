@@ -28,7 +28,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
@@ -42,7 +42,7 @@ jobs:
           echo "DATE=$(date --rfc-3339=date)" >> "$GITHUB_ENV"
 
       - name: Cache NuGet packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: _cache/nuget
           key: nuget-${{ runner.os }}-${{ hashFiles('src/Directory.Packages.props', 'src/**/*.csproj', 'global.json') }}
@@ -50,7 +50,7 @@ jobs:
             nuget-${{ runner.os }}-
 
       - name: Cache Node modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             _cache/node
@@ -60,7 +60,7 @@ jobs:
             node-${{ runner.os }}-
 
       - name: Cache MSBuild outputs
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: _cache/msbuild
           key: msbuild-${{ runner.os }}-${{ hashFiles('src/**/*.cs', 'src/**/*.csproj', 'src/**/*.targets', 'src/**/*.props') }}
@@ -69,7 +69,7 @@ jobs:
             msbuild-${{ runner.os }}-
 
       - name: Cache Webpack
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: _cache/webpack
           key: webpack-${{ runner.os }}-${{ hashFiles('frontend/src/**/*', 'yarn.lock') }}
@@ -118,7 +118,7 @@ jobs:
           reporttypes: "HtmlInline;Cobertura;TextSummary"
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         if: always()
         continue-on-error: true
         with:
