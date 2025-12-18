@@ -56,7 +56,7 @@ namespace NzbDrone.Common.Http
 
             if (values.Length > 1)
             {
-                throw new ApplicationException($"Expected {key} to occur only once, but was {values.Join("|")}.");
+                throw new InvalidHeaderException($"Expected {key} to occur only once, but was {values.Join("|")}.");
             }
 
             return values[0];

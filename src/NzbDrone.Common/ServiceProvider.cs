@@ -75,7 +75,7 @@ namespace NzbDrone.Common
             if (installOutput.ExitCode != 0)
             {
                 _logger.Error($"Failed to install service: {installOutput.Lines.Select(x => x.Content).ConcatToString("\n")}");
-                throw new ApplicationException("Failed to install service");
+                throw new ServiceInstallationException("Failed to install service");
             }
 
             _logger.Info(installOutput.Lines.Select(x => x.Content).ConcatToString("\n"));
@@ -84,7 +84,7 @@ namespace NzbDrone.Common
             if (descOutput.ExitCode != 0)
             {
                 _logger.Error($"Failed to install service: {descOutput.Lines.Select(x => x.Content).ConcatToString("\n")}");
-                throw new ApplicationException("Failed to install service");
+                throw new ServiceInstallationException("Failed to install service");
             }
 
             _logger.Info(descOutput.Lines.Select(x => x.Content).ConcatToString("\n"));

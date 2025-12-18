@@ -142,7 +142,7 @@ namespace NzbDrone.Core.Datastore
 
             if (result.Count != ids.Count())
             {
-                throw new ApplicationException($"Expected query to return {ids.Count()} rows but returned {result.Count}");
+                throw new DataRetrievalException($"Expected query to return {ids.Count()} rows but returned {result.Count}");
             }
 
             return result;
