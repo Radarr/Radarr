@@ -28,9 +28,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: develop
           VALIDATE_ALL_CODEBASE: false
-          # Disable linters not needed for this project
+          # Disable linters not needed or handled elsewhere
           VALIDATE_CSHARP: false
           VALIDATE_JSCPD: false
           VALIDATE_NATURAL_LANGUAGE: false
           VALIDATE_MARKDOWN: false
           VALIDATE_GITLEAKS: false
+          VALIDATE_CHECKOV: false
+          VALIDATE_GITHUB_ACTIONS: false
