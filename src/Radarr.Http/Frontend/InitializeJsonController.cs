@@ -19,7 +19,7 @@ namespace Radarr.Http.Frontend
         private static string _urlBase;
         private string _generatedContent;
 
-        private static readonly JsonSerializerOptions JsonOptions = new()
+        private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions()
         {
             WriteIndented = true
         };
