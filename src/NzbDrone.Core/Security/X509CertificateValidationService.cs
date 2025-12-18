@@ -24,9 +24,10 @@ namespace NzbDrone.Core.Security
         {
             var targetHostName = string.Empty;
 
+            // Security: reject unknown sender types instead of bypassing validation
             if (sender is not SslStream && sender is not string)
             {
-                return true;
+                return false;
             }
 
             if (sender is SslStream request)

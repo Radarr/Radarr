@@ -1,4 +1,4 @@
-using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.EnvironmentInfo;
@@ -18,6 +18,11 @@ namespace Radarr.Http.Frontend
         private static string _apiKey;
         private static string _urlBase;
         private string _generatedContent;
+
+        private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions()
+        {
+            WriteIndented = true
+        };
 
         public InitializeJsonController(IConfigFileProvider configFileProvider,
                                       IAnalyticsService analyticsService)
@@ -42,21 +47,21 @@ namespace Radarr.Http.Frontend
                 return _generatedContent;
             }
 
-            var builder = new StringBuilder();
-            builder.AppendLine("{");
-            builder.AppendLine($"  \"apiRoot\": \"{_urlBase}/api/v3\",");
-            builder.AppendLine($"  \"apiKey\": \"{_apiKey}\",");
-            builder.AppendLine($"  \"release\": \"{BuildInfo.Release}\",");
-            builder.AppendLine($"  \"version\": \"{BuildInfo.Version.ToString()}\",");
-            builder.AppendLine($"  \"instanceName\": \"{_configFileProvider.InstanceName.ToString()}\",");
-            builder.AppendLine($"  \"theme\": \"{_configFileProvider.Theme.ToString()}\",");
-            builder.AppendLine($"  \"branch\": \"{_configFileProvider.Branch.ToLower()}\",");
-            builder.AppendLine($"  \"analytics\": {_analyticsService.IsEnabled.ToString().ToLowerInvariant()},");
-            builder.AppendLine($"  \"urlBase\": \"{_urlBase}\",");
-            builder.AppendLine($"  \"isProduction\": {RuntimeInfo.IsProduction.ToString().ToLowerInvariant()}");
-            builder.AppendLine("}");
+            var config = new
+            {
+                apiRoot = $"{_urlBase}/api/v3",
+                apiKey = _apiKey,
+                release = BuildInfo.Release,
+                version = BuildInfo.Version.ToString(),
+                instanceName = _configFileProvider.InstanceName,
+                theme = _configFileProvider.Theme.ToString(),
+                branch = _configFileProvider.Branch.ToLower(),
+                analytics = _analyticsService.IsEnabled,
+                urlBase = _urlBase,
+                isProduction = RuntimeInfo.IsProduction
+            };
 
-            _generatedContent = builder.ToString();
+            _generatedContent = JsonSerializer.Serialize(config, JsonOptions);
 
             return _generatedContent;
         }

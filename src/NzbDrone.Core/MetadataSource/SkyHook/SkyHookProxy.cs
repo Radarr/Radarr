@@ -63,7 +63,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 .AddQueryParam("since", startDate)
                 .Build();
 
-            request.AllowAutoRedirect = true;
+            request.AllowAutoRedirect = false;
             request.SuppressHttpError = true;
 
             var response = _httpClient.Get<List<int>>(request);
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 .SetSegment("route", "list/tmdb/trending")
                 .Build();
 
-            request.AllowAutoRedirect = true;
+            request.AllowAutoRedirect = false;
             request.SuppressHttpError = true;
 
             var response = _httpClient.Get<List<MovieResource>>(request);
@@ -91,7 +91,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 .SetSegment("route", "list/tmdb/popular")
                 .Build();
 
-            request.AllowAutoRedirect = true;
+            request.AllowAutoRedirect = false;
             request.SuppressHttpError = true;
 
             var response = _httpClient.Get<List<MovieResource>>(request);
@@ -106,7 +106,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                                              .Resource(tmdbId.ToString())
                                              .Build();
 
-            httpRequest.AllowAutoRedirect = true;
+            httpRequest.AllowAutoRedirect = false;
             httpRequest.SuppressHttpError = true;
 
             var httpResponse = _httpClient.Get<MovieResource>(httpRequest);
@@ -139,7 +139,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                                              .Resource(tmdbId.ToString())
                                              .Build();
 
-            httpRequest.AllowAutoRedirect = true;
+            httpRequest.AllowAutoRedirect = false;
             httpRequest.SuppressHttpError = true;
 
             var httpResponse = _httpClient.Get<CollectionResource>(httpRequest);
@@ -172,7 +172,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             httpRequest.SetContent(tmdbIds.ToJson());
             httpRequest.ContentSummary = tmdbIds.ToJson(Formatting.None);
 
-            httpRequest.AllowAutoRedirect = true;
+            httpRequest.AllowAutoRedirect = false;
             httpRequest.SuppressHttpError = true;
 
             var httpResponse = _httpClient.Post<List<MovieResource>>(httpRequest);
@@ -201,7 +201,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                                              .Resource(imdbId.ToString())
                                              .Build();
 
-            httpRequest.AllowAutoRedirect = true;
+            httpRequest.AllowAutoRedirect = false;
             httpRequest.SuppressHttpError = true;
 
             var httpResponse = _httpClient.Get<List<MovieResource>>(httpRequest);
@@ -524,7 +524,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     .AddQueryParam("year", yearTerm)
                     .Build();
 
-                request.AllowAutoRedirect = true;
+                request.AllowAutoRedirect = false;
                 request.SuppressHttpError = true;
 
                 var httpResponse = _httpClient.Get<List<MovieResource>>(request);
