@@ -48,7 +48,7 @@ namespace Radarr.Http.Validation
             var endpoints = dataSource.Endpoints;
             foreach (var t in endpoints)
             {
-                if (t is RouteEndpoint endpoint && (endpoint.Metadata.GetMetadata<ISuppressMatchingMetadata>()?.SuppressMatching ?? false) == false)
+                if (t is RouteEndpoint endpoint && !(endpoint.Metadata.GetMetadata<ISuppressMatchingMetadata>()?.SuppressMatching ?? false))
                 {
                     builder.AddEndpoint(endpoint);
                 }

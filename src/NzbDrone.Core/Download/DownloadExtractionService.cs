@@ -146,7 +146,7 @@ namespace NzbDrone.Core.Download
             if (path.Contains(".part") && extension.Equals(".rar", StringComparison.OrdinalIgnoreCase))
             {
                 var filename = Path.GetFileNameWithoutExtension(path);
-                return filename.EndsWith(".part1", StringComparison.OrdinalIgnoreCase) == false;
+                return !filename.EndsWith(".part1", StringComparison.OrdinalIgnoreCase);
             }
 
             return false;

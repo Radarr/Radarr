@@ -8,7 +8,7 @@ namespace NzbDrone.Core.AutoTagging
     {
         public Dictionary<IAutoTaggingSpecification, bool> Matches { get; set; }
 
-        public bool DidMatch => !(Matches.Any(m => m.Key.Required && m.Value == false) ||
-                                  Matches.All(m => m.Value == false));
+        public bool DidMatch => !(Matches.Any(m => m.Key.Required && !m.Value) ||
+                                  Matches.All(m => !m.Value));
     }
 }
