@@ -29,7 +29,7 @@ Logarr is written in C# (backend) and JS (frontend). The backend is built on .NE
 
 ## Getting started
 
-1. Clone the repository: `git clone https://github.com/Cody-k/logarr.git`
+1. Clone the repository: `git clone https://github.com/cheir-mneme/logarr.git`
 1. Install dependencies and build as described below
 
 > Be sure to run lint `yarn lint --fix` on your code for any front end changes before committing.

@@ -61,7 +61,7 @@ Web interface: `http://localhost:7878`
 Requirements: .NET 8.0 SDK, Node.js 20+, Yarn
 
 ```bash
-git clone https://github.com/Cody-k/logarr.git
+git clone https://github.com/cheir-mneme/logarr.git
 cd logarr
 ./build.sh --backend --frontend
 dotnet run --project src/Radarr
