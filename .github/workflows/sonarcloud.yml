@@ -21,12 +21,24 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
+      - name: Check for SONAR_TOKEN
+        id: check-secret
+        run: |
+          if [ -n "${{ secrets.SONAR_TOKEN }}" ]; then
+            echo "available=true" >> $GITHUB_OUTPUT
+          else
+            echo "available=false" >> $GITHUB_OUTPUT
+            echo "::warning::SONAR_TOKEN not configured - skipping SonarCloud scan"
+          fi
+
       - name: Checkout
+        if: steps.check-secret.outputs.available == 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: SonarCloud Scan
+        if: steps.check-secret.outputs.available == 'true'
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

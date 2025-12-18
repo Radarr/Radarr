@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/cheir-mneme/aletheia:${{ github.sha }} .
+        run: docker build -t ghcr.io/cheir-mneme/aletheia:${{ github.sha }} -f docker/Dockerfile .
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
