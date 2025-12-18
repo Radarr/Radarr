@@ -1,5 +1,6 @@
-# Trivy vulnerability scanner for container images
-# Scans Docker images for CVEs and uploads results to GitHub Security tab
+# Trivy vulnerability scanner
+# Scans for CVEs in filesystem/dependencies and uploads to GitHub Security tab
+# Note: Image scanning requires built artifacts, use release workflow for that
 
 name: Trivy Security Scan
 
@@ -23,13 +24,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: docker build -t ghcr.io/cheir-mneme/aletheia:${{ github.sha }} -f docker/Dockerfile .
-
-      - name: Run Trivy vulnerability scanner
+      - name: Run Trivy filesystem scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'ghcr.io/cheir-mneme/aletheia:${{ github.sha }}'
+          scan-type: 'fs'
+          scan-ref: '.'
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
