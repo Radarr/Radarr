@@ -6,6 +6,8 @@ using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
 using NLog;
+using SharpCompress.Archives;
+using SharpCompress.Common;
 
 namespace NzbDrone.Common
 {
@@ -13,31 +15,104 @@ namespace NzbDrone.Common
     {
         void Extract(string compressedFile, string destination);
         void CreateZip(string path, IEnumerable<string> files);
+        bool IsArchive(string path);
+        bool CanExtract(string path);
     }
 
     public class ArchiveService : IArchiveService
     {
         private readonly Logger _logger;
 
+        private static readonly HashSet<string> SupportedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ".zip", ".rar", ".7z", ".tar", ".gz", ".tgz", ".tar.gz", ".bz2", ".tar.bz2"
+        };
+
         public ArchiveService(Logger logger)
         {
             _logger = logger;
+        }
+
+        public bool IsArchive(string path)
+        {
+            var extension = Path.GetExtension(path);
+            return SupportedExtensions.Contains(extension) ||
+                   path.EndsWith(".tar.gz", StringComparison.OrdinalIgnoreCase) ||
+                   path.EndsWith(".tar.bz2", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public bool CanExtract(string path)
+        {
+            if (!File.Exists(path))
+            {
+                return false;
+            }
+
+            return IsArchive(path);
         }
 
         public void Extract(string compressedFile, string destination)
         {
             _logger.Debug("Extracting archive [{0}] to [{1}]", compressedFile, destination);
 
-            if (compressedFile.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
+            var extension = Path.GetExtension(compressedFile).ToLowerInvariant();
+
+            if (extension == ".zip")
             {
                 ExtractZip(compressedFile, destination);
             }
-            else
+            else if (extension == ".rar" || extension == ".7z" || extension == ".r00")
+            {
+                ExtractWithSharpCompress(compressedFile, destination);
+            }
+            else if (compressedFile.EndsWith(".tar.gz", StringComparison.OrdinalIgnoreCase) ||
+                     compressedFile.EndsWith(".tgz", StringComparison.OrdinalIgnoreCase) ||
+                     extension == ".tar" || extension == ".gz")
             {
                 ExtractTgz(compressedFile, destination);
             }
+            else
+            {
+                ExtractWithSharpCompress(compressedFile, destination);
+            }
 
             _logger.Debug("Extraction complete.");
+        }
+
+        private void ExtractWithSharpCompress(string compressedFile, string destination)
+        {
+            var destinationFullPath = Path.GetFullPath(destination);
+            Directory.CreateDirectory(destination);
+
+            using var archive = ArchiveFactory.Open(compressedFile);
+            foreach (var entry in archive.Entries)
+            {
+                if (entry.IsDirectory)
+                {
+                    continue;
+                }
+
+                var fullPath = Path.GetFullPath(Path.Combine(destination, entry.Key));
+
+                if (!fullPath.StartsWith(destinationFullPath + Path.DirectorySeparatorChar) &&
+                    !fullPath.Equals(destinationFullPath, StringComparison.Ordinal))
+                {
+                    _logger.Warn("Skipping archive entry with path traversal attempt: {0}", entry.Key);
+                    continue;
+                }
+
+                var directoryName = Path.GetDirectoryName(fullPath);
+                if (!string.IsNullOrEmpty(directoryName))
+                {
+                    Directory.CreateDirectory(directoryName);
+                }
+
+                entry.WriteToFile(fullPath, new ExtractionOptions
+                {
+                    ExtractFullPath = false,
+                    Overwrite = true
+                });
+            }
         }
 
         public void CreateZip(string path, IEnumerable<string> files)

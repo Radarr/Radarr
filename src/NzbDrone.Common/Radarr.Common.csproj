@@ -15,6 +15,7 @@
     <PackageReference Include="Npgsql" Version="9.0.3" />
     <PackageReference Include="Sentry" Version="4.0.2" />
     <PackageReference Include="NLog.Targets.Syslog" Version="7.0.0" />
+    <PackageReference Include="SharpCompress" Version="0.38.0" />
     <PackageReference Include="SharpZipLib" Version="1.4.2" />
     <PackageReference Include="SourceGear.sqlite3" Version="3.50.4.2" />
     <PackageReference Include="System.Data.SQLite" Version="2.0.2" />
