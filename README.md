@@ -5,6 +5,7 @@ All-in-one media manager for movies, books, and audiobooks.
 ## Overview
 
 Aletheia (from Greek ἀλήθεια - "truth, disclosure") is a unified media management system forked from Radarr. It provides automated monitoring, downloading, and library management for multiple media types through a single interface.
+It's an ambitious attemp to merge much of the functionality of the arr apps. This, in addition to many personal feature requests, QoL improvements, and privacy/security updates.  
 
 **Current Status:** Active development. Movie functionality inherited from Radarr is working. Multi-media foundation being implemented.
 
@@ -21,8 +22,8 @@ Aletheia (from Greek ἀλήθεια - "truth, disclosure") is a unified media m
 - Goodreads/Hardcover metadata
 
 **Audiobooks (in development):**
-- M4B, MP3, FLAC support
-- Narrator tracking (competitive differentiator)
+- M4B, MP3, etc. support
+- Narrator tracking
 - Duration metadata and Audible integration
 
 **General:**
@@ -85,16 +86,6 @@ See [ROADMAP.md](../ROADMAP.md) for detailed phase planning.
 - Phase 5: TV shows
 - Phase 6: Music (with fingerprinting and quality analysis)
 - Phase 7: Subtitles (Bazarr replacement), podcasts, comics
-
-## Key Differences from Radarr
-
-| Feature | Radarr | Aletheia |
-|---------|--------|----------|
-| Media types | Movies only | Movies, books, audiobooks (planned: TV, music, podcasts) |
-| Telemetry | Enabled by default | Disabled by default |
-| Indexer management | External (Prowlarr) | Built-in (planned) |
-| Archive extraction | External (Unpackerr) | Built-in |
-| Narrator tracking | N/A | Native support for audiobooks |
 
 ## Contributing
 
