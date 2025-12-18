@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dapper;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.AutoTagging;
 using NzbDrone.Core.AutoTagging.Specifications;
 using NzbDrone.Core.Datastore;
