@@ -23,7 +23,17 @@ namespace Radarr.Http.Frontend.Mappers
             var path = resourceUrl.Replace('/', Path.DirectorySeparatorChar);
             path = path.Trim(Path.DirectorySeparatorChar);
 
-            return Path.Combine(_appFolderInfo.StartUpFolder, _configFileProvider.UiFolder, path);
+            var basePath = Path.GetFullPath(Path.Combine(_appFolderInfo.StartUpFolder, _configFileProvider.UiFolder));
+            var fullPath = Path.GetFullPath(Path.Combine(basePath, path));
+
+            // Prevent path traversal attacks - ensure path stays within UI folder
+            if (!fullPath.StartsWith(basePath + Path.DirectorySeparatorChar) &&
+                !fullPath.Equals(basePath, StringComparison.Ordinal))
+            {
+                return null;
+            }
+
+            return fullPath;
         }
 
         public override bool CanHandle(string resourceUrl)

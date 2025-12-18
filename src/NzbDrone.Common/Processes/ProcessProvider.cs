@@ -356,17 +356,17 @@ namespace NzbDrone.Common.Processes
         {
             if (OsInfo.IsWindows && path.EndsWith(".bat", StringComparison.InvariantCultureIgnoreCase))
             {
-                return ("cmd.exe", $"/c {path} {args}");
+                return ("cmd.exe", $"/c \"{path}\" {args}");
             }
 
             if (OsInfo.IsWindows && path.EndsWith(".ps1", StringComparison.InvariantCultureIgnoreCase))
             {
-                return ("powershell.exe", $"-ExecutionPolicy Bypass -NoProfile -File {path} {args}");
+                return ("powershell.exe", $"-ExecutionPolicy Bypass -NoProfile -File \"{path}\" {args}");
             }
 
             if (OsInfo.IsWindows && path.EndsWith(".py", StringComparison.InvariantCultureIgnoreCase))
             {
-                return ("python.exe", $"{path} {args}");
+                return ("python.exe", $"\"{path}\" {args}");
             }
 
             return (path, args);

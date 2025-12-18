@@ -31,19 +31,17 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 .SelectMany(v => GetUsedTags(v, mapper))
                 .Concat(GetAutoTaggingTagSpecificationTags(mapper))
                 .Distinct()
-                .ToList();
+                .ToArray();
 
             if (usedTags.Any())
             {
-                var usedTagsList = usedTags.Select(d => d.ToString()).Join(",");
-
                 if (_database.DatabaseType == DatabaseType.PostgreSQL)
                 {
-                    mapper.Execute($"DELETE FROM \"Tags\" WHERE NOT \"Id\" = ANY (\'{{{usedTagsList}}}\'::int[])");
+                    mapper.Execute("DELETE FROM \"Tags\" WHERE NOT \"Id\" = ANY (@UsedTags)", new { UsedTags = usedTags });
                 }
                 else
                 {
-                    mapper.Execute($"DELETE FROM \"Tags\" WHERE NOT \"Id\" IN ({usedTagsList})");
+                    mapper.Execute("DELETE FROM \"Tags\" WHERE \"Id\" NOT IN @UsedTags", new { UsedTags = usedTags });
                 }
             }
             else

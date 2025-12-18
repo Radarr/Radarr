@@ -69,6 +69,8 @@ namespace NzbDrone.Common
                     throw new IOException(string.Format("File {0} failed archive validation.", compressedFile));
                 }
 
+                var destinationFullPath = Path.GetFullPath(destination);
+
                 foreach (ZipEntry zipEntry in zipFile)
                 {
                     if (!zipEntry.IsFile)
@@ -85,7 +87,16 @@ namespace NzbDrone.Common
                     var zipStream = zipFile.GetInputStream(zipEntry);
 
                     // Manipulate the output filename here as desired.
-                    var fullZipToPath = Path.Combine(destination, entryFileName);
+                    var fullZipToPath = Path.GetFullPath(Path.Combine(destination, entryFileName));
+
+                    // Prevent path traversal attacks - ensure extracted path is within destination
+                    if (!fullZipToPath.StartsWith(destinationFullPath + Path.DirectorySeparatorChar) &&
+                        !fullZipToPath.Equals(destinationFullPath, StringComparison.Ordinal))
+                    {
+                        _logger.Warn("Skipping zip entry with path traversal attempt: {0}", entryFileName);
+                        continue;
+                    }
+
                     var directoryName = Path.GetDirectoryName(fullZipToPath);
                     if (directoryName.Length > 0)
                     {
