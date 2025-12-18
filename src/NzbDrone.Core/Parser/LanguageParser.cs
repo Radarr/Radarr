@@ -246,7 +246,7 @@ namespace NzbDrone.Core.Parser
             }
             catch (Exception ex)
             {
-                Logger.Debug(ex, "Failed parsing language tags from subtitle file: {0}", fileName);
+                Logger.Debug(ex, "Failed parsing language tags from subtitle file: {0}", fileName.SanitizeForLog());
             }
 
             return new List<string>();
@@ -256,7 +256,7 @@ namespace NzbDrone.Core.Parser
         {
             try
             {
-                Logger.Debug("Parsing language from subtitle file: {0}", fileName);
+                Logger.Debug("Parsing language from subtitle file: {0}", fileName.SanitizeForLog());
 
                 var simpleFilename = Path.GetFileNameWithoutExtension(fileName);
                 var languageMatch = SubtitleLanguageRegex.Match(simpleFilename);
@@ -277,11 +277,11 @@ namespace NzbDrone.Core.Parser
                     }
                 }
 
-                Logger.Debug("Unable to parse language from subtitle file: {0}", fileName);
+                Logger.Debug("Unable to parse language from subtitle file: {0}", fileName.SanitizeForLog());
             }
             catch (Exception ex)
             {
-                Logger.Debug(ex, "Failed parsing language from subtitle file: {0}", fileName);
+                Logger.Debug(ex, "Failed parsing language from subtitle file: {0}", fileName.SanitizeForLog());
             }
 
             return Language.Unknown;
@@ -304,7 +304,7 @@ namespace NzbDrone.Core.Parser
 
             if (!matchTitle.Groups["title"].Success || (matchTitle.Groups["iso_code"].Captures.Count is var languageCodeNumber && languageCodeNumber != 1))
             {
-                Logger.Debug("Could not parse a title from subtitle file: {0}. Falling back to parsing without title.", fileName);
+                Logger.Debug("Could not parse a title from subtitle file: {0}. Falling back to parsing without title.", fileName.SanitizeForLog());
 
                 return ParseBasicSubtitle(fileName);
             }

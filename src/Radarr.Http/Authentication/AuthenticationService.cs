@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration;
 using Radarr.Http.Extensions;
@@ -62,7 +63,7 @@ namespace Radarr.Http.Authentication
 
         public void LogUnauthorized(HttpRequest context)
         {
-            _authLogger.Info("Auth-Unauthorized ip {0} url '{1}'", context.GetRemoteIP(), context.Path);
+            _authLogger.Info("Auth-Unauthorized ip {0} url '{1}'", context.GetRemoteIP(), context.Path.Value.SanitizeForLog());
         }
 
         private static void LogInvalidated(HttpRequest context)
@@ -72,17 +73,17 @@ namespace Radarr.Http.Authentication
 
         private static void LogFailure(HttpRequest context, string username)
         {
-            _authLogger.Warn("Auth-Failure ip {0} username '{1}'", context.GetRemoteIP(), username);
+            _authLogger.Warn("Auth-Failure ip {0} username '{1}'", context.GetRemoteIP(), username.SanitizeForLog());
         }
 
         private static void LogSuccess(HttpRequest context, string username)
         {
-            _authLogger.Debug("Auth-Success ip {0} username '{1}'", context.GetRemoteIP(), username);
+            _authLogger.Debug("Auth-Success ip {0} username '{1}'", context.GetRemoteIP(), username.SanitizeForLog());
         }
 
         private static void LogLogout(HttpRequest context, string username)
         {
-            _authLogger.Info("Auth-Logout ip {0} username '{1}'", context.GetRemoteIP(), username);
+            _authLogger.Info("Auth-Logout ip {0} username '{1}'", context.GetRemoteIP(), username.SanitizeForLog());
         }
     }
 }

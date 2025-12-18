@@ -44,7 +44,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
 
                 if (qualityCompare < 0)
                 {
-                    _logger.Debug("This file isn't a quality upgrade for movie. Existing quality: {0}. New Quality {1}. Skipping {2}", movieFile.Quality.Quality, localMovie.Quality.Quality, localMovie.Path);
+                    _logger.Debug("This file isn't a quality upgrade for movie. Existing quality: {0}. New Quality {1}. Skipping {2}", movieFile.Quality.Quality, localMovie.Quality.Quality, localMovie.Path.SanitizeForLog());
                     return ImportSpecDecision.Reject(ImportRejectionReason.NotQualityUpgrade, "Not an upgrade for existing movie file. Existing quality: {0}. New Quality {1}.", movieFile.Quality.Quality, localMovie.Quality.Quality);
                 }
 
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                     downloadPropersAndRepacks != ProperDownloadTypes.DoNotPrefer &&
                     localMovie.Quality.Revision.CompareTo(movieFile.Quality.Revision) < 0)
                 {
-                    _logger.Debug("This file isn't a quality revision upgrade for movie. Skipping {0}", localMovie.Path);
+                    _logger.Debug("This file isn't a quality revision upgrade for movie. Skipping {0}", localMovie.Path.SanitizeForLog());
                     return ImportSpecDecision.Reject(ImportRejectionReason.NotRevisionUpgrade, "Not a quality revision upgrade for existing movie file(s)");
                 }
 

@@ -303,7 +303,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             }
             catch (Exception ex)
             {
-                _logger.Warn(ex, "Failed to process file: {0}", file);
+                _logger.Warn(ex, "Failed to process file: {0}", file.SanitizeForLog());
             }
 
             return new ManualImportItem

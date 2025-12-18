@@ -2,6 +2,7 @@ using System.Net;
 using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
@@ -56,37 +57,37 @@ namespace NzbDrone.Core.Download
 
                 nzbData = response.ResponseData;
 
-                _logger.Debug("Downloaded nzb for movie '{0}' finished ({1} bytes from {2})", remoteMovie.Release.Title, nzbData.Length, url);
+                _logger.Debug("Downloaded nzb for movie '{0}' finished ({1} bytes from {2})", remoteMovie.Release.Title.SanitizeForLog(), nzbData.Length, url.SanitizeForLog());
             }
             catch (HttpException ex)
             {
                 if (ex.Response.StatusCode is HttpStatusCode.NotFound or HttpStatusCode.Gone)
                 {
-                    _logger.Error(ex, "Downloading nzb file for movie '{0}' failed since it no longer exists ({1})", remoteMovie.Release.Title, url);
+                    _logger.Error(ex, "Downloading nzb file for movie '{0}' failed since it no longer exists ({1})", remoteMovie.Release.Title.SanitizeForLog(), url.SanitizeForLog());
                     throw new ReleaseUnavailableException(remoteMovie.Release, "Downloading nzb failed", ex);
                 }
 
                 if ((int)ex.Response.StatusCode == 429)
                 {
-                    _logger.Error("API Grab Limit reached for {0}", url);
+                    _logger.Error("API Grab Limit reached for {0}", url.SanitizeForLog());
                 }
                 else
                 {
-                    _logger.Error(ex, "Downloading nzb for movie '{0}' failed ({1})", remoteMovie.Release.Title, url);
+                    _logger.Error(ex, "Downloading nzb for movie '{0}' failed ({1})", remoteMovie.Release.Title.SanitizeForLog(), url.SanitizeForLog());
                 }
 
                 throw new ReleaseDownloadException(remoteMovie.Release, "Downloading nzb failed", ex);
             }
             catch (WebException ex)
             {
-                _logger.Error(ex, "Downloading nzb for movie '{0}' failed ({1})", remoteMovie.Release.Title, url);
+                _logger.Error(ex, "Downloading nzb for movie '{0}' failed ({1})", remoteMovie.Release.Title.SanitizeForLog(), url.SanitizeForLog());
 
                 throw new ReleaseDownloadException(remoteMovie.Release, "Downloading nzb failed", ex);
             }
 
             _nzbValidationService.Validate(filename, nzbData);
 
-            _logger.Info("Adding report [{0}] to the queue.", remoteMovie.Release.Title);
+            _logger.Info("Adding report [{0}] to the queue.", remoteMovie.Release.Title.SanitizeForLog());
             return AddFromNzbFile(remoteMovie, filename, nzbData);
         }
     }

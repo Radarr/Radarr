@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
+using NzbDrone.Common.Extensions;
 using Radarr.Http.Extensions;
 using Radarr.Http.Frontend.Mappers;
 
@@ -69,7 +70,7 @@ namespace Radarr.Http.Frontend
                 return NotFound();
             }
 
-            _logger.Warn("Couldn't find handler for {0}", path);
+            _logger.Warn("Couldn't find handler for {0}", path.SanitizeForLog());
 
             return NotFound();
         }

@@ -51,7 +51,7 @@ namespace Radarr.Api.V3.Indexers
         [Consumes("application/json")]
         public ActionResult<List<ReleaseResource>> Create([FromBody] ReleaseResource release)
         {
-            _logger.Info("Release pushed: {0} - {1}", release.Title, release.DownloadUrl ?? release.MagnetUrl);
+            _logger.Info("Release pushed: {0} - {1}", release.Title.SanitizeForLog(), (release.DownloadUrl ?? release.MagnetUrl).SanitizeForLog());
 
             ValidateResource(release);
 
@@ -91,11 +91,11 @@ namespace Radarr.Api.V3.Indexers
                 if (indexer != null)
                 {
                     release.IndexerId = indexer.Id;
-                    _logger.Debug("Push Release {0} associated with indexer {1} - {2}.", release.Title, release.IndexerId, release.Indexer);
+                    _logger.Debug("Push Release {0} associated with indexer {1} - {2}.", release.Title.SanitizeForLog(), release.IndexerId, release.Indexer.SanitizeForLog());
                 }
                 else
                 {
-                    _logger.Debug("Push Release {0} not associated with known indexer {1}.", release.Title, release.Indexer);
+                    _logger.Debug("Push Release {0} not associated with known indexer {1}.", release.Title.SanitizeForLog(), release.Indexer.SanitizeForLog());
                 }
             }
             else if (release.IndexerId != 0 && release.Indexer.IsNullOrWhiteSpace())
@@ -104,17 +104,17 @@ namespace Radarr.Api.V3.Indexers
                 {
                     var indexer = _indexerFactory.Get(release.IndexerId);
                     release.Indexer = indexer.Name;
-                    _logger.Debug("Push Release {0} associated with indexer {1} - {2}.", release.Title, release.IndexerId, release.Indexer);
+                    _logger.Debug("Push Release {0} associated with indexer {1} - {2}.", release.Title.SanitizeForLog(), release.IndexerId, release.Indexer.SanitizeForLog());
                 }
                 catch (ModelNotFoundException)
                 {
-                    _logger.Debug("Push Release {0} not associated with known indexer {1}.", release.Title, release.IndexerId);
+                    _logger.Debug("Push Release {0} not associated with known indexer {1}.", release.Title.SanitizeForLog(), release.IndexerId);
                     release.IndexerId = 0;
                 }
             }
             else
             {
-                _logger.Debug("Push Release {0} not associated with an indexer.", release.Title);
+                _logger.Debug("Push Release {0} not associated with an indexer.", release.Title.SanitizeForLog());
             }
         }
 
@@ -128,12 +128,12 @@ namespace Radarr.Api.V3.Indexers
 
                 if (downloadClient != null)
                 {
-                    _logger.Debug("Push Release {0} associated with download client {1} - {2}.", release.Title, downloadClientId, release.DownloadClient);
+                    _logger.Debug("Push Release {0} associated with download client {1} - {2}.", release.Title.SanitizeForLog(), downloadClientId, release.DownloadClient.SanitizeForLog());
 
                     return downloadClient.Id;
                 }
 
-                _logger.Debug("Push Release {0} not associated with known download client {1}.", release.Title, release.DownloadClient);
+                _logger.Debug("Push Release {0} not associated with known download client {1}.", release.Title.SanitizeForLog(), release.DownloadClient.SanitizeForLog());
             }
 
             return release.DownloadClientId;

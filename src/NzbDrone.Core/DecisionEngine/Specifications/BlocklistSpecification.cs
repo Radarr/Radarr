@@ -1,4 +1,5 @@
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
@@ -23,7 +24,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         {
             if (_blocklistService.Blocklisted(subject.Movie.Id, subject.Release))
             {
-                _logger.Debug("{0} is blocklisted, rejecting.", subject.Release.Title);
+                _logger.Debug("{0} is blocklisted, rejecting.", subject.Release.Title.SanitizeForLog());
                 return DownloadSpecDecision.Reject(DownloadRejectionReason.Blocklisted, "Release is blocklisted");
             }
 

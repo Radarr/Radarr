@@ -153,13 +153,13 @@ namespace NzbDrone.Core.Parser
 
             if (result == null)
             {
-                Logger.Debug("Attempting to parse movie info using directory and file names. {0}", fileInfo.Directory.Name);
+                Logger.Debug("Attempting to parse movie info using directory and file names. {0}", fileInfo.Directory.Name.SanitizeForLog());
                 result = ParseMovieTitle(fileInfo.Directory.Name + " " + fileInfo.Name);
             }
 
             if (result == null)
             {
-                Logger.Debug("Attempting to parse movie info using directory name. {0}", fileInfo.Directory.Name);
+                Logger.Debug("Attempting to parse movie info using directory name. {0}", fileInfo.Directory.Name.SanitizeForLog());
                 result = ParseMovieTitle(fileInfo.Directory.Name + fileInfo.Extension);
             }
 
@@ -176,7 +176,7 @@ namespace NzbDrone.Core.Parser
                     return null;
                 }
 
-                Logger.Debug("Parsing string '{0}'", title);
+                Logger.Debug("Parsing string '{0}'", title.SanitizeForLog());
 
                 if (ReversedTitleRegex.IsMatch(title))
                 {
@@ -185,7 +185,7 @@ namespace NzbDrone.Core.Parser
 
                     title = $"{titleWithoutExtension}{title.Substring(titleWithoutExtension.Length)}";
 
-                    Logger.Debug("Reversed name detected. Converted to '{0}'", title);
+                    Logger.Debug("Reversed name detected. Converted to '{0}'", title.SanitizeForLog());
                 }
 
                 var releaseTitle = FileExtensions.RemoveFileExtension(title);
@@ -200,7 +200,7 @@ namespace NzbDrone.Core.Parser
                     if (replace.TryReplace(ref releaseTitle))
                     {
                         Logger.Trace($"Replace regex: {replace}");
-                        Logger.Debug("Substituted with " + releaseTitle);
+                        Logger.Debug("Substituted with " + releaseTitle.SanitizeForLog());
                     }
                 }
 
@@ -312,11 +312,11 @@ namespace NzbDrone.Core.Parser
             {
                 if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
                 {
-                    Logger.Error(e, "An error has occurred while trying to parse {0}", title);
+                    Logger.Error(e, "An error has occurred while trying to parse {0}", title.SanitizeForLog());
                 }
             }
 
-            Logger.Debug("Unable to parse {0}", title);
+            Logger.Debug("Unable to parse {0}", title.SanitizeForLog());
             return null;
         }
 
@@ -598,7 +598,7 @@ namespace NzbDrone.Core.Parser
 
             if (RejectHashedReleasesRegex.Any(v => v.IsMatch(titleWithoutExtension)))
             {
-                Logger.Debug("Rejected Hashed Release Title: " + title);
+                Logger.Debug("Rejected Hashed Release Title: " + title.SanitizeForLog());
                 return false;
             }
 
