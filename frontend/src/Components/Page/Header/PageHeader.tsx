@@ -60,7 +60,7 @@ function PageHeader({ isSmallScreen }: PageHeaderProps) {
                 ? `${window.Radarr.urlBase}/Content/Images/logo.png`
                 : `${window.Radarr.urlBase}/Content/Images/logo-full.png`
             }
-            alt="Radarr Logo"
+            alt="Logarr Logo"
           />
         </Link>
       </div>
@@ -77,19 +77,10 @@ function PageHeader({ isSmallScreen }: PageHeaderProps) {
 
       <div className={styles.right}>
         <IconButton
-          className={styles.donate}
-          name={icons.HEART}
-          aria-label={translate('Donate')}
-          to="https://radarr.video/donate"
-          size={14}
-          title={translate('Donate')}
-        />
-
-        <IconButton
           className={styles.translate}
           title={translate('SuggestTranslationChange')}
           name={icons.TRANSLATE}
-          to="https://translate.servarr.com/projects/radarr/radarr/"
+          to="https://github.com/Cody-k/logarr/issues"
           size={24}
         />
 

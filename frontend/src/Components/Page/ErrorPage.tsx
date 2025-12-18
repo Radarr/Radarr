@@ -30,7 +30,7 @@ function ErrorPage(props: ErrorPageProps) {
     systemStatusError,
   } = props;
 
-  let errorMessage = 'Failed to load Radarr';
+  let errorMessage = 'Failed to load Logarr';
 
   if (!isLocalStorageSupported) {
     errorMessage =

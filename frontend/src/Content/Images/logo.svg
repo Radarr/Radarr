@@ -1,16 +1,23 @@
-<svg width="1024px" height="1025px" viewBox="0 0 1024 1025" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <rect width="1024" height="1024" id="artboard_1" />
-    <clipPath id="clip_1">
-      <use xlink:href="#artboard_1" clip-rule="evenodd" />
-    </clipPath>
+    <linearGradient id="tealGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#14b8a6"/>
+      <stop offset="100%" style="stop-color:#0f766e"/>
+    </linearGradient>
   </defs>
-  <g id="Simple-Logo-Dark" clip-path="url(#clip_1)">
-    <use xlink:href="#artboard_1" stroke="none" fill="#24292E" fill-opacity="0" />
-    <g id="Group-Copy" transform="translate(70 18)">
-      <path d="M105.302 156.117L112.824 876.083C52.6511 883.662 7.52159 853.347 7.52159 792.719L0 194.01C0 4.54526 172.997 -40.9263 278.299 34.8596L812.332 345.582C887.548 398.632 902.591 497.154 864.983 565.361C857.461 512.311 834.897 481.996 789.767 451.682L188.04 110.646C142.91 80.3311 105.302 87.9097 105.302 156.117Z" id="Shape" fill="#FFFFFF" stroke="none" />
-      <path d="M0 378.929C45.1296 394.087 90.2591 386.508 127.867 363.772L744.638 0C782.245 53.0501 774.724 106.1 729.594 136.415L210.605 439.558C135.389 477.451 37.608 439.558 0 378.929Z" transform="translate(60.1727 535.046)" id="Shape" fill="#FFFFFF" stroke="none" />
-      <path d="M0 416.822L368.558 204.622L7.52159 0L0 416.822Z" transform="translate(240.6909 284.953)" id="Shape" fill="#FFC230" stroke="none" />
-    </g>
-  </g>
+  <!-- Background circle -->
+  <circle cx="512" cy="512" r="480" fill="url(#tealGradient)"/>
+  <!-- Lambda/L symbol representing Logos -->
+  <path d="M320 760L512 280L704 760H600L512 520L424 760H320Z" fill="white"/>
+  <!-- Media elements - film strip notches on left -->
+  <rect x="180" y="340" width="40" height="30" rx="4" fill="white" opacity="0.6"/>
+  <rect x="180" y="400" width="40" height="30" rx="4" fill="white" opacity="0.6"/>
+  <rect x="180" y="460" width="40" height="30" rx="4" fill="white" opacity="0.6"/>
+  <rect x="180" y="520" width="40" height="30" rx="4" fill="white" opacity="0.6"/>
+  <rect x="180" y="580" width="40" height="30" rx="4" fill="white" opacity="0.6"/>
+  <rect x="180" y="640" width="40" height="30" rx="4" fill="white" opacity="0.6"/>
+  <!-- Media elements - book pages on right -->
+  <rect x="804" y="360" width="40" height="280" rx="4" fill="white" opacity="0.4"/>
+  <rect x="824" y="380" width="40" height="260" rx="4" fill="white" opacity="0.5"/>
+  <rect x="844" y="400" width="30" height="240" rx="4" fill="white" opacity="0.6"/>
 </svg>
