@@ -6,7 +6,7 @@ All-in-one media manager for movies, books, and audiobooks.
 
 Aletheia (from Greek ἀλήθεια - "truth, disclosure") is a unified media management system forked from Radarr. It provides automated monitoring, downloading, and library management for multiple media types through a single interface.
 
-**Current Status:** Early development. Movie functionality inherited from Radarr is working. Book and audiobook support is planned.
+**Current Status:** Active development. Movie functionality inherited from Radarr is working. Multi-media foundation being implemented.
 
 ## Features
 
@@ -15,20 +15,21 @@ Aletheia (from Greek ἀλήθεια - "truth, disclosure") is a unified media m
 - Metadata and artwork management
 - Integration with download clients and indexers
 
-**Books (planned):**
+**Books (in development):**
 - EPUB, MOBI, PDF quality tracking
 - Author and series hierarchy
 - Goodreads/Hardcover metadata
 
-**Audiobooks (planned):**
+**Audiobooks (in development):**
 - M4B, MP3, FLAC support
-- Narrator tracking and duration metadata
-- Audible metadata integration
+- Narrator tracking (competitive differentiator)
+- Duration metadata and Audible integration
 
 **General:**
 - Usenet and BitTorrent support
 - SABnzbd, NZBGet, qBittorrent, Deluge, rTorrent, Transmission integration
 - Plex and Kodi integration
+- Built-in archive extraction (Unpackerr functionality)
 
 ## Privacy
 
@@ -69,13 +70,40 @@ dotnet run --project src/Radarr
 
 ## Roadmap
 
-1. **Foundation** - Generalize database schema, implement hierarchical monitoring (Author → Series → Item)
-2. **Multi-Media** - Add book and audiobook quality profiles, port metadata providers
-3. **Interface** - Unified dashboard with type filters, type-specific detail views
+See [ROADMAP.md](../ROADMAP.md) for detailed phase planning.
+
+**Completed:**
+- Phase 0-1: Privacy & security fixes
+- Phase 2: Foundation (fork, CI/CD, branding)
+- Phase 2.5: Community standards, quality gates, Unpackerr absorption
+
+**Current:**
+- Phase 3: Multi-media foundation (database generalization, indexer management)
+
+**Planned:**
+- Phase 4: Books & audiobooks support
+- Phase 5: TV shows
+- Phase 6: Music (with fingerprinting and quality analysis)
+- Phase 7: Subtitles (Bazarr replacement), podcasts, comics
+
+## Key Differences from Radarr
+
+| Feature | Radarr | Aletheia |
+|---------|--------|----------|
+| Media types | Movies only | Movies, books, audiobooks (planned: TV, music, podcasts) |
+| Telemetry | Enabled by default | Disabled by default |
+| Indexer management | External (Prowlarr) | Built-in (planned) |
+| Archive extraction | External (Unpackerr) | Built-in |
+| Narrator tracking | N/A | Native support for audiobooks |
 
 ## Contributing
 
-Early development phase. See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and code guidelines.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, code guidelines, and PR process.
+
+**Development standards:**
+- Conventional commits (`feat:`, `fix:`, `docs:`, etc.)
+- Feature branches + PRs to `develop`
+- Pre-commit hooks for linting
 
 ## License
 
