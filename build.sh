@@ -20,7 +20,8 @@ UpdateVersionNumber()
     if [ "$RADARRVERSION" != "" ]; then
         echo "Updating Version Info"
         sed -i'' -e "s/<AssemblyVersion>[0-9.*]\+<\/AssemblyVersion>/<AssemblyVersion>$RADARRVERSION<\/AssemblyVersion>/g" src/Directory.Build.props
-        sed -i'' -e "s/<AssemblyConfiguration>[\$()A-Za-z-]\+<\/AssemblyConfiguration>/<AssemblyConfiguration>${BUILD_SOURCEBRANCHNAME}<\/AssemblyConfiguration>/g" src/Directory.Build.props
+        # Use | as delimiter since branch names may contain /
+        sed -i'' -e "s|<AssemblyConfiguration>[\$()A-Za-z-]\+</AssemblyConfiguration>|<AssemblyConfiguration>${BUILD_SOURCEBRANCHNAME}</AssemblyConfiguration>|g" src/Directory.Build.props
         sed -i'' -e "s/<string>10.0.0.0<\/string>/<string>$RADARRVERSION<\/string>/g" distribution/osx/Radarr.app/Contents/Info.plist
     fi
 }
