@@ -40,6 +40,16 @@ namespace NzbDrone.Core.Indexers.FileList
             return pageableRequests;
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(BookSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
+        public IndexerPageableRequestChain GetSearchRequests(AudiobookSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
         private IEnumerable<IndexerRequest> GetRequest(string searchType, string parameters)
         {
             if (Settings.Categories.Empty())

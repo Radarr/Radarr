@@ -34,6 +34,16 @@ namespace NzbDrone.Core.Indexers.HDBits
             return pageableRequests;
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(BookSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
+        public IndexerPageableRequestChain GetSearchRequests(AudiobookSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
         private bool TryAddSearchParameters(TorrentQuery query, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria.Movie.MovieMetadata.Value.ImdbId.IsNullOrWhiteSpace())

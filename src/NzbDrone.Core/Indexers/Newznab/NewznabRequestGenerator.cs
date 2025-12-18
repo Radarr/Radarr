@@ -113,6 +113,66 @@ namespace NzbDrone.Core.Indexers.Newznab
             return pageableRequests;
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(BookSearchCriteria searchCriteria)
+        {
+            var pageableRequests = new IndexerPageableRequestChain();
+
+            var categories = Settings.Categories.Any()
+                ? Settings.Categories
+                : new[] { NewznabStandardCategory.Books, NewznabStandardCategory.BooksEBook };
+
+            if (!string.IsNullOrWhiteSpace(searchCriteria.ISBN))
+            {
+                pageableRequests.Add(GetPagedRequests(MaxPages, categories, "book", $"&q={Uri.EscapeDataString(searchCriteria.ISBN)}"));
+            }
+            else if (!string.IsNullOrWhiteSpace(searchCriteria.Author) && !string.IsNullOrWhiteSpace(searchCriteria.Title))
+            {
+                var query = $"{searchCriteria.Author} {searchCriteria.Title}";
+                if (searchCriteria.Year.HasValue)
+                {
+                    query += $" {searchCriteria.Year}";
+                }
+
+                pageableRequests.Add(GetPagedRequests(MaxPages, categories, "book", $"&q={Uri.EscapeDataString(query)}"));
+            }
+            else if (!string.IsNullOrWhiteSpace(searchCriteria.Title))
+            {
+                pageableRequests.Add(GetPagedRequests(MaxPages, categories, "book", $"&q={Uri.EscapeDataString(searchCriteria.Title)}"));
+            }
+
+            return pageableRequests;
+        }
+
+        public IndexerPageableRequestChain GetSearchRequests(AudiobookSearchCriteria searchCriteria)
+        {
+            var pageableRequests = new IndexerPageableRequestChain();
+
+            var categories = Settings.Categories.Any()
+                ? Settings.Categories
+                : new[] { NewznabStandardCategory.AudioAudiobook, NewznabStandardCategory.Audio };
+
+            if (!string.IsNullOrWhiteSpace(searchCriteria.ASIN))
+            {
+                pageableRequests.Add(GetPagedRequests(MaxPages, categories, "search", $"&q={Uri.EscapeDataString(searchCriteria.ASIN)}"));
+            }
+            else if (!string.IsNullOrWhiteSpace(searchCriteria.Author) && !string.IsNullOrWhiteSpace(searchCriteria.Title))
+            {
+                var query = $"{searchCriteria.Author} {searchCriteria.Title}";
+                if (!string.IsNullOrWhiteSpace(searchCriteria.Narrator))
+                {
+                    query += $" {searchCriteria.Narrator}";
+                }
+
+                pageableRequests.Add(GetPagedRequests(MaxPages, categories, "search", $"&q={Uri.EscapeDataString(query)}"));
+            }
+            else if (!string.IsNullOrWhiteSpace(searchCriteria.Title))
+            {
+                pageableRequests.Add(GetPagedRequests(MaxPages, categories, "search", $"&q={Uri.EscapeDataString(searchCriteria.Title)}"));
+            }
+
+            return pageableRequests;
+        }
+
         private void AddMovieIdPageableRequests(IndexerPageableRequestChain chain, int maxPages, IEnumerable<int> categories, SearchCriteriaBase searchCriteria)
         {
             var includeTmdbSearch = SupportsTmdbSearch && searchCriteria.Movie.MovieMetadata.Value.TmdbId > 0;
