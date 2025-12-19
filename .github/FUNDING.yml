@@ -1,8 +1,5 @@
-# These are supported funding model platforms
-
-github: radarr
-patreon: # Replace with a single Patreon username
-open_collective: radarr
-ko_fi: # Replace with a single Ko-fi username
-tidelift: # Replace with a single Tidelift platform-name/package-name e.g., npm/babel
-custom: # Replace with a single custom sponsorship URL
+# Aletheia is a fork of Radarr. To support upstream development:
+# - GitHub Sponsors: https://github.com/sponsors/radarr
+# - Open Collective: https://opencollective.com/radarr
+#
+# Aletheia sponsorship links will be added once the project ships.
