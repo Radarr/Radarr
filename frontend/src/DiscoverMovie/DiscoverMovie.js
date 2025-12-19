@@ -175,7 +175,7 @@ class DiscoverMovie extends Component {
       return acc;
     }, {});
 
-    const order = Object.keys(characters).sort();
+    const order = Object.keys(characters).sort((a, b) => a.localeCompare(b));
 
     // Reverse if sorting descending
     if (sortDirection === sortDirections.DESCENDING) {
