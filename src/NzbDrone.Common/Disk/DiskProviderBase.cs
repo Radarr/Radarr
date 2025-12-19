@@ -501,6 +501,8 @@ namespace NzbDrone.Common.Disk
 
         public FileStream OpenWriteStream(string path)
         {
+            Ensure.That(path, () => path).IsValidPath(PathValidationType.CurrentOs);
+
             return new FileStream(path, FileMode.Create);
         }
 
