@@ -263,6 +263,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
                     _logger.Debug("uTorrent authentication succeeded.");
 
                     var xmlDoc = new System.Xml.XmlDocument();
+                    xmlDoc.XmlResolver = null; // Disable external entity resolution (XXE prevention)
                     xmlDoc.LoadXml(response.Content);
 
                     authToken = xmlDoc.FirstChild.FirstChild.InnerText;

@@ -30,7 +30,17 @@ namespace Radarr.Api.V3.Logs
 
         protected override string GetLogFilePath(string filename)
         {
-            return Path.Combine(_appFolderInfo.GetLogFolder(), filename);
+            var logFolder = Path.GetFullPath(_appFolderInfo.GetLogFolder());
+            var filePath = Path.GetFullPath(Path.Combine(logFolder, filename));
+
+            // Prevent path traversal - ensure path stays within log folder
+            if (!filePath.StartsWith(logFolder + Path.DirectorySeparatorChar) &&
+                !filePath.Equals(logFolder, global::System.StringComparison.Ordinal))
+            {
+                return null;
+            }
+
+            return filePath;
         }
 
         protected override string DownloadUrlRoot

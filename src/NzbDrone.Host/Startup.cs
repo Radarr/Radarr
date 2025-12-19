@@ -73,6 +73,10 @@ namespace NzbDrone.Host
 
             services.AddResponseCompression(options => options.EnableForHttps = true);
 
+            // CORS is permissive because:
+            // 1. All API endpoints require authentication (API key or session)
+            // 2. Single-user self-hosted model - no cross-user attack surface
+            // 3. Restrictive CORS would break mobile apps and browser extensions
             services.AddCors(options =>
             {
                 options.AddPolicy(VersionedApiControllerAttribute.API_CORS_POLICY,
