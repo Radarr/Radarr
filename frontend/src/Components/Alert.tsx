@@ -9,7 +9,7 @@ interface AlertProps {
   children: React.ReactNode;
 }
 
-function Alert(props: AlertProps) {
+function Alert(props: Readonly<AlertProps>) {
   const { className = styles.alert, kind = 'info', children } = props;
 
   return <div className={classNames(className, styles[kind])}>{children}</div>;

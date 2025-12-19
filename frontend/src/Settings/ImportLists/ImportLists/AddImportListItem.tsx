@@ -27,7 +27,7 @@ function AddImportListItem({
   infoLink,
   presets,
   onImportListSelect,
-}: AddImportListItemProps) {
+}: Readonly<AddImportListItemProps>) {
   const dispatch = useDispatch();
   const hasPresets = !!(presets && presets.length);
 

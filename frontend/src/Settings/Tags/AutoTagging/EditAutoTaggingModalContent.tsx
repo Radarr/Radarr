@@ -44,7 +44,7 @@ export default function EditAutoTaggingModalContent({
   tagsFromId,
   onModalClose,
   onDeleteAutoTaggingPress,
-}: EditAutoTaggingModalContentProps) {
+}: Readonly<EditAutoTaggingModalContentProps>) {
   const {
     error,
     item,

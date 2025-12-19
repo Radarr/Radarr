@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
             return torrent;
         }
 
-        private HadoukenTorrentState ParseState(int state)
+        private static HadoukenTorrentState ParseState(int state)
         {
             if ((state & 1) == 1)
             {

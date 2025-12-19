@@ -18,7 +18,7 @@ function PageSectionContent({
   error,
   errorMessage,
   children,
-}: PageSectionContentProps) {
+}: Readonly<PageSectionContentProps>) {
   if (isFetching && !isPopulated) {
     return <LoadingIndicator />;
   }

@@ -23,7 +23,7 @@ function TextTagInput({
   value,
   onChange,
   ...otherProps
-}: TextTagInputProps) {
+}: Readonly<TextTagInputProps>) {
   const { tags, tagList, valueArray } = useMemo(() => {
     const tagsArray = Array.isArray(value) ? value : split(value);
 

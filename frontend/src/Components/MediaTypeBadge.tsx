@@ -33,7 +33,7 @@ function getLabelForMediaType(mediaType?: MediaType) {
   }
 }
 
-function MediaTypeBadge({ mediaType, className }: MediaTypeBadgeProps) {
+function MediaTypeBadge({ mediaType, className }: Readonly<MediaTypeBadgeProps>) {
   return (
     <Label
       className={className}

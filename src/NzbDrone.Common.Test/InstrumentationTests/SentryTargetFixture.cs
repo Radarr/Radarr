@@ -47,7 +47,7 @@ namespace NzbDrone.Common.Test.InstrumentationTests
             _subject = new SentryTarget("https://aaaaaaaaaaaaaaaaaaaaaaaaaa@sentry.io/111111", Mocker.GetMock<IAppFolderInfo>().Object);
         }
 
-        private LogEventInfo GivenLogEvent(LogLevel level, Exception ex, string message)
+        private static LogEventInfo GivenLogEvent(LogLevel level, Exception ex, string message)
         {
             return LogEventInfo.Create(level, "SentryTest", ex, CultureInfo.InvariantCulture, message);
         }

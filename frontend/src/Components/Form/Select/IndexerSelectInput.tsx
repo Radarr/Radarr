@@ -50,7 +50,7 @@ function IndexerSelectInput({
   value,
   includeAny = false,
   onChange,
-}: IndexerSelectInputProps) {
+}: Readonly<IndexerSelectInputProps>) {
   const dispatch = useDispatch();
   const { isFetching, isPopulated, values } = useSelector(
     createIndexersSelector(includeAny)

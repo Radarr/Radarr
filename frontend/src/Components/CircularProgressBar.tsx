@@ -19,7 +19,7 @@ function CircularProgressBar({
   strokeColor = '#ffc230',
   showProgressText = false,
   progress,
-}: CircularProgressBarProps) {
+}: Readonly<CircularProgressBarProps>) {
   const [currentProgress, setCurrentProgress] = useState(0);
   const raf = React.useRef<number>(0);
   const center = size / 2;

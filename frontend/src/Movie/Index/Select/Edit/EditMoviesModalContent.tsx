@@ -51,7 +51,7 @@ const monitoredOptions = [
   },
 ];
 
-function EditMoviesModalContent(props: EditMoviesModalContentProps) {
+function EditMoviesModalContent(props: Readonly<EditMoviesModalContentProps>) {
   const { movieIds, onSavePress, onModalClose } = props;
 
   const [monitored, setMonitored] = useState(NO_CHANGE);

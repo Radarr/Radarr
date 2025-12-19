@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Indexers.HDBits
             return new IndexerPageableRequestChain();
         }
 
-        private bool TryAddSearchParameters(TorrentQuery query, SearchCriteriaBase searchCriteria)
+        private static bool TryAddSearchParameters(TorrentQuery query, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria.Movie.MovieMetadata.Value.ImdbId.IsNullOrWhiteSpace())
             {

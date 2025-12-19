@@ -132,7 +132,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             }
         }
 
-        private List<Profile147> QueryItems(IDirectDataMapper db)
+        private static List<Profile147> QueryItems(IDirectDataMapper db)
         {
             var test = db.Query("SELECT * FROM \"Profiles\"");
 

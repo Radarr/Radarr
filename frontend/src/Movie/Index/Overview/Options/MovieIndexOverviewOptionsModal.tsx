@@ -11,7 +11,7 @@ function MovieIndexOverviewOptionsModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: MovieIndexOverviewOptionsModalProps) {
+}: Readonly<MovieIndexOverviewOptionsModalProps>) {
   return (
     <Modal isOpen={isOpen} onModalClose={onModalClose}>
       <MovieIndexOverviewOptionsModalContent

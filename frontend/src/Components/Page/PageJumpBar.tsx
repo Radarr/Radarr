@@ -4,7 +4,7 @@ import dimensions from 'Styles/Variables/dimensions';
 import PageJumpBarItem, { PageJumpBarItemProps } from './PageJumpBarItem';
 import styles from './PageJumpBar.css';
 
-const ITEM_HEIGHT = parseInt(dimensions.jumpBarItemHeight);
+const ITEM_HEIGHT = Number.parseInt(dimensions.jumpBarItemHeight);
 
 export interface PageJumpBarItems {
   characters: Record<string, number>;
@@ -21,7 +21,7 @@ function PageJumpBar({
   items,
   minimumItems = 5,
   onItemPress,
-}: PageJumpBarProps) {
+}: Readonly<PageJumpBarProps>) {
   const [jumpBarRef, { height }] = useMeasure();
 
   const visibleItems = useMemo(() => {

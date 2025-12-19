@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
 
             var response = ProcessRequest<FreeboxLogin>(request, settings);
 
-            if (response.Result.LoggedIn == false)
+            if (!response.Result.LoggedIn)
             {
                 throw new DownloadClientAuthenticationException("Not logged");
             }
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
         {
             var uri = "/downloads/" + id;
 
-            if (deleteData == true)
+            if (deleteData)
             {
                 uri += "/erase";
             }
@@ -211,7 +211,7 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
 
             requestBuilder.Headers.ContentType = "application/json";
 
-            if (authentication == true)
+            if (authentication)
             {
                 requestBuilder.SetHeader("X-Fbx-App-Auth", GetSessionToken(requestBuilder, settings));
             }

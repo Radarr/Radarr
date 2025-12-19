@@ -266,7 +266,7 @@ namespace NzbDrone.Core.Indexers.Torznab
             return flags;
         }
 
-        protected string TryGetTorznabAttribute(XElement item, string key, string defaultValue = "")
+        protected static string TryGetTorznabAttribute(XElement item, string key, string defaultValue = "")
         {
             var attr = item.Elements(ns + "attr").FirstOrDefault(e => e.Attribute("name").Value.Equals(key, StringComparison.CurrentCultureIgnoreCase));
 
@@ -290,7 +290,7 @@ namespace NzbDrone.Core.Indexers.Torznab
             return defaultValue;
         }
 
-        protected List<string> TryGetMultipleTorznabAttributes(XElement item, string key)
+        protected static List<string> TryGetMultipleTorznabAttributes(XElement item, string key)
         {
             var attrElements = item.Elements(ns + "attr").Where(e => e.Attribute("name").Value.Equals(key, StringComparison.OrdinalIgnoreCase));
             var results = new List<string>();

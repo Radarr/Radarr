@@ -21,7 +21,7 @@ function MovieInteractiveSearchModal({
   isOpen,
   movieId,
   onModalClose,
-}: MovieInteractiveSearchModalProps) {
+}: Readonly<MovieInteractiveSearchModalProps>) {
   const dispatch = useDispatch();
 
   const handleModalClose = useCallback(() => {

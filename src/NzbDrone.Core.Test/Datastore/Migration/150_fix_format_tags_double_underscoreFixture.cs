@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             convertedTags.First().Should().BeEquivalentTo(converted);
         }
 
-        private List<regex_required_tagsFixture.CustomFormatTest149> QueryItems(IDirectDataMapper db)
+        private static List<regex_required_tagsFixture.CustomFormatTest149> QueryItems(IDirectDataMapper db)
         {
             var items = db.Query<regex_required_tagsFixture.CustomFormatTest149>("SELECT \"Name\", \"FormatTags\" FROM \"CustomFormats\"");
 

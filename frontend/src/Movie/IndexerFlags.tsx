@@ -6,7 +6,7 @@ interface IndexerFlagsProps {
   indexerFlags: number;
 }
 
-function IndexerFlags({ indexerFlags = 0 }: IndexerFlagsProps) {
+function IndexerFlags({ indexerFlags = 0 }: Readonly<IndexerFlagsProps>) {
   const allIndexerFlags = useSelector(createIndexerFlagsSelector);
 
   const flags = allIndexerFlags.items.filter(

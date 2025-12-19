@@ -235,7 +235,7 @@ namespace NzbDrone.Core.Extras.Subtitles
             return importedFiles;
         }
 
-        private string GetSuffix(Language language, int copy, List<string> languageTags, bool multipleCopies = false, string title = null)
+        private static string GetSuffix(Language language, int copy, List<string> languageTags, bool multipleCopies = false, string title = null)
         {
             var suffixBuilder = new StringBuilder();
 

@@ -11,7 +11,7 @@ interface MovieIndexSelectAllButtonProps
   isSelectMode: boolean;
 }
 
-function MovieIndexSelectAllButton(props: MovieIndexSelectAllButtonProps) {
+function MovieIndexSelectAllButton(props: Readonly<MovieIndexSelectAllButtonProps>) {
   const { isSelectMode, overflowComponent } = props;
   const [selectState, selectDispatch] = useSelect();
   const { allSelected, allUnselected } = selectState;

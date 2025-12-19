@@ -105,7 +105,7 @@ function RootFolderSelectInput({
   includeNoChangeDisabled = true,
   onChange,
   ...otherProps
-}: RootFolderSelectInputProps) {
+}: Readonly<RootFolderSelectInputProps>) {
   const dispatch = useDispatch();
   const { values, isSaving, saveError } = useSelector(
     createRootFolderOptionsSelector(

@@ -637,7 +637,7 @@ namespace NzbDrone.Core.Notifications.Discord
             return string.Join(" / ", links);
         }
 
-        private string GetTitle(Movie movie)
+        private static string GetTitle(Movie movie)
         {
             if (movie == null)
             {

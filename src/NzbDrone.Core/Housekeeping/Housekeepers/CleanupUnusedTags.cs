@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
             }
         }
 
-        private int[] GetUsedTags(string table, IDbConnection mapper)
+        private static int[] GetUsedTags(string table, IDbConnection mapper)
         {
             return mapper
                 .Query<List<int>>(

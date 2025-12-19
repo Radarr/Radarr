@@ -97,7 +97,7 @@ namespace NzbDrone.Update
             return startupContext;
         }
 
-        private int ParseProcessId(string arg)
+        private static int ParseProcessId(string arg)
         {
             if (!int.TryParse(arg, out var id) || id <= 0)
             {

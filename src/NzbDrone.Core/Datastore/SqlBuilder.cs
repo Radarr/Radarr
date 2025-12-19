@@ -131,14 +131,14 @@ namespace NzbDrone.Core.Datastore
             }
         }
 
-        private class Clause
+        private sealed class Clause
         {
             public string Sql { get; set; }
             public object Parameters { get; set; }
             public bool IsInclusive { get; set; }
         }
 
-        private class Clauses : List<Clause>
+        private sealed class Clauses : List<Clause>
         {
             private readonly string _joiner;
             private readonly string _prefix;

@@ -52,7 +52,7 @@ interface KeyboardShortcutsModalContentProps {
 
 function KeyboardShortcutsModalContent({
   onModalClose,
-}: KeyboardShortcutsModalContentProps) {
+}: Readonly<KeyboardShortcutsModalContentProps>) {
   const { isOsx } = useSelector(createSystemStatusSelector());
   const allShortcuts = getShortcuts();
 

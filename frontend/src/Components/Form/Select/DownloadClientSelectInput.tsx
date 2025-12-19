@@ -67,7 +67,7 @@ function DownloadClientSelectInput({
   includeAny = false,
   protocol = 'torrent',
   ...otherProps
-}: DownloadClientSelectInputProps) {
+}: Readonly<DownloadClientSelectInputProps>) {
   const dispatch = useDispatch();
   const { isFetching, isPopulated, values } = useSelector(
     createDownloadClientsSelector(includeAny, protocol)

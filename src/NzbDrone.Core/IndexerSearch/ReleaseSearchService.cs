@@ -141,7 +141,7 @@ namespace NzbDrone.Core.IndexerSearch
             return Array.Empty<ReleaseInfo>();
         }
 
-        private List<DownloadDecision> DeDupeDecisions(List<DownloadDecision> decisions)
+        private static List<DownloadDecision> DeDupeDecisions(List<DownloadDecision> decisions)
         {
             // De-dupe reports by guid so duplicate results aren't returned. Pick the one with the least rejections and higher indexer priority.
             return decisions.GroupBy(d => d.RemoteMovie.Release.Guid)

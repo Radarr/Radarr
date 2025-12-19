@@ -46,7 +46,7 @@ function CalendarEvent({
   monitored: isMonitored,
   hasFile,
   grabbed,
-}: CalendarEventProps) {
+}: Readonly<CalendarEventProps>) {
   const movieFile = useMovieFile(movieFileId);
   const queueItem = useSelector(createQueueItemSelectorForHook(id));
 

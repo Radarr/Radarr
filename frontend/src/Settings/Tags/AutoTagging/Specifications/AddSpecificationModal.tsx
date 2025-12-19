@@ -10,7 +10,7 @@ interface AddSpecificationModalProps {
 function AddSpecificationModal({
   isOpen,
   onModalClose,
-}: AddSpecificationModalProps) {
+}: Readonly<AddSpecificationModalProps>) {
   return (
     <Modal isOpen={isOpen} onModalClose={onModalClose}>
       <AddSpecificationModalContent onModalClose={onModalClose} />

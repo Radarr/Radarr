@@ -16,7 +16,7 @@ interface PageHeaderProps {
   isSmallScreen: boolean;
 }
 
-function PageHeader({ isSmallScreen }: PageHeaderProps) {
+function PageHeader({ isSmallScreen }: Readonly<PageHeaderProps>) {
   const dispatch = useDispatch();
 
   const { isSidebarVisible } = useSelector((state: AppState) => state.app);

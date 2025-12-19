@@ -71,7 +71,7 @@ interface QueueRowProps {
   onQueueRowModalOpenOrClose: (isOpen: boolean) => void;
 }
 
-function QueueRow(props: QueueRowProps) {
+function QueueRow(props: Readonly<QueueRowProps>) {
   const {
     id,
     movieId,

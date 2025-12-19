@@ -5,7 +5,7 @@ import MediaInfoProps from 'typings/MediaInfo';
 import formatBitrate from 'Utilities/Number/formatBitrate';
 import getEntries from 'Utilities/Object/getEntries';
 
-function MediaInfo(props: MediaInfoProps) {
+function MediaInfo(props: Readonly<MediaInfoProps>) {
   return (
     <DescriptionList>
       {getEntries(props).map(([key, value]) => {

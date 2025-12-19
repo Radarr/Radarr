@@ -150,7 +150,7 @@ namespace NzbDrone.Core.Profiles.Delay
             return All();
         }
 
-        private int GetAfterOrder(DelayProfile moving, DelayProfile after)
+        private static int GetAfterOrder(DelayProfile moving, DelayProfile after)
         {
             if (after == null)
             {

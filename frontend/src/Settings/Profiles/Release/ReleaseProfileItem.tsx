@@ -20,7 +20,7 @@ interface ReleaseProfileProps extends ReleaseProfile {
   indexerList: Indexer[];
 }
 
-function ReleaseProfileItem(props: ReleaseProfileProps) {
+function ReleaseProfileItem(props: Readonly<ReleaseProfileProps>) {
   const {
     id,
     name,

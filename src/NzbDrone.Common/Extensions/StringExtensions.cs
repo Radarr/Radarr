@@ -228,5 +228,36 @@ namespace NzbDrone.Common.Extensions
 
             return new string(array);
         }
+
+        public static string SanitizeForLog(this string text, int maxLength = 1000)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return text ?? string.Empty;
+            }
+
+            var sb = new StringBuilder(Math.Min(text.Length, maxLength));
+
+            foreach (var c in text)
+            {
+                if (sb.Length >= maxLength)
+                {
+                    sb.Append("...[truncated]");
+                    break;
+                }
+
+                // Replace control characters to prevent log injection attacks
+                if (char.IsControl(c))
+                {
+                    sb.Append(' ');
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+
+            return sb.ToString();
+        }
     }
 }

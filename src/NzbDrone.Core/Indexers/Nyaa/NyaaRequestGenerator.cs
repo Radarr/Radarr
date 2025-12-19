@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Indexers.Nyaa
             yield return new IndexerRequest(baseUrl, HttpAccept.Rss);
         }
 
-        private string PrepareQuery(string query)
+        private static string PrepareQuery(string query)
         {
             return query.Replace(' ', '+');
         }

@@ -5,7 +5,7 @@ interface VirtualTableHeaderProps {
   children?: React.ReactNode;
 }
 
-function VirtualTableHeader({ children }: VirtualTableHeaderProps) {
+function VirtualTableHeader({ children }: Readonly<VirtualTableHeaderProps>) {
   return <div className={styles.header}>{children}</div>;
 }
 

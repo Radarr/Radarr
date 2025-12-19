@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Test.IndexerTests.IntegrationTests
             }
         }
 
-        private void ValidateResult(IList<ReleaseInfo> reports, bool hasSize = false, bool hasInfoUrl = false)
+        private static void ValidateResult(IList<ReleaseInfo> reports, bool hasSize = false, bool hasInfoUrl = false)
         {
             reports.Should().NotBeEmpty();
             reports.Should().OnlyContain(c => c.Title.IsNotNullOrWhiteSpace());

@@ -42,7 +42,7 @@ interface HistoryDetailsModalProps {
   onModalClose: () => void;
 }
 
-function HistoryDetailsModal(props: HistoryDetailsModalProps) {
+function HistoryDetailsModal(props: Readonly<HistoryDetailsModalProps>) {
   const {
     isOpen,
     eventType,

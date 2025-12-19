@@ -101,8 +101,8 @@ import MovieTags from './MovieTags';
 import MovieTitlesTable from './Titles/MovieTitlesTable';
 import styles from './MovieDetails.css';
 
-const defaultFontSize = parseInt(fonts.defaultFontSize);
-const lineHeight = parseFloat(fonts.lineHeight);
+const defaultFontSize = Number.parseInt(fonts.defaultFontSize);
+const lineHeight = Number.parseFloat(fonts.lineHeight);
 
 function getFanartUrl(images: Image[]) {
   const image = images.find((image) => image.coverType === 'fanart');
@@ -155,7 +155,7 @@ interface MovieDetailsProps {
   movieId: number;
 }
 
-function MovieDetails({ movieId }: MovieDetailsProps) {
+function MovieDetails({ movieId }: Readonly<MovieDetailsProps>) {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -417,12 +417,6 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
     touchStart.current = null;
   }, []);
 
-  const handleTouchMove = useCallback(() => {
-    if (!touchStart.current) {
-      return;
-    }
-  }, []);
-
   const handleKeyUp = useCallback(
     (event: KeyboardEvent) => {
       if (
@@ -495,23 +489,15 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
     window.addEventListener('touchstart', handleTouchStart);
     window.addEventListener('touchend', handleTouchEnd);
     window.addEventListener('touchcancel', handleTouchCancel);
-    window.addEventListener('touchmove', handleTouchMove);
     window.addEventListener('keyup', handleKeyUp);
 
     return () => {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('touchcancel', handleTouchCancel);
-      window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [
-    handleTouchStart,
-    handleTouchEnd,
-    handleTouchCancel,
-    handleTouchMove,
-    handleKeyUp,
-  ]);
+  }, [handleTouchStart, handleTouchEnd, handleTouchCancel, handleKeyUp]);
 
   if (!movie) {
     return null;

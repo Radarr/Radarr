@@ -45,7 +45,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             if (indexerTags.Any() && indexerTags.Intersect(subject.Movie.Tags).Empty())
             {
-                _logger.Debug("Indexer {0} has tags. None of these are present on movie {1}. Rejecting", subject.Release.Indexer, subject.Movie);
+                _logger.Debug("Indexer {0} has tags. None of these are present on movie {1}. Rejecting", subject.Release.Indexer.SanitizeForLog(), subject.Movie);
 
                 return DownloadSpecDecision.Reject(DownloadRejectionReason.NoMatchingTag, "Movie tags do not match any of the indexer tags");
             }

@@ -4,7 +4,7 @@ interface TableHeaderProps {
   children?: React.ReactNode;
 }
 
-function TableHeader({ children }: TableHeaderProps) {
+function TableHeader({ children }: Readonly<TableHeaderProps>) {
   return (
     <thead>
       <tr>{children}</tr>

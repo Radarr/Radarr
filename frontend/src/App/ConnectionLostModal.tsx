@@ -13,7 +13,7 @@ interface ConnectionLostModalProps {
   isOpen: boolean;
 }
 
-function ConnectionLostModal(props: ConnectionLostModalProps) {
+function ConnectionLostModal(props: Readonly<ConnectionLostModalProps>) {
   const { isOpen } = props;
 
   const handleModalClose = useCallback(() => {

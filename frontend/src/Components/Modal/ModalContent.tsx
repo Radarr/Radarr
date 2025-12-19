@@ -18,7 +18,7 @@ function ModalContent({
   showCloseButton = true,
   onModalClose,
   ...otherProps
-}: ModalContentProps) {
+}: Readonly<ModalContentProps>) {
   return (
     <div className={className} {...otherProps}>
       {showCloseButton && (

@@ -21,7 +21,7 @@ interface TimeleftCellProps {
   timeFormat: string;
 }
 
-function TimeleftCell(props: TimeleftCellProps) {
+function TimeleftCell(props: Readonly<TimeleftCellProps>) {
   const {
     estimatedCompletionTime,
     timeleft,

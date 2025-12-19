@@ -138,7 +138,7 @@ namespace Radarr.Api.V3.CustomFormats
             }
         }
 
-        protected void VerifyValidationResult(ValidationResult validationResult)
+        protected static void VerifyValidationResult(ValidationResult validationResult)
         {
             var result = new NzbDroneValidationResult(validationResult.Errors);
 

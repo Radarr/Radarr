@@ -8,7 +8,7 @@ interface MovieCrewPostersProps {
   isSmallScreen: boolean;
 }
 
-function MovieCrewPosters({ isSmallScreen }: MovieCrewPostersProps) {
+function MovieCrewPosters({ isSmallScreen }: Readonly<MovieCrewPostersProps>) {
   const { items: crewCredits } = useSelector(
     createMovieCreditsSelector('crew')
   );

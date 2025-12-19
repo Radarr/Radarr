@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Movies.Collections
             return collection;
         }
 
-        private MovieCollection SetPropertiesAndValidate(MovieCollection newCollection)
+        private static MovieCollection SetPropertiesAndValidate(MovieCollection newCollection)
         {
             newCollection.CleanTitle = newCollection.Title.CleanMovieTitle();
             newCollection.SortTitle = MovieTitleNormalizer.Normalize(newCollection.Title, newCollection.TmdbId);

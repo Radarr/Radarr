@@ -42,7 +42,7 @@ const movieAvailabilityOptions: IMovieAvailabilityOption[] = [
   },
 ];
 
-function AvailabilitySelectInput(props: AvailabilitySelectInputProps) {
+function AvailabilitySelectInput(props: Readonly<AvailabilitySelectInputProps>) {
   const {
     includeNoChange = false,
     includeNoChangeDisabled = true,

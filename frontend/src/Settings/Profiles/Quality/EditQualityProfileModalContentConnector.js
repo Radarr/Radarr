@@ -21,13 +21,13 @@ function parseIndex(index) {
   if (split.length === 1) {
     return [
       null,
-      parseInt(split[0]) - 1
+      Number.parseInt(split[0]) - 1
     ];
   }
 
   return [
-    parseInt(split[0]) - 1,
-    parseInt(split[1]) - 1
+    Number.parseInt(split[0]) - 1,
+    Number.parseInt(split[1]) - 1
   ];
 }
 
@@ -202,7 +202,7 @@ class EditQualityProfileModalContentConnector extends Component {
   };
 
   onCutoffChange = ({ name, value }) => {
-    const id = parseInt(value);
+    const id = Number.parseInt(value);
     const item = _.find(this.props.item.items.value, (i) => {
       if (i.quality) {
         return i.quality.id === id;
@@ -218,7 +218,7 @@ class EditQualityProfileModalContentConnector extends Component {
 
   onLanguageChange = ({ name, value }) => {
 
-    const id = parseInt(value);
+    const id = Number.parseInt(value);
 
     const language = _.find(this.props.languages, (item) => item.key === id);
 

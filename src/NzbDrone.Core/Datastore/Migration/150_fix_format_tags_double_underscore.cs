@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(ConvertExistingFormatTags);
         }
 
-        private void ConvertExistingFormatTags(IDbConnection conn, IDbTransaction tran)
+        private static void ConvertExistingFormatTags(IDbConnection conn, IDbTransaction tran)
         {
             var updater = new CustomFormatUpdater149(conn, tran);
 

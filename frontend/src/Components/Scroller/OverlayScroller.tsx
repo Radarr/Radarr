@@ -22,7 +22,7 @@ interface ScrollbarTrackProps {
   props: ComponentPropsWithoutRef<'div'>;
 }
 
-function OverlayScroller(props: OverlayScrollerProps) {
+function OverlayScroller(props: Readonly<OverlayScrollerProps>) {
   const {
     autoHide = false,
     autoScroll = true,
@@ -62,7 +62,7 @@ function OverlayScroller(props: OverlayScrollerProps) {
   );
 
   const renderTrackHorizontal = useCallback(
-    ({ style, props: trackProps }: ScrollbarTrackProps) => {
+    ({ style, props: trackProps }: Readonly<ScrollbarTrackProps>) => {
       const finalStyle = {
         ...style,
         right: 2,
@@ -80,7 +80,7 @@ function OverlayScroller(props: OverlayScrollerProps) {
   );
 
   const renderTrackVertical = useCallback(
-    ({ style, props: trackProps }: ScrollbarTrackProps) => {
+    ({ style, props: trackProps }: Readonly<ScrollbarTrackProps>) => {
       const finalStyle = {
         ...style,
         right: 2,

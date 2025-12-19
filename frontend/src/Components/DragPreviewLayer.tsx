@@ -10,7 +10,7 @@ function DragPreviewLayer({
   className = styles.dragLayer,
   children,
   ...otherProps
-}: DragPreviewLayerProps) {
+}: Readonly<DragPreviewLayerProps>) {
   return (
     <div className={className} {...otherProps}>
       {children}

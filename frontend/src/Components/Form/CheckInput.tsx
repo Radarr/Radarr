@@ -25,7 +25,7 @@ export interface CheckInputProps {
   onChange: (changes: CheckInputChanged) => void;
 }
 
-function CheckInput(props: CheckInputProps) {
+function CheckInput(props: Readonly<CheckInputProps>) {
   const {
     className = styles.input,
     containerClassName = styles.container,

@@ -46,7 +46,7 @@ function MovieHistoryRow({
   data,
   downloadId,
   onMarkAsFailedPress,
-}: MovieHistoryRowProps) {
+}: Readonly<MovieHistoryRowProps>) {
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isMarkAsFailedModalOpen, setIsMarkAsFailedModalOpen] = useState(false);
 

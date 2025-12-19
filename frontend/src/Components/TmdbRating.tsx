@@ -11,7 +11,7 @@ interface TmdbRatingProps {
   hideIcon?: boolean;
 }
 
-function TmdbRating(props: TmdbRatingProps) {
+function TmdbRating(props: Readonly<TmdbRatingProps>) {
   const { ratings, iconSize = 14, hideIcon = false } = props;
 
   const tmdbImage =

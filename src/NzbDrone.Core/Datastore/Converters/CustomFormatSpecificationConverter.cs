@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Datastore.Converters
         }
 
         // Helper function for validating where you are in the JSON
-        private void ValidateToken(Utf8JsonReader reader, JsonTokenType tokenType)
+        private static void ValidateToken(Utf8JsonReader reader, JsonTokenType tokenType)
         {
             if (reader.TokenType != tokenType)
             {
@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Datastore.Converters
             }
         }
 
-        private class SpecificationWrapper
+        private sealed class SpecificationWrapper
         {
             public string Type { get; set; }
             public object Body { get; set; }

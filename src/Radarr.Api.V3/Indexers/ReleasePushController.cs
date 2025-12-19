@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +26,7 @@ namespace Radarr.Api.V3.Indexers
         private readonly IDownloadClientFactory _downloadClientFactory;
         private readonly Logger _logger;
 
-        private static readonly object PushLock = new object();
+        private static readonly SemaphoreSlim PushLock = new SemaphoreSlim(1, 1);
 
         public ReleasePushController(IMakeDownloadDecision downloadDecisionMaker,
                                  IProcessDownloadDecisions downloadDecisionProcessor,
@@ -49,9 +51,9 @@ namespace Radarr.Api.V3.Indexers
 
         [HttpPost]
         [Consumes("application/json")]
-        public ActionResult<List<ReleaseResource>> Create([FromBody] ReleaseResource release)
+        public async Task<ActionResult<List<ReleaseResource>>> Create([FromBody] ReleaseResource release)
         {
-            _logger.Info("Release pushed: {0} - {1}", release.Title, release.DownloadUrl ?? release.MagnetUrl);
+            _logger.Info("Release pushed: {0} - {1}", release.Title.SanitizeForLog(), (release.DownloadUrl ?? release.MagnetUrl).SanitizeForLog());
 
             ValidateResource(release);
 
@@ -65,13 +67,18 @@ namespace Radarr.Api.V3.Indexers
 
             DownloadDecision decision;
 
-            lock (PushLock)
+            await PushLock.WaitAsync();
+            try
             {
                 var decisions = _downloadDecisionMaker.GetRssDecision(new List<ReleaseInfo> { info }, true);
 
                 decision = decisions.FirstOrDefault();
 
-                _downloadDecisionProcessor.ProcessDecision(decision, downloadClientId).GetAwaiter().GetResult();
+                await _downloadDecisionProcessor.ProcessDecision(decision, downloadClientId);
+            }
+            finally
+            {
+                PushLock.Release();
             }
 
             if (decision?.RemoteMovie.ParsedMovieInfo == null)
@@ -91,11 +98,11 @@ namespace Radarr.Api.V3.Indexers
                 if (indexer != null)
                 {
                     release.IndexerId = indexer.Id;
-                    _logger.Debug("Push Release {0} associated with indexer {1} - {2}.", release.Title, release.IndexerId, release.Indexer);
+                    _logger.Debug("Push Release {0} associated with indexer {1} - {2}.", release.Title.SanitizeForLog(), release.IndexerId, release.Indexer.SanitizeForLog());
                 }
                 else
                 {
-                    _logger.Debug("Push Release {0} not associated with known indexer {1}.", release.Title, release.Indexer);
+                    _logger.Debug("Push Release {0} not associated with known indexer {1}.", release.Title.SanitizeForLog(), release.Indexer.SanitizeForLog());
                 }
             }
             else if (release.IndexerId != 0 && release.Indexer.IsNullOrWhiteSpace())
@@ -104,17 +111,17 @@ namespace Radarr.Api.V3.Indexers
                 {
                     var indexer = _indexerFactory.Get(release.IndexerId);
                     release.Indexer = indexer.Name;
-                    _logger.Debug("Push Release {0} associated with indexer {1} - {2}.", release.Title, release.IndexerId, release.Indexer);
+                    _logger.Debug("Push Release {0} associated with indexer {1} - {2}.", release.Title.SanitizeForLog(), release.IndexerId, release.Indexer.SanitizeForLog());
                 }
                 catch (ModelNotFoundException)
                 {
-                    _logger.Debug("Push Release {0} not associated with known indexer {1}.", release.Title, release.IndexerId);
+                    _logger.Debug("Push Release {0} not associated with known indexer {1}.", release.Title.SanitizeForLog(), release.IndexerId);
                     release.IndexerId = 0;
                 }
             }
             else
             {
-                _logger.Debug("Push Release {0} not associated with an indexer.", release.Title);
+                _logger.Debug("Push Release {0} not associated with an indexer.", release.Title.SanitizeForLog());
             }
         }
 
@@ -128,12 +135,12 @@ namespace Radarr.Api.V3.Indexers
 
                 if (downloadClient != null)
                 {
-                    _logger.Debug("Push Release {0} associated with download client {1} - {2}.", release.Title, downloadClientId, release.DownloadClient);
+                    _logger.Debug("Push Release {0} associated with download client {1} - {2}.", release.Title.SanitizeForLog(), downloadClientId, release.DownloadClient.SanitizeForLog());
 
                     return downloadClient.Id;
                 }
 
-                _logger.Debug("Push Release {0} not associated with known download client {1}.", release.Title, release.DownloadClient);
+                _logger.Debug("Push Release {0} not associated with known download client {1}.", release.Title.SanitizeForLog(), release.DownloadClient.SanitizeForLog());
             }
 
             return release.DownloadClientId;

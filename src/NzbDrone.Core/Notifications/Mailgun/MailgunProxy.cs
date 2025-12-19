@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Notifications.Mailgun
             }
         }
 
-        private HttpRequestBuilder BuildRequest(MailgunSettings settings, string resource, HttpMethod method, string messageSubject, string messageBody)
+        private static HttpRequestBuilder BuildRequest(MailgunSettings settings, string resource, HttpMethod method, string messageSubject, string messageBody)
         {
             var loginCredentials = new NetworkCredential("api", settings.ApiKey);
             var url = settings.UseEuEndpoint ? BaseUrlEu : BaseUrlUs;

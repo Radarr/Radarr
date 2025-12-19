@@ -21,7 +21,7 @@ interface PageProps {
   children: React.ReactNode;
 }
 
-function Page({ children }: PageProps) {
+function Page({ children }: Readonly<PageProps>) {
   const dispatch = useDispatch();
   const { hasError, errors, isPopulated, isLocalStorageSupported } =
     useAppPage();

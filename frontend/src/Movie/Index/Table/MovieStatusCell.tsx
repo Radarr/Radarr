@@ -20,7 +20,7 @@ interface MovieStatusCellProps {
   component?: React.ElementType;
 }
 
-function MovieStatusCell(props: MovieStatusCellProps) {
+function MovieStatusCell(props: Readonly<MovieStatusCellProps>) {
   const {
     className,
     movieId,

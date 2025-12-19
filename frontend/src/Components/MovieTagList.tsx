@@ -7,7 +7,7 @@ interface MovieTagListProps {
   tags: number[];
 }
 
-function MovieTagList({ tags }: MovieTagListProps) {
+function MovieTagList({ tags }: Readonly<MovieTagListProps>) {
   const tagList = useSelector(createTagsSelector());
 
   return <TagList tags={tags} tagList={tagList} />;

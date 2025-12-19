@@ -82,7 +82,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             return new HealthCheck(GetType());
         }
 
-        private string FormatRootFolder(string rootFolderPath, List<MovieCollection> collections)
+        private static string FormatRootFolder(string rootFolderPath, List<MovieCollection> collections)
         {
             return $"{rootFolderPath} ({string.Join(", ", collections.Select(c => c.Title))})";
         }

@@ -10,7 +10,7 @@ interface OverrideMatchDataProps {
   onPress: () => void;
 }
 
-function OverrideMatchData(props: OverrideMatchDataProps) {
+function OverrideMatchData(props: Readonly<OverrideMatchDataProps>) {
   const { value, isDisabled = false, isOptional, onPress } = props;
 
   return (

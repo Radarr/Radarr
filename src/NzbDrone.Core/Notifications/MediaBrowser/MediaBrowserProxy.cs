@@ -152,7 +152,7 @@ namespace NzbDrone.Core.Notifications.Emby
             return response.Content;
         }
 
-        private string GetUrl(MediaBrowserSettings settings)
+        private static string GetUrl(MediaBrowserSettings settings)
         {
             var scheme = settings.UseSsl ? "https" : "http";
             return $@"{scheme}://{settings.Address}";

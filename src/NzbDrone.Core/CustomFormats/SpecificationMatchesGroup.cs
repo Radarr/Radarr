@@ -7,7 +7,7 @@ namespace NzbDrone.Core.CustomFormats
     {
         public Dictionary<ICustomFormatSpecification, bool> Matches { get; set; }
 
-        public bool DidMatch => !(Matches.Any(m => m.Key.Required && m.Value == false) ||
-                                  Matches.All(m => m.Value == false));
+        public bool DidMatch => !(Matches.Any(m => m.Key.Required && !m.Value) ||
+                                  Matches.All(m => !m.Value));
     }
 }

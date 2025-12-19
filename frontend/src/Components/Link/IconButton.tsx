@@ -19,7 +19,7 @@ export default function IconButton({
   size = 12,
   isSpinning,
   ...otherProps
-}: IconButtonProps) {
+}: Readonly<IconButtonProps>) {
   return (
     <Link
       className={classNames(

@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(InitPriorityForBackwardCompatibility);
         }
 
-        private void InitPriorityForBackwardCompatibility(IDbConnection conn, IDbTransaction tran)
+        private static void InitPriorityForBackwardCompatibility(IDbConnection conn, IDbTransaction tran)
         {
             var downloadClients = conn.Query<DownloadClients156>($"SELECT \"Id\", \"Implementation\" FROM \"DownloadClients\" WHERE \"Enable\"");
 

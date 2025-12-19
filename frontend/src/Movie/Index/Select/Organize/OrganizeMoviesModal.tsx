@@ -8,7 +8,7 @@ interface OrganizeMoviesModalProps {
   onModalClose: () => void;
 }
 
-function OrganizeMoviesModal(props: OrganizeMoviesModalProps) {
+function OrganizeMoviesModal(props: Readonly<OrganizeMoviesModalProps>) {
   const { isOpen, onModalClose, ...otherProps } = props;
 
   return (

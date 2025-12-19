@@ -43,9 +43,10 @@ namespace NzbDrone.Core.Parser
             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*" + EditionRegex + @".{1,3}(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            // Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.2011.Special.Edition //TODO: Seems to slow down parsing heavily!
-            /*new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|(19|20)\d{2}|\]|\W(19|20)\d{2})))+(\W+|_|$)(?!\\)\(?(?<edition>(((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final(?=(.(Cut|Edition|Version)))|Extended|Rogue|Special|Despecialized|\d{2,3}(th)?.Anniversary)(.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit|Edition|Restored|((2|3|4)in1))))))\)?",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),*/
+            // DISABLED: Complex regex for edition movies with year before edition text
+            // e.g: Mission.Impossible.3.2011.Special.Edition
+            // Reason: Causes ReDoS-like performance degradation due to catastrophic backtracking
+            // Keep for reference; covered by simpler patterns above
 
             // Normal movie format, e.g: Mission.Impossible.3.2011
             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|(1(8|9)|20)\d{2}|\]|\W(1(8|9)|20)\d{2})))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
@@ -153,13 +154,13 @@ namespace NzbDrone.Core.Parser
 
             if (result == null)
             {
-                Logger.Debug("Attempting to parse movie info using directory and file names. {0}", fileInfo.Directory.Name);
+                Logger.Debug("Attempting to parse movie info using directory and file names. {0}", fileInfo.Directory.Name.SanitizeForLog());
                 result = ParseMovieTitle(fileInfo.Directory.Name + " " + fileInfo.Name);
             }
 
             if (result == null)
             {
-                Logger.Debug("Attempting to parse movie info using directory name. {0}", fileInfo.Directory.Name);
+                Logger.Debug("Attempting to parse movie info using directory name. {0}", fileInfo.Directory.Name.SanitizeForLog());
                 result = ParseMovieTitle(fileInfo.Directory.Name + fileInfo.Extension);
             }
 
@@ -176,7 +177,7 @@ namespace NzbDrone.Core.Parser
                     return null;
                 }
 
-                Logger.Debug("Parsing string '{0}'", title);
+                Logger.Debug("Parsing string '{0}'", title.SanitizeForLog());
 
                 if (ReversedTitleRegex.IsMatch(title))
                 {
@@ -185,7 +186,7 @@ namespace NzbDrone.Core.Parser
 
                     title = $"{titleWithoutExtension}{title.Substring(titleWithoutExtension.Length)}";
 
-                    Logger.Debug("Reversed name detected. Converted to '{0}'", title);
+                    Logger.Debug("Reversed name detected. Converted to '{0}'", title.SanitizeForLog());
                 }
 
                 var releaseTitle = FileExtensions.RemoveFileExtension(title);
@@ -200,7 +201,7 @@ namespace NzbDrone.Core.Parser
                     if (replace.TryReplace(ref releaseTitle))
                     {
                         Logger.Trace($"Replace regex: {replace}");
-                        Logger.Debug("Substituted with " + releaseTitle);
+                        Logger.Debug("Substituted with " + releaseTitle.SanitizeForLog());
                     }
                 }
 
@@ -312,11 +313,11 @@ namespace NzbDrone.Core.Parser
             {
                 if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
                 {
-                    Logger.Error(e, "An error has occurred while trying to parse {0}", title);
+                    Logger.Error(e, "An error has occurred while trying to parse {0}", title.SanitizeForLog());
                 }
             }
 
-            Logger.Debug("Unable to parse {0}", title);
+            Logger.Debug("Unable to parse {0}", title.SanitizeForLog());
             return null;
         }
 
@@ -598,7 +599,7 @@ namespace NzbDrone.Core.Parser
 
             if (RejectHashedReleasesRegex.Any(v => v.IsMatch(titleWithoutExtension)))
             {
-                Logger.Debug("Rejected Hashed Release Title: " + title);
+                Logger.Debug("Rejected Hashed Release Title: " + title.SanitizeForLog());
                 return false;
             }
 

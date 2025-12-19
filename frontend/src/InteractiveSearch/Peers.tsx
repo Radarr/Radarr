@@ -35,7 +35,7 @@ interface PeersProps {
   leechers?: number;
 }
 
-function Peers(props: PeersProps) {
+function Peers(props: Readonly<PeersProps>) {
   const { seeders, leechers } = props;
 
   const kind = getKind(seeders);

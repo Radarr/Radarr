@@ -20,7 +20,7 @@ function MovieReleaseDates({
   inCinemas,
   digitalRelease,
   physicalRelease,
-}: MovieReleaseDatesProps) {
+}: Readonly<MovieReleaseDatesProps>) {
   const { showRelativeDates, shortDateFormat, longDateFormat, timeFormat } =
     useSelector(createUISettingsSelector());
 

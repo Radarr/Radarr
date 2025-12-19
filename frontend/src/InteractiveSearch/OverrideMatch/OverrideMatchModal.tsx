@@ -20,7 +20,7 @@ interface OverrideMatchModalProps {
   onModalClose(): void;
 }
 
-function OverrideMatchModal(props: OverrideMatchModalProps) {
+function OverrideMatchModal(props: Readonly<OverrideMatchModalProps>) {
   const {
     isOpen,
     title,

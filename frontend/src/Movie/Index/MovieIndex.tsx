@@ -76,7 +76,7 @@ interface MovieIndexProps {
   initialScrollTop?: number;
 }
 
-const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
+const MovieIndex = withScrollPosition((props: Readonly<MovieIndexProps>) => {
   const history = useHistory();
 
   const {
@@ -206,7 +206,7 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
     const characters = items.reduce((acc: Record<string, number>, item) => {
       let char = item.sortTitle.charAt(0);
 
-      if (!isNaN(Number(char))) {
+      if (!Number.isNaN(Number(char))) {
         char = '#';
       }
 

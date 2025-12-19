@@ -61,7 +61,7 @@ function createPathsSelector() {
   );
 }
 
-function PathInput(props: PathInputProps) {
+function PathInput(props: Readonly<PathInputProps>) {
   const { includeFiles } = props;
 
   const dispatch = useDispatch();
@@ -91,7 +91,7 @@ function PathInput(props: PathInputProps) {
 
 export default PathInput;
 
-export function PathInputInternal(props: PathInputInternalProps) {
+export function PathInputInternal(props: Readonly<PathInputInternalProps>) {
   const {
     className = styles.inputWrapper,
     name,

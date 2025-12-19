@@ -27,7 +27,7 @@ namespace Radarr.Http.REST
         protected ResourceValidator<TResource> PutValidator { get; private set; }
         protected ResourceValidator<TResource> SharedValidator { get; private set; }
 
-        protected void ValidateId(int id)
+        protected static void ValidateId(int id)
         {
             if (id <= 0)
             {

@@ -48,7 +48,7 @@ function Menu({
   children,
   alignMenu = 'left',
   enforceMaxHeight = true,
-}: MenuProps) {
+}: Readonly<MenuProps>) {
   const updater = useRef<(() => void) | null>(null);
   const menuButtonId = useId();
   const menuContentId = useId();

@@ -11,7 +11,7 @@ interface MovieIndexViewMenuProps {
   onViewSelect(value: string): void;
 }
 
-function MovieIndexViewMenu(props: MovieIndexViewMenuProps) {
+function MovieIndexViewMenu(props: Readonly<MovieIndexViewMenuProps>) {
   const { view, isDisabled, onViewSelect } = props;
 
   return (

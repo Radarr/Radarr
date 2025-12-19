@@ -126,7 +126,7 @@ namespace NzbDrone.Core.Datastore.Migration
             conn.Execute(updateSql, corrected, transaction: tran);
         }
 
-        private class LanguageEntity177 : ModelBase
+        private sealed class LanguageEntity177 : ModelBase
         {
             public string Languages { get; set; }
         }

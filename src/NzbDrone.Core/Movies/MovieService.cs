@@ -421,7 +421,7 @@ namespace NzbDrone.Core.Movies
             return _movieRepository.AllMovieWithCollectionsTmdbIds();
         }
 
-        private Movie ReturnSingleMovieOrThrow(List<Movie> movies)
+        private static Movie ReturnSingleMovieOrThrow(List<Movie> movies)
         {
             if (movies.Count == 0)
             {

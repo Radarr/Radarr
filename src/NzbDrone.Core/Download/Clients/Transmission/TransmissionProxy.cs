@@ -242,7 +242,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             return result;
         }
 
-        private string GetBaseUrl(TransmissionSettings settings)
+        private static string GetBaseUrl(TransmissionSettings settings)
         {
             return HttpRequestBuilder.BuildBaseUrl(settings.UseSsl, settings.Host, settings.Port, settings.UrlBase);
         }

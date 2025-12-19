@@ -57,7 +57,7 @@ function LogFiles({
   onRefreshPress,
   onDeleteFilesPress,
   ...otherProps
-}: LogFilesProps) {
+}: Readonly<LogFilesProps>) {
   const { appData, isWindows } = useSelector(
     (state: AppState) => state.system.status.item
   );

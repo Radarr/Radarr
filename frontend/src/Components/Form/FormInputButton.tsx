@@ -18,7 +18,7 @@ function FormInputButton({
   isSpinning = false,
   kind = kinds.PRIMARY,
   ...otherProps
-}: FormInputButtonProps) {
+}: Readonly<FormInputButtonProps>) {
   if (canSpin) {
     return (
       <SpinnerButton

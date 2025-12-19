@@ -14,7 +14,7 @@ interface DescriptionListItemProps {
   data?: DescriptionListItemDescriptionProps['children'];
 }
 
-function DescriptionListItem(props: DescriptionListItemProps) {
+function DescriptionListItem(props: Readonly<DescriptionListItemProps>) {
   const { className, titleClassName, descriptionClassName, title, data } =
     props;
 

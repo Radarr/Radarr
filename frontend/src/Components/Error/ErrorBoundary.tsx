@@ -14,7 +14,7 @@ interface ErrorBoundaryState {
 
 // Class component until componentDidCatch is supported in functional components
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
+  constructor(props: Readonly<ErrorBoundaryProps>) {
     super(props);
 
     this.state = {

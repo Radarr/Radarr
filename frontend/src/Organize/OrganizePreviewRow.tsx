@@ -11,7 +11,7 @@ interface OrganizePreviewRowProps {
   existingPath: string;
   newPath: string;
   isSelected?: boolean;
-  onSelectedChange: (props: SelectStateInputProps) => void;
+  onSelectedChange: (props: Readonly<SelectStateInputProps>) => void;
 }
 
 function OrganizePreviewRow({
@@ -20,7 +20,7 @@ function OrganizePreviewRow({
   newPath,
   isSelected,
   onSelectedChange,
-}: OrganizePreviewRowProps) {
+}: Readonly<OrganizePreviewRowProps>) {
   const handleSelectedChange = useCallback(
     ({ value, shiftKey }: CheckInputChanged) => {
       onSelectedChange({ id, value, shiftKey });

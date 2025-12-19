@@ -17,7 +17,7 @@ function MovieCollectionFilterMenu({
   customFilters,
   isDisabled,
   onFilterSelect,
-}: MovieCollectionFilterMenuProps) {
+}: Readonly<MovieCollectionFilterMenuProps>) {
   return (
     <FilterMenu
       alignMenu="right"

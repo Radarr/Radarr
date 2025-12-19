@@ -86,7 +86,7 @@ function ProviderOptionSelectInput({
   providerData,
   selectOptionsProviderAction,
   ...otherProps
-}: ProviderOptionSelectInputProps) {
+}: Readonly<ProviderOptionSelectInputProps>) {
   const dispatch = useDispatch();
   const [isRefetchRequired, setIsRefetchRequired] = useState(false);
   const previousProviderData = usePrevious(providerData);

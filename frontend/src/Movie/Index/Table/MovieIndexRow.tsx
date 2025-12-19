@@ -42,7 +42,7 @@ interface MovieIndexRowProps {
   isSelectMode: boolean;
 }
 
-function MovieIndexRow(props: MovieIndexRowProps) {
+function MovieIndexRow(props: Readonly<MovieIndexRowProps>) {
   const { movieId, columns, isSelectMode } = props;
 
   const { movie, qualityProfile, isRefreshingMovie, isSearchingMovie } =
@@ -129,7 +129,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
   }, [setIsDeleteMovieModalOpen]);
 
   const onSelectedChange = useCallback(
-    ({ id, value, shiftKey }: SelectStateInputProps) => {
+    ({ id, value, shiftKey }: Readonly<SelectStateInputProps>) => {
       selectDispatch({
         type: 'toggleSelected',
         id,

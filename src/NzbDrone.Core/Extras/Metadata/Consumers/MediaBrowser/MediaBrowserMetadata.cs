@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
             return new List<ImageFileResult>();
         }
 
-        private IEnumerable<ImageFileResult> ProcessMovieImages(Movie movie)
+        private static IEnumerable<ImageFileResult> ProcessMovieImages(Movie movie)
         {
             return new List<ImageFileResult>();
         }

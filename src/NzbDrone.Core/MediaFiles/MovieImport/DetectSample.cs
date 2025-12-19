@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
 
@@ -43,7 +44,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
                 if (new string[] { ".iso", ".img", ".m2ts" }.Contains(extension, StringComparer.OrdinalIgnoreCase))
                 {
-                    _logger.Debug($"Skipping sample check for DVD/BR image file '{path}'");
+                    _logger.Debug($"Skipping sample check for DVD/BR image file '{path.SanitizeForLog()}'");
                     return DetectSampleResult.NotSample;
                 }
             }
@@ -61,21 +62,21 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
             if (runTime.Value.TotalMinutes.Equals(0))
             {
-                _logger.Error("[{0}] has a runtime of 0, is it a valid video file?", path);
+                _logger.Error("[{0}] has a runtime of 0, is it a valid video file?", path.SanitizeForLog());
                 return DetectSampleResult.Sample;
             }
 
             if (runTime.Value.TotalSeconds < minimumRuntime)
             {
-                _logger.Debug("[{0}] appears to be a sample. Runtime: {1} seconds. Expected at least: {2} seconds", path, runTime.Value.TotalSeconds, minimumRuntime);
+                _logger.Debug("[{0}] appears to be a sample. Runtime: {1} seconds. Expected at least: {2} seconds", path.SanitizeForLog(), runTime.Value.TotalSeconds, minimumRuntime);
                 return DetectSampleResult.Sample;
             }
 
-            _logger.Debug("[{0}] does not appear to be a sample. Runtime {1} seconds is more than minimum of {2} seconds", path, runTime, minimumRuntime);
+            _logger.Debug("[{0}] does not appear to be a sample. Runtime {1} seconds is more than minimum of {2} seconds", path.SanitizeForLog(), runTime, minimumRuntime);
             return DetectSampleResult.NotSample;
         }
 
-        private int GetMinimumAllowedRuntime(MovieMetadata movie)
+        private static int GetMinimumAllowedRuntime(MovieMetadata movie)
         {
             // Anime short - 15 seconds
             if (movie.Runtime <= 3)

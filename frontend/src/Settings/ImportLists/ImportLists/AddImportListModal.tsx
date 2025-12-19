@@ -12,7 +12,7 @@ function AddImportListModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: AddImportListModalProps) {
+}: Readonly<AddImportListModalProps>) {
   return (
     <Modal isOpen={isOpen} onModalClose={onModalClose}>
       <AddImportListModalContent {...otherProps} onModalClose={onModalClose} />

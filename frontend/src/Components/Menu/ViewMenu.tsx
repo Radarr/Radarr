@@ -16,7 +16,7 @@ function ViewMenu({
   children,
   isDisabled = false,
   ...otherProps
-}: ViewMenuProps) {
+}: Readonly<ViewMenuProps>) {
   return (
     <Menu {...otherProps}>
       <ToolbarMenuButton

@@ -26,7 +26,7 @@ function VirtualTableHeaderCell({
   children,
   onSortPress,
   ...otherProps
-}: VirtualTableHeaderCellProps) {
+}: Readonly<VirtualTableHeaderCellProps>) {
   const isSorting = isSortable && sortKey === name;
   const sortIcon =
     sortDirection === sortDirections.ASCENDING

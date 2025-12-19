@@ -16,7 +16,7 @@ function AddNewMovieCollectionMovieModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: AddNewCollectionMovieModalProps) {
+}: Readonly<AddNewCollectionMovieModalProps>) {
   const dispatch = useDispatch();
 
   const wasOpen = usePrevious(isOpen);

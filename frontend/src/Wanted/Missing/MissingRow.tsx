@@ -38,7 +38,7 @@ function MissingRow({
   isSelected,
   columns,
   onSelectedChange,
-}: MissingRowProps) {
+}: Readonly<MissingRowProps>) {
   if (!title) {
     return null;
   }

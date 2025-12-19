@@ -110,7 +110,7 @@ namespace NzbDrone.Mono.Disk
             var type = split[2];
             var options = ParseOptions(split[3]);
 
-            if (!mount.StartsWith("/"))
+            if (!mount.StartsWith('/'))
             {
                 // Possible a namespace like 'net:[1234]'.
                 // But we just filter anything not starting with /, we're not interested in anything that isn't mounted somewhere.
@@ -147,7 +147,7 @@ namespace NzbDrone.Mono.Disk
             return result;
         }
 
-        private string ExpandEscapes(string mount)
+        private static string ExpandEscapes(string mount)
         {
             return OctalRegex.Replace(mount, match => match.Captures[0].Value.FromOctalString());
         }

@@ -202,7 +202,7 @@ namespace NzbDrone.Core.Extras.Metadata
             return Enumerable.Empty<ExtraFile>();
         }
 
-        private List<MetadataFile> GetMetadataFilesForConsumer(IMetadata consumer, List<MetadataFile> movieMetadata)
+        private static List<MetadataFile> GetMetadataFilesForConsumer(IMetadata consumer, List<MetadataFile> movieMetadata)
         {
             return movieMetadata.Where(c => c.Consumer == consumer.GetType().Name).ToList();
         }

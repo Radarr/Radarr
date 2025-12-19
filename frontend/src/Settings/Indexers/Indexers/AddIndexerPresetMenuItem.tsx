@@ -17,7 +17,7 @@ function AddIndexerPresetMenuItem({
   implementationName,
   onPress,
   ...otherProps
-}: AddIndexerPresetMenuItemProps) {
+}: Readonly<AddIndexerPresetMenuItemProps>) {
   const dispatch = useDispatch();
 
   const handlePress = useCallback(() => {

@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(ConvertProfile);
         }
 
-        private void ConvertProfile(IDbConnection conn, IDbTransaction tran)
+        private static void ConvertProfile(IDbConnection conn, IDbTransaction tran)
         {
             var updater = new ProfileUpdater125(conn, tran);
             updater.SplitQualityAppend(19, 31); // Remux2160p    AFTER     Bluray2160p

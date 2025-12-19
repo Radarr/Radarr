@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
 
             if (columnIndex == -1)
             {
-                throw new ApplicationException($"Column {expression.Column.Name} does not exist on table {expression.TableName}.");
+                throw new InvalidDatabaseSchemaException($"Column {expression.Column.Name} does not exist on table {expression.TableName}.");
             }
 
             columnDefinitions[columnIndex] = expression.Column;
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
 
             if (columnIndex == -1)
             {
-                throw new ApplicationException($"Column {expression.ColumnName} does not exist on table {expression.TableName}.");
+                throw new InvalidDatabaseSchemaException($"Column {expression.ColumnName} does not exist on table {expression.TableName}.");
             }
 
             var changedColumn = columnDefinitions[columnIndex];
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
 
             if (columnsToRemove.Any())
             {
-                throw new ApplicationException($"Column {columnsToRemove.First()} does not exist on table {expression.TableName}.");
+                throw new InvalidDatabaseSchemaException($"Column {columnsToRemove.First()} does not exist on table {expression.TableName}.");
             }
 
             ProcessAlterTable(tableDefinition);
@@ -103,12 +103,12 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
 
             if (columnIndex == -1)
             {
-                throw new ApplicationException($"Column {expression.OldName} does not exist on table {expression.TableName}.");
+                throw new InvalidDatabaseSchemaException($"Column {expression.OldName} does not exist on table {expression.TableName}.");
             }
 
             if (columnDefinitions.Any(c => c.Name == expression.NewName))
             {
-                throw new ApplicationException($"Column {expression.NewName} already exists on table {expression.TableName}.");
+                throw new InvalidDatabaseSchemaException($"Column {expression.NewName} already exists on table {expression.TableName}.");
             }
 
             oldColumnDefinitions[columnIndex] = (ColumnDefinition)columnDefinitions[columnIndex].Clone();

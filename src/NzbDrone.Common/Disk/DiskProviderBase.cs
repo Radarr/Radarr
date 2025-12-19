@@ -138,7 +138,7 @@ namespace NzbDrone.Common.Disk
             }
             catch (Exception e)
             {
-                Logger.Trace("Directory '{0}' isn't writable. {1}", path, e.Message);
+                Logger.Trace("Directory '{0}' isn't writable. {1}", path.SanitizeForLog(), e.Message);
                 return false;
             }
         }
@@ -206,7 +206,7 @@ namespace NzbDrone.Common.Disk
             }
             catch (IOException ex)
             {
-                Logger.Trace(ex, "Unable to resolve symlink target for {0}", path);
+                Logger.Trace(ex, "Unable to resolve symlink target for {0}", path.SanitizeForLog());
             }
 
             return fi.Length;
@@ -534,12 +534,12 @@ namespace NzbDrone.Common.Disk
             }
             catch (Exception ex)
             {
-                Logger.Debug(ex, $"Failed to get mount for path {path}");
+                Logger.Debug(ex, "Failed to get mount for path {0}", path.SanitizeForLog());
                 return null;
             }
         }
 
-        protected List<DriveInfo> GetDriveInfoMounts()
+        protected static List<DriveInfo> GetDriveInfoMounts()
         {
             return DriveInfo.GetDrives()
                             .Where(d => d.IsReady)

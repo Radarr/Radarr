@@ -43,7 +43,7 @@ function EditMovieModalContent({
   movieId,
   onModalClose,
   onDeleteMoviePress,
-}: EditMovieModalContentProps) {
+}: Readonly<EditMovieModalContentProps>) {
   const dispatch = useDispatch();
   const {
     title,

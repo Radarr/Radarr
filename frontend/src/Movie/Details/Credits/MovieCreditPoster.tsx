@@ -21,7 +21,7 @@ function MovieCreditPoster({
   tmdbId,
   personName,
   ...otherProps
-}: MovieCreditPosterProps) {
+}: Readonly<MovieCreditPosterProps>) {
   const importList = useSelector(createMovieCreditImportListSelector(tmdbId));
 
   const dispatch = useDispatch();

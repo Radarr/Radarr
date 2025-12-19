@@ -13,7 +13,7 @@ interface AuthenticationRequiredModalProps {
 
 export default function AuthenticationRequiredModal({
   isOpen,
-}: AuthenticationRequiredModalProps) {
+}: Readonly<AuthenticationRequiredModalProps>) {
   return (
     <Modal
       size={sizes.MEDIUM}

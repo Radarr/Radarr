@@ -23,7 +23,8 @@ const VALID_TAG_REGEX = new RegExp('[^-_a-z0-9]', 'i');
 function isValidTag(tagName: string) {
   try {
     return !VALID_TAG_REGEX.test(tagName);
-  } catch {
+  } catch (e) {
+    console.warn('Tag validation failed:', e);
     return false;
   }
 }

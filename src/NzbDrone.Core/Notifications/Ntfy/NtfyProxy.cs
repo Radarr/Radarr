@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Notifications.Ntfy
             }
         }
 
-        private HttpRequestBuilder BuildTopicRequest(string serverUrl, string topic)
+        private static HttpRequestBuilder BuildTopicRequest(string serverUrl, string topic)
         {
             var trimServerUrl = serverUrl.TrimEnd('/');
 

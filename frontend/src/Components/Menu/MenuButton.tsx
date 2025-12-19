@@ -15,7 +15,7 @@ function MenuButton({
   children,
   isDisabled = false,
   ...otherProps
-}: MenuButtonProps) {
+}: Readonly<MenuButtonProps>) {
   return (
     <Link
       className={classNames(className, isDisabled && styles.isDisabled)}

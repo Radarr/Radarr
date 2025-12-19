@@ -252,7 +252,7 @@ namespace NzbDrone.Core.MediaCover
             }
         }
 
-        private string GetExtension(MediaCoverTypes coverType)
+        private static string GetExtension(MediaCoverTypes coverType)
         {
             return coverType switch
             {

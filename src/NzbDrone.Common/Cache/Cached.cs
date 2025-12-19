@@ -8,7 +8,7 @@ namespace NzbDrone.Common.Cache
 {
     public class Cached<T> : ICached<T>
     {
-        private class CacheItem
+        private sealed class CacheItem
         {
             public T Object { get; private set; }
             public DateTime? ExpiryTime { get; private set; }

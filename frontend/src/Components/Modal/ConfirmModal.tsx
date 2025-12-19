@@ -34,7 +34,7 @@ function ConfirmModal({
   isSpinning = false,
   onConfirm,
   onCancel,
-}: ConfirmModalProps) {
+}: Readonly<ConfirmModalProps>) {
   const { bindShortcut, unbindShortcut } = useKeyboardShortcuts();
 
   useEffect(() => {

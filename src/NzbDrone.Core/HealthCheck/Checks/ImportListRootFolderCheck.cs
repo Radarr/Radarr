@@ -87,7 +87,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             return new HealthCheck(GetType());
         }
 
-        private string FormatRootFolder(string rootFolderPath, List<ImportListDefinition> importLists)
+        private static string FormatRootFolder(string rootFolderPath, List<ImportListDefinition> importLists)
         {
             return $"{rootFolderPath} ({string.Join(", ", importLists.Select(l => l.Name))})";
         }

@@ -323,7 +323,7 @@ namespace NzbDrone.Core.Indexers
             return enclosures.SingleOrDefault();
         }
 
-        protected IEnumerable<XElement> GetItems(XDocument document)
+        protected static IEnumerable<XElement> GetItems(XDocument document)
         {
             var root = document.Root;
 

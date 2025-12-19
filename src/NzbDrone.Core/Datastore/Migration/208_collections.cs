@@ -225,13 +225,13 @@ namespace NzbDrone.Core.Datastore.Migration
             conn.Execute(updateSql, updatedMeta, transaction: tran);
         }
 
-        private class MovieCollection207
+        private sealed class MovieCollection207
         {
             public string Name { get; set; }
             public int TmdbId { get; set; }
         }
 
-        private class MovieCollection208
+        private sealed class MovieCollection208
         {
             public int Id { get; set; }
             public string Title { get; set; }
@@ -246,20 +246,20 @@ namespace NzbDrone.Core.Datastore.Migration
             public int TmdbId { get; set; }
         }
 
-        private class MovieMetadata208
+        private sealed class MovieMetadata208
         {
             public int Id { get; set; }
             public int CollectionTmdbId { get; set; }
             public string CollectionTitle { get; set; }
         }
 
-        private class ImportList208
+        private sealed class ImportList208
         {
             public int Id { get; set; }
             public int Monitor { get; set; }
         }
 
-        private class TmdbCollectionSettings206
+        private sealed class TmdbCollectionSettings206
         {
             public string CollectionId { get; set; }
         }

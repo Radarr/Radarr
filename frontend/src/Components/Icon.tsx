@@ -34,7 +34,7 @@ export default function Icon({
   isSpinning = false,
   fixedWidth = false,
   ...otherProps
-}: IconProps) {
+}: Readonly<IconProps>) {
   const icon = (
     <FontAwesomeIcon
       className={classNames(className, styles[kind])}

@@ -28,7 +28,7 @@ export interface DeleteMovieModalContentProps {
 function DeleteMovieModalContent({
   movieId,
   onModalClose,
-}: DeleteMovieModalContentProps) {
+}: Readonly<DeleteMovieModalContentProps>) {
   const dispatch = useDispatch();
   const {
     title,

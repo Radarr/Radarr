@@ -72,25 +72,25 @@ namespace NzbDrone.Core.Datastore.Migration
             conn.Execute(updateSql, corrected, transaction: tran);
         }
 
-        private class Movie205
+        private sealed class Movie205
         {
             public int Id { get; set; }
             public string Ratings { get; set; }
         }
 
-        private class Ratings205
+        private sealed class Ratings205
         {
             public int Votes { get; set; }
             public decimal Value { get; set; }
         }
 
-        private class Movie206
+        private sealed class Movie206
         {
             public int Id { get; set; }
             public string Ratings { get; set; }
         }
 
-        private class Ratings206
+        private sealed class Ratings206
         {
             public RatingChild206 Tmdb { get; set; }
             public RatingChild206 Imdb { get; set; }
@@ -98,7 +98,7 @@ namespace NzbDrone.Core.Datastore.Migration
             public RatingChild206 RottenTomatoes { get; set; }
         }
 
-        private class RatingChild206
+        private sealed class RatingChild206
         {
             public int Votes { get; set; }
             public decimal Value { get; set; }

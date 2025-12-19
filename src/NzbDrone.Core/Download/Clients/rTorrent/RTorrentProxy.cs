@@ -163,7 +163,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             }
         }
 
-        private string[] GetCommands(string label, RTorrentPriority priority, string directory)
+        private static string[] GetCommands(string label, RTorrentPriority priority, string directory)
         {
             var result = new List<string>();
 

@@ -221,7 +221,7 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
             return false;
         }
 
-        private double? GetSeedRatio(RemoteMovie remoteMovie)
+        private static double? GetSeedRatio(RemoteMovie remoteMovie)
         {
             if (remoteMovie.SeedConfiguration == null || remoteMovie.SeedConfiguration.Ratio == null)
             {

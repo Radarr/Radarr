@@ -8,7 +8,7 @@ interface ManageImportListsModalProps {
   onModalClose(): void;
 }
 
-function ManageImportListsModal(props: ManageImportListsModalProps) {
+function ManageImportListsModal(props: Readonly<ManageImportListsModalProps>) {
   const { isOpen, onModalClose } = props;
 
   return (

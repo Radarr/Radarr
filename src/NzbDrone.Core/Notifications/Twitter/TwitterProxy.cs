@@ -85,12 +85,12 @@ namespace NzbDrone.Core.Notifications.Twitter
             ExecuteRequest(request);
         }
 
-        private string GetCustomParametersString(Dictionary<string, string> customParams)
+        private static string GetCustomParametersString(Dictionary<string, string> customParams)
         {
             return customParams.Select(x => string.Format("{0}={1}", x.Key, x.Value)).Join("&");
         }
 
-        private HttpRequest GetRequest(OAuthRequest oAuthRequest, Dictionary<string, string> customParams)
+        private static HttpRequest GetRequest(OAuthRequest oAuthRequest, Dictionary<string, string> customParams)
         {
             var auth = oAuthRequest.GetAuthorizationHeader(customParams);
             var request = new HttpRequest(oAuthRequest.RequestUrl);

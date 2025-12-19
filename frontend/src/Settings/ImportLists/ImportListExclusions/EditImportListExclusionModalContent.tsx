@@ -67,7 +67,7 @@ function EditImportListExclusionModalContent({
   id,
   onModalClose,
   onDeleteImportListExclusionPress,
-}: EditImportListExclusionModalContentProps) {
+}: Readonly<EditImportListExclusionModalContentProps>) {
   const { isFetching, isSaving, item, error, saveError, ...otherProps } =
     useSelector(createImportListExclusionSelector(id));
 

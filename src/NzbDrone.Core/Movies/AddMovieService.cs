@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Movies
             newMovie = AddSkyhookData(newMovie);
             newMovie = SetPropertiesAndValidate(newMovie);
 
-            _logger.Info("Adding Movie {0} Path: [{1}]", newMovie, newMovie.Path);
+            _logger.Info("Adding Movie {0} Path: [{1}]", newMovie, newMovie.Path.SanitizeForLog());
 
             _movieMetadataService.Upsert(newMovie.MovieMetadata.Value);
             newMovie.MovieMetadataId = newMovie.MovieMetadata.Value.Id;
@@ -72,11 +72,11 @@ namespace NzbDrone.Core.Movies
             {
                 if (m.Path.IsNullOrWhiteSpace())
                 {
-                    _logger.Info("Adding Movie {0} Root Folder Path: [{1}]", m, m.RootFolderPath);
+                    _logger.Info("Adding Movie {0} Root Folder Path: [{1}]", m, m.RootFolderPath.SanitizeForLog());
                 }
                 else
                 {
-                    _logger.Info("Adding Movie {0} Path: [{1}]", m, m.Path);
+                    _logger.Info("Adding Movie {0} Path: [{1}]", m, m.Path.SanitizeForLog());
                 }
 
                 try
@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Movies
             }
             catch (MovieNotFoundException)
             {
-                _logger.Error("TmdbId {0} was not found, it may have been removed from TMDb. Path: {1}", newMovie.TmdbId, newMovie.Path);
+                _logger.Error("TmdbId {0} was not found, it may have been removed from TMDb. Path: {1}", newMovie.TmdbId, newMovie.Path.SanitizeForLog());
 
                 throw new ValidationException(new List<ValidationFailure>
                                               {

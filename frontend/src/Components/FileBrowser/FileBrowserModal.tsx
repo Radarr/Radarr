@@ -10,7 +10,7 @@ interface FileBrowserModalProps extends FileBrowserModalContentProps {
   onModalClose: () => void;
 }
 
-function FileBrowserModal(props: FileBrowserModalProps) {
+function FileBrowserModal(props: Readonly<FileBrowserModalProps>) {
   const { isOpen, onModalClose, ...otherProps } = props;
 
   return (

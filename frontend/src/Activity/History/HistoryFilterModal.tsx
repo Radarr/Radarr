@@ -27,7 +27,7 @@ interface HistoryFilterModalProps {
   isOpen: boolean;
 }
 
-export default function HistoryFilterModal(props: HistoryFilterModalProps) {
+export default function HistoryFilterModal(props: Readonly<HistoryFilterModalProps>) {
   const sectionItems = useSelector(createHistorySelector());
   const filterBuilderProps = useSelector(createFilterBuilderPropsSelector());
   const customFilterType = 'history';

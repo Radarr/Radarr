@@ -273,7 +273,7 @@ namespace Radarr.Api.V3.Movies
 
             BroadcastResourceChange(ModelAction.Updated, MapToResource(updatedMovie));
 
-            return Accepted(moviesResource.Id);
+            return Ok(moviesResource);
         }
 
         [RestDeleteById]
@@ -308,7 +308,7 @@ namespace Radarr.Api.V3.Movies
             }
         }
 
-        private void LinkMovieStatistics(MovieResource resource, MovieStatistics movieStatistics)
+        private static void LinkMovieStatistics(MovieResource resource, MovieStatistics movieStatistics)
         {
             resource.Statistics = movieStatistics.ToResource();
             resource.HasFile = movieStatistics.MovieFileCount > 0;

@@ -27,7 +27,7 @@ interface BlocklistFilterModalProps {
   isOpen: boolean;
 }
 
-export default function BlocklistFilterModal(props: BlocklistFilterModalProps) {
+export default function BlocklistFilterModal(props: Readonly<BlocklistFilterModalProps>) {
   const sectionItems = useSelector(createBlocklistSelector());
   const filterBuilderProps = useSelector(createFilterBuilderPropsSelector());
   const customFilterType = 'blocklist';

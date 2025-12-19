@@ -29,11 +29,11 @@ namespace Radarr.Api.V3.RemotePathMappings
                 .NotEmpty();
 
             SharedValidator.RuleFor(c => c.RemotePath)
-                .Must(remotePath => remotePath.IsNotNullOrWhiteSpace() && !remotePath.StartsWith(" "))
+                .Must(remotePath => remotePath.IsNotNullOrWhiteSpace() && !remotePath.StartsWith(' '))
                 .WithMessage("Remote Path '{PropertyValue}' must not start with a space");
 
             SharedValidator.RuleFor(c => c.RemotePath)
-                .Must(remotePath => remotePath.IsNotNullOrWhiteSpace() && !remotePath.EndsWith(" "))
+                .Must(remotePath => remotePath.IsNotNullOrWhiteSpace() && !remotePath.EndsWith(' '))
                 .WithMessage("Remote Path '{PropertyValue}' must not end with a space");
 
             SharedValidator.RuleFor(c => c.LocalPath)

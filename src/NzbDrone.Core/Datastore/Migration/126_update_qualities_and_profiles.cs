@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(ConvertProfile);
         }
 
-        private void ConvertProfile(IDbConnection conn, IDbTransaction tran)
+        private static void ConvertProfile(IDbConnection conn, IDbTransaction tran)
         {
             var updater = new ProfileUpdater125(conn, tran);
             updater.SplitQualityAppend(0, 27); // TELECINE AFTER Unknown

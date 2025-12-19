@@ -47,7 +47,7 @@ function Table({
   onSortPress,
   onTableOptionChange,
   onSelectAllChange,
-}: TableProps) {
+}: Readonly<TableProps>) {
   return (
     <Scroller
       className={classNames(

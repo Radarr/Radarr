@@ -9,7 +9,7 @@ interface MoviePosterProps
   size?: 250 | 500;
 }
 
-function MoviePoster({ size = 250, ...otherProps }: MoviePosterProps) {
+function MoviePoster({ size = 250, ...otherProps }: Readonly<MoviePosterProps>) {
   return (
     <MovieImage
       {...otherProps}

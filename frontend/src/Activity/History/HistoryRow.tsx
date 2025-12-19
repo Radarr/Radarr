@@ -41,7 +41,7 @@ interface HistoryRowProps {
   columns: Column[];
 }
 
-function HistoryRow(props: HistoryRowProps) {
+function HistoryRow(props: Readonly<HistoryRowProps>) {
   const {
     id,
     movieId,

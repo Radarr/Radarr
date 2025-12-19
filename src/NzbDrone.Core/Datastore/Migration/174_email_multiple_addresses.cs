@@ -66,12 +66,12 @@ namespace NzbDrone.Core.Datastore.Migration
             conn.Execute(updateSql, corrected, transaction: tran);
         }
 
-        private class ProviderDefinition166 : ModelBase
+        private sealed class ProviderDefinition166 : ModelBase
         {
             public string Settings { get; set; }
         }
 
-        private class EmailSettings173
+        private sealed class EmailSettings173
         {
             public string Server { get; set; }
             public int Port { get; set; }
@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Datastore.Migration
             public string To { get; set; }
         }
 
-        private class EmailSettings174
+        private sealed class EmailSettings174
         {
             public string Server { get; set; }
             public int Port { get; set; }

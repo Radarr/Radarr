@@ -325,7 +325,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return movie;
         }
 
-        private string StripTrailingTheFromTitle(string title)
+        private static string StripTrailingTheFromTitle(string title)
         {
             if (title.EndsWith(",the"))
             {

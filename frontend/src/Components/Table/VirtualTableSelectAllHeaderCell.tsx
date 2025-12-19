@@ -14,7 +14,7 @@ function VirtualTableSelectAllHeaderCell({
   allSelected,
   allUnselected,
   onSelectAllChange,
-}: VirtualTableSelectAllHeaderCellProps) {
+}: Readonly<VirtualTableSelectAllHeaderCellProps>) {
   const value = useMemo(() => {
     if (allSelected) {
       return true;

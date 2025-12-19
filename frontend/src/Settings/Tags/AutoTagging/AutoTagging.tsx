@@ -32,7 +32,7 @@ export default function AutoTagging({
   isDeleting,
   onConfirmDeleteAutoTagging,
   onCloneAutoTaggingPress,
-}: AutoTaggingProps) {
+}: Readonly<AutoTaggingProps>) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 

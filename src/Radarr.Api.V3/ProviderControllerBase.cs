@@ -304,7 +304,7 @@ namespace Radarr.Api.V3
             VerifyValidationResult(validationResult, includeWarnings);
         }
 
-        protected void VerifyValidationResult(ValidationResult validationResult, bool includeWarnings)
+        protected static void VerifyValidationResult(ValidationResult validationResult, bool includeWarnings)
         {
             var result = validationResult as NzbDroneValidationResult ?? new NzbDroneValidationResult(validationResult.Errors);
 

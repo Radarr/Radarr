@@ -17,7 +17,7 @@ function EditMetadataModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: EditMetadataModalProps) {
+}: Readonly<EditMetadataModalProps>) {
   const dispatch = useDispatch();
 
   const advancedSettings = useSelector(

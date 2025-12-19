@@ -23,7 +23,7 @@ interface NamingOptionProps {
   }) => void;
 }
 
-function NamingOption(props: NamingOptionProps) {
+function NamingOption(props: Readonly<NamingOptionProps>) {
   const {
     token,
     tokenSeparator,

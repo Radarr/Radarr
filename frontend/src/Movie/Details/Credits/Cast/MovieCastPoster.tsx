@@ -26,7 +26,7 @@ export interface MovieCastPosterProps
   onImportListSelect(): void;
 }
 
-function MovieCastPoster(props: MovieCastPosterProps) {
+function MovieCastPoster(props: Readonly<MovieCastPosterProps>) {
   const {
     tmdbId,
     personName,

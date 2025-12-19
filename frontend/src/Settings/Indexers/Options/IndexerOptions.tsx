@@ -33,7 +33,7 @@ interface IndexerOptionsProps {
 function IndexerOptions({
   setChildSave,
   onChildStateChange,
-}: IndexerOptionsProps) {
+}: Readonly<IndexerOptionsProps>) {
   const dispatch = useDispatch();
   const {
     isFetching,

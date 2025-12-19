@@ -12,8 +12,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 // Poster container dimensions
-const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
-const columnPaddingSmallScreen = parseInt(
+const columnPadding = Number.parseInt(dimensions.movieIndexColumnPadding);
+const columnPaddingSmallScreen = Number.parseInt(
   dimensions.movieIndexColumnPaddingSmallScreen
 );
 
@@ -23,7 +23,7 @@ interface MovieCreditPostersProps {
   isSmallScreen: boolean;
 }
 
-function MovieCreditPosters(props: MovieCreditPostersProps) {
+function MovieCreditPosters(props: Readonly<MovieCreditPostersProps>) {
   const { items, itemComponent, isSmallScreen } = props;
 
   const posterWidth = 162;

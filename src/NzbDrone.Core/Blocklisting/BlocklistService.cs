@@ -139,7 +139,7 @@ namespace NzbDrone.Core.Blocklisting
             return HasSameIndexer(item, release.Indexer);
         }
 
-        private bool HasSameIndexer(Blocklist item, string indexer)
+        private static bool HasSameIndexer(Blocklist item, string indexer)
         {
             if (item.Indexer.IsNullOrWhiteSpace())
             {
@@ -149,7 +149,7 @@ namespace NzbDrone.Core.Blocklisting
             return item.Indexer.Equals(indexer, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private bool HasSamePublishedDate(Blocklist item, DateTime publishedDate)
+        private static bool HasSamePublishedDate(Blocklist item, DateTime publishedDate)
         {
             if (!item.PublishedDate.HasValue)
             {
@@ -160,7 +160,7 @@ namespace NzbDrone.Core.Blocklisting
                    item.PublishedDate.Value.AddMinutes(2) >= publishedDate;
         }
 
-        private bool HasSameSize(Blocklist item, long size)
+        private static bool HasSameSize(Blocklist item, long size)
         {
             if (!item.Size.HasValue)
             {

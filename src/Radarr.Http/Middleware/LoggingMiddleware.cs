@@ -35,19 +35,20 @@ namespace Radarr.Http.Middleware
             LogEnd(context);
         }
 
-        private void LogStart(HttpContext context)
+        private static void LogStart(HttpContext context)
         {
             var id = Interlocked.Increment(ref _requestSequenceID);
 
             context.Items["ApiRequestSequenceID"] = id;
             context.Items["ApiRequestStartTime"] = DateTime.UtcNow;
 
-            var reqPath = GetRequestPathAndQuery(context.Request);
+            var reqPath = GetRequestPathAndQuery(context.Request).SanitizeForLog();
+            var origin = GetOrigin(context).SanitizeForLog();
 
-            _loggerHttp.Trace("Req: {0} [{1}] {2} (from {3})", id, context.Request.Method, reqPath, GetOrigin(context));
+            _loggerHttp.Trace("Req: {0} [{1}] {2} (from {3})", id, context.Request.Method, reqPath, origin);
         }
 
-        private void LogEnd(HttpContext context)
+        private static void LogEnd(HttpContext context)
         {
             var id = (int)context.Items["ApiRequestSequenceID"];
             var startTime = (DateTime)context.Items["ApiRequestStartTime"];
@@ -55,7 +56,7 @@ namespace Radarr.Http.Middleware
             var endTime = DateTime.UtcNow;
             var duration = endTime - startTime;
 
-            var reqPath = GetRequestPathAndQuery(context.Request);
+            var reqPath = GetRequestPathAndQuery(context.Request).SanitizeForLog();
 
             _loggerHttp.Trace("Res: {0} [{1}] {2}: {3}.{4} ({5} ms)", id, context.Request.Method, reqPath, context.Response.StatusCode, (HttpStatusCode)context.Response.StatusCode, (int)duration.TotalMilliseconds);
 

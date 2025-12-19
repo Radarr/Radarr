@@ -102,7 +102,7 @@ namespace Radarr.Api.V3.AutoTagging
             }
         }
 
-        private void VerifyValidationResult(ValidationResult validationResult)
+        private static void VerifyValidationResult(ValidationResult validationResult)
         {
             var result = new NzbDroneValidationResult(validationResult.Errors);
 

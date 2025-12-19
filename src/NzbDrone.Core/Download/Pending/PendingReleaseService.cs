@@ -450,7 +450,7 @@ namespace NzbDrone.Core.Download.Pending
             return GetPendingReleases().First(p => queueId == GetQueueId(p, p.RemoteMovie.Movie));
         }
 
-        private int GetQueueId(PendingRelease pendingRelease, Movie movie)
+        private static int GetQueueId(PendingRelease pendingRelease, Movie movie)
         {
             return HashConverter.GetHashInt31(string.Format("pending-{0}-movie{1}", pendingRelease.Id, movie?.Id ?? 0));
         }

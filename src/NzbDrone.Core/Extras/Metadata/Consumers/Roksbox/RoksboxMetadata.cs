@@ -149,12 +149,12 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             return new List<ImageFileResult> { new ImageFileResult(destination, source) };
         }
 
-        private string GetMovieFileMetadataFilename(string movieFilePath)
+        private static string GetMovieFileMetadataFilename(string movieFilePath)
         {
             return Path.ChangeExtension(movieFilePath, "xml");
         }
 
-        private string GetMovieFileImageFilename(string movieFilePath)
+        private static string GetMovieFileImageFilename(string movieFilePath)
         {
             return Path.ChangeExtension(movieFilePath, "jpg");
         }

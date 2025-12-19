@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Alter.Table("Movies").AlterColumn("TmdbId").AsInt32().Unique();
         }
 
-        private void FixMovies(IDbConnection conn, IDbTransaction tran)
+        private static void FixMovies(IDbConnection conn, IDbTransaction tran)
         {
             var movieRows = conn.Query<MovieEntity185>($"SELECT \"Id\", \"TmdbId\", \"Added\", \"LastInfoSync\", \"MovieFileId\" FROM \"Movies\"");
 
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Datastore.Migration
             }
         }
 
-        private class MovieEntity185
+        private sealed class MovieEntity185
         {
             public int Id { get; set; }
             public int TmdbId { get; set; }

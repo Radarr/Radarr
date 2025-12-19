@@ -241,7 +241,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             return flags;
         }
 
-        protected string TryGetNewznabAttribute(XElement item, string key, string defaultValue = "")
+        protected static string TryGetNewznabAttribute(XElement item, string key, string defaultValue = "")
         {
             var attrElement = item.Elements(ns + "attr").FirstOrDefault(e => e.Attribute("name").Value.Equals(key, StringComparison.OrdinalIgnoreCase));
             if (attrElement != null)
@@ -256,7 +256,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             return defaultValue;
         }
 
-        protected List<string> TryGetMultipleNewznabAttributes(XElement item, string key)
+        protected static List<string> TryGetMultipleNewznabAttributes(XElement item, string key)
         {
             var attrElements = item.Elements(ns + "attr").Where(e => e.Attribute("name").Value.Equals(key, StringComparison.OrdinalIgnoreCase));
             var results = new List<string>();

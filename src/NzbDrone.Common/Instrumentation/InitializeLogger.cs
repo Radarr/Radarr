@@ -19,7 +19,7 @@ namespace NzbDrone.Common.Instrumentation
             var sentryTarget = LogManager.Configuration.AllTargets.OfType<SentryTarget>().FirstOrDefault();
             if (sentryTarget != null)
             {
-                sentryTarget.UpdateScope(_osInfo);
+                SentryTarget.UpdateScope(_osInfo);
             }
         }
     }

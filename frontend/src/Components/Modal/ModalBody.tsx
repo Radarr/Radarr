@@ -15,7 +15,7 @@ function ModalBody({
   scrollDirection = 'vertical',
   children,
   ...otherProps
-}: ModalBodyProps) {
+}: Readonly<ModalBodyProps>) {
   let className = otherProps.className;
   const hasScroller = scrollDirection !== 'none';
 

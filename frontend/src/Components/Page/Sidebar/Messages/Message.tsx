@@ -15,7 +15,7 @@ interface MessageProps {
   type: Extract<MessageType, keyof typeof styles>;
 }
 
-function Message({ id, hideAfter, name, message, type }: MessageProps) {
+function Message({ id, hideAfter, name, message, type }: Readonly<MessageProps>) {
   const dispatch = useDispatch();
   const dismissTimeout = useRef<ReturnType<typeof setTimeout>>();
 

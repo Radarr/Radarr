@@ -15,7 +15,7 @@ interface AppProps {
 
 const queryClient = new QueryClient();
 
-function App({ store, history }: AppProps) {
+function App({ store, history }: Readonly<AppProps>) {
   return (
     <DocumentTitle title={window.Radarr.instanceName}>
       <QueryClientProvider client={queryClient}>

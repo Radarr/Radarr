@@ -19,7 +19,7 @@ interface BlocklistDetailsModalProps {
   onModalClose: () => void;
 }
 
-function BlocklistDetailsModal(props: BlocklistDetailsModalProps) {
+function BlocklistDetailsModal(props: Readonly<BlocklistDetailsModalProps>) {
   const { isOpen, sourceTitle, protocol, indexer, message, onModalClose } =
     props;
 

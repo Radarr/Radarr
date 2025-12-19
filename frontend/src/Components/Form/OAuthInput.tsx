@@ -22,7 +22,7 @@ function OAuthInput({
   providerData,
   section,
   onChange,
-}: OAuthInputProps) {
+}: Readonly<OAuthInputProps>) {
   const dispatch = useDispatch();
   const { authorizing, error, result } = useSelector(
     (state: AppState) => state.oAuth

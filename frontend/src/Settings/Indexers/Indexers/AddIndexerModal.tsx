@@ -12,7 +12,7 @@ function AddIndexerModal({
   isOpen,
   onIndexerSelect,
   onModalClose,
-}: AddIndexerModalProps) {
+}: Readonly<AddIndexerModalProps>) {
   return (
     <Modal isOpen={isOpen} onModalClose={onModalClose}>
       <AddIndexerModalContent

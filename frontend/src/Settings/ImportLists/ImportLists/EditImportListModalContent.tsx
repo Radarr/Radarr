@@ -44,7 +44,7 @@ function EditImportListModalContent({
   id,
   onModalClose,
   onDeleteImportListPress,
-}: EditImportListModalContentProps) {
+}: Readonly<EditImportListModalContentProps>) {
   const dispatch = useDispatch();
   const showAdvancedSettings = useShowAdvancedSettings();
 

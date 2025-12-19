@@ -19,7 +19,7 @@ function AddImportListPresetMenuItem({
   minRefreshInterval,
   onPress,
   ...otherProps
-}: AddImportListPresetMenuItemProps) {
+}: Readonly<AddImportListPresetMenuItemProps>) {
   const dispatch = useDispatch();
 
   const handlePress = useCallback(() => {

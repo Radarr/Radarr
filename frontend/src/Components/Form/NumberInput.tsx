@@ -13,7 +13,7 @@ function parseValue(
     return null;
   }
 
-  let newValue = isFloat ? parseFloat(value) : parseInt(value);
+  let newValue = isFloat ? Number.parseFloat(value) : Number.parseInt(value);
 
   if (min != null && newValue != null && newValue < min) {
     newValue = min;
@@ -41,7 +41,7 @@ function NumberInput({
   max,
   onChange,
   ...otherProps
-}: NumberInputProps) {
+}: Readonly<NumberInputProps>) {
   const [value, setValue] = useState(
     inputValue == null ? '' : inputValue.toString()
   );
@@ -82,8 +82,7 @@ function NumberInput({
 
   useEffect(() => {
     if (
-      // @ts-expect-error inputValue may be null
-      !isNaN(inputValue) &&
+      !Number.isNaN(inputValue) &&
       inputValue !== previousValue &&
       !isFocused.current
     ) {

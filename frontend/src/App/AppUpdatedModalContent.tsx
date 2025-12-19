@@ -62,7 +62,7 @@ interface AppUpdatedModalContentProps {
   onModalClose: () => void;
 }
 
-function AppUpdatedModalContent(props: AppUpdatedModalContentProps) {
+function AppUpdatedModalContent(props: Readonly<AppUpdatedModalContentProps>) {
   const dispatch = useDispatch();
   const { version, prevVersion } = useSelector((state: AppState) => state.app);
   const { isPopulated, error, items } = useSelector(

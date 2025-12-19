@@ -6,7 +6,7 @@ import translate from 'Utilities/String/translate';
 import PageContentBody from './PageContentBody';
 import styles from './PageContentError.css';
 
-function PageContentError(props: ErrorBoundaryErrorProps) {
+function PageContentError(props: Readonly<ErrorBoundaryErrorProps>) {
   return (
     <div className={styles.content}>
       <PageContentBody>

@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(ConvertFileChmodToFolderChmod);
         }
 
-        private void ConvertFileChmodToFolderChmod(IDbConnection conn, IDbTransaction tran)
+        private static void ConvertFileChmodToFolderChmod(IDbConnection conn, IDbTransaction tran)
         {
             using (var getFileChmodCmd = conn.CreateCommand())
             {

@@ -110,7 +110,7 @@ interface InteractiveSearchRowProps extends Release {
   onGrabPress(...args: unknown[]): void;
 }
 
-function InteractiveSearchRow(props: InteractiveSearchRowProps) {
+function InteractiveSearchRow(props: Readonly<InteractiveSearchRowProps>) {
   const {
     guid,
     indexerId,

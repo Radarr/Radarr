@@ -23,8 +23,8 @@ import Messages from './Messages/Messages';
 import PageSidebarItem from './PageSidebarItem';
 import styles from './PageSidebar.css';
 
-const HEADER_HEIGHT = parseInt(dimensions.headerHeight);
-const SIDEBAR_WIDTH = parseInt(dimensions.sidebarWidth);
+const HEADER_HEIGHT = Number.parseInt(dimensions.headerHeight);
+const SIDEBAR_WIDTH = Number.parseInt(dimensions.sidebarWidth);
 
 interface SidebarItem {
   iconName?: IconName;
@@ -219,7 +219,7 @@ interface PageSidebarProps {
   isSidebarVisible: boolean;
 }
 
-function PageSidebar({ isSidebarVisible, isSmallScreen }: PageSidebarProps) {
+function PageSidebar({ isSidebarVisible, isSmallScreen }: Readonly<PageSidebarProps>) {
   const dispatch = useDispatch();
   const location = useLocation();
   const sidebarRef = useRef(null);

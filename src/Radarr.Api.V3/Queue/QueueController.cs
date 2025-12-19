@@ -376,7 +376,7 @@ namespace Radarr.Api.V3.Queue
             return trackedDownload;
         }
 
-        private QueueResource MapToResource(NzbDrone.Core.Queue.Queue queueItem, bool includeMovie)
+        private static QueueResource MapToResource(NzbDrone.Core.Queue.Queue queueItem, bool includeMovie)
         {
             return queueItem.ToResource(includeMovie);
         }

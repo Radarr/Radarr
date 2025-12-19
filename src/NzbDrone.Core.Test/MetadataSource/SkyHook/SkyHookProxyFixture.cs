@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             details.Title.Should().Be(title);
         }
 
-        private void ValidateMovie(MovieMetadata movie)
+        private static void ValidateMovie(MovieMetadata movie)
         {
             movie.Should().NotBeNull();
             movie.Title.Should().NotBeNullOrWhiteSpace();

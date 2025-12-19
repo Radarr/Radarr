@@ -11,7 +11,7 @@ interface LegendIconItemProps extends Pick<IconProps, 'kind'> {
   tooltip: string;
 }
 
-function LegendIconItem(props: LegendIconItemProps) {
+function LegendIconItem(props: Readonly<LegendIconItemProps>) {
   const { name, fullColorEvents, icon, kind, tooltip } = props;
 
   return (

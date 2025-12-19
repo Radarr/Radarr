@@ -134,7 +134,7 @@ namespace NzbDrone.Core.Datastore
             return expression;
         }
 
-        private bool TryGetConstantValue(Expression expression, out object result)
+        private static bool TryGetConstantValue(Expression expression, out object result)
         {
             result = null;
 
@@ -207,7 +207,7 @@ namespace NzbDrone.Core.Datastore
             return false;
         }
 
-        private object GetFieldValue(object entity, MemberInfo member)
+        private static object GetFieldValue(object entity, MemberInfo member)
         {
             if (member.MemberType == MemberTypes.Field)
             {

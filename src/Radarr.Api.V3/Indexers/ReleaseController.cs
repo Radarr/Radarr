@@ -173,7 +173,7 @@ namespace Radarr.Api.V3.Indexers
             return resource;
         }
 
-        private string GetCacheKey(ReleaseResource resource)
+        private static string GetCacheKey(ReleaseResource resource)
         {
             return string.Concat(resource.IndexerId, "_", resource.Guid);
         }

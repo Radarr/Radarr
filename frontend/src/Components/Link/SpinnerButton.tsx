@@ -18,7 +18,7 @@ function SpinnerButton({
   spinnerIcon = icons.SPINNER,
   children,
   ...otherProps
-}: SpinnerButtonProps) {
+}: Readonly<SpinnerButtonProps>) {
   return (
     <Button
       className={classNames(

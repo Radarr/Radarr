@@ -153,14 +153,14 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Couldn't import file. {0}", localMovie.Path);
+                _logger.Error(ex, "Couldn't import file. {0}", localMovie.Path.SanitizeForLog());
 
                 decision = new ImportDecision(localMovie, new ImportRejection(ImportRejectionReason.Error, "Unexpected error processing file"));
             }
 
             if (decision == null)
             {
-                _logger.Error("Unable to make a decision on {0}", localMovie.Path);
+                _logger.Error("Unable to make a decision on {0}", localMovie.Path.SanitizeForLog());
             }
             else if (decision.Rejections.Any())
             {
@@ -192,7 +192,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Couldn't evaluate decision on {0}", localMovie.Path);
+                _logger.Error(ex, "Couldn't evaluate decision on {0}", localMovie.Path.SanitizeForLog());
                 return new ImportRejection(ImportRejectionReason.DecisionError, $"{spec.GetType().Name}: {ex.Message}");
             }
 

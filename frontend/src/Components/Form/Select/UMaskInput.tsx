@@ -76,8 +76,8 @@ export interface UMaskInputProps {
   onBlur?: (event: SyntheticEvent) => void;
 }
 
-function UMaskInput({ name, value, onChange }: UMaskInputProps) {
-  const valueNum = parseInt(value, 8);
+function UMaskInput({ name, value, onChange }: Readonly<UMaskInputProps>) {
+  const valueNum = Number.parseInt(value, 8);
   const umaskNum = 0o777 & ~valueNum;
   const umask = umaskNum.toString(8).padStart(4, '0');
   const folderNum = 0o777 & ~umaskNum;

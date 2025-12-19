@@ -21,7 +21,7 @@ interface ParseModalContentProps {
   onModalClose: () => void;
 }
 
-function ParseModalContent(props: ParseModalContentProps) {
+function ParseModalContent(props: Readonly<ParseModalContentProps>) {
   const { onModalClose } = props;
   const { isFetching, error, item } = useSelector(parseStateSelector());
 

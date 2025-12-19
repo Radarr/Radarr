@@ -42,7 +42,7 @@ function CaptchaInput({
   siteKey,
   secretToken,
   onChange,
-}: CaptchaInputProps) {
+}: Readonly<CaptchaInputProps>) {
   const { token } = useSelector((state: AppState) => state.captcha);
   const dispatch = useDispatch();
   const previousToken = usePrevious(token);

@@ -28,7 +28,7 @@ interface FileBrowserRowProps {
   onPress: (path: string) => void;
 }
 
-function FileBrowserRow(props: FileBrowserRowProps) {
+function FileBrowserRow(props: Readonly<FileBrowserRowProps>) {
   const { type, name, path, onPress } = props;
 
   const handlePress = useCallback(() => {

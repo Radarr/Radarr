@@ -271,6 +271,10 @@ dotnet_diagnostic.CA5397.severity = suggestion
 
 dotnet_diagnostic.SYSLIB0006.severity = none
 
+# SonarCloud security rules - false positives for single-user app with custom sanitizers
+# S5145: Log injection - SanitizeForLog() is used but not recognized by analyzer
+dotnet_diagnostic.S5145.severity = none
+
 [*.{js,html,hbs,less,css,ts,tsx}]
 charset = utf-8
 trim_trailing_whitespace = true

@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Download.Clients.Flood
             _authCookieCache = cacheManager.GetCache<Dictionary<string, string>>(GetType(), "authCookies");
         }
 
-        private string BuildUrl(FloodSettings settings)
+        private static string BuildUrl(FloodSettings settings)
         {
             return $"{(settings.UseSsl ? "https://" : "http://")}{settings.Host}:{settings.Port}/{settings.UrlBase}";
         }

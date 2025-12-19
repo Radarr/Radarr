@@ -78,7 +78,7 @@ function QualityProfileSelectInput({
   includeMixed = false,
   onChange,
   ...otherProps
-}: QualityProfileSelectInputProps) {
+}: Readonly<QualityProfileSelectInputProps>) {
   const values = useSelector(
     createQualityProfilesSelector(
       includeNoChange,

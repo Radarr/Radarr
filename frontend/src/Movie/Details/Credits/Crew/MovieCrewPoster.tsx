@@ -26,7 +26,7 @@ export interface MovieCrewPosterProps
   onImportListSelect(): void;
 }
 
-function MovieCrewPoster(props: MovieCrewPosterProps) {
+function MovieCrewPoster(props: Readonly<MovieCrewPosterProps>) {
   const {
     tmdbId,
     personName,

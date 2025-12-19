@@ -1,0 +1,26 @@
+name: "Aletheia CodeQL Configuration"
+
+queries:
+  - uses: security-extended
+
+packs:
+  csharp:
+    - .github/codeql/extensions
+
+query-filters:
+  - exclude:
+      id: cs/log-forging
+  - exclude:
+      id: cs/path-injection
+  - exclude:
+      id: cs/cleartext-storage-of-sensitive-information
+  - exclude:
+      id: cs/web/insecure-direct-object-reference
+  - exclude:
+      id: cs/web/missing-function-level-access-control
+
+paths-ignore:
+  - node_modules
+  - _output
+  - _tests
+  - _artifacts

@@ -11,7 +11,7 @@ namespace NzbDrone.Common.Extensions
                 return false;
             }
 
-            if (path.StartsWith(" ") || path.EndsWith(" "))
+            if (path.StartsWith(' ') || path.EndsWith(' '))
             {
                 return false;
             }

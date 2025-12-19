@@ -20,7 +20,7 @@ interface RootFolderRowProps {
   unmappedFolders: object[];
 }
 
-function RootFolderRow(props: RootFolderRowProps) {
+function RootFolderRow(props: Readonly<RootFolderRowProps>) {
   const { id, path, accessible, freeSpace = 0, unmappedFolders = [] } = props;
 
   const isUnavailable = !accessible;
@@ -62,7 +62,7 @@ function RootFolderRow(props: RootFolderRowProps) {
       </TableRowCell>
 
       <TableRowCell className={styles.freeSpace}>
-        {isUnavailable || isNaN(Number(freeSpace))
+        {isUnavailable || Number.isNaN(Number(freeSpace))
           ? '-'
           : formatBytes(freeSpace)}
       </TableRowCell>

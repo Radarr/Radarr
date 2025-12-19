@@ -18,7 +18,7 @@ function SortMenu({
   children,
   isDisabled = false,
   ...otherProps
-}: SortMenuProps) {
+}: Readonly<SortMenuProps>) {
   return (
     <Menu className={className} {...otherProps}>
       <ToolbarMenuButton

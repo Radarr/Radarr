@@ -7,7 +7,7 @@ interface ManageCustomFormatsModalProps {
   onModalClose(): void;
 }
 
-function ManageCustomFormatsModal(props: ManageCustomFormatsModalProps) {
+function ManageCustomFormatsModal(props: Readonly<ManageCustomFormatsModalProps>) {
   const { isOpen, onModalClose } = props;
 
   return (

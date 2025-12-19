@@ -130,26 +130,26 @@ namespace NzbDrone.Core.Datastore.Migration
             conn.Execute(sql, newRows, transaction: tran);
         }
 
-        private class Profile168 : ModelBase
+        private sealed class Profile168 : ModelBase
         {
             public int FormatCutoff { get; set; }
             public List<ProfileFormatItem168> FormatItems { get; set; }
         }
 
-        private class ProfileFormatItem168
+        private sealed class ProfileFormatItem168
         {
             public int Format { get; set; }
             public bool Allowed { get; set; }
         }
 
-        private class Profile169 : ModelBase
+        private sealed class Profile169 : ModelBase
         {
             public int MinFormatScore { get; set; }
             public int CutoffFormatScore { get; set; }
             public List<ProfileFormatItem169> FormatItems { get; set; }
         }
 
-        private class ProfileFormatItem169
+        private sealed class ProfileFormatItem169
         {
             public int Format { get; set; }
             public int Score { get; set; }

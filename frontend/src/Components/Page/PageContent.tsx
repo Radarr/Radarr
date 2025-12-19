@@ -14,7 +14,7 @@ function PageContent({
   className = styles.content,
   title,
   children,
-}: PageContentProps) {
+}: Readonly<PageContentProps>) {
   return (
     <ErrorBoundary errorComponent={PageContentError}>
       <DocumentTitle

@@ -16,7 +16,7 @@ function EditReleaseProfileModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: EditReleaseProfileModalProps) {
+}: Readonly<EditReleaseProfileModalProps>) {
   const dispatch = useDispatch();
 
   const handleModalClose = useCallback(() => {

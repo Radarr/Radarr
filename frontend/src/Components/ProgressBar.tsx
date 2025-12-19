@@ -30,7 +30,7 @@ function ProgressBar({
   kind = 'primary',
   size = 'medium',
   width,
-}: ProgressBarProps) {
+}: Readonly<ProgressBarProps>) {
   const progressPercent = `${progress.toFixed(precision)}%`;
   const progressText = text || progressPercent;
   const actualWidth = width ? `${width}px` : '100%';

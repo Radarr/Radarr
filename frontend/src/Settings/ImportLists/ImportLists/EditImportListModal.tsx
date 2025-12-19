@@ -20,7 +20,7 @@ function EditImportListModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: EditImportListModalProps) {
+}: Readonly<EditImportListModalProps>) {
   const dispatch = useDispatch();
 
   const handleModalClose = useCallback(() => {

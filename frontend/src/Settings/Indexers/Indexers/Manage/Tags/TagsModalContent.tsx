@@ -26,7 +26,7 @@ interface TagsModalContentProps {
   onModalClose: () => void;
 }
 
-function TagsModalContent(props: TagsModalContentProps) {
+function TagsModalContent(props: Readonly<TagsModalContentProps>) {
   const { ids, onModalClose, onApplyTagsPress } = props;
 
   const allIndexers: IndexerAppState = useSelector(

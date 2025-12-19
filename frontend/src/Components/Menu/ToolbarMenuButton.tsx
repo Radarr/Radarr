@@ -18,7 +18,7 @@ function ToolbarMenuButton({
   showIndicator = false,
   text,
   ...otherProps
-}: ToolbarMenuButtonProps) {
+}: Readonly<ToolbarMenuButtonProps>) {
   return (
     <MenuButton className={styles.menuButton} {...otherProps}>
       <div>

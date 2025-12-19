@@ -294,7 +294,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             }
         }
 
-        private void VerifyResponse<TResult>(JsonRpcResponse<TResult> response)
+        private static void VerifyResponse<TResult>(JsonRpcResponse<TResult> response)
         {
             if (response.Error != null)
             {
@@ -368,7 +368,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             throw new DownloadClientException("Failed to connect to Deluge daemon.");
         }
 
-        private DelugeTorrent[] GetTorrents(DelugeUpdateUIResult result)
+        private static DelugeTorrent[] GetTorrents(DelugeUpdateUIResult result)
         {
             if (result.Torrents == null)
             {

@@ -23,7 +23,7 @@ export interface TooltipProps {
   position?: (typeof tooltipPositions.all)[number];
   canFlip?: boolean;
 }
-function Tooltip(props: TooltipProps) {
+function Tooltip(props: Readonly<TooltipProps>) {
   const {
     className,
     bodyClassName = styles.body,
@@ -84,11 +84,11 @@ function Tooltip(props: TooltipProps) {
   const maxWidth = useMemo(() => {
     const windowWidth = window.innerWidth;
 
-    if (windowWidth >= parseInt(dimensions.breakpointLarge)) {
+    if (windowWidth >= Number.parseInt(dimensions.breakpointLarge)) {
       return 800;
-    } else if (windowWidth >= parseInt(dimensions.breakpointMedium)) {
+    } else if (windowWidth >= Number.parseInt(dimensions.breakpointMedium)) {
       return 650;
-    } else if (windowWidth >= parseInt(dimensions.breakpointSmall)) {
+    } else if (windowWidth >= Number.parseInt(dimensions.breakpointSmall)) {
       return 500;
     }
 

@@ -21,7 +21,7 @@ function AutoCompleteInput({
   values,
   onChange,
   ...otherProps
-}: AutoCompleteInputProps) {
+}: Readonly<AutoCompleteInputProps>) {
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
   const getSuggestionValue = useCallback((item: string) => {

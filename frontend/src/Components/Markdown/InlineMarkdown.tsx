@@ -7,7 +7,7 @@ interface InlineMarkdownProps {
   blockClassName?: string;
 }
 
-function InlineMarkdown(props: InlineMarkdownProps) {
+function InlineMarkdown(props: Readonly<InlineMarkdownProps>) {
   const { className, data, blockClassName } = props;
 
   // For now only replace links or code blocks (not both)

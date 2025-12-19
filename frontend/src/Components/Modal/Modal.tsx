@@ -67,7 +67,7 @@ function Modal({
   isOpen,
   closeOnBackgroundClick = true,
   onModalClose,
-}: ModalProps) {
+}: Readonly<ModalProps>) {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const isBackdropPressed = useRef(false);
   const bodyScrollTop = useRef(0);

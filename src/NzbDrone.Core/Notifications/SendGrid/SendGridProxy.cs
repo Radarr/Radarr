@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Notifications.SendGrid
             }
         }
 
-        private HttpRequest BuildRequest(SendGridSettings settings, string resource, HttpMethod method)
+        private static HttpRequest BuildRequest(SendGridSettings settings, string resource, HttpMethod method)
         {
             var request = new HttpRequestBuilder(settings.BaseUrl).Resource(resource)
                 .SetHeader("Authorization", $"Bearer {settings.ApiKey}")

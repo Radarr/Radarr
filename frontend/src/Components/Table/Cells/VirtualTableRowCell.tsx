@@ -9,7 +9,7 @@ export interface VirtualTableRowCellProps {
 function VirtualTableRowCell({
   className = styles.cell,
   children,
-}: VirtualTableRowCellProps) {
+}: Readonly<VirtualTableRowCellProps>) {
   return <div className={className}>{children}</div>;
 }
 

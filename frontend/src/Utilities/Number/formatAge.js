@@ -2,8 +2,8 @@ import translate from 'Utilities/String/translate';
 
 function formatAge(age, ageHours, ageMinutes) {
   age = Math.round(age);
-  ageHours = parseFloat(ageHours);
-  ageMinutes = ageMinutes && parseFloat(ageMinutes);
+  ageHours = Number.parseFloat(ageHours);
+  ageMinutes = ageMinutes && Number.parseFloat(ageMinutes);
 
   if (age < 2 && ageHours) {
     if (ageHours < 2 && !!ageMinutes) {

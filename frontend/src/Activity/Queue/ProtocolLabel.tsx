@@ -7,7 +7,7 @@ interface ProtocolLabelProps {
   protocol: DownloadProtocol;
 }
 
-function ProtocolLabel({ protocol }: ProtocolLabelProps) {
+function ProtocolLabel({ protocol }: Readonly<ProtocolLabelProps>) {
   const protocolName = protocol === 'usenet' ? 'nzb' : protocol;
 
   return <Label className={styles[protocol]}>{protocolName}</Label>;

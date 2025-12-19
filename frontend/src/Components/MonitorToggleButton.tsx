@@ -14,7 +14,7 @@ interface MonitorToggleButtonProps {
   onPress: (value: boolean, options: { shiftKey: boolean }) => unknown;
 }
 
-function MonitorToggleButton(props: MonitorToggleButtonProps) {
+function MonitorToggleButton(props: Readonly<MonitorToggleButtonProps>) {
   const {
     className = styles.toggleButton,
     monitored,

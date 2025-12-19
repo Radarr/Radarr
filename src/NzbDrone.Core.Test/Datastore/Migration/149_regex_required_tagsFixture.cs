@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             convertedTags2.Should().BeEquivalentTo("E_NRXRQ_Director");
         }
 
-        private List<CustomFormatTest149> QueryItems(IDirectDataMapper db)
+        private static List<CustomFormatTest149> QueryItems(IDirectDataMapper db)
         {
             var items = db.Query<CustomFormatTest149>("SELECT \"Name\", \"FormatTags\" FROM \"CustomFormats\"");
 

@@ -107,7 +107,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             json.Should().Contain($"\"name\": \"Edition 1\"");
         }
 
-        private void ValidateFormatTag(string json, string type, bool required, bool negated)
+        private static void ValidateFormatTag(string json, string type, bool required, bool negated)
         {
             json.Should().Contain($"\"type\": \"{type}\"");
 

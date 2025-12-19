@@ -119,7 +119,7 @@ function ImportListExclusions() {
   );
 
   const handleSelectedChange = useCallback(
-    ({ id, value, shiftKey = false }: SelectStateInputProps) => {
+    ({ id, value, shiftKey = false }: Readonly<SelectStateInputProps>) => {
       setSelectState({
         type: 'toggleSelected',
         items,

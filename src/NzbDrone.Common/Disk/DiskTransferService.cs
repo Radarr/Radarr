@@ -464,7 +464,7 @@ namespace NzbDrone.Common.Disk
             }
         }
 
-        private void WaitForIO()
+        private static void WaitForIO()
         {
             // This delay is intended to give the IO stack a bit of time to recover, this is especially required if remote NAS devices are involved.
             Thread.Sleep(3000);

@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Datastore.Migration
             conn.Execute(sql, newRows, transaction: tran);
         }
 
-        private void RemoveCustomFormatFromQuality(IDbConnection conn, IDbTransaction tran, string table)
+        private static void RemoveCustomFormatFromQuality(IDbConnection conn, IDbTransaction tran, string table)
         {
             var rows = conn.Query<QualityRow>($"SELECT \"Id\", \"Quality\" from \"{table}\"");
 
@@ -151,12 +151,12 @@ namespace NzbDrone.Core.Datastore.Migration
             conn.Execute(updateSql, toUpdate, transaction: tran);
         }
 
-        private class ParsedMovieInfoData164 : ModelBase
+        private sealed class ParsedMovieInfoData164 : ModelBase
         {
             public ParsedMovieInfo164 ParsedMovieInfo { get; set; }
         }
 
-        private class ParsedMovieInfo164
+        private sealed class ParsedMovieInfo164
         {
             public string MovieTitle { get; set; }
             public string SimpleReleaseTitle { get; set; }
@@ -169,24 +169,24 @@ namespace NzbDrone.Core.Datastore.Migration
             public string ImdbId { get; set; }
         }
 
-        private class QualityModel164
+        private sealed class QualityModel164
         {
             public Quality164 Quality { get; set; }
             public Revision165 Revision { get; set; }
             public string HardcodedSubs { get; set; }
         }
 
-        private class Quality164
+        private sealed class Quality164
         {
             public int Id { get; set; }
         }
 
-        private class ParsedMovieInfoData165 : ModelBase
+        private sealed class ParsedMovieInfoData165 : ModelBase
         {
             public ParsedMovieInfo165 ParsedMovieInfo { get; set; }
         }
 
-        private class ParsedMovieInfo165
+        private sealed class ParsedMovieInfo165
         {
             public string MovieTitle { get; set; }
             public string SimpleReleaseTitle { get; set; }
@@ -199,37 +199,37 @@ namespace NzbDrone.Core.Datastore.Migration
             public string ImdbId { get; set; }
         }
 
-        private class BlacklistData : ModelBase
+        private sealed class BlacklistData : ModelBase
         {
             public string TorrentInfoHash { get; set; }
             public string Data { get; set; }
         }
 
-        private class MovieFileData : ModelBase
+        private sealed class MovieFileData : ModelBase
         {
             public string SceneName { get; set; }
             public string SourceTitle { get; set; }
             public string Data { get; set; }
         }
 
-        private class IndexerFlagsItem : ModelBase
+        private sealed class IndexerFlagsItem : ModelBase
         {
             public int IndexerFlags { get; set; }
         }
 
-        private class QualityRow : ModelBase
+        private sealed class QualityRow : ModelBase
         {
             public QualityModel165 Quality { get; set; }
         }
 
-        private class QualityModel165
+        private sealed class QualityModel165
         {
             public int Quality { get; set; }
             public Revision165 Revision { get; set; }
             public string HardcodedSubs { get; set; }
         }
 
-        private class Revision165
+        private sealed class Revision165
         {
             public int Version { get; set; }
             public int Real { get; set; }
