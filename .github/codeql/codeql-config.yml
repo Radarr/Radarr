@@ -15,7 +15,7 @@ query-filters:
   - exclude:
       id: cs/cleartext-storage-of-sensitive-information
   - exclude:
-      id: cs/insecure-direct-object-reference
+      id: cs/web/insecure-direct-object-reference
   - exclude:
       id: cs/web/missing-function-level-access-control
 
