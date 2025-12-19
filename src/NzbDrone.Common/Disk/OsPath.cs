@@ -421,7 +421,7 @@ namespace NzbDrone.Common.Disk
         {
             if (left.Kind != right.Kind && right.Kind != OsPathKind.Unknown)
             {
-                throw new Exception(string.Format("Cannot combine OsPaths of different platforms ('{0}' + '{1}')", left, right));
+                throw new PathCombinationException("Cannot combine OsPaths of different platforms ('{0}' + '{1}')", left, right);
             }
 
             if (right.IsEmpty)

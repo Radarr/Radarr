@@ -147,6 +147,7 @@ namespace NzbDrone.Core.Messaging.Commands
         {
             _logger.Info("Shutting down task execution");
             _cancellationTokenSource.Cancel(true);
+            _cancellationTokenSource.Dispose();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
             // Use IMDb list Export for user lists to bypass RadarrAPI caching
             if (Settings.ListId.StartsWith("ls", StringComparison.OrdinalIgnoreCase))
             {
-                throw new Exception("IMDb lists of the form 'ls12345678' are no longer supported. Feel free to remove this list after you review your Clean Library Level.");
+                throw new NotSupportedException("IMDb lists of the form 'ls12345678' are no longer supported. Feel free to remove this list after you review your Clean Library Level.");
             }
 
             var request = RequestBuilder.Create()

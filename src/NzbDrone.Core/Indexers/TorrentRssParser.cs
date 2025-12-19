@@ -168,7 +168,10 @@ namespace NzbDrone.Core.Indexers
             if (PeersElementName.IsNotNullOrWhiteSpace())
             {
                 var itempeers = item.FindDecendants(PeersElementName).SingleOrDefault();
-                return int.Parse(itempeers.Value);
+                if (itempeers != null)
+                {
+                    return int.Parse(itempeers.Value);
+                }
             }
 
             return null;
