@@ -32,9 +32,9 @@ namespace NzbDrone.Core.Test.NotificationTests
         }
 
         [TestCase(false, "MyRadarr", false)]
-        [TestCase(true,  "MyRadarr", true)]
-        [TestCase(true,  "",         false)]
-        [TestCase(true,  "   ",      false)]
+        [TestCase(true, "MyRadarr", true)]
+        [TestCase(true, "", false)]
+        [TestCase(true, "   ", false)]
         public void OnDownload_should_append_instance_name_to_title_only_when_enabled_and_non_empty(bool includeInstanceNameInTitle, string instanceName, bool shouldAppendInstanceName)
         {
             ((GotifySettings)Subject.Definition.Settings).IncludeInstanceNameInTitle = includeInstanceNameInTitle;

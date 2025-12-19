@@ -18,15 +18,15 @@ namespace NzbDrone.Core.Notifications.Gotify
 
         private readonly IGotifyProxy _proxy;
         private readonly ILocalizationService _localizationService;
-        private readonly Logger _logger;
         private readonly IConfigFileProvider _configFileProvider;
+        private readonly Logger _logger;
 
-        public Gotify(IGotifyProxy proxy, ILocalizationService localizationService, Logger logger, IConfigFileProvider configFileProvider)
+        public Gotify(IGotifyProxy proxy, ILocalizationService localizationService, IConfigFileProvider configFileProvider, Logger logger)
         {
             _proxy = proxy;
             _localizationService = localizationService;
-            _logger = logger;
             _configFileProvider = configFileProvider;
+            _logger = logger;
         }
 
         public override string Name => "Gotify";
