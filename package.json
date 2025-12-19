@@ -8,7 +8,7 @@
     "clean": "rimraf ./_output/UI && rimraf --glob \"**/*.js.map\"",
     "start": "webpack --watch --config ./frontend/build/webpack.config.js",
     "watch": "webpack --watch --config ./frontend/build/webpack.config.js",
-    "lint": "eslint --config frontend/.eslintrc.js --ignore-path frontend/.eslintignore frontend/",
+    "lint": "eslint --config frontend/eslint.config.mjs frontend/",
     "lint-fix": "yarn lint --fix",
     "stylelint-linux": "stylelint $(find frontend -name '*.css') --config frontend/.stylelintrc",
     "stylelint-windows": "stylelint \"frontend/**/*.css\" --config frontend/.stylelintrc",
@@ -90,8 +90,6 @@
     "use-debounce": "10.0.4"
   },
   "devDependencies": {
-    "husky": "^9.1.7",
-    "lint-staged": "^15.2.10",
     "@babel/core": "7.27.1",
     "@babel/eslint-parser": "7.27.1",
     "@babel/plugin-proposal-export-default-from": "7.27.1",
@@ -120,9 +118,8 @@
     "core-js": "3.42.0",
     "css-loader": "6.7.3",
     "css-modules-typescript-loader": "4.0.1",
-    "eslint": "8.57.1",
+    "eslint": "^9.0.0",
     "eslint-config-prettier": "10.1.8",
-    "eslint-plugin-filenames": "1.3.2",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-prettier": "5.5.4",
     "eslint-plugin-react": "7.37.1",
@@ -131,7 +128,10 @@
     "file-loader": "6.2.0",
     "filemanager-webpack-plugin": "8.0.0",
     "fork-ts-checker-webpack-plugin": "8.0.0",
+    "globals": "16.5.0",
     "html-webpack-plugin": "5.6.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
     "loader-utils": "^3.2.1",
     "mini-css-extract-plugin": "2.9.1",
     "postcss": "8.5.6",
@@ -169,7 +169,7 @@
   },
   "lint-staged": {
     "frontend/**/*.{ts,tsx}": [
-      "eslint --config frontend/.eslintrc.js --fix",
+      "eslint --config frontend/eslint.config.mjs --fix",
       "prettier --write"
     ],
     "frontend/**/*.css": [
