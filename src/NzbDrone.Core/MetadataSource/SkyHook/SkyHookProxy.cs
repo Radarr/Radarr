@@ -128,8 +128,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
 
             var credits = new List<Credit>();
-            credits.AddRange(httpResponse.Resource.Credits.Cast.Select(MapCast));
-            credits.AddRange(httpResponse.Resource.Credits.Crew.Select(MapCrew));
+            credits.AddRange(httpResponse.Resource.Credits?.Cast?.Select(MapCast) ?? Enumerable.Empty<Credit>());
+            credits.AddRange(httpResponse.Resource.Credits?.Crew?.Select(MapCrew) ?? Enumerable.Empty<Credit>());
 
             var movie = MapMovie(httpResponse.Resource);
 

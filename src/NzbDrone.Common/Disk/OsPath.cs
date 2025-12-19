@@ -376,11 +376,6 @@ namespace NzbDrone.Common.Disk
 
         public bool Equals(OsPath other, bool ignoreTrailingSlash)
         {
-            if (ReferenceEquals(other, null))
-            {
-                return false;
-            }
-
             if (_path == other._path)
             {
                 return true;
@@ -399,21 +394,11 @@ namespace NzbDrone.Common.Disk
 
         public static bool operator ==(OsPath left, OsPath right)
         {
-            if (ReferenceEquals(left, null))
-            {
-                return ReferenceEquals(right, null);
-            }
-
             return left.Equals(right);
         }
 
         public static bool operator !=(OsPath left, OsPath right)
         {
-            if (ReferenceEquals(left, null))
-            {
-                return !ReferenceEquals(right, null);
-            }
-
             return !left.Equals(right);
         }
 
