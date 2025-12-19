@@ -50,7 +50,7 @@ class ImportMovie extends Component {
 
   onSelectAllChange = ({ value }) => {
     // Only select non-dupes
-    this.setState(selectAll(this.state.selectedState, value));
+    this.setState((prevState) => selectAll(prevState.selectedState, value));
   };
 
   onSelectedChange = ({ id, value, shiftKey = false }) => {

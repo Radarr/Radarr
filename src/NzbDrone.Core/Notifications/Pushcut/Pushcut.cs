@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Notifications.Pushcut
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            _proxy.SendNotification(MOVIE_GRABBED_TITLE, grabMessage?.Message, GetPosterUrl(grabMessage.Movie), GetLinks(grabMessage.Movie), Settings);
+            _proxy.SendNotification(MOVIE_GRABBED_TITLE, grabMessage?.Message, GetPosterUrl(grabMessage?.Movie), GetLinks(grabMessage?.Movie), Settings);
         }
 
         public override void OnDownload(DownloadMessage downloadMessage)

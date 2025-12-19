@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Notifications
         public bool SupportsOnManualInteractionRequired { get; set; }
 
         [MemberwiseEqualityIgnore]
-        public override bool Enable => OnGrab || OnDownload || (OnDownload && OnUpgrade) || OnRename || OnMovieAdded || OnMovieDelete || OnMovieFileDelete || (OnMovieFileDelete && OnMovieFileDeleteForUpgrade) || OnHealthIssue || OnHealthRestored || OnApplicationUpdate || OnManualInteractionRequired;
+        public override bool Enable => OnGrab || OnDownload || OnRename || OnMovieAdded || OnMovieDelete || OnMovieFileDelete || OnHealthIssue || OnHealthRestored || OnApplicationUpdate || OnManualInteractionRequired;
 
         public bool Equals(NotificationDefinition other)
         {

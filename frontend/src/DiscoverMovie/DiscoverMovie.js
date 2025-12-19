@@ -214,11 +214,13 @@ class DiscoverMovie extends Component {
   };
 
   onSelectAllChange = ({ value }) => {
-    this.setState(selectAll(this.state.selectedState, value));
+    this.setState((prevState) => selectAll(prevState.selectedState, value));
   };
 
   onSelectAllPress = () => {
-    this.onSelectAllChange({ value: !this.state.allSelected });
+    this.setState((prevState) =>
+      selectAll(prevState.selectedState, !prevState.allSelected)
+    );
   };
 
   onImportListSyncPress = () => {
