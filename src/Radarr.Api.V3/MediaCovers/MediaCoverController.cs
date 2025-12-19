@@ -28,7 +28,14 @@ namespace Radarr.Api.V3.MediaCovers
         [HttpGet(@"{movieId:int}/{filename:regex((.+)\.(jpg|png|gif))}")]
         public IActionResult GetMediaCover(int movieId, string filename)
         {
-            var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", movieId.ToString(), filename);
+            var mediaCoverPath = Path.GetFullPath(Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover"));
+            var filePath = Path.GetFullPath(Path.Combine(mediaCoverPath, movieId.ToString(), filename));
+
+            // Prevent path traversal - ensure path stays within MediaCover folder
+            if (!filePath.StartsWith(mediaCoverPath + Path.DirectorySeparatorChar))
+            {
+                return NotFound();
+            }
 
             if (!_diskProvider.FileExists(filePath) || _diskProvider.GetFileSize(filePath) == 0)
             {

@@ -26,7 +26,8 @@ namespace NzbDrone.Core.Profiles.Releases
             var options = GetOptions(modifiers);
 
             // For now we simply expect the pattern to be .net compliant. We should probably check and reject perl-specific constructs.
-            return new Regex(pattern, options | RegexOptions.Compiled);
+            // Use timeout to mitigate ReDoS attacks from malicious patterns
+            return new Regex(pattern, options | RegexOptions.Compiled, TimeSpan.FromSeconds(5));
         }
 
         private static RegexOptions GetOptions(string modifiers)
