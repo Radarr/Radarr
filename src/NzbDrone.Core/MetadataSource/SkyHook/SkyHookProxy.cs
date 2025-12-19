@@ -25,8 +25,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 {
     public class SkyHookProxy : IProvideMovieInfo, ISearchForNewMovie
     {
-        private static readonly Regex ImdbUrlRegex = new Regex(@"\bimdb\.com/title/(tt\d{7,})\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex TmdbUrlRegex = new Regex(@"\bthemoviedb\.org/movie/(\d+)\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly TimeSpan RegexTimeout = TimeSpan.FromSeconds(1);
+        private static readonly Regex ImdbUrlRegex = new Regex(@"\bimdb\.com/title/(tt\d{7,})\b", RegexOptions.Compiled | RegexOptions.IgnoreCase, RegexTimeout);
+        private static readonly Regex TmdbUrlRegex = new Regex(@"\bthemoviedb\.org/movie/(\d+)\b", RegexOptions.Compiled | RegexOptions.IgnoreCase, RegexTimeout);
 
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;

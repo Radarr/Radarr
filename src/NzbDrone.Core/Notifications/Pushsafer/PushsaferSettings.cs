@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Notifications.Pushsafer
 {
     public class PushsaferSettingsValidator : AbstractValidator<PushsaferSettings>
     {
-        private static readonly Regex HexColorRegex = new Regex("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$", RegexOptions.Compiled);
+        private static readonly Regex HexColorRegex = new Regex("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         public PushsaferSettingsValidator()
         {
