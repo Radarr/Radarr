@@ -1,0 +1,6 @@
+name: aletheia/codeql-extensions
+version: 1.0.0
+extensionTargets:
+  codeql/csharp-all: "*"
+dataExtensions:
+  - log-sanitizers.yml
