@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +26,7 @@ namespace Radarr.Api.V3.Indexers
         private readonly IDownloadClientFactory _downloadClientFactory;
         private readonly Logger _logger;
 
-        private static readonly object PushLock = new object();
+        private static readonly SemaphoreSlim PushLock = new SemaphoreSlim(1, 1);
 
         public ReleasePushController(IMakeDownloadDecision downloadDecisionMaker,
                                  IProcessDownloadDecisions downloadDecisionProcessor,
@@ -49,7 +51,7 @@ namespace Radarr.Api.V3.Indexers
 
         [HttpPost]
         [Consumes("application/json")]
-        public ActionResult<List<ReleaseResource>> Create([FromBody] ReleaseResource release)
+        public async Task<ActionResult<List<ReleaseResource>>> Create([FromBody] ReleaseResource release)
         {
             _logger.Info("Release pushed: {0} - {1}", release.Title.SanitizeForLog(), (release.DownloadUrl ?? release.MagnetUrl).SanitizeForLog());
 
@@ -65,13 +67,18 @@ namespace Radarr.Api.V3.Indexers
 
             DownloadDecision decision;
 
-            lock (PushLock)
+            await PushLock.WaitAsync();
+            try
             {
                 var decisions = _downloadDecisionMaker.GetRssDecision(new List<ReleaseInfo> { info }, true);
 
                 decision = decisions.FirstOrDefault();
 
-                _downloadDecisionProcessor.ProcessDecision(decision, downloadClientId).GetAwaiter().GetResult();
+                await _downloadDecisionProcessor.ProcessDecision(decision, downloadClientId);
+            }
+            finally
+            {
+                PushLock.Release();
             }
 
             if (decision?.RemoteMovie.ParsedMovieInfo == null)
