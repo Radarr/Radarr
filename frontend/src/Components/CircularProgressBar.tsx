@@ -55,7 +55,7 @@ function CircularProgressBar({
       return () => cancelAnimationFrame(raf.current);
     },
     // We only want to run this effect once
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     []
   );
 
