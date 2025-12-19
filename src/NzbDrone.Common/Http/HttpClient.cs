@@ -274,7 +274,7 @@ namespace NzbDrone.Common.Http
                     fileInfo.Directory.Create();
                 }
 
-                _logger.Debug("Downloading [{0}] to [{1}]", url, fileName);
+                _logger.Debug("Downloading [{0}] to [{1}]", url.SanitizeForLog(), fileName.SanitizeForLog());
 
                 var stopWatch = Stopwatch.StartNew();
                 await using (var fileStream = new FileStream(fileNamePart, FileMode.Create, FileAccess.ReadWrite))
