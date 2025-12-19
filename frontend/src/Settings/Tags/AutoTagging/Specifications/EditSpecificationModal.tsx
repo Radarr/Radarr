@@ -7,8 +7,7 @@ import EditSpecificationModalContent, {
   EditSpecificationModalContentProps,
 } from './EditSpecificationModalContent';
 
-interface EditSpecificationModalProps
-  extends EditSpecificationModalContentProps {
+interface EditSpecificationModalProps extends EditSpecificationModalContentProps {
   isOpen: boolean;
   onModalClose: () => void;
 }

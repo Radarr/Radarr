@@ -19,17 +19,15 @@ import RootFolderSelectInputSelectedValue from './RootFolderSelectInputSelectedV
 
 const ADD_NEW_KEY = 'addNew';
 
-export interface RootFolderSelectInputValue
-  extends EnhancedSelectInputValue<string> {
+export interface RootFolderSelectInputValue extends EnhancedSelectInputValue<string> {
   freeSpace?: number;
   isMissing?: boolean;
 }
 
-export interface RootFolderSelectInputProps
-  extends Omit<
-    EnhancedSelectInputProps<EnhancedSelectInputValue<string>, string>,
-    'value' | 'values'
-  > {
+export interface RootFolderSelectInputProps extends Omit<
+  EnhancedSelectInputProps<EnhancedSelectInputValue<string>, string>,
+  'value' | 'values'
+> {
   name: string;
   value?: string;
   includeMissingValue?: boolean;

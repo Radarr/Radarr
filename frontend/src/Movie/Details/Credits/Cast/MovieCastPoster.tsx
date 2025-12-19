@@ -17,8 +17,10 @@ import MovieCredit from 'typings/MovieCredit';
 import translate from 'Utilities/String/translate';
 import styles from '../MovieCreditPoster.css';
 
-export interface MovieCastPosterProps
-  extends Pick<MovieCredit, 'personName' | 'images' | 'character'> {
+export interface MovieCastPosterProps extends Pick<
+  MovieCredit,
+  'personName' | 'images' | 'character'
+> {
   tmdbId: number;
   posterWidth: number;
   posterHeight: number;

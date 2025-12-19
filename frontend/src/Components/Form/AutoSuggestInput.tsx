@@ -25,8 +25,10 @@ import usePrevious from 'Helpers/Hooks/usePrevious';
 import { InputChanged } from 'typings/inputs';
 import styles from './AutoSuggestInput.css';
 
-interface AutoSuggestInputProps<T>
-  extends Omit<AutosuggestPropsBase<T>, 'renderInputComponent' | 'inputProps'> {
+interface AutoSuggestInputProps<T> extends Omit<
+  AutosuggestPropsBase<T>,
+  'renderInputComponent' | 'inputProps'
+> {
   forwardedRef?: MutableRefObject<Autosuggest<T> | null>;
   className?: string;
   inputContainerClassName?: string;

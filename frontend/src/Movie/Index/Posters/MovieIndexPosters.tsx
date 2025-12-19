@@ -20,7 +20,9 @@ const columnPaddingSmallScreen = Number.parseInt(
   dimensions.movieIndexColumnPaddingSmallScreen
 );
 const progressBarHeight = Number.parseInt(dimensions.progressBarSmallHeight);
-const detailedProgressBarHeight = Number.parseInt(dimensions.progressBarMediumHeight);
+const detailedProgressBarHeight = Number.parseInt(
+  dimensions.progressBarMediumHeight
+);
 
 const ADDITIONAL_COLUMN_COUNT: Record<string, number> = {
   small: 3,
@@ -100,7 +102,9 @@ function getWindowScrollTopPosition() {
   return document.documentElement.scrollTop || document.body.scrollTop || 0;
 }
 
-export default function MovieIndexPosters(props: Readonly<MovieIndexPostersProps>) {
+export default function MovieIndexPosters(
+  props: Readonly<MovieIndexPostersProps>
+) {
   const {
     scrollerRef,
     items,

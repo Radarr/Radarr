@@ -10,7 +10,9 @@ interface SelectIndexerFlagsModalProps {
   onModalClose(): void;
 }
 
-function SelectIndexerFlagsModal(props: Readonly<SelectIndexerFlagsModalProps>) {
+function SelectIndexerFlagsModal(
+  props: Readonly<SelectIndexerFlagsModalProps>
+) {
   const {
     isOpen,
     indexerFlags,

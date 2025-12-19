@@ -3,8 +3,10 @@ import { useDispatch } from 'react-redux';
 import MenuItem, { MenuItemProps } from 'Components/Menu/MenuItem';
 import { selectImportListSchema } from 'Store/Actions/settingsActions';
 
-interface AddImportListPresetMenuItemProps
-  extends Omit<MenuItemProps, 'children'> {
+interface AddImportListPresetMenuItemProps extends Omit<
+  MenuItemProps,
+  'children'
+> {
   name: string;
   implementation: string;
   implementationName: string;

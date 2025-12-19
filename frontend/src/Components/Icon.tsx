@@ -11,11 +11,10 @@ import styles from './Icon.css';
 export type IconName = FontAwesomeIconProps['icon'];
 export type IconKind = Extract<Kind, keyof typeof styles>;
 
-export interface IconProps
-  extends Omit<
-    FontAwesomeIconProps,
-    'icon' | 'spin' | 'name' | 'title' | 'size'
-  > {
+export interface IconProps extends Omit<
+  FontAwesomeIconProps,
+  'icon' | 'spin' | 'name' | 'title' | 'size'
+> {
   containerClassName?: ComponentProps<'span'>['className'];
   name: IconName;
   kind?: IconKind;

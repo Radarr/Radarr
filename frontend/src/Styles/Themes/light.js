@@ -1,6 +1,5 @@
 const aletheiaTeal = '#0d9488';
 const aletheiaAlternateTeal = '#14b8a6';
-const aletheiaDarkTeal = '#0f766e';
 const darkGray = '#888';
 const mediumGray = '#999';
 const gray = '#adadad';

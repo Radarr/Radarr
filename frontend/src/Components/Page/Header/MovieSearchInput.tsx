@@ -39,18 +39,17 @@ interface AddNewMovieSuggestion {
   title: string;
 }
 
-export interface SuggestedMovie
-  extends Pick<
-    Movie,
-    | 'title'
-    | 'year'
-    | 'titleSlug'
-    | 'sortTitle'
-    | 'images'
-    | 'alternateTitles'
-    | 'tmdbId'
-    | 'imdbId'
-  > {
+export interface SuggestedMovie extends Pick<
+  Movie,
+  | 'title'
+  | 'year'
+  | 'titleSlug'
+  | 'sortTitle'
+  | 'images'
+  | 'alternateTitles'
+  | 'tmdbId'
+  | 'imdbId'
+> {
   firstCharacter: string;
   tags: Tag[];
 }
@@ -125,7 +124,8 @@ function MovieSearchInput() {
   const { bindShortcut, unbindShortcut } = useKeyboardShortcuts();
 
   const [value, setValue] = useState('');
-  const [_requestLoading, setRequestLoading] = useState(false);
+  // eslint-disable-next-line react/hook-use-state
+  const [, setRequestLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<MovieSuggestion[]>([]);
 
   const autosuggestRef = useRef<Autosuggest>(null);

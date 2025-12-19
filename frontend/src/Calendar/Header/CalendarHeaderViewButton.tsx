@@ -3,8 +3,10 @@ import { CalendarView } from 'Calendar/calendarViews';
 import Button, { ButtonProps } from 'Components/Link/Button';
 import titleCase from 'Utilities/String/titleCase';
 
-interface CalendarHeaderViewButtonProps
-  extends Omit<ButtonProps, 'children' | 'onPress'> {
+interface CalendarHeaderViewButtonProps extends Omit<
+  ButtonProps,
+  'children' | 'onPress'
+> {
   view: CalendarView;
   selectedView: CalendarView;
   onPress: (view: CalendarView) => void;

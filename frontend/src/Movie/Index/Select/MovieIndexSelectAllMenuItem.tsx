@@ -8,7 +8,9 @@ interface MovieIndexSelectAllMenuItemProps {
   isSelectMode: boolean;
 }
 
-function MovieIndexSelectAllMenuItem(props: Readonly<MovieIndexSelectAllMenuItemProps>) {
+function MovieIndexSelectAllMenuItem(
+  props: Readonly<MovieIndexSelectAllMenuItemProps>
+) {
   const { isSelectMode } = props;
   const [selectState, selectDispatch] = useSelect();
   const { allSelected, allUnselected } = selectState;

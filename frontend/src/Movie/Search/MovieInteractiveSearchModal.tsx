@@ -12,8 +12,7 @@ import MovieInteractiveSearchModalContent, {
   MovieInteractiveSearchModalContentProps,
 } from './MovieInteractiveSearchModalContent';
 
-interface MovieInteractiveSearchModalProps
-  extends MovieInteractiveSearchModalContentProps {
+interface MovieInteractiveSearchModalProps extends MovieInteractiveSearchModalContentProps {
   isOpen: boolean;
 }
 

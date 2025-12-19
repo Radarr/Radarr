@@ -18,7 +18,7 @@ type GetSettingsSectionItemType<Name extends SectionsWithItemNames> =
 
 function createSettingsSectionSelector<
   Name extends SectionsWithItemNames,
-  T extends GetSettingsSectionItemType<Name>
+  T extends GetSettingsSectionItemType<Name>,
 >(section: Name) {
   return createSelector(
     (state: AppState) => state.settings[section],

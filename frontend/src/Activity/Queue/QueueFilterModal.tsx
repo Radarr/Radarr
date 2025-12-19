@@ -27,7 +27,9 @@ interface QueueFilterModalProps {
   isOpen: boolean;
 }
 
-export default function QueueFilterModal(props: Readonly<QueueFilterModalProps>) {
+export default function QueueFilterModal(
+  props: Readonly<QueueFilterModalProps>
+) {
   const sectionItems = useSelector(createQueueSelector());
   const filterBuilderProps = useSelector(createFilterBuilderPropsSelector());
   const customFilterType = 'queue';

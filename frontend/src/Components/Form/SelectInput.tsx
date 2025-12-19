@@ -8,8 +8,10 @@ import React, {
 import { InputChanged } from 'typings/inputs';
 import styles from './SelectInput.css';
 
-export interface SelectInputOption
-  extends Pick<ComponentProps<'option'>, 'disabled'> {
+export interface SelectInputOption extends Pick<
+  ComponentProps<'option'>,
+  'disabled'
+> {
   key: string | number;
   value: string | number | (() => string | number);
 }

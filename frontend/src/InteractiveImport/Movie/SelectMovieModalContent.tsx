@@ -99,7 +99,9 @@ function Row({ index, style, data }: ListChildComponentProps<RowItemData>) {
   );
 }
 
-function SelectMovieModalContent(props: Readonly<SelectMovieModalContentProps>) {
+function SelectMovieModalContent(
+  props: Readonly<SelectMovieModalContentProps>
+) {
   const { modalTitle, onMovieSelect, onModalClose } = props;
 
   const listRef = useRef<List<RowItemData>>(null);
