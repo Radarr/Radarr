@@ -58,8 +58,7 @@ interface AutoSuggestInputProps<T> extends Omit<
   onChange?: (change: InputChanged<T>) => unknown;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function AutoSuggestInput<T = any>(props: AutoSuggestInputProps<T>) {
+function AutoSuggestInput<T = unknown>(props: AutoSuggestInputProps<T>) {
   const {
     // TODO: forwaredRef should be replaces with React.forwardRef
     forwardedRef,

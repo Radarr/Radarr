@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { Data, ModifierFn } from 'popper.js';
 import React, {
   ElementType,
   KeyboardEvent,
@@ -189,11 +190,10 @@ function EnhancedSelectInput<T extends EnhancedSelectInputValue<V>, V>(
     return '';
   }, [value, values, isMultiSelect]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleComputeMaxHeight = useCallback((data: any) => {
+  const handleComputeMaxHeight: ModifierFn = useCallback((data: Data) => {
     const windowHeight = window.innerHeight;
 
-    data.styles.maxHeight = windowHeight - MINIMUM_DISTANCE_FROM_EDGE;
+    data.styles.maxHeight = `${windowHeight - MINIMUM_DISTANCE_FROM_EDGE}px`;
 
     return data;
   }, []);

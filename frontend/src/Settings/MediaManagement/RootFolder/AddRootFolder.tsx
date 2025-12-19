@@ -41,8 +41,12 @@ function AddRootFolder() {
 
           <ul>
             {Array.isArray(saveError.responseJSON) ? (
-              saveError.responseJSON.map((e, index) => {
-                return <li key={index}>{e.errorMessage}</li>;
+              saveError.responseJSON.map((e) => {
+                return (
+                  <li key={e.propertyName ?? e.errorMessage}>
+                    {e.errorMessage}
+                  </li>
+                );
               })
             ) : (
               <li>{JSON.stringify(saveError.responseJSON)}</li>

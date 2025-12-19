@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ColorImpairedConsumer } from 'App/ColorImpairedContext';
 import { Kind } from 'Helpers/Props/kinds';
 import { Size } from 'Helpers/Props/sizes';
@@ -35,6 +35,12 @@ function ProgressBar({
   const progressText = text || progressPercent;
   const actualWidth = width ? `${width}px` : '100%';
 
+  const widthStyle = useMemo(() => ({ width: actualWidth }), [actualWidth]);
+  const progressStyle = useMemo(
+    () => ({ width: progressPercent }),
+    [progressPercent]
+  );
+
   return (
     <ColorImpairedConsumer>
       {(enableColorImpairedMode) => {
@@ -42,12 +48,12 @@ function ProgressBar({
           <div
             className={classNames(containerClassName, styles[size])}
             title={title}
-            style={{ width: actualWidth }}
+            style={widthStyle}
           >
             {showText && width ? (
               <div
                 className={classNames(styles.backTextContainer, styles[kind])}
-                style={{ width: actualWidth }}
+                style={widthStyle}
               >
                 <div className={styles.backText}>
                   <div>{progressText}</div>
@@ -68,18 +74,15 @@ function ProgressBar({
               aria-valuenow={Math.floor(progress)}
               aria-valuemin={0}
               aria-valuemax={100}
-              style={{ width: progressPercent }}
+              style={progressStyle}
             />
 
             {showText ? (
               <div
                 className={classNames(styles.frontTextContainer, styles[kind])}
-                style={{ width: progressPercent }}
+                style={progressStyle}
               >
-                <div
-                  className={styles.frontText}
-                  style={{ width: actualWidth }}
-                >
+                <div className={styles.frontText} style={widthStyle}>
                   <div>{progressText}</div>
                 </div>
               </div>

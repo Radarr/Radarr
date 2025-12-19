@@ -21,17 +21,17 @@ function Form({
     <div id={id}>
       {validationErrors.length || validationWarnings.length ? (
         <div className={styles.validationFailures}>
-          {validationErrors.map((error, index) => {
+          {validationErrors.map((error) => {
             return (
-              <Alert key={index} kind={kinds.DANGER}>
+              <Alert key={error.propertyName} kind={kinds.DANGER}>
                 {error.errorMessage}
               </Alert>
             );
           })}
 
-          {validationWarnings.map((warning, index) => {
+          {validationWarnings.map((warning) => {
             return (
-              <Alert key={index} kind={kinds.WARNING}>
+              <Alert key={warning.propertyName} kind={kinds.WARNING}>
                 {warning.errorMessage}
               </Alert>
             );

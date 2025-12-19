@@ -83,7 +83,7 @@ export default function AutoTagging({
       <TagList tags={tags} tagList={tagList} />
 
       <div>
-        {specifications.map((item, index) => {
+        {specifications.map((item) => {
           if (!item) {
             return null;
           }
@@ -98,7 +98,7 @@ export default function AutoTagging({
           }
 
           return (
-            <Label key={index} kind={kind}>
+            <Label key={item.id} kind={kind}>
               {item.name}
             </Label>
           );

@@ -38,9 +38,9 @@ function ExtraFileDetailsPopover(
         title={translate('Tags')}
         body={
           <ul>
-            {details.map(({ name, value }, index) => {
+            {details.map(({ name, value }) => {
               return (
-                <li key={index}>
+                <li key={name}>
                   {name}: {value}
                 </li>
               );
