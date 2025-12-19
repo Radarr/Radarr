@@ -11,7 +11,8 @@
     "lint": "eslint --config frontend/.eslintrc.js --ignore-path frontend/.eslintignore frontend/",
     "lint-fix": "yarn lint --fix",
     "stylelint-linux": "stylelint $(find frontend -name '*.css') --config frontend/.stylelintrc",
-    "stylelint-windows": "stylelint \"frontend/**/*.css\" --config frontend/.stylelintrc"
+    "stylelint-windows": "stylelint \"frontend/**/*.css\" --config frontend/.stylelintrc",
+    "prepare": "husky"
   },
   "repository": "https://github.com/Radarr/Radarr",
   "author": "Team Radarr",
@@ -89,6 +90,8 @@
     "use-debounce": "10.0.4"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
     "@babel/core": "7.27.1",
     "@babel/eslint-parser": "7.27.1",
     "@babel/plugin-proposal-export-default-from": "7.27.1",
@@ -163,5 +166,14 @@
     "color-string": "^1.9.1",
     "postcss-color-function/**/postcss": "^8.5.6",
     "glob": "^11.1.0"
+  },
+  "lint-staged": {
+    "frontend/**/*.{ts,tsx}": [
+      "eslint --config frontend/.eslintrc.js --fix",
+      "prettier --write"
+    ],
+    "frontend/**/*.css": [
+      "prettier --write"
+    ]
   }
 }
