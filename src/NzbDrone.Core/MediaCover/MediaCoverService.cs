@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.Disk;
@@ -141,7 +142,7 @@ namespace NzbDrone.Core.MediaCover
             return Path.Combine(_coverRootFolder, movieId.ToString());
         }
 
-        private bool EnsureCovers(Movie movie)
+        private async Task<bool> EnsureCoversAsync(Movie movie)
         {
             var updated = false;
             var toResize = new List<Tuple<MediaCover, bool>>();
@@ -184,7 +185,7 @@ namespace NzbDrone.Core.MediaCover
 
             try
             {
-                _semaphore.Wait();
+                await _semaphore.WaitAsync();
 
                 foreach (var tuple in toResize)
                 {
@@ -261,9 +262,9 @@ namespace NzbDrone.Core.MediaCover
             };
         }
 
-        public void HandleAsync(MovieUpdatedEvent message)
+        public async void HandleAsync(MovieUpdatedEvent message)
         {
-            var updated = EnsureCovers(message.Movie);
+            var updated = await EnsureCoversAsync(message.Movie);
 
             _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie, updated));
         }
