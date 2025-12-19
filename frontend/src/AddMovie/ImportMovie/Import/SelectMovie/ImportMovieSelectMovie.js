@@ -78,7 +78,7 @@ class ImportMovieSelectMovie extends Component {
       this._addListener();
     }
 
-    this.setState({ isOpen: !this.state.isOpen });
+    this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
   };
 
   onSearchInputChange = ({ value }) => {

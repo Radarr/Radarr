@@ -219,7 +219,7 @@ const MovieIndex = withScrollPosition((props: Readonly<MovieIndexProps>) => {
       return acc;
     }, {});
 
-    const order = Object.keys(characters).sort();
+    const order = Object.keys(characters).sort((a, b) => a.localeCompare(b));
 
     // Reverse if sorting descending
     if (sortDirection === DESCENDING) {
