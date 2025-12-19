@@ -125,7 +125,7 @@ class CustomFormat extends Component {
               return (
                 <Label
                   className={styles.label}
-                  key={index}
+                  key={item.name}
                   kind={kind}
                 >
                   {item.name}

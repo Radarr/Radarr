@@ -226,9 +226,9 @@ class ImportMovieFooter extends Component {
                     <ul>
                       {
                         Array.isArray(importError.responseJSON) ?
-                          importError.responseJSON.map((error, index) => {
+                          importError.responseJSON.map((error) => {
                             return (
-                              <li key={index}>
+                              <li key={error.errorMessage}>
                                 {error.errorMessage}
                               </li>
                             );

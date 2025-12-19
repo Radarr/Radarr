@@ -153,9 +153,9 @@ class ImportMovieSelectFolder extends Component {
                       <ul>
                         {
                           Array.isArray(saveError.responseJSON) ?
-                            saveError.responseJSON.map((e, index) => {
+                            saveError.responseJSON.map((e) => {
                               return (
-                                <li key={index}>
+                                <li key={e.errorMessage}>
                                   {e.errorMessage}
                                 </li>
                               );

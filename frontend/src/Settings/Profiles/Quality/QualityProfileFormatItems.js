@@ -84,10 +84,10 @@ class QualityProfileFormatItems extends Component {
           />
 
           {
-            errors.map((error, index) => {
+            errors.map((error) => {
               return (
                 <FormInputHelpText
-                  key={index}
+                  key={error.message}
                   text={error.message}
                   isError={true}
                   isCheckInput={false}
@@ -97,10 +97,10 @@ class QualityProfileFormatItems extends Component {
           }
 
           {
-            warnings.map((warning, index) => {
+            warnings.map((warning) => {
               return (
                 <FormInputHelpText
-                  key={index}
+                  key={warning.message}
                   text={warning.message}
                   isWarning={true}
                   isCheckInput={false}
