@@ -25,6 +25,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 {
     public class SkyHookProxy : IProvideMovieInfo, ISearchForNewMovie
     {
+        private static readonly Regex ImdbUrlRegex = new Regex(@"\bimdb\.com/title/(tt\d{7,})\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex TmdbUrlRegex = new Regex(@"\bthemoviedb\.org/movie/(\d+)\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
@@ -406,7 +409,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             try
             {
-                var match = new Regex(@"\bimdb\.com/title/(tt\d{7,})\b", RegexOptions.IgnoreCase).Match(title);
+                var match = ImdbUrlRegex.Match(title);
 
                 if (match.Success)
                 {
@@ -414,7 +417,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
                 else
                 {
-                    match = new Regex(@"\bthemoviedb\.org/movie/(\d+)\b", RegexOptions.IgnoreCase).Match(title);
+                    match = TmdbUrlRegex.Match(title);
 
                     if (match.Success)
                     {
