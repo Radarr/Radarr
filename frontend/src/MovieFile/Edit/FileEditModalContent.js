@@ -47,7 +47,7 @@ class FileEditModalContent extends Component {
   // Listeners
 
   onQualityChange = ({ value }) => {
-    this.setState({ qualityId: Number.Number.parseInt(value) });
+    this.setState({ qualityId: Number.parseInt(value) });
   };
 
   onInputChange = ({ name, value }) => {

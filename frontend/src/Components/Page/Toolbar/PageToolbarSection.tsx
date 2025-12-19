@@ -12,8 +12,8 @@ import { PageToolbarButtonProps } from './PageToolbarButton';
 import PageToolbarOverflowMenuItem from './PageToolbarOverflowMenuItem';
 import styles from './PageToolbarSection.css';
 
-const BUTTON_WIDTH = Number.Number.parseInt(dimensions.toolbarButtonWidth);
-const SEPARATOR_MARGIN = Number.Number.parseInt(dimensions.toolbarSeparatorMargin);
+const BUTTON_WIDTH = Number.parseInt(dimensions.toolbarButtonWidth);
+const SEPARATOR_MARGIN = Number.parseInt(dimensions.toolbarSeparatorMargin);
 const SEPARATOR_WIDTH = 2 * SEPARATOR_MARGIN + 1;
 
 export interface PageToolbarSectionProps {

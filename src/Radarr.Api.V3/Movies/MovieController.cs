@@ -273,7 +273,7 @@ namespace Radarr.Api.V3.Movies
 
             BroadcastResourceChange(ModelAction.Updated, MapToResource(updatedMovie));
 
-            return Accepted(moviesResource.Id);
+            return Ok(moviesResource);
         }
 
         [RestDeleteById]

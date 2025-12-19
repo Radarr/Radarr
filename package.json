@@ -156,5 +156,12 @@
   "volta": {
     "node": "20.11.1",
     "yarn": "1.22.19"
+  },
+  "resolutions": {
+    "cross-spawn": "^7.0.6",
+    "brace-expansion": "^2.0.2",
+    "color-string": "^1.9.1",
+    "postcss-color-function/**/postcss": "^8.5.6",
+    "glob": "^11.1.0"
   }
 }

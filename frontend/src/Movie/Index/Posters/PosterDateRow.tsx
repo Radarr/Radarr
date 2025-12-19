@@ -1,6 +1,5 @@
 import React from 'react';
-import Icon from 'Components/Icon';
-import { IconDefinition } from 'Helpers/Props/icons';
+import Icon, { IconName } from 'Components/Icon';
 import formatDate from 'Utilities/Date/formatDate';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import styles from './MovieIndexPoster.css';
@@ -8,7 +7,7 @@ import styles from './MovieIndexPoster.css';
 interface PosterDateRowProps {
   show: boolean;
   date?: string;
-  icon: IconDefinition;
+  icon: IconName;
   label: string;
   shortDateFormat: string;
   longDateFormat: string;

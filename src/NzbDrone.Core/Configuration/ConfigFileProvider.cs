@@ -326,7 +326,12 @@ namespace NzbDrone.Core.Configuration
             return _cache.Get(key, () =>
                 {
                     var xDoc = LoadConfigFile();
-                    var config = xDoc.Descendants(CONFIG_ELEMENT_NAME).Single();
+                    var config = xDoc.Descendants(CONFIG_ELEMENT_NAME).SingleOrDefault();
+
+                    if (config == null)
+                    {
+                        return defaultValue.ToString();
+                    }
 
                     var parentContainer = config;
 
@@ -352,7 +357,12 @@ namespace NzbDrone.Core.Configuration
         {
             var valueString = value.ToString().Trim();
             var xDoc = LoadConfigFile();
-            var config = xDoc.Descendants(CONFIG_ELEMENT_NAME).Single();
+            var config = xDoc.Descendants(CONFIG_ELEMENT_NAME).SingleOrDefault();
+
+            if (config == null)
+            {
+                return;
+            }
 
             var parentContainer = config;
 
@@ -408,7 +418,12 @@ namespace NzbDrone.Core.Configuration
         private void DeleteOldValues()
         {
             var xDoc = LoadConfigFile();
-            var config = xDoc.Descendants(CONFIG_ELEMENT_NAME).Single();
+            var config = xDoc.Descendants(CONFIG_ELEMENT_NAME).SingleOrDefault();
+
+            if (config == null)
+            {
+                return;
+            }
 
             var type = GetType();
             var properties = type.GetProperties();

@@ -13,7 +13,7 @@ function createMovieCreditImportListSelector(tmdbId: number) {
               (field) => field.name === 'personId'
             )?.value as string | null;
 
-            if (personIdValue && Number.Number.parseInt(personIdValue) === tmdbId) {
+            if (personIdValue && Number.parseInt(personIdValue) === tmdbId) {
               acc.push(importList);
 
               return acc;

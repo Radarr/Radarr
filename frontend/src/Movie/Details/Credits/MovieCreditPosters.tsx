@@ -12,8 +12,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 // Poster container dimensions
-const columnPadding = Number.Number.parseInt(dimensions.movieIndexColumnPadding);
-const columnPaddingSmallScreen = Number.Number.parseInt(
+const columnPadding = Number.parseInt(dimensions.movieIndexColumnPadding);
+const columnPaddingSmallScreen = Number.parseInt(
   dimensions.movieIndexColumnPaddingSmallScreen
 );
 

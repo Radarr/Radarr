@@ -162,7 +162,7 @@ class DiscoverMovie extends Component {
     const characters = _.reduce(items, (acc, item) => {
       let char = item.sortTitle.charAt(0);
 
-      if (!Number.Number.isNaN(char)) {
+      if (!Number.isNaN(char)) {
         char = '#';
       }
 

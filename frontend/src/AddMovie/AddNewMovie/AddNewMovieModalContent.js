@@ -24,7 +24,7 @@ class AddNewMovieModalContent extends Component {
   // Listeners
 
   onQualityProfileIdChange = ({ value }) => {
-    this.props.onInputChange({ name: 'qualityProfileId', value: Number.Number.parseInt(value) });
+    this.props.onInputChange({ name: 'qualityProfileId', value: Number.parseInt(value) });
   };
 
   onAddMoviePress = () => {

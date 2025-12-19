@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Download
                     }
                     catch (Exception ex)
                     {
-                        if (!magnetUrl.IsNullOrWhiteSpace())
+                        if (magnetUrl.IsNullOrWhiteSpace())
                         {
                             throw;
                         }

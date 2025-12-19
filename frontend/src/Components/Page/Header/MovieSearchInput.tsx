@@ -125,7 +125,7 @@ function MovieSearchInput() {
   const { bindShortcut, unbindShortcut } = useKeyboardShortcuts();
 
   const [value, setValue] = useState('');
-  const [requestLoading, setRequestLoading] = useState(false);
+  const [_requestLoading, setRequestLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<MovieSuggestion[]>([]);
 
   const autosuggestRef = useRef<Autosuggest>(null);
@@ -133,6 +133,7 @@ function MovieSearchInput() {
   const worker = useRef<Worker | null>(null);
   const isLoading = useRef(false);
   const requestValue = useRef<string | null>(null);
+  const requestLoadingRef = useRef(false);
 
   const suggestionGroups = useMemo(() => {
     const result: Section[] = [];
@@ -164,15 +165,18 @@ function MovieSearchInput() {
 
       if (!isLoading.current) {
         requestValue.current = null;
+        requestLoadingRef.current = false;
         setRequestLoading(false);
       } else if (value === requestValue.current) {
         setSuggestions(suggestions);
         requestValue.current = null;
+        requestLoadingRef.current = false;
         setRequestLoading(false);
         isLoading.current = false;
         // setLoading(false);
       } else {
         setSuggestions(suggestions);
+        requestLoadingRef.current = true;
         setRequestLoading(true);
 
         const payload = {
@@ -192,9 +196,11 @@ function MovieSearchInput() {
     }
 
     requestValue.current = value;
-    setRequestLoading(true);
 
-    if (!requestLoading) {
+    if (!requestLoadingRef.current) {
+      requestLoadingRef.current = true;
+      setRequestLoading(true);
+
       const payload = {
         value,
         movies,

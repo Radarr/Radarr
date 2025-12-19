@@ -11,16 +11,16 @@ import Movie from 'Movie/Movie';
 import dimensions from 'Styles/Variables/dimensions';
 import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
 
-const bodyPadding = Number.Number.parseInt(dimensions.pageContentBodyPadding);
-const bodyPaddingSmallScreen = Number.Number.parseInt(
+const bodyPadding = Number.parseInt(dimensions.pageContentBodyPadding);
+const bodyPaddingSmallScreen = Number.parseInt(
   dimensions.pageContentBodyPaddingSmallScreen
 );
-const columnPadding = Number.Number.parseInt(dimensions.movieIndexColumnPadding);
-const columnPaddingSmallScreen = Number.Number.parseInt(
+const columnPadding = Number.parseInt(dimensions.movieIndexColumnPadding);
+const columnPaddingSmallScreen = Number.parseInt(
   dimensions.movieIndexColumnPaddingSmallScreen
 );
-const progressBarHeight = Number.Number.parseInt(dimensions.progressBarSmallHeight);
-const detailedProgressBarHeight = Number.Number.parseInt(dimensions.progressBarMediumHeight);
+const progressBarHeight = Number.parseInt(dimensions.progressBarSmallHeight);
+const detailedProgressBarHeight = Number.parseInt(dimensions.progressBarMediumHeight);
 
 const ADDITIONAL_COLUMN_COUNT: Record<string, number> = {
   small: 3,

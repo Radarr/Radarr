@@ -50,7 +50,7 @@ function getValue(input, selectedFilterBuilderProp) {
         case 'tib':
           return convertToBytes(value, 4, true);
         default:
-          return Number.Number.parseInt(value);
+          return Number.parseInt(value);
       }
     }
   }

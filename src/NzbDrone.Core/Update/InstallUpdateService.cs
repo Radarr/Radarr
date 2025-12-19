@@ -99,7 +99,7 @@ namespace NzbDrone.Core.Update
                 }
             }
 
-            if (_appFolderInfo.StartUpFolder.EndsWith("_output"))
+            if (Path.GetFileName(_appFolderInfo.StartUpFolder) == "_output")
             {
                 _logger.ProgressDebug("Running in developer environment, not updating.");
                 return false;
@@ -181,7 +181,7 @@ namespace NzbDrone.Core.Update
             {
                 try
                 {
-                    _logger.Info("Branch [{0}] is being redirected to [{1}]]", currentBranch, package.Branch);
+                    _logger.Info("Branch [{0}] is being redirected to [{1}]", currentBranch, package.Branch);
                     var config = new Dictionary<string, object>();
                     config["Branch"] = package.Branch;
                     _configFileProvider.SaveConfigDictionary(config);

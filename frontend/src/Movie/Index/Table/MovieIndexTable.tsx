@@ -15,8 +15,8 @@ import MovieIndexRow from './MovieIndexRow';
 import MovieIndexTableHeader from './MovieIndexTableHeader';
 import styles from './MovieIndexTable.css';
 
-const bodyPadding = Number.Number.parseInt(dimensions.pageContentBodyPadding);
-const bodyPaddingSmallScreen = Number.Number.parseInt(
+const bodyPadding = Number.parseInt(dimensions.pageContentBodyPadding);
+const bodyPaddingSmallScreen = Number.parseInt(
   dimensions.pageContentBodyPaddingSmallScreen
 );
 

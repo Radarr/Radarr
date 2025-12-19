@@ -84,11 +84,11 @@ function Tooltip(props: Readonly<TooltipProps>) {
   const maxWidth = useMemo(() => {
     const windowWidth = window.innerWidth;
 
-    if (windowWidth >= Number.Number.parseInt(dimensions.breakpointLarge)) {
+    if (windowWidth >= Number.parseInt(dimensions.breakpointLarge)) {
       return 800;
-    } else if (windowWidth >= Number.Number.parseInt(dimensions.breakpointMedium)) {
+    } else if (windowWidth >= Number.parseInt(dimensions.breakpointMedium)) {
       return 650;
-    } else if (windowWidth >= Number.Number.parseInt(dimensions.breakpointSmall)) {
+    } else if (windowWidth >= Number.parseInt(dimensions.breakpointSmall)) {
       return 500;
     }
 

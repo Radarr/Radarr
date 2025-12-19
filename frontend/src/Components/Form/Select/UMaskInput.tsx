@@ -77,7 +77,7 @@ export interface UMaskInputProps {
 }
 
 function UMaskInput({ name, value, onChange }: Readonly<UMaskInputProps>) {
-  const valueNum = Number.Number.parseInt(value, 8);
+  const valueNum = Number.parseInt(value, 8);
   const umaskNum = 0o777 & ~valueNum;
   const umask = umaskNum.toString(8).padStart(4, '0');
   const folderNum = 0o777 & ~umaskNum;

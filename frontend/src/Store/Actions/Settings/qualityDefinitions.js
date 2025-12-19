@@ -58,7 +58,7 @@ export default {
       const qualityDefinitions = getState().settings.qualityDefinitions;
 
       const upatedDefinitions = Object.keys(qualityDefinitions.pendingChanges).map((key) => {
-        const id = Number.Number.parseInt(key);
+        const id = Number.parseInt(key);
         const pendingChanges = qualityDefinitions.pendingChanges[id] || {};
         const item = _.find(qualityDefinitions.items, { id });
 

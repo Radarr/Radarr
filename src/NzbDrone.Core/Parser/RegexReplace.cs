@@ -1,22 +1,25 @@
+using System;
 using System.Text.RegularExpressions;
 
 namespace NzbDrone.Core.Parser
 {
     public class RegexReplace
     {
+        private static readonly TimeSpan RegexTimeout = TimeSpan.FromSeconds(5);
+
         private readonly Regex _regex;
         private readonly string _replacementFormat;
         private readonly MatchEvaluator _replacementFunc;
 
         public RegexReplace(string pattern, string replacement, RegexOptions regexOptions)
         {
-            _regex = new Regex(pattern, regexOptions);
+            _regex = new Regex(pattern, regexOptions | RegexOptions.Compiled, RegexTimeout);
             _replacementFormat = replacement;
         }
 
         public RegexReplace(string pattern, MatchEvaluator replacement, RegexOptions regexOptions)
         {
-            _regex = new Regex(pattern, regexOptions);
+            _regex = new Regex(pattern, regexOptions | RegexOptions.Compiled, RegexTimeout);
             _replacementFunc = replacement;
         }
 

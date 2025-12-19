@@ -3,7 +3,7 @@ import { filesize } from 'filesize';
 function formatBytes(input: string | number) {
   const size = Number(input);
 
-  if (Number.Number.isNaN(size)) {
+  if (Number.isNaN(size)) {
     return '';
   }
 

@@ -30,7 +30,7 @@ function createMapStateToProps() {
         items
       } = rootFolders;
 
-      const rootFolderId = Number.Number.parseInt(match.params.rootFolderId);
+      const rootFolderId = Number.parseInt(match.params.rootFolderId);
 
       const result = {
         rootFolderId,
