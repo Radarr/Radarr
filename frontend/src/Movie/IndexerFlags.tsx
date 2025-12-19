@@ -16,8 +16,8 @@ function IndexerFlags({ indexerFlags = 0 }: Readonly<IndexerFlagsProps>) {
 
   return flags.length ? (
     <ul>
-      {flags.map((flag, index) => {
-        return <li key={index}>{flag.name}</li>;
+      {flags.map((flag) => {
+        return <li key={flag.id}>{flag.name}</li>;
       })}
     </ul>
   ) : null;

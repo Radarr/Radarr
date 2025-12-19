@@ -302,8 +302,8 @@ function InteractiveSearchRow(props: Readonly<InteractiveSearchRowProps>) {
             title={translate('IndexerFlags')}
             body={
               <ul>
-                {indexerFlags.map((flag, index) => {
-                  return <li key={index}>{flag}</li>;
+                {indexerFlags.map((flag) => {
+                  return <li key={flag}>{flag}</li>;
                 })}
               </ul>
             }
@@ -319,8 +319,8 @@ function InteractiveSearchRow(props: Readonly<InteractiveSearchRowProps>) {
             title={translate('ReleaseRejected')}
             body={
               <ul>
-                {rejections.map((rejection, index) => {
-                  return <li key={index}>{rejection}</li>;
+                {rejections.map((rejection) => {
+                  return <li key={rejection}>{rejection}</li>;
                 })}
               </ul>
             }

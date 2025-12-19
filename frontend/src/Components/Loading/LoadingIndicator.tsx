@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from './LoadingIndicator.css';
 
 interface LoadingIndicatorProps {
@@ -14,20 +14,24 @@ function LoadingIndicator({
   size = 50,
 }: Readonly<LoadingIndicatorProps>) {
   const sizeInPx = `${size}px`;
-  const width = sizeInPx;
-  const height = sizeInPx;
+
+  const containerStyle = useMemo(() => ({ height: sizeInPx }), [sizeInPx]);
+  const rippleContainerStyle = useMemo(
+    () => ({ width: sizeInPx, height: sizeInPx }),
+    [sizeInPx]
+  );
 
   return (
-    <div className={className} style={{ height }}>
+    <div className={className} style={containerStyle}>
       <div
         className={classNames(styles.rippleContainer, 'followingBalls')}
-        style={{ width, height }}
+        style={rippleContainerStyle}
       >
-        <div className={rippleClassName} style={{ width, height }} />
+        <div className={rippleClassName} style={rippleContainerStyle} />
 
-        <div className={rippleClassName} style={{ width, height }} />
+        <div className={rippleClassName} style={rippleContainerStyle} />
 
-        <div className={rippleClassName} style={{ width, height }} />
+        <div className={rippleClassName} style={rippleContainerStyle} />
       </div>
     </div>
   );

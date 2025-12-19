@@ -20,7 +20,7 @@ function UpdateChanges(props: Readonly<UpdateChangesProps>) {
     <div>
       <div className={styles.title}>{title}</div>
       <ul>
-        {uniqueChanges.map((change, index) => {
+        {uniqueChanges.map((change) => {
           const checkChange = change.replace(
             /#\d{4,5}\b/g,
             (match) =>
@@ -30,7 +30,7 @@ function UpdateChanges(props: Readonly<UpdateChangesProps>) {
           );
 
           return (
-            <li key={index}>
+            <li key={change}>
               <InlineMarkdown data={checkChange} />
             </li>
           );

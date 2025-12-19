@@ -269,10 +269,10 @@ function FormInputGroup<T, C extends InputType>(
 
       {!checkInput && helpTexts ? (
         <div>
-          {helpTexts.map((text, index) => {
+          {helpTexts.map((text) => {
             return (
               <FormInputHelpText
-                key={index}
+                key={text}
                 text={text}
                 isCheckInput={checkInput}
               />
@@ -287,10 +287,12 @@ function FormInputGroup<T, C extends InputType>(
 
       {helpLink ? <Link to={helpLink}>{translate('MoreInfo')}</Link> : null}
 
-      {errors.map((error, index) => {
+      {errors.map((error) => {
+        const message =
+          'errorMessage' in error ? error.errorMessage : error.message;
         return 'errorMessage' in error ? (
           <FormInputHelpText
-            key={index}
+            key={message}
             text={error.errorMessage}
             link={error.infoLink}
             tooltip={error.detailedDescription}
@@ -299,7 +301,7 @@ function FormInputGroup<T, C extends InputType>(
           />
         ) : (
           <FormInputHelpText
-            key={index}
+            key={message}
             text={error.message}
             isError={true}
             isCheckInput={checkInput}
@@ -307,10 +309,12 @@ function FormInputGroup<T, C extends InputType>(
         );
       })}
 
-      {warnings.map((warning, index) => {
+      {warnings.map((warning) => {
+        const message =
+          'errorMessage' in warning ? warning.errorMessage : warning.message;
         return 'errorMessage' in warning ? (
           <FormInputHelpText
-            key={index}
+            key={message}
             text={warning.errorMessage}
             link={warning.infoLink}
             tooltip={warning.detailedDescription}
@@ -319,7 +323,7 @@ function FormInputGroup<T, C extends InputType>(
           />
         ) : (
           <FormInputHelpText
-            key={index}
+            key={message}
             text={warning.message}
             isWarning={true}
             isCheckInput={checkInput}

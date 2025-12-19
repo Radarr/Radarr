@@ -376,8 +376,8 @@ function InteractiveImportRow(props: Readonly<InteractiveImportRowProps>) {
             title={translate('ReleaseRejected')}
             body={
               <ul>
-                {rejections.map((rejection, index) => {
-                  return <li key={index}>{rejection.reason}</li>;
+                {rejections.map((rejection) => {
+                  return <li key={rejection.reason}>{rejection.reason}</li>;
                 })}
               </ul>
             }
