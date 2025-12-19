@@ -5,7 +5,7 @@ root = true
 # NOTE: Requires **VS2019 16.3** or later
 
 # Stylecop.ruleset
-# Description: Rules for Radarr
+# Description: Rules for Aletheia
 
 # Code files
 [*.cs]
@@ -18,12 +18,6 @@ indent_size = 4
 # Sort using and Import directives with System.* appearing first
 dotnet_sort_system_directives_first = true
 
-# Avoid "this." and "Me." if not necessary
-dotnet_style_qualification_for_field = false:refactoring
-dotnet_style_qualification_for_property = false:refactoring
-dotnet_style_qualification_for_method = false:refactoring
-dotnet_style_qualification_for_event = false:refactoring
-
 # Indentation preferences
 csharp_indent_block_contents = true
 csharp_indent_braces = false
@@ -32,10 +26,13 @@ csharp_indent_case_contents_when_block = true
 csharp_indent_switch_labels = true
 csharp_indent_labels = flush_left
 
+# Avoid "this." and "Me." if not necessary
 dotnet_style_qualification_for_field = false:suggestion
 dotnet_style_qualification_for_property = false:suggestion
 dotnet_style_qualification_for_method = false:suggestion
 dotnet_style_qualification_for_event = false:suggestion
+
+# Naming conventions
 dotnet_naming_style.instance_field_style.capitalization = camel_case
 dotnet_naming_style.instance_field_style.required_prefix = _
 

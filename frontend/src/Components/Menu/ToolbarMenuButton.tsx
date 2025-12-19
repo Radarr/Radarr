@@ -5,8 +5,10 @@ import MenuButton, { MenuButtonProps } from 'Components/Menu/MenuButton';
 import { icons } from 'Helpers/Props';
 import styles from './ToolbarMenuButton.css';
 
-export interface ToolbarMenuButtonProps
-  extends Omit<MenuButtonProps, 'children'> {
+export interface ToolbarMenuButtonProps extends Omit<
+  MenuButtonProps,
+  'children'
+> {
   className?: string;
   iconName: IconName;
   showIndicator?: boolean;

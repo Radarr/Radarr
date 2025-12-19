@@ -17,7 +17,9 @@ interface MovieIndexSearchMenuItemProps {
   selectedFilterKey: string;
 }
 
-function MovieIndexSearchMenuItem(props: Readonly<MovieIndexSearchMenuItemProps>) {
+function MovieIndexSearchMenuItem(
+  props: Readonly<MovieIndexSearchMenuItemProps>
+) {
   const isSearching = useSelector(createCommandExecutingSelector(MOVIE_SEARCH));
   const {
     items,

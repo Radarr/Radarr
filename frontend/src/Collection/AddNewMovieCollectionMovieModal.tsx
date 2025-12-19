@@ -7,8 +7,7 @@ import AddNewMovieCollectionMovieModalContent, {
   AddNewMovieCollectionMovieModalContentProps,
 } from './AddNewMovieCollectionMovieModalContent';
 
-interface AddNewCollectionMovieModalProps
-  extends AddNewMovieCollectionMovieModalContentProps {
+interface AddNewCollectionMovieModalProps extends AddNewMovieCollectionMovieModalContentProps {
   isOpen: boolean;
 }
 

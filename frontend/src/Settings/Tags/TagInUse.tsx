@@ -6,7 +6,11 @@ interface TagInUseProps {
   count: number;
 }
 
-export default function TagInUse({ label, labelPlural, count }: Readonly<TagInUseProps>) {
+export default function TagInUse({
+  label,
+  labelPlural,
+  count,
+}: Readonly<TagInUseProps>) {
   if (count === 0) {
     return null;
   }

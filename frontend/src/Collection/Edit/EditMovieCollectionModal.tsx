@@ -6,8 +6,7 @@ import EditMovieCollectionModalContent, {
   EditMovieCollectionModalContentProps,
 } from './EditMovieCollectionModalContent';
 
-interface EditMovieCollectionModalProps
-  extends EditMovieCollectionModalContentProps {
+interface EditMovieCollectionModalProps extends EditMovieCollectionModalContentProps {
   isOpen: boolean;
 }
 

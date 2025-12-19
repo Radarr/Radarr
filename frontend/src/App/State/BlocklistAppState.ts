@@ -6,7 +6,8 @@ import AppSectionState, {
 } from './AppSectionState';
 
 interface BlocklistAppState
-  extends AppSectionState<Blocklist>,
+  extends
+    AppSectionState<Blocklist>,
     AppSectionFilterState<Blocklist>,
     PagedAppSectionState,
     TableAppSectionState {

@@ -30,7 +30,10 @@ function PosterDateRow({
   }
 
   return (
-    <div className={styles.title} title={`${label}: ${formatDate(date, longDateFormat)}`}>
+    <div
+      className={styles.title}
+      title={`${label}: ${formatDate(date, longDateFormat)}`}
+    >
       <Icon name={icon} />{' '}
       {getRelativeDate({
         date,

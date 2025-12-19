@@ -7,8 +7,7 @@ import EnhancedSelectInputOption, {
 } from './EnhancedSelectInputOption';
 import styles from './RootFolderSelectInputOption.css';
 
-interface RootFolderSelectInputOptionProps
-  extends EnhancedSelectInputOptionProps {
+interface RootFolderSelectInputOptionProps extends EnhancedSelectInputOptionProps {
   id: string;
   value: string;
   freeSpace?: number;

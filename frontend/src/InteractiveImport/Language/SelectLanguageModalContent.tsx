@@ -45,7 +45,9 @@ function createFilteredLanguagesSelector() {
   });
 }
 
-function SelectLanguageModalContent(props: Readonly<SelectLanguageModalContentProps>) {
+function SelectLanguageModalContent(
+  props: Readonly<SelectLanguageModalContentProps>
+) {
   const { modalTitle, onLanguagesSelect, onModalClose } = props;
 
   const { isFetching, isPopulated, error, items } = useSelector(

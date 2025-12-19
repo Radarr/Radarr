@@ -7,7 +7,7 @@ import getSectionState from 'Utilities/State/getSectionState';
 
 function createSortedSectionSelector<
   T,
-  S extends AppSectionState<T> | AppSectionProviderState<T>
+  S extends AppSectionState<T> | AppSectionProviderState<T>,
 >(section: string, comparer: (a: T, b: T) => number) {
   return createSelector(
     (state: AppState) => state,

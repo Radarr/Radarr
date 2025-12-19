@@ -219,7 +219,10 @@ interface PageSidebarProps {
   isSidebarVisible: boolean;
 }
 
-function PageSidebar({ isSidebarVisible, isSmallScreen }: Readonly<PageSidebarProps>) {
+function PageSidebar({
+  isSidebarVisible,
+  isSmallScreen,
+}: Readonly<PageSidebarProps>) {
   const dispatch = useDispatch();
   const location = useLocation();
   const sidebarRef = useRef(null);

@@ -3,8 +3,10 @@ import { useDispatch } from 'react-redux';
 import MenuItem, { MenuItemProps } from 'Components/Menu/MenuItem';
 import { selectIndexerSchema } from 'Store/Actions/settingsActions';
 
-interface AddIndexerPresetMenuItemProps
-  extends Omit<MenuItemProps, 'children'> {
+interface AddIndexerPresetMenuItemProps extends Omit<
+  MenuItemProps,
+  'children'
+> {
   name: string;
   implementation: string;
   implementationName: string;

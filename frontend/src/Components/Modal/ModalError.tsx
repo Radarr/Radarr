@@ -14,7 +14,10 @@ interface ModalErrorProps extends ErrorBoundaryErrorProps {
   onModalClose: () => void;
 }
 
-function ModalError({ onModalClose, ...otherProps }: Readonly<ModalErrorProps>) {
+function ModalError({
+  onModalClose,
+  ...otherProps
+}: Readonly<ModalErrorProps>) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>{translate('Error')}</ModalHeader>

@@ -6,7 +6,9 @@ export interface DescriptionListItemTitleProps {
   children?: ReactNode;
 }
 
-function DescriptionListItemTitle(props: Readonly<DescriptionListItemTitleProps>) {
+function DescriptionListItemTitle(
+  props: Readonly<DescriptionListItemTitleProps>
+) {
   const { className = styles.title, children } = props;
 
   return <dt className={className}>{children}</dt>;

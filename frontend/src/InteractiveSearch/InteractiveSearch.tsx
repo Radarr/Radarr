@@ -125,7 +125,9 @@ interface InteractiveSearchProps {
   searchPayload: InteractiveSearchPayload;
 }
 
-function InteractiveSearch({ searchPayload }: Readonly<InteractiveSearchProps>) {
+function InteractiveSearch({
+  searchPayload,
+}: Readonly<InteractiveSearchProps>) {
   const {
     isFetching,
     isPopulated,

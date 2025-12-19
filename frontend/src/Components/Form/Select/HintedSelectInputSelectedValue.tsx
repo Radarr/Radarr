@@ -15,7 +15,7 @@ interface HintedSelectInputSelectedValueProps<T, V> {
 
 function HintedSelectInputSelectedValue<
   T extends EnhancedSelectInputValue<V>,
-  V extends number | string
+  V extends number | string,
 >(props: HintedSelectInputSelectedValueProps<T, V>) {
   const {
     selectedValue,

@@ -9,7 +9,9 @@ interface ManageIndexersEditModalProps {
   onModalClose(): void;
 }
 
-function ManageIndexersEditModal(props: Readonly<ManageIndexersEditModalProps>) {
+function ManageIndexersEditModal(
+  props: Readonly<ManageIndexersEditModalProps>
+) {
   const { isOpen, indexerIds, onSavePress, onModalClose } = props;
 
   return (

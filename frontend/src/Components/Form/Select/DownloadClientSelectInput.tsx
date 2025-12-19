@@ -51,11 +51,10 @@ function createDownloadClientsSelector(
   );
 }
 
-export interface DownloadClientSelectInputProps
-  extends Omit<
-    EnhancedSelectInputProps<EnhancedSelectInputValue<number>, number>,
-    'values'
-  > {
+export interface DownloadClientSelectInputProps extends Omit<
+  EnhancedSelectInputProps<EnhancedSelectInputValue<number>, number>,
+  'values'
+> {
   name: string;
   value: number;
   includeAny?: boolean;

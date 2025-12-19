@@ -56,7 +56,9 @@ interface SelectQualityModalContentProps {
   onModalClose(): void;
 }
 
-function SelectQualityModalContent(props: Readonly<SelectQualityModalContentProps>) {
+function SelectQualityModalContent(
+  props: Readonly<SelectQualityModalContentProps>
+) {
   const { modalTitle, onQualitySelect, onModalClose } = props;
 
   const [qualityId, setQualityId] = useState(props.qualityId);

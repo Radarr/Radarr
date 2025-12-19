@@ -21,7 +21,8 @@ export interface TagDetail extends ModelBase {
 }
 
 export interface TagDetailAppState
-  extends AppSectionState<TagDetail>,
+  extends
+    AppSectionState<TagDetail>,
     AppSectionDeleteState,
     AppSectionSaveState {}
 

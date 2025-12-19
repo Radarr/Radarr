@@ -30,7 +30,9 @@ const selectDeleteOptions = createSelector(
   (deleteOptions) => deleteOptions
 );
 
-function DeleteMovieModalContent(props: Readonly<DeleteMovieModalContentProps>) {
+function DeleteMovieModalContent(
+  props: Readonly<DeleteMovieModalContentProps>
+) {
   const { movieIds, onModalClose } = props;
 
   const { addImportExclusion } = useSelector(selectDeleteOptions);

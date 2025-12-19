@@ -16,7 +16,7 @@ type SchemaState<T> = AppSectionSchemaState<T> | AppSectionItemSchemaState<T>;
 
 function selector<
   T extends ModelBaseSetting,
-  S extends AppSectionProviderState<T> & SchemaState<T>
+  S extends AppSectionProviderState<T> & SchemaState<T>,
 >(id: number | undefined, section: S) {
   if (id) {
     const {
@@ -80,7 +80,7 @@ function selector<
 
 export default function createProviderSettingsSelector<
   T extends ModelBase,
-  S extends AppSectionProviderState<T> & SchemaState<T>
+  S extends AppSectionProviderState<T> & SchemaState<T>,
 >(sectionName: string) {
   // @ts-expect-error - This isn't fully typed
   return createSelector(
@@ -92,7 +92,7 @@ export default function createProviderSettingsSelector<
 
 export function createProviderSettingsSelectorHook<
   T extends ModelBaseSetting,
-  S extends AppSectionProviderState<T> & SchemaState<T>
+  S extends AppSectionProviderState<T> & SchemaState<T>,
 >(sectionName: string, id: number | undefined) {
   return createSelector(
     (state: AppState) => state.settings,

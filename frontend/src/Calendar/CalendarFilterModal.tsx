@@ -27,7 +27,9 @@ interface CalendarFilterModalProps {
   isOpen: boolean;
 }
 
-export default function CalendarFilterModal(props: Readonly<CalendarFilterModalProps>) {
+export default function CalendarFilterModal(
+  props: Readonly<CalendarFilterModalProps>
+) {
   const sectionItems = useSelector(createCalendarSelector());
   const filterBuilderProps = useSelector(createFilterBuilderPropsSelector());
   const customFilterType = 'calendar';

@@ -93,9 +93,20 @@ jobs:
           cp _tests/net8.0/linux-x64/publish/*.json _tests/ 2>/dev/null || true
           find _tests -name "Radarr.Test.Dummy" -exec chmod a+x {} \;
 
-      - name: Test with coverage
+      - name: Unit tests with coverage
         shell: bash
         run: ./test.sh Linux Unit Coverage
+
+      - name: Integration tests
+        shell: bash
+        run: |
+          mkdir -p bin
+          cp -r _output/net8.0/linux-x64/publish/* bin/
+          chmod +x bin/Radarr
+          ./test.sh Linux Integration Test
+        # Integration tests may fail in CI without full environment setup
+        # Remove continue-on-error once tests are stable
+        continue-on-error: true
 
       - name: Report test results
         uses: dorny/test-reporter@v2

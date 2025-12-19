@@ -15,7 +15,9 @@ const columnPaddingSmallScreen = Number.parseInt(
   dimensions.movieIndexColumnPaddingSmallScreen
 );
 const progressBarHeight = Number.parseInt(dimensions.progressBarSmallHeight);
-const detailedProgressBarHeight = Number.parseInt(dimensions.progressBarMediumHeight);
+const detailedProgressBarHeight = Number.parseInt(
+  dimensions.progressBarMediumHeight
+);
 const bodyPadding = Number.parseInt(dimensions.pageContentBodyPadding);
 const bodyPaddingSmallScreen = Number.parseInt(
   dimensions.pageContentBodyPaddingSmallScreen
