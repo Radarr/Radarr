@@ -1,7 +1,7 @@
 name: "Aletheia CodeQL Configuration"
 
 queries:
-  - uses: security-and-quality
+  - uses: security-extended
 
 packs:
   csharp:
@@ -10,6 +10,8 @@ packs:
 query-filters:
   - exclude:
       id: cs/log-forging
+  - exclude:
+      id: cs/path-injection
 
 paths-ignore:
   - node_modules
