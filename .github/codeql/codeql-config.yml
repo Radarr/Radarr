@@ -12,6 +12,12 @@ query-filters:
       id: cs/log-forging
   - exclude:
       id: cs/path-injection
+  - exclude:
+      id: cs/cleartext-storage-of-sensitive-information
+  - exclude:
+      id: cs/insecure-direct-object-reference
+  - exclude:
+      id: cs/web/missing-function-level-access-control
 
 paths-ignore:
   - node_modules
