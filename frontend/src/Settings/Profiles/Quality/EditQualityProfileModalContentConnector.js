@@ -474,7 +474,7 @@ class EditQualityProfileModalContentConnector extends Component {
   };
 
   onToggleEditGroupsMode = () => {
-    this.setState({ editGroups: !this.state.editGroups });
+    this.setState((prevState) => ({ editGroups: !prevState.editGroups }));
   };
 
   //

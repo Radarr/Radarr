@@ -94,10 +94,7 @@ function QualityProfileSelectInput({
   );
 
   useEffect(() => {
-    if (
-      !value ||
-      !values.some((option) => option.key === value || option.key === value)
-    ) {
+    if (!value || !values.some((option) => option.key === value)) {
       const firstValue = values.find(
         (option) => typeof option.key === 'number'
       );
