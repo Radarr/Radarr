@@ -1,0 +1,12 @@
+# Default owner for all files
+* @cheir-mneme
+
+# CI/CD workflows
+.github/ @cheir-mneme
+
+# Frontend
+frontend/ @cheir-mneme
+
+# Core backend
+src/NzbDrone.Core/ @cheir-mneme
+src/Radarr.Api.V3/ @cheir-mneme
