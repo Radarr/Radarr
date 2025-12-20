@@ -6,7 +6,7 @@ name: Trivy Security Scan
 
 on:
   push:
-    branches: [develop, master]
+    branches: [develop, main]
   pull_request:
     branches: [develop]
   schedule:

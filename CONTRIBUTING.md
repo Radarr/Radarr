@@ -116,7 +116,7 @@ docs: update installation instructions
 
 ## Pull Requesting
 
-- Only make pull requests to `develop`, never `master`
+- Only make pull requests to `develop`, never `main`
 - Use meaningful feature branch names: `feature/`, `fix/`, `refactor/`, `docs/`
 - Each PR should contain related changes (one feature/bug fix per PR)
 - Fill out the PR template completely

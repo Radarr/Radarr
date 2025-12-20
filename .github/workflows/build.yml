@@ -6,7 +6,7 @@ permissions:
 on:
   workflow_dispatch:
   push:
-    branches: [develop, master]
+    branches: [develop, main]
     paths-ignore:
       - ".github/**"
       - "src/Radarr.Api.*/openapi.json"
