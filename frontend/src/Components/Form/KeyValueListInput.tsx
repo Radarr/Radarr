@@ -84,7 +84,7 @@ function KeyValueListInput({
     >
       {[...value, { key: '', value: '' }].map((v, index) => (
         <KeyValueListInputItem
-          key={`${index}-${v.key}-${v.value}`}
+          key={v.key ? `${v.key}-${v.value}` : `new-item`}
           index={index}
           keyValue={v.key}
           value={v.value}
