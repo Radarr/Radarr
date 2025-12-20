@@ -2008,6 +2008,7 @@
   "UpgradesAllowed": "Upgrades Allowed",
   "UpgradesAllowedHelpText": "If disabled qualities will not be upgraded",
   "Uppercase": "Uppercase",
+  "Upstream": "Upstream",
   "Uptime": "Uptime",
   "UrlBase": "URL Base",
   "UrlBaseHelpText": "For reverse proxy support, default is empty",
