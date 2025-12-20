@@ -56,6 +56,10 @@ namespace NzbDrone.Core.Organizer
 
         private static readonly Regex ReservedDeviceNamesRegex = new Regex(@"^(?:aux|com[1-9]|con|lpt[1-9]|nul|prn)\.", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        // Edition token regex patterns
+        private static readonly Regex EditionOrdinalRegex = new Regex(@"((?:\b|_)\d{1,3}(?:st|th|rd|nd)(?:\b|_))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex EditionUppercaseRegex = new Regex(@"((?:\b|_)(?:IMAX|3D|SDR|HDR|DV)(?:\b|_))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         // generated from https://www.loc.gov/standards/iso639-2/ISO-639-2_utf-8.txt
         public static readonly ImmutableDictionary<string, string> Iso639BTMap = new Dictionary<string, string>
         {
@@ -533,8 +537,8 @@ namespace NzbDrone.Core.Organizer
         {
             var edition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(movieFile.Edition.ToLowerInvariant());
 
-            edition = Regex.Replace(edition, @"((?:\b|_)\d{1,3}(?:st|th|rd|nd)(?:\b|_))", match => match.Groups[1].Value.ToLowerInvariant(), RegexOptions.IgnoreCase);
-            edition = Regex.Replace(edition, @"((?:\b|_)(?:IMAX|3D|SDR|HDR|DV)(?:\b|_))", match => match.Groups[1].Value.ToUpperInvariant(), RegexOptions.IgnoreCase);
+            edition = EditionOrdinalRegex.Replace(edition, match => match.Groups[1].Value.ToLowerInvariant());
+            edition = EditionUppercaseRegex.Replace(edition, match => match.Groups[1].Value.ToUpperInvariant());
 
             return edition;
         }

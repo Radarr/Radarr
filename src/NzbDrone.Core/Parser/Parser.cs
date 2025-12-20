@@ -137,6 +137,11 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex RequestInfoRegex = new Regex(@"^(?:\[.+?\])+", RegexOptions.Compiled);
 
+        // ToUrlSlug regex patterns
+        private static readonly Regex SlugSpaceRegex = new Regex(@"\s", RegexOptions.Compiled);
+        private static readonly Regex SlugInvalidCharsRegex = new Regex(@"[^a-z0-9\s-_]", RegexOptions.Compiled);
+        private static readonly Regex SlugDuplicateDefaultRegex = new Regex(@"([-_]){2,}", RegexOptions.Compiled);
+
         private static readonly string[] Numbers = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
         private static readonly Regex MultiRegex = new (@"[_. ](?<multi>multi)[_. ]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -405,13 +410,13 @@ namespace NzbDrone.Core.Parser
             value = value.RemoveAccent();
 
             // Replace spaces
-            value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);
+            value = SlugSpaceRegex.Replace(value, "-");
 
             // Should invalid characters be replaced with dash or empty string?
             var replaceCharacter = invalidDashReplacement ? "-" : string.Empty;
 
             // Remove invalid chars
-            value = Regex.Replace(value, @"[^a-z0-9\s-_]", replaceCharacter, RegexOptions.Compiled);
+            value = SlugInvalidCharsRegex.Replace(value, replaceCharacter);
 
             // Trim dashes or underscores from end, or user defined character set
             if (!string.IsNullOrEmpty(trimEndChars))
@@ -422,7 +427,15 @@ namespace NzbDrone.Core.Parser
             // Replace double occurrences of - or _, or user defined character set
             if (!string.IsNullOrEmpty(deduplicateChars))
             {
-                value = Regex.Replace(value, @"([" + deduplicateChars + "]){2,}", "$1", RegexOptions.Compiled);
+                // Use cached regex for default pattern, otherwise create dynamic pattern
+                if (deduplicateChars == "-_")
+                {
+                    value = SlugDuplicateDefaultRegex.Replace(value, "$1");
+                }
+                else
+                {
+                    value = Regex.Replace(value, @"([" + deduplicateChars + "]){2,}", "$1", RegexOptions.Compiled);
+                }
             }
 
             return value;
