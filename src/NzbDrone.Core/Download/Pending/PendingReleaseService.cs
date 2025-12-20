@@ -392,7 +392,13 @@ namespace NzbDrone.Core.Download.Pending
 
         private int GetDelay(RemoteMovie remoteMovie)
         {
-            var delayProfile = _delayProfileService.AllForTags(remoteMovie.Movie.Tags).OrderBy(d => d.Order).First();
+            var delayProfile = _delayProfileService.AllForTags(remoteMovie.Movie.Tags).OrderBy(d => d.Order).FirstOrDefault();
+
+            if (delayProfile == null)
+            {
+                return 0;
+            }
+
             var delay = delayProfile.GetProtocolDelay(remoteMovie.Release.DownloadProtocol);
             var minimumAge = _configService.MinimumAge;
 

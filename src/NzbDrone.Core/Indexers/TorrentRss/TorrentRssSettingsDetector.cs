@@ -40,7 +40,22 @@ namespace NzbDrone.Core.Indexers.TorrentRss
             _logger.Debug("Evaluating TorrentRss feed '{0}'", settings.BaseUrl);
 
             var requestGenerator = new TorrentRssIndexerRequestGenerator { Settings = settings };
-            var request = requestGenerator.GetRecentRequests().GetAllTiers().First().First();
+            var allTiers = requestGenerator.GetRecentRequests().GetAllTiers();
+            var firstTier = allTiers.FirstOrDefault();
+
+            if (firstTier == null)
+            {
+                _logger.Warn("No request tiers available for indexer {0}", settings.BaseUrl);
+                return null;
+            }
+
+            var request = firstTier.FirstOrDefault();
+
+            if (request == null)
+            {
+                _logger.Warn("No requests available in first tier for indexer {0}", settings.BaseUrl);
+                return null;
+            }
 
             HttpResponse httpResponse = null;
             try
