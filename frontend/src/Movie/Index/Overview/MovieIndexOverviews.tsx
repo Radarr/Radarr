@@ -23,6 +23,12 @@ const bodyPaddingSmallScreen = Number.parseInt(
   dimensions.pageContentBodyPaddingSmallScreen
 );
 
+const listStyle = {
+  width: '100%',
+  height: '100%',
+  overflow: 'none',
+} as const;
+
 interface RowItemData {
   items: Movie[];
   sortKey: string;
@@ -179,28 +185,36 @@ function MovieIndexOverviews(props: Readonly<MovieIndexOverviewsProps>) {
     }
   }, [jumpToCharacter, rowHeight, items, scrollerRef, listRef]);
 
+  const itemData = useMemo(() => {
+    return {
+      items,
+      sortKey,
+      posterWidth,
+      posterHeight,
+      rowHeight,
+      isSelectMode,
+      isSmallScreen,
+    };
+  }, [
+    items,
+    sortKey,
+    posterWidth,
+    posterHeight,
+    rowHeight,
+    isSelectMode,
+    isSmallScreen,
+  ]);
+
   return (
     <div ref={measureRef}>
       <List<RowItemData>
         ref={listRef}
-        style={{
-          width: '100%',
-          height: '100%',
-          overflow: 'none',
-        }}
+        style={listStyle}
         width={size.width}
         height={size.height}
         itemCount={items.length}
         itemSize={rowHeight}
-        itemData={{
-          items,
-          sortKey,
-          posterWidth,
-          posterHeight,
-          rowHeight,
-          isSelectMode,
-          isSmallScreen,
-        }}
+        itemData={itemData}
       >
         {Row}
       </List>

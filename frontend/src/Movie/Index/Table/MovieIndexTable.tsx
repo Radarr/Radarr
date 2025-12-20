@@ -20,6 +20,12 @@ const bodyPaddingSmallScreen = Number.parseInt(
   dimensions.pageContentBodyPaddingSmallScreen
 );
 
+const listStyle = {
+  width: '100%',
+  height: '100%',
+  overflow: 'none',
+} as const;
+
 interface RowItemData {
   items: Movie[];
   sortKey: string;
@@ -53,14 +59,7 @@ function Row({ index, style, data }: ListChildComponentProps<RowItemData>) {
   const movie = items[index];
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        ...style,
-      }}
-      className={styles.row}
-    >
+    <div style={style} className={styles.row}>
       <MovieIndexRow
         movieId={movie.id}
         sortKey={sortKey}
@@ -167,6 +166,15 @@ function MovieIndexTable(props: Readonly<MovieIndexTableProps>) {
     }
   }, [jumpToCharacter, rowHeight, items, scrollerRef, listRef]);
 
+  const itemData = useMemo(() => {
+    return {
+      items,
+      sortKey,
+      columns,
+      isSelectMode,
+    };
+  }, [items, sortKey, columns, isSelectMode]);
+
   return (
     <div ref={measureRef}>
       <Scroller className={styles.tableScroller} scrollDirection="horizontal">
@@ -178,21 +186,12 @@ function MovieIndexTable(props: Readonly<MovieIndexTableProps>) {
         />
         <List<RowItemData>
           ref={listRef}
-          style={{
-            width: '100%',
-            height: '100%',
-            overflow: 'none',
-          }}
+          style={listStyle}
           width={size.width}
           height={size.height}
           itemCount={items.length}
           itemSize={rowHeight}
-          itemData={{
-            items,
-            sortKey,
-            columns,
-            isSelectMode,
-          }}
+          itemData={itemData}
         >
           {Row}
         </List>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './CircularProgressBar.css';
 
 interface CircularProgressBarProps {
@@ -59,15 +59,24 @@ function CircularProgressBar({
     []
   );
 
+  const containerStyle = useMemo(() => {
+    return {
+      width: sizeInPixels,
+      height: sizeInPixels,
+      lineHeight: sizeInPixels,
+    };
+  }, [sizeInPixels]);
+
+  const circleStyle = useMemo(() => {
+    return {
+      stroke: strokeColor,
+      strokeWidth,
+      strokeDashoffset,
+    };
+  }, [strokeColor, strokeWidth, strokeDashoffset]);
+
   return (
-    <div
-      className={containerClassName}
-      style={{
-        width: sizeInPixels,
-        height: sizeInPixels,
-        lineHeight: sizeInPixels,
-      }}
-    >
+    <div className={containerClassName} style={containerStyle}>
       <svg
         className={className}
         version="1.1"
@@ -81,11 +90,7 @@ function CircularProgressBar({
           cx={center}
           cy={center}
           strokeDasharray={circumference}
-          style={{
-            stroke: strokeColor,
-            strokeWidth,
-            strokeDashoffset,
-          }}
+          style={circleStyle}
         />
       </svg>
 
