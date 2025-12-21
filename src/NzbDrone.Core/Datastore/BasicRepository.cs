@@ -214,7 +214,8 @@ namespace NzbDrone.Core.Datastore
             var multi = RetryStrategy.Execute(static (state, _) => state.connection.QueryMultiple(state._insertSql, state.model, state.transaction), (connection, _insertSql, model, transaction));
 
             var multiRead = multi.Read();
-            var id = (int)(multiRead.First().id ?? multiRead.First().Id);
+            var firstRow = multiRead.First();
+            var id = (int)(firstRow.id ?? firstRow.Id);
             _keyProperty.SetValue(model, id);
 
             return model;
