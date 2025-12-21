@@ -11,6 +11,7 @@ namespace NzbDrone.Core.MetadataSource
         private static readonly Regex RegexCleanPunctuation = new Regex("[-._:]", RegexOptions.Compiled);
         private static readonly Regex RegexCleanCountryYearPostfix = new Regex(@"(?<=.+)( \([A-Z]{2}\)| \(\d{4}\)| \([A-Z]{2}\) \(\d{4}\))$", RegexOptions.Compiled);
         private static readonly Regex ArticleRegex = new Regex(@"^(a|an|the)\s", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex QueryYearRegex = new Regex(@"^(?<query>.+)\s+(?:\((?<year>\d{4})\)|(?<year>\d{4}))$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         public string SearchQuery { get; private set; }
 
@@ -21,7 +22,7 @@ namespace NzbDrone.Core.MetadataSource
         {
             SearchQuery = searchQuery;
 
-            var match = Regex.Match(SearchQuery, @"^(?<query>.+)\s+(?:\((?<year>\d{4})\)|(?<year>\d{4}))$");
+            var match = QueryYearRegex.Match(SearchQuery);
             if (match.Success)
             {
                 _searchQueryWithoutYear = match.Groups["query"].Value.ToLowerInvariant();

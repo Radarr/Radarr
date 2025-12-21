@@ -19,6 +19,8 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 {
     public abstract class TransmissionBase : TorrentClientBase<TransmissionSettings>
     {
+        protected static readonly Regex VersionRegex = new Regex(@"(?<!\(|(\d|\.)+)(\d|\.)+(?!\)|(\d|\.)+)", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+
         public abstract bool SupportsLabels { get; }
 
         protected readonly ITransmissionProxy _proxy;
@@ -331,7 +333,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         {
             var rawVersion = _proxy.GetClientVersion(Settings);
 
-            var versionResult = Regex.Match(rawVersion, @"(?<!\(|(\d|\.)+)(\d|\.)+(?!\)|(\d|\.)+)").Value;
+            var versionResult = VersionRegex.Match(rawVersion).Value;
             var clientVersion = Version.Parse(versionResult);
 
             return clientVersion >= new Version(major, minor);

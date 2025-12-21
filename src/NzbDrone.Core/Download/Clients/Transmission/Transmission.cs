@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -78,7 +77,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
             _logger.Debug("Transmission version information: {0}", versionString);
 
-            var versionResult = Regex.Match(versionString, @"(?<!\(|(\d|\.)+)(\d|\.)+(?!\)|(\d|\.)+)").Value;
+            var versionResult = VersionRegex.Match(versionString).Value;
             var version = Version.Parse(versionResult);
 
             if (version < new Version(2, 40))
