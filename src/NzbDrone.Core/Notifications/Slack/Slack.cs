@@ -133,7 +133,7 @@ namespace NzbDrone.Core.Notifications.Slack
                 new ()
                 {
                     Title = previousCheck.Source.Name,
-                    Text = $"The following issue is now resolved: {previousCheck.Message}",
+                    Text = NotificationHelpers.GetHealthRestoredMessage(previousCheck),
                     Color = "good"
                 }
             };

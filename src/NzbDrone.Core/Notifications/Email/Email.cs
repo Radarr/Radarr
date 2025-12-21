@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Notifications.Email
 
         public override void OnMovieAdded(Movie movie)
         {
-            var body = $"{movie.Title} added to library.";
+            var body = NotificationHelpers.GetMovieAddedMessage(movie);
 
             SendEmail(Settings, MOVIE_ADDED_TITLE_BRANDED, body);
         }
@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Notifications.Email
 
         public override void OnHealthRestored(HealthCheck.HealthCheck previousMessage)
         {
-            SendEmail(Settings, HEALTH_RESTORED_TITLE_BRANDED, $"The following issue is now resolved: {previousMessage.Message}");
+            SendEmail(Settings, HEALTH_RESTORED_TITLE_BRANDED, NotificationHelpers.GetHealthRestoredMessage(previousMessage));
         }
 
         public override void OnApplicationUpdate(ApplicationUpdateMessage updateMessage)

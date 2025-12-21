@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Notifications.Apprise
 
         public override void OnHealthRestored(HealthCheck.HealthCheck previousCheck)
         {
-            _proxy.SendNotification(HEALTH_RESTORED_TITLE, $"The following issue is now resolved: {previousCheck.Message}", null, Settings);
+            _proxy.SendNotification(HEALTH_RESTORED_TITLE, NotificationHelpers.GetHealthRestoredMessage(previousCheck), null, Settings);
         }
 
         public override void OnApplicationUpdate(ApplicationUpdateMessage updateMessage)

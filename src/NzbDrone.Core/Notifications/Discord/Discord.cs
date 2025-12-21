@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Notifications.Discord
                 },
                 Url = $"https://www.themoviedb.org/movie/{message.Movie.MovieMetadata.Value.TmdbId}",
                 Description = "Movie Grabbed",
-                Title = GetTitle(message.Movie),
+                Title = NotificationHelpers.GetTitle(message.Movie),
                 Color = (int)DiscordColors.Standard,
                 Fields = new List<DiscordField>(),
                 Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Notifications.Discord
                         break;
                     case DiscordGrabFieldType.Size:
                         discordField.Name = "Size";
-                        discordField.Value = BytesToString(message.RemoteMovie.Release.Size);
+                        discordField.Value = NotificationHelpers.BytesToString(message.RemoteMovie.Release.Size);
                         discordField.Inline = true;
                         break;
                     case DiscordGrabFieldType.Release:
@@ -106,7 +106,7 @@ namespace NzbDrone.Core.Notifications.Discord
                         break;
                     case DiscordGrabFieldType.Links:
                         discordField.Name = "Links";
-                        discordField.Value = GetLinksString(message.Movie);
+                        discordField.Value = NotificationHelpers.GetLinksString(message.Movie);
                         break;
                     case DiscordGrabFieldType.CustomFormats:
                         discordField.Name = "Custom Formats";
@@ -149,7 +149,7 @@ namespace NzbDrone.Core.Notifications.Discord
                 },
                 Url = $"https://www.themoviedb.org/movie/{message.Movie.MovieMetadata.Value.TmdbId}",
                 Description = isUpgrade ? "Movie Upgraded" : "Movie Imported",
-                Title = GetTitle(message.Movie),
+                Title = NotificationHelpers.GetTitle(message.Movie),
                 Color = isUpgrade ? (int)DiscordColors.Upgrade : (int)DiscordColors.Success,
                 Fields = new List<DiscordField>(),
                 Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
@@ -209,7 +209,7 @@ namespace NzbDrone.Core.Notifications.Discord
                         break;
                     case DiscordImportFieldType.Size:
                         discordField.Name = "Size";
-                        discordField.Value = BytesToString(message.MovieFile.Size);
+                        discordField.Value = NotificationHelpers.BytesToString(message.MovieFile.Size);
                         discordField.Inline = true;
                         break;
                     case DiscordImportFieldType.Languages:
@@ -226,7 +226,7 @@ namespace NzbDrone.Core.Notifications.Discord
                         break;
                     case DiscordImportFieldType.Links:
                         discordField.Name = "Links";
-                        discordField.Value = GetLinksString(message.Movie);
+                        discordField.Value = NotificationHelpers.GetLinksString(message.Movie);
                         break;
                     case DiscordImportFieldType.Tags:
                         discordField.Name = "Tags";
@@ -266,7 +266,7 @@ namespace NzbDrone.Core.Notifications.Discord
                 Title = movie.Title,
                 Description = "Movie Added",
                 Color = (int)DiscordColors.Success,
-                Fields = new List<DiscordField> { new () { Name = "Links", Value = GetLinksString(movie) } }
+                Fields = new List<DiscordField> { new () { Name = "Links", Value = NotificationHelpers.GetLinksString(movie) } }
             };
 
             if (Settings.ImportFields.Contains((int)DiscordImportFieldType.Poster))
@@ -323,7 +323,7 @@ namespace NzbDrone.Core.Notifications.Discord
                 Title = movie.Title,
                 Description = deleteMessage.DeletedFilesMessage,
                 Color = (int)DiscordColors.Danger,
-                Fields = new List<DiscordField> { new () { Name = "Links", Value = GetLinksString(movie) } }
+                Fields = new List<DiscordField> { new () { Name = "Links", Value = NotificationHelpers.GetLinksString(movie) } }
             };
 
             if (Settings.ImportFields.Contains((int)DiscordImportFieldType.Poster))
@@ -361,7 +361,7 @@ namespace NzbDrone.Core.Notifications.Discord
                     IconUrl = "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/256.png"
                 },
                 Url = $"https://www.themoviedb.org/movie/{movie.MovieMetadata.Value.TmdbId}",
-                Title = GetTitle(movie),
+                Title = NotificationHelpers.GetTitle(movie),
                 Description = "Movie File Deleted",
                 Color = (int)DiscordColors.Danger,
                 Fields = new List<DiscordField>
@@ -407,7 +407,7 @@ namespace NzbDrone.Core.Notifications.Discord
                     IconUrl = "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/256.png"
                 },
                 Title = "Health Issue Resolved: " + previousCheck.Source.Name,
-                Description = $"The following issue is now resolved: {previousCheck.Message}",
+                Description = NotificationHelpers.GetHealthRestoredMessage(previousCheck),
                 Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
                 Color = (int)DiscordColors.Success
             };
@@ -462,7 +462,7 @@ namespace NzbDrone.Core.Notifications.Discord
                 },
                 Url = movie?.MovieMetadata.Value.TmdbId > 0 ? $"https://www.themoviedb.org/movie/{movie.MovieMetadata.Value.TmdbId}" : null,
                 Description = "Manual interaction needed",
-                Title = GetTitle(movie),
+                Title = NotificationHelpers.GetTitle(movie),
                 Color = (int)DiscordColors.Standard,
                 Fields = new List<DiscordField>(),
                 Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
@@ -514,7 +514,7 @@ namespace NzbDrone.Core.Notifications.Discord
                         break;
                     case DiscordManualInteractionFieldType.Size:
                         discordField.Name = "Size";
-                        discordField.Value = BytesToString(message.TrackedDownload.DownloadItem.TotalSize);
+                        discordField.Value = NotificationHelpers.BytesToString(message.TrackedDownload.DownloadItem.TotalSize);
                         discordField.Inline = true;
                         break;
                     case DiscordManualInteractionFieldType.DownloadTitle:
@@ -523,7 +523,7 @@ namespace NzbDrone.Core.Notifications.Discord
                         break;
                     case DiscordManualInteractionFieldType.Links:
                         discordField.Name = "Links";
-                        discordField.Value = GetLinksString(message.Movie);
+                        discordField.Value = NotificationHelpers.GetLinksString(message.Movie);
                         break;
                     case DiscordManualInteractionFieldType.Tags:
                         discordField.Name = "Tags";
@@ -590,63 +590,6 @@ namespace NzbDrone.Core.Notifications.Discord
             }
 
             return payload;
-        }
-
-        private static string BytesToString(long byteCount)
-        {
-            string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; // Longs run out around EB
-            if (byteCount == 0)
-            {
-                return "0 " + suf[0];
-            }
-
-            var bytes = Math.Abs(byteCount);
-            var place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
-            var num = Math.Round(bytes / Math.Pow(1024, place), 1);
-            return string.Format("{0} {1}", (Math.Sign(byteCount) * num).ToString(), suf[place]);
-        }
-
-        private static string GetLinksString(Movie movie)
-        {
-            if (movie?.MovieMetadata?.Value == null)
-            {
-                return null;
-            }
-
-            var links = new List<string>
-            {
-                $"[TMDb](https://themoviedb.org/movie/{movie.MovieMetadata.Value.TmdbId})",
-                $"[Trakt](https://trakt.tv/search/tmdb/{movie.MovieMetadata.Value.TmdbId}?id_type=movie)"
-            };
-
-            if (movie.MovieMetadata.Value.ImdbId.IsNotNullOrWhiteSpace())
-            {
-                links.Add($"[IMDb](https://imdb.com/title/{movie.MovieMetadata.Value.ImdbId}/)");
-            }
-
-            if (movie.MovieMetadata.Value.YouTubeTrailerId.IsNotNullOrWhiteSpace())
-            {
-                links.Add($"[YouTube](https://www.youtube.com/watch?v={movie.MovieMetadata.Value.YouTubeTrailerId})");
-            }
-
-            if (movie.MovieMetadata.Value.Website.IsNotNullOrWhiteSpace())
-            {
-                links.Add($"[Website]({movie.MovieMetadata.Value.Website})");
-            }
-
-            return string.Join(" / ", links);
-        }
-
-        private static string GetTitle(Movie movie)
-        {
-            if (movie == null)
-            {
-                return null;
-            }
-
-            var title = (movie.MovieMetadata.Value.Year > 0 ? $"{movie.MovieMetadata.Value.Title} ({movie.MovieMetadata.Value.Year})" : movie.MovieMetadata.Value.Title).Replace("`", "\\`");
-
-            return title.Length > 256 ? $"{title.AsSpan(0, 253).TrimEnd('\\')}..." : title;
         }
 
         private List<string> GetTagLabels(Movie movie)
