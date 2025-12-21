@@ -110,12 +110,12 @@ namespace NzbDrone.Host
                 c.SwaggerDoc("v3", new OpenApiInfo
                 {
                     Version = "3.0.0",
-                    Title = "Radarr",
-                    Description = "Radarr API docs",
+                    Title = "Aletheia",
+                    Description = "Aletheia API docs",
                     License = new OpenApiLicense
                     {
                         Name = "GPL-3.0",
-                        Url = new Uri("https://github.com/Radarr/Radarr/blob/develop/LICENSE")
+                        Url = new Uri("https://github.com/cheir-mneme/aletheia/blob/develop/LICENSE")
                     }
                 });
 

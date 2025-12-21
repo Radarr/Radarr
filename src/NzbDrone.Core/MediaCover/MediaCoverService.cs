@@ -91,7 +91,7 @@ namespace NzbDrone.Core.MediaCover
         {
             if (movieId == 0)
             {
-                // Movie isn't in Radarr yet, map via a proxy to circument referrer issues
+                // Movie isn't in Aletheia yet, map via a proxy to circumvent referrer issues
                 foreach (var mediaCover in covers)
                 {
                     mediaCover.Url = _mediaCoverProxy.RegisterUrl(mediaCover.RemoteUrl);

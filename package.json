@@ -1,7 +1,7 @@
 {
-  "name": "radarr",
+  "name": "aletheia",
   "version": "1.0.0",
-  "description": "Radarr is a PVR for Usenet and BitTorrent users",
+  "description": "Aletheia is an all-in-one media manager for movies, books, and audiobooks",
   "scripts": {
     "build": "webpack --config ./frontend/build/webpack.config.js",
     "prebuild": "yarn clean",
@@ -15,8 +15,8 @@
     "prepare": "husky",
     "secretlint": "secretlint \"**/*\""
   },
-  "repository": "https://github.com/Radarr/Radarr",
-  "author": "Team Radarr",
+  "repository": "https://github.com/cheir-mneme/aletheia",
+  "author": "cheir-mneme",
   "license": "GPL-3.0",
   "readmeFilename": "readme.md",
   "main": "index.ts",

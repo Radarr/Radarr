@@ -22,7 +22,7 @@ namespace NzbDrone.Common.EnvironmentInfo
             IsStarting = true;
 
             // net6.0 will return Radarr.dll for entry assembly, we need the actual
-            // executable name (Radarr on linux).  On mono this will return the location of
+            // executable name (Radarr on linux - note: executable not yet renamed in fork).  On mono this will return the location of
             // the mono executable itself, which is not what we want.
             var entry = Process.GetCurrentProcess().MainModule;
 

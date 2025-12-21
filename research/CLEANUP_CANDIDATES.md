@@ -62,14 +62,15 @@ These contain only `{}` and serve no purpose:
 
 ## Documentation Requiring Updates
 
-| File | Issue |
-|------|-------|
-| `README.md` | Still says "Radarr" - needs Aletheia branding |
-| `CONTRIBUTING.md` | Outdated .NET version info, Radarr references |
-| `CODE_OF_CONDUCT.md` | Uses `development@radarr.video` email |
-| `CLA.md` | Generic template, not customized for Aletheia |
-| `.github/PULL_REQUEST_TEMPLATE.md` | References `Radarr.Console` and Radarr paths |
-| `.editorconfig` (line 281) | References non-existent `.travis.yml` |
+| File | Issue | Status |
+|------|-------|--------|
+| `package.json` | Says "radarr", "Team Radarr", Radarr repo | ✅ Updated (PR #TBD) |
+| `README.md` | Still says "Radarr" - needs Aletheia branding | ✅ Already updated |
+| `CONTRIBUTING.md` | Outdated .NET version info, Radarr references | ℹ️ Radarr.Console/Radarr.sln references are correct (not renamed) |
+| `CODE_OF_CONDUCT.md` | Uses `development@radarr.video` email | ✅ Already updated to GitHub issues |
+| `CLA.md` | Generic template, not customized for Aletheia | ℹ️ Generic is acceptable |
+| `.github/PULL_REQUEST_TEMPLATE.md` | References `Radarr.Console` and Radarr paths | ℹ️ References are correct (projects not renamed) |
+| `.editorconfig` (line 281) | References non-existent `.travis.yml` | ⚠️ Still needs fixing |
 
 ---
 

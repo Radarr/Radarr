@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Indexers.Newznab
     {
         public static List<FieldSelectOption<int>> GetFieldSelectOptions(List<NewznabCategory> categories)
         {
-            // Categories not relevant for Radarr
+            // Categories not relevant for Aletheia (movies only currently)
             var ignoreCategories = new HashSet<int> { 1000, 3000, 4000, 6000, 7000 };
 
             // And maybe relevant for specific users
