@@ -167,7 +167,13 @@ namespace NzbDrone.Core.Authentication
             }
 
             var xDoc = _configFileProvider.LoadConfigFile();
-            var config = xDoc.Descendants("Config").Single();
+            var config = xDoc.Descendants("Config").SingleOrDefault();
+
+            if (config == null)
+            {
+                return;
+            }
+
             var usernameElement = config.Descendants("Username").FirstOrDefault();
             var passwordElement = config.Descendants("Password").FirstOrDefault();
 
