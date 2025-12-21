@@ -104,9 +104,6 @@ jobs:
           cp -r _output/net8.0/linux-x64/publish/* bin/
           chmod +x bin/Radarr
           ./test.sh Linux Integration Test
-        # Integration tests may fail in CI without full environment setup
-        # Remove continue-on-error once tests are stable
-        continue-on-error: true
 
       - name: Report test results
         uses: dorny/test-reporter@v2
@@ -116,7 +113,7 @@ jobs:
           path: "**/TestResult.xml"
           list-tests: "failed"
           reporter: dotnet-nunit
-          fail-on-error: false
+          fail-on-error: true
           fail-on-empty: false
 
       - name: Generate coverage report
