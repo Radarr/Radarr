@@ -118,7 +118,7 @@ namespace Radarr.Api.V3
 
             if (hasDefinitionChanged)
             {
-                providerDefinition = _providerFactory.Update(providerDefinition);
+                _providerFactory.Update(providerDefinition);
             }
 
             return Ok(_resourceMapper.ToResource(providerDefinition));

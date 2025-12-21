@@ -72,9 +72,9 @@ namespace Radarr.Api.V3.CustomFormats
 
             Validate(model);
 
-            var updated = _formatService.Update(model);
+            _formatService.Update(model);
 
-            return Ok(updated.ToResource(true));
+            return Ok(GetResourceById(model.Id));
         }
 
         [HttpPut("bulk")]

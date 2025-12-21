@@ -68,9 +68,9 @@ namespace Radarr.Api.V3.AutoTagging
 
             Validate(model);
 
-            var updated = _autoTaggingService.Update(model);
+            _autoTaggingService.Update(model);
 
-            return Ok(updated.ToResource());
+            return Ok(GetResourceById(model.Id));
         }
 
         [HttpGet]

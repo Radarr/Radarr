@@ -101,9 +101,9 @@ namespace Radarr.Api.V3.MovieFiles
                 movieFile.SceneName = movieFileResource.SceneName;
             }
 
-            var updatedFile = _mediaFileService.Update(movieFile);
-            var movie = _movieService.GetMovie(updatedFile.MovieId);
-            return Ok(updatedFile.ToResource(movie, _upgradableSpecification, _formatCalculator));
+            _mediaFileService.Update(movieFile);
+            var movie = _movieService.GetMovie(movieFile.MovieId);
+            return Ok(movieFile.ToResource(movie, _upgradableSpecification, _formatCalculator));
         }
 
         [Obsolete("Use bulk endpoint instead")]

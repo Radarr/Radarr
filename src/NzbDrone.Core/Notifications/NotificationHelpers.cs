@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies;
 
@@ -69,8 +68,8 @@ namespace NzbDrone.Core.Notifications
                 return string.Empty;
             }
 
-            var title = (movie.MovieMetadata.Value.Year > 0 
-                ? $"{movie.MovieMetadata.Value.Title} ({movie.MovieMetadata.Value.Year})" 
+            var title = (movie.MovieMetadata.Value.Year > 0
+                ? $"{movie.MovieMetadata.Value.Title} ({movie.MovieMetadata.Value.Year})"
                 : movie.MovieMetadata.Value.Title).Replace("`", "\\`");
 
             return title.Length > 256 ? $"{title.AsSpan(0, 253).TrimEnd('\\')}..." : title;
