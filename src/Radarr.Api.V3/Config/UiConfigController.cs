@@ -46,7 +46,7 @@ namespace Radarr.Api.V3.Config
             _configFileProvider.SaveConfigDictionary(dictionary);
             _configService.SaveConfigDictionary(dictionary);
 
-            return Accepted(resource.Id);
+            return Ok(GetResourceById(resource.Id));
         }
 
         protected override UiConfigResource ToResource(IConfigService model)

@@ -98,7 +98,7 @@ namespace Radarr.Api.V3.Collections
 
             var updatedMovie = _collectionService.UpdateCollection(model);
 
-            return Accepted(updatedMovie.Id);
+            return Ok(GetResourceById(updatedMovie.Id));
         }
 
         [HttpPut]
@@ -148,7 +148,7 @@ namespace Radarr.Api.V3.Collections
 
             _commandQueueManager.Push(new RefreshCollectionsCommand());
 
-            return Accepted(updated);
+            return Ok(updated);
         }
 
         private IEnumerable<CollectionResource> MapToResource(List<MovieCollection> collections)

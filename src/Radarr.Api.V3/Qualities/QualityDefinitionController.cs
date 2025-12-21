@@ -34,7 +34,7 @@ namespace Radarr.Api.V3.Qualities
         {
             var model = resource.ToModel();
             _qualityDefinitionService.Update(model);
-            return Accepted(model.Id);
+            return Ok(GetResourceById(model.Id));
         }
 
         protected override QualityDefinitionResource GetResourceById(int id)
@@ -56,7 +56,7 @@ namespace Radarr.Api.V3.Qualities
 
             _qualityDefinitionService.UpdateMany(qualityDefinitions);
 
-            return Accepted(_qualityDefinitionService.All()
+            return Ok(_qualityDefinitionService.All()
                 .ToResource());
         }
 
