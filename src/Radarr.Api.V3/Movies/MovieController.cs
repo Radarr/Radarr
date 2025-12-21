@@ -114,7 +114,7 @@ namespace Radarr.Api.V3.Movies
         }
 
         [HttpGet]
-        public List<MovieResource> AllMovie(int? tmdbId, bool excludeLocalCovers = false, int? languageId = null)
+        public async Task<List<MovieResource>> AllMovie(int? tmdbId, bool excludeLocalCovers = false, int? languageId = null)
         {
             var moviesResources = new List<MovieResource>();
 
@@ -144,7 +144,7 @@ namespace Radarr.Api.V3.Movies
                 var tdict = translations.ToDictionaryIgnoreDuplicates(x => x.MovieMetadataId);
                 var sdict = movieStats.ToDictionary(x => x.MovieId);
 
-                var movies = movieTask.GetAwaiter().GetResult();
+                var movies = await movieTask;
 
                 moviesResources = new List<MovieResource>(movies.Count);
 
