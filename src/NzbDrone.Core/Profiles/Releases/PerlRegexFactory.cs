@@ -5,7 +5,7 @@ namespace NzbDrone.Core.Profiles.Releases
 {
     public static class PerlRegexFactory
     {
-        private static Regex _perlRegexFormat = new Regex(@"/(?<pattern>.*)/(?<modifiers>[a-z]*)", RegexOptions.Compiled);
+        private static readonly Regex _perlRegexFormat = new Regex(@"/(?<pattern>.*)/(?<modifiers>[a-z]*)", RegexOptions.Compiled);
 
         public static bool TryCreateRegex(string pattern, out Regex regex)
         {
