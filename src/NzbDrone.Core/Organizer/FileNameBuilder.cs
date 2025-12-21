@@ -466,71 +466,66 @@ namespace NzbDrone.Core.Organizer
 
         private static string GetLanguagesToken(List<string> mediaInfoLanguages, string filter, bool skipEnglishOnly, bool quoted)
         {
-            var tokens = new List<string>();
-            foreach (var item in mediaInfoLanguages)
-            {
-                if (!string.IsNullOrWhiteSpace(item) && item != "und")
-                {
-                    tokens.Add(item.Trim());
-                }
-            }
+            var tokens = mediaInfoLanguages
+                .Where(item => !string.IsNullOrWhiteSpace(item) && item != "und")
+                .Select(item => NormalizeLanguageCode(item.Trim()))
+                .Distinct()
+                .ToList();
 
-            for (var i = 0; i < tokens.Count; i++)
-            {
-                try
-                {
-                    var token = tokens[i].ToLowerInvariant();
-                    if (Iso639BTMap.TryGetValue(token, out var mapped))
-                    {
-                        token = mapped;
-                    }
+            var filteredTokens = ApplyLanguageFilter(tokens, filter);
 
-                    var cultureInfo = new CultureInfo(token);
-                    tokens[i] = cultureInfo.TwoLetterISOLanguageName.ToUpper();
-                }
-                catch
-                {
-                }
-            }
-
-            tokens = tokens.Distinct().ToList();
-
-            var filteredTokens = tokens;
-
-            // Exclude or filter
-            if (filter.IsNotNullOrWhiteSpace())
-            {
-                if (filter.StartsWith("-"))
-                {
-                    filteredTokens = tokens.Except(filter.Split('-')).ToList();
-                }
-                else
-                {
-                    filteredTokens = filter.Split('+').Intersect(tokens).ToList();
-                }
-            }
-
-            // Replace with wildcard (maybe too limited)
-            if (filter.IsNotNullOrWhiteSpace() && filter.EndsWith("+") && filteredTokens.Count != tokens.Count)
-            {
-                filteredTokens.Add("--");
-            }
-
-            if (skipEnglishOnly && filteredTokens.Count == 1 && filteredTokens.First() == "EN")
+            if (skipEnglishOnly && filteredTokens.Count == 1 && filteredTokens[0] == "EN")
             {
                 return string.Empty;
             }
 
             var response = string.Join("+", filteredTokens);
 
-            if (quoted && response.IsNotNullOrWhiteSpace())
+            return quoted && response.IsNotNullOrWhiteSpace() ? $"[{response}]" : response;
+        }
+
+        private static string NormalizeLanguageCode(string token)
+        {
+            try
             {
-                return $"[{response}]";
+                var normalized = token.ToLowerInvariant();
+                if (Iso639BTMap.TryGetValue(normalized, out var mapped))
+                {
+                    normalized = mapped;
+                }
+
+                var cultureInfo = new CultureInfo(normalized);
+                return cultureInfo.TwoLetterISOLanguageName.ToUpper();
+            }
+            catch
+            {
+                return token;
+            }
+        }
+
+        private static List<string> ApplyLanguageFilter(List<string> tokens, string filter)
+        {
+            if (filter.IsNullOrWhiteSpace())
+            {
+                return tokens;
+            }
+
+            List<string> filteredTokens;
+            if (filter.StartsWith("-"))
+            {
+                filteredTokens = tokens.Except(filter.Split('-')).ToList();
             }
             else
             {
-                return response;
+                filteredTokens = filter.Split('+').Intersect(tokens).ToList();
             }
+
+            if (filter.EndsWith("+") && filteredTokens.Count != tokens.Count)
+            {
+                filteredTokens.Add("--");
+            }
+
+            return filteredTokens;
         }
 
         private static string GetEditionToken(MovieFile movieFile)
