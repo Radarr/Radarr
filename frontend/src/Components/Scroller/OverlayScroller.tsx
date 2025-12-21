@@ -98,8 +98,7 @@ function OverlayScroller(props: Readonly<OverlayScrollerProps>) {
   );
 
   const renderView = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (props: any) => {
+    (props: ComponentPropsWithoutRef<'div'>) => {
       return <div className={className} {...props} />;
     },
     [className]

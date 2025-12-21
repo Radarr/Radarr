@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { Data, ModifierFn } from 'popper.js';
 import React, {
   useCallback,
   useEffect,
@@ -95,24 +96,25 @@ function Tooltip(props: Readonly<TooltipProps>) {
     return 450;
   }, []);
 
-  const computeMaxSize = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (data: any) => {
-      const { top, right, bottom, left } = data.offsets.reference;
+  const computeMaxSize: ModifierFn = useCallback(
+    (data: Data) => {
+      const { top, left, width, height } = data.offsets.reference;
+      const right = left + width;
+      const bottom = top + height;
 
       const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
 
       if (/^top/.test(data.placement)) {
-        data.styles.maxHeight = top - 20;
+        data.styles.maxHeight = `${top - 20}px`;
       } else if (/^bottom/.test(data.placement)) {
-        data.styles.maxHeight = windowHeight - bottom - 20;
+        data.styles.maxHeight = `${windowHeight - bottom - 20}px`;
       } else if (/^right/.test(data.placement)) {
-        data.styles.maxWidth = Math.min(maxWidth, windowWidth - right - 20);
-        data.styles.maxHeight = top - 20;
+        data.styles.maxWidth = `${Math.min(maxWidth, windowWidth - right - 20)}px`;
+        data.styles.maxHeight = `${top - 20}px`;
       } else {
-        data.styles.maxWidth = Math.min(maxWidth, left - 20);
-        data.styles.maxHeight = top - 20;
+        data.styles.maxWidth = `${Math.min(maxWidth, left - 20)}px`;
+        data.styles.maxHeight = `${top - 20}px`;
       }
 
       return data;

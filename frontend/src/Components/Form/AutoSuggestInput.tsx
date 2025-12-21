@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { Data, ModifierFn } from 'popper.js';
 import React, {
   FocusEvent,
   FormEvent,
@@ -90,24 +91,24 @@ function AutoSuggestInput<T = unknown>(props: AutoSuggestInputProps<T>) {
   const updater = useRef<(() => void) | null>(null);
   const previousSuggestions = usePrevious(suggestions);
 
-  const handleComputeMaxHeight = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (data: any) => {
-      const { top, bottom, width } = data.offsets.reference;
+  const handleComputeMaxHeight: ModifierFn = useCallback(
+    (data: Data) => {
+      const { top, height, width } = data.offsets.reference;
+      const bottom = top + height;
 
       if (enforceMaxHeight) {
-        data.styles.maxHeight = maxHeight;
+        data.styles.maxHeight = `${maxHeight}px`;
       } else {
         const windowHeight = window.innerHeight;
 
-        if (/^botton/.test(data.placement)) {
-          data.styles.maxHeight = windowHeight - bottom;
+        if (/^bottom/.test(data.placement)) {
+          data.styles.maxHeight = `${windowHeight - bottom}px`;
         } else {
-          data.styles.maxHeight = top;
+          data.styles.maxHeight = `${top}px`;
         }
       }
 
-      data.styles.width = width;
+      data.styles.width = `${width}px`;
 
       return data;
     },

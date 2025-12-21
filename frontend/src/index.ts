@@ -19,8 +19,7 @@ const error = console.error;
 // Monkey patch console.error to filter out some warnings from React
 // TODO: Remove this after the great TypeScript migration
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function logError(...parameters: any[]) {
+function logError(...parameters: unknown[]) {
   const filter = parameters.find((parameter) => {
     return (
       typeof parameter === 'string' &&
