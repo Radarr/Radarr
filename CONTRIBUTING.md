@@ -33,8 +33,14 @@ Aletheia is written in C# (backend) and JS (frontend). The backend is built on .
 1. Install dependencies and build as described below
 1. (Optional) Install pre-commit hooks: `./scripts/setup-hooks.sh`
 
-> The pre-commit hooks will automatically run lint checks before each commit.
-> You can also run lint manually: `yarn lint --fix` for JS/TS, `yarn stylelint-linux --fix` for CSS.
+> The pre-commit hooks will automatically run lint checks and secret scanning before each commit.
+> - **ESLint**: Checks TypeScript/JavaScript code quality
+> - **Prettier**: Formats code consistently
+> - **Secretlint**: Scans for accidentally committed secrets (API keys, tokens, etc.)
+> You can also run these tools manually:
+> - `yarn lint --fix` for JS/TS
+> - `yarn stylelint-linux --fix` for CSS
+> - `yarn secretlint "**/*"` for secret scanning
 
 ### Building the frontend
 

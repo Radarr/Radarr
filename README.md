@@ -37,10 +37,15 @@ It's an ambitious attemp to merge much of the functionality of the arr apps. Thi
 Telemetry and analytics are **disabled by default**:
 
 - No usage analytics or behavior tracking
-- No machine fingerprinting
-- Error reporting is opt-in
+- No machine fingerprinting or unique identifiers
+- Error reporting (Sentry) is opt-in
+- Update checks only send version and platform info (no personal data)
 
-To enable error reporting, toggle Analytics in Settings → General.
+To enable error reporting for troubleshooting, toggle Analytics in Settings → General.
+
+**What data is collected if you opt-in:**
+- Anonymous error reports via Sentry (stack traces, OS version, app version)
+- No personally identifiable information is ever collected
 
 ## Quick Start
 
