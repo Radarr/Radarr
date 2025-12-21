@@ -134,6 +134,10 @@ function MovieSearchInput() {
   const isLoading = useRef(false);
   const requestValue = useRef<string | null>(null);
   const requestLoadingRef = useRef(false);
+  const moviesRef = useRef(movies);
+
+  // Keep moviesRef current to avoid stale closure in debounced callback
+  moviesRef.current = movies;
 
   const suggestionGroups = useMemo(() => {
     const result: Section[] = [];
@@ -203,7 +207,7 @@ function MovieSearchInput() {
 
       const payload = {
         value,
-        movies,
+        movies: moviesRef.current,
       };
 
       worker.current?.postMessage(payload);
