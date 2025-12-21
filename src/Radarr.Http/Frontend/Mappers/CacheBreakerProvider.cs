@@ -35,7 +35,13 @@ namespace Radarr.Http.Frontend.Mappers
                 return resourceUrl + "?t=" + DateTime.UtcNow.Ticks;
             }
 
-            var mapper = _diskMappers.Single(m => m.CanHandle(resourceUrl));
+            var mapper = _diskMappers.SingleOrDefault(m => m.CanHandle(resourceUrl));
+
+            if (mapper == null)
+            {
+                return resourceUrl;
+            }
+
             var pathToFile = mapper.Map(resourceUrl);
             var hash = _hashProvider.ComputeMd5(pathToFile).ToBase64();
 

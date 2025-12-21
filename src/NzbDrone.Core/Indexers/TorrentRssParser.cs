@@ -86,6 +86,7 @@ namespace NzbDrone.Core.Indexers
                 }
                 catch
                 {
+                    // Invalid magnet URL format - fall through to return null
                 }
             }
 
