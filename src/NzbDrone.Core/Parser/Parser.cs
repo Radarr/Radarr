@@ -138,9 +138,9 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex RequestInfoRegex = new Regex(@"^(?:\[.+?\])+", RegexOptions.Compiled);
 
         // ToUrlSlug regex patterns
-        private static readonly Regex SlugSpaceRegex = new Regex(@"\s", RegexOptions.Compiled);
-        private static readonly Regex SlugInvalidCharsRegex = new Regex(@"[^a-z0-9\s-_]", RegexOptions.Compiled);
-        private static readonly Regex SlugDuplicateDefaultRegex = new Regex(@"([-_]){2,}", RegexOptions.Compiled);
+        private static readonly Regex SlugSpaceRegex = new Regex(@"\s", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        private static readonly Regex SlugInvalidCharsRegex = new Regex(@"[^a-z0-9\s-_]", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        private static readonly Regex SlugDuplicateDefaultRegex = new Regex(@"([-_]){2,}", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         private static readonly string[] Numbers = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 

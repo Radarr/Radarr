@@ -57,8 +57,8 @@ namespace NzbDrone.Core.Organizer
         private static readonly Regex ReservedDeviceNamesRegex = new Regex(@"^(?:aux|com[1-9]|con|lpt[1-9]|nul|prn)\.", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         // Edition token regex patterns
-        private static readonly Regex EditionOrdinalRegex = new Regex(@"((?:\b|_)\d{1,3}(?:st|th|rd|nd)(?:\b|_))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex EditionUppercaseRegex = new Regex(@"((?:\b|_)(?:IMAX|3D|SDR|HDR|DV)(?:\b|_))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex EditionOrdinalRegex = new Regex(@"((?:\b|_)\d{1,3}(?:st|th|rd|nd)(?:\b|_))", RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
+        private static readonly Regex EditionUppercaseRegex = new Regex(@"((?:\b|_)(?:IMAX|3D|SDR|HDR|DV)(?:\b|_))", RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
 
         // generated from https://www.loc.gov/standards/iso639-2/ISO-639-2_utf-8.txt
         public static readonly ImmutableDictionary<string, string> Iso639BTMap = new Dictionary<string, string>
