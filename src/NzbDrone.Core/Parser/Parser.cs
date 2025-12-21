@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex[] ReportMovieTitleFolderRegex = new[]
         {
             // When year comes first.
-            new Regex(@"^(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?<title>.+?)?$")
+            new Regex(@"^(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?<title>.+?)?$", RegexOptions.Compiled, TimeSpan.FromSeconds(1))
         };
 
         private static readonly Regex[] RejectHashedReleasesRegex = new Regex[]
