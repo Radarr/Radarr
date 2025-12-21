@@ -101,8 +101,9 @@ namespace Radarr.Api.V3.MovieFiles
                 movieFile.SceneName = movieFileResource.SceneName;
             }
 
-            _mediaFileService.Update(movieFile);
-            return Accepted(movieFile.Id);
+            var updatedFile = _mediaFileService.Update(movieFile);
+            var movie = _movieService.GetMovie(updatedFile.MovieId);
+            return Ok(updatedFile.ToResource(movie, _upgradableSpecification, _formatCalculator));
         }
 
         [Obsolete("Use bulk endpoint instead")]
@@ -155,11 +156,11 @@ namespace Radarr.Api.V3.MovieFiles
 
             var movie = _movieService.GetMovie(movieFiles.First().MovieId);
 
-            return Accepted(movieFiles.ConvertAll(f => f.ToResource(movie, _upgradableSpecification, _formatCalculator)));
+            return Ok(movieFiles.ConvertAll(f => f.ToResource(movie, _upgradableSpecification, _formatCalculator)));
         }
 
         [RestDeleteById]
-        public void DeleteMovieFile(int id)
+        public ActionResult DeleteMovieFile(int id)
         {
             var movieFile = _mediaFileService.GetMovie(id);
 
@@ -171,11 +172,13 @@ namespace Radarr.Api.V3.MovieFiles
             var movie = _movieService.GetMovie(movieFile.MovieId);
 
             _mediaFileDeletionService.DeleteMovieFile(movie, movieFile);
+
+            return NoContent();
         }
 
         [HttpDelete("bulk")]
         [Consumes("application/json")]
-        public object DeleteMovieFiles([FromBody] MovieFileListResource resource)
+        public ActionResult DeleteMovieFiles([FromBody] MovieFileListResource resource)
         {
             if (!resource.MovieFileIds.Any())
             {
@@ -186,7 +189,7 @@ namespace Radarr.Api.V3.MovieFiles
 
             if (movieFiles.Count == 0)
             {
-                return new { };
+                return NoContent();
             }
 
             var movie = _movieService.GetMovie(movieFiles.First().MovieId);
@@ -196,7 +199,7 @@ namespace Radarr.Api.V3.MovieFiles
                 _mediaFileDeletionService.DeleteMovieFile(movie, movieFile);
             }
 
-            return new { };
+            return NoContent();
         }
 
         [HttpPut("bulk")]

@@ -271,15 +271,18 @@ namespace Radarr.Api.V3.Movies
 
             var updatedMovie = _moviesService.UpdateMovie(model);
 
-            BroadcastResourceChange(ModelAction.Updated, MapToResource(updatedMovie));
+            var resource = MapToResource(updatedMovie);
 
-            return Ok(moviesResource);
+            BroadcastResourceChange(ModelAction.Updated, resource);
+
+            return Ok(resource);
         }
 
         [RestDeleteById]
-        public void DeleteMovie(int id, bool deleteFiles = false, bool addImportExclusion = false)
+        public ActionResult DeleteMovie(int id, bool deleteFiles = false, bool addImportExclusion = false)
         {
             _moviesService.DeleteMovie(id, deleteFiles, addImportExclusion);
+            return NoContent();
         }
 
         private void MapCoversToLocal(MovieResource movie)

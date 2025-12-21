@@ -64,9 +64,10 @@ namespace Radarr.Api.V3.RootFolders
         }
 
         [RestDeleteById]
-        public void DeleteFolder(int id)
+        public ActionResult DeleteFolder(int id)
         {
             _rootFolderService.Remove(id);
+            return NoContent();
         }
     }
 }

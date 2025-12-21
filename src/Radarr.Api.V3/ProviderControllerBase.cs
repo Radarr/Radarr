@@ -118,10 +118,10 @@ namespace Radarr.Api.V3
 
             if (hasDefinitionChanged)
             {
-                _providerFactory.Update(providerDefinition);
+                providerDefinition = _providerFactory.Update(providerDefinition);
             }
 
-            return Accepted(existingDefinition.Id);
+            return Ok(_resourceMapper.ToResource(providerDefinition));
         }
 
         [HttpPut("bulk")]
@@ -162,7 +162,7 @@ namespace Radarr.Api.V3
 
             _bulkResourceMapper.UpdateModel(providerResource, definitionsToUpdate);
 
-            return Accepted(_providerFactory.Update(definitionsToUpdate).Select(x => _resourceMapper.ToResource(x)));
+            return Ok(_providerFactory.Update(definitionsToUpdate).Select(x => _resourceMapper.ToResource(x)));
         }
 
         private TProviderDefinition GetDefinition(TProviderResource providerResource, TProviderDefinition existingDefinition, bool validate, bool includeWarnings, bool forceValidate)

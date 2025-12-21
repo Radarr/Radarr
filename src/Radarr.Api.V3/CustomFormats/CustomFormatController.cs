@@ -72,9 +72,9 @@ namespace Radarr.Api.V3.CustomFormats
 
             Validate(model);
 
-            _formatService.Update(model);
+            var updated = _formatService.Update(model);
 
-            return Accepted(model.Id);
+            return Ok(updated.ToResource(true));
         }
 
         [HttpPut("bulk")]
@@ -96,22 +96,23 @@ namespace Radarr.Api.V3.CustomFormats
 
             _formatService.Update(customFormats);
 
-            return Accepted(customFormats.ConvertAll(cf => cf.ToResource(true)));
+            return Ok(customFormats.ConvertAll(cf => cf.ToResource(true)));
         }
 
         [RestDeleteById]
-        public void DeleteFormat(int id)
+        public ActionResult DeleteFormat(int id)
         {
             _formatService.Delete(id);
+            return NoContent();
         }
 
         [HttpDelete("bulk")]
         [Consumes("application/json")]
-        public virtual object DeleteFormats([FromBody] CustomFormatBulkResource resource)
+        public virtual ActionResult DeleteFormats([FromBody] CustomFormatBulkResource resource)
         {
             _formatService.Delete(resource.Ids.ToList());
 
-            return new { };
+            return NoContent();
         }
 
         [HttpGet("schema")]

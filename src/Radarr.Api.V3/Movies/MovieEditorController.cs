@@ -132,7 +132,7 @@ namespace Radarr.Api.V3.Movies
                 moviesResources.Add(movieResource);
             }
 
-            return Accepted(moviesResources);
+            return Ok(moviesResources);
         }
 
         [HttpDelete]

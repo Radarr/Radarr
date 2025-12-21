@@ -67,9 +67,10 @@ namespace Radarr.Api.V3.RemotePathMappings
         }
 
         [RestDeleteById]
-        public void DeleteMapping(int id)
+        public ActionResult DeleteMapping(int id)
         {
             _remotePathMappingService.Remove(id);
+            return NoContent();
         }
 
         [RestPutById]
@@ -77,7 +78,9 @@ namespace Radarr.Api.V3.RemotePathMappings
         {
             var mapping = resource.ToModel();
 
-            return Accepted(_remotePathMappingService.Update(mapping));
+            var updated = _remotePathMappingService.Update(mapping);
+
+            return Ok(updated.ToResource());
         }
     }
 }

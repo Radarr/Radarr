@@ -68,9 +68,9 @@ namespace Radarr.Api.V3.AutoTagging
 
             Validate(model);
 
-            _autoTaggingService.Update(model);
+            var updated = _autoTaggingService.Update(model);
 
-            return Accepted(model.Id);
+            return Ok(updated.ToResource());
         }
 
         [HttpGet]
@@ -81,9 +81,10 @@ namespace Radarr.Api.V3.AutoTagging
         }
 
         [RestDeleteById]
-        public void DeleteFormat(int id)
+        public ActionResult DeleteFormat(int id)
         {
             _autoTaggingService.Delete(id);
+            return NoContent();
         }
 
         [HttpGet("schema")]

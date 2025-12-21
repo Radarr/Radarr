@@ -41,14 +41,15 @@ namespace Radarr.Api.V3.CustomFilters
         [Consumes("application/json")]
         public ActionResult<CustomFilterResource> UpdateCustomFilter([FromBody] CustomFilterResource resource)
         {
-            _customFilterService.Update(resource.ToModel());
-            return Accepted(resource.Id);
+            var updated = _customFilterService.Update(resource.ToModel());
+            return Ok(updated.ToResource());
         }
 
         [RestDeleteById]
-        public void DeleteCustomResource(int id)
+        public ActionResult DeleteCustomResource(int id)
         {
             _customFilterService.Delete(id);
+            return NoContent();
         }
     }
 }
