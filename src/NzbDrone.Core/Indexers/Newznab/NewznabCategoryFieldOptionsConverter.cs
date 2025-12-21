@@ -9,10 +9,10 @@ namespace NzbDrone.Core.Indexers.Newznab
         public static List<FieldSelectOption<int>> GetFieldSelectOptions(List<NewznabCategory> categories)
         {
             // Categories not relevant for Radarr
-            var ignoreCategories = new[] { 1000, 3000, 4000, 6000, 7000 };
+            var ignoreCategories = new HashSet<int> { 1000, 3000, 4000, 6000, 7000 };
 
             // And maybe relevant for specific users
-            var unimportantCategories = new[] { 0, 5000 };
+            var unimportantCategories = new HashSet<int> { 0, 5000 };
 
             var result = new List<FieldSelectOption<int>>();
 

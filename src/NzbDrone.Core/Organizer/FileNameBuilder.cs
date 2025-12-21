@@ -451,12 +451,12 @@ namespace NzbDrone.Core.Organizer
             {
                 if (filter.StartsWith("-"))
                 {
-                    var splitFilter = filter.Substring(1).Split(',');
+                    var splitFilter = new HashSet<string>(filter.Substring(1).Split(','));
                     filteredTokens = tokens.Where(c => !splitFilter.Contains(c.Name)).ToList();
                 }
                 else
                 {
-                    var splitFilter = filter.Split(',');
+                    var splitFilter = new HashSet<string>(filter.Split(','));
                     filteredTokens = tokens.Where(c => splitFilter.Contains(c.Name)).ToList();
                 }
             }
