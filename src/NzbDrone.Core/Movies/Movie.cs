@@ -4,6 +4,7 @@ using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaTypes;
 using NzbDrone.Core.Profiles.Qualities;
 
 namespace NzbDrone.Core.Movies
@@ -14,9 +15,11 @@ namespace NzbDrone.Core.Movies
         {
             Tags = new HashSet<int>();
             MovieMetadata = new MovieMetadata();
+            MediaType = MediaType.Movie;
         }
 
         public int MovieMetadataId { get; set; }
+        public MediaType MediaType { get; set; }
 
         public bool Monitored { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
