@@ -112,6 +112,11 @@ namespace Radarr.Api.V3.MovieFiles
         {
             var movieFiles = _mediaFileService.GetMovies(resource.MovieFileIds);
 
+            if (movieFiles.Count == 0)
+            {
+                return new { };
+            }
+
             foreach (var movieFile in movieFiles)
             {
                 if (resource.Quality != null)
@@ -178,6 +183,12 @@ namespace Radarr.Api.V3.MovieFiles
             }
 
             var movieFiles = _mediaFileService.GetMovies(resource.MovieFileIds);
+
+            if (movieFiles.Count == 0)
+            {
+                return new { };
+            }
+
             var movie = _movieService.GetMovie(movieFiles.First().MovieId);
 
             foreach (var movieFile in movieFiles)
@@ -193,6 +204,11 @@ namespace Radarr.Api.V3.MovieFiles
         public object SetPropertiesBulk([FromBody] List<MovieFileResource> resources)
         {
             var movieFiles = _mediaFileService.GetMovies(resources.Select(r => r.Id));
+
+            if (movieFiles.Count == 0)
+            {
+                return new { };
+            }
 
             foreach (var movieFile in movieFiles)
             {
