@@ -38,6 +38,11 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation.Proxies
 
             var response = ProcessRequest<FileStationListResponse>(requestBuilder, $"get info of {path}", settings);
 
+            if (response?.Data?.Files == null || response.Data.Files.Count == 0)
+            {
+                throw new DownloadClientException($"No file info returned for path: {path}");
+            }
+
             return response.Data.Files.First();
         }
     }

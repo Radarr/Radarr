@@ -256,6 +256,11 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
 
             var filesResponse = _proxy.GetFiles(vortexQueueItem.Id, Settings);
 
+            if (filesResponse == null || filesResponse.Count == 0)
+            {
+                return outputPath;
+            }
+
             if (filesResponse.Count > 1)
             {
                 var message = _localizationService.GetLocalizedString("DownloadClientNzbVortexMultipleFilesMessage", new Dictionary<string, object> { { "outputPath", outputPath } });
