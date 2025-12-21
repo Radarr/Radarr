@@ -184,9 +184,9 @@ namespace NzbDrone.Common
 
         public void Restart(string serviceName)
         {
-            var args = string.Format("/C net.exe stop \"{0}\" && net.exe start \"{0}\"", serviceName);
-
-            _processProvider.Start("cmd.exe", args);
+            _logger.Info("Restarting {0} Service...", serviceName);
+            Stop(serviceName);
+            Start(serviceName);
         }
 
         public void SetPermissions(string serviceName)

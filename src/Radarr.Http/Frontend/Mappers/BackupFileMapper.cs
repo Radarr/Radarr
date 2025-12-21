@@ -19,7 +19,17 @@ namespace Radarr.Http.Frontend.Mappers
         {
             var path = resourceUrl.Replace("/backup/", "").Replace('/', Path.DirectorySeparatorChar);
 
-            return Path.Combine(_backupService.GetBackupFolder(), path);
+            var basePath = Path.GetFullPath(_backupService.GetBackupFolder());
+            var filePath = Path.GetFullPath(Path.Combine(basePath, path));
+
+            // Prevent path traversal - ensure path stays within backup folder
+            if (!filePath.StartsWith(basePath + Path.DirectorySeparatorChar) &&
+                !filePath.Equals(basePath, System.StringComparison.Ordinal))
+            {
+                return null;
+            }
+
+            return filePath;
         }
 
         public override bool CanHandle(string resourceUrl)
