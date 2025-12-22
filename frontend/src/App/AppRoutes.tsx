@@ -5,6 +5,8 @@ import History from 'Activity/History/History';
 import Queue from 'Activity/Queue/Queue';
 import AddNewMovieConnector from 'AddMovie/AddNewMovie/AddNewMovieConnector';
 import ImportMovies from 'AddMovie/ImportMovie/ImportMovies';
+import AudiobookIndex from 'Audiobook/Index/AudiobookIndex';
+import BookIndex from 'Book/Index/BookIndex';
 import CalendarPage from 'Calendar/CalendarPage';
 import CollectionConnector from 'Collection/CollectionConnector';
 import NotFound from 'Components/NotFound';
@@ -68,6 +70,18 @@ function AppRoutes() {
       <Route path="/add/discover" component={DiscoverMovieConnector} />
 
       <Route path="/movie/:titleSlug" component={MovieDetailsPage} />
+
+      {/*
+        Books
+      */}
+
+      <Route exact={true} path="/books" component={BookIndex} />
+
+      {/*
+        Audiobooks
+      */}
+
+      <Route exact={true} path="/audiobooks" component={AudiobookIndex} />
 
       {/*
         Calendar

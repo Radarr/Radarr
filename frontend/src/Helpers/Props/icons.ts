@@ -32,6 +32,7 @@ import {
   faBan as fasBan,
   faBars as fasBars,
   faBolt as fasBolt,
+  faBook as fasBook,
   faBookmark as fasBookmark,
   faBookReader as fasBookReader,
   faBroadcastTower as fasBroadcastTower,
@@ -73,6 +74,7 @@ import {
   faFolderOpen as fasFolderOpen,
   faFolderTree as farFolderTree,
   faForward as fasForward,
+  faHeadphones as fasHeadphones,
   faHeart as fasHeart,
   faHistory as fasHistory,
   faHome as fasHome,
@@ -129,6 +131,7 @@ export const ACTIVITY = farClock;
 export const ADD = fasPlus;
 export const ALTERNATE_TITLES = farClone;
 export const ADVANCED_SETTINGS = fasCog;
+export const AUDIOBOOK = fasHeadphones;
 export const ANNOUNCED = fasBullhorn;
 export const ARROW_LEFT = fasArrowCircleLeft;
 export const ARROW_RIGHT = fasArrowCircleRight;
@@ -252,3 +255,4 @@ export const VIEW = fasEye;
 export const WARNING = fasExclamationTriangle;
 export const WIKI = fasBookReader;
 export const BLOCKLIST = fasBan;
+export const BOOK = fasBook;

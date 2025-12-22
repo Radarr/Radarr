@@ -70,6 +70,38 @@ const LINKS: SidebarItem[] = [
   },
 
   {
+    iconName: icons.BOOK,
+    title: () => translate('Books'),
+    to: '/books',
+    children: [
+      {
+        title: () => translate('AddNew'),
+        to: '/books/add/new',
+      },
+      {
+        title: () => translate('ImportLibrary'),
+        to: '/books/add/import',
+      },
+    ],
+  },
+
+  {
+    iconName: icons.AUDIOBOOK,
+    title: () => translate('Audiobooks'),
+    to: '/audiobooks',
+    children: [
+      {
+        title: () => translate('AddNew'),
+        to: '/audiobooks/add/new',
+      },
+      {
+        title: () => translate('ImportLibrary'),
+        to: '/audiobooks/add/import',
+      },
+    ],
+  },
+
+  {
     iconName: icons.CALENDAR,
     title: () => translate('Calendar'),
     to: '/calendar',
