@@ -37,6 +37,10 @@ namespace Radarr.Api.V3.Books
         public int? AuthorId { get; set; }
         public int? SeriesId { get; set; }
         public int? SeriesPosition { get; set; }
+
+        public bool? HasFile { get; set; }
+        public long? SizeOnDisk { get; set; }
+        public BookStatisticsResource Statistics { get; set; }
     }
 
     public static class BookResourceMapper

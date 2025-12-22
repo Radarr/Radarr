@@ -41,6 +41,10 @@ namespace Radarr.Api.V3.Audiobooks
         public int? SeriesId { get; set; }
         public int? SeriesPosition { get; set; }
         public int? BookId { get; set; }
+
+        public bool? HasFile { get; set; }
+        public long? SizeOnDisk { get; set; }
+        public AudiobookStatisticsResource Statistics { get; set; }
     }
 
     public static class AudiobookResourceMapper

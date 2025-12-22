@@ -7,6 +7,7 @@ import * as authors from './authorActions';
 import * as blocklist from './blocklistActions';
 import * as books from './bookActions';
 import * as calendar from './calendarActions';
+import * as dashboard from './dashboardActions';
 import * as captcha from './captchaActions';
 import * as commands from './commandActions';
 import * as customFilters from './customFilterActions';
@@ -47,6 +48,7 @@ export default [
   books,
   calendar,
   captcha,
+  dashboard,
   commands,
   customFilters,
   discoverMovie,

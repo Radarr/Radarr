@@ -45,10 +45,16 @@ interface SidebarItem {
 
 const LINKS: SidebarItem[] = [
   {
+    iconName: icons.HOUSEKEEPING,
+    title: () => translate('Dashboard'),
+    to: '/',
+    alias: '/dashboard',
+  },
+
+  {
     iconName: icons.MOVIE_CONTINUING,
     title: () => translate('Movies'),
-    to: '/',
-    alias: '/movies',
+    to: '/movies',
     children: [
       {
         title: () => translate('AddNew'),

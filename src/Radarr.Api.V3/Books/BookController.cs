@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Books.Events;
+using NzbDrone.Core.BookStats;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Monitoring;
@@ -27,11 +29,13 @@ namespace Radarr.Api.V3.Books
         private readonly IBookService _bookService;
         private readonly IRootFolderService _rootFolderService;
         private readonly IHierarchicalMonitoringService _monitoringService;
+        private readonly IBookStatisticsService _bookStatisticsService;
 
         public BookController(IBroadcastSignalRMessage signalRBroadcaster,
                               IBookService bookService,
                               IRootFolderService rootFolderService,
                               IHierarchicalMonitoringService monitoringService,
+                              IBookStatisticsService bookStatisticsService,
                               RootFolderValidator rootFolderValidator,
                               MappedNetworkDriveValidator mappedNetworkDriveValidator,
                               RecycleBinValidator recycleBinValidator,
@@ -43,6 +47,7 @@ namespace Radarr.Api.V3.Books
             _bookService = bookService;
             _rootFolderService = rootFolderService;
             _monitoringService = monitoringService;
+            _bookStatisticsService = bookStatisticsService;
 
             SharedValidator.RuleFor(s => s.Path).Cascade(CascadeMode.Stop)
                 .IsValidPath()
@@ -93,12 +98,16 @@ namespace Radarr.Api.V3.Books
 
             var resources = books.ToResource();
             var rootFolders = _rootFolderService.All();
+            var bookStats = _bookStatisticsService.BookStatistics();
+            var sdict = bookStats.ToDictionary(x => x.BookId);
 
             for (var i = 0; i < resources.Count; i++)
             {
                 resources[i].RootFolderPath = _rootFolderService.GetBestRootFolderPath(resources[i].Path, rootFolders);
                 resources[i].EffectivelyMonitored = _monitoringService.IsEffectivelyMonitored(books[i]);
             }
+
+            LinkBookStatistics(resources, sdict);
 
             return resources;
         }
@@ -119,8 +128,32 @@ namespace Radarr.Api.V3.Books
             var resource = book.ToResource();
             resource.RootFolderPath = _rootFolderService.GetBestRootFolderPath(resource.Path);
             resource.EffectivelyMonitored = _monitoringService.IsEffectivelyMonitored(book);
+            FetchAndLinkBookStatistics(resource);
 
             return resource;
+        }
+
+        private void FetchAndLinkBookStatistics(BookResource resource)
+        {
+            LinkBookStatistics(resource, _bookStatisticsService.BookStatistics(resource.Id));
+        }
+
+        private void LinkBookStatistics(List<BookResource> resources, Dictionary<int, BookStatistics> sDict)
+        {
+            foreach (var book in resources)
+            {
+                if (sDict.TryGetValue(book.Id, out var stats))
+                {
+                    LinkBookStatistics(book, stats);
+                }
+            }
+        }
+
+        private static void LinkBookStatistics(BookResource resource, BookStatistics bookStatistics)
+        {
+            resource.Statistics = bookStatistics.ToResource();
+            resource.HasFile = bookStatistics.BookFileCount > 0;
+            resource.SizeOnDisk = bookStatistics.SizeOnDisk;
         }
 
         [RestPostById]

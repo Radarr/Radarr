@@ -9,6 +9,7 @@ import CalendarAppState from './CalendarAppState';
 import CaptchaAppState from './CaptchaAppState';
 import CommandAppState from './CommandAppState';
 import CustomFiltersAppState from './CustomFiltersAppState';
+import DashboardAppState from './DashboardAppState';
 import ExtraFilesAppState from './ExtraFilesAppState';
 import HistoryAppState, { MovieHistoryAppState } from './HistoryAppState';
 import InteractiveImportAppState from './InteractiveImportAppState';
@@ -97,6 +98,7 @@ interface AppState {
   captcha: CaptchaAppState;
   commands: CommandAppState;
   customFilters: CustomFiltersAppState;
+  dashboard: DashboardAppState;
   extraFiles: ExtraFilesAppState;
   history: HistoryAppState;
   interactiveImport: InteractiveImportAppState;

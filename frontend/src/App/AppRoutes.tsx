@@ -17,6 +17,7 @@ import CalendarPage from 'Calendar/CalendarPage';
 import CollectionConnector from 'Collection/CollectionConnector';
 import NotFound from 'Components/NotFound';
 import Switch from 'Components/Router/Switch';
+import Dashboard from 'Dashboard/Dashboard';
 import DiscoverMovieConnector from 'DiscoverMovie/DiscoverMovieConnector';
 import MovieDetailsPage from 'Movie/Details/MovieDetailsPage';
 import MovieIndex from 'Movie/Index/MovieIndex';
@@ -53,10 +54,10 @@ function AppRoutes() {
   return (
     <Switch>
       {/*
-        Movies
+        Dashboard
       */}
 
-      <Route exact={true} path="/" component={MovieIndex} />
+      <Route exact={true} path="/" component={Dashboard} />
 
       {window.Radarr.urlBase && (
         <Route
@@ -68,6 +69,14 @@ function AppRoutes() {
           render={RedirectWithUrlBase}
         />
       )}
+
+      <Route path="/dashboard" component={Dashboard} />
+
+      {/*
+        Movies
+      */}
+
+      <Route exact={true} path="/movies" component={MovieIndex} />
 
       <Route path="/add/new" component={AddNewMovieConnector} />
 

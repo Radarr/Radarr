@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Audiobooks;
 using NzbDrone.Core.Audiobooks.Events;
+using NzbDrone.Core.AudiobookStats;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Monitoring;
@@ -27,11 +29,13 @@ namespace Radarr.Api.V3.Audiobooks
         private readonly IAudiobookService _audiobookService;
         private readonly IRootFolderService _rootFolderService;
         private readonly IHierarchicalMonitoringService _monitoringService;
+        private readonly IAudiobookStatisticsService _audiobookStatisticsService;
 
         public AudiobookController(IBroadcastSignalRMessage signalRBroadcaster,
                                    IAudiobookService audiobookService,
                                    IRootFolderService rootFolderService,
                                    IHierarchicalMonitoringService monitoringService,
+                                   IAudiobookStatisticsService audiobookStatisticsService,
                                    RootFolderValidator rootFolderValidator,
                                    MappedNetworkDriveValidator mappedNetworkDriveValidator,
                                    RecycleBinValidator recycleBinValidator,
@@ -43,6 +47,7 @@ namespace Radarr.Api.V3.Audiobooks
             _audiobookService = audiobookService;
             _rootFolderService = rootFolderService;
             _monitoringService = monitoringService;
+            _audiobookStatisticsService = audiobookStatisticsService;
 
             SharedValidator.RuleFor(s => s.Path).Cascade(CascadeMode.Stop)
                 .IsValidPath()
@@ -101,12 +106,16 @@ namespace Radarr.Api.V3.Audiobooks
 
             var resources = audiobooks.ToResource();
             var rootFolders = _rootFolderService.All();
+            var audiobookStats = _audiobookStatisticsService.AudiobookStatistics();
+            var sdict = audiobookStats.ToDictionary(x => x.AudiobookId);
 
             for (var i = 0; i < resources.Count; i++)
             {
                 resources[i].RootFolderPath = _rootFolderService.GetBestRootFolderPath(resources[i].Path, rootFolders);
                 resources[i].EffectivelyMonitored = _monitoringService.IsEffectivelyMonitored(audiobooks[i]);
             }
+
+            LinkAudiobookStatistics(resources, sdict);
 
             return resources;
         }
@@ -127,8 +136,32 @@ namespace Radarr.Api.V3.Audiobooks
             var resource = audiobook.ToResource();
             resource.RootFolderPath = _rootFolderService.GetBestRootFolderPath(resource.Path);
             resource.EffectivelyMonitored = _monitoringService.IsEffectivelyMonitored(audiobook);
+            FetchAndLinkAudiobookStatistics(resource);
 
             return resource;
+        }
+
+        private void FetchAndLinkAudiobookStatistics(AudiobookResource resource)
+        {
+            LinkAudiobookStatistics(resource, _audiobookStatisticsService.AudiobookStatistics(resource.Id));
+        }
+
+        private void LinkAudiobookStatistics(List<AudiobookResource> resources, Dictionary<int, AudiobookStatistics> sDict)
+        {
+            foreach (var audiobook in resources)
+            {
+                if (sDict.TryGetValue(audiobook.Id, out var stats))
+                {
+                    LinkAudiobookStatistics(audiobook, stats);
+                }
+            }
+        }
+
+        private static void LinkAudiobookStatistics(AudiobookResource resource, AudiobookStatistics audiobookStatistics)
+        {
+            resource.Statistics = audiobookStatistics.ToResource();
+            resource.HasFile = audiobookStatistics.AudiobookFileCount > 0;
+            resource.SizeOnDisk = audiobookStatistics.SizeOnDisk;
         }
 
         [RestPostById]
