@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using NzbDrone.Common.Reflection;
+using NzbDrone.Core.Audiobooks;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Authors;
 using NzbDrone.Core.AutoTagging.Specifications;
 using NzbDrone.Core.Blocklisting;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFilters;
 using NzbDrone.Core.CustomFormats;
@@ -141,6 +143,10 @@ namespace NzbDrone.Core.Datastore
             Mapper.Entity<Credit>("Credits").RegisterModel();
 
             Mapper.Entity<ImportListExclusion>("ImportExclusions").RegisterModel();
+
+            Mapper.Entity<Book>("Books").RegisterModel();
+
+            Mapper.Entity<Audiobook>("Audiobooks").RegisterModel();
 
             Mapper.Entity<QualityDefinition>("QualityDefinitions").RegisterModel()
                   .Ignore(d => d.GroupName)
