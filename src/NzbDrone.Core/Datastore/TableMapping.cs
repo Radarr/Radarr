@@ -4,6 +4,7 @@ using System.Linq;
 using Dapper;
 using NzbDrone.Common.Reflection;
 using NzbDrone.Core.Authentication;
+using NzbDrone.Core.Authors;
 using NzbDrone.Core.AutoTagging.Specifications;
 using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Configuration;
@@ -113,6 +114,10 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<MovieFile>("MovieFiles").RegisterModel()
                   .Ignore(f => f.Path);
+
+            Mapper.Entity<Author>("Authors").RegisterModel();
+
+            Mapper.Entity<NzbDrone.Core.Series.Series>("Series").RegisterModel();
 
             Mapper.Entity<Movie>("Movies").RegisterModel()
                   .Ignore(s => s.RootFolderPath)

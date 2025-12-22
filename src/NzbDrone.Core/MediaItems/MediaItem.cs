@@ -21,6 +21,9 @@ namespace NzbDrone.Core.MediaItems
         public HashSet<int> Tags { get; set; }
         public DateTime? LastSearchTime { get; set; }
 
+        public int? AuthorId { get; set; }
+        public int? SeriesId { get; set; }
+
         public abstract string GetTitle();
         public abstract int GetYear();
     }
