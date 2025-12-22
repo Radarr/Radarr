@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using NzbDrone.Core.Datastore;
+using NzbDrone.Core.MediaItems;
 
 namespace NzbDrone.Core.Music
 {
-    public interface IArtistService
+    public interface IArtistService : IBaseMediaService<Artist>
     {
         Artist GetArtist(int artistId);
         List<Artist> GetArtists(IEnumerable<int> artistIds);
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Music
         bool ArtistPathExists(string path);
     }
 
-    public class ArtistService : IArtistService
+    public class ArtistService : BaseMediaService<Artist>, IArtistService
     {
         private readonly IArtistRepository _artistRepository;
 
@@ -30,78 +30,21 @@ namespace NzbDrone.Core.Music
             _artistRepository = artistRepository;
         }
 
-        public Artist GetArtist(int artistId)
-        {
-            return _artistRepository.Get(artistId);
-        }
+        protected override IBasicRepository<Artist> Repository => _artistRepository;
 
-        public List<Artist> GetArtists(IEnumerable<int> artistIds)
-        {
-            return _artistRepository.Get(artistIds).ToList();
-        }
+        public Artist GetArtist(int artistId) => Get(artistId);
+        public List<Artist> GetArtists(IEnumerable<int> artistIds) => Get(artistIds);
+        public Artist AddArtist(Artist newArtist) => Add(newArtist);
+        public List<Artist> AddArtists(List<Artist> newArtists) => AddMany(newArtists);
+        public void DeleteArtist(int artistId, bool deleteFiles) => Delete(artistId, deleteFiles);
+        public void DeleteArtists(List<int> artistIds, bool deleteFiles) => DeleteMany(artistIds, deleteFiles);
+        public List<Artist> GetAllArtists() => GetAll();
+        public Artist UpdateArtist(Artist artist) => Update(artist);
+        public List<Artist> UpdateArtists(List<Artist> artists) => UpdateMany(artists);
 
-        public Artist AddArtist(Artist newArtist)
-        {
-            newArtist.Added = DateTime.UtcNow;
-            return _artistRepository.Insert(newArtist);
-        }
-
-        public List<Artist> AddArtists(List<Artist> newArtists)
-        {
-            var now = DateTime.UtcNow;
-            foreach (var artist in newArtists)
-            {
-                artist.Added = now;
-            }
-
-            _artistRepository.InsertMany(newArtists);
-            return newArtists;
-        }
-
-        public Artist FindByName(string name)
-        {
-            return _artistRepository.FindByName(name);
-        }
-
-        public Artist FindByForeignId(string foreignArtistId)
-        {
-            return _artistRepository.FindByForeignId(foreignArtistId);
-        }
-
-        public void DeleteArtist(int artistId, bool deleteFiles)
-        {
-            _artistRepository.Delete(artistId);
-        }
-
-        public void DeleteArtists(List<int> artistIds, bool deleteFiles)
-        {
-            _artistRepository.DeleteMany(artistIds);
-        }
-
-        public List<Artist> GetAllArtists()
-        {
-            return _artistRepository.All().ToList();
-        }
-
-        public List<Artist> GetMonitoredArtists()
-        {
-            return _artistRepository.GetMonitored();
-        }
-
-        public Artist UpdateArtist(Artist artist)
-        {
-            return _artistRepository.Update(artist);
-        }
-
-        public List<Artist> UpdateArtists(List<Artist> artists)
-        {
-            _artistRepository.UpdateMany(artists);
-            return artists;
-        }
-
-        public bool ArtistPathExists(string path)
-        {
-            return _artistRepository.ArtistPathExists(path);
-        }
+        public Artist FindByName(string name) => _artistRepository.FindByName(name);
+        public Artist FindByForeignId(string foreignArtistId) => _artistRepository.FindByForeignId(foreignArtistId);
+        public List<Artist> GetMonitoredArtists() => _artistRepository.GetMonitored();
+        public bool ArtistPathExists(string path) => _artistRepository.ArtistPathExists(path);
     }
 }

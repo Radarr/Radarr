@@ -342,7 +342,7 @@ namespace NzbDrone.Core.Organizer
         {
             tokenHandlers["{Original Title}"] = m => GetOriginalTitle(movieFile, multipleTokens);
             tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(movieFile, multipleTokens);
-            tokenHandlers["{Release Group}"] = m => movieFile.ReleaseGroup.IsNullOrWhiteSpace() ? m.DefaultValue("Radarr") : Truncate(movieFile.ReleaseGroup, m.CustomFormat);
+            tokenHandlers["{Release Group}"] = m => movieFile.ReleaseGroup.IsNullOrWhiteSpace() ? m.DefaultValue("Aletheia") : Truncate(movieFile.ReleaseGroup, m.CustomFormat);
         }
 
         private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie, MovieFile movieFile)

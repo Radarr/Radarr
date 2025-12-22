@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using NzbDrone.Core.Audiobooks.Events;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.MediaItems;
 using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.Audiobooks
 {
-    public interface IAudiobookService
+    public interface IAudiobookService : IBaseMediaService<Audiobook>
     {
         Audiobook GetAudiobook(int audiobookId);
         List<Audiobook> GetAudiobooks(IEnumerable<int> audiobookIds);
-        PagingSpec<Audiobook> Paged(PagingSpec<Audiobook> pagingSpec);
         Audiobook AddAudiobook(Audiobook newAudiobook);
         List<Audiobook> AddAudiobooks(List<Audiobook> newAudiobooks);
         Audiobook FindByIsbn(string isbn);
@@ -34,159 +33,61 @@ namespace NzbDrone.Core.Audiobooks
         bool AudiobookPathExists(string folder);
     }
 
-    public class AudiobookService : IAudiobookService
+    public class AudiobookService : BaseMediaService<Audiobook>, IAudiobookService
     {
         private readonly IAudiobookRepository _audiobookRepository;
         private readonly IEventAggregator _eventAggregator;
 
-        public AudiobookService(IAudiobookRepository audiobookRepository,
-                                IEventAggregator eventAggregator)
+        public AudiobookService(IAudiobookRepository audiobookRepository, IEventAggregator eventAggregator)
         {
             _audiobookRepository = audiobookRepository;
             _eventAggregator = eventAggregator;
         }
 
-        public Audiobook GetAudiobook(int audiobookId)
-        {
-            return _audiobookRepository.Get(audiobookId);
-        }
+        protected override IBasicRepository<Audiobook> Repository => _audiobookRepository;
+        protected override IEventAggregator EventAggregator => _eventAggregator;
 
-        public List<Audiobook> GetAudiobooks(IEnumerable<int> audiobookIds)
-        {
-            return _audiobookRepository.Get(audiobookIds).ToList();
-        }
+        public Audiobook GetAudiobook(int audiobookId) => Get(audiobookId);
+        public List<Audiobook> GetAudiobooks(IEnumerable<int> audiobookIds) => Get(audiobookIds);
+        public Audiobook AddAudiobook(Audiobook newAudiobook) => Add(newAudiobook);
+        public List<Audiobook> AddAudiobooks(List<Audiobook> newAudiobooks) => AddMany(newAudiobooks);
+        public void DeleteAudiobook(int audiobookId, bool deleteFiles) => Delete(audiobookId, deleteFiles);
+        public void DeleteAudiobooks(List<int> audiobookIds, bool deleteFiles) => DeleteMany(audiobookIds, deleteFiles);
+        public List<Audiobook> GetAllAudiobooks() => GetAll();
+        public Audiobook UpdateAudiobook(Audiobook audiobook) => Update(audiobook);
+        public List<Audiobook> UpdateAudiobooks(List<Audiobook> audiobooks) => UpdateMany(audiobooks);
 
-        public PagingSpec<Audiobook> Paged(PagingSpec<Audiobook> pagingSpec)
-        {
-            return _audiobookRepository.GetPaged(pagingSpec);
-        }
-
-        public Audiobook AddAudiobook(Audiobook newAudiobook)
-        {
-            newAudiobook.Added = DateTime.UtcNow;
-            var audiobook = _audiobookRepository.Insert(newAudiobook);
-
-            _eventAggregator.PublishEvent(new AudiobookAddedEvent(GetAudiobook(audiobook.Id)));
-
-            return audiobook;
-        }
-
-        public List<Audiobook> AddAudiobooks(List<Audiobook> newAudiobooks)
-        {
-            var now = DateTime.UtcNow;
-            foreach (var audiobook in newAudiobooks)
-            {
-                audiobook.Added = now;
-            }
-
-            _audiobookRepository.InsertMany(newAudiobooks);
-
-            _eventAggregator.PublishEvent(new AudiobooksImportedEvent(newAudiobooks));
-
-            return newAudiobooks;
-        }
-
-        public Audiobook FindByIsbn(string isbn)
-        {
-            return _audiobookRepository.FindByIsbn(isbn);
-        }
-
-        public Audiobook FindByIsbn13(string isbn13)
-        {
-            return _audiobookRepository.FindByIsbn13(isbn13);
-        }
-
-        public Audiobook FindByAsin(string asin)
-        {
-            return _audiobookRepository.FindByAsin(asin);
-        }
-
-        public Audiobook FindByForeignId(string foreignAudiobookId)
-        {
-            return _audiobookRepository.FindByForeignId(foreignAudiobookId);
-        }
-
-        public Audiobook FindByPath(string path)
-        {
-            return _audiobookRepository.FindByPath(path);
-        }
-
-        public List<Audiobook> FindByAuthorId(int authorId)
-        {
-            return _audiobookRepository.FindByAuthorId(authorId);
-        }
-
-        public List<Audiobook> FindBySeriesId(int seriesId)
-        {
-            return _audiobookRepository.FindBySeriesId(seriesId);
-        }
-
-        public List<Audiobook> FindByBookId(int bookId)
-        {
-            return _audiobookRepository.FindByBookId(bookId);
-        }
-
-        public List<Audiobook> FindByNarrator(string narrator)
-        {
-            return _audiobookRepository.FindByNarrator(narrator);
-        }
-
-        public Dictionary<int, string> AllAudiobookPaths()
-        {
-            return _audiobookRepository.AllAudiobookPaths();
-        }
-
+        public Audiobook FindByIsbn(string isbn) => _audiobookRepository.FindByIsbn(isbn);
+        public Audiobook FindByIsbn13(string isbn13) => _audiobookRepository.FindByIsbn13(isbn13);
+        public Audiobook FindByAsin(string asin) => _audiobookRepository.FindByAsin(asin);
+        public Audiobook FindByForeignId(string foreignAudiobookId) => _audiobookRepository.FindByForeignId(foreignAudiobookId);
+        public Audiobook FindByPath(string path) => _audiobookRepository.FindByPath(path);
+        public List<Audiobook> FindByAuthorId(int authorId) => _audiobookRepository.FindByAuthorId(authorId);
+        public List<Audiobook> FindBySeriesId(int seriesId) => _audiobookRepository.FindBySeriesId(seriesId);
+        public List<Audiobook> FindByBookId(int bookId) => _audiobookRepository.FindByBookId(bookId);
+        public List<Audiobook> FindByNarrator(string narrator) => _audiobookRepository.FindByNarrator(narrator);
+        public Dictionary<int, string> AllAudiobookPaths() => _audiobookRepository.AllAudiobookPaths();
         public List<Audiobook> GetAudiobooksBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)
-        {
-            return _audiobookRepository.AudiobooksBetweenDates(start, end, includeUnmonitored);
-        }
+            => _audiobookRepository.AudiobooksBetweenDates(start, end, includeUnmonitored);
+        public Dictionary<int, List<int>> AllAudiobookTags() => _audiobookRepository.AllAudiobookTags();
+        public bool AudiobookPathExists(string folder) => _audiobookRepository.AudiobookPathExists(folder);
 
-        public void DeleteAudiobook(int audiobookId, bool deleteFiles)
-        {
-            var audiobook = _audiobookRepository.Get(audiobookId);
-            _audiobookRepository.Delete(audiobookId);
-            _eventAggregator.PublishEvent(new AudiobookDeletedEvent(audiobook, deleteFiles));
-        }
+        protected override void OnItemAdded(Audiobook item)
+            => _eventAggregator.PublishEvent(new AudiobookAddedEvent(item));
 
-        public void DeleteAudiobooks(List<int> audiobookIds, bool deleteFiles)
-        {
-            var audiobooks = _audiobookRepository.Get(audiobookIds).ToList();
-            _audiobookRepository.DeleteMany(audiobookIds);
-            _eventAggregator.PublishEvent(new AudiobooksDeletedEvent(audiobooks, deleteFiles));
-        }
+        protected override void OnItemsImported(List<Audiobook> items)
+            => _eventAggregator.PublishEvent(new AudiobooksImportedEvent(items));
 
-        public List<Audiobook> GetAllAudiobooks()
-        {
-            return _audiobookRepository.All().ToList();
-        }
+        protected override void OnItemDeleted(Audiobook item, bool deleteFiles)
+            => _eventAggregator.PublishEvent(new AudiobookDeletedEvent(item, deleteFiles));
 
-        public Dictionary<int, List<int>> AllAudiobookTags()
-        {
-            return _audiobookRepository.AllAudiobookTags();
-        }
+        protected override void OnItemsDeleted(List<Audiobook> items, bool deleteFiles)
+            => _eventAggregator.PublishEvent(new AudiobooksDeletedEvent(items, deleteFiles));
 
-        public Audiobook UpdateAudiobook(Audiobook audiobook)
-        {
-            var storedAudiobook = GetAudiobook(audiobook.Id);
-            var updatedAudiobook = _audiobookRepository.Update(audiobook);
+        protected override void OnItemEdited(Audiobook updated, Audiobook stored)
+            => _eventAggregator.PublishEvent(new AudiobookEditedEvent(updated, stored));
 
-            _eventAggregator.PublishEvent(new AudiobookEditedEvent(updatedAudiobook, storedAudiobook));
-
-            return updatedAudiobook;
-        }
-
-        public List<Audiobook> UpdateAudiobooks(List<Audiobook> audiobooks)
-        {
-            _audiobookRepository.UpdateMany(audiobooks);
-
-            _eventAggregator.PublishEvent(new AudiobooksBulkEditedEvent(audiobooks));
-
-            return audiobooks;
-        }
-
-        public bool AudiobookPathExists(string folder)
-        {
-            return _audiobookRepository.AudiobookPathExists(folder);
-        }
+        protected override void OnItemsBulkEdited(List<Audiobook> items)
+            => _eventAggregator.PublishEvent(new AudiobooksBulkEditedEvent(items));
     }
 }

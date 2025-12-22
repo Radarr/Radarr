@@ -1,11 +1,11 @@
 {
   "openapi": "3.0.4",
   "info": {
-    "title": "Radarr",
-    "description": "Radarr API docs",
+    "title": "Aletheia",
+    "description": "Aletheia API docs",
     "license": {
       "name": "GPL-3.0",
-      "url": "https://github.com/Radarr/Radarr/blob/develop/LICENSE"
+      "url": "https://github.com/cheir-mneme/aletheia/blob/develop/LICENSE"
     },
     "version": "3.0.0"
   },
