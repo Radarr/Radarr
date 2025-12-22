@@ -123,6 +123,21 @@ namespace NzbDrone.Core.Qualities
         public static Quality WEBRip1080p => new Quality(15, "WEBRip-1080p", QualitySource.WEBRIP, 1080);
         public static Quality WEBRip2160p => new Quality(17, "WEBRip-2160p", QualitySource.WEBRIP, 2160);
 
+        // Book Qualities (IDs 100-109)
+        public static Quality EbookUnknown => new Quality(100, "Unknown eBook", QualitySource.EBOOK, 0);
+        public static Quality EPUB => new Quality(101, "EPUB", QualitySource.EBOOK, 0);
+        public static Quality MOBI => new Quality(102, "MOBI", QualitySource.EBOOK, 0);
+        public static Quality AZW3 => new Quality(103, "AZW3", QualitySource.EBOOK, 0);
+        public static Quality PDF => new Quality(104, "PDF", QualitySource.EBOOK, 0);
+        public static Quality TXT => new Quality(105, "TXT", QualitySource.EBOOK, 0);
+
+        // Audiobook Qualities (IDs 200-209)
+        public static Quality AudiobookUnknown => new Quality(200, "Unknown Audiobook", QualitySource.AUDIOBOOK, 0);
+        public static Quality MP3_128 => new Quality(201, "MP3-128", QualitySource.AUDIOBOOK, 128);
+        public static Quality MP3_320 => new Quality(202, "MP3-320", QualitySource.AUDIOBOOK, 320);
+        public static Quality M4B => new Quality(203, "M4B", QualitySource.AUDIOBOOK, 256);
+        public static Quality AudioFLAC => new Quality(204, "FLAC", QualitySource.AUDIOBOOK, 1411);
+
         static Quality()
         {
             All = new List<Quality>
@@ -156,7 +171,22 @@ namespace NzbDrone.Core.Qualities
                 Remux1080p,
                 Remux2160p,
                 BRDISK,
-                RAWHD
+                RAWHD,
+
+                // Book qualities
+                EbookUnknown,
+                EPUB,
+                MOBI,
+                AZW3,
+                PDF,
+                TXT,
+
+                // Audiobook qualities
+                AudiobookUnknown,
+                MP3_128,
+                MP3_320,
+                M4B,
+                AudioFLAC
             };
 
             AllLookup = new Quality[All.Select(v => v.Id).Max() + 1];
@@ -201,7 +231,22 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.Remux2160p)  { Weight = 24, MinSize = 0, MaxSize = null, PreferredSize = null },
 
                 new QualityDefinition(Quality.BRDISK)      { Weight = 25, MinSize = 0, MaxSize = null, PreferredSize = null },
-                new QualityDefinition(Quality.RAWHD)       { Weight = 26, MinSize = 0, MaxSize = null, PreferredSize = null }
+                new QualityDefinition(Quality.RAWHD)       { Weight = 26, MinSize = 0, MaxSize = null, PreferredSize = null },
+
+                // Book quality definitions (Weight 100+)
+                new QualityDefinition(Quality.EbookUnknown) { Weight = 100, MinSize = 0, MaxSize = 50, PreferredSize = 10 },
+                new QualityDefinition(Quality.TXT)          { Weight = 101, MinSize = 0, MaxSize = 5, PreferredSize = 1 },
+                new QualityDefinition(Quality.PDF)          { Weight = 102, MinSize = 0, MaxSize = 100, PreferredSize = 20 },
+                new QualityDefinition(Quality.MOBI)         { Weight = 103, MinSize = 0, MaxSize = 50, PreferredSize = 5 },
+                new QualityDefinition(Quality.AZW3)         { Weight = 104, MinSize = 0, MaxSize = 50, PreferredSize = 5 },
+                new QualityDefinition(Quality.EPUB)         { Weight = 105, MinSize = 0, MaxSize = 50, PreferredSize = 5 },
+
+                // Audiobook quality definitions (Weight 200+)
+                new QualityDefinition(Quality.AudiobookUnknown) { Weight = 200, MinSize = 0, MaxSize = null, PreferredSize = null },
+                new QualityDefinition(Quality.MP3_128)          { Weight = 201, MinSize = 0, MaxSize = 500, PreferredSize = 200 },
+                new QualityDefinition(Quality.MP3_320)          { Weight = 202, MinSize = 0, MaxSize = 1000, PreferredSize = 500 },
+                new QualityDefinition(Quality.M4B)              { Weight = 203, MinSize = 0, MaxSize = 1000, PreferredSize = 400 },
+                new QualityDefinition(Quality.AudioFLAC)        { Weight = 204, MinSize = 0, MaxSize = null, PreferredSize = null }
             };
         }
 
