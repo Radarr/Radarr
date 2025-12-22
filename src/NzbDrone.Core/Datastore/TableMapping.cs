@@ -36,6 +36,7 @@ using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Credits;
 using NzbDrone.Core.Movies.Translations;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
@@ -153,6 +154,14 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<AudiobookFile>("AudiobookFiles").RegisterModel()
                   .Ignore(f => f.Path);
+
+            Mapper.Entity<Artist>("Artists").RegisterModel();
+
+            Mapper.Entity<Album>("Albums").RegisterModel();
+
+            Mapper.Entity<Track>("Tracks").RegisterModel();
+
+            Mapper.Entity<MusicFile>("MusicFiles").RegisterModel();
 
             Mapper.Entity<QualityDefinition>("QualityDefinitions").RegisterModel()
                   .Ignore(d => d.GroupName)
