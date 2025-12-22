@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NLog;
 using NzbDrone.Core.Audiobooks.Events;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
@@ -39,15 +38,12 @@ namespace NzbDrone.Core.Audiobooks
     {
         private readonly IAudiobookRepository _audiobookRepository;
         private readonly IEventAggregator _eventAggregator;
-        private readonly Logger _logger;
 
         public AudiobookService(IAudiobookRepository audiobookRepository,
-                                IEventAggregator eventAggregator,
-                                Logger logger)
+                                IEventAggregator eventAggregator)
         {
             _audiobookRepository = audiobookRepository;
             _eventAggregator = eventAggregator;
-            _logger = logger;
         }
 
         public Audiobook GetAudiobook(int audiobookId)

@@ -98,10 +98,12 @@ export const actionHandlers = handleThunks({
 
     const id = payload.id;
     const items = getState().addAudiobook.items;
-    const newAudiobook = _.cloneDeep(_.find(items, { id }));
-
-    Object.assign(newAudiobook, payload);
-    newAudiobook.id = 0;
+    const found = _.find(items, { id });
+    const newAudiobook = {
+      ...structuredClone(found),
+      ...payload,
+      id: 0
+    };
 
     const promise = createAjaxRequest({
       url: '/audiobook',
@@ -156,7 +158,7 @@ export const reducers = createHandleActions({
       ...otherDefaultState
     } = defaultState;
 
-    return Object.assign({}, state, otherDefaultState);
+    return { ...state, ...otherDefaultState };
   }
 
 }, defaultState, section);

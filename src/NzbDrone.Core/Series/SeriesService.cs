@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using NLog;
-using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.Series
 {
@@ -25,16 +23,10 @@ namespace NzbDrone.Core.Series
     public class SeriesService : ISeriesService
     {
         private readonly ISeriesRepository _seriesRepository;
-        private readonly IEventAggregator _eventAggregator;
-        private readonly Logger _logger;
 
-        public SeriesService(ISeriesRepository seriesRepository,
-                             IEventAggregator eventAggregator,
-                             Logger logger)
+        public SeriesService(ISeriesRepository seriesRepository)
         {
             _seriesRepository = seriesRepository;
-            _eventAggregator = eventAggregator;
-            _logger = logger;
         }
 
         public Series GetSeries(int seriesId)

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NLog;
 using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
@@ -37,15 +36,12 @@ namespace NzbDrone.Core.Books
     {
         private readonly IBookRepository _bookRepository;
         private readonly IEventAggregator _eventAggregator;
-        private readonly Logger _logger;
 
         public BookService(IBookRepository bookRepository,
-                           IEventAggregator eventAggregator,
-                           Logger logger)
+                           IEventAggregator eventAggregator)
         {
             _bookRepository = bookRepository;
             _eventAggregator = eventAggregator;
-            _logger = logger;
         }
 
         public Book GetBook(int bookId)

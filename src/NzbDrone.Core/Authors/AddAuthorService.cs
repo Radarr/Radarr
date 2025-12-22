@@ -18,17 +18,14 @@ namespace NzbDrone.Core.Authors
     public class AddAuthorService : IAddAuthorService
     {
         private readonly IAuthorService _authorService;
-        private readonly IBuildFileNames _fileNameBuilder;
         private readonly IAddAuthorValidator _addAuthorValidator;
         private readonly Logger _logger;
 
         public AddAuthorService(IAuthorService authorService,
-                                IBuildFileNames fileNameBuilder,
                                 IAddAuthorValidator addAuthorValidator,
                                 Logger logger)
         {
             _authorService = authorService;
-            _fileNameBuilder = fileNameBuilder;
             _addAuthorValidator = addAuthorValidator;
             _logger = logger;
         }
@@ -75,7 +72,7 @@ namespace NzbDrone.Core.Authors
                         throw;
                     }
 
-                    _logger.Debug("Author {0} was not added due to validation failures. {1}", a.Name, ex.Message);
+                    _logger.Debug(ex, "Author {0} was not added due to validation failures.", a.Name);
                 }
             }
 

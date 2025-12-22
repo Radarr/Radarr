@@ -9,7 +9,7 @@ import translate from 'Utilities/String/translate';
 import styles from './AudiobookDetails.css';
 
 interface AudiobookDetailsProps {
-  audiobookId: number;
+  readonly audiobookId: number;
 }
 
 function formatDuration(minutes: number): string {
@@ -19,7 +19,7 @@ function formatDuration(minutes: number): string {
   return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
 }
 
-function AudiobookDetails({ audiobookId }: AudiobookDetailsProps) {
+function AudiobookDetails({ audiobookId }: Readonly<AudiobookDetailsProps>) {
   const audiobook = useSelector((state: AppState) =>
     state.audiobooks.items.find((a) => a.id === audiobookId)
   );

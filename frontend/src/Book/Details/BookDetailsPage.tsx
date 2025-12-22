@@ -12,7 +12,7 @@ function BookDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
-  const bookId = parseInt(id);
+  const bookId = Number.parseInt(id);
   const bookIndex = allBooks.findIndex((book) => book.id === bookId);
 
   const previousIndex = usePrevious(bookIndex);

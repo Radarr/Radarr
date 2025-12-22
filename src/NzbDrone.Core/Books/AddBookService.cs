@@ -18,17 +18,14 @@ namespace NzbDrone.Core.Books
     public class AddBookService : IAddBookService
     {
         private readonly IBookService _bookService;
-        private readonly IBuildFileNames _fileNameBuilder;
         private readonly IAddBookValidator _addBookValidator;
         private readonly Logger _logger;
 
         public AddBookService(IBookService bookService,
-                              IBuildFileNames fileNameBuilder,
                               IAddBookValidator addBookValidator,
                               Logger logger)
         {
             _bookService = bookService;
-            _fileNameBuilder = fileNameBuilder;
             _addBookValidator = addBookValidator;
             _logger = logger;
         }
@@ -75,7 +72,7 @@ namespace NzbDrone.Core.Books
                         throw;
                     }
 
-                    _logger.Debug("Book {0} was not added due to validation failures. {1}", b.Title, ex.Message);
+                    _logger.Debug(ex, "Book {0} was not added due to validation failures.", b.Title);
                 }
             }
 

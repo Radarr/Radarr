@@ -9,10 +9,10 @@ import translate from 'Utilities/String/translate';
 import styles from './SeriesDetails.css';
 
 interface SeriesDetailsProps {
-  seriesId: number;
+  readonly seriesId: number;
 }
 
-function SeriesDetails({ seriesId }: SeriesDetailsProps) {
+function SeriesDetails({ seriesId }: Readonly<SeriesDetailsProps>) {
   const series = useSelector((state: AppState) =>
     state.series.items.find((s) => s.id === seriesId)
   );

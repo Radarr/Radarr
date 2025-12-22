@@ -18,17 +18,14 @@ namespace NzbDrone.Core.Audiobooks
     public class AddAudiobookService : IAddAudiobookService
     {
         private readonly IAudiobookService _audiobookService;
-        private readonly IBuildFileNames _fileNameBuilder;
         private readonly IAddAudiobookValidator _addAudiobookValidator;
         private readonly Logger _logger;
 
         public AddAudiobookService(IAudiobookService audiobookService,
-                                   IBuildFileNames fileNameBuilder,
                                    IAddAudiobookValidator addAudiobookValidator,
                                    Logger logger)
         {
             _audiobookService = audiobookService;
-            _fileNameBuilder = fileNameBuilder;
             _addAudiobookValidator = addAudiobookValidator;
             _logger = logger;
         }
@@ -75,7 +72,7 @@ namespace NzbDrone.Core.Audiobooks
                         throw;
                     }
 
-                    _logger.Debug("Audiobook {0} was not added due to validation failures. {1}", a.Title, ex.Message);
+                    _logger.Debug(ex, "Audiobook {0} was not added due to validation failures.", a.Title);
                 }
             }
 

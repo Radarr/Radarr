@@ -12,7 +12,7 @@ function AuthorDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
-  const authorId = parseInt(id);
+  const authorId = Number.parseInt(id);
   const authorIndex = allAuthors.findIndex((author) => author.id === authorId);
 
   const previousIndex = usePrevious(authorIndex);

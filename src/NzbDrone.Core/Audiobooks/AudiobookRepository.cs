@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Profiles.Qualities;
 
 namespace NzbDrone.Core.Audiobooks
 {
@@ -26,14 +25,10 @@ namespace NzbDrone.Core.Audiobooks
 
     public class AudiobookRepository : BasicRepository<Audiobook>, IAudiobookRepository
     {
-        private readonly IQualityProfileRepository _profileRepository;
-
         public AudiobookRepository(IMainDatabase database,
-                                   IQualityProfileRepository profileRepository,
                                    IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
-            _profileRepository = profileRepository;
         }
 
         public bool AudiobookPathExists(string path)

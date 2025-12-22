@@ -12,7 +12,7 @@ function AudiobookDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
-  const audiobookId = parseInt(id);
+  const audiobookId = Number.parseInt(id);
   const audiobookIndex = allAudiobooks.findIndex(
     (audiobook) => audiobook.id === audiobookId
   );

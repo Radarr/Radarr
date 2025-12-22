@@ -12,7 +12,7 @@ function SeriesDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
-  const seriesId = parseInt(id);
+  const seriesId = Number.parseInt(id);
   const seriesIndex = allSeries.findIndex((series) => series.id === seriesId);
 
   const previousIndex = usePrevious(seriesIndex);

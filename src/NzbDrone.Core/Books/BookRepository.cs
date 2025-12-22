@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Profiles.Qualities;
 
 namespace NzbDrone.Core.Books
 {
@@ -24,14 +23,10 @@ namespace NzbDrone.Core.Books
 
     public class BookRepository : BasicRepository<Book>, IBookRepository
     {
-        private readonly IQualityProfileRepository _profileRepository;
-
         public BookRepository(IMainDatabase database,
-                              IQualityProfileRepository profileRepository,
                               IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
-            _profileRepository = profileRepository;
         }
 
         public bool BookPathExists(string path)

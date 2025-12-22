@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Series
                         throw;
                     }
 
-                    _logger.Debug("Series {0} was not added due to validation failures. {1}", s.Title, ex.Message);
+                    _logger.Debug(ex, "Series {0} was not added due to validation failures.", s.Title);
                 }
             }
 

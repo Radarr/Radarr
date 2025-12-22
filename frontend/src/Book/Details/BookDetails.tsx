@@ -9,10 +9,10 @@ import translate from 'Utilities/String/translate';
 import styles from './BookDetails.css';
 
 interface BookDetailsProps {
-  bookId: number;
+  readonly bookId: number;
 }
 
-function BookDetails({ bookId }: BookDetailsProps) {
+function BookDetails({ bookId }: Readonly<BookDetailsProps>) {
   const book = useSelector((state: AppState) =>
     state.books.items.find((b) => b.id === bookId)
   );

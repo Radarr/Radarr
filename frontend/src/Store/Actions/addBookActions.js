@@ -98,10 +98,12 @@ export const actionHandlers = handleThunks({
 
     const id = payload.id;
     const items = getState().addBook.items;
-    const newBook = _.cloneDeep(_.find(items, { id }));
-
-    Object.assign(newBook, payload);
-    newBook.id = 0;
+    const found = _.find(items, { id });
+    const newBook = {
+      ...structuredClone(found),
+      ...payload,
+      id: 0
+    };
 
     const promise = createAjaxRequest({
       url: '/book',
@@ -156,7 +158,7 @@ export const reducers = createHandleActions({
       ...otherDefaultState
     } = defaultState;
 
-    return Object.assign({}, state, otherDefaultState);
+    return { ...state, ...otherDefaultState };
   }
 
 }, defaultState, section);

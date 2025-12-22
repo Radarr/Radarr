@@ -9,10 +9,10 @@ import translate from 'Utilities/String/translate';
 import styles from './AuthorDetails.css';
 
 interface AuthorDetailsProps {
-  authorId: number;
+  readonly authorId: number;
 }
 
-function AuthorDetails({ authorId }: AuthorDetailsProps) {
+function AuthorDetails({ authorId }: Readonly<AuthorDetailsProps>) {
   const author = useSelector((state: AppState) =>
     state.authors.items.find((a) => a.id === authorId)
   );
