@@ -29,6 +29,7 @@ namespace Radarr.Api.V3.Audiobooks
         public bool IsAbridged { get; set; }
 
         public bool Monitored { get; set; }
+        public bool EffectivelyMonitored { get; set; }
         public int QualityProfileId { get; set; }
         public string Path { get; set; }
         public string RootFolderPath { get; set; }

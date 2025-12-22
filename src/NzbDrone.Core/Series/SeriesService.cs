@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Monitoring;
 
 namespace NzbDrone.Core.Series
 {
@@ -23,10 +24,13 @@ namespace NzbDrone.Core.Series
     public class SeriesService : ISeriesService
     {
         private readonly ISeriesRepository _seriesRepository;
+        private readonly IHierarchicalMonitoringService _hierarchicalMonitoringService;
 
-        public SeriesService(ISeriesRepository seriesRepository)
+        public SeriesService(ISeriesRepository seriesRepository,
+                             IHierarchicalMonitoringService hierarchicalMonitoringService)
         {
             _seriesRepository = seriesRepository;
+            _hierarchicalMonitoringService = hierarchicalMonitoringService;
         }
 
         public Series GetSeries(int seriesId)
@@ -87,6 +91,13 @@ namespace NzbDrone.Core.Series
 
         public Series UpdateSeries(Series series)
         {
+            var existingSeries = _seriesRepository.Get(series.Id);
+
+            if (existingSeries.Monitored != series.Monitored)
+            {
+                _hierarchicalMonitoringService.SetSeriesMonitored(series.Id, series.Monitored);
+            }
+
             return _seriesRepository.Update(series);
         }
 

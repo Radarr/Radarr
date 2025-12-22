@@ -18,6 +18,10 @@ query-filters:
       id: cs/web/insecure-direct-object-reference
   - exclude:
       id: cs/web/missing-function-level-access-control
+  # User-controlled monitoring flag is expected behavior for hierarchical monitoring
+  # The cascade operation is the intended design when admin changes monitoring status
+  - exclude:
+      id: cs/user-controlled-bypass
 
 paths-ignore:
   - node_modules

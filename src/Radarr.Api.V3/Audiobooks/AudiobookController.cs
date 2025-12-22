@@ -6,6 +6,7 @@ using NzbDrone.Core.Audiobooks;
 using NzbDrone.Core.Audiobooks.Events;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Monitoring;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
@@ -25,10 +26,12 @@ namespace Radarr.Api.V3.Audiobooks
     {
         private readonly IAudiobookService _audiobookService;
         private readonly IRootFolderService _rootFolderService;
+        private readonly IHierarchicalMonitoringService _monitoringService;
 
         public AudiobookController(IBroadcastSignalRMessage signalRBroadcaster,
                                    IAudiobookService audiobookService,
                                    IRootFolderService rootFolderService,
+                                   IHierarchicalMonitoringService monitoringService,
                                    RootFolderValidator rootFolderValidator,
                                    MappedNetworkDriveValidator mappedNetworkDriveValidator,
                                    RecycleBinValidator recycleBinValidator,
@@ -39,6 +42,7 @@ namespace Radarr.Api.V3.Audiobooks
         {
             _audiobookService = audiobookService;
             _rootFolderService = rootFolderService;
+            _monitoringService = monitoringService;
 
             SharedValidator.RuleFor(s => s.Path).Cascade(CascadeMode.Stop)
                 .IsValidPath()
@@ -98,9 +102,10 @@ namespace Radarr.Api.V3.Audiobooks
             var resources = audiobooks.ToResource();
             var rootFolders = _rootFolderService.All();
 
-            foreach (var resource in resources)
+            for (var i = 0; i < resources.Count; i++)
             {
-                resource.RootFolderPath = _rootFolderService.GetBestRootFolderPath(resource.Path, rootFolders);
+                resources[i].RootFolderPath = _rootFolderService.GetBestRootFolderPath(resources[i].Path, rootFolders);
+                resources[i].EffectivelyMonitored = _monitoringService.IsEffectivelyMonitored(audiobooks[i]);
             }
 
             return resources;
@@ -121,6 +126,7 @@ namespace Radarr.Api.V3.Audiobooks
 
             var resource = audiobook.ToResource();
             resource.RootFolderPath = _rootFolderService.GetBestRootFolderPath(resource.Path);
+            resource.EffectivelyMonitored = _monitoringService.IsEffectivelyMonitored(audiobook);
 
             return resource;
         }

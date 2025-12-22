@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Monitoring;
 
 namespace NzbDrone.Core.Authors
 {
@@ -24,10 +25,13 @@ namespace NzbDrone.Core.Authors
     public class AuthorService : IAuthorService
     {
         private readonly IAuthorRepository _authorRepository;
+        private readonly IHierarchicalMonitoringService _hierarchicalMonitoringService;
 
-        public AuthorService(IAuthorRepository authorRepository)
+        public AuthorService(IAuthorRepository authorRepository,
+                             IHierarchicalMonitoringService hierarchicalMonitoringService)
         {
             _authorRepository = authorRepository;
+            _hierarchicalMonitoringService = hierarchicalMonitoringService;
         }
 
         public Author GetAuthor(int authorId)
@@ -90,6 +94,13 @@ namespace NzbDrone.Core.Authors
 
         public Author UpdateAuthor(Author author)
         {
+            var existingAuthor = _authorRepository.Get(author.Id);
+
+            if (existingAuthor.Monitored != author.Monitored)
+            {
+                _hierarchicalMonitoringService.SetAuthorMonitored(author.Id, author.Monitored);
+            }
+
             return _authorRepository.Update(author);
         }
 
