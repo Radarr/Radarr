@@ -102,6 +102,18 @@ const LINKS: SidebarItem[] = [
   },
 
   {
+    iconName: icons.AUTHOR,
+    title: () => translate('Authors'),
+    to: '/authors',
+  },
+
+  {
+    iconName: icons.SERIES,
+    title: () => translate('Series'),
+    to: '/series',
+  },
+
+  {
     iconName: icons.CALENDAR,
     title: () => translate('Calendar'),
     to: '/calendar',

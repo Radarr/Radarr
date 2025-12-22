@@ -1,6 +1,9 @@
+import * as addAudiobook from './addAudiobookActions';
+import * as addBook from './addBookActions';
 import * as addMovie from './addMovieActions';
 import * as app from './appActions';
 import * as audiobooks from './audiobookActions';
+import * as authors from './authorActions';
 import * as blocklist from './blocklistActions';
 import * as books from './bookActions';
 import * as calendar from './calendarActions';
@@ -27,15 +30,19 @@ import * as providerOptions from './providerOptionActions';
 import * as queue from './queueActions';
 import * as releases from './releaseActions';
 import * as rootFolders from './rootFolderActions';
+import * as series from './seriesActions';
 import * as settings from './settingsActions';
 import * as system from './systemActions';
 import * as tags from './tagActions';
 import * as wanted from './wantedActions';
 
 export default [
+  addAudiobook,
+  addBook,
   addMovie,
   app,
   audiobooks,
+  authors,
   blocklist,
   books,
   calendar,
@@ -62,6 +69,7 @@ export default [
   movieHistory,
   movieIndex,
   movieCredits,
+  series,
   settings,
   system,
   tags,
