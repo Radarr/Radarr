@@ -1,15 +1,13 @@
 using System;
-using System.Collections.Generic;
-using NzbDrone.Core.Datastore;
+using NzbDrone.Core.MediaItems;
 using NzbDrone.Core.MediaTypes;
 
 namespace NzbDrone.Core.Audiobooks
 {
-    public class Audiobook : ModelBase
+    public class Audiobook : MediaItem
     {
         public Audiobook()
         {
-            Tags = new HashSet<int>();
             MediaType = MediaType.Audiobook;
         }
 
@@ -28,20 +26,12 @@ namespace NzbDrone.Core.Audiobooks
         public int? DurationMinutes { get; set; }
         public bool IsAbridged { get; set; }
 
-        public MediaType MediaType { get; set; }
-        public bool Monitored { get; set; }
-        public int QualityProfileId { get; set; }
-        public string Path { get; set; }
-        public string RootFolderPath { get; set; }
-        public DateTime Added { get; set; }
-        public HashSet<int> Tags { get; set; }
-        public DateTime? LastSearchTime { get; set; }
-
-        public int? AuthorId { get; set; }
-        public int? SeriesId { get; set; }
         public int? SeriesPosition { get; set; }
 
         public int? BookId { get; set; }
+
+        public override string GetTitle() => Title;
+        public override int GetYear() => ReleaseDate?.Year ?? 0;
 
         public override string ToString()
         {
