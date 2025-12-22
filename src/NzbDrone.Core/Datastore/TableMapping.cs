@@ -148,6 +148,12 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<Audiobook>("Audiobooks").RegisterModel();
 
+            Mapper.Entity<BookFile>("BookFiles").RegisterModel()
+                  .Ignore(f => f.Path);
+
+            Mapper.Entity<AudiobookFile>("AudiobookFiles").RegisterModel()
+                  .Ignore(f => f.Path);
+
             Mapper.Entity<QualityDefinition>("QualityDefinitions").RegisterModel()
                   .Ignore(d => d.GroupName)
                   .Ignore(d => d.Weight);

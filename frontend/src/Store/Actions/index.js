@@ -1,6 +1,8 @@
 import * as addMovie from './addMovieActions';
 import * as app from './appActions';
+import * as audiobooks from './audiobookActions';
 import * as blocklist from './blocklistActions';
+import * as books from './bookActions';
 import * as calendar from './calendarActions';
 import * as captcha from './captchaActions';
 import * as commands from './commandActions';
@@ -33,7 +35,9 @@ import * as wanted from './wantedActions';
 export default [
   addMovie,
   app,
+  audiobooks,
   blocklist,
+  books,
   calendar,
   captcha,
   commands,

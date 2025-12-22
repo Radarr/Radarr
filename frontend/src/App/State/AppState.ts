@@ -1,5 +1,7 @@
 import { Error } from './AppSectionState';
+import AudiobooksAppState from './AudiobooksAppState';
 import BlocklistAppState from './BlocklistAppState';
+import BooksAppState from './BooksAppState';
 import CalendarAppState from './CalendarAppState';
 import CaptchaAppState from './CaptchaAppState';
 import CommandAppState from './CommandAppState';
@@ -81,7 +83,9 @@ export interface AppSectionState {
 
 interface AppState {
   app: AppSectionState;
+  audiobooks: AudiobooksAppState;
   blocklist: BlocklistAppState;
+  books: BooksAppState;
   calendar: CalendarAppState;
   captcha: CaptchaAppState;
   commands: CommandAppState;
