@@ -6,7 +6,8 @@ using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.MediaItems
 {
-    public interface IBaseMediaService<T> where T : ModelBase
+    public interface IBaseMediaService<T>
+        where T : ModelBase, new()
     {
         T Get(int id);
         List<T> Get(IEnumerable<int> ids);
@@ -20,7 +21,8 @@ namespace NzbDrone.Core.MediaItems
         List<T> UpdateMany(List<T> items);
     }
 
-    public abstract class BaseMediaService<T> : IBaseMediaService<T> where T : ModelBase
+    public abstract class BaseMediaService<T> : IBaseMediaService<T>
+        where T : ModelBase, new()
     {
         protected abstract IBasicRepository<T> Repository { get; }
         protected virtual IEventAggregator EventAggregator => null;
@@ -112,11 +114,28 @@ namespace NzbDrone.Core.MediaItems
             }
         }
 
-        protected virtual void OnItemAdded(T item) { }
-        protected virtual void OnItemsImported(List<T> items) { }
-        protected virtual void OnItemDeleted(T item, bool deleteFiles) { }
-        protected virtual void OnItemsDeleted(List<T> items, bool deleteFiles) { }
-        protected virtual void OnItemEdited(T updated, T stored) { }
-        protected virtual void OnItemsBulkEdited(List<T> items) { }
+        protected virtual void OnItemAdded(T item)
+        {
+        }
+
+        protected virtual void OnItemsImported(List<T> items)
+        {
+        }
+
+        protected virtual void OnItemDeleted(T item, bool deleteFiles)
+        {
+        }
+
+        protected virtual void OnItemsDeleted(List<T> items, bool deleteFiles)
+        {
+        }
+
+        protected virtual void OnItemEdited(T updated, T stored)
+        {
+        }
+
+        protected virtual void OnItemsBulkEdited(List<T> items)
+        {
+        }
     }
 }

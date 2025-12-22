@@ -55,11 +55,6 @@ namespace NzbDrone.Core.Movies.Credits
             return _creditRepo.All().ToList();
         }
 
-        public void RemoveTitle(Credit credit)
-        {
-            _creditRepo.Delete(credit);
-        }
-
         public List<Credit> UpdateCredits(List<Credit> credits, MovieMetadata movieMetadata)
         {
             var movieMetadataId = movieMetadata.Id;
