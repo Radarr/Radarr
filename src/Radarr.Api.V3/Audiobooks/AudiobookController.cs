@@ -1,26 +1,25 @@
 using System.Collections.Generic;
 using System.Linq;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Audiobooks;
 using NzbDrone.Core.Audiobooks.Events;
 using NzbDrone.Core.AudiobookStats;
 using NzbDrone.Core.Datastore.Events;
+using NzbDrone.Core.MediaItems;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Monitoring;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
+using Radarr.Api.V3.MediaItems;
 using Radarr.Http;
-using Radarr.Http.REST;
-using Radarr.Http.REST.Attributes;
 
 namespace Radarr.Api.V3.Audiobooks
 {
     [V3ApiController]
-    public class AudiobookController : RestControllerWithSignalR<AudiobookResource, Audiobook>,
+    public class AudiobookController : BaseMediaCrudController<AudiobookResource, Audiobook>,
                                        IHandle<AudiobookAddedEvent>,
                                        IHandle<AudiobookEditedEvent>,
                                        IHandle<AudiobooksDeletedEvent>,
@@ -30,6 +29,9 @@ namespace Radarr.Api.V3.Audiobooks
         private readonly IRootFolderService _rootFolderService;
         private readonly IHierarchicalMonitoringService _monitoringService;
         private readonly IAudiobookStatisticsService _audiobookStatisticsService;
+
+        protected override IBaseMediaService<Audiobook> MediaService => _audiobookService;
+        protected override IRootFolderService RootFolderService => _rootFolderService;
 
         public AudiobookController(IBroadcastSignalRMessage signalRBroadcaster,
                                    IAudiobookService audiobookService,
@@ -49,34 +51,33 @@ namespace Radarr.Api.V3.Audiobooks
             _monitoringService = monitoringService;
             _audiobookStatisticsService = audiobookStatisticsService;
 
-            SharedValidator.RuleFor(s => s.Path).Cascade(CascadeMode.Stop)
-                .IsValidPath()
-                .SetValidator(rootFolderValidator)
-                .SetValidator(mappedNetworkDriveValidator)
-                .SetValidator(recycleBinValidator)
-                .SetValidator(systemFolderValidator)
-                .When(s => s.Path.IsNotNullOrWhiteSpace());
-
-            PostValidator.RuleFor(s => s.Path).Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .IsValidPath()
-                .When(s => s.RootFolderPath.IsNullOrWhiteSpace());
-            PostValidator.RuleFor(s => s.RootFolderPath).Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .IsValidPath()
-                .SetValidator(rootFolderExistsValidator)
-                .When(s => s.Path.IsNullOrWhiteSpace());
-
-            PutValidator.RuleFor(s => s.Path).Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .IsValidPath();
-
-            SharedValidator.RuleFor(s => s.QualityProfileId).Cascade(CascadeMode.Stop)
-                .ValidId()
-                .SetValidator(qualityProfileExistsValidator);
-
-            PostValidator.RuleFor(s => s.Title).NotEmpty();
+            SetupPathValidation(rootFolderValidator, mappedNetworkDriveValidator, recycleBinValidator, systemFolderValidator, rootFolderExistsValidator);
+            SetupQualityValidation(qualityProfileExistsValidator);
+            SetupTitleValidation();
         }
+
+        protected override string GetPath(AudiobookResource resource) => resource.Path;
+        protected override string GetRootFolderPath(AudiobookResource resource) => resource.RootFolderPath;
+        protected override int GetQualityProfileId(AudiobookResource resource) => resource.QualityProfileId;
+        protected override string GetTitle(AudiobookResource resource) => resource.Title;
+
+        protected override AudiobookResource MapToResource(Audiobook audiobook)
+        {
+            if (audiobook == null)
+            {
+                return null;
+            }
+
+            var resource = audiobook.ToResource();
+            resource.RootFolderPath = _rootFolderService.GetBestRootFolderPath(resource.Path);
+            resource.EffectivelyMonitored = _monitoringService.IsEffectivelyMonitored(audiobook);
+            FetchAndLinkAudiobookStatistics(resource);
+
+            return resource;
+        }
+
+        protected override Audiobook ResourceToModel(AudiobookResource resource) => resource.ToModel();
+        protected override Audiobook ApplyResourceToModel(AudiobookResource resource, Audiobook audiobook) => resource.ToModel(audiobook);
 
         [HttpGet]
         public List<AudiobookResource> GetAudiobooks(int? authorId = null, int? seriesId = null, int? bookId = null, string narrator = null)
@@ -120,27 +121,6 @@ namespace Radarr.Api.V3.Audiobooks
             return resources;
         }
 
-        protected override AudiobookResource GetResourceById(int id)
-        {
-            var audiobook = _audiobookService.GetAudiobook(id);
-            return MapToResource(audiobook);
-        }
-
-        private AudiobookResource MapToResource(Audiobook audiobook)
-        {
-            if (audiobook == null)
-            {
-                return null;
-            }
-
-            var resource = audiobook.ToResource();
-            resource.RootFolderPath = _rootFolderService.GetBestRootFolderPath(resource.Path);
-            resource.EffectivelyMonitored = _monitoringService.IsEffectivelyMonitored(audiobook);
-            FetchAndLinkAudiobookStatistics(resource);
-
-            return resource;
-        }
-
         private void FetchAndLinkAudiobookStatistics(AudiobookResource resource)
         {
             LinkAudiobookStatistics(resource, _audiobookStatisticsService.AudiobookStatistics(resource.Id));
@@ -162,36 +142,6 @@ namespace Radarr.Api.V3.Audiobooks
             resource.Statistics = audiobookStatistics.ToResource();
             resource.HasFile = audiobookStatistics.AudiobookFileCount > 0;
             resource.SizeOnDisk = audiobookStatistics.SizeOnDisk;
-        }
-
-        [RestPostById]
-        [Consumes("application/json")]
-        [Produces("application/json")]
-        public ActionResult<AudiobookResource> AddAudiobook([FromBody] AudiobookResource audiobookResource)
-        {
-            var audiobook = _audiobookService.AddAudiobook(audiobookResource.ToModel());
-            return Created(audiobook.Id);
-        }
-
-        [RestPutById]
-        [Consumes("application/json")]
-        [Produces("application/json")]
-        public ActionResult<AudiobookResource> UpdateAudiobook([FromBody] AudiobookResource audiobookResource)
-        {
-            var audiobook = _audiobookService.GetAudiobook(audiobookResource.Id);
-            var updatedAudiobook = _audiobookService.UpdateAudiobook(audiobookResource.ToModel(audiobook));
-            var resource = MapToResource(updatedAudiobook);
-
-            BroadcastResourceChange(ModelAction.Updated, resource);
-
-            return Ok(resource);
-        }
-
-        [RestDeleteById]
-        public ActionResult DeleteAudiobook(int id, bool deleteFiles = false)
-        {
-            _audiobookService.DeleteAudiobook(id, deleteFiles);
-            return NoContent();
         }
 
         [NonAction]
