@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Authors;
+using Radarr.Api.V3.MediaItems;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Authors
 {
-    public class AuthorResource : RestResource
+    public class AuthorResource : RestResource, IMediaResource
     {
         public AuthorResource()
         {

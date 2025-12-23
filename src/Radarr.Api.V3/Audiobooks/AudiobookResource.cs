@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Audiobooks;
+using Radarr.Api.V3.MediaItems;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Audiobooks
 {
-    public class AudiobookResource : RestResource
+    public class AudiobookResource : RestResource, IMediaResource
     {
         public AudiobookResource()
         {

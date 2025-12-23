@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Books;
+using Radarr.Api.V3.MediaItems;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Books
 {
-    public class BookResource : RestResource
+    public class BookResource : RestResource, IMediaResource
     {
         public BookResource()
         {
