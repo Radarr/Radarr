@@ -1,92 +1,36 @@
 using System.Collections.Generic;
-using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
-using NzbDrone.Common.Extensions;
+using FluentValidation.Results;
 using NzbDrone.Core.Books;
+using Radarr.Api.V3.MediaItems;
 using Radarr.Http;
 
 namespace Radarr.Api.V3.Books
 {
     [V3ApiController("book/editor")]
-    public class BookEditorController : Controller
+    public class BookEditorController : BaseMediaEditorController<Book, BookResource, BookEditorResource>
     {
         private readonly IBookService _bookService;
         private readonly BookEditorValidator _bookEditorValidator;
 
-        public BookEditorController(IBookService bookService,
-                                    BookEditorValidator bookEditorValidator)
+        public BookEditorController(IBookService bookService, BookEditorValidator bookEditorValidator)
         {
             _bookService = bookService;
             _bookEditorValidator = bookEditorValidator;
         }
 
-        [HttpPut]
-        public IActionResult SaveAll([FromBody] BookEditorResource resource)
-        {
-            var booksToUpdate = _bookService.GetBooks(resource.BookIds);
+        protected override List<Book> GetItemsByIds(List<int> ids) => _bookService.GetBooks(ids);
+        protected override List<Book> UpdateItems(List<Book> items) => _bookService.UpdateBooks(items);
+        protected override void DeleteItems(List<int> ids, bool deleteFiles) => _bookService.DeleteBooks(ids, deleteFiles);
+        protected override ValidationResult ValidateItem(Book item) => _bookEditorValidator.Validate(item);
+        protected override BookResource ToResource(Book model) => model.ToResource();
 
-            foreach (var book in booksToUpdate)
-            {
-                if (resource.Monitored.HasValue)
-                {
-                    book.Monitored = resource.Monitored.Value;
-                }
-
-                if (resource.QualityProfileId.HasValue)
-                {
-                    book.QualityProfileId = resource.QualityProfileId.Value;
-                }
-
-                if (resource.RootFolderPath.IsNotNullOrWhiteSpace())
-                {
-                    book.RootFolderPath = resource.RootFolderPath;
-                }
-
-                if (resource.Tags != null)
-                {
-                    var newTags = resource.Tags;
-                    var applyTags = resource.ApplyTags;
-
-                    switch (applyTags)
-                    {
-                        case ApplyTags.Add:
-                            newTags.ForEach(t => book.Tags.Add(t));
-                            break;
-                        case ApplyTags.Remove:
-                            newTags.ForEach(t => book.Tags.Remove(t));
-                            break;
-                        case ApplyTags.Replace:
-                            book.Tags = new HashSet<int>(newTags);
-                            break;
-                    }
-                }
-
-                var validationResult = _bookEditorValidator.Validate(book);
-
-                if (!validationResult.IsValid)
-                {
-                    throw new ValidationException(validationResult.Errors);
-                }
-            }
-
-            var updatedBooks = _bookService.UpdateBooks(booksToUpdate);
-
-            var booksResources = new List<BookResource>(updatedBooks.Count);
-
-            foreach (var book in updatedBooks)
-            {
-                booksResources.Add(book.ToResource());
-            }
-
-            return Ok(booksResources);
-        }
-
-        [HttpDelete]
-        public object DeleteBooks([FromBody] BookEditorResource resource)
-        {
-            _bookService.DeleteBooks(resource.BookIds, resource.DeleteFiles);
-
-            return new { };
-        }
+        protected override bool GetMonitored(Book item) => item.Monitored;
+        protected override void SetMonitored(Book item, bool monitored) => item.Monitored = monitored;
+        protected override int GetQualityProfileId(Book item) => item.QualityProfileId;
+        protected override void SetQualityProfileId(Book item, int qualityProfileId) => item.QualityProfileId = qualityProfileId;
+        protected override string GetRootFolderPath(Book item) => item.RootFolderPath;
+        protected override void SetRootFolderPath(Book item, string rootFolderPath) => item.RootFolderPath = rootFolderPath;
+        protected override HashSet<int> GetTags(Book item) => item.Tags;
+        protected override void SetTags(Book item, HashSet<int> tags) => item.Tags = tags;
     }
 }

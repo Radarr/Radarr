@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Radarr.Api.V3.MediaItems;
 
 namespace Radarr.Api.V3.Audiobooks
 {
-    public class AudiobookEditorResource
+    public class AudiobookEditorResource : IEditorResource
     {
         public List<int> AudiobookIds { get; set; }
         public bool? Monitored { get; set; }
@@ -12,5 +13,7 @@ namespace Radarr.Api.V3.Audiobooks
         public ApplyTags ApplyTags { get; set; }
         public bool MoveFiles { get; set; }
         public bool DeleteFiles { get; set; }
+
+        List<int> IEditorResource.Ids => AudiobookIds;
     }
 }
