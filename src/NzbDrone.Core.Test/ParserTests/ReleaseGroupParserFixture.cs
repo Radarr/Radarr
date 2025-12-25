@@ -108,6 +108,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("A Movie in the Name (1964) (1080p BluRay x265 r00t)", "r00t")]
         [TestCase("Movie Title (2022) (2160p ATV WEB-DL Hybrid H265 DV HDR DDP Atmos 5.1 English - HONE)", "HONE")]
         [TestCase("Movie Title (2009) (2160p PMTP WEB-DL Hybrid H265 DV HDR10+ DDP Atmos 5.1 English - HONE)", "HONE")]
+        [TestCase("Movie Title (2022) (1080p PCOK WEB-DL H265 DV HDR DDP Atmos 5.1 English - GiLG)", "GiLG")]
+        [TestCase("Movie Title (2022) Extended (2160p PCOK WEB-DL H265 DV HDR DDP Atmos 5.1 English - GiLG)", "GiLG")]
         [TestCase("Why.Cant.You.Use.Normal.Characters.2021.2160p.UHD.HDR10+.BluRay.TrueHD.Atmos.7.1.x265-ZØNEHD", "ZØNEHD")]
         [TestCase("Movie.Should.Not.Use.Dots.2022.1080p.BluRay.x265.10bit.Tigole)", "Tigole")]
         [TestCase("Movie.Should.Not.Use.Dots.2022.1080p.BluRay.x265.10bit.Tigole", null)]
