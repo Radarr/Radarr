@@ -103,6 +103,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("ReleaseGroup").AsString().Nullable()
                 .WithColumn("Quality").AsString().Nullable()
                 .WithColumn("Language").AsString().Nullable()
+                .WithColumn("StreamingSource").AsInt32().NotNullable().WithDefaultValue(0)
                 .WithColumn("MediaInfo").AsString().Nullable();
 
             Create.Index("IX_EpisodeFiles_TVShowId").OnTable("EpisodeFiles").OnColumn("TVShowId");

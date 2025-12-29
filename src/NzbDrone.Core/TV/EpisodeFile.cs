@@ -20,6 +20,7 @@ namespace NzbDrone.Core.TV
 
         public QualityModel Quality { get; set; }
         public Language Language { get; set; }
+        public StreamingSource StreamingSource { get; set; }
 
         public string MediaInfo { get; set; }
 
