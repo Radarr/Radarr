@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
                 .Returns<List<DownloadDecision>>(v => v);
         }
 
-        private Movie GetMovie(int id)
+        private static Movie GetMovie(int id)
         {
             return Builder<Movie>.CreateNew()
                             .With(e => e.Id = id)

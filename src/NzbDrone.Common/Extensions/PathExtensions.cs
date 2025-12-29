@@ -418,7 +418,7 @@ namespace NzbDrone.Common.Extensions
 
         private static bool IsPathValidForNonWindows(string path)
         {
-            return path.StartsWith("/");
+            return path.StartsWith('/');
         }
     }
 }

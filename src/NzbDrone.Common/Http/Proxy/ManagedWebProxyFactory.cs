@@ -47,7 +47,7 @@ namespace NzbDrone.Common.Http.Proxy
             }
         }
 
-        private Uri GetProxyUri(HttpProxySettings proxySettings)
+        private static Uri GetProxyUri(HttpProxySettings proxySettings)
         {
             switch (proxySettings.Type)
             {

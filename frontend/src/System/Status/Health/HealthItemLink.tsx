@@ -7,7 +7,7 @@ interface HealthItemLinkProps {
   source: string;
 }
 
-function HealthItemLink(props: HealthItemLinkProps) {
+function HealthItemLink(props: Readonly<HealthItemLinkProps>) {
   const { source } = props;
 
   switch (source) {

@@ -22,7 +22,8 @@ export interface QueueDetailsAppState extends AppSectionState<Queue> {
 }
 
 export interface QueuePagedAppState
-  extends AppSectionState<Queue>,
+  extends
+    AppSectionState<Queue>,
     AppSectionFilterState<Queue>,
     PagedAppSectionState,
     TableAppSectionState {

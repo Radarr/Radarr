@@ -11,7 +11,7 @@ interface MovieCollectionLabelProps {
   tmdbId: number;
 }
 
-function MovieCollectionLabel({ tmdbId }: MovieCollectionLabelProps) {
+function MovieCollectionLabel({ tmdbId }: Readonly<MovieCollectionLabelProps>) {
   const {
     id,
     monitored,

@@ -61,7 +61,7 @@ interface ImportListOptionsProps {
 function ImportListOptions({
   setChildSave,
   onChildStateChange,
-}: ImportListOptionsProps) {
+}: Readonly<ImportListOptionsProps>) {
   const dispatch = useDispatch();
   const showAdvancedSettings = useShowAdvancedSettings();
 

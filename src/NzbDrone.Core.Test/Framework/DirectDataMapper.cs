@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.Framework
             return item;
         }
 
-        protected T MapToObject<T>(DataRow dataRow)
+        protected static T MapToObject<T>(DataRow dataRow)
             where T : new()
         {
             var item = new T();

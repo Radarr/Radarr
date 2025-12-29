@@ -261,7 +261,7 @@ namespace NzbDrone.Core.Download.Clients.Aria2
             return null;
         }
 
-        private string GetOutputPath(Aria2Status torrent)
+        private static string GetOutputPath(Aria2Status torrent)
         {
             if (torrent.Files.Length == 1)
             {

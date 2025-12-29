@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Instrumentation
             var sentryTarget = LogManager.Configuration.AllTargets.OfType<SentryTarget>().FirstOrDefault();
             if (sentryTarget != null)
             {
-                sentryTarget.UpdateScope(_database.Version, _database.Migration, _configFileProvider.Branch, _platformInfo);
+                SentryTarget.UpdateScope(_database.Version, _database.Migration, _configFileProvider.Branch, _platformInfo);
             }
         }
 

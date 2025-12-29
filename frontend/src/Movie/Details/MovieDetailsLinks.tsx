@@ -11,7 +11,7 @@ type MovieDetailsLinksProps = Pick<
   'tmdbId' | 'imdbId' | 'youTubeTrailerId'
 >;
 
-function MovieDetailsLinks(props: MovieDetailsLinksProps) {
+function MovieDetailsLinks(props: Readonly<MovieDetailsLinksProps>) {
   const { tmdbId, imdbId, youTubeTrailerId } = props;
 
   return (

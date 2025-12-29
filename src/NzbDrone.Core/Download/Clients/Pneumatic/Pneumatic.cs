@@ -40,20 +40,15 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
             var url = remoteMovie.Release.DownloadUrl;
             var title = remoteMovie.Release.Title;
 
-            // We don't have full seasons in movies.
-            // if (remoteMovie.ParsedEpisodeInfo.FullSeason)
-            // {
-            //    throw new NotSupportedException("Full season releases are not supported with Pneumatic.");
-            // }
             title = FileNameBuilder.CleanFileName(title);
 
             // Save to the Pneumatic directory (The user will need to ensure its accessible by XBMC)
             var nzbFile = Path.Combine(Settings.NzbFolder, title + ".nzb");
 
-            _logger.Debug("Downloading NZB from: {0} to: {1}", url, nzbFile);
+            _logger.Debug("Downloading NZB from: {0} to: {1}", url.SanitizeForLog(), nzbFile.SanitizeForLog());
             await _httpClient.DownloadFileAsync(url, nzbFile);
 
-            _logger.Debug("NZB Download succeeded, saved to: {0}", nzbFile);
+            _logger.Debug("NZB Download succeeded, saved to: {0}", nzbFile.SanitizeForLog());
 
             var strmFile = WriteStrmFile(title, nzbFile);
 

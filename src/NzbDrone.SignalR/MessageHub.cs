@@ -25,7 +25,7 @@ namespace NzbDrone.SignalR
 
     public class MessageHub : Hub
     {
-        private static HashSet<string> _connections = new HashSet<string>();
+        private static readonly HashSet<string> _connections = new HashSet<string>();
 
         public static bool IsConnected
         {

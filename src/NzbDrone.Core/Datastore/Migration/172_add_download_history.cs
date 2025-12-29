@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Datastore.Migration
             { 9, 4 } // MovieHistoryType.DownloadIgnored -> DownloadHistoryType.DownloadIgnored
         };
 
-        private void InitialImportedDownloadHistory(IDbConnection conn, IDbTransaction tran)
+        private static void InitialImportedDownloadHistory(IDbConnection conn, IDbTransaction tran)
         {
             using (var cmd = conn.CreateCommand())
             {

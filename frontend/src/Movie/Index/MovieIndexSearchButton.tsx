@@ -19,7 +19,7 @@ interface MovieIndexSearchButtonProps {
   overflowComponent: React.FunctionComponent<never>;
 }
 
-function MovieIndexSearchButton(props: MovieIndexSearchButtonProps) {
+function MovieIndexSearchButton(props: Readonly<MovieIndexSearchButtonProps>) {
   const isSearching = useSelector(createCommandExecutingSelector(MOVIE_SEARCH));
   const {
     items,

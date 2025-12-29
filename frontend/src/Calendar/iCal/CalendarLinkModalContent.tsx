@@ -43,7 +43,7 @@ interface CalendarLinkModalContentProps {
 
 function CalendarLinkModalContent({
   onModalClose,
-}: CalendarLinkModalContentProps) {
+}: Readonly<CalendarLinkModalContentProps>) {
   const [state, setState] = useState<{
     unmonitored: boolean;
     asAllDay: boolean;
@@ -70,7 +70,7 @@ function CalendarLinkModalContent({
   );
 
   const { iCalHttpUrl, iCalWebCalUrl } = useMemo(() => {
-    let icalUrl = `${window.location.host}${window.Radarr.urlBase}/feed/v3/calendar/Radarr.ics?`;
+    let icalUrl = `${window.location.host}${window.Radarr.urlBase}/feed/v3/calendar/Aletheia.ics?`;
 
     if (unmonitored) {
       icalUrl += 'unmonitored=true&';

@@ -74,7 +74,7 @@ namespace Radarr.Api.V3.CustomFormats
 
             _formatService.Update(model);
 
-            return Accepted(model.Id);
+            return Ok(GetResourceById(model.Id));
         }
 
         [HttpPut("bulk")]
@@ -96,22 +96,23 @@ namespace Radarr.Api.V3.CustomFormats
 
             _formatService.Update(customFormats);
 
-            return Accepted(customFormats.ConvertAll(cf => cf.ToResource(true)));
+            return Ok(customFormats.ConvertAll(cf => cf.ToResource(true)));
         }
 
         [RestDeleteById]
-        public void DeleteFormat(int id)
+        public ActionResult DeleteFormat(int id)
         {
             _formatService.Delete(id);
+            return NoContent();
         }
 
         [HttpDelete("bulk")]
         [Consumes("application/json")]
-        public virtual object DeleteFormats([FromBody] CustomFormatBulkResource resource)
+        public virtual ActionResult DeleteFormats([FromBody] CustomFormatBulkResource resource)
         {
             _formatService.Delete(resource.Ids.ToList());
 
-            return new { };
+            return NoContent();
         }
 
         [HttpGet("schema")]
@@ -138,7 +139,7 @@ namespace Radarr.Api.V3.CustomFormats
             }
         }
 
-        protected void VerifyValidationResult(ValidationResult validationResult)
+        protected static void VerifyValidationResult(ValidationResult validationResult)
         {
             var result = new NzbDroneValidationResult(validationResult.Errors);
 

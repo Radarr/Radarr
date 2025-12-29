@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(MoveRemoveSettings);
         }
 
-        private void MoveRemoveSettings(IDbConnection conn, IDbTransaction tran)
+        private static void MoveRemoveSettings(IDbConnection conn, IDbTransaction tran)
         {
             var removeCompletedDownloads = false;
             var removeFailedDownloads = true;

@@ -14,11 +14,11 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
+import styles from 'Components/Styles/TagsModalContent.css';
 import { inputTypes, kinds, sizes } from 'Helpers/Props';
 import createTagsSelector from 'Store/Selectors/createTagsSelector';
 import ImportList from 'typings/ImportList';
 import translate from 'Utilities/String/translate';
-import styles from './TagsModalContent.css';
 
 interface TagsModalContentProps {
   ids: number[];
@@ -26,7 +26,7 @@ interface TagsModalContentProps {
   onModalClose: () => void;
 }
 
-function TagsModalContent(props: TagsModalContentProps) {
+function TagsModalContent(props: Readonly<TagsModalContentProps>) {
   const { ids, onModalClose, onApplyTagsPress } = props;
 
   const allImportLists: ImportListAppState = useSelector(

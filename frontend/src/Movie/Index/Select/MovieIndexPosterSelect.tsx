@@ -13,7 +13,7 @@ interface MovieIndexPosterSelectProps {
 function MovieIndexPosterSelect({
   movieId,
   titleSlug,
-}: MovieIndexPosterSelectProps) {
+}: Readonly<MovieIndexPosterSelectProps>) {
   const [selectState, selectDispatch] = useSelect();
   const isSelected = selectState.selectedState[movieId];
 

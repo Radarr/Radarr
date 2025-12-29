@@ -26,7 +26,7 @@ interface RemoveQueueItemModalProps {
   canIgnore: boolean;
   isPending: boolean;
   selectedCount?: number;
-  onRemovePress(props: RemovePressProps): void;
+  onRemovePress(props: Readonly<RemovePressProps>): void;
   onModalClose: () => void;
 }
 
@@ -36,7 +36,7 @@ type BlocklistMethod =
   | 'blocklistAndSearch'
   | 'blocklistOnly';
 
-function RemoveQueueItemModal(props: RemoveQueueItemModalProps) {
+function RemoveQueueItemModal(props: Readonly<RemoveQueueItemModalProps>) {
   const {
     isOpen,
     sourceTitle = '',

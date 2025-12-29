@@ -10,7 +10,7 @@ interface SelectMovieModalProps {
   onModalClose(): void;
 }
 
-function SelectMovieModal(props: SelectMovieModalProps) {
+function SelectMovieModal(props: Readonly<SelectMovieModalProps>) {
   const { isOpen, modalTitle, onMovieSelect, onModalClose } = props;
 
   return (

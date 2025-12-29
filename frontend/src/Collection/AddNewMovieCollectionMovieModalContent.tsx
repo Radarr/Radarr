@@ -50,7 +50,7 @@ function AddNewMovieCollectionMovieModalContent({
   collectionId,
   folder,
   onModalClose,
-}: AddNewMovieCollectionMovieModalContentProps) {
+}: Readonly<AddNewMovieCollectionMovieModalContentProps>) {
   const dispatch = useDispatch();
 
   const collection = useMovieCollection(collectionId)!;

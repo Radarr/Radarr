@@ -43,12 +43,12 @@ namespace NzbDrone.Core.Datastore.Migration
             conn.Execute(updateSql, updated, transaction: tran);
         }
 
-        private class QualityDefinition170 : ModelBase
+        private sealed class QualityDefinition170 : ModelBase
         {
             public int? MaxSize { get; set; }
         }
 
-        private class QualityDefinition171 : ModelBase
+        private sealed class QualityDefinition171 : ModelBase
         {
             public int? PreferredSize { get; set; }
         }

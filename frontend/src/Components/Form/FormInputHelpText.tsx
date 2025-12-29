@@ -23,7 +23,7 @@ function FormInputHelpText({
   isError = false,
   isWarning = false,
   isCheckInput = false,
-}: FormInputHelpTextProps) {
+}: Readonly<FormInputHelpTextProps>) {
   return (
     <div
       className={classNames(

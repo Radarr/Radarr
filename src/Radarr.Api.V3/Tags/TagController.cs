@@ -54,14 +54,15 @@ namespace Radarr.Api.V3.Tags
         [Consumes("application/json")]
         public ActionResult<TagResource> Update([FromBody] TagResource resource)
         {
-            _tagService.Update(resource.ToModel());
-            return Accepted(resource.Id);
+            var updatedTag = _tagService.Update(resource.ToModel());
+            return Ok(updatedTag.ToResource());
         }
 
         [RestDeleteById]
-        public void DeleteTag(int id)
+        public ActionResult DeleteTag(int id)
         {
             _tagService.Delete(id);
+            return NoContent();
         }
 
         [NonAction]

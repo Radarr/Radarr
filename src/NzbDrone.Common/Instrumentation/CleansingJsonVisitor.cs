@@ -34,7 +34,7 @@ namespace NzbDrone.Common.Instrumentation
             }
         }
 
-        private JValue CleanseValue(JValue value)
+        private static JValue CleanseValue(JValue value)
         {
             var text = value.Value<string>();
             var cleansed = CleanseLogMessage.Cleanse(text);

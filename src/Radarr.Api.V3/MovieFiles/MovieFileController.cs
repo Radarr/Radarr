@@ -102,7 +102,8 @@ namespace Radarr.Api.V3.MovieFiles
             }
 
             _mediaFileService.Update(movieFile);
-            return Accepted(movieFile.Id);
+            var movie = _movieService.GetMovie(movieFile.MovieId);
+            return Ok(movieFile.ToResource(movie, _upgradableSpecification, _formatCalculator));
         }
 
         [Obsolete("Use bulk endpoint instead")]
@@ -111,6 +112,11 @@ namespace Radarr.Api.V3.MovieFiles
         public object SetMovieFile([FromBody] MovieFileListResource resource)
         {
             var movieFiles = _mediaFileService.GetMovies(resource.MovieFileIds);
+
+            if (movieFiles.Count == 0)
+            {
+                return new { };
+            }
 
             foreach (var movieFile in movieFiles)
             {
@@ -150,11 +156,11 @@ namespace Radarr.Api.V3.MovieFiles
 
             var movie = _movieService.GetMovie(movieFiles.First().MovieId);
 
-            return Accepted(movieFiles.ConvertAll(f => f.ToResource(movie, _upgradableSpecification, _formatCalculator)));
+            return Ok(movieFiles.ConvertAll(f => f.ToResource(movie, _upgradableSpecification, _formatCalculator)));
         }
 
         [RestDeleteById]
-        public void DeleteMovieFile(int id)
+        public ActionResult DeleteMovieFile(int id)
         {
             var movieFile = _mediaFileService.GetMovie(id);
 
@@ -166,11 +172,13 @@ namespace Radarr.Api.V3.MovieFiles
             var movie = _movieService.GetMovie(movieFile.MovieId);
 
             _mediaFileDeletionService.DeleteMovieFile(movie, movieFile);
+
+            return NoContent();
         }
 
         [HttpDelete("bulk")]
         [Consumes("application/json")]
-        public object DeleteMovieFiles([FromBody] MovieFileListResource resource)
+        public ActionResult DeleteMovieFiles([FromBody] MovieFileListResource resource)
         {
             if (!resource.MovieFileIds.Any())
             {
@@ -178,6 +186,12 @@ namespace Radarr.Api.V3.MovieFiles
             }
 
             var movieFiles = _mediaFileService.GetMovies(resource.MovieFileIds);
+
+            if (movieFiles.Count == 0)
+            {
+                return NoContent();
+            }
+
             var movie = _movieService.GetMovie(movieFiles.First().MovieId);
 
             foreach (var movieFile in movieFiles)
@@ -185,7 +199,7 @@ namespace Radarr.Api.V3.MovieFiles
                 _mediaFileDeletionService.DeleteMovieFile(movie, movieFile);
             }
 
-            return new { };
+            return NoContent();
         }
 
         [HttpPut("bulk")]
@@ -193,6 +207,11 @@ namespace Radarr.Api.V3.MovieFiles
         public object SetPropertiesBulk([FromBody] List<MovieFileResource> resources)
         {
             var movieFiles = _mediaFileService.GetMovies(resources.Select(r => r.Id));
+
+            if (movieFiles.Count == 0)
+            {
+                return new { };
+            }
 
             foreach (var movieFile in movieFiles)
             {
@@ -234,7 +253,7 @@ namespace Radarr.Api.V3.MovieFiles
 
             var movie = _movieService.GetMovie(movieFiles.First().MovieId);
 
-            return Accepted(movieFiles.ConvertAll(f => f.ToResource(movie, _upgradableSpecification, _formatCalculator)));
+            return Ok(movieFiles.ConvertAll(f => f.ToResource(movie, _upgradableSpecification, _formatCalculator)));
         }
 
         [NonAction]

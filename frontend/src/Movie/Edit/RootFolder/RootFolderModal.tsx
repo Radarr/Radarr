@@ -14,7 +14,7 @@ function RootFolderModal({
   movieId,
   onSavePress,
   onModalClose,
-}: RootFolderModalProps) {
+}: Readonly<RootFolderModalProps>) {
   return (
     <Modal isOpen={isOpen} onModalClose={onModalClose}>
       <RootFolderModalContent

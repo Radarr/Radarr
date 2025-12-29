@@ -40,7 +40,7 @@ function MovieImage({
   overflow = false,
   onError,
   onLoad,
-}: MovieImageProps) {
+}: Readonly<MovieImageProps>) {
   const [url, setUrl] = useState<string | null>(null);
   const [hasError, setHasError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);

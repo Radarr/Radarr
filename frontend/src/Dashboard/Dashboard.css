@@ -1,0 +1,72 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.mediaCard {
+  padding: 20px;
+  background-color: var(--cardBackgroundColor);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.mediaCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--borderColor);
+}
+
+.mediaCardTitle {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.statsRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.statsRow:not(:last-child) {
+  border-bottom: 1px solid var(--borderColor);
+}
+
+.statsLabel {
+  color: var(--textMutedColor);
+}
+
+.statsValue {
+  font-weight: 500;
+}
+
+.totalCard {
+  padding: 20px;
+  background-color: var(--cardBackgroundColor);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.totalCardTitle {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--borderColor);
+}
+
+.totalValue {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--linkColor);
+}

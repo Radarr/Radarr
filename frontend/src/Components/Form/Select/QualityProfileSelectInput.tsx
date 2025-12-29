@@ -56,14 +56,13 @@ function createQualityProfilesSelector(
   );
 }
 
-export interface QualityProfileSelectInputProps
-  extends Omit<
-    EnhancedSelectInputProps<
-      EnhancedSelectInputValue<number | string>,
-      number | string
-    >,
-    'values'
-  > {
+export interface QualityProfileSelectInputProps extends Omit<
+  EnhancedSelectInputProps<
+    EnhancedSelectInputValue<number | string>,
+    number | string
+  >,
+  'values'
+> {
   name: string;
   includeNoChange?: boolean;
   includeNoChangeDisabled?: boolean;
@@ -78,7 +77,7 @@ function QualityProfileSelectInput({
   includeMixed = false,
   onChange,
   ...otherProps
-}: QualityProfileSelectInputProps) {
+}: Readonly<QualityProfileSelectInputProps>) {
   const values = useSelector(
     createQualityProfilesSelector(
       includeNoChange,
@@ -95,10 +94,7 @@ function QualityProfileSelectInput({
   );
 
   useEffect(() => {
-    if (
-      !value ||
-      !values.some((option) => option.key === value || option.key === value)
-    ) {
+    if (!value || !values.some((option) => option.key === value)) {
       const firstValue = values.find(
         (option) => typeof option.key === 'number'
       );

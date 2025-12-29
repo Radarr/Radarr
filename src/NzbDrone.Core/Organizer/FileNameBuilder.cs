@@ -56,6 +56,10 @@ namespace NzbDrone.Core.Organizer
 
         private static readonly Regex ReservedDeviceNamesRegex = new Regex(@"^(?:aux|com[1-9]|con|lpt[1-9]|nul|prn)\.", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        // Edition token regex patterns
+        private static readonly Regex EditionOrdinalRegex = new Regex(@"((?:\b|_)\d{1,3}(?:st|th|rd|nd)(?:\b|_))", RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
+        private static readonly Regex EditionUppercaseRegex = new Regex(@"((?:\b|_)(?:IMAX|3D|SDR|HDR|DV)(?:\b|_))", RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
+
         // generated from https://www.loc.gov/standards/iso639-2/ISO-639-2_utf-8.txt
         public static readonly ImmutableDictionary<string, string> Iso639BTMap = new Dictionary<string, string>
         {
@@ -213,11 +217,21 @@ namespace NzbDrone.Core.Organizer
 
         public static string TitleThe(string title)
         {
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                return string.Empty;
+            }
+
             return TitlePrefixRegex.Replace(title, "$2, $1$3");
         }
 
         public static string CleanTitleThe(string title)
         {
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                return string.Empty;
+            }
+
             if (TitlePrefixRegex.IsMatch(title))
             {
                 var splitResult = TitlePrefixRegex.Split(title);
@@ -269,6 +283,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Movie Certification}"] = m => movie.MovieMetadata.Value.Certification ?? string.Empty;
             tokenHandlers["{Movie Collection}"] = m => Truncate(movie.MovieMetadata.Value.CollectionTitle, m.CustomFormat) ?? string.Empty;
             tokenHandlers["{Movie CollectionThe}"] = m => Truncate(TitleThe(movie.MovieMetadata.Value.CollectionTitle), m.CustomFormat) ?? string.Empty;
+            tokenHandlers["{Movie CleanCollectionThe}"] = m => Truncate(CleanTitleThe(movie.MovieMetadata.Value.CollectionTitle), m.CustomFormat) ?? string.Empty;
         }
 
         private string GetLanguageTitle(Movie movie, string isoCodes)
@@ -306,7 +321,7 @@ namespace NzbDrone.Core.Organizer
             }
         }
 
-        private void AddReleaseDateTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, int releaseYear)
+        private static void AddReleaseDateTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, int releaseYear)
         {
             if (releaseYear == 0)
             {
@@ -317,7 +332,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Release Year}"] = m => string.Format("{0}", releaseYear.ToString()); // Do I need m.CustomFormat?
         }
 
-        private void AddIdTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie)
+        private static void AddIdTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie)
         {
             tokenHandlers["{ImdbId}"] = m => movie.MovieMetadata.Value.ImdbId ?? string.Empty;
             tokenHandlers["{TmdbId}"] = m => movie.MovieMetadata.Value.TmdbId.ToString();
@@ -327,7 +342,7 @@ namespace NzbDrone.Core.Organizer
         {
             tokenHandlers["{Original Title}"] = m => GetOriginalTitle(movieFile, multipleTokens);
             tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(movieFile, multipleTokens);
-            tokenHandlers["{Release Group}"] = m => movieFile.ReleaseGroup.IsNullOrWhiteSpace() ? m.DefaultValue("Radarr") : Truncate(movieFile.ReleaseGroup, m.CustomFormat);
+            tokenHandlers["{Release Group}"] = m => movieFile.ReleaseGroup.IsNullOrWhiteSpace() ? m.DefaultValue("Aletheia") : Truncate(movieFile.ReleaseGroup, m.CustomFormat);
         }
 
         private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie, MovieFile movieFile)
@@ -426,7 +441,7 @@ namespace NzbDrone.Core.Organizer
             };
         }
 
-        private string GetCustomFormatsToken(List<CustomFormat> customFormats, string filter)
+        private static string GetCustomFormatsToken(List<CustomFormat> customFormats, string filter)
         {
             var tokens = customFormats.Where(x => x.IncludeCustomFormatWhenRenaming).ToList();
 
@@ -436,12 +451,12 @@ namespace NzbDrone.Core.Organizer
             {
                 if (filter.StartsWith("-"))
                 {
-                    var splitFilter = filter.Substring(1).Split(',');
+                    var splitFilter = new HashSet<string>(filter.Substring(1).Split(','));
                     filteredTokens = tokens.Where(c => !splitFilter.Contains(c.Name)).ToList();
                 }
                 else
                 {
-                    var splitFilter = filter.Split(',');
+                    var splitFilter = new HashSet<string>(filter.Split(','));
                     filteredTokens = tokens.Where(c => splitFilter.Contains(c.Name)).ToList();
                 }
             }
@@ -449,81 +464,76 @@ namespace NzbDrone.Core.Organizer
             return string.Join(" ", filteredTokens);
         }
 
-        private string GetLanguagesToken(List<string> mediaInfoLanguages, string filter, bool skipEnglishOnly, bool quoted)
+        private static string GetLanguagesToken(List<string> mediaInfoLanguages, string filter, bool skipEnglishOnly, bool quoted)
         {
-            var tokens = new List<string>();
-            foreach (var item in mediaInfoLanguages)
-            {
-                if (!string.IsNullOrWhiteSpace(item) && item != "und")
-                {
-                    tokens.Add(item.Trim());
-                }
-            }
+            var tokens = mediaInfoLanguages
+                .Where(item => !string.IsNullOrWhiteSpace(item) && item != "und")
+                .Select(item => NormalizeLanguageCode(item.Trim()))
+                .Distinct()
+                .ToList();
 
-            for (var i = 0; i < tokens.Count; i++)
-            {
-                try
-                {
-                    var token = tokens[i].ToLowerInvariant();
-                    if (Iso639BTMap.TryGetValue(token, out var mapped))
-                    {
-                        token = mapped;
-                    }
+            var filteredTokens = ApplyLanguageFilter(tokens, filter);
 
-                    var cultureInfo = new CultureInfo(token);
-                    tokens[i] = cultureInfo.TwoLetterISOLanguageName.ToUpper();
-                }
-                catch
-                {
-                }
-            }
-
-            tokens = tokens.Distinct().ToList();
-
-            var filteredTokens = tokens;
-
-            // Exclude or filter
-            if (filter.IsNotNullOrWhiteSpace())
-            {
-                if (filter.StartsWith("-"))
-                {
-                    filteredTokens = tokens.Except(filter.Split('-')).ToList();
-                }
-                else
-                {
-                    filteredTokens = filter.Split('+').Intersect(tokens).ToList();
-                }
-            }
-
-            // Replace with wildcard (maybe too limited)
-            if (filter.IsNotNullOrWhiteSpace() && filter.EndsWith("+") && filteredTokens.Count != tokens.Count)
-            {
-                filteredTokens.Add("--");
-            }
-
-            if (skipEnglishOnly && filteredTokens.Count == 1 && filteredTokens.First() == "EN")
+            if (skipEnglishOnly && filteredTokens.Count == 1 && filteredTokens[0] == "EN")
             {
                 return string.Empty;
             }
 
             var response = string.Join("+", filteredTokens);
 
-            if (quoted && response.IsNotNullOrWhiteSpace())
+            return quoted && response.IsNotNullOrWhiteSpace() ? $"[{response}]" : response;
+        }
+
+        private static string NormalizeLanguageCode(string token)
+        {
+            try
             {
-                return $"[{response}]";
+                var normalized = token.ToLowerInvariant();
+                if (Iso639BTMap.TryGetValue(normalized, out var mapped))
+                {
+                    normalized = mapped;
+                }
+
+                var cultureInfo = new CultureInfo(normalized);
+                return cultureInfo.TwoLetterISOLanguageName.ToUpper();
             }
-            else
+            catch
             {
-                return response;
+                return token;
             }
         }
 
-        private string GetEditionToken(MovieFile movieFile)
+        private static List<string> ApplyLanguageFilter(List<string> tokens, string filter)
+        {
+            if (filter.IsNullOrWhiteSpace())
+            {
+                return tokens;
+            }
+
+            List<string> filteredTokens;
+            if (filter.StartsWith("-"))
+            {
+                filteredTokens = tokens.Except(filter.Split('-')).ToList();
+            }
+            else
+            {
+                filteredTokens = filter.Split('+').Intersect(tokens).ToList();
+            }
+
+            if (filter.EndsWith("+") && filteredTokens.Count != tokens.Count)
+            {
+                filteredTokens.Add("--");
+            }
+
+            return filteredTokens;
+        }
+
+        private static string GetEditionToken(MovieFile movieFile)
         {
             var edition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(movieFile.Edition.ToLowerInvariant());
 
-            edition = Regex.Replace(edition, @"((?:\b|_)\d{1,3}(?:st|th|rd|nd)(?:\b|_))", match => match.Groups[1].Value.ToLowerInvariant(), RegexOptions.IgnoreCase);
-            edition = Regex.Replace(edition, @"((?:\b|_)(?:IMAX|3D|SDR|HDR|DV)(?:\b|_))", match => match.Groups[1].Value.ToUpperInvariant(), RegexOptions.IgnoreCase);
+            edition = EditionOrdinalRegex.Replace(edition, match => match.Groups[1].Value.ToLowerInvariant());
+            edition = EditionUppercaseRegex.Replace(edition, match => match.Groups[1].Value.ToUpperInvariant());
 
             return edition;
         }
@@ -599,7 +609,7 @@ namespace NzbDrone.Core.Organizer
             return replacementText;
         }
 
-        private string ReplaceNumberToken(string token, int value)
+        private static string ReplaceNumberToken(string token, int value)
         {
             var split = token.Trim('{', '}').Split(':');
             if (split.Length == 1)
@@ -610,7 +620,7 @@ namespace NzbDrone.Core.Organizer
             return value.ToString(split[1]);
         }
 
-        private string GetQualityProper(Movie movie, QualityModel quality)
+        private static string GetQualityProper(Movie movie, QualityModel quality)
         {
             if (quality.Revision.Version > 1)
             {
@@ -620,7 +630,7 @@ namespace NzbDrone.Core.Organizer
             return string.Empty;
         }
 
-        private string GetQualityReal(Movie movie, QualityModel quality)
+        private static string GetQualityReal(Movie movie, QualityModel quality)
         {
             if (quality.Revision.Real > 0)
             {
@@ -640,7 +650,7 @@ namespace NzbDrone.Core.Organizer
             return CleanFileName(movieFile.SceneName);
         }
 
-        private string GetOriginalFileName(MovieFile movieFile, bool multipleTokens)
+        private static string GetOriginalFileName(MovieFile movieFile, bool multipleTokens)
         {
             if (multipleTokens)
             {
@@ -655,7 +665,7 @@ namespace NzbDrone.Core.Organizer
             return Path.GetFileNameWithoutExtension(movieFile.RelativePath);
         }
 
-        private string ReplaceReservedDeviceNames(string input)
+        private static string ReplaceReservedDeviceNames(string input)
         {
             // Replace reserved windows device names with an alternative
             return ReservedDeviceNamesRegex.Replace(input, match => match.Value.Replace(".", "_"));
@@ -728,7 +738,7 @@ namespace NzbDrone.Core.Organizer
             return $"{input.Truncate(maxLength - 3).TrimEnd(' ', '.')}{{ellipsis}}";
         }
 
-        private int GetMaxLengthFromFormatter(string formatter)
+        private static int GetMaxLengthFromFormatter(string formatter)
         {
             int.TryParse(formatter, out var maxCustomLength);
 

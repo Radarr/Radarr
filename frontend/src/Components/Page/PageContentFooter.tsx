@@ -9,7 +9,7 @@ interface PageContentFooterProps {
 function PageContentFooter({
   className = styles.contentFooter,
   children,
-}: PageContentFooterProps) {
+}: Readonly<PageContentFooterProps>) {
   return <div className={className}>{children}</div>;
 }
 

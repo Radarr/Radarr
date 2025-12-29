@@ -52,7 +52,7 @@ namespace Radarr.Api.V3.Config
 
             _namingConfigService.Save(nameSpec);
 
-            return Accepted(resource.Id);
+            return Ok(GetResourceById(resource.Id));
         }
 
         [HttpGet("examples")]

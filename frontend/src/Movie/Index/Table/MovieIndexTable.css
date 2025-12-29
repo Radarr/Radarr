@@ -3,6 +3,8 @@
 }
 
 .row {
+  display: flex;
+  justify-content: space-between;
   transition: background-color 500ms;
 
   &:hover {

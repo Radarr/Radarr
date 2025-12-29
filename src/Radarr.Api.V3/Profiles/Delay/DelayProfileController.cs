@@ -60,7 +60,7 @@ namespace Radarr.Api.V3.Profiles.Delay
         {
             var model = resource.ToModel();
             _delayProfileService.Update(model);
-            return Accepted(model.Id);
+            return Ok(GetResourceById(model.Id));
         }
 
         protected override DelayProfileResource GetResourceById(int id)

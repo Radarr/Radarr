@@ -15,7 +15,7 @@ function OrganizePreviewModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: OrganizePreviewModalProps) {
+}: Readonly<OrganizePreviewModalProps>) {
   const dispatch = useDispatch();
 
   const handleOnModalClose = useCallback(() => {

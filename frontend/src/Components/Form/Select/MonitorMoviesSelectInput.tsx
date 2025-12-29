@@ -6,16 +6,17 @@ import EnhancedSelectInput, {
   EnhancedSelectInputValue,
 } from './EnhancedSelectInput';
 
-export interface MonitorMoviesSelectInputProps
-  extends Omit<
-    EnhancedSelectInputProps<EnhancedSelectInputValue<string>, string>,
-    'values'
-  > {
+export interface MonitorMoviesSelectInputProps extends Omit<
+  EnhancedSelectInputProps<EnhancedSelectInputValue<string>, string>,
+  'values'
+> {
   includeNoChange?: boolean;
   includeMixed?: boolean;
 }
 
-function MonitorMoviesSelectInput(props: MonitorMoviesSelectInputProps) {
+function MonitorMoviesSelectInput(
+  props: Readonly<MonitorMoviesSelectInputProps>
+) {
   const {
     includeNoChange = false,
     includeMixed = false,

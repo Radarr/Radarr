@@ -5,7 +5,8 @@ import AppSectionState, {
 import RootFolder from 'typings/RootFolder';
 
 interface RootFolderAppState
-  extends AppSectionState<RootFolder>,
+  extends
+    AppSectionState<RootFolder>,
     AppSectionDeleteState,
     AppSectionSaveState {}
 

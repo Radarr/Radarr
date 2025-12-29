@@ -66,7 +66,7 @@ interface InteractiveImportRowProps {
   onValidRowChange(id: number, isValid: boolean): void;
 }
 
-function InteractiveImportRow(props: InteractiveImportRowProps) {
+function InteractiveImportRow(props: Readonly<InteractiveImportRowProps>) {
   const {
     id,
     allowMovieChange,
@@ -376,8 +376,8 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
             title={translate('ReleaseRejected')}
             body={
               <ul>
-                {rejections.map((rejection, index) => {
-                  return <li key={index}>{rejection.reason}</li>;
+                {rejections.map((rejection) => {
+                  return <li key={rejection.reason}>{rejection.reason}</li>;
                 })}
               </ul>
             }

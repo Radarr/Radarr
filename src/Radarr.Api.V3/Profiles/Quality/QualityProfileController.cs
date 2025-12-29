@@ -69,7 +69,7 @@ namespace Radarr.Api.V3.Profiles.Quality
 
             _qualityProfileService.Update(model);
 
-            return Accepted(model.Id);
+            return Ok(GetResourceById(model.Id));
         }
 
         protected override QualityProfileResource GetResourceById(int id)

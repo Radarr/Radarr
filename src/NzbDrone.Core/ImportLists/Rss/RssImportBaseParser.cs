@@ -98,7 +98,7 @@ namespace NzbDrone.Core.ImportLists.Rss
             }
         }
 
-        protected IEnumerable<XElement> GetItems(XDocument document)
+        protected static IEnumerable<XElement> GetItems(XDocument document)
         {
             var root = document.Root;
 

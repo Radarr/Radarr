@@ -49,7 +49,7 @@ interface MovieTitlesProps {
   movieId: number;
 }
 
-function MovieTitlesTable({ movieId }: MovieTitlesProps) {
+function MovieTitlesTable({ movieId }: Readonly<MovieTitlesProps>) {
   const { isFetching, isPopulated, error, items } = useSelector(
     movieAlternativeTitlesSelector(movieId)
   );

@@ -7,7 +7,10 @@ export interface PageJumpBarItemProps {
   onItemPress: (label: string) => void;
 }
 
-function PageJumpBarItem({ label, onItemPress }: PageJumpBarItemProps) {
+function PageJumpBarItem({
+  label,
+  onItemPress,
+}: Readonly<PageJumpBarItemProps>) {
   const handlePress = useCallback(() => {
     onItemPress(label);
   }, [label, onItemPress]);

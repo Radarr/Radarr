@@ -67,7 +67,7 @@ function MovieStatusLabel({
   hasMovieFiles,
   status,
   useLabel = false,
-}: MovieStatusLabelProps) {
+}: Readonly<MovieStatusLabelProps>) {
   const queueItem = useSelector(createQueueItemSelectorForHook(movieId));
 
   let movieStatus = getMovieStatus(

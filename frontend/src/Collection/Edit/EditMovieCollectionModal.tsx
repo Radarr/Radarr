@@ -6,8 +6,7 @@ import EditMovieCollectionModalContent, {
   EditMovieCollectionModalContentProps,
 } from './EditMovieCollectionModalContent';
 
-interface EditMovieCollectionModalProps
-  extends EditMovieCollectionModalContentProps {
+interface EditMovieCollectionModalProps extends EditMovieCollectionModalContentProps {
   isOpen: boolean;
 }
 
@@ -15,7 +14,7 @@ function EditMovieCollectionModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: EditMovieCollectionModalProps) {
+}: Readonly<EditMovieCollectionModalProps>) {
   const dispatch = useDispatch();
 
   const handleModalClose = useCallback(() => {

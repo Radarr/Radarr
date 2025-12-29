@@ -30,8 +30,8 @@ namespace NzbDrone.Common
 
         public static string AnonymousToken()
         {
-            var seed = $"{Environment.ProcessorCount}_{Environment.OSVersion.Platform}_{Environment.MachineName}_{Environment.UserName}";
-            return HashUtil.CalculateCrc(seed);
+            // Machine fingerprinting removed for privacy - return non-identifying placeholder
+            return "anonymous";
         }
     }
 }

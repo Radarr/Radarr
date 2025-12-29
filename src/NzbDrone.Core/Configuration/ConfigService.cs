@@ -25,14 +25,14 @@ namespace NzbDrone.Core.Configuration
         private readonly IConfigRepository _repository;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
-        private static Dictionary<string, string> _cache;
+        private static readonly object _cacheLock = new object();
+        private static Dictionary<string, string> _cache = new Dictionary<string, string>();
 
         public ConfigService(IConfigRepository repository, IEventAggregator eventAggregator, Logger logger)
         {
             _repository = repository;
             _eventAggregator = eventAggregator;
             _logger = logger;
-            _cache = new Dictionary<string, string>();
         }
 
         private Dictionary<string, object> AllWithDefaults()
@@ -160,6 +160,20 @@ namespace NzbDrone.Core.Configuration
             get { return GetValueBoolean("EnableCompletedDownloadHandling", true); }
 
             set { SetValue("EnableCompletedDownloadHandling", value); }
+        }
+
+        public bool AutoExtractArchives
+        {
+            get { return GetValueBoolean("AutoExtractArchives", false); }
+
+            set { SetValue("AutoExtractArchives", value); }
+        }
+
+        public bool DeleteArchiveAfterExtraction
+        {
+            get { return GetValueBoolean("DeleteArchiveAfterExtraction", true); }
+
+            set { SetValue("DeleteArchiveAfterExtraction", value); }
         }
 
         public bool PreferIndexerFlags
@@ -477,9 +491,12 @@ namespace NzbDrone.Core.Configuration
 
             EnsureCache();
 
-            if (_cache.TryGetValue(key, out var dbValue) && dbValue != null && !string.IsNullOrEmpty(dbValue))
+            lock (_cacheLock)
             {
-                return dbValue;
+                if (_cache.TryGetValue(key, out var dbValue) && dbValue != null && !string.IsNullOrEmpty(dbValue))
+                {
+                    return dbValue;
+                }
             }
 
             _logger.Trace("Using default config value for '{0}' defaultValue:'{1}'", key, defaultValue);
@@ -519,21 +536,24 @@ namespace NzbDrone.Core.Configuration
 
         private void EnsureCache()
         {
-            lock (_cache)
+            lock (_cacheLock)
             {
                 if (!_cache.Any())
                 {
                     var all = _repository.All();
-                    _cache = all.ToDictionary(c => c.Key.ToLower(), c => c.Value);
+                    foreach (var item in all)
+                    {
+                        _cache[item.Key.ToLower()] = item.Value;
+                    }
                 }
             }
         }
 
         private static void ClearCache()
         {
-            lock (_cache)
+            lock (_cacheLock)
             {
-                _cache = new Dictionary<string, string>();
+                _cache.Clear();
             }
         }
     }

@@ -29,7 +29,7 @@ interface InteractiveSearchFilterModalProps {
 
 export default function InteractiveSearchFilterModal({
   ...otherProps
-}: InteractiveSearchFilterModalProps) {
+}: Readonly<InteractiveSearchFilterModalProps>) {
   const sectionItems = useSelector(createReleasesSelector());
   const filterBuilderProps = useSelector(createFilterBuilderPropsSelector());
 

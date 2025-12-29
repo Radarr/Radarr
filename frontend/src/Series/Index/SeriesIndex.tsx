@@ -1,0 +1,93 @@
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import AppState from 'App/State/AppState';
+import Alert from 'Components/Alert';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import PageContent from 'Components/Page/PageContent';
+import PageContentBody from 'Components/Page/PageContentBody';
+import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
+import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
+import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
+import Table from 'Components/Table/Table';
+import TableBody from 'Components/Table/TableBody';
+import { icons, kinds } from 'Helpers/Props';
+import { fetchSeries } from 'Store/Actions/seriesActions';
+import translate from 'Utilities/String/translate';
+import SeriesIndexRow from './SeriesIndexRow';
+
+const columns = [
+  {
+    name: 'title',
+    label: () => translate('Title'),
+    isVisible: true,
+  },
+  {
+    name: 'description',
+    label: () => translate('Description'),
+    isVisible: true,
+  },
+  {
+    name: 'monitored',
+    label: () => translate('Monitored'),
+    isVisible: true,
+  },
+];
+
+function SeriesIndex() {
+  const dispatch = useDispatch();
+  const { isFetching, isPopulated, error, items } = useSelector(
+    (state: AppState) => state.series
+  );
+
+  useEffect(() => {
+    dispatch(fetchSeries());
+  }, [dispatch]);
+
+  const onRefreshPress = useCallback(() => {
+    dispatch(fetchSeries());
+  }, [dispatch]);
+
+  const hasNoSeries = isPopulated && !items.length;
+
+  return (
+    <PageContent title={translate('Series')}>
+      <PageToolbar>
+        <PageToolbarSection>
+          <PageToolbarButton
+            label={translate('RefreshAll')}
+            iconName={icons.REFRESH}
+            isSpinning={isFetching}
+            onPress={onRefreshPress}
+          />
+        </PageToolbarSection>
+      </PageToolbar>
+
+      <PageContentBody>
+        {isFetching && !isPopulated ? <LoadingIndicator /> : null}
+
+        {!isFetching && !!error ? (
+          <Alert kind={kinds.DANGER}>{translate('UnableToLoadSeries')}</Alert>
+        ) : null}
+
+        {isPopulated && !error && items.length > 0 ? (
+          <Table columns={columns}>
+            <TableBody>
+              {items.map((seriesItem) => (
+                <SeriesIndexRow key={seriesItem.id} {...seriesItem} />
+              ))}
+            </TableBody>
+          </Table>
+        ) : null}
+
+        {hasNoSeries ? (
+          <div style={{ padding: '20px', textAlign: 'center' }}>
+            <p>{translate('NoSeries')}</p>
+            <p>Add series to organize books into collections.</p>
+          </div>
+        ) : null}
+      </PageContentBody>
+    </PageContent>
+  );
+}
+
+export default SeriesIndex;

@@ -38,7 +38,7 @@ function EditSpecificationModalContent({
   id,
   onDeleteSpecificationPress,
   onModalClose,
-}: EditSpecificationModalContentProps) {
+}: Readonly<EditSpecificationModalContentProps>) {
   const advancedSettings = useSelector(
     (state: AppState) => state.settings.advancedSettings
   );

@@ -71,10 +71,10 @@ class AddSpecificationItem extends Component {
 
                     <MenuContent>
                       {
-                        presets.map((preset, index) => {
+                        presets.map((preset) => {
                           return (
                             <AddSpecificationPresetMenuItem
-                              key={index}
+                              key={preset.name}
                               name={preset.name}
                               implementation={implementation}
                               onPress={onSpecificationSelect}

@@ -10,16 +10,24 @@ import MovieIndexOverview from './MovieIndexOverview';
 import selectOverviewOptions from './selectOverviewOptions';
 
 // Poster container dimensions
-const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
-const columnPaddingSmallScreen = parseInt(
+const columnPadding = Number.parseInt(dimensions.movieIndexColumnPadding);
+const columnPaddingSmallScreen = Number.parseInt(
   dimensions.movieIndexColumnPaddingSmallScreen
 );
-const progressBarHeight = parseInt(dimensions.progressBarSmallHeight);
-const detailedProgressBarHeight = parseInt(dimensions.progressBarMediumHeight);
-const bodyPadding = parseInt(dimensions.pageContentBodyPadding);
-const bodyPaddingSmallScreen = parseInt(
+const progressBarHeight = Number.parseInt(dimensions.progressBarSmallHeight);
+const detailedProgressBarHeight = Number.parseInt(
+  dimensions.progressBarMediumHeight
+);
+const bodyPadding = Number.parseInt(dimensions.pageContentBodyPadding);
+const bodyPaddingSmallScreen = Number.parseInt(
   dimensions.pageContentBodyPaddingSmallScreen
 );
+
+const listStyle = {
+  width: '100%',
+  height: '100%',
+  overflow: 'none',
+} as const;
 
 interface RowItemData {
   items: Movie[];
@@ -62,7 +70,7 @@ function getWindowScrollTopPosition() {
   return document.documentElement.scrollTop || document.body.scrollTop || 0;
 }
 
-function MovieIndexOverviews(props: MovieIndexOverviewsProps) {
+function MovieIndexOverviews(props: Readonly<MovieIndexOverviewsProps>) {
   const {
     items,
     sortKey,
@@ -177,28 +185,36 @@ function MovieIndexOverviews(props: MovieIndexOverviewsProps) {
     }
   }, [jumpToCharacter, rowHeight, items, scrollerRef, listRef]);
 
+  const itemData = useMemo(() => {
+    return {
+      items,
+      sortKey,
+      posterWidth,
+      posterHeight,
+      rowHeight,
+      isSelectMode,
+      isSmallScreen,
+    };
+  }, [
+    items,
+    sortKey,
+    posterWidth,
+    posterHeight,
+    rowHeight,
+    isSelectMode,
+    isSmallScreen,
+  ]);
+
   return (
     <div ref={measureRef}>
       <List<RowItemData>
         ref={listRef}
-        style={{
-          width: '100%',
-          height: '100%',
-          overflow: 'none',
-        }}
+        style={listStyle}
         width={size.width}
         height={size.height}
         itemCount={items.length}
         itemSize={rowHeight}
-        itemData={{
-          items,
-          sortKey,
-          posterWidth,
-          posterHeight,
-          rowHeight,
-          isSelectMode,
-          isSmallScreen,
-        }}
+        itemData={itemData}
       >
         {Row}
       </List>

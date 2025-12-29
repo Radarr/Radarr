@@ -11,7 +11,7 @@ interface FormGroupProps extends ComponentPropsWithoutRef<'div'> {
   isAdvanced?: boolean;
 }
 
-function FormGroup(props: FormGroupProps) {
+function FormGroup(props: Readonly<FormGroupProps>) {
   const {
     className = styles.group,
     children,

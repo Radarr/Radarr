@@ -7,6 +7,7 @@ import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import MediaTypeBadge from 'Components/MediaTypeBadge';
 import MovieTagList from 'Components/MovieTagList';
 import RottenTomatoRating from 'Components/RottenTomatoRating';
 import TmdbRating from 'Components/TmdbRating';
@@ -22,11 +23,10 @@ import { Statistics } from 'Movie/Movie';
 import MoviePoster from 'Movie/MoviePoster';
 import { executeCommand } from 'Store/Actions/commandActions';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
-import formatDate from 'Utilities/Date/formatDate';
-import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import translate from 'Utilities/String/translate';
 import createMovieIndexItemSelector from '../createMovieIndexItemSelector';
 import MovieIndexPosterInfo from './MovieIndexPosterInfo';
+import PosterDateRow from './PosterDateRow';
 import selectPosterOptions from './selectPosterOptions';
 import styles from './MovieIndexPoster.css';
 
@@ -38,7 +38,7 @@ interface MovieIndexPosterProps {
   posterHeight: number;
 }
 
-function MovieIndexPoster(props: MovieIndexPosterProps) {
+function MovieIndexPoster(props: Readonly<MovieIndexPosterProps>) {
   const { movieId, sortKey, isSelectMode, posterWidth, posterHeight } = props;
 
   const { movie, qualityProfile, isRefreshingMovie, isSearchingMovie } =
@@ -90,6 +90,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     originalTitle,
     originalLanguage,
     tags = [],
+    mediaType,
   } = movie;
 
   const { sizeOnDisk = 0 } = statistics;
@@ -234,6 +235,12 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         </div>
       ) : null}
 
+      {mediaType && mediaType !== 'movie' ? (
+        <div className={styles.title}>
+          <MediaTypeBadge mediaType={mediaType} />
+        </div>
+      ) : null}
+
       {showMonitored ? (
         <div className={styles.title}>
           {monitored ? translate('Monitored') : translate('Unmonitored')}
@@ -246,81 +253,49 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         </div>
       ) : null}
 
-      {showCinemaRelease && inCinemas ? (
-        <div
-          className={styles.title}
-          title={`${translate('InCinemas')}: ${formatDate(
-            inCinemas,
-            longDateFormat
-          )}`}
-        >
-          <Icon name={icons.IN_CINEMAS} />{' '}
-          {getRelativeDate({
-            date: inCinemas,
-            shortDateFormat,
-            showRelativeDates,
-            timeFormat,
-            timeForToday: false,
-          })}
-        </div>
-      ) : null}
+      <PosterDateRow
+        show={showCinemaRelease}
+        date={inCinemas}
+        icon={icons.IN_CINEMAS}
+        label={translate('InCinemas')}
+        shortDateFormat={shortDateFormat}
+        longDateFormat={longDateFormat}
+        showRelativeDates={showRelativeDates}
+        timeFormat={timeFormat}
+      />
 
-      {showDigitalRelease && digitalRelease ? (
-        <div
-          className={styles.title}
-          title={`${translate('DigitalRelease')}: ${formatDate(
-            digitalRelease,
-            longDateFormat
-          )}`}
-        >
-          <Icon name={icons.MOVIE_FILE} />{' '}
-          {getRelativeDate({
-            date: digitalRelease,
-            shortDateFormat,
-            showRelativeDates,
-            timeFormat,
-            timeForToday: false,
-          })}
-        </div>
-      ) : null}
+      <PosterDateRow
+        show={showDigitalRelease}
+        date={digitalRelease}
+        icon={icons.MOVIE_FILE}
+        label={translate('DigitalRelease')}
+        shortDateFormat={shortDateFormat}
+        longDateFormat={longDateFormat}
+        showRelativeDates={showRelativeDates}
+        timeFormat={timeFormat}
+      />
 
-      {showPhysicalRelease && physicalRelease ? (
-        <div
-          className={styles.title}
-          title={`${translate('PhysicalRelease')}: ${formatDate(
-            physicalRelease,
-            longDateFormat
-          )}`}
-        >
-          <Icon name={icons.DISC} />{' '}
-          {getRelativeDate({
-            date: physicalRelease,
-            shortDateFormat,
-            showRelativeDates,
-            timeFormat,
-            timeForToday: false,
-          })}
-        </div>
-      ) : null}
+      <PosterDateRow
+        show={showPhysicalRelease}
+        date={physicalRelease}
+        icon={icons.DISC}
+        label={translate('PhysicalRelease')}
+        shortDateFormat={shortDateFormat}
+        longDateFormat={longDateFormat}
+        showRelativeDates={showRelativeDates}
+        timeFormat={timeFormat}
+      />
 
-      {showReleaseDate && releaseDate ? (
-        <div
-          className={styles.title}
-          title={`${translate('ReleaseDate')}: ${formatDate(
-            releaseDate,
-            longDateFormat
-          )}`}
-        >
-          <Icon name={icons.CALENDAR} />{' '}
-          {getRelativeDate({
-            date: releaseDate,
-            shortDateFormat,
-            showRelativeDates,
-            timeFormat,
-            timeForToday: false,
-          })}
-        </div>
-      ) : null}
+      <PosterDateRow
+        show={showReleaseDate}
+        date={releaseDate}
+        icon={icons.CALENDAR}
+        label={translate('ReleaseDate')}
+        shortDateFormat={shortDateFormat}
+        longDateFormat={longDateFormat}
+        showRelativeDates={showRelativeDates}
+        timeFormat={timeFormat}
+      />
 
       {showTmdbRating && !!ratings.tmdb ? (
         <div className={styles.title}>

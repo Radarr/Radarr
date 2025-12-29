@@ -25,6 +25,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 {
     public class SkyHookProxy : IProvideMovieInfo, ISearchForNewMovie
     {
+        private static readonly TimeSpan RegexTimeout = TimeSpan.FromSeconds(1);
+        private static readonly Regex ImdbUrlRegex = new Regex(@"\bimdb\.com/title/(tt\d{7,})\b", RegexOptions.Compiled | RegexOptions.IgnoreCase, RegexTimeout);
+        private static readonly Regex TmdbUrlRegex = new Regex(@"\bthemoviedb\.org/movie/(\d+)\b", RegexOptions.Compiled | RegexOptions.IgnoreCase, RegexTimeout);
+
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
@@ -63,7 +67,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 .AddQueryParam("since", startDate)
                 .Build();
 
-            request.AllowAutoRedirect = true;
+            request.AllowAutoRedirect = false;
             request.SuppressHttpError = true;
 
             var response = _httpClient.Get<List<int>>(request);
@@ -77,7 +81,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 .SetSegment("route", "list/tmdb/trending")
                 .Build();
 
-            request.AllowAutoRedirect = true;
+            request.AllowAutoRedirect = false;
             request.SuppressHttpError = true;
 
             var response = _httpClient.Get<List<MovieResource>>(request);
@@ -91,7 +95,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 .SetSegment("route", "list/tmdb/popular")
                 .Build();
 
-            request.AllowAutoRedirect = true;
+            request.AllowAutoRedirect = false;
             request.SuppressHttpError = true;
 
             var response = _httpClient.Get<List<MovieResource>>(request);
@@ -106,7 +110,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                                              .Resource(tmdbId.ToString())
                                              .Build();
 
-            httpRequest.AllowAutoRedirect = true;
+            httpRequest.AllowAutoRedirect = false;
             httpRequest.SuppressHttpError = true;
 
             var httpResponse = _httpClient.Get<MovieResource>(httpRequest);
@@ -124,8 +128,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
 
             var credits = new List<Credit>();
-            credits.AddRange(httpResponse.Resource.Credits.Cast.Select(MapCast));
-            credits.AddRange(httpResponse.Resource.Credits.Crew.Select(MapCrew));
+            credits.AddRange(httpResponse.Resource.Credits?.Cast?.Select(MapCast) ?? Enumerable.Empty<Credit>());
+            credits.AddRange(httpResponse.Resource.Credits?.Crew?.Select(MapCrew) ?? Enumerable.Empty<Credit>());
 
             var movie = MapMovie(httpResponse.Resource);
 
@@ -139,7 +143,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                                              .Resource(tmdbId.ToString())
                                              .Build();
 
-            httpRequest.AllowAutoRedirect = true;
+            httpRequest.AllowAutoRedirect = false;
             httpRequest.SuppressHttpError = true;
 
             var httpResponse = _httpClient.Get<CollectionResource>(httpRequest);
@@ -172,7 +176,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             httpRequest.SetContent(tmdbIds.ToJson());
             httpRequest.ContentSummary = tmdbIds.ToJson(Formatting.None);
 
-            httpRequest.AllowAutoRedirect = true;
+            httpRequest.AllowAutoRedirect = false;
             httpRequest.SuppressHttpError = true;
 
             var httpResponse = _httpClient.Post<List<MovieResource>>(httpRequest);
@@ -201,7 +205,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                                              .Resource(imdbId.ToString())
                                              .Build();
 
-            httpRequest.AllowAutoRedirect = true;
+            httpRequest.AllowAutoRedirect = false;
             httpRequest.SuppressHttpError = true;
 
             var httpResponse = _httpClient.Get<List<MovieResource>>(httpRequest);
@@ -325,7 +329,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return movie;
         }
 
-        private string StripTrailingTheFromTitle(string title)
+        private static string StripTrailingTheFromTitle(string title)
         {
             if (title.EndsWith(",the"))
             {
@@ -406,7 +410,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             try
             {
-                var match = new Regex(@"\bimdb\.com/title/(tt\d{7,})\b", RegexOptions.IgnoreCase).Match(title);
+                var match = ImdbUrlRegex.Match(title);
 
                 if (match.Success)
                 {
@@ -414,7 +418,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
                 else
                 {
-                    match = new Regex(@"\bthemoviedb\.org/movie/(\d+)\b", RegexOptions.IgnoreCase).Match(title);
+                    match = TmdbUrlRegex.Match(title);
 
                     if (match.Success)
                     {
@@ -524,7 +528,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     .AddQueryParam("year", yearTerm)
                     .Build();
 
-                request.AllowAutoRedirect = true;
+                request.AllowAutoRedirect = false;
                 request.SuppressHttpError = true;
 
                 var httpResponse = _httpClient.Get<List<MovieResource>>(request);

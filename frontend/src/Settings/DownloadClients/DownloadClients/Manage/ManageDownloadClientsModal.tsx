@@ -7,7 +7,9 @@ interface ManageDownloadClientsModalProps {
   onModalClose(): void;
 }
 
-function ManageDownloadClientsModal(props: ManageDownloadClientsModalProps) {
+function ManageDownloadClientsModal(
+  props: Readonly<ManageDownloadClientsModalProps>
+) {
   const { isOpen, onModalClose } = props;
 
   return (

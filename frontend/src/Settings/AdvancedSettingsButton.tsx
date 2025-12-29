@@ -13,7 +13,9 @@ interface AdvancedSettingsButtonProps {
   showLabel: boolean;
 }
 
-function AdvancedSettingsButton({ showLabel }: AdvancedSettingsButtonProps) {
+function AdvancedSettingsButton({
+  showLabel,
+}: Readonly<AdvancedSettingsButtonProps>) {
   const showAdvancedSettings = useSelector(
     (state: AppState) => state.settings.advancedSettings
   );

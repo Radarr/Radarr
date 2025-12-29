@@ -140,7 +140,7 @@ namespace NzbDrone.Core.Datastore
             return lambdaExpression;
         }
 
-        private Expression VisitParameter(ParameterExpression expression)
+        private static Expression VisitParameter(ParameterExpression expression)
         {
             return expression;
         }

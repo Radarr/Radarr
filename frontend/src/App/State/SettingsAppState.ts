@@ -32,44 +32,46 @@ type Presets<T> = T & {
 };
 
 export interface AutoTaggingAppState
-  extends AppSectionState<AutoTagging>,
+  extends
+    AppSectionState<AutoTagging>,
     AppSectionDeleteState,
     AppSectionSaveState {}
 
 export interface AutoTaggingSpecificationAppState
-  extends AppSectionState<AutoTaggingSpecification>,
+  extends
+    AppSectionState<AutoTaggingSpecification>,
     AppSectionDeleteState,
     AppSectionSaveState,
     AppSectionSchemaState<AutoTaggingSpecification> {}
 
 export interface DelayProfileAppState
-  extends AppSectionState<DelayProfile>,
+  extends
+    AppSectionState<DelayProfile>,
     AppSectionDeleteState,
     AppSectionSaveState {}
 
 export interface DownloadClientAppState
-  extends AppSectionState<DownloadClient>,
+  extends
+    AppSectionState<DownloadClient>,
     AppSectionDeleteState,
     AppSectionSaveState {
   isTestingAll: boolean;
 }
 
 export interface GeneralAppState
-  extends AppSectionItemState<General>,
-    AppSectionSaveState {}
+  extends AppSectionItemState<General>, AppSectionSaveState {}
 
 export interface MediaManagementAppState
-  extends AppSectionItemState<MediaManagement>,
-    AppSectionSaveState {}
+  extends AppSectionItemState<MediaManagement>, AppSectionSaveState {}
 
 export interface NamingAppState
-  extends AppSectionItemState<NamingConfig>,
-    AppSectionSaveState {}
+  extends AppSectionItemState<NamingConfig>, AppSectionSaveState {}
 
 export type NamingExamplesAppState = AppSectionItemState<NamingExample>;
 
 export interface ImportListAppState
-  extends AppSectionState<ImportList>,
+  extends
+    AppSectionState<ImportList>,
     AppSectionDeleteState,
     AppSectionSaveState,
     AppSectionSchemaState<Presets<ImportList>> {
@@ -77,11 +79,11 @@ export interface ImportListAppState
 }
 
 export interface IndexerOptionsAppState
-  extends AppSectionItemState<IndexerOptions>,
-    AppSectionSaveState {}
+  extends AppSectionItemState<IndexerOptions>, AppSectionSaveState {}
 
 export interface IndexerAppState
-  extends AppSectionState<Indexer>,
+  extends
+    AppSectionState<Indexer>,
     AppSectionDeleteState,
     AppSectionSaveState,
     AppSectionSchemaState<Presets<Indexer>> {
@@ -89,30 +91,30 @@ export interface IndexerAppState
 }
 
 export interface NotificationAppState
-  extends AppSectionState<Notification>,
-    AppSectionDeleteState {}
+  extends AppSectionState<Notification>, AppSectionDeleteState {}
 
 export interface QualityProfilesAppState
-  extends AppSectionState<QualityProfile>,
+  extends
+    AppSectionState<QualityProfile>,
     AppSectionItemSchemaState<QualityProfile> {}
 
 export interface ReleaseProfilesAppState
-  extends AppSectionState<ReleaseProfile>,
-    AppSectionSaveState {
+  extends AppSectionState<ReleaseProfile>, AppSectionSaveState {
   pendingChanges: Partial<ReleaseProfile>;
 }
 
 export interface CustomFormatAppState
-  extends AppSectionState<CustomFormat>,
+  extends
+    AppSectionState<CustomFormat>,
     AppSectionDeleteState,
     AppSectionSaveState {}
 
 export interface ImportListOptionsSettingsAppState
-  extends AppSectionItemState<ImportListOptionsSettings>,
-    AppSectionSaveState {}
+  extends AppSectionItemState<ImportListOptionsSettings>, AppSectionSaveState {}
 
 export interface ImportListExclusionsSettingsAppState
-  extends AppSectionState<ImportListExclusion>,
+  extends
+    AppSectionState<ImportListExclusion>,
     AppSectionSaveState,
     PagedAppSectionState,
     AppSectionDeleteState {

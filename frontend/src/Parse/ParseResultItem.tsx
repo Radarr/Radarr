@@ -6,7 +6,7 @@ interface ParseResultItemProps {
   data: string | number | ReactNode;
 }
 
-function ParseResultItem(props: ParseResultItemProps) {
+function ParseResultItem(props: Readonly<ParseResultItemProps>) {
   const { title, data } = props;
 
   return (

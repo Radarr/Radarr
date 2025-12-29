@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Notifications.Telegram
             title = Settings.IncludeInstanceNameInTitle ? $"{title} - {InstanceName}" : title;
             var links = GetLinks(movie);
 
-            _proxy.SendNotification(title, $"{movie.Title} added to library", links, Settings);
+            _proxy.SendNotification(title, NotificationHelpers.GetMovieAddedMessage(movie), links, Settings);
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Notifications.Telegram
             var title = Settings.IncludeAppNameInTitle ? HEALTH_RESTORED_TITLE_BRANDED : HEALTH_RESTORED_TITLE;
             title = Settings.IncludeInstanceNameInTitle ? $"{title} - {InstanceName}" : title;
 
-            _proxy.SendNotification(title, $"The following issue is now resolved: {previousCheck.Message}", new List<TelegramLink>(), Settings);
+            _proxy.SendNotification(title, NotificationHelpers.GetHealthRestoredMessage(previousCheck), new List<TelegramLink>(), Settings);
         }
 
         public override void OnApplicationUpdate(ApplicationUpdateMessage updateMessage)

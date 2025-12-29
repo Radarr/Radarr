@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Datastore.Migration
             }
         }
 
-        private Resolution ParseResolution(string value)
+        private static Resolution ParseResolution(string value)
         {
             switch (value)
             {
@@ -133,7 +133,7 @@ namespace NzbDrone.Core.Datastore.Migration
             }
         }
 
-        private QualitySource ParseSource(string value)
+        private static QualitySource ParseSource(string value)
         {
             switch (value)
             {
@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Datastore.Migration
             }
         }
 
-        private Modifier ParseModifier(string value)
+        private static Modifier ParseModifier(string value)
         {
             switch (value)
             {
@@ -177,7 +177,7 @@ namespace NzbDrone.Core.Datastore.Migration
             }
         }
 
-        private IndexerFlags ParseIndexerFlag(string value)
+        private static IndexerFlags ParseIndexerFlag(string value)
         {
             var flagValues = Enum.GetValues(typeof(IndexerFlags));
 
@@ -203,18 +203,18 @@ namespace NzbDrone.Core.Datastore.Migration
             return (min, max);
         }
 
-        private string ParseString(string value, bool isRegex)
+        private static string ParseString(string value, bool isRegex)
         {
             return isRegex ? value : Regex.Escape(value);
         }
 
-        private class FormatTag167 : ModelBase
+        private sealed class FormatTag167 : ModelBase
         {
             public string Name { get; set; }
             public List<string> FormatTags { get; set; }
         }
 
-        private class Specification168 : ModelBase
+        private sealed class Specification168 : ModelBase
         {
             public List<ICustomFormatSpecification> Specifications { get; set; }
         }

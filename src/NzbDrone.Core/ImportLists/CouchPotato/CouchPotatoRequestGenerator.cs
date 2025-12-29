@@ -21,7 +21,7 @@ namespace NzbDrone.Core.ImportLists.CouchPotato
             var urlBase = "";
             if (!string.IsNullOrWhiteSpace(Settings.UrlBase))
             {
-                urlBase = Settings.UrlBase.StartsWith("/") ? Settings.UrlBase : $"/{Settings.UrlBase}";
+                urlBase = Settings.UrlBase.StartsWith('/') ? Settings.UrlBase : $"/{Settings.UrlBase}";
             }
 
             var status = "";

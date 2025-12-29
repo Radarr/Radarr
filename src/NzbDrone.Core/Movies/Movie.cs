@@ -1,47 +1,49 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaItems;
+using NzbDrone.Core.MediaTypes;
 using NzbDrone.Core.Profiles.Qualities;
 
 namespace NzbDrone.Core.Movies
 {
-    public class Movie : ModelBase
+    public class Movie : MediaItem
     {
         public Movie()
         {
-            Tags = new HashSet<int>();
             MovieMetadata = new MovieMetadata();
+            MediaType = MediaType.Movie;
         }
 
         public int MovieMetadataId { get; set; }
-
-        public bool Monitored { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
-        public int QualityProfileId { get; set; }
-
-        public string Path { get; set; }
 
         public LazyLoaded<MovieMetadata> MovieMetadata { get; set; }
 
-        public string RootFolderPath { get; set; }
-        public DateTime Added { get; set; }
         public QualityProfile QualityProfile { get; set; }
-        public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
-        public DateTime? LastSearchTime { get; set; }
         public MovieFile MovieFile { get; set; }
         public int MovieFileId { get; set; }
 
         public bool HasFile => MovieFileId > 0;
 
-        // compatibility properties
+        // MediaItem abstract method implementations
+        public override string GetTitle() => MovieMetadata.Value.Title;
+        public override int GetYear() => MovieMetadata.Value.Year;
+
+        // Backward-compatible property accessors
         public string Title
         {
-            get { return MovieMetadata.Value.Title; }
-            set { MovieMetadata.Value.Title = value; }
+            get => MovieMetadata.Value.Title;
+            set => MovieMetadata.Value.Title = value;
+        }
+
+        public int Year
+        {
+            get => MovieMetadata.Value.Year;
+            set => MovieMetadata.Value.Year = value;
         }
 
         public int TmdbId
@@ -54,12 +56,6 @@ namespace NzbDrone.Core.Movies
         {
             get { return MovieMetadata.Value.ImdbId; }
             set { MovieMetadata.Value.ImdbId = value; }
-        }
-
-        public int Year
-        {
-            get { return MovieMetadata.Value.Year; }
-            set { MovieMetadata.Value.Year = value; }
         }
 
         public string FolderName()

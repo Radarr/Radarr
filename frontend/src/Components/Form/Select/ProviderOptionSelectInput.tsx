@@ -69,11 +69,10 @@ function createProviderOptionsSelector(
   );
 }
 
-export interface ProviderOptionSelectInputProps
-  extends Omit<
-    EnhancedSelectInputProps<EnhancedSelectInputValue<unknown>, unknown>,
-    'values'
-  > {
+export interface ProviderOptionSelectInputProps extends Omit<
+  EnhancedSelectInputProps<EnhancedSelectInputValue<unknown>, unknown>,
+  'values'
+> {
   provider: string;
   providerData: ProviderOptions;
   name: string;
@@ -86,7 +85,7 @@ function ProviderOptionSelectInput({
   providerData,
   selectOptionsProviderAction,
   ...otherProps
-}: ProviderOptionSelectInputProps) {
+}: Readonly<ProviderOptionSelectInputProps>) {
   const dispatch = useDispatch();
   const [isRefetchRequired, setIsRefetchRequired] = useState(false);
   const previousProviderData = usePrevious(providerData);

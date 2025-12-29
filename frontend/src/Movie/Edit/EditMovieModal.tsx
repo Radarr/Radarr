@@ -14,7 +14,7 @@ function EditMovieModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: EditMovieModalProps) {
+}: Readonly<EditMovieModalProps>) {
   const dispatch = useDispatch();
 
   const handleModalClose = useCallback(() => {

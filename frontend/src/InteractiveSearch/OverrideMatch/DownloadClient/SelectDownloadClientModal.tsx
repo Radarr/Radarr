@@ -12,7 +12,9 @@ interface SelectDownloadClientModalProps {
   onModalClose(): void;
 }
 
-function SelectDownloadClientModal(props: SelectDownloadClientModalProps) {
+function SelectDownloadClientModal(
+  props: Readonly<SelectDownloadClientModalProps>
+) {
   const { isOpen, protocol, modalTitle, onDownloadClientSelect, onModalClose } =
     props;
 

@@ -17,7 +17,7 @@ namespace NzbDrone.Common.Test
     {
         private string _parent = @"C:\Test".AsOsAgnostic();
 
-        private IAppFolderInfo GetIAppDirectoryInfo()
+        private static IAppFolderInfo GetIAppDirectoryInfo()
         {
             var fakeEnvironment = new Mock<IAppFolderInfo>();
 

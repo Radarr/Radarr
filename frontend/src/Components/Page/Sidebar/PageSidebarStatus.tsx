@@ -12,7 +12,7 @@ function PageSidebarStatus({
   count,
   errors,
   warnings,
-}: PageSidebarStatusProps) {
+}: Readonly<PageSidebarStatusProps>) {
   if (!count) {
     return null;
   }

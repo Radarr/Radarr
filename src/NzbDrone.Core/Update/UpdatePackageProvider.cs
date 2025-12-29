@@ -45,12 +45,6 @@ namespace NzbDrone.Core.Update
                                          .AddQueryParam("includeMajorVersion", true)
                                          .SetSegment("branch", branch);
 
-            if (_analyticsService.IsEnabled)
-            {
-                // Send if the system is active so we know which versions to deprecate/ignore
-                request.AddQueryParam("active", _analyticsService.InstallIsActive.ToString().ToLower());
-            }
-
             var update = _httpClient.Get<UpdatePackageAvailable>(request.Build()).Resource;
 
             if (!update.Available)
@@ -75,12 +69,6 @@ namespace NzbDrone.Core.Update
             if (previousVersion != null && previousVersion != currentVersion)
             {
                 request.AddQueryParam("prevVersion", previousVersion);
-            }
-
-            if (_analyticsService.IsEnabled)
-            {
-                // Send if the system is active so we know which versions to deprecate/ignore
-                request.AddQueryParam("active", _analyticsService.InstallIsActive.ToString().ToLower());
             }
 
             var updates = _httpClient.Get<List<UpdatePackage>>(request.Build());

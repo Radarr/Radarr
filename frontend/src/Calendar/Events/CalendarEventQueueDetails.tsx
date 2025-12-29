@@ -29,7 +29,7 @@ function CalendarEventQueueDetails({
   trackedDownloadStatus,
   statusMessages,
   errorMessage,
-}: CalendarEventQueueDetailsProps) {
+}: Readonly<CalendarEventQueueDetailsProps>) {
   const progress = size ? 100 - (sizeleft / size) * 100 : 0;
 
   return (

@@ -18,7 +18,7 @@ function MovieCollectionSortMenu({
   sortDirection,
   isDisabled,
   onSortSelect,
-}: MovieCollectionSortMenuProps) {
+}: Readonly<MovieCollectionSortMenuProps>) {
   return (
     <SortMenu isDisabled={isDisabled} alignMenu={align.RIGHT}>
       <MenuContent>

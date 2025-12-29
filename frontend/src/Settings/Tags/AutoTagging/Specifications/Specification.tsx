@@ -29,7 +29,7 @@ export default function Specification({
   negate,
   onConfirmDeleteSpecification,
   onCloneSpecificationPress,
-}: SpecificationProps) {
+}: Readonly<SpecificationProps>) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 

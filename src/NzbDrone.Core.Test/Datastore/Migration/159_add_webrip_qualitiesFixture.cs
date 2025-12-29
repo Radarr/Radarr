@@ -10,12 +10,12 @@ namespace NzbDrone.Core.Test.Datastore.Migration
     [TestFixture]
     public class add_webrip_qualitesFixture : MigrationTest<add_webrip_qualites>
     {
-        private string GenerateQualityJson(int quality, bool allowed)
+        private static string GenerateQualityJson(int quality, bool allowed)
         {
             return $"{{ \"quality\": {quality}, \"allowed\": {allowed.ToString().ToLowerInvariant()} }}";
         }
 
-        private string GenerateQualityGroupJson(int quality, bool allowed, string groupname, int group)
+        private static string GenerateQualityGroupJson(int quality, bool allowed, string groupname, int group)
         {
             return $"{{\"id\": {group}, \"name\": \"{groupname}\", \"items\": [ {{ \"quality\": {quality}, \"allowed\": {allowed.ToString().ToLowerInvariant()} }} ] }}";
         }

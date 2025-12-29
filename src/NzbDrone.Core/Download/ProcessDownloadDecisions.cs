@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Download.Pending;
@@ -158,13 +159,13 @@ namespace NzbDrone.Core.Download
             return decisions.Where(IsQualifiedReport).ToList();
         }
 
-        internal bool IsQualifiedReport(DownloadDecision decision)
+        internal static bool IsQualifiedReport(DownloadDecision decision)
         {
             // Process both approved and temporarily rejected
             return (decision.Approved || decision.TemporarilyRejected) && decision.RemoteMovie.Movie != null;
         }
 
-        private bool IsMovieProcessed(List<DownloadDecision> decisions, DownloadDecision report)
+        private static bool IsMovieProcessed(List<DownloadDecision> decisions, DownloadDecision report)
         {
             var movieId = report.RemoteMovie.Movie.Id;
 
@@ -198,27 +199,27 @@ namespace NzbDrone.Core.Download
 
             try
             {
-                _logger.Trace("Grabbing release '{0}' from Indexer {1} at priority {2}.", remoteMovie, remoteIndexer, remoteMovie.Release.IndexerPriority);
+                _logger.Trace("Grabbing release '{0}' from Indexer {1} at priority {2}.", remoteMovie.Release.Title.SanitizeForLog(), remoteIndexer.SanitizeForLog(), remoteMovie.Release.IndexerPriority);
                 await _downloadService.DownloadReport(remoteMovie, downloadClientId);
 
                 return ProcessedDecisionResult.Grabbed;
             }
             catch (ReleaseUnavailableException)
             {
-                _logger.Warn("Failed to download release '{0}' from Indexer {1}. Release not available", remoteMovie, remoteIndexer);
+                _logger.Warn("Failed to download release '{0}' from Indexer {1}. Release not available", remoteMovie.Release.Title.SanitizeForLog(), remoteIndexer.SanitizeForLog());
                 return ProcessedDecisionResult.Rejected;
             }
             catch (Exception ex)
             {
                 if (ex is DownloadClientUnavailableException || ex is DownloadClientAuthenticationException)
                 {
-                    _logger.Debug(ex, "Failed to send release '{0}' from Indexer {1} to download client, storing until later.", remoteMovie, remoteIndexer);
+                    _logger.Debug(ex, "Failed to send release '{0}' from Indexer {1} to download client, storing until later.", remoteMovie.Release.Title.SanitizeForLog(), remoteIndexer.SanitizeForLog());
 
                     return ProcessedDecisionResult.Failed;
                 }
                 else
                 {
-                    _logger.Warn(ex, "Couldn't add release '{0}' from Indexer {1} to download queue.", remoteMovie, remoteIndexer);
+                    _logger.Warn(ex, "Couldn't add release '{0}' from Indexer {1} to download queue.", remoteMovie.Release.Title.SanitizeForLog(), remoteIndexer.SanitizeForLog());
                     return ProcessedDecisionResult.Skipped;
                 }
             }

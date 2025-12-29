@@ -7,8 +7,7 @@ import AddNewMovieCollectionMovieModalContent, {
   AddNewMovieCollectionMovieModalContentProps,
 } from './AddNewMovieCollectionMovieModalContent';
 
-interface AddNewCollectionMovieModalProps
-  extends AddNewMovieCollectionMovieModalContentProps {
+interface AddNewCollectionMovieModalProps extends AddNewMovieCollectionMovieModalContentProps {
   isOpen: boolean;
 }
 
@@ -16,7 +15,7 @@ function AddNewMovieCollectionMovieModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: AddNewCollectionMovieModalProps) {
+}: Readonly<AddNewCollectionMovieModalProps>) {
   const dispatch = useDispatch();
 
   const wasOpen = usePrevious(isOpen);

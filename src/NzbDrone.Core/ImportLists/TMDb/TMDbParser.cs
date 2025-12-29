@@ -47,7 +47,7 @@ namespace NzbDrone.Core.ImportLists.TMDb
             return movie;
         }
 
-        private MediaCover.MediaCover MapPosterImage(string path)
+        private static MediaCover.MediaCover MapPosterImage(string path)
         {
             if (path.IsNotNullOrWhiteSpace())
             {

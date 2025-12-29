@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Localization
             return language;
         }
 
-        private string ReplaceTokens(string input, Dictionary<string, object> tokens)
+        private static string ReplaceTokens(string input, Dictionary<string, object> tokens)
         {
             tokens.TryAdd("appName", "Radarr");
 

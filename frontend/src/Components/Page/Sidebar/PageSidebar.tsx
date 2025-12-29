@@ -23,8 +23,8 @@ import Messages from './Messages/Messages';
 import PageSidebarItem from './PageSidebarItem';
 import styles from './PageSidebar.css';
 
-const HEADER_HEIGHT = parseInt(dimensions.headerHeight);
-const SIDEBAR_WIDTH = parseInt(dimensions.sidebarWidth);
+const HEADER_HEIGHT = Number.parseInt(dimensions.headerHeight);
+const SIDEBAR_WIDTH = Number.parseInt(dimensions.sidebarWidth);
 
 interface SidebarItem {
   iconName?: IconName;
@@ -45,10 +45,16 @@ interface SidebarItem {
 
 const LINKS: SidebarItem[] = [
   {
+    iconName: icons.HOUSEKEEPING,
+    title: () => translate('Dashboard'),
+    to: '/',
+    alias: '/dashboard',
+  },
+
+  {
     iconName: icons.MOVIE_CONTINUING,
     title: () => translate('Movies'),
-    to: '/',
-    alias: '/movies',
+    to: '/movies',
     children: [
       {
         title: () => translate('AddNew'),
@@ -67,6 +73,50 @@ const LINKS: SidebarItem[] = [
         to: '/add/discover',
       },
     ],
+  },
+
+  {
+    iconName: icons.BOOK,
+    title: () => translate('Books'),
+    to: '/books',
+    children: [
+      {
+        title: () => translate('AddNew'),
+        to: '/books/add/new',
+      },
+      {
+        title: () => translate('ImportLibrary'),
+        to: '/books/add/import',
+      },
+    ],
+  },
+
+  {
+    iconName: icons.AUDIOBOOK,
+    title: () => translate('Audiobooks'),
+    to: '/audiobooks',
+    children: [
+      {
+        title: () => translate('AddNew'),
+        to: '/audiobooks/add/new',
+      },
+      {
+        title: () => translate('ImportLibrary'),
+        to: '/audiobooks/add/import',
+      },
+    ],
+  },
+
+  {
+    iconName: icons.AUTHOR,
+    title: () => translate('Authors'),
+    to: '/authors',
+  },
+
+  {
+    iconName: icons.SERIES,
+    title: () => translate('Series'),
+    to: '/series',
   },
 
   {
@@ -219,7 +269,10 @@ interface PageSidebarProps {
   isSidebarVisible: boolean;
 }
 
-function PageSidebar({ isSidebarVisible, isSmallScreen }: PageSidebarProps) {
+function PageSidebar({
+  isSidebarVisible,
+  isSmallScreen,
+}: Readonly<PageSidebarProps>) {
   const dispatch = useDispatch();
   const location = useLocation();
   const sidebarRef = useRef(null);

@@ -7,7 +7,7 @@ interface NotFoundProps {
   message?: string;
 }
 
-function NotFound(props: NotFoundProps) {
+function NotFound(props: Readonly<NotFoundProps>) {
   const { message = translate('DefaultNotFoundMessage') } = props;
 
   return (

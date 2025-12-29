@@ -3,15 +3,26 @@ import { Redirect, Route } from 'react-router-dom';
 import Blocklist from 'Activity/Blocklist/Blocklist';
 import History from 'Activity/History/History';
 import Queue from 'Activity/Queue/Queue';
+import AddNewAudiobook from 'AddAudiobook/AddNewAudiobook/AddNewAudiobook';
+import AddNewBook from 'AddBook/AddNewBook/AddNewBook';
 import AddNewMovieConnector from 'AddMovie/AddNewMovie/AddNewMovieConnector';
 import ImportMovies from 'AddMovie/ImportMovie/ImportMovies';
+import AudiobookDetailsPage from 'Audiobook/Details/AudiobookDetailsPage';
+import AudiobookIndex from 'Audiobook/Index/AudiobookIndex';
+import AuthorDetailsPage from 'Author/Details/AuthorDetailsPage';
+import AuthorIndex from 'Author/Index/AuthorIndex';
+import BookDetailsPage from 'Book/Details/BookDetailsPage';
+import BookIndex from 'Book/Index/BookIndex';
 import CalendarPage from 'Calendar/CalendarPage';
 import CollectionConnector from 'Collection/CollectionConnector';
 import NotFound from 'Components/NotFound';
 import Switch from 'Components/Router/Switch';
+import Dashboard from 'Dashboard/Dashboard';
 import DiscoverMovieConnector from 'DiscoverMovie/DiscoverMovieConnector';
 import MovieDetailsPage from 'Movie/Details/MovieDetailsPage';
 import MovieIndex from 'Movie/Index/MovieIndex';
+import SeriesDetailsPage from 'Series/Details/SeriesDetailsPage';
+import SeriesIndex from 'Series/Index/SeriesIndex';
 import CustomFormatSettingsPage from 'Settings/CustomFormats/CustomFormatSettingsPage';
 import DownloadClientSettingsConnector from 'Settings/DownloadClients/DownloadClientSettingsConnector';
 import GeneralSettingsConnector from 'Settings/General/GeneralSettingsConnector';
@@ -43,10 +54,10 @@ function AppRoutes() {
   return (
     <Switch>
       {/*
-        Movies
+        Dashboard
       */}
 
-      <Route exact={true} path="/" component={MovieIndex} />
+      <Route exact={true} path="/" component={Dashboard} />
 
       {window.Radarr.urlBase && (
         <Route
@@ -59,6 +70,14 @@ function AppRoutes() {
         />
       )}
 
+      <Route path="/dashboard" component={Dashboard} />
+
+      {/*
+        Movies
+      */}
+
+      <Route exact={true} path="/movies" component={MovieIndex} />
+
       <Route path="/add/new" component={AddNewMovieConnector} />
 
       <Route path="/collections" component={CollectionConnector} />
@@ -68,6 +87,42 @@ function AppRoutes() {
       <Route path="/add/discover" component={DiscoverMovieConnector} />
 
       <Route path="/movie/:titleSlug" component={MovieDetailsPage} />
+
+      {/*
+        Books
+      */}
+
+      <Route exact={true} path="/books" component={BookIndex} />
+
+      <Route path="/books/add/new" component={AddNewBook} />
+
+      <Route path="/book/:id" component={BookDetailsPage} />
+
+      {/*
+        Audiobooks
+      */}
+
+      <Route exact={true} path="/audiobooks" component={AudiobookIndex} />
+
+      <Route path="/audiobooks/add/new" component={AddNewAudiobook} />
+
+      <Route path="/audiobook/:id" component={AudiobookDetailsPage} />
+
+      {/*
+        Authors
+      */}
+
+      <Route exact={true} path="/authors" component={AuthorIndex} />
+
+      <Route path="/author/:id" component={AuthorDetailsPage} />
+
+      {/*
+        Series
+      */}
+
+      <Route exact={true} path="/series" component={SeriesIndex} />
+
+      <Route path="/series/:id" component={SeriesDetailsPage} />
 
       {/*
         Calendar

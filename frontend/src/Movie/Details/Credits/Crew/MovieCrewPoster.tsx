@@ -17,8 +17,10 @@ import MovieCredit from 'typings/MovieCredit';
 import translate from 'Utilities/String/translate';
 import styles from '../MovieCreditPoster.css';
 
-export interface MovieCrewPosterProps
-  extends Pick<MovieCredit, 'personName' | 'images' | 'job'> {
+export interface MovieCrewPosterProps extends Pick<
+  MovieCredit,
+  'personName' | 'images' | 'job'
+> {
   tmdbId: number;
   posterWidth: number;
   posterHeight: number;
@@ -26,7 +28,7 @@ export interface MovieCrewPosterProps
   onImportListSelect(): void;
 }
 
-function MovieCrewPoster(props: MovieCrewPosterProps) {
+function MovieCrewPoster(props: Readonly<MovieCrewPosterProps>) {
   const {
     tmdbId,
     personName,

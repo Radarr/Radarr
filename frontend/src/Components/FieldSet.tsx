@@ -10,7 +10,11 @@ interface FieldSetProps {
   children?: React.ReactNode;
 }
 
-function FieldSet({ size = sizes.MEDIUM, legend, children }: FieldSetProps) {
+function FieldSet({
+  size = sizes.MEDIUM,
+  legend,
+  children,
+}: Readonly<FieldSetProps>) {
   return (
     <fieldset className={styles.fieldSet}>
       <legend

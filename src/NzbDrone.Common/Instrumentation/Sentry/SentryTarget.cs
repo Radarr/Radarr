@@ -147,11 +147,10 @@ namespace NzbDrone.Common.Instrumentation.Sentry
 
             _debounce = new SentryDebounce();
 
-            // initialize to true and reconfigure later
-            // Otherwise it will default to false and any errors occurring
-            // before config file gets read will not be filtered
+            // Initialize to false by default for privacy
+            // Will be reconfigured by ReconfigureLogging.ReconfigureSentry() based on user settings after startup
             FilterEvents = true;
-            SentryEnabled = true;
+            SentryEnabled = false;
         }
 
         public void InitializeScope()
@@ -175,7 +174,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
             });
         }
 
-        public void UpdateScope(IOsInfo osInfo)
+        public static void UpdateScope(IOsInfo osInfo)
         {
             SentrySdk.ConfigureScope(scope =>
             {
@@ -183,7 +182,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
             });
         }
 
-        public void UpdateScope(Version databaseVersion, int migration, string updateBranch, IPlatformInfo platformInfo)
+        public static void UpdateScope(Version databaseVersion, int migration, string updateBranch, IPlatformInfo platformInfo)
         {
             SentrySdk.ConfigureScope(scope =>
             {

@@ -18,7 +18,7 @@ interface MovieStatusProps {
   movieFileId: number | undefined;
 }
 
-function MovieStatus({ movieId, movieFileId }: MovieStatusProps) {
+function MovieStatus({ movieId, movieFileId }: Readonly<MovieStatusProps>) {
   const {
     isAvailable,
     monitored,

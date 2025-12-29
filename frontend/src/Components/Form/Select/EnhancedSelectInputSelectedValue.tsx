@@ -12,7 +12,7 @@ function EnhancedSelectInputSelectedValue({
   className = styles.selectedValue,
   children,
   isDisabled = false,
-}: EnhancedSelectInputSelectedValueProps) {
+}: Readonly<EnhancedSelectInputSelectedValueProps>) {
   return (
     <div className={classNames(className, isDisabled && styles.isDisabled)}>
       {children}

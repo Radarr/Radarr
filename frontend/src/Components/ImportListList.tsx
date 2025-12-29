@@ -8,7 +8,7 @@ interface ImportListListProps {
   lists: number[];
 }
 
-function ImportListList({ lists }: ImportListListProps) {
+function ImportListList({ lists }: Readonly<ImportListListProps>) {
   const allImportLists = useSelector(
     (state: AppState) => state.settings.importLists.items
   );

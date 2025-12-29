@@ -55,7 +55,7 @@ namespace NzbDrone.Common.Http
         {
             var protocol = useHttps ? "https" : "http";
 
-            if (urlBase.IsNotNullOrWhiteSpace() && !urlBase.StartsWith("/"))
+            if (urlBase.IsNotNullOrWhiteSpace() && !urlBase.StartsWith('/'))
             {
                 urlBase = "/" + urlBase;
             }
@@ -153,7 +153,7 @@ namespace NzbDrone.Common.Http
 
             if (request.ContentData != null)
             {
-                throw new ApplicationException("Cannot send HttpRequest Body and FormData simultaneously.");
+                throw new InvalidRequestException("Cannot send HttpRequest Body and FormData simultaneously.");
             }
 
             var shouldSendAsMultipart = FormData.Any(v => v.ContentType != null || v.FileName != null || v.ContentData.Length > 1024);
@@ -239,7 +239,7 @@ namespace NzbDrone.Common.Http
 
         public virtual HttpRequestBuilder Resource(string resourceUrl)
         {
-            if (!ResourceUrl.IsNotNullOrWhiteSpace() || resourceUrl.StartsWith("/"))
+            if (!ResourceUrl.IsNotNullOrWhiteSpace() || resourceUrl.StartsWith('/'))
             {
                 ResourceUrl = resourceUrl.TrimStart('/');
             }

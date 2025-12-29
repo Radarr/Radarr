@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Profiles.Delay
 {
@@ -111,8 +112,7 @@ namespace NzbDrone.Core.Profiles.Delay
 
             if (moving == null)
             {
-                // TODO: This should throw
-                return all;
+                throw new ModelNotFoundException(typeof(DelayProfile), id);
             }
 
             var afterOrder = GetAfterOrder(moving, after);
@@ -150,7 +150,7 @@ namespace NzbDrone.Core.Profiles.Delay
             return All();
         }
 
-        private int GetAfterOrder(DelayProfile moving, DelayProfile after)
+        private static int GetAfterOrder(DelayProfile moving, DelayProfile after)
         {
             if (after == null)
             {

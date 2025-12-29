@@ -102,13 +102,25 @@ namespace NzbDrone.Core.Download
             }
 
             // Use the first priority clients first
-            availableProviders = availableProviders.GroupBy(v => (v.Definition as DownloadClientDefinition).Priority)
+            var priorityGroup = availableProviders.GroupBy(v => (v.Definition as DownloadClientDefinition)?.Priority ?? int.MaxValue)
                                                    .OrderBy(v => v.Key)
-                                                   .First().OrderBy(v => v.Definition.Id).ToList();
+                                                   .FirstOrDefault();
+
+            if (priorityGroup == null)
+            {
+                throw new DownloadClientUnavailableException("No download client available after priority grouping");
+            }
+
+            availableProviders = priorityGroup.OrderBy(v => v.Definition.Id).ToList();
 
             var lastId = _lastUsedDownloadClient.Find(downloadProtocol.ToString());
 
-            var provider = availableProviders.FirstOrDefault(v => v.Definition.Id > lastId) ?? availableProviders.First();
+            var provider = availableProviders.FirstOrDefault(v => v.Definition.Id > lastId) ?? availableProviders.FirstOrDefault();
+
+            if (provider == null)
+            {
+                throw new DownloadClientUnavailableException("No download client available");
+            }
 
             _lastUsedDownloadClient.Set(downloadProtocol.ToString(), provider.Definition.Id);
 
@@ -129,7 +141,14 @@ namespace NzbDrone.Core.Download
 
         public IDownloadClient Get(int id)
         {
-            return _downloadClientFactory.GetAvailableProviders().Single(d => d.Definition.Id == id);
+            var client = _downloadClientFactory.GetAvailableProviders().SingleOrDefault(d => d.Definition.Id == id);
+
+            if (client == null)
+            {
+                throw new DownloadClientUnavailableException($"Download client with id {id} not found");
+            }
+
+            return client;
         }
 
         private IEnumerable<IDownloadClient> FilterBlockedDownloadClients(IEnumerable<IDownloadClient> clients)

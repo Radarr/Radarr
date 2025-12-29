@@ -10,7 +10,7 @@ interface MovieIndexPosterOptionsModalProps {
 function MovieIndexPosterOptionsModal({
   isOpen,
   onModalClose,
-}: MovieIndexPosterOptionsModalProps) {
+}: Readonly<MovieIndexPosterOptionsModalProps>) {
   return (
     <Modal isOpen={isOpen} onModalClose={onModalClose}>
       <MovieIndexPosterOptionsModalContent onModalClose={onModalClose} />

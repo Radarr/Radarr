@@ -208,7 +208,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             return importResults;
         }
 
-        private string GetOriginalFilePath(DownloadClientItem downloadClientItem, LocalMovie localMovie)
+        private static string GetOriginalFilePath(DownloadClientItem downloadClientItem, LocalMovie localMovie)
         {
             var path = localMovie.Path;
 

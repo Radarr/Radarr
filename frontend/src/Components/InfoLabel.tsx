@@ -21,7 +21,7 @@ function InfoLabel({
   outline = false,
   children,
   ...otherProps
-}: InfoLabelProps) {
+}: Readonly<InfoLabelProps>) {
   return (
     <span
       className={classNames(

@@ -280,6 +280,8 @@ namespace NzbDrone.Common.Http.Dispatchers
             // This issue is being tracked at https://github.com/dotnet/runtime/issues/26177 and expected to be fixed in .NET 6.
             if (useIPv6)
             {
+                CancellationTokenSource quickFailCts = null;
+                CancellationTokenSource linkedTokenSource = null;
                 try
                 {
                     var localToken = cancellationToken;
@@ -287,8 +289,8 @@ namespace NzbDrone.Common.Http.Dispatchers
                     if (!hasResolvedIPv6Availability)
                     {
                         // to make things move fast, use a very low timeout for the initial ipv6 attempt.
-                        var quickFailCts = new CancellationTokenSource(connection_establish_timeout);
-                        var linkedTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, quickFailCts.Token);
+                        quickFailCts = new CancellationTokenSource(connection_establish_timeout);
+                        linkedTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, quickFailCts.Token);
 
                         localToken = linkedTokenSource.Token;
                     }
@@ -305,6 +307,8 @@ namespace NzbDrone.Common.Http.Dispatchers
                 finally
                 {
                     hasResolvedIPv6Availability = true;
+                    linkedTokenSource?.Dispose();
+                    quickFailCts?.Dispose();
                 }
             }
 

@@ -109,7 +109,12 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation.Proxies
                     {
                         foreach (var task in response.Data.Task)
                         {
-                            var taskTransfer = responseTransfer.Data.Task.Where(t => t.Id == task.Id).First();
+                            var taskTransfer = responseTransfer.Data.Task.FirstOrDefault(t => t.Id == task.Id);
+
+                            if (taskTransfer == null)
+                            {
+                                continue;
+                            }
 
                             var combinedTask = new DownloadStationTask
                             {

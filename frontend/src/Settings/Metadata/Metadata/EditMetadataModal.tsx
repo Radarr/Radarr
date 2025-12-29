@@ -8,8 +8,10 @@ import EditMetadataModalContent, {
   EditMetadataModalContentProps,
 } from './EditMetadataModalContent';
 
-interface EditMetadataModalProps
-  extends Omit<EditMetadataModalContentProps, 'advancedSettings'> {
+interface EditMetadataModalProps extends Omit<
+  EditMetadataModalContentProps,
+  'advancedSettings'
+> {
   isOpen: boolean;
 }
 
@@ -17,7 +19,7 @@ function EditMetadataModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: EditMetadataModalProps) {
+}: Readonly<EditMetadataModalProps>) {
   const dispatch = useDispatch();
 
   const advancedSettings = useSelector(

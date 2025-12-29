@@ -13,7 +13,10 @@ interface FavoriteFolderRowProps {
   onPress: (folder: string) => unknown;
 }
 
-function FavoriteFolderRow({ folder, onPress }: FavoriteFolderRowProps) {
+function FavoriteFolderRow({
+  folder,
+  onPress,
+}: Readonly<FavoriteFolderRowProps>) {
   const dispatch = useDispatch();
 
   const handlePress = useCallback(() => {

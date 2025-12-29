@@ -162,7 +162,7 @@ class DiscoverMovie extends Component {
     const characters = _.reduce(items, (acc, item) => {
       let char = item.sortTitle.charAt(0);
 
-      if (!isNaN(char)) {
+      if (!Number.isNaN(char)) {
         char = '#';
       }
 
@@ -175,7 +175,7 @@ class DiscoverMovie extends Component {
       return acc;
     }, {});
 
-    const order = Object.keys(characters).sort();
+    const order = Object.keys(characters).sort((a, b) => a.localeCompare(b));
 
     // Reverse if sorting descending
     if (sortDirection === sortDirections.DESCENDING) {
@@ -214,11 +214,13 @@ class DiscoverMovie extends Component {
   };
 
   onSelectAllChange = ({ value }) => {
-    this.setState(selectAll(this.state.selectedState, value));
+    this.setState((prevState) => selectAll(prevState.selectedState, value));
   };
 
   onSelectAllPress = () => {
-    this.onSelectAllChange({ value: !this.state.allSelected });
+    this.setState((prevState) =>
+      selectAll(prevState.selectedState, !prevState.allSelected)
+    );
   };
 
   onImportListSyncPress = () => {

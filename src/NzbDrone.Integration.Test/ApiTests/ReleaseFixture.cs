@@ -41,7 +41,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             var result = Releases.Post(new ReleaseResource { Guid = releases.First().Guid }, HttpStatusCode.InternalServerError);
         }
 
-        private bool BeValidRelease(ReleaseResource releaseResource)
+        private static bool BeValidRelease(ReleaseResource releaseResource)
         {
             releaseResource.Guid.Should().NotBeNullOrEmpty();
             releaseResource.Age.Should().BeGreaterOrEqualTo(-1);

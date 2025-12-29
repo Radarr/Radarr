@@ -27,7 +27,15 @@ namespace Radarr.Http.Frontend.Mappers
             var path = resourceUrl.Replace('/', Path.DirectorySeparatorChar);
             path = path.Trim(Path.DirectorySeparatorChar);
 
-            var resourcePath = Path.Combine(_appFolderInfo.GetAppDataPath(), path);
+            var basePath = Path.GetFullPath(_appFolderInfo.GetAppDataPath());
+            var resourcePath = Path.GetFullPath(Path.Combine(basePath, path));
+
+            // Prevent path traversal attacks - ensure path stays within AppData folder
+            if (!resourcePath.StartsWith(basePath + Path.DirectorySeparatorChar) &&
+                !resourcePath.Equals(basePath, StringComparison.Ordinal))
+            {
+                return null;
+            }
 
             if (!_diskProvider.FileExists(resourcePath) || _diskProvider.GetFileSize(resourcePath) == 0)
             {

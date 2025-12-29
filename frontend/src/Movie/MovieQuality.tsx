@@ -77,7 +77,7 @@ interface MovieQualityProps {
   showRevision?: boolean;
 }
 
-function MovieQuality(props: MovieQualityProps) {
+function MovieQuality(props: Readonly<MovieQualityProps>) {
   const {
     className,
     title = '',

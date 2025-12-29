@@ -26,7 +26,12 @@ namespace NzbDrone.Core.Profiles.Qualities
 
         public Quality FirststAllowedQuality()
         {
-            var firstAllowed = Items.First(q => q.Allowed);
+            var firstAllowed = Items.FirstOrDefault(q => q.Allowed);
+
+            if (firstAllowed == null)
+            {
+                return Quality.Unknown;
+            }
 
             if (firstAllowed.Quality != null)
             {
@@ -35,12 +40,19 @@ namespace NzbDrone.Core.Profiles.Qualities
 
             // Returning any item from the group will work,
             // returning the first because it's the true first quality.
-            return firstAllowed.Items.First().Quality;
+            var firstItem = firstAllowed.Items.FirstOrDefault();
+
+            return firstItem?.Quality ?? Quality.Unknown;
         }
 
         public Quality LastAllowedQuality()
         {
-            var lastAllowed = Items.Last(q => q.Allowed);
+            var lastAllowed = Items.LastOrDefault(q => q.Allowed);
+
+            if (lastAllowed == null)
+            {
+                return Quality.Unknown;
+            }
 
             if (lastAllowed.Quality != null)
             {
@@ -49,7 +61,9 @@ namespace NzbDrone.Core.Profiles.Qualities
 
             // Returning any item from the group will work,
             // returning the last because it's the true last quality.
-            return lastAllowed.Items.Last().Quality;
+            var lastItem = lastAllowed.Items.LastOrDefault();
+
+            return lastItem?.Quality ?? Quality.Unknown;
         }
 
         public QualityIndex GetIndex(Quality quality, bool respectGroupOrder = false)

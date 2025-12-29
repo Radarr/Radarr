@@ -6,6 +6,6 @@ export type TableRowCellProps = ComponentPropsWithoutRef<'td'>;
 export default function TableRowCell({
   className = styles.cell,
   ...tdProps
-}: TableRowCellProps) {
+}: Readonly<TableRowCellProps>) {
   return <td className={className} {...tdProps} />;
 }

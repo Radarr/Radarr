@@ -12,7 +12,7 @@ function ViewMenuItem({
   name,
   selectedView,
   ...otherProps
-}: ViewMenuItemProps) {
+}: Readonly<ViewMenuItemProps>) {
   const isSelected = name === selectedView;
 
   return (

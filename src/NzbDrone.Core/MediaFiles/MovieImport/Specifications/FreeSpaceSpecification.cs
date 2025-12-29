@@ -43,7 +43,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
 
                 if (!freeSpace.HasValue)
                 {
-                    _logger.Debug("Free space check returned an invalid result for: {0}", path);
+                    _logger.Debug("Free space check returned an invalid result for: {0}", path.FullName.SanitizeForLog());
                     return ImportSpecDecision.Accept();
                 }
 
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to check free disk space while importing: {0}", localMovie.Path);
+                _logger.Error(ex, "Unable to check free disk space while importing: {0}", localMovie.Path.SanitizeForLog());
             }
 
             return ImportSpecDecision.Accept();

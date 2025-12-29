@@ -65,6 +65,7 @@ namespace NzbDrone.Core.Jobs
         {
             _logger.Info("Shutting down scheduler");
             _cancellationTokenSource.Cancel(true);
+            _cancellationTokenSource.Dispose();
             Timer.Stop();
         }
     }

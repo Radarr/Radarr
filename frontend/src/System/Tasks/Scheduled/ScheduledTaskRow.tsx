@@ -27,7 +27,7 @@ interface ScheduledTaskRowProps {
   nextExecution: string;
 }
 
-function ScheduledTaskRow(props: ScheduledTaskRowProps) {
+function ScheduledTaskRow(props: Readonly<ScheduledTaskRowProps>) {
   const {
     id,
     taskName,

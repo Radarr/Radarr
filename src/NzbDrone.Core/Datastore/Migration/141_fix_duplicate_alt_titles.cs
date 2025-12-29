@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Alter.Table("AlternativeTitles").AlterColumn("CleanTitle").AsString().Unique();
         }
 
-        private void RemoveDuplicateAlternateTitles(IDbConnection conn, IDbTransaction tran)
+        private static void RemoveDuplicateAlternateTitles(IDbConnection conn, IDbTransaction tran)
         {
             using (var cmd = conn.CreateCommand())
             {

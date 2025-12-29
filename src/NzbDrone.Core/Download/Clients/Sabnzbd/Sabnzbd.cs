@@ -331,7 +331,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             return true;
         }
 
-        private Version ParseVersion(string version)
+        private static Version ParseVersion(string version)
         {
             if (version.IsNullOrWhiteSpace())
             {
@@ -520,7 +520,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             return null;
         }
 
-        private bool ContainsCategory(IEnumerable<string> categories, string category)
+        private static bool ContainsCategory(IEnumerable<string> categories, string category)
         {
             if (categories == null || categories.Empty())
             {
@@ -535,7 +535,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             return categories.Contains(category);
         }
 
-        private bool RemovesCompletedDownloads(SabnzbdConfig config)
+        private static bool RemovesCompletedDownloads(SabnzbdConfig config)
         {
             var retention = config.Misc.history_retention;
             var option = config.Misc.history_retention_option;
@@ -573,7 +573,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             return retention != "0";
         }
 
-        private bool ValidatePath(DownloadClientItem downloadClientItem)
+        private static bool ValidatePath(DownloadClientItem downloadClientItem)
         {
             var downloadItemOutputPath = downloadClientItem.OutputPath;
 

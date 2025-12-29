@@ -20,7 +20,7 @@ function RootFolderSelectInputSelectedValue({
   includeFreeSpace = true,
   isWindows,
   ...otherProps
-}: RootFolderSelectInputSelectedValueProps) {
+}: Readonly<RootFolderSelectInputSelectedValueProps>) {
   const slashCharacter = isWindows ? '\\' : '/';
   const { value, freeSpace, isMissing } =
     values.find((v) => v.key === selectedValue) ||

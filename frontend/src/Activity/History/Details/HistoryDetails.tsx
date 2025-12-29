@@ -30,7 +30,7 @@ interface HistoryDetailsProps {
   downloadId?: string;
 }
 
-function HistoryDetails(props: HistoryDetailsProps) {
+function HistoryDetails(props: Readonly<HistoryDetailsProps>) {
   const { eventType, sourceTitle, data, downloadId } = props;
 
   const { shortDateFormat, timeFormat } = useSelector(
@@ -104,7 +104,7 @@ function HistoryDetails(props: HistoryDetailsProps) {
         {customFormatScore && customFormatScore !== '0' ? (
           <DescriptionListItem
             title={translate('CustomFormatScore')}
-            data={formatCustomFormatScore(parseInt(customFormatScore))}
+            data={formatCustomFormatScore(Number.parseInt(customFormatScore))}
           />
         ) : null}
 
@@ -230,7 +230,7 @@ function HistoryDetails(props: HistoryDetailsProps) {
         {customFormatScore && customFormatScore !== '0' ? (
           <DescriptionListItem
             title={translate('CustomFormatScore')}
-            data={formatCustomFormatScore(parseInt(customFormatScore))}
+            data={formatCustomFormatScore(Number.parseInt(customFormatScore))}
           />
         ) : null}
 
@@ -272,7 +272,7 @@ function HistoryDetails(props: HistoryDetailsProps) {
         {customFormatScore && customFormatScore !== '0' ? (
           <DescriptionListItem
             title={translate('CustomFormatScore')}
-            data={formatCustomFormatScore(parseInt(customFormatScore))}
+            data={formatCustomFormatScore(Number.parseInt(customFormatScore))}
           />
         ) : null}
 

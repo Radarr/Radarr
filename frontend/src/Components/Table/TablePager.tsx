@@ -31,7 +31,7 @@ function TablePager({
   onNextPagePress,
   onLastPagePress,
   onPageSelect,
-}: TablePagerProps) {
+}: Readonly<TablePagerProps>) {
   const [isShowingPageSelect, setIsShowingPageSelect] = useState(false);
 
   const isFirstPage = page === 1;

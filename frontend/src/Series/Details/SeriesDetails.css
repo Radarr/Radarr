@@ -1,0 +1,45 @@
+.container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 300;
+  margin: 0 0 10px;
+}
+
+.details {
+  margin-top: 20px;
+}
+
+.detailRow {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.label {
+  width: 150px;
+  font-weight: 500;
+  color: var(--labelColor);
+}
+
+.value {
+  flex: 1;
+}
+
+.description {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: var(--tableRowBackgroundColor);
+  border-radius: 4px;
+}
+
+.monitoredIcon {
+  margin-left: 10px;
+}

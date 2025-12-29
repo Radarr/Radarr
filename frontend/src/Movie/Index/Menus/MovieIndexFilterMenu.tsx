@@ -11,7 +11,7 @@ interface MovieIndexFilterMenuProps {
   onFilterSelect: (filter: number | string) => void;
 }
 
-function MovieIndexFilterMenu(props: MovieIndexFilterMenuProps) {
+function MovieIndexFilterMenu(props: Readonly<MovieIndexFilterMenuProps>) {
   const {
     selectedFilterKey,
     filters,

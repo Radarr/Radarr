@@ -21,7 +21,9 @@ interface OrganizeMoviesModalContentProps {
   onModalClose: () => void;
 }
 
-function OrganizeMoviesModalContent(props: OrganizeMoviesModalContentProps) {
+function OrganizeMoviesModalContent(
+  props: Readonly<OrganizeMoviesModalContentProps>
+) {
   const { movieIds, onModalClose } = props;
 
   const allMovies: Movie[] = useSelector(createAllMoviesSelector());

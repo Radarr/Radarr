@@ -47,7 +47,9 @@ interface OverrideMatchModalContentProps {
   onModalClose(): void;
 }
 
-function OverrideMatchModalContent(props: OverrideMatchModalContentProps) {
+function OverrideMatchModalContent(
+  props: Readonly<OverrideMatchModalContentProps>
+) {
   const modalTitle = translate('ManualGrab');
   const {
     indexerId,

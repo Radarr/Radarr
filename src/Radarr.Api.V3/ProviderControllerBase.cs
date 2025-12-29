@@ -121,7 +121,7 @@ namespace Radarr.Api.V3
                 _providerFactory.Update(providerDefinition);
             }
 
-            return Accepted(existingDefinition.Id);
+            return Ok(_resourceMapper.ToResource(providerDefinition));
         }
 
         [HttpPut("bulk")]
@@ -162,7 +162,7 @@ namespace Radarr.Api.V3
 
             _bulkResourceMapper.UpdateModel(providerResource, definitionsToUpdate);
 
-            return Accepted(_providerFactory.Update(definitionsToUpdate).Select(x => _resourceMapper.ToResource(x)));
+            return Ok(_providerFactory.Update(definitionsToUpdate).Select(x => _resourceMapper.ToResource(x)));
         }
 
         private TProviderDefinition GetDefinition(TProviderResource providerResource, TProviderDefinition existingDefinition, bool validate, bool includeWarnings, bool forceValidate)
@@ -304,7 +304,7 @@ namespace Radarr.Api.V3
             VerifyValidationResult(validationResult, includeWarnings);
         }
 
-        protected void VerifyValidationResult(ValidationResult validationResult, bool includeWarnings)
+        protected static void VerifyValidationResult(ValidationResult validationResult, bool includeWarnings)
         {
             var result = validationResult as NzbDroneValidationResult ?? new NzbDroneValidationResult(validationResult.Errors);
 

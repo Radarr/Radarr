@@ -10,7 +10,7 @@ interface SelectSeasonRowProps {
   onDownloadClientSelect(downloadClientId: number): unknown;
 }
 
-function SelectDownloadClientRow(props: SelectSeasonRowProps) {
+function SelectDownloadClientRow(props: Readonly<SelectSeasonRowProps>) {
   const { id, name, priority, onDownloadClientSelect } = props;
 
   const onSeasonSelectWrapper = useCallback(() => {

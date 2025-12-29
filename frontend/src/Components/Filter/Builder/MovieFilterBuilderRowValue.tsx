@@ -6,7 +6,9 @@ import sortByProp from 'Utilities/Array/sortByProp';
 import FilterBuilderRowValue from './FilterBuilderRowValue';
 import FilterBuilderRowValueProps from './FilterBuilderRowValueProps';
 
-function MovieFilterBuilderRowValue(props: FilterBuilderRowValueProps) {
+function MovieFilterBuilderRowValue(
+  props: Readonly<FilterBuilderRowValueProps>
+) {
   const allMovies: Movie[] = useSelector(createAllMoviesSelector());
 
   const tagList = allMovies

@@ -15,6 +15,8 @@ namespace NzbDrone.Core.Parser
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(Parser));
 
+        private static readonly Regex ImdbIdRegex = new Regex(@"^(\d{1,10}|(tt)\d{1,10})$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+
         private static readonly Regex EditionRegex = new Regex(@"\(?\b(?<edition>(((Recut.|Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Extended|Despecialized|(Special|Rouge|Final|Assembly|Imperial|Diamond|Signature|Hunter|Rekall)(?=(.(Cut|Edition|Version)))|\d{2,3}(th)?.Anniversary)(?:.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|Open.?Matte|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|Open?.Matte|IMAX|Fan.?Edit|Restored|((2|3|4)in1))))))\b\)?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex ReportEditionRegex = new Regex(@"^.+?" + EditionRegex, RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -43,9 +45,10 @@ namespace NzbDrone.Core.Parser
             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*" + EditionRegex + @".{1,3}(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            // Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.2011.Special.Edition //TODO: Seems to slow down parsing heavily!
-            /*new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|(19|20)\d{2}|\]|\W(19|20)\d{2})))+(\W+|_|$)(?!\\)\(?(?<edition>(((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final(?=(.(Cut|Edition|Version)))|Extended|Rogue|Special|Despecialized|\d{2,3}(th)?.Anniversary)(.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit|Edition|Restored|((2|3|4)in1))))))\)?",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),*/
+            // DISABLED: Complex regex for edition movies with year before edition text
+            // e.g: Mission.Impossible.3.2011.Special.Edition
+            // Reason: Causes ReDoS-like performance degradation due to catastrophic backtracking
+            // Keep for reference; covered by simpler patterns above
 
             // Normal movie format, e.g: Mission.Impossible.3.2011
             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|(1(8|9)|20)\d{2}|\]|\W(1(8|9)|20)\d{2})))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
@@ -63,7 +66,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex[] ReportMovieTitleFolderRegex = new[]
         {
             // When year comes first.
-            new Regex(@"^(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?<title>.+?)?$")
+            new Regex(@"^(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?<title>.+?)?$", RegexOptions.Compiled, TimeSpan.FromSeconds(1))
         };
 
         private static readonly Regex[] RejectHashedReleasesRegex = new Regex[]
@@ -134,6 +137,11 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex RequestInfoRegex = new Regex(@"^(?:\[.+?\])+", RegexOptions.Compiled);
 
+        // ToUrlSlug regex patterns
+        private static readonly Regex SlugSpaceRegex = new Regex(@"\s", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        private static readonly Regex SlugInvalidCharsRegex = new Regex(@"[^a-z0-9\s-_]", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        private static readonly Regex SlugDuplicateDefaultRegex = new Regex(@"([-_]){2,}", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+
         private static readonly string[] Numbers = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
         private static readonly Regex MultiRegex = new (@"[_. ](?<multi>multi)[_. ]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -153,13 +161,13 @@ namespace NzbDrone.Core.Parser
 
             if (result == null)
             {
-                Logger.Debug("Attempting to parse movie info using directory and file names. {0}", fileInfo.Directory.Name);
+                Logger.Debug("Attempting to parse movie info using directory and file names. {0}", fileInfo.Directory.Name.SanitizeForLog());
                 result = ParseMovieTitle(fileInfo.Directory.Name + " " + fileInfo.Name);
             }
 
             if (result == null)
             {
-                Logger.Debug("Attempting to parse movie info using directory name. {0}", fileInfo.Directory.Name);
+                Logger.Debug("Attempting to parse movie info using directory name. {0}", fileInfo.Directory.Name.SanitizeForLog());
                 result = ParseMovieTitle(fileInfo.Directory.Name + fileInfo.Extension);
             }
 
@@ -176,7 +184,7 @@ namespace NzbDrone.Core.Parser
                     return null;
                 }
 
-                Logger.Debug("Parsing string '{0}'", title);
+                Logger.Debug("Parsing string '{0}'", title.SanitizeForLog());
 
                 if (ReversedTitleRegex.IsMatch(title))
                 {
@@ -185,7 +193,7 @@ namespace NzbDrone.Core.Parser
 
                     title = $"{titleWithoutExtension}{title.Substring(titleWithoutExtension.Length)}";
 
-                    Logger.Debug("Reversed name detected. Converted to '{0}'", title);
+                    Logger.Debug("Reversed name detected. Converted to '{0}'", title.SanitizeForLog());
                 }
 
                 var releaseTitle = FileExtensions.RemoveFileExtension(title);
@@ -200,7 +208,7 @@ namespace NzbDrone.Core.Parser
                     if (replace.TryReplace(ref releaseTitle))
                     {
                         Logger.Trace($"Replace regex: {replace}");
-                        Logger.Debug("Substituted with " + releaseTitle);
+                        Logger.Debug("Substituted with " + releaseTitle.SanitizeForLog());
                     }
                 }
 
@@ -312,11 +320,11 @@ namespace NzbDrone.Core.Parser
             {
                 if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
                 {
-                    Logger.Error(e, "An error has occurred while trying to parse {0}", title);
+                    Logger.Error(e, "An error has occurred while trying to parse {0}", title.SanitizeForLog());
                 }
             }
 
-            Logger.Debug("Unable to parse {0}", title);
+            Logger.Debug("Unable to parse {0}", title.SanitizeForLog());
             return null;
         }
 
@@ -379,9 +387,7 @@ namespace NzbDrone.Core.Parser
 
         public static string NormalizeImdbId(string imdbId)
         {
-            var imdbRegex = new Regex(@"^(\d{1,10}|(tt)\d{1,10})$");
-
-            if (!imdbRegex.IsMatch(imdbId))
+            if (!ImdbIdRegex.IsMatch(imdbId))
             {
                 return null;
             }
@@ -404,13 +410,13 @@ namespace NzbDrone.Core.Parser
             value = value.RemoveAccent();
 
             // Replace spaces
-            value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);
+            value = SlugSpaceRegex.Replace(value, "-");
 
             // Should invalid characters be replaced with dash or empty string?
             var replaceCharacter = invalidDashReplacement ? "-" : string.Empty;
 
             // Remove invalid chars
-            value = Regex.Replace(value, @"[^a-z0-9\s-_]", replaceCharacter, RegexOptions.Compiled);
+            value = SlugInvalidCharsRegex.Replace(value, replaceCharacter);
 
             // Trim dashes or underscores from end, or user defined character set
             if (!string.IsNullOrEmpty(trimEndChars))
@@ -421,7 +427,15 @@ namespace NzbDrone.Core.Parser
             // Replace double occurrences of - or _, or user defined character set
             if (!string.IsNullOrEmpty(deduplicateChars))
             {
-                value = Regex.Replace(value, @"([" + deduplicateChars + "]){2,}", "$1", RegexOptions.Compiled);
+                // Use cached regex for default pattern, otherwise create dynamic pattern
+                if (deduplicateChars == "-_")
+                {
+                    value = SlugDuplicateDefaultRegex.Replace(value, "$1");
+                }
+                else
+                {
+                    value = Regex.Replace(value, @"([" + deduplicateChars + "]){2,}", "$1", RegexOptions.Compiled);
+                }
             }
 
             return value;
@@ -598,7 +612,7 @@ namespace NzbDrone.Core.Parser
 
             if (RejectHashedReleasesRegex.Any(v => v.IsMatch(titleWithoutExtension)))
             {
-                Logger.Debug("Rejected Hashed Release Title: " + title);
+                Logger.Debug("Rejected Hashed Release Title: " + title.SanitizeForLog());
                 return false;
             }
 

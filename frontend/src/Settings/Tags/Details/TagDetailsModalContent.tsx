@@ -83,7 +83,7 @@ function TagDetailsModalContent({
   movieIds = [],
   onModalClose,
   onDeleteTagPress,
-}: TagDetailsModalContentProps) {
+}: Readonly<TagDetailsModalContentProps>) {
   const movies = useSelector(createMatchingMoviesSelector(movieIds));
 
   const delayProfiles = useSelector(

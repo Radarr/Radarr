@@ -9,7 +9,7 @@ interface EditMoviesModalProps {
   onModalClose(): void;
 }
 
-function EditMoviesModal(props: EditMoviesModalProps) {
+function EditMoviesModal(props: Readonly<EditMoviesModalProps>) {
   const { isOpen, movieIds, onSavePress, onModalClose } = props;
 
   return (

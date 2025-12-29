@@ -276,7 +276,7 @@ namespace NzbDrone.Core.Datastore.Migration
             }
         }
 
-        private void MigrateVideoCodecLegacy(MediaInfo198 mediaInfo, MediaInfo199 m, string sceneName)
+        private static void MigrateVideoCodecLegacy(MediaInfo198 mediaInfo, MediaInfo199 m, string sceneName)
         {
             var videoCodec = mediaInfo.VideoCodec;
 
@@ -335,7 +335,7 @@ namespace NzbDrone.Core.Datastore.Migration
             }
         }
 
-        private HdrFormat MigrateHdrFormat(MediaInfo198 mediaInfo)
+        private static HdrFormat MigrateHdrFormat(MediaInfo198 mediaInfo)
         {
             if (mediaInfo.VideoHdrFormatCompatibility.IsNotNullOrWhiteSpace())
             {
@@ -531,7 +531,7 @@ namespace NzbDrone.Core.Datastore.Migration
             }
         }
 
-        private void MigrateAudioCodecLegacy(MediaInfo198 mediaInfo, MediaInfo199 m)
+        private static void MigrateAudioCodecLegacy(MediaInfo198 mediaInfo, MediaInfo199 m)
         {
             var audioFormat = mediaInfo.AudioFormat;
 
@@ -617,7 +617,7 @@ namespace NzbDrone.Core.Datastore.Migration
             m.AudioChannelPositions = audioChannels.ToString();
         }
 
-        private decimal? FormatAudioChannelsFromAudioChannelPositions(MediaInfo198 mediaInfo)
+        private static decimal? FormatAudioChannelsFromAudioChannelPositions(MediaInfo198 mediaInfo)
         {
             var audioChannelPositions = mediaInfo.AudioChannelPositions;
 
@@ -676,7 +676,7 @@ namespace NzbDrone.Core.Datastore.Migration
             return null;
         }
 
-        private decimal? FormatAudioChannelsFromAudioChannelPositionsText(MediaInfo198 mediaInfo)
+        private static decimal? FormatAudioChannelsFromAudioChannelPositionsText(MediaInfo198 mediaInfo)
         {
             var audioChannelPositionsTextContainer = mediaInfo.AudioChannelPositionsTextContainer;
             var audioChannelPositionsTextStream = mediaInfo.AudioChannelPositionsTextStream;
@@ -706,7 +706,7 @@ namespace NzbDrone.Core.Datastore.Migration
             return null;
         }
 
-        private decimal? FormatAudioChannelsFromAudioChannels(MediaInfo198 mediaInfo)
+        private static decimal? FormatAudioChannelsFromAudioChannels(MediaInfo198 mediaInfo)
         {
             var audioChannelsContainer = mediaInfo.AudioChannelsContainer;
             var audioChannelsStream = mediaInfo.AudioChannelsStream;
@@ -742,7 +742,7 @@ namespace NzbDrone.Core.Datastore.Migration
             return null;
         }
 
-        private List<string> MigrateLanguages(string mediaInfoLanguages)
+        private static List<string> MigrateLanguages(string mediaInfoLanguages)
         {
             var languages = new List<string>();
 
@@ -788,12 +788,12 @@ namespace NzbDrone.Core.Datastore.Migration
             return languages;
         }
 
-        private string MigratePrimaries(string primary)
+        private static string MigratePrimaries(string primary)
         {
             return primary.IsNotNullOrWhiteSpace() ? primary.Replace("BT.", "bt") : primary;
         }
 
-        private string MigrateTransferCharacteristics(string transferCharacteristics)
+        private static string MigrateTransferCharacteristics(string transferCharacteristics)
         {
             if (transferCharacteristics == "PQ")
             {

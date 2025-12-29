@@ -33,7 +33,9 @@ function isDeletingSelector() {
   );
 }
 
-function ManageCustomFormatsModalRow(props: ManageCustomFormatsModalRowProps) {
+function ManageCustomFormatsModalRow(
+  props: Readonly<ManageCustomFormatsModalRowProps>
+) {
   const {
     id,
     isSelected,

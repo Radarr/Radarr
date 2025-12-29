@@ -16,7 +16,7 @@ interface PageHeaderActionsMenuProps {
   onKeyboardShortcutsPress(): void;
 }
 
-function PageHeaderActionsMenu(props: PageHeaderActionsMenuProps) {
+function PageHeaderActionsMenu(props: Readonly<PageHeaderActionsMenuProps>) {
   const { onKeyboardShortcutsPress } = props;
 
   const dispatch = useDispatch();

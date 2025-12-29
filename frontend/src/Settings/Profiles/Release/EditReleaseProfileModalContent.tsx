@@ -72,7 +72,7 @@ function EditReleaseProfileModalContent({
   id,
   onModalClose,
   onDeleteReleaseProfilePress,
-}: EditReleaseProfileModalContentProps) {
+}: Readonly<EditReleaseProfileModalContentProps>) {
   const { item, isFetching, isSaving, error, saveError, ...otherProps } =
     useSelector(createReleaseProfileSelector(id));
 

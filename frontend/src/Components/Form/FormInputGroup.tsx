@@ -90,65 +90,68 @@ const componentMap: Record<InputType, ElementType> = {
 type PickProps<V, C extends InputType> = C extends 'text'
   ? TextInputProps
   : C extends 'autoComplete'
-  ? AutoCompleteInputProps
-  : C extends 'availabilitySelect'
-  ? AvailabilitySelectInputProps
-  : C extends 'captcha'
-  ? CaptchaInputProps
-  : C extends 'check'
-  ? CheckInputProps
-  : C extends 'date'
-  ? TextInputProps
-  : C extends 'device'
-  ? DeviceInputProps
-  : C extends 'downloadClientSelect'
-  ? DownloadClientSelectInputProps
-  : C extends 'dynamicSelect'
-  ? ProviderOptionSelectInputProps
-  : C extends 'file'
-  ? TextInputProps
-  : C extends 'float'
-  ? TextInputProps
-  : C extends 'indexerFlagsSelect'
-  ? IndexerFlagsSelectInputProps
-  : C extends 'indexerSelect'
-  ? IndexerSelectInputProps
-  : C extends 'keyValueList'
-  ? KeyValueListInputProps
-  : C extends 'languageSelect'
-  ? LanguageSelectInputProps
-  : C extends 'monitorMoviesSelect'
-  ? MonitorMoviesSelectInputProps
-  : C extends 'movieTag'
-  ? MovieTagInputProps<V>
-  : C extends 'number'
-  ? NumberInputProps
-  : C extends 'oauth'
-  ? OAuthInputProps
-  : C extends 'password'
-  ? TextInputProps
-  : C extends 'path'
-  ? PathInputProps
-  : C extends 'qualityProfileSelect'
-  ? QualityProfileSelectInputProps
-  : C extends 'rootFolderSelect'
-  ? RootFolderSelectInputProps
-  : C extends 'select'
-  ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    EnhancedSelectInputProps<any, V>
-  : C extends 'tag'
-  ? MovieTagInputProps<V>
-  : C extends 'tagSelect'
-  ? TagSelectInputProps
-  : C extends 'text'
-  ? TextInputProps
-  : C extends 'textArea'
-  ? TextAreaProps
-  : C extends 'textTag'
-  ? TextTagInputProps
-  : C extends 'umask'
-  ? UMaskInputProps
-  : never;
+    ? AutoCompleteInputProps
+    : C extends 'availabilitySelect'
+      ? AvailabilitySelectInputProps
+      : C extends 'captcha'
+        ? CaptchaInputProps
+        : C extends 'check'
+          ? CheckInputProps
+          : C extends 'date'
+            ? TextInputProps
+            : C extends 'device'
+              ? DeviceInputProps
+              : C extends 'downloadClientSelect'
+                ? DownloadClientSelectInputProps
+                : C extends 'dynamicSelect'
+                  ? ProviderOptionSelectInputProps
+                  : C extends 'file'
+                    ? TextInputProps
+                    : C extends 'float'
+                      ? TextInputProps
+                      : C extends 'indexerFlagsSelect'
+                        ? IndexerFlagsSelectInputProps
+                        : C extends 'indexerSelect'
+                          ? IndexerSelectInputProps
+                          : C extends 'keyValueList'
+                            ? KeyValueListInputProps
+                            : C extends 'languageSelect'
+                              ? LanguageSelectInputProps
+                              : C extends 'monitorMoviesSelect'
+                                ? MonitorMoviesSelectInputProps
+                                : C extends 'movieTag'
+                                  ? MovieTagInputProps<V>
+                                  : C extends 'number'
+                                    ? NumberInputProps
+                                    : C extends 'oauth'
+                                      ? OAuthInputProps
+                                      : C extends 'password'
+                                        ? TextInputProps
+                                        : C extends 'path'
+                                          ? PathInputProps
+                                          : C extends 'qualityProfileSelect'
+                                            ? QualityProfileSelectInputProps
+                                            : C extends 'rootFolderSelect'
+                                              ? RootFolderSelectInputProps
+                                              : C extends 'select'
+                                                ? EnhancedSelectInputProps<
+                                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                                    any,
+                                                    V
+                                                  >
+                                                : C extends 'tag'
+                                                  ? MovieTagInputProps<V>
+                                                  : C extends 'tagSelect'
+                                                    ? TagSelectInputProps
+                                                    : C extends 'text'
+                                                      ? TextInputProps
+                                                      : C extends 'textArea'
+                                                        ? TextAreaProps
+                                                        : C extends 'textTag'
+                                                          ? TextTagInputProps
+                                                          : C extends 'umask'
+                                                            ? UMaskInputProps
+                                                            : never;
 
 export interface FormInputGroupValues<T> {
   key: T;
@@ -266,10 +269,10 @@ function FormInputGroup<T, C extends InputType>(
 
       {!checkInput && helpTexts ? (
         <div>
-          {helpTexts.map((text, index) => {
+          {helpTexts.map((text) => {
             return (
               <FormInputHelpText
-                key={index}
+                key={text}
                 text={text}
                 isCheckInput={checkInput}
               />
@@ -284,10 +287,12 @@ function FormInputGroup<T, C extends InputType>(
 
       {helpLink ? <Link to={helpLink}>{translate('MoreInfo')}</Link> : null}
 
-      {errors.map((error, index) => {
+      {errors.map((error) => {
+        const message =
+          'errorMessage' in error ? error.errorMessage : error.message;
         return 'errorMessage' in error ? (
           <FormInputHelpText
-            key={index}
+            key={message}
             text={error.errorMessage}
             link={error.infoLink}
             tooltip={error.detailedDescription}
@@ -296,7 +301,7 @@ function FormInputGroup<T, C extends InputType>(
           />
         ) : (
           <FormInputHelpText
-            key={index}
+            key={message}
             text={error.message}
             isError={true}
             isCheckInput={checkInput}
@@ -304,10 +309,12 @@ function FormInputGroup<T, C extends InputType>(
         );
       })}
 
-      {warnings.map((warning, index) => {
+      {warnings.map((warning) => {
+        const message =
+          'errorMessage' in warning ? warning.errorMessage : warning.message;
         return 'errorMessage' in warning ? (
           <FormInputHelpText
-            key={index}
+            key={message}
             text={warning.errorMessage}
             link={warning.infoLink}
             tooltip={warning.detailedDescription}
@@ -316,7 +323,7 @@ function FormInputGroup<T, C extends InputType>(
           />
         ) : (
           <FormInputHelpText
-            key={index}
+            key={message}
             text={warning.message}
             isWarning={true}
             isCheckInput={checkInput}

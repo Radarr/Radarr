@@ -12,7 +12,7 @@ function TableRow({
   children,
   overlayContent,
   ...otherProps
-}: TableRowProps) {
+}: Readonly<TableRowProps>) {
   return (
     <tr className={className} {...otherProps}>
       {children}

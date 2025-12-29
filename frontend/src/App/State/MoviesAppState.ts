@@ -56,9 +56,7 @@ export interface MovieIndexAppState {
 }
 
 interface MoviesAppState
-  extends AppSectionState<Movie>,
-    AppSectionDeleteState,
-    AppSectionSaveState {
+  extends AppSectionState<Movie>, AppSectionDeleteState, AppSectionSaveState {
   itemMap: Record<number, number>;
 
   deleteOptions: {

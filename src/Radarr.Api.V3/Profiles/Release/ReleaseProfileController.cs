@@ -67,7 +67,7 @@ namespace Radarr.Api.V3.Profiles.Release
 
             _profileService.Update(model);
 
-            return Accepted(model.Id);
+            return Ok(GetResourceById(model.Id));
         }
 
         protected override ReleaseProfileResource GetResourceById(int id)

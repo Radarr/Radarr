@@ -14,7 +14,7 @@ export interface ErrorBoundaryErrorProps {
   };
 }
 
-function ErrorBoundaryError(props: ErrorBoundaryErrorProps) {
+function ErrorBoundaryError(props: Readonly<ErrorBoundaryErrorProps>) {
   const {
     className = styles.container,
     messageClassName = styles.message,
@@ -53,9 +53,9 @@ function ErrorBoundaryError(props: ErrorBoundaryErrorProps) {
         {error ? <div>{error.message}</div> : null}
 
         {detailedError ? (
-          detailedError.map((d, index) => {
+          detailedError.map((d) => {
             return (
-              <div key={index}>
+              <div key={`${d.fileName}:${d.lineNumber}:${d.columnNumber}`}>
                 {`  at ${d.functionName} (${d.fileName}:${d.lineNumber}:${d.columnNumber})`}
               </div>
             );

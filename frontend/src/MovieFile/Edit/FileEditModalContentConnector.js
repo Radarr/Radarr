@@ -74,7 +74,7 @@ class FileEditModalContentConnector extends Component {
     const languages = [];
 
     languageIds.forEach((languageId) => {
-      const language = this.props.languages.find((item) => item.id === parseInt(languageId));
+      const language = this.props.languages.find((item) => item.id === Number.parseInt(languageId));
 
       if (language !== undefined) {
         languages.push(language);

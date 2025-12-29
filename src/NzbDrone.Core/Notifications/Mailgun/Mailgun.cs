@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Notifications.Mailgun
 
         public override void OnMovieAdded(Movie movie)
         {
-            _proxy.SendNotification(MOVIE_ADDED_TITLE, $"{movie.Title} added to library", Settings);
+            _proxy.SendNotification(MOVIE_ADDED_TITLE, NotificationHelpers.GetMovieAddedMessage(movie), Settings);
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Notifications.Mailgun
 
         public override void OnHealthRestored(HealthCheck.HealthCheck previousCheckMessage)
         {
-            _proxy.SendNotification(HEALTH_RESTORED_TITLE_BRANDED, $"The following issue is now resolved: {previousCheckMessage.Message}", Settings);
+            _proxy.SendNotification(HEALTH_RESTORED_TITLE_BRANDED, NotificationHelpers.GetHealthRestoredMessage(previousCheckMessage), Settings);
         }
 
         public override void OnApplicationUpdate(ApplicationUpdateMessage updateMessage)

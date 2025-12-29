@@ -134,7 +134,7 @@ namespace Radarr.Api.V3.Movies
             LinkMovieStatistics(resource, _movieStatisticsService.MovieStatistics(resource.Id));
         }
 
-        private void LinkMovieStatistics(MovieResource resource, MovieStatistics movieStatistics)
+        private static void LinkMovieStatistics(MovieResource resource, MovieStatistics movieStatistics)
         {
             resource.Statistics = movieStatistics.ToResource();
             resource.HasFile = movieStatistics.MovieFileCount > 0;

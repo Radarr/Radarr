@@ -15,7 +15,7 @@ function createSetSettingValueReducer(section) {
       let parsedValue = null;
 
       if (_.isNumber(currentValue) && value != null) {
-        parsedValue = parseInt(value);
+        parsedValue = Number.parseInt(value);
       } else {
         parsedValue = value;
       }

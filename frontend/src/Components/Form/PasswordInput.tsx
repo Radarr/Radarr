@@ -7,7 +7,7 @@ function onCopy(e: SyntheticEvent) {
   e.nativeEvent.stopImmediatePropagation();
 }
 
-function PasswordInput(props: TextInputProps) {
+function PasswordInput(props: Readonly<TextInputProps>) {
   return <TextInput {...props} type="password" onCopy={onCopy} />;
 }
 

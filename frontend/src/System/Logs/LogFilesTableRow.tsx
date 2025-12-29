@@ -16,7 +16,7 @@ function LogFilesTableRow({
   filename,
   lastWriteTime,
   downloadUrl,
-}: LogFilesTableRowProps) {
+}: Readonly<LogFilesTableRowProps>) {
   return (
     <TableRow>
       <TableRowCell>{filename}</TableRowCell>

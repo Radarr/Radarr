@@ -70,7 +70,7 @@ namespace Radarr.Api.V3.AutoTagging
 
             _autoTaggingService.Update(model);
 
-            return Accepted(model.Id);
+            return Ok(GetResourceById(model.Id));
         }
 
         [HttpGet]
@@ -81,9 +81,10 @@ namespace Radarr.Api.V3.AutoTagging
         }
 
         [RestDeleteById]
-        public void DeleteFormat(int id)
+        public ActionResult DeleteFormat(int id)
         {
             _autoTaggingService.Delete(id);
+            return NoContent();
         }
 
         [HttpGet("schema")]
@@ -102,7 +103,7 @@ namespace Radarr.Api.V3.AutoTagging
             }
         }
 
-        private void VerifyValidationResult(ValidationResult validationResult)
+        private static void VerifyValidationResult(ValidationResult validationResult)
         {
             var result = new NzbDroneValidationResult(validationResult.Errors);
 

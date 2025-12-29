@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Notifications.Gotify
 
         public override void OnMovieAdded(Movie movie)
         {
-            SendNotification(MOVIE_ADDED_TITLE, $"{movie.Title} added to library", movie);
+            SendNotification(MOVIE_ADDED_TITLE, NotificationHelpers.GetMovieAddedMessage(movie), movie);
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Notifications.Gotify
 
         public override void OnHealthRestored(HealthCheck.HealthCheck previousCheck)
         {
-            SendNotification(HEALTH_RESTORED_TITLE, $"The following issue is now resolved: {previousCheck.Message}", null);
+            SendNotification(HEALTH_RESTORED_TITLE, NotificationHelpers.GetHealthRestoredMessage(previousCheck), null);
         }
 
         public override void OnApplicationUpdate(ApplicationUpdateMessage message)

@@ -35,7 +35,7 @@ function MovieIndexProgressBar({
   detailedProgressBar,
   bottomRadius,
   isStandAlone,
-}: MovieIndexProgressBarProps) {
+}: Readonly<MovieIndexProgressBarProps>) {
   const queueDetails: MovieQueueDetails = useSelector(
     createMovieQueueItemsDetailsSelector(movieId)
   );

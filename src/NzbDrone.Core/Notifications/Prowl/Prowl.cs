@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Notifications.Prowl
 
         public override void OnMovieAdded(Movie movie)
         {
-            _prowlProxy.SendNotification(MOVIE_ADDED_TITLE, $"{movie.Title} added to library", Settings);
+            _prowlProxy.SendNotification(MOVIE_ADDED_TITLE, NotificationHelpers.GetMovieAddedMessage(movie), Settings);
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Notifications.Prowl
 
         public override void OnHealthRestored(HealthCheck.HealthCheck previousMessage)
         {
-            _prowlProxy.SendNotification(HEALTH_RESTORED_TITLE, $"The following issue is now resolved: {previousMessage.Message}", Settings);
+            _prowlProxy.SendNotification(HEALTH_RESTORED_TITLE, NotificationHelpers.GetHealthRestoredMessage(previousMessage), Settings);
         }
 
         public override void OnApplicationUpdate(ApplicationUpdateMessage updateMessage)

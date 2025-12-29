@@ -14,7 +14,7 @@ function MenuItem({
   children,
   isDisabled = false,
   ...otherProps
-}: MenuItemProps) {
+}: Readonly<MenuItemProps>) {
   return (
     <Link
       className={classNames(className, isDisabled && styles.isDisabled)}

@@ -76,7 +76,7 @@ namespace Radarr.Api.V3.Calendar
             return Content(icalendar, "text/calendar");
         }
 
-        private void CreateEvent(Ical.Net.Calendar calendar, MovieMetadata movie, string releaseType)
+        private static void CreateEvent(Ical.Net.Calendar calendar, MovieMetadata movie, string releaseType)
         {
             var date = movie.InCinemas;
             var eventType = "_cinemas";

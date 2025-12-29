@@ -29,7 +29,7 @@ function KeyValueListInput({
   keyPlaceholder,
   valuePlaceholder,
   onChange,
-}: KeyValueListInputProps): JSX.Element {
+}: Readonly<KeyValueListInputProps>): JSX.Element {
   const [isFocused, setIsFocused] = useState(false);
 
   const handleItemChange = useCallback(
@@ -84,7 +84,7 @@ function KeyValueListInput({
     >
       {[...value, { key: '', value: '' }].map((v, index) => (
         <KeyValueListInputItem
-          key={index}
+          key={v.key ? `${v.key}-${v.value}` : `new-item`}
           index={index}
           keyValue={v.key}
           value={v.value}

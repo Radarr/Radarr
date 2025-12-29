@@ -6,7 +6,8 @@ import Link, { LinkProps } from './Link';
 import styles from './IconButton.css';
 
 export interface IconButtonProps
-  extends Omit<LinkProps, 'name' | 'kind'>,
+  extends
+    Omit<LinkProps, 'name' | 'kind'>,
     Pick<IconProps, 'name' | 'kind' | 'size' | 'isSpinning'> {
   iconClassName?: IconProps['className'];
 }
@@ -19,7 +20,7 @@ export default function IconButton({
   size = 12,
   isSpinning,
   ...otherProps
-}: IconButtonProps) {
+}: Readonly<IconButtonProps>) {
   return (
     <Link
       className={classNames(

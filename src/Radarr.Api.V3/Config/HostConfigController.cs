@@ -125,7 +125,7 @@ namespace Radarr.Api.V3.Config
                 _userService.Upsert(resource.Username, resource.Password);
             }
 
-            return Accepted(resource.Id);
+            return Ok(GetResourceById(resource.Id));
         }
     }
 }

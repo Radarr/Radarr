@@ -8,7 +8,7 @@ interface NoMovieProps {
   totalItems: number;
 }
 
-function NoMovie(props: NoMovieProps) {
+function NoMovie(props: Readonly<NoMovieProps>) {
   const { totalItems } = props;
 
   if (totalItems > 0) {

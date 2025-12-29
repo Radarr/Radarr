@@ -16,7 +16,7 @@ interface ErrorPageProps {
   systemStatusError?: Error;
 }
 
-function ErrorPage(props: ErrorPageProps) {
+function ErrorPage(props: Readonly<ErrorPageProps>) {
   const {
     version,
     isLocalStorageSupported,
@@ -30,7 +30,7 @@ function ErrorPage(props: ErrorPageProps) {
     systemStatusError,
   } = props;
 
-  let errorMessage = 'Failed to load Radarr';
+  let errorMessage = 'Failed to load Aletheia';
 
   if (!isLocalStorageSupported) {
     errorMessage =

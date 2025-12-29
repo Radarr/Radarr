@@ -8,7 +8,7 @@ interface DeleteMovieModalProps {
   onModalClose(): void;
 }
 
-function DeleteMovieModal(props: DeleteMovieModalProps) {
+function DeleteMovieModal(props: Readonly<DeleteMovieModalProps>) {
   const { isOpen, movieIds, onModalClose } = props;
 
   return (

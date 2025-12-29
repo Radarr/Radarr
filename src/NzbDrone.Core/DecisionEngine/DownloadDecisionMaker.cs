@@ -72,7 +72,7 @@ namespace NzbDrone.Core.DecisionEngine
             {
                 DownloadDecision decision = null;
                 _logger.ProgressTrace("Processing release {0}/{1}", reportNumber, reports.Count);
-                _logger.Debug("Processing release '{0}' from '{1}'", report.Title, report.Indexer);
+                _logger.Debug("Processing release '{0}' from '{1}'", report.Title.SanitizeForLog(), report.Indexer.SanitizeForLog());
 
                 try
                 {
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.DecisionEngine
                             remoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(remoteMovie, remoteMovie.Release.Size);
                             remoteMovie.CustomFormatScore = remoteMovie?.Movie?.QualityProfile?.CalculateCustomFormatScore(remoteMovie.CustomFormats) ?? 0;
 
-                            _logger.Trace("Custom Format Score of '{0}' [{1}] calculated for '{2}'", remoteMovie.CustomFormatScore, remoteMovie.CustomFormats?.ConcatToString(), report.Title);
+                            _logger.Trace("Custom Format Score of '{0}' [{1}] calculated for '{2}'", remoteMovie.CustomFormatScore, remoteMovie.CustomFormats?.ConcatToString(), report.Title.SanitizeForLog());
 
                             remoteMovie.DownloadAllowed = remoteMovie.Movie != null;
                             decision = GetDecisionForReport(remoteMovie, searchCriteria);
@@ -159,11 +159,11 @@ namespace NzbDrone.Core.DecisionEngine
 
                     if (decision.Rejections.Any())
                     {
-                        _logger.Debug("Release '{0}' from '{1}' rejected for the following reasons: {2}", report.Title, report.Indexer, string.Join(", ", decision.Rejections));
+                        _logger.Debug("Release '{0}' from '{1}' rejected for the following reasons: {2}", report.Title.SanitizeForLog(), report.Indexer.SanitizeForLog(), string.Join(", ", decision.Rejections));
                     }
                     else
                     {
-                        _logger.Debug("Release '{0}' from '{1}' accepted", report.Title, report.Indexer);
+                        _logger.Debug("Release '{0}' from '{1}' accepted", report.Title.SanitizeForLog(), report.Indexer.SanitizeForLog());
                     }
 
                     yield return decision;
@@ -209,7 +209,7 @@ namespace NzbDrone.Core.DecisionEngine
             {
                 e.Data.Add("report", remoteMovie.Release.ToJson());
                 e.Data.Add("parsed", remoteMovie.ParsedMovieInfo.ToJson());
-                _logger.Error(e, "Couldn't evaluate decision on {0}, with spec: {1}", remoteMovie.Release.Title, spec.GetType().Name);
+                _logger.Error(e, "Couldn't evaluate decision on {0}, with spec: {1}", remoteMovie.Release.Title.SanitizeForLog(), spec.GetType().Name);
                 return new DownloadRejection(DownloadRejectionReason.DecisionError, $"{spec.GetType().Name}: {e.Message}");
             }
 

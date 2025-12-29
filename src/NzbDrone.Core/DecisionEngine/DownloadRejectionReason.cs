@@ -10,6 +10,8 @@ public enum DownloadRejectionReason
     Availability,
     MinimumAgeDelay,
     MovieNotMonitored,
+    BookNotMonitored,
+    AudiobookNotMonitored,
     HistoryRecentCutoffMet,
     HistoryCdhDisabledCutoffMet,
     HistoryHigherPreference,

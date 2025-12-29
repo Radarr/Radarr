@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["NzbDrone.Common.Extensions", "StringExtensions", false, "SanitizeForLog", "(System.String,System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+

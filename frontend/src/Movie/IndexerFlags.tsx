@@ -6,7 +6,7 @@ interface IndexerFlagsProps {
   indexerFlags: number;
 }
 
-function IndexerFlags({ indexerFlags = 0 }: IndexerFlagsProps) {
+function IndexerFlags({ indexerFlags = 0 }: Readonly<IndexerFlagsProps>) {
   const allIndexerFlags = useSelector(createIndexerFlagsSelector);
 
   const flags = allIndexerFlags.items.filter(
@@ -16,8 +16,8 @@ function IndexerFlags({ indexerFlags = 0 }: IndexerFlagsProps) {
 
   return flags.length ? (
     <ul>
-      {flags.map((flag, index) => {
-        return <li key={index}>{flag.name}</li>;
+      {flags.map((flag) => {
+        return <li key={flag.id}>{flag.name}</li>;
       })}
     </ul>
   ) : null;

@@ -63,8 +63,7 @@ export interface AppSectionItemState<T> {
 }
 
 export interface AppSectionProviderState<T>
-  extends AppSectionDeleteState,
-    AppSectionSaveState {
+  extends AppSectionDeleteState, AppSectionSaveState {
   isFetching: boolean;
   isPopulated: boolean;
   isTesting?: boolean;

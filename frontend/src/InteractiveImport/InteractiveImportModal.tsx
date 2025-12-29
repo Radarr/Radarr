@@ -8,8 +8,10 @@ import InteractiveImportModalContent, {
   InteractiveImportModalContentProps,
 } from './Interactive/InteractiveImportModalContent';
 
-interface InteractiveImportModalProps
-  extends Omit<InteractiveImportModalContentProps, 'modalTitle'> {
+interface InteractiveImportModalProps extends Omit<
+  InteractiveImportModalContentProps,
+  'modalTitle'
+> {
   isOpen: boolean;
   folder?: string;
   downloadId?: string;
@@ -17,7 +19,7 @@ interface InteractiveImportModalProps
   onModalClose(): void;
 }
 
-function InteractiveImportModal(props: InteractiveImportModalProps) {
+function InteractiveImportModal(props: Readonly<InteractiveImportModalProps>) {
   const {
     isOpen,
     folder,

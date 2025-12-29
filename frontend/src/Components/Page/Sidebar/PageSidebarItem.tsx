@@ -28,7 +28,7 @@ function PageSidebarItem({
   statusComponent: StatusComponent,
   children,
   onPress,
-}: PageSidebarItemProps) {
+}: Readonly<PageSidebarItemProps>) {
   const handlePress = useCallback(() => {
     if (isChildItem || !isParentItem) {
       onPress?.();

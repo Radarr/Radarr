@@ -922,7 +922,7 @@ namespace NzbDrone.Common.Test.DiskTests
                 .Returns(mock.Object);
         }
 
-        private void VerifyCopyFolder(string source, string destination)
+        private static void VerifyCopyFolder(string source, string destination)
         {
             var sourceFiles = Directory.GetFileSystemEntries(source, "*", SearchOption.AllDirectories).Select(v => v.Substring(source.Length + 1)).ToArray();
             var destFiles = Directory.GetFileSystemEntries(destination, "*", SearchOption.AllDirectories).Select(v => v.Substring(destination.Length + 1)).ToArray();
@@ -930,7 +930,7 @@ namespace NzbDrone.Common.Test.DiskTests
             CollectionAssert.AreEquivalent(sourceFiles, destFiles);
         }
 
-        private void VerifyMoveFolder(string source, string from, string destination)
+        private static void VerifyMoveFolder(string source, string from, string destination)
         {
             Directory.Exists(from).Should().BeFalse();
 

@@ -53,7 +53,7 @@ interface CalendarDayProps {
   isTodaysDate: boolean;
 }
 
-function CalendarDay({ date, isTodaysDate }: CalendarDayProps) {
+function CalendarDay({ date, isTodaysDate }: Readonly<CalendarDayProps>) {
   const { time, view } = useSelector((state: AppState) => state.calendar);
   const events = useSelector(createCalendarEventsConnector(date));
 

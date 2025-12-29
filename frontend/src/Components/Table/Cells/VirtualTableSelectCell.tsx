@@ -22,7 +22,7 @@ function VirtualTableSelectCell({
   isDisabled,
   onSelectedChange,
   ...otherProps
-}: VirtualTableSelectCellProps) {
+}: Readonly<VirtualTableSelectCellProps>) {
   const handleChange = useCallback(
     ({ value, shiftKey }: CheckInputChanged) => {
       onSelectedChange({ id, value, shiftKey });

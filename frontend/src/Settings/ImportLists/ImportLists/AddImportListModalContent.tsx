@@ -25,7 +25,7 @@ export interface AddImportListModalContentProps {
 function AddImportListModalContent({
   onImportListSelect,
   onModalClose,
-}: AddImportListModalContentProps) {
+}: Readonly<AddImportListModalContentProps>) {
   const dispatch = useDispatch();
   const { isSchemaFetching, isSchemaPopulated, schemaError, schema } =
     useSelector((state: AppState) => state.settings.importLists);

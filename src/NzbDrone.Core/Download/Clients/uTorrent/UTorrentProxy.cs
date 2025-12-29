@@ -187,7 +187,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             ProcessRequest(requestBuilder, settings);
         }
 
-        private HttpRequestBuilder BuildRequest(UTorrentSettings settings)
+        private static HttpRequestBuilder BuildRequest(UTorrentSettings settings)
         {
             var requestBuilder = new HttpRequestBuilder(settings.UseSsl, settings.Host, settings.Port, settings.UrlBase)
                 .Resource("/gui/")
@@ -263,6 +263,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
                     _logger.Debug("uTorrent authentication succeeded.");
 
                     var xmlDoc = new System.Xml.XmlDocument();
+                    xmlDoc.XmlResolver = null; // Disable external entity resolution (XXE prevention)
                     xmlDoc.LoadXml(response.Content);
 
                     authToken = xmlDoc.FirstChild.FirstChild.InnerText;

@@ -44,7 +44,7 @@ namespace NzbDrone.Core.ProgressMessaging
             }
         }
 
-        private bool IsClientMessage(LogEventInfo logEvent, CommandModel command)
+        private static bool IsClientMessage(LogEventInfo logEvent, CommandModel command)
         {
             if (command == null || !command.Body.SendUpdatesToClient)
             {

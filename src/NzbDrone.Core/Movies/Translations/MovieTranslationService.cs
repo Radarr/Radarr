@@ -36,11 +36,6 @@ namespace NzbDrone.Core.Movies.Translations
             return _translationRepo.FindByLanguage(language).ToList();
         }
 
-        public void RemoveTitle(MovieTranslation title)
-        {
-            _translationRepo.Delete(title);
-        }
-
         public List<MovieTranslation> UpdateTranslations(List<MovieTranslation> translations, MovieMetadata movieMetadata)
         {
             var movieMetadataId = movieMetadata.Id;

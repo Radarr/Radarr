@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
             return _plexServerProxy.GetMovieSections(settings).ToList();
         }
 
-        private void ValidateVersion(Version version)
+        private static void ValidateVersion(Version version)
         {
             if (version >= new Version(1, 3, 0) && version < new Version(1, 3, 1))
             {

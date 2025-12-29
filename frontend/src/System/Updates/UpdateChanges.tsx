@@ -7,7 +7,7 @@ interface UpdateChangesProps {
   changes: string[];
 }
 
-function UpdateChanges(props: UpdateChangesProps) {
+function UpdateChanges(props: Readonly<UpdateChangesProps>) {
   const { title, changes } = props;
 
   if (changes.length === 0) {
@@ -20,17 +20,17 @@ function UpdateChanges(props: UpdateChangesProps) {
     <div>
       <div className={styles.title}>{title}</div>
       <ul>
-        {uniqueChanges.map((change, index) => {
+        {uniqueChanges.map((change) => {
           const checkChange = change.replace(
             /#\d{4,5}\b/g,
             (match) =>
-              `[${match}](https://github.com/Radarr/Radarr/issues/${match.substring(
+              `[${match}](https://github.com/cheir-mneme/aletheia/issues/${match.substring(
                 1
               )})`
           );
 
           return (
-            <li key={index}>
+            <li key={change}>
               <InlineMarkdown data={checkChange} />
             </li>
           );

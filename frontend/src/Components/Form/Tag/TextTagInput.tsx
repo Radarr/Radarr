@@ -8,11 +8,10 @@ interface TextTag extends TagBase {
   name: string;
 }
 
-export interface TextTagInputProps
-  extends Omit<
-    TagInputProps<TextTag>,
-    'tags' | 'tagList' | 'onTagAdd' | 'onTagDelete'
-  > {
+export interface TextTagInputProps extends Omit<
+  TagInputProps<TextTag>,
+  'tags' | 'tagList' | 'onTagAdd' | 'onTagDelete'
+> {
   name: string;
   value: string | string[];
   onChange: (change: InputChanged<string[]>) => unknown;
@@ -23,7 +22,7 @@ function TextTagInput({
   value,
   onChange,
   ...otherProps
-}: TextTagInputProps) {
+}: Readonly<TextTagInputProps>) {
   const { tags, tagList, valueArray } = useMemo(() => {
     const tagsArray = Array.isArray(value) ? value : split(value);
 

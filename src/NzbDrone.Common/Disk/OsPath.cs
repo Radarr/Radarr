@@ -42,7 +42,7 @@ namespace NzbDrone.Common.Disk
 
         private static OsPathKind DetectPathKind(string path)
         {
-            if (path.StartsWith("/"))
+            if (path.StartsWith('/'))
             {
                 return OsPathKind.Unix;
             }
@@ -141,7 +141,7 @@ namespace NzbDrone.Common.Disk
 
                 if (IsUnixPath)
                 {
-                    return _path.StartsWith("/");
+                    return _path.StartsWith('/');
                 }
 
                 return false;
@@ -246,7 +246,7 @@ namespace NzbDrone.Common.Disk
                 return -1;
             }
 
-            if (_path.StartsWith("/") && index == 0)
+            if (_path.StartsWith('/') && index == 0)
             {
                 index++;
             }
@@ -376,11 +376,6 @@ namespace NzbDrone.Common.Disk
 
         public bool Equals(OsPath other, bool ignoreTrailingSlash)
         {
-            if (ReferenceEquals(other, null))
-            {
-                return false;
-            }
-
             if (_path == other._path)
             {
                 return true;
@@ -399,21 +394,11 @@ namespace NzbDrone.Common.Disk
 
         public static bool operator ==(OsPath left, OsPath right)
         {
-            if (ReferenceEquals(left, null))
-            {
-                return ReferenceEquals(right, null);
-            }
-
             return left.Equals(right);
         }
 
         public static bool operator !=(OsPath left, OsPath right)
         {
-            if (ReferenceEquals(left, null))
-            {
-                return !ReferenceEquals(right, null);
-            }
-
             return !left.Equals(right);
         }
 
@@ -421,7 +406,7 @@ namespace NzbDrone.Common.Disk
         {
             if (left.Kind != right.Kind && right.Kind != OsPathKind.Unknown)
             {
-                throw new Exception(string.Format("Cannot combine OsPaths of different platforms ('{0}' + '{1}')", left, right));
+                throw new PathCombinationException("Cannot combine OsPaths of different platforms ('{0}' + '{1}')", left, right);
             }
 
             if (right.IsEmpty)
@@ -490,7 +475,7 @@ namespace NzbDrone.Common.Disk
                 newFragments.Add(leftFragments[j]);
             }
 
-            if (left.FullPath.EndsWith("\\") || left.FullPath.EndsWith("/"))
+            if (left.FullPath.EndsWith("\\") || left.FullPath.EndsWith('/'))
             {
                 newFragments.Add(string.Empty);
             }

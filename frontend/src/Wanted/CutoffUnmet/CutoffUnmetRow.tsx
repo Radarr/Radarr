@@ -39,7 +39,7 @@ function CutoffUnmetRow({
   isSelected,
   columns,
   onSelectedChange,
-}: CutoffUnmetRowProps) {
+}: Readonly<CutoffUnmetRowProps>) {
   if (!movieFileId) {
     return null;
   }

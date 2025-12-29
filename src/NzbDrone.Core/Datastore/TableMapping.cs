@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using NzbDrone.Common.Reflection;
+using NzbDrone.Core.Audiobooks;
 using NzbDrone.Core.Authentication;
+using NzbDrone.Core.Authors;
 using NzbDrone.Core.AutoTagging.Specifications;
 using NzbDrone.Core.Blocklisting;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFilters;
 using NzbDrone.Core.CustomFormats;
@@ -26,12 +29,14 @@ using NzbDrone.Core.Instrumentation;
 using NzbDrone.Core.Jobs;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaTypes;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Credits;
 using NzbDrone.Core.Movies.Translations;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
@@ -113,6 +118,10 @@ namespace NzbDrone.Core.Datastore
             Mapper.Entity<MovieFile>("MovieFiles").RegisterModel()
                   .Ignore(f => f.Path);
 
+            Mapper.Entity<Author>("Authors").RegisterModel();
+
+            Mapper.Entity<NzbDrone.Core.Series.Series>("Series").RegisterModel();
+
             Mapper.Entity<Movie>("Movies").RegisterModel()
                   .Ignore(s => s.RootFolderPath)
                   .Ignore(s => s.Title)
@@ -135,6 +144,24 @@ namespace NzbDrone.Core.Datastore
             Mapper.Entity<Credit>("Credits").RegisterModel();
 
             Mapper.Entity<ImportListExclusion>("ImportExclusions").RegisterModel();
+
+            Mapper.Entity<Book>("Books").RegisterModel();
+
+            Mapper.Entity<Audiobook>("Audiobooks").RegisterModel();
+
+            Mapper.Entity<BookFile>("BookFiles").RegisterModel()
+                  .Ignore(f => f.Path);
+
+            Mapper.Entity<AudiobookFile>("AudiobookFiles").RegisterModel()
+                  .Ignore(f => f.Path);
+
+            Mapper.Entity<Artist>("Artists").RegisterModel();
+
+            Mapper.Entity<Album>("Albums").RegisterModel();
+
+            Mapper.Entity<Track>("Tracks").RegisterModel();
+
+            Mapper.Entity<MusicFile>("MusicFiles").RegisterModel();
 
             Mapper.Entity<QualityDefinition>("QualityDefinitions").RegisterModel()
                   .Ignore(d => d.GroupName)
@@ -202,6 +229,7 @@ namespace NzbDrone.Core.Datastore
             SqlMapper.AddTypeHandler(new DapperLanguageIntConverter());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<Language>>(new LanguageIntConverter()));
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<string>>());
+            SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<MediaType>>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<ParsedMovieInfo>(new QualityIntConverter(), new LanguageIntConverter()));
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<ReleaseInfo>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<PendingReleaseAdditionalInfo>());

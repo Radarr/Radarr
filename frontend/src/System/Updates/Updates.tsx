@@ -85,12 +85,12 @@ function Updates() {
   };
 
   const { isMajorUpdate, hasUpdateToInstall } = useMemo(() => {
-    const majorVersion = parseInt(
+    const majorVersion = Number.parseInt(
       currentVersion.match(VERSION_REGEX)?.[0] ?? '0'
     );
 
     const latestVersion = items[0]?.version;
-    const latestMajorVersion = parseInt(
+    const latestMajorVersion = Number.parseInt(
       latestVersion?.match(VERSION_REGEX)?.[0] ?? '0'
     );
 
@@ -284,8 +284,8 @@ function Updates() {
               <div>
                 <InlineMarkdown
                   data={translate('InstallMajorVersionUpdateMessageLink', {
-                    domain: 'radarr.video',
-                    url: 'https://radarr.video/#downloads',
+                    domain: 'github.com',
+                    url: 'https://github.com/cheir-mneme/aletheia/releases',
                   })}
                 />
               </div>

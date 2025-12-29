@@ -17,7 +17,7 @@ interface QueueStatusCellProps {
   errorMessage?: string;
 }
 
-function QueueStatusCell(props: QueueStatusCellProps) {
+function QueueStatusCell(props: Readonly<QueueStatusCellProps>) {
   const {
     sourceTitle,
     status,

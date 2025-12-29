@@ -87,27 +87,5 @@ namespace NzbDrone.Core.Test.MovieStatsTests
             stats.Should().HaveCount(1);
             stats.First().SizeOnDisk.Should().Be(_movieFile.Size);
         }
-
-        // [Test]
-        // public void should_not_duplicate_size_for_multi_movie_files()
-        // {
-        //     GivenMovieWithFile();
-        //     GivenMovieFile();
-        //
-        //     var movie2 = _movie.JsonClone();
-        //
-        //     var movieMetadata = Builder<MovieMetadata>.CreateNew().With(h => h.TmdbId = 234567).BuildNew();
-        //     Db.Insert(movieMetadata);
-        //
-        //     movie2.Id = 0;
-        //     movie2.MovieMetadataId = movieMetadata.Id;
-        //
-        //     Db.Insert(movie2);
-        //
-        //     var stats = Subject.MovieStatistics();
-        //
-        //     stats.Should().HaveCount(1);
-        //     stats.First().SizeOnDisk.Should().Be(_movieFile.Size);
-        // }
     }
 }

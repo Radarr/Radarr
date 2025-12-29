@@ -9,7 +9,9 @@ interface ManageImportListsEditModalProps {
   onModalClose(): void;
 }
 
-function ManageImportListsEditModal(props: ManageImportListsEditModalProps) {
+function ManageImportListsEditModal(
+  props: Readonly<ManageImportListsEditModalProps>
+) {
   const { isOpen, importListIds, onSavePress, onModalClose } = props;
 
   return (

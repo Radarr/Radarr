@@ -37,7 +37,7 @@ namespace NzbDrone.Core.MovieStats
                 Query(MovieFilesBuilder().Where<MovieFile>(x => x.MovieId == movieId), _selectMovieFilesTemplate));
         }
 
-        private List<MovieStatistics> MapResults(List<MovieStatistics> moviesResult, List<MovieStatistics> filesResult)
+        private static List<MovieStatistics> MapResults(List<MovieStatistics> moviesResult, List<MovieStatistics> filesResult)
         {
             moviesResult.ForEach(e =>
             {

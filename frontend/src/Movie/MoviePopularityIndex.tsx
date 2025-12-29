@@ -9,7 +9,7 @@ interface MoviePopularityIndexProps {
   popularity: number;
 }
 
-function MoviePopularityIndex(props: MoviePopularityIndexProps) {
+function MoviePopularityIndex(props: Readonly<MoviePopularityIndexProps>) {
   const { popularity } = props;
 
   return (

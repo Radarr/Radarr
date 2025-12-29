@@ -169,7 +169,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
             if (id.Length < 10 && int.TryParse(id, out var nzbId))
             {
-                // Download wasn't grabbed by Radarr, so the id is the NzbId reported by nzbget.
+                // Download wasn't grabbed by Aletheia, so the id is the NzbId reported by nzbget.
                 queueItem = queue.SingleOrDefault(h => h.NzbId == nzbId);
                 historyItem = history.SingleOrDefault(h => h.Id == nzbId);
             }

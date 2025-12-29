@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Pushcut
@@ -31,7 +30,7 @@ namespace NzbDrone.Core.Notifications.Pushcut
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            _proxy.SendNotification(MOVIE_GRABBED_TITLE, grabMessage?.Message, GetPosterUrl(grabMessage.Movie), GetLinks(grabMessage.Movie), Settings);
+            _proxy.SendNotification(MOVIE_GRABBED_TITLE, grabMessage?.Message, GetPosterUrl(grabMessage?.Movie), GetLinks(grabMessage?.Movie), Settings);
         }
 
         public override void OnDownload(DownloadMessage downloadMessage)
@@ -41,7 +40,7 @@ namespace NzbDrone.Core.Notifications.Pushcut
 
         public override void OnMovieAdded(Movie movie)
         {
-            _proxy.SendNotification(MOVIE_ADDED_TITLE, $"{movie.Title} added to library", GetPosterUrl(movie), GetLinks(movie), Settings);
+            _proxy.SendNotification(MOVIE_ADDED_TITLE, NotificationHelpers.GetMovieAddedMessage(movie), GetPosterUrl(movie), GetLinks(movie), Settings);
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
@@ -61,7 +60,7 @@ namespace NzbDrone.Core.Notifications.Pushcut
 
         public override void OnHealthRestored(HealthCheck.HealthCheck previousCheck)
         {
-            _proxy.SendNotification(HEALTH_RESTORED_TITLE_BRANDED, $"The following issue is now resolved: {previousCheck.Message}", null, new List<NotificationMetadataLink>(), Settings);
+            _proxy.SendNotification(HEALTH_RESTORED_TITLE_BRANDED, NotificationHelpers.GetHealthRestoredMessage(previousCheck), null, new List<NotificationMetadataLink>(), Settings);
         }
 
         public override void OnApplicationUpdate(ApplicationUpdateMessage updateMessage)
@@ -72,11 +71,6 @@ namespace NzbDrone.Core.Notifications.Pushcut
         public override void OnManualInteractionRequired(ManualInteractionRequiredMessage manualInteractionRequiredMessage)
         {
             _proxy.SendNotification(MANUAL_INTERACTION_REQUIRED_TITLE_BRANDED, manualInteractionRequiredMessage.Message, null, new List<NotificationMetadataLink>(), Settings);
-        }
-
-        private string GetPosterUrl(Movie movie)
-        {
-            return movie.MovieMetadata.Value.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Poster)?.RemoteUrl;
         }
 
         private List<NotificationMetadataLink> GetLinks(Movie movie)

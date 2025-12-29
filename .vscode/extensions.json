@@ -1,7 +1,0 @@
-{
-  "recommendations": [
-    "esbenp.prettier-vscode",
-    "ms-dotnettools.csdevkit",
-    "ms-vscode-remote.remote-containers"
-  ]
-}

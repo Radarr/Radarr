@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Movies
             .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId)
             .LeftJoin<MovieMetadata, AlternativeTitle>((mm, t) => mm.Id == t.MovieMetadataId);
 
-        private Movie Map(Dictionary<int, Movie> dict, Movie movie, MovieMetadata metadata, QualityProfile qualityProfile, MovieFile movieFile, AlternativeTitle altTitle = null, MovieTranslation translation = null)
+        private static Movie Map(Dictionary<int, Movie> dict, Movie movie, MovieMetadata metadata, QualityProfile qualityProfile, MovieFile movieFile, AlternativeTitle altTitle = null, MovieTranslation translation = null)
         {
             if (!dict.TryGetValue(movie.Id, out var movieEntry))
             {

@@ -7,7 +7,7 @@ interface ParseModalProps {
   onModalClose: () => void;
 }
 
-function ParseModal(props: ParseModalProps) {
+function ParseModal(props: Readonly<ParseModalProps>) {
   const { isOpen, onModalClose } = props;
 
   return (

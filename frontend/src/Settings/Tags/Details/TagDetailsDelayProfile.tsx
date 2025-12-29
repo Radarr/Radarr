@@ -16,7 +16,7 @@ function TagDetailsDelayProfile({
   enableTorrent,
   usenetDelay,
   torrentDelay,
-}: TagDetailsDelayProfileProps) {
+}: Readonly<TagDetailsDelayProfileProps>) {
   return (
     <div>
       <div>

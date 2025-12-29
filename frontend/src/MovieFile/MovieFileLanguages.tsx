@@ -6,7 +6,9 @@ interface MovieFileLanguagesProps {
   movieFileId: number;
 }
 
-function MovieFileLanguages({ movieFileId }: MovieFileLanguagesProps) {
+function MovieFileLanguages({
+  movieFileId,
+}: Readonly<MovieFileLanguagesProps>) {
   const movieFile = useMovieFile(movieFileId);
 
   return <MovieLanguages languages={movieFile?.languages ?? []} />;

@@ -6,8 +6,6 @@ namespace NzbDrone.Common.Crypto
 {
     public static class HashConverter
     {
-        private static readonly SHA1 Sha1 = SHA1.Create();
-
         public static int GetHashInt31(string target)
         {
             var hash = GetHash(target);
@@ -16,10 +14,8 @@ namespace NzbDrone.Common.Crypto
 
         public static byte[] GetHash(string target)
         {
-            lock (Sha1)
-            {
-                return Sha1.ComputeHash(Encoding.Default.GetBytes(target));
-            }
+            using var sha1 = SHA1.Create();
+            return sha1.ComputeHash(Encoding.Default.GetBytes(target));
         }
     }
 }

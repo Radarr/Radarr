@@ -325,7 +325,7 @@ namespace NzbDrone.Core.MediaFiles
             return _importApprovedMovie.Import(decisions, true, downloadClientItem, importMode);
         }
 
-        private string GetCleanedUpFolderName(string folder)
+        private static string GetCleanedUpFolderName(string folder)
         {
             folder = folder.Replace("_UNPACK_", "")
                            .Replace("_FAILED_", "");
@@ -346,7 +346,7 @@ namespace NzbDrone.Core.MediaFiles
             return new ImportResult(new ImportDecision(localMovie, new ImportRejection(ImportRejectionReason.UnknownMovie, "Unknown Movie")), message);
         }
 
-        private ImportResult RejectionResult(ImportRejectionReason reason, string message)
+        private static ImportResult RejectionResult(ImportRejectionReason reason, string message)
         {
             return new ImportResult(new ImportDecision(null, new ImportRejection(reason, message)), message);
         }

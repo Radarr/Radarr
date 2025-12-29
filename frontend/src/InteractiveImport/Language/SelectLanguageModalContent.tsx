@@ -45,7 +45,9 @@ function createFilteredLanguagesSelector() {
   });
 }
 
-function SelectLanguageModalContent(props: SelectLanguageModalContentProps) {
+function SelectLanguageModalContent(
+  props: Readonly<SelectLanguageModalContentProps>
+) {
   const { modalTitle, onLanguagesSelect, onModalClose } = props;
 
   const { isFetching, isPopulated, error, items } = useSelector(
@@ -56,7 +58,7 @@ function SelectLanguageModalContent(props: SelectLanguageModalContentProps) {
 
   const onLanguageChange = useCallback(
     ({ name, value }: { name: string; value: boolean }) => {
-      const changedId = parseInt(name);
+      const changedId = Number.parseInt(name);
 
       let newLanguages = [...languageIds];
 

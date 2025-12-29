@@ -5,11 +5,10 @@ import EnhancedSelectInput, {
   EnhancedSelectInputValue,
 } from './EnhancedSelectInput';
 
-export interface AvailabilitySelectInputProps
-  extends Omit<
-    EnhancedSelectInputProps<EnhancedSelectInputValue<string>, string>,
-    'values'
-  > {
+export interface AvailabilitySelectInputProps extends Omit<
+  EnhancedSelectInputProps<EnhancedSelectInputValue<string>, string>,
+  'values'
+> {
   includeNoChange?: boolean;
   includeNoChangeDisabled?: boolean;
   includeMixed?: boolean;
@@ -42,7 +41,9 @@ const movieAvailabilityOptions: IMovieAvailabilityOption[] = [
   },
 ];
 
-function AvailabilitySelectInput(props: AvailabilitySelectInputProps) {
+function AvailabilitySelectInput(
+  props: Readonly<AvailabilitySelectInputProps>
+) {
   const {
     includeNoChange = false,
     includeNoChangeDisabled = true,

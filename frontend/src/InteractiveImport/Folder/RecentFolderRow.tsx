@@ -25,7 +25,7 @@ function RecentFolderRow({
   lastUsed,
   isFavorite,
   onPress,
-}: RecentFolderRowProps) {
+}: Readonly<RecentFolderRowProps>) {
   const dispatch = useDispatch();
 
   const handlePress = useCallback(() => {

@@ -42,7 +42,7 @@ namespace Radarr.Api.V3.Config
 
             _configService.SaveConfigDictionary(dictionary);
 
-            return Accepted(resource.Id);
+            return Ok(GetResourceById(resource.Id));
         }
 
         protected abstract TResource ToResource(IConfigService model);

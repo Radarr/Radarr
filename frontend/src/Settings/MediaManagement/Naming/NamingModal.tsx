@@ -116,7 +116,12 @@ const movieTokens = [
   },
   {
     token: '{Movie CollectionThe}',
-    example: 'Movie Collection, The',
+    example: "Movie's Collection, The",
+    footNotes: '1',
+  },
+  {
+    token: '{Movie CleanCollectionThe}',
+    example: 'Movies Collection, The',
     footNotes: '1',
   },
   { token: '{Movie Certification}', example: 'R' },
@@ -186,7 +191,7 @@ interface NamingModalProps {
   onModalClose: () => void;
 }
 
-function NamingModal(props: NamingModalProps) {
+function NamingModal(props: Readonly<NamingModalProps>) {
   const {
     isOpen,
     name,

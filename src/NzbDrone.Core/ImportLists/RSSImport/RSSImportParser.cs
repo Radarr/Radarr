@@ -199,7 +199,7 @@ namespace NzbDrone.Core.ImportLists.RSSImport
             return Parser.Parser.ParseImdbId(url);
         }
 
-        protected IEnumerable<XElement> GetItems(XDocument document)
+        protected static IEnumerable<XElement> GetItems(XDocument document)
         {
             var root = document.Root;
 

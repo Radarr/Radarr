@@ -7,7 +7,7 @@ interface ManageIndexersModalProps {
   onModalClose(): void;
 }
 
-function ManageIndexersModal(props: ManageIndexersModalProps) {
+function ManageIndexersModal(props: Readonly<ManageIndexersModalProps>) {
   const { isOpen, onModalClose } = props;
 
   return (

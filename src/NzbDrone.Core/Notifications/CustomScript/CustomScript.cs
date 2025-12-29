@@ -381,7 +381,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             return processOutput;
         }
 
-        private bool ValidatePathParent(string possibleParent, string path)
+        private static bool ValidatePathParent(string possibleParent, string path)
         {
             return possibleParent.IsParentPath(path);
         }

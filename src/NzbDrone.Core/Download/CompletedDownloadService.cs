@@ -30,6 +30,7 @@ namespace NzbDrone.Core.Download
         private readonly IHistoryService _historyService;
         private readonly IProvideImportItemService _provideImportItemService;
         private readonly IDownloadedMovieImportService _downloadedMovieImportService;
+        private readonly IDownloadExtractionService _downloadExtractionService;
         private readonly IParsingService _parsingService;
         private readonly IMovieService _movieService;
         private readonly ITrackedDownloadAlreadyImported _trackedDownloadAlreadyImported;
@@ -40,6 +41,7 @@ namespace NzbDrone.Core.Download
                                         IHistoryService historyService,
                                         IProvideImportItemService provideImportItemService,
                                         IDownloadedMovieImportService downloadedMovieImportService,
+                                        IDownloadExtractionService downloadExtractionService,
                                         IParsingService parsingService,
                                         IMovieService movieService,
                                         ITrackedDownloadAlreadyImported trackedDownloadAlreadyImported,
@@ -50,6 +52,7 @@ namespace NzbDrone.Core.Download
             _historyService = historyService;
             _provideImportItemService = provideImportItemService;
             _downloadedMovieImportService = downloadedMovieImportService;
+            _downloadExtractionService = downloadExtractionService;
             _parsingService = parsingService;
             _movieService = movieService;
             _trackedDownloadAlreadyImported = trackedDownloadAlreadyImported;
@@ -65,6 +68,17 @@ namespace NzbDrone.Core.Download
             }
 
             SetImportItem(trackedDownload);
+
+            // Extract archives if needed before import
+            var outputPath = trackedDownload.DownloadItem.OutputPath.FullPath;
+            if (_downloadExtractionService.ShouldExtract(outputPath))
+            {
+                var extractedPath = _downloadExtractionService.ExtractIfNeeded(outputPath);
+                if (extractedPath != outputPath)
+                {
+                    _logger.Info("Archives extracted, updating import path to: {0}", extractedPath);
+                }
+            }
 
             // Only process tracked downloads that are still downloading or have been blocked for importing due to an issue with matching
             if (trackedDownload.State != TrackedDownloadState.Downloading && trackedDownload.State != TrackedDownloadState.ImportBlocked)
@@ -268,7 +282,7 @@ namespace NzbDrone.Core.Download
             trackedDownload.ImportItem = _provideImportItemService.ProvideImportItem(trackedDownload.DownloadItem, trackedDownload.ImportItem);
         }
 
-        private bool ValidatePath(TrackedDownload trackedDownload)
+        private static bool ValidatePath(TrackedDownload trackedDownload)
         {
             var downloadItemOutputPath = trackedDownload.ImportItem.OutputPath;
 

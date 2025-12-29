@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(SetSortTitles);
         }
 
-        private void SetSortTitles(IDbConnection conn, IDbTransaction tran)
+        private static void SetSortTitles(IDbConnection conn, IDbTransaction tran)
         {
             using (var getSeriesCmd = conn.CreateCommand())
             {

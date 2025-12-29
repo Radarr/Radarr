@@ -13,7 +13,7 @@ interface FormLabelProps {
   isAdvanced?: boolean;
 }
 
-function FormLabel(props: FormLabelProps) {
+function FormLabel(props: Readonly<FormLabelProps>) {
   const {
     children,
     className = styles.label,

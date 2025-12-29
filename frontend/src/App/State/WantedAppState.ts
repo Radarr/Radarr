@@ -10,13 +10,15 @@ interface WantedMovie extends Movie {
 }
 
 interface WantedCutoffUnmetAppState
-  extends AppSectionState<WantedMovie>,
+  extends
+    AppSectionState<WantedMovie>,
     AppSectionFilterState<WantedMovie>,
     PagedAppSectionState,
     TableAppSectionState {}
 
 interface WantedMissingAppState
-  extends AppSectionState<WantedMovie>,
+  extends
+    AppSectionState<WantedMovie>,
     AppSectionFilterState<WantedMovie>,
     PagedAppSectionState,
     TableAppSectionState {}

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles.MediaInfo;
@@ -68,7 +69,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation
                 }
                 catch (Exception ex)
                 {
-                    var message = $"Unable to augment information for file: '{localMovie.Path}'. Movie: {localMovie.Movie} Error: {ex.Message}";
+                    var message = $"Unable to augment information for file: '{localMovie.Path.SanitizeForLog()}'. Movie: {localMovie.Movie} Error: {ex.Message}";
 
                     _logger.Warn(ex, message);
                 }

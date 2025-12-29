@@ -8,9 +8,10 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Core.Test.Http
 {
     [TestFixture]
+    [Platform(Exclude = "MacOsX")]
     public class HttpProxySettingsProviderFixture : TestBase<HttpProxySettingsProvider>
     {
-        private HttpProxySettings GetProxySettings()
+        private static HttpProxySettings GetProxySettings()
         {
             return new HttpProxySettings(ProxyType.Socks5, "localhost", 8080, "*.httpbin.org,google.com,172.16.0.0/12", true, null, null);
         }
@@ -23,7 +24,7 @@ namespace NzbDrone.Core.Test.Http
         {
             var settings = GetProxySettings();
 
-            Subject.ShouldProxyBeBypassed(settings, new HttpUri(url)).Should().BeTrue();
+            HttpProxySettingsProvider.ShouldProxyBeBypassed(settings, new HttpUri(url)).Should().BeTrue();
         }
 
         [TestCase("http://bing.com/get")]
@@ -32,7 +33,7 @@ namespace NzbDrone.Core.Test.Http
         {
             var settings = GetProxySettings();
 
-            Subject.ShouldProxyBeBypassed(settings, new HttpUri(url)).Should().BeFalse();
+            HttpProxySettingsProvider.ShouldProxyBeBypassed(settings, new HttpUri(url)).Should().BeFalse();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
@@ -26,7 +27,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
         {
             if (localMovie.ExistingFile)
             {
-                _logger.Debug("{0} is in movie folder, skipping unpacking check", localMovie.Path);
+                _logger.Debug("{0} is in movie folder, skipping unpacking check", localMovie.Path.SanitizeForLog());
                 return ImportSpecDecision.Accept();
             }
 
@@ -39,13 +40,13 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                     {
                         if (OsInfo.IsNotWindows)
                         {
-                            _logger.Debug("{0} is still being unpacked", localMovie.Path);
+                            _logger.Debug("{0} is still being unpacked", localMovie.Path.SanitizeForLog());
                             return ImportSpecDecision.Reject(ImportRejectionReason.Unpacking, "File is still being unpacked");
                         }
 
                         if (_diskProvider.FileGetLastWrite(localMovie.Path) > DateTime.UtcNow.AddMinutes(-5))
                         {
-                            _logger.Debug("{0} appears to be unpacking still", localMovie.Path);
+                            _logger.Debug("{0} appears to be unpacking still", localMovie.Path.SanitizeForLog());
                             return ImportSpecDecision.Reject(ImportRejectionReason.Unpacking, "File is still being unpacked");
                         }
                     }

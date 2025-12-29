@@ -11,6 +11,9 @@ namespace NzbDrone.Core.Qualities
         TV,
         WEBDL,
         WEBRIP,
-        BLURAY
+        BLURAY,
+        EBOOK,
+        AUDIOBOOK,
+        MUSIC
     }
 }

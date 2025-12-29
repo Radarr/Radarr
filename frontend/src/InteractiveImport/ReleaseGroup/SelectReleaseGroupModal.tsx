@@ -10,7 +10,9 @@ interface SelectReleaseGroupModalProps {
   onModalClose(): void;
 }
 
-function SelectReleaseGroupModal(props: SelectReleaseGroupModalProps) {
+function SelectReleaseGroupModal(
+  props: Readonly<SelectReleaseGroupModalProps>
+) {
   const {
     isOpen,
     releaseGroup,

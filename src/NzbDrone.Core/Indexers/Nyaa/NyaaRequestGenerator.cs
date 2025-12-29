@@ -30,6 +30,16 @@ namespace NzbDrone.Core.Indexers.Nyaa
             return pageableRequests;
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(BookSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
+        public IndexerPageableRequestChain GetSearchRequests(AudiobookSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
         private IEnumerable<IndexerRequest> GetPagedRequests(string term)
         {
             var baseUrl = $"{Settings.BaseUrl.TrimEnd('/')}/?page=rss{Settings.AdditionalParameters}";
@@ -42,7 +52,7 @@ namespace NzbDrone.Core.Indexers.Nyaa
             yield return new IndexerRequest(baseUrl, HttpAccept.Rss);
         }
 
-        private string PrepareQuery(string query)
+        private static string PrepareQuery(string query)
         {
             return query.Replace(' ', '+');
         }

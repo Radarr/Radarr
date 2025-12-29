@@ -7,7 +7,9 @@ interface QualityProfileNameProps {
   qualityProfileId: number;
 }
 
-function QualityProfileName({ qualityProfileId }: QualityProfileNameProps) {
+function QualityProfileName({
+  qualityProfileId,
+}: Readonly<QualityProfileNameProps>) {
   const qualityProfile = useSelector(
     createQualityProfileSelectorForHook(qualityProfileId)
   );

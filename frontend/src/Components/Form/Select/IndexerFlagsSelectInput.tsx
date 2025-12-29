@@ -41,7 +41,7 @@ function IndexerFlagsSelectInput({
   indexerFlags,
   onChange,
   ...otherProps
-}: IndexerFlagsSelectInputProps) {
+}: Readonly<IndexerFlagsSelectInputProps>) {
   const { value, values } = useSelector(selectIndexerFlagsValues(indexerFlags));
 
   const handleChange = useCallback(

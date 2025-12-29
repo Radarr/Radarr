@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,6 +13,7 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
         private static readonly Regex SpecialCharacter = new Regex(@"['.\u0060\u00B4\u2018\u2019]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex NonWord = new Regex(@"[\W]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex BeginningThe = new Regex(@"^the\s", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex RepeatingPlusRegex = new Regex(@"\+{2,}", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         public Movie Movie { get; set; }
         public List<string> SceneTitles { get; set; }
@@ -32,7 +34,7 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
             cleanTitle = NonWord.Replace(cleanTitle, "+");
 
             // remove any repeating +s
-            cleanTitle = Regex.Replace(cleanTitle, @"\+{2,}", "+");
+            cleanTitle = RepeatingPlusRegex.Replace(cleanTitle, "+");
             cleanTitle = cleanTitle.RemoveAccent();
             return cleanTitle.Trim('+', ' ');
         }

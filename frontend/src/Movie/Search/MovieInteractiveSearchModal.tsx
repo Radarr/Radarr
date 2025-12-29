@@ -12,8 +12,7 @@ import MovieInteractiveSearchModalContent, {
   MovieInteractiveSearchModalContentProps,
 } from './MovieInteractiveSearchModalContent';
 
-interface MovieInteractiveSearchModalProps
-  extends MovieInteractiveSearchModalContentProps {
+interface MovieInteractiveSearchModalProps extends MovieInteractiveSearchModalContentProps {
   isOpen: boolean;
 }
 
@@ -21,7 +20,7 @@ function MovieInteractiveSearchModal({
   isOpen,
   movieId,
   onModalClose,
-}: MovieInteractiveSearchModalProps) {
+}: Readonly<MovieInteractiveSearchModalProps>) {
   const dispatch = useDispatch();
 
   const handleModalClose = useCallback(() => {

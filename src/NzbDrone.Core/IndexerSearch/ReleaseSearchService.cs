@@ -8,6 +8,7 @@ using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Parser.Model;
@@ -75,7 +76,7 @@ namespace NzbDrone.Core.IndexerSearch
                 InteractiveSearch = interactiveSearch
             };
 
-            var wantedLanguages = _qualityProfileService.GetAcceptableLanguages(movie.QualityProfileId);
+            var wantedLanguages = new HashSet<Language>(_qualityProfileService.GetAcceptableLanguages(movie.QualityProfileId));
             var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
 
             var queryTranslations = new List<string>
@@ -141,7 +142,7 @@ namespace NzbDrone.Core.IndexerSearch
             return Array.Empty<ReleaseInfo>();
         }
 
-        private List<DownloadDecision> DeDupeDecisions(List<DownloadDecision> decisions)
+        private static List<DownloadDecision> DeDupeDecisions(List<DownloadDecision> decisions)
         {
             // De-dupe reports by guid so duplicate results aren't returned. Pick the one with the least rejections and higher indexer priority.
             return decisions.GroupBy(d => d.RemoteMovie.Release.Guid)

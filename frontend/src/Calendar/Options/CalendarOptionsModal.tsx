@@ -10,7 +10,7 @@ interface CalendarOptionsModalProps {
 function CalendarOptionsModal({
   isOpen,
   onModalClose,
-}: CalendarOptionsModalProps) {
+}: Readonly<CalendarOptionsModalProps>) {
   return (
     <Modal isOpen={isOpen} onModalClose={onModalClose}>
       <CalendarOptionsModalContent onModalClose={onModalClose} />

@@ -18,7 +18,7 @@ function MenuContent({
   children,
   style,
   isOpen,
-}: MenuContentProps) {
+}: Readonly<MenuContentProps>) {
   const generatedId = useId();
 
   return (

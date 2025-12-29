@@ -392,7 +392,13 @@ namespace NzbDrone.Core.Download.Pending
 
         private int GetDelay(RemoteMovie remoteMovie)
         {
-            var delayProfile = _delayProfileService.AllForTags(remoteMovie.Movie.Tags).OrderBy(d => d.Order).First();
+            var delayProfile = _delayProfileService.AllForTags(remoteMovie.Movie.Tags).OrderBy(d => d.Order).FirstOrDefault();
+
+            if (delayProfile == null)
+            {
+                return 0;
+            }
+
             var delay = delayProfile.GetProtocolDelay(remoteMovie.Release.DownloadProtocol);
             var minimumAge = _configService.MinimumAge;
 
@@ -450,7 +456,7 @@ namespace NzbDrone.Core.Download.Pending
             return GetPendingReleases().First(p => queueId == GetQueueId(p, p.RemoteMovie.Movie));
         }
 
-        private int GetQueueId(PendingRelease pendingRelease, Movie movie)
+        private static int GetQueueId(PendingRelease pendingRelease, Movie movie)
         {
             return HashConverter.GetHashInt31(string.Format("pending-{0}-movie{1}", pendingRelease.Id, movie?.Id ?? 0));
         }

@@ -209,7 +209,7 @@ namespace NzbDrone.Core.Parser
             return null;
         }
 
-        private FindMovieResult TryGetMovieBySearchCriteria(ParsedMovieInfo parsedMovieInfo, string imdbId, int tmdbId, SearchCriteriaBase searchCriteria)
+        private static FindMovieResult TryGetMovieBySearchCriteria(ParsedMovieInfo parsedMovieInfo, string imdbId, int tmdbId, SearchCriteriaBase searchCriteria)
         {
             Movie possibleMovie = null;
 

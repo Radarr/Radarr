@@ -84,14 +84,14 @@ namespace NzbDrone.Core.MediaFiles
             {
                 if (!_diskProvider.FolderExists(rootFolder))
                 {
-                    _logger.Warn("Movie's root folder ({0}) doesn't exist.", rootFolder);
+                    _logger.Warn("Movie's root folder ({0}) doesn't exist.", rootFolder.SanitizeForLog());
                     _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderDoesNotExist));
                     return;
                 }
 
                 if (_diskProvider.FolderEmpty(rootFolder))
                 {
-                    _logger.Warn("Movie's root folder ({0}) is empty. Rescan will not update movies as a failsafe.", rootFolder);
+                    _logger.Warn("Movie's root folder ({0}) is empty. Rescan will not update movies as a failsafe.", rootFolder.SanitizeForLog());
                     _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderIsEmpty));
                     return;
                 }
@@ -105,11 +105,11 @@ namespace NzbDrone.Core.MediaFiles
                 {
                     if (_configService.DeleteEmptyFolders)
                     {
-                        _logger.Debug("Not creating missing movie folder: {0} because delete empty movie folders is enabled", movie.Path);
+                        _logger.Debug("Not creating missing movie folder: {0} because delete empty movie folders is enabled", movie.Path.SanitizeForLog());
                     }
                     else
                     {
-                        _logger.Debug("Creating missing movie folder: {0}", movie.Path);
+                        _logger.Debug("Creating missing movie folder: {0}", movie.Path.SanitizeForLog());
 
                         _diskProvider.CreateFolder(movie.Path);
                         SetPermissions(movie.Path);
@@ -117,7 +117,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
                 else
                 {
-                    _logger.Debug("Movie's folder doesn't exist: {0}", movie.Path);
+                    _logger.Debug("Movie's folder doesn't exist: {0}", movie.Path.SanitizeForLog());
                 }
 
                 CleanMediaFiles(movie, new List<string>());
@@ -194,30 +194,30 @@ namespace NzbDrone.Core.MediaFiles
 
         public string[] GetVideoFiles(string path, bool allDirectories = true)
         {
-            _logger.Debug("Scanning '{0}' for video files", path);
+            _logger.Debug("Scanning '{0}' for video files", path.SanitizeForLog());
 
             var filesOnDisk = _diskProvider.GetFiles(path, allDirectories).ToList();
 
             var mediaFileList = filesOnDisk.Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file)))
                                            .ToList();
 
-            _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
-            _logger.Debug("{0} video files were found in {1}", mediaFileList.Count, path);
+            _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path.SanitizeForLog());
+            _logger.Debug("{0} video files were found in {1}", mediaFileList.Count, path.SanitizeForLog());
 
             return mediaFileList.ToArray();
         }
 
         public string[] GetNonVideoFiles(string path, bool allDirectories = true)
         {
-            _logger.Debug("Scanning '{0}' for non-video files", path);
+            _logger.Debug("Scanning '{0}' for non-video files", path.SanitizeForLog());
 
             var filesOnDisk = _diskProvider.GetFiles(path, allDirectories).ToList();
 
             var mediaFileList = filesOnDisk.Where(file => !MediaFileExtensions.Extensions.Contains(Path.GetExtension(file)))
                                            .ToList();
 
-            _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
-            _logger.Debug("{0} non-video files were found in {1}", mediaFileList.Count, path);
+            _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path.SanitizeForLog());
+            _logger.Debug("{0} non-video files were found in {1}", mediaFileList.Count, path.SanitizeForLog());
 
             return mediaFileList.ToArray();
         }
@@ -251,7 +251,7 @@ namespace NzbDrone.Core.MediaFiles
             }
             catch (Exception ex)
             {
-                _logger.Warn(ex, "Unable to apply permissions to: " + path);
+                _logger.Warn(ex, "Unable to apply permissions to: " + path.SanitizeForLog());
                 _logger.Debug(ex, ex.Message);
             }
         }

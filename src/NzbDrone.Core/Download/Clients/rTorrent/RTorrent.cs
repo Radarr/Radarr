@@ -300,7 +300,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
                 return null;
             }
 
-            return result.Errors.First();
+            return result.Errors.FirstOrDefault();
         }
 
         private bool WaitForTorrent(string hash, int tries, int retryDelay)

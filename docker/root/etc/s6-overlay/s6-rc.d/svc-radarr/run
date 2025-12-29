@@ -1,0 +1,13 @@
+#!/usr/bin/with-contenv bash
+
+if [[ -z ${LSIO_NON_ROOT_USER} ]]; then
+    exec \
+        s6-notifyoncheck -d -n 300 -w 1000 \
+            cd /app/radarr/bin s6-setuidgid abc /app/radarr/bin/Radarr \
+            -nobrowser -data=/config
+else
+    exec \
+        s6-notifyoncheck -d -n 300 -w 1000 \
+            cd /app/radarr/bin /app/radarr/bin/Radarr \
+            -nobrowser -data=/config
+fi

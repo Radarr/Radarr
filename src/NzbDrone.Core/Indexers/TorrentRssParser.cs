@@ -86,6 +86,7 @@ namespace NzbDrone.Core.Indexers
                 }
                 catch
                 {
+                    // Invalid magnet URL format - fall through to return null
                 }
             }
 
@@ -168,7 +169,10 @@ namespace NzbDrone.Core.Indexers
             if (PeersElementName.IsNotNullOrWhiteSpace())
             {
                 var itempeers = item.FindDecendants(PeersElementName).SingleOrDefault();
-                return int.Parse(itempeers.Value);
+                if (itempeers != null)
+                {
+                    return int.Parse(itempeers.Value);
+                }
             }
 
             return null;

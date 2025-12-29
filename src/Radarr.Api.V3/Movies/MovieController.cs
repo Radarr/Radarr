@@ -114,7 +114,7 @@ namespace Radarr.Api.V3.Movies
         }
 
         [HttpGet]
-        public List<MovieResource> AllMovie(int? tmdbId, bool excludeLocalCovers = false, int? languageId = null)
+        public async Task<List<MovieResource>> AllMovie(int? tmdbId, bool excludeLocalCovers = false, int? languageId = null)
         {
             var moviesResources = new List<MovieResource>();
 
@@ -144,7 +144,7 @@ namespace Radarr.Api.V3.Movies
                 var tdict = translations.ToDictionaryIgnoreDuplicates(x => x.MovieMetadataId);
                 var sdict = movieStats.ToDictionary(x => x.MovieId);
 
-                var movies = movieTask.GetAwaiter().GetResult();
+                var movies = await movieTask;
 
                 moviesResources = new List<MovieResource>(movies.Count);
 
@@ -271,15 +271,18 @@ namespace Radarr.Api.V3.Movies
 
             var updatedMovie = _moviesService.UpdateMovie(model);
 
-            BroadcastResourceChange(ModelAction.Updated, MapToResource(updatedMovie));
+            var resource = MapToResource(updatedMovie);
 
-            return Accepted(moviesResource.Id);
+            BroadcastResourceChange(ModelAction.Updated, resource);
+
+            return Ok(resource);
         }
 
         [RestDeleteById]
-        public void DeleteMovie(int id, bool deleteFiles = false, bool addImportExclusion = false)
+        public ActionResult DeleteMovie(int id, bool deleteFiles = false, bool addImportExclusion = false)
         {
             _moviesService.DeleteMovie(id, deleteFiles, addImportExclusion);
+            return NoContent();
         }
 
         private void MapCoversToLocal(MovieResource movie)
@@ -308,7 +311,7 @@ namespace Radarr.Api.V3.Movies
             }
         }
 
-        private void LinkMovieStatistics(MovieResource resource, MovieStatistics movieStatistics)
+        private static void LinkMovieStatistics(MovieResource resource, MovieStatistics movieStatistics)
         {
             resource.Statistics = movieStatistics.ToResource();
             resource.HasFile = movieStatistics.MovieFileCount > 0;

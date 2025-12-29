@@ -204,7 +204,7 @@ namespace NzbDrone.Core.Notifications.Trakt
             _proxy.RemoveFromCollection(payload, settings.AccessToken);
         }
 
-        private string MapMediaType(QualitySource source)
+        private static string MapMediaType(QualitySource source)
         {
             var traktSource = source switch
             {
@@ -219,7 +219,7 @@ namespace NzbDrone.Core.Notifications.Trakt
             return traktSource;
         }
 
-        private string MapResolution(int resolution, string scanType)
+        private static string MapResolution(int resolution, string scanType)
         {
             var scanIdentifier = scanType.IsNotNullOrWhiteSpace() && TraktInterlacedTypes.InterlacedTypes.Contains(scanType) ? "i" : "p";
 
@@ -236,7 +236,7 @@ namespace NzbDrone.Core.Notifications.Trakt
             return traktResolution;
         }
 
-        private string MapHdr(MovieFile movieFile)
+        private static string MapHdr(MovieFile movieFile)
         {
             var traktHdr = movieFile.MediaInfo?.VideoHdrFormat switch
             {
@@ -250,7 +250,7 @@ namespace NzbDrone.Core.Notifications.Trakt
             return traktHdr;
         }
 
-        private string MapAudio(MovieFile movieFile)
+        private static string MapAudio(MovieFile movieFile)
         {
             var audioCodec = movieFile.MediaInfo != null ? MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, movieFile.SceneName) : string.Empty;
 
@@ -280,7 +280,7 @@ namespace NzbDrone.Core.Notifications.Trakt
             return traktAudioFormat;
         }
 
-        private string MapAudioChannels(MovieFile movieFile)
+        private static string MapAudioChannels(MovieFile movieFile)
         {
             var audioChannels = movieFile.MediaInfo != null ? MediaInfoFormatter.FormatAudioChannels(movieFile.MediaInfo).ToString("0.0") : string.Empty;
 

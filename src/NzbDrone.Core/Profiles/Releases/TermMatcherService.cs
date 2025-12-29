@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Profiles.Releases
             return _matcherCache.Get(term, () => CreateMatcherInternal(term), TimeSpan.FromHours(24));
         }
 
-        private ITermMatcher CreateMatcherInternal(string term)
+        private static ITermMatcher CreateMatcherInternal(string term)
         {
             if (PerlRegexFactory.TryCreateRegex(term, out var regex))
             {

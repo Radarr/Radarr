@@ -10,7 +10,7 @@ interface CardProps extends Pick<LinkProps, 'onPress'> {
   children: React.ReactNode;
 }
 
-function Card(props: CardProps) {
+function Card(props: Readonly<CardProps>) {
   const {
     className = styles.card,
     overlayClassName = styles.overlay,

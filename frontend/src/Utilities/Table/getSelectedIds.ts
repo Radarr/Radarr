@@ -6,7 +6,10 @@ function getSelectedIds(selectedState: SelectedState): number[] {
     selectedState,
     (result: number[], value, id) => {
       if (value) {
-        result.push(parseInt(id));
+        const parsed = Number.parseInt(id);
+        if (!Number.isNaN(parsed)) {
+          result.push(parsed);
+        }
       }
 
       return result;

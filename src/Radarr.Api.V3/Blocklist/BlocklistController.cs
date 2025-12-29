@@ -63,18 +63,19 @@ namespace Radarr.Api.V3.Blocklist
         }
 
         [RestDeleteById]
-        public void DeleteBlocklist(int id)
+        public ActionResult DeleteBlocklist(int id)
         {
             _blocklistService.Delete(id);
+            return NoContent();
         }
 
         [HttpDelete("bulk")]
         [Produces("application/json")]
-        public object Remove([FromBody] BlocklistBulkResource resource)
+        public ActionResult Remove([FromBody] BlocklistBulkResource resource)
         {
             _blocklistService.Delete(resource.Ids);
 
-            return new { };
+            return NoContent();
         }
     }
 }

@@ -73,6 +73,10 @@ namespace NzbDrone.Host
 
             services.AddResponseCompression(options => options.EnableForHttps = true);
 
+            // CORS is permissive because:
+            // 1. All API endpoints require authentication (API key or session)
+            // 2. Single-user self-hosted model - no cross-user attack surface
+            // 3. Restrictive CORS would break mobile apps and browser extensions
             services.AddCors(options =>
             {
                 options.AddPolicy(VersionedApiControllerAttribute.API_CORS_POLICY,
@@ -106,12 +110,12 @@ namespace NzbDrone.Host
                 c.SwaggerDoc("v3", new OpenApiInfo
                 {
                     Version = "3.0.0",
-                    Title = "Radarr",
-                    Description = "Radarr API docs",
+                    Title = "Aletheia",
+                    Description = "Aletheia API docs",
                     License = new OpenApiLicense
                     {
                         Name = "GPL-3.0",
-                        Url = new Uri("https://github.com/Radarr/Radarr/blob/develop/LICENSE")
+                        Url = new Uri("https://github.com/cheir-mneme/aletheia/blob/develop/LICENSE")
                     }
                 });
 
@@ -306,7 +310,7 @@ namespace NzbDrone.Host
             });
         }
 
-        private void EnsureSingleInstance(bool isService, IStartupContext startupContext, ISingleInstancePolicy instancePolicy)
+        private static void EnsureSingleInstance(bool isService, IStartupContext startupContext, ISingleInstancePolicy instancePolicy)
         {
             if (startupContext.Flags.Contains(StartupContext.NO_SINGLE_INSTANCE_CHECK))
             {

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Apprise
@@ -52,7 +51,7 @@ namespace NzbDrone.Core.Notifications.Apprise
 
         public override void OnHealthRestored(HealthCheck.HealthCheck previousCheck)
         {
-            _proxy.SendNotification(HEALTH_RESTORED_TITLE, $"The following issue is now resolved: {previousCheck.Message}", null, Settings);
+            _proxy.SendNotification(HEALTH_RESTORED_TITLE, NotificationHelpers.GetHealthRestoredMessage(previousCheck), null, Settings);
         }
 
         public override void OnApplicationUpdate(ApplicationUpdateMessage updateMessage)
@@ -72,11 +71,6 @@ namespace NzbDrone.Core.Notifications.Apprise
             failures.AddIfNotNull(_proxy.Test(Settings));
 
             return new ValidationResult(failures);
-        }
-
-        private static string GetPosterUrl(Movie movie)
-        {
-            return movie?.MovieMetadata?.Value?.Images?.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Poster)?.RemoteUrl;
         }
     }
 }

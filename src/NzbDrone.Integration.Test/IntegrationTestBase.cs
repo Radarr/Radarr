@@ -60,6 +60,7 @@ namespace NzbDrone.Integration.Test
         private List<SignalRMessage> _signalRReceived;
 
         private HubConnection _signalrConnection;
+        private CancellationTokenSource _signalrCts;
 
         protected IEnumerable<SignalRMessage> SignalRMessages => _signalRReceived;
 
@@ -148,6 +149,12 @@ namespace NzbDrone.Integration.Test
                 _signalRReceived = new List<SignalRMessage>();
             }
 
+            if (_signalrCts != null)
+            {
+                _signalrCts.Dispose();
+                _signalrCts = null;
+            }
+
             if (Directory.Exists(TempDirectory))
             {
                 try
@@ -174,11 +181,11 @@ namespace NzbDrone.Integration.Test
             _signalRReceived = new List<SignalRMessage>();
             _signalrConnection = new HubConnectionBuilder().WithUrl("http://localhost:7878/signalr/messages").Build();
 
-            var cts = new CancellationTokenSource();
+            _signalrCts = new CancellationTokenSource();
 
             _signalrConnection.Closed += e =>
             {
-                cts.Cancel();
+                _signalrCts.Cancel();
                 return Task.CompletedTask;
             };
 

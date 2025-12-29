@@ -21,7 +21,7 @@ function EditIndexerModal({
   isOpen,
   onModalClose,
   ...otherProps
-}: EditIndexerModalProps) {
+}: Readonly<EditIndexerModalProps>) {
   const dispatch = useDispatch();
 
   const handleModalClose = useCallback(() => {

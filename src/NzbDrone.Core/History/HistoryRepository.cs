@@ -133,7 +133,7 @@ namespace NzbDrone.Core.History
                 return hist;
             });
 
-        private string BuildLanguageWhereClause(int[] languages)
+        private static string BuildLanguageWhereClause(int[] languages)
         {
             var clauses = new List<string>();
 
@@ -153,7 +153,7 @@ namespace NzbDrone.Core.History
             return $"({string.Join(" OR ", clauses)})";
         }
 
-        private string BuildQualityWhereClause(int[] qualities)
+        private static string BuildQualityWhereClause(int[] qualities)
         {
             var clauses = new List<string>();
 

@@ -12,7 +12,7 @@ function VirtualTableRow({
   children,
   style,
   ...otherProps
-}: VirtualTableRowProps) {
+}: Readonly<VirtualTableRowProps>) {
   return (
     <div className={className} style={style} {...otherProps}>
       {children}

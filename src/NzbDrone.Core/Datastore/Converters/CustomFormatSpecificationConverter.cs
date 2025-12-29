@@ -9,6 +9,20 @@ namespace NzbDrone.Core.Datastore.Converters
 {
     public class CustomFormatSpecificationListConverter : JsonConverter<List<ICustomFormatSpecification>>
     {
+        private static readonly HashSet<string> AllowedSpecificationTypes = new HashSet<string>(StringComparer.Ordinal)
+        {
+            "YearSpecification",
+            "SourceSpecification",
+            "LanguageSpecification",
+            "SizeSpecification",
+            "IndexerFlagSpecification",
+            "ResolutionSpecification",
+            "QualityModifierSpecification",
+            "ReleaseTitleSpecification",
+            "ReleaseGroupSpecification",
+            "EditionSpecification"
+        };
+
         public override void Write(Utf8JsonWriter writer, List<ICustomFormatSpecification> value, JsonSerializerOptions options)
         {
             var wrapped = value.Select(x => new SpecificationWrapper
@@ -43,6 +57,11 @@ namespace NzbDrone.Core.Datastore.Converters
                 reader.Read(); // Move to start of object (stored in this property)
                 ValidateToken(reader, JsonTokenType.StartObject); // Start of formattag
 
+                if (!AllowedSpecificationTypes.Contains(typename))
+                {
+                    throw new JsonException($"Invalid specification type: '{typename}'. Type must be one of the allowed specification types.");
+                }
+
                 var type = Type.GetType($"NzbDrone.Core.CustomFormats.{typename}, Radarr.Core", true);
                 var item = (ICustomFormatSpecification)JsonSerializer.Deserialize(ref reader, type, options);
                 results.Add(item);
@@ -57,7 +76,7 @@ namespace NzbDrone.Core.Datastore.Converters
         }
 
         // Helper function for validating where you are in the JSON
-        private void ValidateToken(Utf8JsonReader reader, JsonTokenType tokenType)
+        private static void ValidateToken(Utf8JsonReader reader, JsonTokenType tokenType)
         {
             if (reader.TokenType != tokenType)
             {
@@ -65,7 +84,7 @@ namespace NzbDrone.Core.Datastore.Converters
             }
         }
 
-        private class SpecificationWrapper
+        private sealed class SpecificationWrapper
         {
             public string Type { get; set; }
             public object Body { get; set; }

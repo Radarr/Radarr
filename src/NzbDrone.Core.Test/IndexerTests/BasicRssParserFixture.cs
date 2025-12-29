@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Test.IndexerTests
             result.Should().Be(0);
         }
 
-        private IndexerResponse CreateResponse(string url, string content)
+        private static IndexerResponse CreateResponse(string url, string content)
         {
             var httpRequest = new HttpRequest(url);
             var httpResponse = new HttpResponse(httpRequest, new HttpHeader(), Encoding.UTF8.GetBytes(content));

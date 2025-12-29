@@ -142,7 +142,7 @@ namespace NzbDrone.Core.Datastore
 
             if (result.Count != ids.Count())
             {
-                throw new ApplicationException($"Expected query to return {ids.Count()} rows but returned {result.Count}");
+                throw new DataRetrievalException($"Expected query to return {ids.Count()} rows but returned {result.Count}");
             }
 
             return result;
@@ -214,7 +214,8 @@ namespace NzbDrone.Core.Datastore
             var multi = RetryStrategy.Execute(static (state, _) => state.connection.QueryMultiple(state._insertSql, state.model, state.transaction), (connection, _insertSql, model, transaction));
 
             var multiRead = multi.Read();
-            var id = (int)(multiRead.First().id ?? multiRead.First().Id);
+            var firstRow = multiRead.First();
+            var id = (int)(firstRow.id ?? firstRow.Id);
             _keyProperty.SetValue(model, id);
 
             return model;
@@ -433,7 +434,7 @@ namespace NzbDrone.Core.Datastore
             return pagingSpec;
         }
 
-        protected void AddFilters(SqlBuilder builder, PagingSpec<TModel> pagingSpec)
+        protected static void AddFilters(SqlBuilder builder, PagingSpec<TModel> pagingSpec)
         {
             var filters = pagingSpec.FilterExpressions;
 

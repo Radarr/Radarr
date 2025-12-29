@@ -27,7 +27,7 @@ export default function AddSpecificationItem({
   infoLink,
   presets,
   onSpecificationSelect,
-}: AddSpecificationItemProps) {
+}: Readonly<AddSpecificationItemProps>) {
   const handleSpecificationSelect = useCallback(() => {
     onSpecificationSelect({ implementation });
   }, [implementation, onSpecificationSelect]);
@@ -54,10 +54,10 @@ export default function AddSpecificationItem({
                 </Button>
 
                 <MenuContent>
-                  {presets.map((preset, index) => {
+                  {presets.map((preset) => {
                     return (
                       <AddSpecificationPresetMenuItem
-                        key={index}
+                        key={preset.id}
                         name={preset.name}
                         implementation={implementation}
                         onPress={handleSpecificationSelect}

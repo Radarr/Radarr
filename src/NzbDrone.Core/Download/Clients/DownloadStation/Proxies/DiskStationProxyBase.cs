@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation.Proxies
             _apiName = apiName;
         }
 
-        private string GenerateSessionCacheKey(DownloadStationSettings settings)
+        private static string GenerateSessionCacheKey(DownloadStationSettings settings)
         {
             return $"{settings.Username}@{settings.Host}:{settings.Port}";
         }
@@ -201,7 +201,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation.Proxies
             return requestBuilder;
         }
 
-        private string GenerateInfoCacheKey(DownloadStationSettings settings, DiskStationApi api)
+        private static string GenerateInfoCacheKey(DownloadStationSettings settings, DiskStationApi api)
         {
             return $"{settings.Host}:{settings.Port}->{api}";
         }

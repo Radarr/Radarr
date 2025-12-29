@@ -39,18 +39,17 @@ interface AddNewMovieSuggestion {
   title: string;
 }
 
-export interface SuggestedMovie
-  extends Pick<
-    Movie,
-    | 'title'
-    | 'year'
-    | 'titleSlug'
-    | 'sortTitle'
-    | 'images'
-    | 'alternateTitles'
-    | 'tmdbId'
-    | 'imdbId'
-  > {
+export interface SuggestedMovie extends Pick<
+  Movie,
+  | 'title'
+  | 'year'
+  | 'titleSlug'
+  | 'sortTitle'
+  | 'images'
+  | 'alternateTitles'
+  | 'tmdbId'
+  | 'imdbId'
+> {
   firstCharacter: string;
   tags: Tag[];
 }
@@ -125,7 +124,8 @@ function MovieSearchInput() {
   const { bindShortcut, unbindShortcut } = useKeyboardShortcuts();
 
   const [value, setValue] = useState('');
-  const [requestLoading, setRequestLoading] = useState(false);
+  // eslint-disable-next-line react/hook-use-state
+  const [, setRequestLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<MovieSuggestion[]>([]);
 
   const autosuggestRef = useRef<Autosuggest>(null);
@@ -133,6 +133,11 @@ function MovieSearchInput() {
   const worker = useRef<Worker | null>(null);
   const isLoading = useRef(false);
   const requestValue = useRef<string | null>(null);
+  const requestLoadingRef = useRef(false);
+  const moviesRef = useRef(movies);
+
+  // Keep moviesRef current to avoid stale closure in debounced callback
+  moviesRef.current = movies;
 
   const suggestionGroups = useMemo(() => {
     const result: Section[] = [];
@@ -164,15 +169,18 @@ function MovieSearchInput() {
 
       if (!isLoading.current) {
         requestValue.current = null;
+        requestLoadingRef.current = false;
         setRequestLoading(false);
       } else if (value === requestValue.current) {
         setSuggestions(suggestions);
         requestValue.current = null;
+        requestLoadingRef.current = false;
         setRequestLoading(false);
         isLoading.current = false;
         // setLoading(false);
       } else {
         setSuggestions(suggestions);
+        requestLoadingRef.current = true;
         setRequestLoading(true);
 
         const payload = {
@@ -192,12 +200,14 @@ function MovieSearchInput() {
     }
 
     requestValue.current = value;
-    setRequestLoading(true);
 
-    if (!requestLoading) {
+    if (!requestLoadingRef.current) {
+      requestLoadingRef.current = true;
+      setRequestLoading(true);
+
       const payload = {
         value,
-        movies,
+        movies: moviesRef.current,
       };
 
       worker.current?.postMessage(payload);

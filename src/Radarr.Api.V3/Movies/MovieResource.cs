@@ -45,8 +45,6 @@ namespace Radarr.Api.V3.Movies
         public string PhysicalReleaseNote { get; set; }
         public List<MediaCover> Images { get; set; }
         public string Website { get; set; }
-
-        // public bool Downloaded { get; set; }
         public string RemotePoster { get; set; }
         public int Year { get; set; }
         public string YouTubeTrailerId { get; set; }

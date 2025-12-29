@@ -34,7 +34,7 @@ function EnhancedSelectInputOption({
   isMobile,
   children,
   onSelect,
-}: EnhancedSelectInputOptionProps) {
+}: Readonly<EnhancedSelectInputOptionProps>) {
   const handlePress = useCallback(
     (event: SyntheticEvent) => {
       event.preventDefault();

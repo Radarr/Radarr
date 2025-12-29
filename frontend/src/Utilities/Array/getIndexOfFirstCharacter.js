@@ -3,7 +3,7 @@ export default function getIndexOfFirstCharacter(items, character) {
     const firstCharacter = item.sortTitle.charAt(0);
 
     if (character === '#') {
-      return !isNaN(firstCharacter);
+      return !Number.isNaN(firstCharacter);
     }
 
     return firstCharacter === character;

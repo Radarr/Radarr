@@ -54,7 +54,8 @@ namespace NzbDrone.Core.Notifications.Notifiarr
                         throw new NotifiarrException("API key is invalid");
                     case 400:
                         // 400 responses shouldn't be treated as an actual error because it's a misconfiguration
-                        // between Radarr and Notifiarr for a specific event, but shouldn't stop all events.
+                        // between Aletheia and Notifiarr for a specific event, but shouldn't stop all events.
+                        // Note: Notifiarr service still refers to this as "Radarr Integration" in their UI
                         _logger.Warn("HTTP 400 - Unable to send notification. Ensure Radarr Integration is enabled & assigned a channel on Notifiarr");
                         break;
                     case 502:

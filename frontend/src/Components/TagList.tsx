@@ -10,7 +10,7 @@ interface TagListProps {
   tagList: Tag[];
 }
 
-function TagList({ tags, tagList }: TagListProps) {
+function TagList({ tags, tagList }: Readonly<TagListProps>) {
   const sortedTags = tags
     .map((tagId) => tagList.find((tag) => tag.id === tagId))
     .filter((tag) => !!tag)

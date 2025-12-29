@@ -63,7 +63,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             // TODO: Cache media info by path, mtime and length so we don't need to read files multiple times
             try
             {
-                _logger.Debug("Getting media info from {0}", filename);
+                _logger.Debug("Getting media info from {0}", filename.SanitizeForLog());
                 var ffprobeOutput = FFProbe.GetStreamJson(filename, ffOptions: new FFOptions { ExtraArguments = "-probesize 50000000" });
 
                 var analysis = FFProbe.AnalyseStreamJson(ffprobeOutput);
@@ -133,7 +133,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to parse media info from file: {0}", filename);
+                _logger.Error(ex, "Unable to parse media info from file: {0}", filename.SanitizeForLog());
             }
 
             return null;
@@ -176,7 +176,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             return 0;
         }
 
-        private VideoStream GetPrimaryVideoStream(IMediaAnalysis mediaAnalysis)
+        private static VideoStream GetPrimaryVideoStream(IMediaAnalysis mediaAnalysis)
         {
             if (mediaAnalysis.VideoStreams.Count <= 1)
             {

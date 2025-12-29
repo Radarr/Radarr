@@ -77,7 +77,7 @@ export interface MovieHistoryModalContentProps {
 function MovieHistoryModalContent({
   movieId,
   onModalClose,
-}: MovieHistoryModalContentProps) {
+}: Readonly<MovieHistoryModalContentProps>) {
   const dispatch = useDispatch();
 
   const { isFetching, isPopulated, error, items } = useSelector(

@@ -9,7 +9,7 @@ interface StartTimeProps {
   startTime: string;
 }
 
-function StartTime(props: StartTimeProps) {
+function StartTime(props: Readonly<StartTimeProps>) {
   const { startTime } = props;
   const { timeFormat, longDateFormat } = useSelector(
     createUISettingsSelector()

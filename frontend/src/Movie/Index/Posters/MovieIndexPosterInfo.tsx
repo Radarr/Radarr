@@ -49,7 +49,7 @@ interface MovieIndexPosterInfoProps {
   showTags: boolean;
 }
 
-function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
+function MovieIndexPosterInfo(props: Readonly<MovieIndexPosterInfoProps>) {
   const {
     studio,
     showQualityProfile,

@@ -55,11 +55,6 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             return _titleRepo.All().ToList();
         }
 
-        public void RemoveTitle(AlternativeTitle title)
-        {
-            _titleRepo.Delete(title);
-        }
-
         public List<AlternativeTitle> UpdateTitles(List<AlternativeTitle> titles, MovieMetadata movieMetadata)
         {
             var movieMetadataId = movieMetadata.Id;

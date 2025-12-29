@@ -17,7 +17,7 @@ export default function ClipboardButton({
   value,
   className = styles.button,
   ...otherProps
-}: ClipboardButtonProps) {
+}: Readonly<ClipboardButtonProps>) {
   const [state, setState] = useState<ClipboardState>(null);
 
   useEffect(() => {

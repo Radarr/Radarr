@@ -6,12 +6,16 @@ import PageToolbarButton, {
 import { icons } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 
-interface MovieIndexSelectAllButtonProps
-  extends Omit<PageToolbarButtonProps, 'iconName'> {
+interface MovieIndexSelectAllButtonProps extends Omit<
+  PageToolbarButtonProps,
+  'iconName'
+> {
   isSelectMode: boolean;
 }
 
-function MovieIndexSelectAllButton(props: MovieIndexSelectAllButtonProps) {
+function MovieIndexSelectAllButton(
+  props: Readonly<MovieIndexSelectAllButtonProps>
+) {
   const { isSelectMode, overflowComponent } = props;
   const [selectState, selectDispatch] = useSelect();
   const { allSelected, allUnselected } = selectState;

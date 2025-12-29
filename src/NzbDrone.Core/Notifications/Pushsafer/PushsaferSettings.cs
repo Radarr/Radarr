@@ -10,6 +10,8 @@ namespace NzbDrone.Core.Notifications.Pushsafer
 {
     public class PushsaferSettingsValidator : AbstractValidator<PushsaferSettings>
     {
+        private static readonly Regex HexColorRegex = new Regex("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+
         public PushsaferSettingsValidator()
         {
             RuleFor(c => c.ApiKey).NotEmpty();
@@ -18,7 +20,7 @@ namespace NzbDrone.Core.Notifications.Pushsafer
             RuleFor(c => c.Sound).ValidParsedStringRange(0, 62).When(c => c.Sound.IsNotNullOrWhiteSpace());
             RuleFor(c => c.Vibration).ValidParsedStringRange(1, 3).When(c => c.Vibration.IsNotNullOrWhiteSpace());
             RuleFor(c => c.Icon).ValidParsedStringRange(1, 181).When(c => c.Icon.IsNotNullOrWhiteSpace());
-            RuleFor(c => c.IconColor).Matches(new Regex("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")).When(c => c.IconColor.IsNotNullOrWhiteSpace());
+            RuleFor(c => c.IconColor).Matches(HexColorRegex).When(c => c.IconColor.IsNotNullOrWhiteSpace());
         }
     }
 

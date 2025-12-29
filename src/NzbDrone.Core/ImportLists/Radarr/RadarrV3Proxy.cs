@@ -85,7 +85,7 @@ namespace NzbDrone.Core.ImportLists.Radarr
             return null;
         }
 
-        private HttpRequestBuilder BuildRequest(string resource, RadarrSettings settings)
+        private static HttpRequestBuilder BuildRequest(string resource, RadarrSettings settings)
         {
             var baseUrl = settings.BaseUrl.TrimEnd('/');
 

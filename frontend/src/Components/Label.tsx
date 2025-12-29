@@ -18,7 +18,7 @@ export default function Label({
   size = sizes.SMALL,
   outline = false,
   ...otherProps
-}: LabelProps) {
+}: Readonly<LabelProps>) {
   return (
     <span
       className={classNames(

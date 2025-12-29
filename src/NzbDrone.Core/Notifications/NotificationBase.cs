@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentValidation.Results;
+using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.ThingiProvider;
@@ -103,6 +105,11 @@ namespace NzbDrone.Core.Notifications
         public bool SupportsOnManualInteractionRequired => HasConcreteImplementation("OnManualInteractionRequired");
 
         protected TSettings Settings => (TSettings)Definition.Settings;
+
+        protected static string GetPosterUrl(Movie movie)
+        {
+            return movie?.MovieMetadata?.Value?.Images?.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Poster)?.RemoteUrl;
+        }
 
         public override string ToString()
         {

@@ -22,12 +22,12 @@ namespace NzbDrone.Core.Test.Datastore
             Mocker.Resolve<DbFactory>();
         }
 
-        private WhereBuilderPostgres Where(Expression<Func<Movie, bool>> filter)
+        private static WhereBuilderPostgres Where(Expression<Func<Movie, bool>> filter)
         {
             return new WhereBuilderPostgres(filter, true, 0);
         }
 
-        private WhereBuilderPostgres WhereMeta(Expression<Func<MovieMetadata, bool>> filter)
+        private static WhereBuilderPostgres WhereMeta(Expression<Func<MovieMetadata, bool>> filter)
         {
             return new WhereBuilderPostgres(filter, true, 0);
         }

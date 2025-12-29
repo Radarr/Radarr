@@ -77,7 +77,7 @@ function CollectionFooter({
   isSaving,
   saveError,
   onUpdateSelectedPress,
-}: CollectionFooterProps) {
+}: Readonly<CollectionFooterProps>) {
   const [monitored, setMonitored] = useState(NO_CHANGE);
   const [monitor, setMonitor] = useState(NO_CHANGE);
   const [qualityProfileId, setQualityProfileId] = useState<string | number>(

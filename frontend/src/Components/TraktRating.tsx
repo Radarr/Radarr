@@ -11,7 +11,7 @@ interface TraktRatingProps {
   hideIcon?: boolean;
 }
 
-function TraktRating(props: TraktRatingProps) {
+function TraktRating(props: Readonly<TraktRatingProps>) {
   const { ratings, iconSize = 14, hideIcon = false } = props;
 
   const traktImage =

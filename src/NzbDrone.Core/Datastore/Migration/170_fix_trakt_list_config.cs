@@ -6,7 +6,6 @@ using System.Text.Json.Serialization;
 using Dapper;
 using FluentMigrator;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
 namespace NzbDrone.Core.Datastore.Migration
@@ -155,8 +154,6 @@ namespace NzbDrone.Core.Datastore.Migration
                     });
                 }
             }
-
-            Console.WriteLine(corrected.ToJson());
 
             var updateSql = "UPDATE \"NetImport\" SET \"Implementation\" = @Implementation, \"ConfigContract\" = @ConfigContract, \"Settings\" = @Settings WHERE \"Id\" = @Id";
             conn.Execute(updateSql, corrected, transaction: tran);

@@ -125,31 +125,32 @@ namespace NzbDrone.Core.Movies
 
         public Movie FindByTitle(List<string> titles, int? year, List<string> otherTitles, List<Movie> candidates)
         {
-            var cleanTitles = titles.Select(t => t.CleanMovieTitle().ToLowerInvariant());
+            var cleanTitlesSet = new HashSet<string>(titles.Select(t => t.CleanMovieTitle().ToLowerInvariant()));
+            var otherTitlesSet = new HashSet<string>(otherTitles);
 
-            var result = candidates.Where(x => cleanTitles.Contains(x.MovieMetadata.Value.CleanTitle) || cleanTitles.Contains(x.MovieMetadata.Value.CleanOriginalTitle))
+            var result = candidates.Where(x => cleanTitlesSet.Contains(x.MovieMetadata.Value.CleanTitle) || cleanTitlesSet.Contains(x.MovieMetadata.Value.CleanOriginalTitle))
                 .AllWithYear(year)
                 .ToList();
 
             if (result == null || result.Count == 0)
             {
                 result =
-                    candidates.Where(movie => otherTitles.Contains(movie.MovieMetadata.Value.CleanTitle)).AllWithYear(year).ToList();
+                    candidates.Where(movie => otherTitlesSet.Contains(movie.MovieMetadata.Value.CleanTitle)).AllWithYear(year).ToList();
             }
 
             if (result == null || result.Count == 0)
             {
                 result = candidates
-                    .Where(m => m.MovieMetadata.Value.AlternativeTitles.Any(t => cleanTitles.Contains(t.CleanTitle) ||
-                                                        otherTitles.Contains(t.CleanTitle)))
+                    .Where(m => m.MovieMetadata.Value.AlternativeTitles.Any(t => cleanTitlesSet.Contains(t.CleanTitle) ||
+                                                        otherTitlesSet.Contains(t.CleanTitle)))
                     .AllWithYear(year).ToList();
             }
 
             if (result == null || result.Count == 0)
             {
                 result = candidates
-                    .Where(m => m.MovieMetadata.Value.Translations.Any(t => cleanTitles.Contains(t.CleanTitle) ||
-                                                        otherTitles.Contains(t.CleanTitle)))
+                    .Where(m => m.MovieMetadata.Value.Translations.Any(t => cleanTitlesSet.Contains(t.CleanTitle) ||
+                                                        otherTitlesSet.Contains(t.CleanTitle)))
                     .AllWithYear(year).ToList();
             }
 
@@ -421,7 +422,7 @@ namespace NzbDrone.Core.Movies
             return _movieRepository.AllMovieWithCollectionsTmdbIds();
         }
 
-        private Movie ReturnSingleMovieOrThrow(List<Movie> movies)
+        private static Movie ReturnSingleMovieOrThrow(List<Movie> movies)
         {
             if (movies.Count == 0)
             {

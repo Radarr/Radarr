@@ -19,7 +19,7 @@ function SelectedMenuItem({
   isSelected,
   onPress,
   ...otherProps
-}: SelectedMenuItemProps) {
+}: Readonly<SelectedMenuItemProps>) {
   const handlePress = useCallback(() => {
     onPress(name ?? '');
   }, [name, onPress]);

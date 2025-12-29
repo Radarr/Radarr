@@ -46,7 +46,7 @@ function AgendaEvent({
   hasFile,
   grabbed,
   showDate,
-}: AgendaEventProps) {
+}: Readonly<AgendaEventProps>) {
   const movieFile = useMovieFile(movieFileId);
   const queueItem = useSelector(createQueueItemSelectorForHook(id));
   const { longDateFormat, enableColorImpairedMode } = useSelector(

@@ -1,9 +1,15 @@
+import AddAudiobookAppState from './AddAudiobookAppState';
+import AddBookAppState from './AddBookAppState';
 import { Error } from './AppSectionState';
+import AudiobooksAppState from './AudiobooksAppState';
+import AuthorsAppState from './AuthorsAppState';
 import BlocklistAppState from './BlocklistAppState';
+import BooksAppState from './BooksAppState';
 import CalendarAppState from './CalendarAppState';
 import CaptchaAppState from './CaptchaAppState';
 import CommandAppState from './CommandAppState';
 import CustomFiltersAppState from './CustomFiltersAppState';
+import DashboardAppState from './DashboardAppState';
 import ExtraFilesAppState from './ExtraFilesAppState';
 import HistoryAppState, { MovieHistoryAppState } from './HistoryAppState';
 import InteractiveImportAppState from './InteractiveImportAppState';
@@ -21,6 +27,7 @@ import ProviderOptionsAppState from './ProviderOptionsAppState';
 import QueueAppState from './QueueAppState';
 import ReleasesAppState from './ReleasesAppState';
 import RootFolderAppState from './RootFolderAppState';
+import SeriesAppState from './SeriesAppState';
 import SettingsAppState from './SettingsAppState';
 import SystemAppState from './SystemAppState';
 import TagsAppState from './TagsAppState';
@@ -80,12 +87,18 @@ export interface AppSectionState {
 }
 
 interface AppState {
+  addAudiobook: AddAudiobookAppState;
+  addBook: AddBookAppState;
   app: AppSectionState;
+  audiobooks: AudiobooksAppState;
+  authors: AuthorsAppState;
   blocklist: BlocklistAppState;
+  books: BooksAppState;
   calendar: CalendarAppState;
   captcha: CaptchaAppState;
   commands: CommandAppState;
   customFilters: CustomFiltersAppState;
+  dashboard: DashboardAppState;
   extraFiles: ExtraFilesAppState;
   history: HistoryAppState;
   interactiveImport: InteractiveImportAppState;
@@ -104,6 +117,7 @@ interface AppState {
   queue: QueueAppState;
   releases: ReleasesAppState;
   rootFolders: RootFolderAppState;
+  series: SeriesAppState;
   settings: SettingsAppState;
   system: SystemAppState;
   tags: TagsAppState;

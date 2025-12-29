@@ -11,6 +11,7 @@ namespace NzbDrone.Core.MetadataSource
         private static readonly Regex RegexCleanPunctuation = new Regex("[-._:]", RegexOptions.Compiled);
         private static readonly Regex RegexCleanCountryYearPostfix = new Regex(@"(?<=.+)( \([A-Z]{2}\)| \(\d{4}\)| \([A-Z]{2}\) \(\d{4}\))$", RegexOptions.Compiled);
         private static readonly Regex ArticleRegex = new Regex(@"^(a|an|the)\s", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex QueryYearRegex = new Regex(@"^(?<query>.+)\s+(?:\((?<year>\d{4})\)|(?<year>\d{4}))$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         public string SearchQuery { get; private set; }
 
@@ -21,7 +22,7 @@ namespace NzbDrone.Core.MetadataSource
         {
             SearchQuery = searchQuery;
 
-            var match = Regex.Match(SearchQuery, @"^(?<query>.+)\s+(?:\((?<year>\d{4})\)|(?<year>\d{4}))$");
+            var match = QueryYearRegex.Match(SearchQuery);
             if (match.Success)
             {
                 _searchQueryWithoutYear = match.Groups["query"].Value.ToLowerInvariant();
@@ -75,7 +76,7 @@ namespace NzbDrone.Core.MetadataSource
             return Compare(x, y, s => SearchQuery.LevenshteinDistanceClean(s.Title) - GetYearFactor(s));
         }
 
-        public int Compare<T>(Movie x, Movie y, Func<Movie, T> keySelector)
+        public static int Compare<T>(Movie x, Movie y, Func<Movie, T> keySelector)
             where T : IComparable<T>
         {
             var keyX = keySelector(x);
@@ -106,14 +107,14 @@ namespace NzbDrone.Core.MetadataSource
             return matchX.CompareTo(matchY);
         }
 
-        private string CleanPunctuation(string title)
+        private static string CleanPunctuation(string title)
         {
             title = RegexCleanPunctuation.Replace(title, "");
 
             return title.ToLowerInvariant();
         }
 
-        private string CleanTitle(string title)
+        private static string CleanTitle(string title)
         {
             title = RegexCleanPunctuation.Replace(title, "");
             title = RegexCleanCountryYearPostfix.Replace(title, "");
@@ -121,7 +122,7 @@ namespace NzbDrone.Core.MetadataSource
             return title.ToLowerInvariant();
         }
 
-        private string CleanArticles(string title)
+        private static string CleanArticles(string title)
         {
             title = ArticleRegex.Replace(title, "");
 

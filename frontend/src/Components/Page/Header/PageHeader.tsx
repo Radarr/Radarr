@@ -16,7 +16,7 @@ interface PageHeaderProps {
   isSmallScreen: boolean;
 }
 
-function PageHeader({ isSmallScreen }: PageHeaderProps) {
+function PageHeader({ isSmallScreen }: Readonly<PageHeaderProps>) {
   const dispatch = useDispatch();
 
   const { isSidebarVisible } = useSelector((state: AppState) => state.app);
@@ -60,7 +60,7 @@ function PageHeader({ isSmallScreen }: PageHeaderProps) {
                 ? `${window.Radarr.urlBase}/Content/Images/logo.png`
                 : `${window.Radarr.urlBase}/Content/Images/logo-full.png`
             }
-            alt="Radarr Logo"
+            alt="Aletheia Logo"
           />
         </Link>
       </div>
@@ -77,19 +77,10 @@ function PageHeader({ isSmallScreen }: PageHeaderProps) {
 
       <div className={styles.right}>
         <IconButton
-          className={styles.donate}
-          name={icons.HEART}
-          aria-label={translate('Donate')}
-          to="https://radarr.video/donate"
-          size={14}
-          title={translate('Donate')}
-        />
-
-        <IconButton
           className={styles.translate}
           title={translate('SuggestTranslationChange')}
           name={icons.TRANSLATE}
-          to="https://translate.servarr.com/projects/radarr/radarr/"
+          to="https://github.com/cheir-mneme/aletheia/issues"
           size={24}
         />
 

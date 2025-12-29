@@ -15,7 +15,7 @@ interface RelativeDateCellProps {
   component?: React.ElementType;
 }
 
-function RelativeDateCell(props: RelativeDateCellProps) {
+function RelativeDateCell(props: Readonly<RelativeDateCellProps>) {
   const {
     className = styles.cell,
     date,

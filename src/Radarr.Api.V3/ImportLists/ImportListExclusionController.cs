@@ -76,7 +76,7 @@ namespace Radarr.Api.V3.ImportLists
         public ActionResult<ImportListExclusionResource> UpdateImportListExclusion([FromBody] ImportListExclusionResource resource)
         {
             _importListExclusionService.Update(resource.ToModel());
-            return Accepted(resource.Id);
+            return Ok(GetResourceById(resource.Id));
         }
 
         [HttpPost("bulk")]

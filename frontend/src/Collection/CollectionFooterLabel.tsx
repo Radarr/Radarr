@@ -13,7 +13,7 @@ function CollectionFooterLabel({
   className = styles.label,
   label,
   isSaving,
-}: CollectionFooterLabelProps) {
+}: Readonly<CollectionFooterLabelProps>) {
   return (
     <div className={className}>
       {label}

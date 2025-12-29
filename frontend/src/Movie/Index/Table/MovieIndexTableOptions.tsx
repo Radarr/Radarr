@@ -12,7 +12,7 @@ interface MovieIndexTableOptionsProps {
   onTableOptionChange(...args: unknown[]): unknown;
 }
 
-function MovieIndexTableOptions(props: MovieIndexTableOptionsProps) {
+function MovieIndexTableOptions(props: Readonly<MovieIndexTableOptionsProps>) {
   const { onTableOptionChange } = props;
 
   const tableOptions = useSelector(selectTableOptions);
