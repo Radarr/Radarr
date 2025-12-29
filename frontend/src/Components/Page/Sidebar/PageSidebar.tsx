@@ -120,6 +120,12 @@ const LINKS: SidebarItem[] = [
   },
 
   {
+    iconName: icons.TV,
+    title: () => translate('TVShows'),
+    to: '/tvshows',
+  },
+
+  {
     iconName: icons.CALENDAR,
     title: () => translate('Calendar'),
     to: '/calendar',

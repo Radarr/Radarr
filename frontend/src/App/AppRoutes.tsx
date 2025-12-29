@@ -42,6 +42,8 @@ import Logs from 'System/Logs/Logs';
 import Status from 'System/Status/Status';
 import Tasks from 'System/Tasks/Tasks';
 import Updates from 'System/Updates/Updates';
+import TVShowDetailsPage from 'TVShow/Details/TVShowDetailsPage';
+import TVShowIndex from 'TVShow/Index/TVShowIndex';
 import getPathWithUrlBase from 'Utilities/getPathWithUrlBase';
 import CutoffUnmet from 'Wanted/CutoffUnmet/CutoffUnmet';
 import Missing from 'Wanted/Missing/Missing';
@@ -123,6 +125,14 @@ function AppRoutes() {
       <Route exact={true} path="/bookseries" component={BookSeriesIndex} />
 
       <Route path="/bookseries/:id" component={BookSeriesDetailsPage} />
+
+      {/*
+        TV Shows
+      */}
+
+      <Route exact={true} path="/tvshows" component={TVShowIndex} />
+
+      <Route path="/tvshow/:id" component={TVShowDetailsPage} />
 
       {/*
         Calendar

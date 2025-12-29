@@ -11,6 +11,7 @@ import CaptchaAppState from './CaptchaAppState';
 import CommandAppState from './CommandAppState';
 import CustomFiltersAppState from './CustomFiltersAppState';
 import DashboardAppState from './DashboardAppState';
+import EpisodesAppState from './EpisodesAppState';
 import ExtraFilesAppState from './ExtraFilesAppState';
 import HistoryAppState, { MovieHistoryAppState } from './HistoryAppState';
 import InteractiveImportAppState from './InteractiveImportAppState';
@@ -28,9 +29,11 @@ import ProviderOptionsAppState from './ProviderOptionsAppState';
 import QueueAppState from './QueueAppState';
 import ReleasesAppState from './ReleasesAppState';
 import RootFolderAppState from './RootFolderAppState';
+import SeasonsAppState from './SeasonsAppState';
 import SettingsAppState from './SettingsAppState';
 import SystemAppState from './SystemAppState';
 import TagsAppState from './TagsAppState';
+import TVShowsAppState from './TVShowsAppState';
 import WantedAppState from './WantedAppState';
 
 interface FilterBuilderPropOption {
@@ -99,6 +102,7 @@ interface AppState {
   commands: CommandAppState;
   customFilters: CustomFiltersAppState;
   dashboard: DashboardAppState;
+  episodes: EpisodesAppState;
   extraFiles: ExtraFilesAppState;
   history: HistoryAppState;
   interactiveImport: InteractiveImportAppState;
@@ -118,9 +122,11 @@ interface AppState {
   releases: ReleasesAppState;
   rootFolders: RootFolderAppState;
   bookSeries: BookSeriesAppState;
+  seasons: SeasonsAppState;
   settings: SettingsAppState;
   system: SystemAppState;
   tags: TagsAppState;
+  tvShows: TVShowsAppState;
   wanted: WantedAppState;
 }
 
