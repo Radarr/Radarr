@@ -5,28 +5,57 @@ All notable changes to Aletheia are documented in this file.
 ## [Unreleased]
 
 ### Added
-- **Phase 2: Multi-Media Infrastructure** (December 2025)
-  - Book and Audiobook entity models with database migrations
-  - Author and Series hierarchical entities for book organization
+- **Phase 3: Multi-Media Foundation** (December 2025)
+  - ConfigService split into focused services (UIConfig, ProxyConfig, DownloadConfig, ImportConfig)
+  - BaseMediaCrudController extracted for all media type controllers
+  - BaseMediaEditorController extracted for bulk edit operations
+  - IMediaResource interface for resource type consolidation
+  - MediaItem base entity with MediaType discriminator
+  - Database migrations: 244 (MediaType), 246 (Books/Audiobooks), 250 (Music)
+
+- **Phase 4: Books & Audiobooks** (December 2025)
+  - Book entity with Author, ISBN, Publisher, Description fields
+  - Audiobook entity with Narrator, Duration, IsAbridged fields
+  - Author and Series hierarchical entities for organization
+  - Book qualities: EPUB (101), MOBI (102), AZW3 (103), PDF (104), TXT (105), CBR (106), CBZ (107)
+  - Audiobook qualities: MP3-128 (201), MP3-320 (202), M4B (203), AudioFLAC (204)
+  - BookQualityParser and AudiobookQualityParser with regex timeout protection
   - Full CRUD API controllers for all new media types
   - Frontend pages: Author details, Series details, Book details, Audiobook details
-  - Navigation sidebar entries for new media types
-  - Redux store actions and selectors for new entities
-  - Lookup and editor modals for books and audiobooks
-  - Quality definitions for EPUB, MOBI, PDF, M4B, FLAC
+  - OpenLibrary metadata provider (BookInfoProxy)
+  - AudiobookInfoProxy with narrator support
+
+- **Phase 6: Music Foundation** (December 2025) - PR #147
+  - Artist, Album, Track entities with hierarchical relationships
+  - 60+ music quality definitions covering:
+    - Standard formats: MP3 (128/192/256/320/VBR), AAC, OGG Vorbis
+    - Lossless: FLAC, ALAC, WAV, AIFF, APE, WavPack
+    - Hi-Res: 24-bit depths (44.1-384 kHz), DSD64/128/256/512
+    - Immersive: Dolby Atmos, Sony 360 Reality Audio, DTS:X
+    - Special: Vinyl rips, SHM-SACD, MQA
+  - MusicQualityParser with comprehensive format detection
+  - ArtistRepository, AlbumRepository, TrackRepository
+  - ArtistService, AlbumService with hierarchical monitoring
+  - Music API layer (ArtistController, AlbumController, TrackController)
+  - ArtistLookupController, AlbumLookupController for search
+  - MusicBrainzProxy metadata provider
 
 ### Changed
 - **Database Schema** - MediaType discriminator added to base entities
 - **Indexers** - SupportedMediaTypes property enables multi-media indexer filtering
-- **Code Quality** - Removed unused private fields, modernized JS patterns
+- **Code Quality** - Extracted methods for cognitive complexity, added regex timeouts
 
 ### Fixed
-- SonarCloud code quality issues (PR #131)
+- SonarCloud code quality issues (PR #131, #147)
   - Removed 9 unused private fields from service classes
   - Object.assign → spread syntax in Redux actions
   - parseInt → Number.parseInt for consistency
   - Added readonly modifiers to React component props
   - Fixed logging exception parameters
+  - S6444: Added 5s regex timeout to MusicQualityParser, BookQualityParser, AudiobookQualityParser
+  - S3776: Extracted ParseFormatMatch/ParseBitrateMatch in AudiobookQualityParser
+  - S4136: Reordered ToModel overloads in AlbumResource, ArtistResource
+  - S1192: Extracted constants in MusicBrainzProxy
 
 ### Security
 - Fix SQL injection in CleanupUnusedTags.cs - use parameterized Dapper queries
