@@ -18,6 +18,12 @@ namespace NzbDrone.Core.MetadataSource.Book
         private const string UserAgent = "Aletheia/1.0 (https://github.com/cheir-mneme/aletheia)";
         private const string SearchFields = "key,title,author_name,first_publish_year,isbn,cover_i,number_of_pages_median,subject,publisher,language";
 
+        // API parameter names and JSON field names
+        private const string ParamLimit = "limit";
+        private const string ParamFields = "fields";
+        private const string ParamTitle = "title";
+        private const string JsonFieldTitle = "title";
+
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
@@ -54,7 +60,7 @@ namespace NzbDrone.Core.MetadataSource.Book
             try
             {
                 var request = BuildRequestBuilder($"{BaseUrl}/trending/daily.json")
-                    .AddQueryParam("limit", "20")
+                    .AddQueryParam(ParamLimit, "20")
                     .Build();
                 var response = ExecuteRequest(request);
 
@@ -94,9 +100,9 @@ namespace NzbDrone.Core.MetadataSource.Book
             try
             {
                 var request = BuildRequestBuilder(SearchUrl)
-                    .AddQueryParam("title", title)
-                    .AddQueryParam("limit", "25")
-                    .AddQueryParam("fields", SearchFields)
+                    .AddQueryParam(ParamTitle, title)
+                    .AddQueryParam(ParamLimit, "25")
+                    .AddQueryParam(ParamFields, SearchFields)
                     .Build();
 
                 var response = ExecuteRequest(request);
@@ -126,10 +132,10 @@ namespace NzbDrone.Core.MetadataSource.Book
             try
             {
                 var request = BuildRequestBuilder(SearchUrl)
-                    .AddQueryParam("title", title)
+                    .AddQueryParam(ParamTitle, title)
                     .AddQueryParam("first_publish_year", year.ToString(CultureInfo.InvariantCulture))
-                    .AddQueryParam("limit", "25")
-                    .AddQueryParam("fields", SearchFields)
+                    .AddQueryParam(ParamLimit, "25")
+                    .AddQueryParam(ParamFields, SearchFields)
                     .Build();
 
                 var response = ExecuteRequest(request);
@@ -191,8 +197,8 @@ namespace NzbDrone.Core.MetadataSource.Book
             {
                 var request = BuildRequestBuilder(SearchUrl)
                     .AddQueryParam("q", $"asin:{asin}")
-                    .AddQueryParam("limit", "1")
-                    .AddQueryParam("fields", SearchFields)
+                    .AddQueryParam(ParamLimit, "1")
+                    .AddQueryParam(ParamFields, SearchFields)
                     .Build();
 
                 var response = ExecuteRequest(request);
@@ -223,8 +229,8 @@ namespace NzbDrone.Core.MetadataSource.Book
             {
                 var request = BuildRequestBuilder(SearchUrl)
                     .AddQueryParam("author", authorName)
-                    .AddQueryParam("limit", "50")
-                    .AddQueryParam("fields", SearchFields)
+                    .AddQueryParam(ParamLimit, "50")
+                    .AddQueryParam(ParamFields, SearchFields)
                     .Build();
 
                 var response = ExecuteRequest(request);
@@ -307,7 +313,7 @@ namespace NzbDrone.Core.MetadataSource.Book
             var book = new BookMetadata
             {
                 ForeignBookId = key,
-                Title = json["title"]?.ToString(),
+                Title = json[JsonFieldTitle]?.ToString(),
                 Authors = new List<string>(),
                 Genres = new List<string>()
             };
@@ -381,7 +387,7 @@ namespace NzbDrone.Core.MetadataSource.Book
             var book = new BookMetadata
             {
                 ForeignBookId = workId,
-                Title = json["title"]?.ToString(),
+                Title = json[JsonFieldTitle]?.ToString(),
                 Authors = new List<string>(),
                 Genres = new List<string>()
             };
@@ -441,7 +447,7 @@ namespace NzbDrone.Core.MetadataSource.Book
         {
             var book = new BookMetadata
             {
-                Title = json["title"]?.ToString(),
+                Title = json[JsonFieldTitle]?.ToString(),
                 Authors = new List<string>(),
                 Genres = new List<string>()
             };
@@ -557,7 +563,7 @@ namespace NzbDrone.Core.MetadataSource.Book
             var book = new BookMetadata
             {
                 ForeignBookId = key,
-                Title = json["title"]?.ToString(),
+                Title = json[JsonFieldTitle]?.ToString(),
                 Authors = new List<string>(),
                 Genres = new List<string>()
             };

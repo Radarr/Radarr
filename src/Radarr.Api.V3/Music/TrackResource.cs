@@ -12,14 +12,13 @@ namespace Radarr.Api.V3.Music
     {
         public TrackResource()
         {
-            Monitored = true;
         }
 
         public int? AlbumId { get; set; }
         public string Title { get; set; }
         public string ForeignTrackId { get; set; }
-        public int TrackNumber { get; set; }
-        public int DiscNumber { get; set; }
+        public int? TrackNumber { get; set; }
+        public int? DiscNumber { get; set; }
         public int? DurationSeconds { get; set; }
 
         public bool Monitored { get; set; }
@@ -76,8 +75,8 @@ namespace Radarr.Api.V3.Music
                 AlbumId = resource.AlbumId,
                 Title = resource.Title,
                 ForeignTrackId = resource.ForeignTrackId,
-                TrackNumber = resource.TrackNumber,
-                DiscNumber = resource.DiscNumber,
+                TrackNumber = resource.TrackNumber ?? 0,
+                DiscNumber = resource.DiscNumber ?? 1,
                 DurationSeconds = resource.DurationSeconds,
                 Monitored = resource.Monitored,
                 QualityProfileId = resource.QualityProfileId,
@@ -106,14 +105,14 @@ namespace Radarr.Api.V3.Music
             return track;
         }
 
-        public static List<TrackResource> ToResource(this IEnumerable<Track> tracks)
-        {
-            return tracks.Select(ToResource).ToList();
-        }
-
         public static List<Track> ToModel(this IEnumerable<TrackResource> resources)
         {
             return resources.Select(ToModel).ToList();
+        }
+
+        public static List<TrackResource> ToResource(this IEnumerable<Track> tracks)
+        {
+            return tracks.Select(ToResource).ToList();
         }
     }
 }

@@ -11,7 +11,6 @@ namespace Radarr.Api.V3.Music
     {
         public AlbumResource()
         {
-            Monitored = true;
         }
 
         public int? ArtistId { get; set; }
@@ -113,14 +112,14 @@ namespace Radarr.Api.V3.Music
             return album;
         }
 
-        public static List<AlbumResource> ToResource(this IEnumerable<Album> albums)
-        {
-            return albums.Select(ToResource).ToList();
-        }
-
         public static List<Album> ToModel(this IEnumerable<AlbumResource> resources)
         {
             return resources.Select(ToModel).ToList();
+        }
+
+        public static List<AlbumResource> ToResource(this IEnumerable<Album> albums)
+        {
+            return albums.Select(ToResource).ToList();
         }
     }
 }

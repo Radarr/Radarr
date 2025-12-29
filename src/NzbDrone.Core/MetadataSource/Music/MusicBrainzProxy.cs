@@ -16,6 +16,10 @@ namespace NzbDrone.Core.MetadataSource.Music
         private const string CoverArtBaseUrl = "https://coverartarchive.org";
         private const string UserAgent = "Aletheia/1.0 (https://github.com/cheir-mneme/aletheia)";
 
+        // JSON field names and API parameter names
+        private const string JsonFieldArtist = "artist";
+        private const string JsonFieldTitle = "title";
+
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
@@ -56,7 +60,7 @@ namespace NzbDrone.Core.MetadataSource.Music
         {
             try
             {
-                var request = BuildSearchRequest("artist", query);
+                var request = BuildSearchRequest(JsonFieldArtist, query);
                 var response = ExecuteRequest(request);
 
                 if (response == null)
@@ -107,7 +111,7 @@ namespace NzbDrone.Core.MetadataSource.Music
             try
             {
                 var request = BuildRequestBuilder($"/release-group")
-                    .AddQueryParam("artist", artistMusicBrainzId)
+                    .AddQueryParam(JsonFieldArtist, artistMusicBrainzId)
                     .AddQueryParam("limit", "100")
                     .Build();
 
@@ -359,7 +363,7 @@ namespace NzbDrone.Core.MetadataSource.Music
             var album = new AlbumMetadata
             {
                 MusicBrainzId = json["id"]?.ToString(),
-                Title = json["title"]?.ToString(),
+                Title = json[JsonFieldTitle]?.ToString(),
                 ReleaseType = json["primary-type"]?.ToString(),
                 Genres = new List<string>(),
                 Tracks = new List<TrackMetadata>()
@@ -370,7 +374,7 @@ namespace NzbDrone.Core.MetadataSource.Music
             var artistCredits = json["artist-credit"] as JArray;
             if (artistCredits != null && artistCredits.Count > 0)
             {
-                var primaryArtist = artistCredits[0]["artist"];
+                var primaryArtist = artistCredits[0][JsonFieldArtist];
                 album.ArtistMusicBrainzId = primaryArtist?["id"]?.ToString();
                 album.ArtistName = primaryArtist?["name"]?.ToString();
             }
@@ -389,14 +393,14 @@ namespace NzbDrone.Core.MetadataSource.Music
             var track = new TrackMetadata
             {
                 MusicBrainzId = json["id"]?.ToString(),
-                Title = json["title"]?.ToString(),
+                Title = json[JsonFieldTitle]?.ToString(),
                 DurationMs = json["length"]?.Value<int>()
             };
 
             var artistCredits = json["artist-credit"] as JArray;
             if (artistCredits != null && artistCredits.Count > 0)
             {
-                var primaryArtist = artistCredits[0]["artist"];
+                var primaryArtist = artistCredits[0][JsonFieldArtist];
                 track.ArtistMusicBrainzId = primaryArtist?["id"]?.ToString();
                 track.ArtistName = primaryArtist?["name"]?.ToString();
             }
@@ -430,7 +434,7 @@ namespace NzbDrone.Core.MetadataSource.Music
                     var track = new TrackMetadata
                     {
                         MusicBrainzId = recording?["id"]?.ToString(),
-                        Title = trackJson["title"]?.ToString() ?? recording?["title"]?.ToString(),
+                        Title = trackJson[JsonFieldTitle]?.ToString() ?? recording?[JsonFieldTitle]?.ToString(),
                         AlbumMusicBrainzId = albumMusicBrainzId,
                         TrackNumber = trackJson["position"]?.Value<int>() ?? 0,
                         DiscNumber = discNumber,
@@ -440,7 +444,7 @@ namespace NzbDrone.Core.MetadataSource.Music
                     var artistCredits = recording?["artist-credit"] as JArray;
                     if (artistCredits != null && artistCredits.Count > 0)
                     {
-                        var primaryArtist = artistCredits[0]["artist"];
+                        var primaryArtist = artistCredits[0][JsonFieldArtist];
                         track.ArtistMusicBrainzId = primaryArtist?["id"]?.ToString();
                         track.ArtistName = primaryArtist?["name"]?.ToString();
                     }

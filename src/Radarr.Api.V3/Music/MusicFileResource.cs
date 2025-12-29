@@ -13,8 +13,8 @@ namespace Radarr.Api.V3.Music
         public int? TrackId { get; set; }
         public int? AlbumId { get; set; }
         public string RelativePath { get; set; }
-        public long Size { get; set; }
-        public DateTime DateAdded { get; set; }
+        public long? Size { get; set; }
+        public DateTime? DateAdded { get; set; }
         public string SceneName { get; set; }
         public string ReleaseGroup { get; set; }
         public QualityModel Quality { get; set; }

@@ -13,6 +13,7 @@ namespace NzbDrone.Core.Qualities
         WEBRIP,
         BLURAY,
         EBOOK,
-        AUDIOBOOK
+        AUDIOBOOK,
+        MUSIC
     }
 }

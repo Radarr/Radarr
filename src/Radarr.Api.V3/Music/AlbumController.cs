@@ -132,7 +132,7 @@ namespace Radarr.Api.V3.Music
             LinkAlbumStatistics(resource, _musicStatisticsService.AlbumStatistics(resource.Id));
         }
 
-        private void LinkAlbumStatistics(List<AlbumResource> resources, Dictionary<int, MusicStatistics> sDict)
+        private static void LinkAlbumStatistics(List<AlbumResource> resources, Dictionary<int, MusicStatistics> sDict)
         {
             foreach (var album in resources)
             {

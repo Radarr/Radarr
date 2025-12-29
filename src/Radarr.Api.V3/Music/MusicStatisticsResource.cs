@@ -6,21 +6,21 @@ namespace Radarr.Api.V3.Music
     [global::System.Diagnostics.CodeAnalysis.SuppressMessage("SonarLint", "S6968", Justification = "Follows existing resource patterns")]
     public class MusicStatisticsResource
     {
-        public int TrackCount { get; set; }
-        public int TrackFileCount { get; set; }
-        public long SizeOnDisk { get; set; }
+        public int? TrackCount { get; set; }
+        public int? TrackFileCount { get; set; }
+        public long? SizeOnDisk { get; set; }
         public List<string> ReleaseGroups { get; set; }
 
         public decimal PercentOfTracks
         {
             get
             {
-                if (TrackCount == 0)
+                if (TrackCount == null || TrackCount == 0)
                 {
                     return 0;
                 }
 
-                return TrackFileCount / (decimal)TrackCount * 100;
+                return (TrackFileCount ?? 0) / (decimal)TrackCount * 100;
             }
         }
     }

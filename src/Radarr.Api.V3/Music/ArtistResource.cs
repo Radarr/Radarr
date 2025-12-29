@@ -12,7 +12,6 @@ namespace Radarr.Api.V3.Music
     {
         public ArtistResource()
         {
-            Monitored = true;
         }
 
         public string Name { get; set; }
@@ -103,14 +102,14 @@ namespace Radarr.Api.V3.Music
             return artist;
         }
 
-        public static List<ArtistResource> ToResource(this IEnumerable<Artist> artists)
-        {
-            return artists.Select(ToResource).ToList();
-        }
-
         public static List<Artist> ToModel(this IEnumerable<ArtistResource> resources)
         {
             return resources.Select(ToModel).ToList();
+        }
+
+        public static List<ArtistResource> ToResource(this IEnumerable<Artist> artists)
+        {
+            return artists.Select(ToResource).ToList();
         }
     }
 }
