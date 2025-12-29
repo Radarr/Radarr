@@ -1,11 +1,11 @@
 import React from 'react';
+import BookSeries from 'BookSeries/BookSeries';
 import Icon from 'Components/Icon';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRow from 'Components/Table/TableRow';
 import { icons } from 'Helpers/Props';
-import Series from 'Series/Series';
 
-function SeriesIndexRow(props: Series) {
+function BookSeriesIndexRow(props: BookSeries) {
   const { title, description, monitored } = props;
 
   return (
@@ -22,4 +22,4 @@ function SeriesIndexRow(props: Series) {
   );
 }
 
-export default SeriesIndexRow;
+export default BookSeriesIndexRow;

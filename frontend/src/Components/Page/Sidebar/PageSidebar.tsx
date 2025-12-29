@@ -115,8 +115,8 @@ const LINKS: SidebarItem[] = [
 
   {
     iconName: icons.SERIES,
-    title: () => translate('Series'),
-    to: '/series',
+    title: () => translate('BookSeries'),
+    to: '/bookseries',
   },
 
   {

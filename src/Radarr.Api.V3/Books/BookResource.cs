@@ -36,7 +36,7 @@ namespace Radarr.Api.V3.Books
         public DateTime? LastSearchTime { get; set; }
 
         public int? AuthorId { get; set; }
-        public int? SeriesId { get; set; }
+        public int? BookSeriesId { get; set; }
         public int? SeriesPosition { get; set; }
 
         public bool? HasFile { get; set; }
@@ -75,7 +75,7 @@ namespace Radarr.Api.V3.Books
                 Tags = model.Tags,
                 LastSearchTime = model.LastSearchTime,
                 AuthorId = model.AuthorId,
-                SeriesId = model.SeriesId,
+                BookSeriesId = model.BookSeriesId,
                 SeriesPosition = model.SeriesPosition
             };
         }
@@ -107,7 +107,7 @@ namespace Radarr.Api.V3.Books
                 RootFolderPath = resource.RootFolderPath,
                 Tags = resource.Tags ?? new HashSet<int>(),
                 AuthorId = resource.AuthorId,
-                SeriesId = resource.SeriesId,
+                BookSeriesId = resource.BookSeriesId,
                 SeriesPosition = resource.SeriesPosition
             };
         }
@@ -133,7 +133,7 @@ namespace Radarr.Api.V3.Books
             book.RootFolderPath = updatedBook.RootFolderPath;
             book.Tags = updatedBook.Tags;
             book.AuthorId = updatedBook.AuthorId;
-            book.SeriesId = updatedBook.SeriesId;
+            book.BookSeriesId = updatedBook.BookSeriesId;
             book.SeriesPosition = updatedBook.SeriesPosition;
 
             return book;

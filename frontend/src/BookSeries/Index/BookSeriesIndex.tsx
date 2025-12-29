@@ -11,9 +11,9 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import { icons, kinds } from 'Helpers/Props';
-import { fetchSeries } from 'Store/Actions/seriesActions';
+import { fetchBookSeries } from 'Store/Actions/bookSeriesActions';
 import translate from 'Utilities/String/translate';
-import SeriesIndexRow from './SeriesIndexRow';
+import BookSeriesIndexRow from './BookSeriesIndexRow';
 
 const columns = [
   {
@@ -33,24 +33,24 @@ const columns = [
   },
 ];
 
-function SeriesIndex() {
+function BookSeriesIndex() {
   const dispatch = useDispatch();
   const { isFetching, isPopulated, error, items } = useSelector(
-    (state: AppState) => state.series
+    (state: AppState) => state.bookSeries
   );
 
   useEffect(() => {
-    dispatch(fetchSeries());
+    dispatch(fetchBookSeries());
   }, [dispatch]);
 
   const onRefreshPress = useCallback(() => {
-    dispatch(fetchSeries());
+    dispatch(fetchBookSeries());
   }, [dispatch]);
 
-  const hasNoSeries = isPopulated && !items.length;
+  const hasNoBookSeries = isPopulated && !items.length;
 
   return (
-    <PageContent title={translate('Series')}>
+    <PageContent title={translate('BookSeries')}>
       <PageToolbar>
         <PageToolbarSection>
           <PageToolbarButton
@@ -66,23 +66,28 @@ function SeriesIndex() {
         {isFetching && !isPopulated ? <LoadingIndicator /> : null}
 
         {!isFetching && !!error ? (
-          <Alert kind={kinds.DANGER}>{translate('UnableToLoadSeries')}</Alert>
+          <Alert kind={kinds.DANGER}>
+            {translate('UnableToLoadBookSeries')}
+          </Alert>
         ) : null}
 
         {isPopulated && !error && items.length > 0 ? (
           <Table columns={columns}>
             <TableBody>
-              {items.map((seriesItem) => (
-                <SeriesIndexRow key={seriesItem.id} {...seriesItem} />
+              {items.map((bookSeriesItem) => (
+                <BookSeriesIndexRow
+                  key={bookSeriesItem.id}
+                  {...bookSeriesItem}
+                />
               ))}
             </TableBody>
           </Table>
         ) : null}
 
-        {hasNoSeries ? (
+        {hasNoBookSeries ? (
           <div style={{ padding: '20px', textAlign: 'center' }}>
-            <p>{translate('NoSeries')}</p>
-            <p>Add series to organize books into collections.</p>
+            <p>{translate('NoBookSeries')}</p>
+            <p>Add book series to organize books into collections.</p>
           </div>
         ) : null}
       </PageContentBody>
@@ -90,4 +95,4 @@ function SeriesIndex() {
   );
 }
 
-export default SeriesIndex;
+export default BookSeriesIndex;

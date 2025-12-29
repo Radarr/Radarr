@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Books
         Book FindByAsin(string asin);
         Book FindByForeignId(string foreignBookId);
         List<Book> FindByAuthorId(int authorId);
-        List<Book> FindBySeriesId(int seriesId);
+        List<Book> FindByBookSeriesId(int bookSeriesId);
         List<Book> BooksBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         Book FindByPath(string path);
         Dictionary<int, string> AllBookPaths();
@@ -59,9 +59,9 @@ namespace NzbDrone.Core.Books
             return Query(b => b.AuthorId == authorId);
         }
 
-        public List<Book> FindBySeriesId(int seriesId)
+        public List<Book> FindByBookSeriesId(int bookSeriesId)
         {
-            return Query(b => b.SeriesId == seriesId);
+            return Query(b => b.BookSeriesId == bookSeriesId);
         }
 
         public List<Book> BooksBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)

@@ -1,8 +1,8 @@
 using NzbDrone.Core.Datastore;
 
-namespace NzbDrone.Core.Series
+namespace NzbDrone.Core.BookSeries
 {
-    public class Series : ModelBase
+    public class BookSeries : ModelBase
     {
         public string Title { get; set; }
         public string SortTitle { get; set; }

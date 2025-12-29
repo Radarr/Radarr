@@ -4,10 +4,10 @@ using NLog;
 using NzbDrone.Core.Audiobooks;
 using NzbDrone.Core.Authors;
 using NzbDrone.Core.Books;
+using NzbDrone.Core.BookSeries;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Monitoring.Events;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Series;
 
 namespace NzbDrone.Core.Monitoring
 {
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Monitoring
     public class HierarchicalMonitoringService : IHierarchicalMonitoringService
     {
         private readonly IAuthorRepository _authorRepository;
-        private readonly ISeriesRepository _seriesRepository;
+        private readonly IBookSeriesRepository _bookSeriesRepository;
         private readonly IBookRepository _bookRepository;
         private readonly IAudiobookRepository _audiobookRepository;
         private readonly IArtistRepository _artistRepository;
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Monitoring
 
         public HierarchicalMonitoringService(
             IAuthorRepository authorRepository,
-            ISeriesRepository seriesRepository,
+            IBookSeriesRepository bookSeriesRepository,
             IBookRepository bookRepository,
             IAudiobookRepository audiobookRepository,
             IArtistRepository artistRepository,
@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Monitoring
             Logger logger)
         {
             _authorRepository = authorRepository;
-            _seriesRepository = seriesRepository;
+            _bookSeriesRepository = bookSeriesRepository;
             _bookRepository = bookRepository;
             _audiobookRepository = audiobookRepository;
             _artistRepository = artistRepository;
@@ -49,17 +49,17 @@ namespace NzbDrone.Core.Monitoring
 
         public bool IsEffectivelyMonitored(Book book)
         {
-            return book.Monitored && !IsAncestorUnmonitored(book.SeriesId, book.AuthorId);
+            return book.Monitored && !IsAncestorUnmonitored(book.BookSeriesId, book.AuthorId);
         }
 
         public bool IsEffectivelyMonitored(Audiobook audiobook)
         {
-            return audiobook.Monitored && !IsAncestorUnmonitored(audiobook.SeriesId, audiobook.AuthorId);
+            return audiobook.Monitored && !IsAncestorUnmonitored(audiobook.BookSeriesId, audiobook.AuthorId);
         }
 
-        public bool IsEffectivelyMonitored(NzbDrone.Core.Series.Series series)
+        public bool IsEffectivelyMonitored(NzbDrone.Core.BookSeries.BookSeries bookSeries)
         {
-            return series.Monitored && !IsAncestorUnmonitored(null, series.AuthorId);
+            return bookSeries.Monitored && !IsAncestorUnmonitored(null, bookSeries.AuthorId);
         }
 
         public void SetAuthorMonitored(int authorId, bool monitored)
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Monitoring
 
             _eventAggregator.PublishEvent(changeEvent);
 
-            _logger.Info("Author {0} monitoring changed from {1} to {2}. Affected: {3} series, {4} books, {5} audiobooks",
+            _logger.Info("Author {0} monitoring changed from {1} to {2}. Affected: {3} book series, {4} books, {5} audiobooks",
                 author.Name,
                 previousMonitored,
                 monitored,
@@ -99,36 +99,36 @@ namespace NzbDrone.Core.Monitoring
                 changeEvent.AffectedAudiobooksCount);
         }
 
-        public void SetSeriesMonitored(int seriesId, bool monitored)
+        public void SetBookSeriesMonitored(int bookSeriesId, bool monitored)
         {
-            var series = _seriesRepository.Get(seriesId);
-            if (series == null)
+            var bookSeries = _bookSeriesRepository.Get(bookSeriesId);
+            if (bookSeries == null)
             {
-                _logger.Warn("Series with id {0} not found", seriesId);
+                _logger.Warn("BookSeries with id {0} not found", bookSeriesId);
                 return;
             }
 
-            var previousMonitored = series.Monitored;
+            var previousMonitored = bookSeries.Monitored;
             if (previousMonitored == monitored)
             {
                 return;
             }
 
-            series.Monitored = monitored;
-            _seriesRepository.Update(series);
+            bookSeries.Monitored = monitored;
+            _bookSeriesRepository.Update(bookSeries);
 
-            var changeEvent = new SeriesMonitoringChangedEvent(series, previousMonitored);
+            var changeEvent = new BookSeriesMonitoringChangedEvent(bookSeries, previousMonitored);
 
-            // Cascade unmonitoring to descendants when series is unmonitored
+            // Cascade unmonitoring to descendants when book series is unmonitored
             if (previousMonitored && !monitored)
             {
-                CascadeUnmonitorFromSeries(seriesId, changeEvent);
+                CascadeUnmonitorFromBookSeries(bookSeriesId, changeEvent);
             }
 
             _eventAggregator.PublishEvent(changeEvent);
 
-            _logger.Info("Series {0} monitoring changed from {1} to {2}. Affected: {3} books, {4} audiobooks",
-                series.Title,
+            _logger.Info("BookSeries {0} monitoring changed from {1} to {2}. Affected: {3} books, {4} audiobooks",
+                bookSeries.Title,
                 previousMonitored,
                 monitored,
                 changeEvent.AffectedBooksCount,
@@ -137,23 +137,23 @@ namespace NzbDrone.Core.Monitoring
 
         public List<Book> GetEffectivelyMonitoredBooks()
         {
-            var (monitoredAuthors, monitoredSeries) = GetMonitoringContext();
+            var (monitoredAuthors, monitoredBookSeries) = GetMonitoringContext();
 
             return _bookRepository.All()
                 .Where(b => b.Monitored)
                 .Where(b => !b.AuthorId.HasValue || monitoredAuthors.Contains(b.AuthorId.Value))
-                .Where(b => !b.SeriesId.HasValue || monitoredSeries.Contains(b.SeriesId.Value))
+                .Where(b => !b.BookSeriesId.HasValue || monitoredBookSeries.Contains(b.BookSeriesId.Value))
                 .ToList();
         }
 
         public List<Audiobook> GetEffectivelyMonitoredAudiobooks()
         {
-            var (monitoredAuthors, monitoredSeries) = GetMonitoringContext();
+            var (monitoredAuthors, monitoredBookSeries) = GetMonitoringContext();
 
             return _audiobookRepository.All()
                 .Where(a => a.Monitored)
                 .Where(a => !a.AuthorId.HasValue || monitoredAuthors.Contains(a.AuthorId.Value))
-                .Where(a => !a.SeriesId.HasValue || monitoredSeries.Contains(a.SeriesId.Value))
+                .Where(a => !a.BookSeriesId.HasValue || monitoredBookSeries.Contains(a.BookSeriesId.Value))
                 .ToList();
         }
 
@@ -313,12 +313,12 @@ namespace NzbDrone.Core.Monitoring
                 _trackRepository.UpdateMany);
         }
 
-        private bool IsAncestorUnmonitored(int? seriesId, int? authorId)
+        private bool IsAncestorUnmonitored(int? bookSeriesId, int? authorId)
         {
-            if (seriesId.HasValue)
+            if (bookSeriesId.HasValue)
             {
-                var series = _seriesRepository.Get(seriesId.Value);
-                if (series != null && !series.Monitored)
+                var bookSeries = _bookSeriesRepository.Get(bookSeriesId.Value);
+                if (bookSeries != null && !bookSeries.Monitored)
                 {
                     return true;
                 }
@@ -336,26 +336,26 @@ namespace NzbDrone.Core.Monitoring
             return false;
         }
 
-        private (HashSet<int> MonitoredAuthors, HashSet<int> MonitoredSeries) GetMonitoringContext()
+        private (HashSet<int> MonitoredAuthors, HashSet<int> MonitoredBookSeries) GetMonitoringContext()
         {
             var monitoredAuthors = _authorRepository.GetMonitored()
                 .Select(a => a.Id)
                 .ToHashSet();
 
-            var monitoredSeries = _seriesRepository.GetMonitored()
+            var monitoredBookSeries = _bookSeriesRepository.GetMonitored()
                 .Where(s => !s.AuthorId.HasValue || monitoredAuthors.Contains(s.AuthorId.Value))
                 .Select(s => s.Id)
                 .ToHashSet();
 
-            return (monitoredAuthors, monitoredSeries);
+            return (monitoredAuthors, monitoredBookSeries);
         }
 
         private void CascadeUnmonitorFromAuthor(int authorId, AuthorMonitoringChangedEvent changeEvent)
         {
             changeEvent.AffectedSeriesCount = UnmonitorEntities(
-                _seriesRepository.FindByAuthorId(authorId).Where(s => s.Monitored).ToList(),
+                _bookSeriesRepository.FindByAuthorId(authorId).Where(s => s.Monitored).ToList(),
                 s => s.Monitored = false,
-                _seriesRepository.UpdateMany);
+                _bookSeriesRepository.UpdateMany);
 
             changeEvent.AffectedBooksCount = UnmonitorEntities(
                 _bookRepository.FindByAuthorId(authorId).Where(b => b.Monitored).ToList(),
@@ -368,15 +368,15 @@ namespace NzbDrone.Core.Monitoring
                 _audiobookRepository.UpdateMany);
         }
 
-        private void CascadeUnmonitorFromSeries(int seriesId, SeriesMonitoringChangedEvent changeEvent)
+        private void CascadeUnmonitorFromBookSeries(int bookSeriesId, BookSeriesMonitoringChangedEvent changeEvent)
         {
             changeEvent.AffectedBooksCount = UnmonitorEntities(
-                _bookRepository.FindBySeriesId(seriesId).Where(b => b.Monitored).ToList(),
+                _bookRepository.FindByBookSeriesId(bookSeriesId).Where(b => b.Monitored).ToList(),
                 b => b.Monitored = false,
                 _bookRepository.UpdateMany);
 
             changeEvent.AffectedAudiobooksCount = UnmonitorEntities(
-                _audiobookRepository.FindBySeriesId(seriesId).Where(a => a.Monitored).ToList(),
+                _audiobookRepository.FindByBookSeriesId(bookSeriesId).Where(a => a.Monitored).ToList(),
                 a => a.Monitored = false,
                 _audiobookRepository.UpdateMany);
         }

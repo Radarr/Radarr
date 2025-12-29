@@ -9,12 +9,12 @@ namespace NzbDrone.Core.Monitoring
     {
         bool IsEffectivelyMonitored(Book book);
         bool IsEffectivelyMonitored(Audiobook audiobook);
-        bool IsEffectivelyMonitored(NzbDrone.Core.Series.Series series);
+        bool IsEffectivelyMonitored(NzbDrone.Core.BookSeries.BookSeries bookSeries);
         bool IsEffectivelyMonitored(Album album);
         bool IsEffectivelyMonitored(Track track);
 
         void SetAuthorMonitored(int authorId, bool monitored);
-        void SetSeriesMonitored(int seriesId, bool monitored);
+        void SetBookSeriesMonitored(int bookSeriesId, bool monitored);
         void SetArtistMonitored(int artistId, bool monitored);
         void SetAlbumMonitored(int albumId, bool monitored);
 

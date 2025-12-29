@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Radarr.Http.REST;
-using SeriesModel = NzbDrone.Core.Series.Series;
+using BookSeriesModel = NzbDrone.Core.BookSeries.BookSeries;
 
-namespace Radarr.Api.V3.Series
+namespace Radarr.Api.V3.BookSeries
 {
-    public class SeriesResource : RestResource
+    public class BookSeriesResource : RestResource
     {
-        public SeriesResource()
+        public BookSeriesResource()
         {
             Monitored = true;
         }
@@ -20,16 +20,16 @@ namespace Radarr.Api.V3.Series
         public bool Monitored { get; set; }
     }
 
-    public static class SeriesResourceMapper
+    public static class BookSeriesResourceMapper
     {
-        public static SeriesResource ToResource(this SeriesModel model)
+        public static BookSeriesResource ToResource(this BookSeriesModel model)
         {
             if (model == null)
             {
                 return null;
             }
 
-            return new SeriesResource
+            return new BookSeriesResource
             {
                 Id = model.Id,
                 Title = model.Title,
@@ -41,14 +41,14 @@ namespace Radarr.Api.V3.Series
             };
         }
 
-        public static SeriesModel ToModel(this SeriesResource resource)
+        public static BookSeriesModel ToModel(this BookSeriesResource resource)
         {
             if (resource == null)
             {
                 return null;
             }
 
-            return new SeriesModel
+            return new BookSeriesModel
             {
                 Id = resource.Id,
                 Title = resource.Title,
@@ -60,26 +60,26 @@ namespace Radarr.Api.V3.Series
             };
         }
 
-        public static SeriesModel ToModel(this SeriesResource resource, SeriesModel series)
+        public static BookSeriesModel ToModel(this BookSeriesResource resource, BookSeriesModel bookSeries)
         {
-            var updatedSeries = resource.ToModel();
+            var updatedBookSeries = resource.ToModel();
 
-            series.Title = updatedSeries.Title;
-            series.SortTitle = updatedSeries.SortTitle;
-            series.Description = updatedSeries.Description;
-            series.ForeignSeriesId = updatedSeries.ForeignSeriesId;
-            series.AuthorId = updatedSeries.AuthorId;
-            series.Monitored = updatedSeries.Monitored;
+            bookSeries.Title = updatedBookSeries.Title;
+            bookSeries.SortTitle = updatedBookSeries.SortTitle;
+            bookSeries.Description = updatedBookSeries.Description;
+            bookSeries.ForeignSeriesId = updatedBookSeries.ForeignSeriesId;
+            bookSeries.AuthorId = updatedBookSeries.AuthorId;
+            bookSeries.Monitored = updatedBookSeries.Monitored;
 
-            return series;
+            return bookSeries;
         }
 
-        public static List<SeriesResource> ToResource(this IEnumerable<SeriesModel> seriesList)
+        public static List<BookSeriesResource> ToResource(this IEnumerable<BookSeriesModel> bookSeriesList)
         {
-            return seriesList.Select(ToResource).ToList();
+            return bookSeriesList.Select(ToResource).ToList();
         }
 
-        public static List<SeriesModel> ToModel(this IEnumerable<SeriesResource> resources)
+        public static List<BookSeriesModel> ToModel(this IEnumerable<BookSeriesResource> resources)
         {
             return resources.Select(ToModel).ToList();
         }

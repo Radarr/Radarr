@@ -6,22 +6,22 @@ import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import { icons } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
-import styles from './SeriesDetails.css';
+import styles from './BookSeriesDetails.css';
 
-interface SeriesDetailsProps {
-  readonly seriesId: number;
+interface BookSeriesDetailsProps {
+  readonly bookSeriesId: number;
 }
 
-function SeriesDetails({ seriesId }: Readonly<SeriesDetailsProps>) {
-  const series = useSelector((state: AppState) =>
-    state.series.items.find((s) => s.id === seriesId)
+function BookSeriesDetails({ bookSeriesId }: Readonly<BookSeriesDetailsProps>) {
+  const bookSeries = useSelector((state: AppState) =>
+    state.bookSeries.items.find((s) => s.id === bookSeriesId)
   );
 
-  if (!series) {
+  if (!bookSeries) {
     return null;
   }
 
-  const { title, sortTitle, description, monitored, authorId } = series;
+  const { title, sortTitle, description, monitored, authorId } = bookSeries;
 
   return (
     <PageContent title={title}>
@@ -66,4 +66,4 @@ function SeriesDetails({ seriesId }: Readonly<SeriesDetailsProps>) {
   );
 }
 
-export default SeriesDetails;
+export default BookSeriesDetails;

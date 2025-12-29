@@ -1,6 +1,6 @@
 import ModelBase from 'App/ModelBase';
 
-interface Series extends ModelBase {
+interface BookSeries extends ModelBase {
   title: string;
   sortTitle: string;
   description: string;
@@ -10,4 +10,4 @@ interface Series extends ModelBase {
   isSaving?: boolean;
 }
 
-export default Series;
+export default BookSeries;

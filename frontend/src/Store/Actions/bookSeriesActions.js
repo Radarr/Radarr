@@ -7,7 +7,7 @@ import createRemoveItemHandler from './Creators/createRemoveItemHandler';
 import createSaveProviderHandler from './Creators/createSaveProviderHandler';
 import createSetSettingValueReducer from './Creators/Reducers/createSetSettingValueReducer';
 
-export const section = 'series';
+export const section = 'bookSeries';
 
 export const defaultState = {
   isFetching: false,
@@ -23,16 +23,16 @@ export const defaultState = {
   pendingChanges: {}
 };
 
-export const FETCH_SERIES = 'series/fetchSeries';
-export const SET_SERIES_VALUE = 'series/setSeriesValue';
-export const SAVE_SERIES = 'series/saveSeries';
-export const DELETE_SERIES = 'series/deleteSeries';
+export const FETCH_BOOK_SERIES = 'bookSeries/fetchBookSeries';
+export const SET_BOOK_SERIES_VALUE = 'bookSeries/setBookSeriesValue';
+export const SAVE_BOOK_SERIES = 'bookSeries/saveBookSeries';
+export const DELETE_BOOK_SERIES = 'bookSeries/deleteBookSeries';
 
-export const fetchSeries = createThunk(FETCH_SERIES);
-export const saveSeries = createThunk(SAVE_SERIES);
-export const deleteSeries = createThunk(DELETE_SERIES);
+export const fetchBookSeries = createThunk(FETCH_BOOK_SERIES);
+export const saveBookSeries = createThunk(SAVE_BOOK_SERIES);
+export const deleteBookSeries = createThunk(DELETE_BOOK_SERIES);
 
-export const setSeriesValue = createAction(SET_SERIES_VALUE, (payload) => {
+export const setBookSeriesValue = createAction(SET_BOOK_SERIES_VALUE, (payload) => {
   return {
     section,
     ...payload
@@ -40,11 +40,11 @@ export const setSeriesValue = createAction(SET_SERIES_VALUE, (payload) => {
 });
 
 export const actionHandlers = handleThunks({
-  [FETCH_SERIES]: createFetchHandler(section, '/series'),
-  [SAVE_SERIES]: createSaveProviderHandler(section, '/series'),
-  [DELETE_SERIES]: createRemoveItemHandler(section, '/series')
+  [FETCH_BOOK_SERIES]: createFetchHandler(section, '/bookseries'),
+  [SAVE_BOOK_SERIES]: createSaveProviderHandler(section, '/bookseries'),
+  [DELETE_BOOK_SERIES]: createRemoveItemHandler(section, '/bookseries')
 });
 
 export const reducers = createHandleActions({
-  [SET_SERIES_VALUE]: createSetSettingValueReducer(section)
+  [SET_BOOK_SERIES_VALUE]: createSetSettingValueReducer(section)
 }, defaultState, section);

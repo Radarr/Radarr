@@ -120,7 +120,7 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<Author>("Authors").RegisterModel();
 
-            Mapper.Entity<NzbDrone.Core.Series.Series>("Series").RegisterModel();
+            Mapper.Entity<NzbDrone.Core.BookSeries.BookSeries>("BookSeries").RegisterModel();
 
             Mapper.Entity<Movie>("Movies").RegisterModel()
                   .Ignore(s => s.RootFolderPath)

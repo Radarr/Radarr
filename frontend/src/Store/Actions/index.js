@@ -31,7 +31,7 @@ import * as providerOptions from './providerOptionActions';
 import * as queue from './queueActions';
 import * as releases from './releaseActions';
 import * as rootFolders from './rootFolderActions';
-import * as series from './seriesActions';
+import * as bookSeries from './bookSeriesActions';
 import * as settings from './settingsActions';
 import * as system from './systemActions';
 import * as tags from './tagActions';
@@ -71,7 +71,7 @@ export default [
   movieHistory,
   movieIndex,
   movieCredits,
-  series,
+  bookSeries,
   settings,
   system,
   tags,

@@ -22,7 +22,7 @@ namespace NzbDrone.Core.MediaItems
         public DateTime? LastSearchTime { get; set; }
 
         public int? AuthorId { get; set; }
-        public int? SeriesId { get; set; }
+        public int? BookSeriesId { get; set; }
 
         public abstract string GetTitle();
         public abstract int GetYear();

@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Audiobooks
         Audiobook FindByAsin(string asin);
         Audiobook FindByForeignId(string foreignAudiobookId);
         List<Audiobook> FindByAuthorId(int authorId);
-        List<Audiobook> FindBySeriesId(int seriesId);
+        List<Audiobook> FindByBookSeriesId(int bookSeriesId);
         List<Audiobook> FindByBookId(int bookId);
         List<Audiobook> FindByNarrator(string narrator);
         List<Audiobook> AudiobooksBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
@@ -61,9 +61,9 @@ namespace NzbDrone.Core.Audiobooks
             return Query(a => a.AuthorId == authorId);
         }
 
-        public List<Audiobook> FindBySeriesId(int seriesId)
+        public List<Audiobook> FindByBookSeriesId(int bookSeriesId)
         {
-            return Query(a => a.SeriesId == seriesId);
+            return Query(a => a.BookSeriesId == bookSeriesId);
         }
 
         public List<Audiobook> FindByBookId(int bookId)

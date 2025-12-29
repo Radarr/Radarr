@@ -13,6 +13,8 @@ import AuthorDetailsPage from 'Author/Details/AuthorDetailsPage';
 import AuthorIndex from 'Author/Index/AuthorIndex';
 import BookDetailsPage from 'Book/Details/BookDetailsPage';
 import BookIndex from 'Book/Index/BookIndex';
+import BookSeriesDetailsPage from 'BookSeries/Details/BookSeriesDetailsPage';
+import BookSeriesIndex from 'BookSeries/Index/BookSeriesIndex';
 import CalendarPage from 'Calendar/CalendarPage';
 import CollectionConnector from 'Collection/CollectionConnector';
 import NotFound from 'Components/NotFound';
@@ -21,8 +23,6 @@ import Dashboard from 'Dashboard/Dashboard';
 import DiscoverMovieConnector from 'DiscoverMovie/DiscoverMovieConnector';
 import MovieDetailsPage from 'Movie/Details/MovieDetailsPage';
 import MovieIndex from 'Movie/Index/MovieIndex';
-import SeriesDetailsPage from 'Series/Details/SeriesDetailsPage';
-import SeriesIndex from 'Series/Index/SeriesIndex';
 import CustomFormatSettingsPage from 'Settings/CustomFormats/CustomFormatSettingsPage';
 import DownloadClientSettingsConnector from 'Settings/DownloadClients/DownloadClientSettingsConnector';
 import GeneralSettingsConnector from 'Settings/General/GeneralSettingsConnector';
@@ -117,12 +117,12 @@ function AppRoutes() {
       <Route path="/author/:id" component={AuthorDetailsPage} />
 
       {/*
-        Series
+        Book Series
       */}
 
-      <Route exact={true} path="/series" component={SeriesIndex} />
+      <Route exact={true} path="/bookseries" component={BookSeriesIndex} />
 
-      <Route path="/series/:id" component={SeriesDetailsPage} />
+      <Route path="/bookseries/:id" component={BookSeriesDetailsPage} />
 
       {/*
         Calendar

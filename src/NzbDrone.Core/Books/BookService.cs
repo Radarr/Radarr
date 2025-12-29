@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Books
         Book FindByForeignId(string foreignBookId);
         Book FindByPath(string path);
         List<Book> FindByAuthorId(int authorId);
-        List<Book> FindBySeriesId(int seriesId);
+        List<Book> FindByBookSeriesId(int bookSeriesId);
         Dictionary<int, string> AllBookPaths();
         List<Book> GetBooksBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         void DeleteBook(int bookId, bool deleteFiles);
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Books
         public Book FindByForeignId(string foreignBookId) => _bookRepository.FindByForeignId(foreignBookId);
         public Book FindByPath(string path) => _bookRepository.FindByPath(path);
         public List<Book> FindByAuthorId(int authorId) => _bookRepository.FindByAuthorId(authorId);
-        public List<Book> FindBySeriesId(int seriesId) => _bookRepository.FindBySeriesId(seriesId);
+        public List<Book> FindByBookSeriesId(int bookSeriesId) => _bookRepository.FindByBookSeriesId(bookSeriesId);
         public Dictionary<int, string> AllBookPaths() => _bookRepository.AllBookPaths();
         public List<Book> GetBooksBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)
             => _bookRepository.BooksBetweenDates(start, end, includeUnmonitored);

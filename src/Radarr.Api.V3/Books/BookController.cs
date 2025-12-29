@@ -79,7 +79,7 @@ namespace Radarr.Api.V3.Books
         protected override Book ApplyResourceToModel(BookResource resource, Book book) => resource.ToModel(book);
 
         [HttpGet]
-        public List<BookResource> GetBooks(int? authorId = null, int? seriesId = null)
+        public List<BookResource> GetBooks(int? authorId = null, int? bookSeriesId = null)
         {
             List<Book> books;
 
@@ -87,9 +87,9 @@ namespace Radarr.Api.V3.Books
             {
                 books = _bookService.FindByAuthorId(authorId.Value);
             }
-            else if (seriesId.HasValue)
+            else if (bookSeriesId.HasValue)
             {
-                books = _bookService.FindBySeriesId(seriesId.Value);
+                books = _bookService.FindByBookSeriesId(bookSeriesId.Value);
             }
             else
             {

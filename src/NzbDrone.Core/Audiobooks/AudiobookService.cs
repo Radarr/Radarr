@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Audiobooks
         Audiobook FindByForeignId(string foreignAudiobookId);
         Audiobook FindByPath(string path);
         List<Audiobook> FindByAuthorId(int authorId);
-        List<Audiobook> FindBySeriesId(int seriesId);
+        List<Audiobook> FindByBookSeriesId(int bookSeriesId);
         List<Audiobook> FindByBookId(int bookId);
         List<Audiobook> FindByNarrator(string narrator);
         Dictionary<int, string> AllAudiobookPaths();
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Audiobooks
         public Audiobook FindByForeignId(string foreignAudiobookId) => _audiobookRepository.FindByForeignId(foreignAudiobookId);
         public Audiobook FindByPath(string path) => _audiobookRepository.FindByPath(path);
         public List<Audiobook> FindByAuthorId(int authorId) => _audiobookRepository.FindByAuthorId(authorId);
-        public List<Audiobook> FindBySeriesId(int seriesId) => _audiobookRepository.FindBySeriesId(seriesId);
+        public List<Audiobook> FindByBookSeriesId(int bookSeriesId) => _audiobookRepository.FindByBookSeriesId(bookSeriesId);
         public List<Audiobook> FindByBookId(int bookId) => _audiobookRepository.FindByBookId(bookId);
         public List<Audiobook> FindByNarrator(string narrator) => _audiobookRepository.FindByNarrator(narrator);
         public Dictionary<int, string> AllAudiobookPaths() => _audiobookRepository.AllAudiobookPaths();

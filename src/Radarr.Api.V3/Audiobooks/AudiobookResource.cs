@@ -39,7 +39,7 @@ namespace Radarr.Api.V3.Audiobooks
         public DateTime? LastSearchTime { get; set; }
 
         public int? AuthorId { get; set; }
-        public int? SeriesId { get; set; }
+        public int? BookSeriesId { get; set; }
         public int? SeriesPosition { get; set; }
         public int? BookId { get; set; }
 
@@ -81,7 +81,7 @@ namespace Radarr.Api.V3.Audiobooks
                 Tags = model.Tags,
                 LastSearchTime = model.LastSearchTime,
                 AuthorId = model.AuthorId,
-                SeriesId = model.SeriesId,
+                BookSeriesId = model.BookSeriesId,
                 SeriesPosition = model.SeriesPosition,
                 BookId = model.BookId
             };
@@ -116,7 +116,7 @@ namespace Radarr.Api.V3.Audiobooks
                 RootFolderPath = resource.RootFolderPath,
                 Tags = resource.Tags ?? new HashSet<int>(),
                 AuthorId = resource.AuthorId,
-                SeriesId = resource.SeriesId,
+                BookSeriesId = resource.BookSeriesId,
                 SeriesPosition = resource.SeriesPosition,
                 BookId = resource.BookId
             };
@@ -145,7 +145,7 @@ namespace Radarr.Api.V3.Audiobooks
             audiobook.RootFolderPath = updatedAudiobook.RootFolderPath;
             audiobook.Tags = updatedAudiobook.Tags;
             audiobook.AuthorId = updatedAudiobook.AuthorId;
-            audiobook.SeriesId = updatedAudiobook.SeriesId;
+            audiobook.BookSeriesId = updatedAudiobook.BookSeriesId;
             audiobook.SeriesPosition = updatedAudiobook.SeriesPosition;
             audiobook.BookId = updatedAudiobook.BookId;
 
