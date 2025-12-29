@@ -16,6 +16,10 @@ namespace NzbDrone.Core.TV
         List<Episode> GetEpisodesByTVShowIdAndSeasonNumber(int tvShowId, int seasonNumber);
         Episode FindByTVShowIdAndEpisode(int tvShowId, int seasonNumber, int episodeNumber);
         Episode FindByTVShowIdAndAbsoluteNumber(int tvShowId, int absoluteNumber);
+        Episode FindByAirDate(int tvShowId, string airDate);
+        List<Episode> GetEpisodesBySeason(int tvShowId, int seasonNumber);
+        List<Episode> FindBySeasonAndEpisode(int tvShowId, int seasonNumber, int[] episodeNumbers);
+        List<Episode> FindByAbsoluteEpisodeNumber(int tvShowId, int[] absoluteEpisodeNumbers);
         Episode AddEpisode(Episode newEpisode);
         List<Episode> AddEpisodes(List<Episode> newEpisodes);
         void DeleteEpisode(int episodeId, bool deleteFiles);
@@ -52,6 +56,14 @@ namespace NzbDrone.Core.TV
             => _episodeRepository.FindByTVShowIdAndEpisode(tvShowId, seasonNumber, episodeNumber);
         public Episode FindByTVShowIdAndAbsoluteNumber(int tvShowId, int absoluteNumber)
             => _episodeRepository.FindByTVShowIdAndAbsoluteNumber(tvShowId, absoluteNumber);
+        public Episode FindByAirDate(int tvShowId, string airDate)
+            => _episodeRepository.FindByAirDate(tvShowId, airDate);
+        public List<Episode> GetEpisodesBySeason(int tvShowId, int seasonNumber)
+            => GetEpisodesByTVShowIdAndSeasonNumber(tvShowId, seasonNumber);
+        public List<Episode> FindBySeasonAndEpisode(int tvShowId, int seasonNumber, int[] episodeNumbers)
+            => _episodeRepository.FindBySeasonAndEpisode(tvShowId, seasonNumber, episodeNumbers);
+        public List<Episode> FindByAbsoluteEpisodeNumber(int tvShowId, int[] absoluteEpisodeNumbers)
+            => _episodeRepository.FindByAbsoluteEpisodeNumber(tvShowId, absoluteEpisodeNumbers);
         public Episode FindByPath(string path) => _episodeRepository.FindByPath(path);
         public Dictionary<int, string> AllEpisodePaths() => _episodeRepository.AllEpisodePaths();
         public List<Episode> GetEpisodesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)

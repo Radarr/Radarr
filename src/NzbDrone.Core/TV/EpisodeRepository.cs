@@ -13,6 +13,9 @@ namespace NzbDrone.Core.TV
         List<Episode> FindByTVShowIdAndSeasonNumber(int tvShowId, int seasonNumber);
         Episode FindByTVShowIdAndEpisode(int tvShowId, int seasonNumber, int episodeNumber);
         Episode FindByTVShowIdAndAbsoluteNumber(int tvShowId, int absoluteNumber);
+        Episode FindByAirDate(int tvShowId, string airDate);
+        List<Episode> FindBySeasonAndEpisode(int tvShowId, int seasonNumber, int[] episodeNumbers);
+        List<Episode> FindByAbsoluteEpisodeNumber(int tvShowId, int[] absoluteEpisodeNumbers);
         List<Episode> EpisodesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         Episode FindByPath(string path);
         Dictionary<int, string> AllEpisodePaths();
@@ -52,6 +55,32 @@ namespace NzbDrone.Core.TV
         {
             return Query(e => e.TVShowId == tvShowId &&
                               e.AbsoluteEpisodeNumber == absoluteNumber).FirstOrDefault();
+        }
+
+        public Episode FindByAirDate(int tvShowId, string airDate)
+        {
+            if (!DateTime.TryParse(airDate, out var date))
+            {
+                return null;
+            }
+
+            return Query(e => e.TVShowId == tvShowId &&
+                              e.AirDate.HasValue &&
+                              e.AirDate.Value.Date == date.Date).FirstOrDefault();
+        }
+
+        public List<Episode> FindBySeasonAndEpisode(int tvShowId, int seasonNumber, int[] episodeNumbers)
+        {
+            return Query(e => e.TVShowId == tvShowId &&
+                              e.SeasonNumber == seasonNumber &&
+                              episodeNumbers.Contains(e.EpisodeNumber));
+        }
+
+        public List<Episode> FindByAbsoluteEpisodeNumber(int tvShowId, int[] absoluteEpisodeNumbers)
+        {
+            return Query(e => e.TVShowId == tvShowId &&
+                              e.AbsoluteEpisodeNumber.HasValue &&
+                              absoluteEpisodeNumbers.Contains(e.AbsoluteEpisodeNumber.Value));
         }
 
         public List<Episode> EpisodesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)

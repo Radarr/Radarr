@@ -1,3 +1,4 @@
+using System;
 using System.Text.RegularExpressions;
 
 namespace NzbDrone.Core.Parser;
@@ -6,6 +7,18 @@ namespace NzbDrone.Core.Parser;
 // they are not intended to be used outside of them parsing.
 internal static class ParserCommon
 {
+    private static readonly Regex SimpleTitleRegex = new Regex(@"[\W_]+", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+
+    internal static string SimplifyTitle(string title)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+        {
+            return string.Empty;
+        }
+
+        return SimpleTitleRegex.Replace(title, string.Empty).ToLowerInvariant();
+    }
+
     internal static readonly RegexReplace[] PreSubstitutionRegex = System.Array.Empty<RegexReplace>();
 
     // Valid TLDs http://data.iana.org/TLD/tlds-alpha-by-domain.txt
