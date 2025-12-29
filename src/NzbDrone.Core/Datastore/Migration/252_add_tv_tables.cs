@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Datastore.Migration
         protected override void MainDbUpgrade()
         {
             Create.TableForModel("TVShows")
-                .WithColumn("TvdbId").AsInt32().NotNullable()
+                .WithColumn("TvdbId").AsInt32().Nullable()
                 .WithColumn("TmdbId").AsInt32().Nullable()
                 .WithColumn("ImdbId").AsString().Nullable()
                 .WithColumn("AniDbId").AsInt32().Nullable()
@@ -70,7 +70,9 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("AirDateUtc").AsDateTime().Nullable()
                 .WithColumn("Runtime").AsInt32().Nullable()
                 .WithColumn("UnverifiedSceneNumbering").AsBoolean().NotNullable().WithDefaultValue(false)
+                .WithColumn("IsSpecial").AsBoolean().NotNullable().WithDefaultValue(false)
                 .WithColumn("EpisodeFileId").AsInt32().Nullable()
+                .WithColumn("MediaType").AsInt32().NotNullable().WithDefaultValue(2)
                 .WithColumn("Monitored").AsBoolean().NotNullable().WithDefaultValue(true)
                 .WithColumn("QualityProfileId").AsInt32().NotNullable()
                 .WithColumn("Path").AsString().Nullable()
@@ -93,8 +95,9 @@ namespace NzbDrone.Core.Datastore.Migration
             Create.Index("IX_Episodes_Monitored").OnTable("Episodes").OnColumn("Monitored");
 
             Create.TableForModel("EpisodeFiles")
-                .WithColumn("TVShowId").AsInt32().NotNullable()
-                .WithColumn("SeasonNumber").AsInt32().NotNullable()
+                .WithColumn("TVShowId").AsInt32().Nullable()
+                .WithColumn("SeasonId").AsInt32().Nullable()
+                .WithColumn("EpisodeId").AsInt32().Nullable()
                 .WithColumn("RelativePath").AsString().Nullable()
                 .WithColumn("Path").AsString().Nullable()
                 .WithColumn("Size").AsInt64().NotNullable()
@@ -107,9 +110,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("MediaInfo").AsString().Nullable();
 
             Create.Index("IX_EpisodeFiles_TVShowId").OnTable("EpisodeFiles").OnColumn("TVShowId");
-            Create.Index("IX_EpisodeFiles_TVShowId_SeasonNumber").OnTable("EpisodeFiles")
-                .OnColumn("TVShowId").Ascending()
-                .OnColumn("SeasonNumber").Ascending();
+            Create.Index("IX_EpisodeFiles_SeasonId").OnTable("EpisodeFiles").OnColumn("SeasonId");
+            Create.Index("IX_EpisodeFiles_EpisodeId").OnTable("EpisodeFiles").OnColumn("EpisodeId");
         }
     }
 }

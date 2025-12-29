@@ -8,6 +8,7 @@ using NzbDrone.Core.BookSeries;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Monitoring.Events;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.TV;
 
 namespace NzbDrone.Core.Monitoring
 {
@@ -22,6 +23,9 @@ namespace NzbDrone.Core.Monitoring
         private readonly IArtistRepository _artistRepository;
         private readonly IAlbumRepository _albumRepository;
         private readonly ITrackRepository _trackRepository;
+        private readonly ITVShowRepository _tvShowRepository;
+        private readonly ISeasonRepository _seasonRepository;
+        private readonly IEpisodeRepository _episodeRepository;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
@@ -33,6 +37,9 @@ namespace NzbDrone.Core.Monitoring
             IArtistRepository artistRepository,
             IAlbumRepository albumRepository,
             ITrackRepository trackRepository,
+            ITVShowRepository tvShowRepository,
+            ISeasonRepository seasonRepository,
+            IEpisodeRepository episodeRepository,
             IEventAggregator eventAggregator,
             Logger logger)
         {
@@ -43,6 +50,9 @@ namespace NzbDrone.Core.Monitoring
             _artistRepository = artistRepository;
             _albumRepository = albumRepository;
             _trackRepository = trackRepository;
+            _tvShowRepository = tvShowRepository;
+            _seasonRepository = seasonRepository;
+            _episodeRepository = episodeRepository;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -252,6 +262,149 @@ namespace NzbDrone.Core.Monitoring
                 .Where(t => t.Monitored)
                 .Where(t => !t.AlbumId.HasValue || monitoredAlbums.Contains(t.AlbumId.Value))
                 .ToList();
+        }
+
+        public bool IsEffectivelyMonitored(Episode episode)
+        {
+            return episode.Monitored && !IsTVAncestorUnmonitored(episode.SeasonId, episode.TVShowId);
+        }
+
+        public bool IsEffectivelyMonitored(Season season)
+        {
+            return season.Monitored && !IsTVAncestorUnmonitored(null, season.TVShowId);
+        }
+
+        public void SetTVShowMonitored(int tvShowId, bool monitored)
+        {
+            var tvShow = _tvShowRepository.Get(tvShowId);
+            if (tvShow == null)
+            {
+                _logger.Warn("TVShow with id {0} not found", tvShowId);
+                return;
+            }
+
+            var previousMonitored = tvShow.Monitored;
+            if (previousMonitored == monitored)
+            {
+                return;
+            }
+
+            tvShow.Monitored = monitored;
+            _tvShowRepository.Update(tvShow);
+
+            var changeEvent = new TVShowMonitoringChangedEvent(tvShow, previousMonitored);
+
+            if (previousMonitored && !monitored)
+            {
+                CascadeUnmonitorFromTVShow(tvShowId, changeEvent);
+            }
+
+            _eventAggregator.PublishEvent(changeEvent);
+
+            _logger.Info("TVShow {0} monitoring changed from {1} to {2}. Affected: {3} seasons, {4} episodes",
+                tvShow.Title,
+                previousMonitored,
+                monitored,
+                changeEvent.AffectedSeasonsCount,
+                changeEvent.AffectedEpisodesCount);
+        }
+
+        public void SetSeasonMonitored(int seasonId, bool monitored)
+        {
+            var season = _seasonRepository.Get(seasonId);
+            if (season == null)
+            {
+                _logger.Warn("Season with id {0} not found", seasonId);
+                return;
+            }
+
+            var previousMonitored = season.Monitored;
+            if (previousMonitored == monitored)
+            {
+                return;
+            }
+
+            season.Monitored = monitored;
+            _seasonRepository.Update(season);
+
+            var changeEvent = new SeasonMonitoringChangedEvent(season, previousMonitored);
+
+            if (previousMonitored && !monitored)
+            {
+                CascadeUnmonitorFromSeason(seasonId, changeEvent);
+            }
+
+            _eventAggregator.PublishEvent(changeEvent);
+
+            _logger.Info("Season {0} monitoring changed from {1} to {2}. Affected: {3} episodes",
+                season.SeasonNumber,
+                previousMonitored,
+                monitored,
+                changeEvent.AffectedEpisodesCount);
+        }
+
+        public List<Episode> GetEffectivelyMonitoredEpisodes()
+        {
+            var monitoredTVShows = _tvShowRepository.GetMonitored()
+                .Select(t => t.Id)
+                .ToHashSet();
+
+            var monitoredSeasons = _seasonRepository.All()
+                .Where(s => s.Monitored)
+                .Where(s => !s.TVShowId.HasValue || monitoredTVShows.Contains(s.TVShowId.Value))
+                .Select(s => s.Id)
+                .ToHashSet();
+
+            return _episodeRepository.All()
+                .Where(e => e.Monitored)
+                .Where(e => !e.SeasonId.HasValue || monitoredSeasons.Contains(e.SeasonId.Value))
+                .ToList();
+        }
+
+        private bool IsTVAncestorUnmonitored(int? seasonId, int? tvShowId)
+        {
+            if (seasonId.HasValue)
+            {
+                var season = _seasonRepository.Get(seasonId.Value);
+                if (season != null && !season.Monitored)
+                {
+                    return true;
+                }
+            }
+
+            if (tvShowId.HasValue)
+            {
+                var tvShow = _tvShowRepository.Get(tvShowId.Value);
+                if (tvShow != null && !tvShow.Monitored)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void CascadeUnmonitorFromTVShow(int tvShowId, TVShowMonitoringChangedEvent changeEvent)
+        {
+            var seasonsToUnmonitor = _seasonRepository.FindByTVShowId(tvShowId).Where(s => s.Monitored).ToList();
+            changeEvent.AffectedSeasonsCount = UnmonitorEntities(
+                seasonsToUnmonitor,
+                s => s.Monitored = false,
+                _seasonRepository.UpdateMany);
+
+            var seasonIds = seasonsToUnmonitor.Select(s => s.Id).ToList();
+            changeEvent.AffectedEpisodesCount = UnmonitorEntities(
+                seasonIds.SelectMany(id => _episodeRepository.FindBySeasonId(id)).Where(e => e.Monitored).ToList(),
+                e => e.Monitored = false,
+                _episodeRepository.UpdateMany);
+        }
+
+        private void CascadeUnmonitorFromSeason(int seasonId, SeasonMonitoringChangedEvent changeEvent)
+        {
+            changeEvent.AffectedEpisodesCount = UnmonitorEntities(
+                _episodeRepository.FindBySeasonId(seasonId).Where(e => e.Monitored).ToList(),
+                e => e.Monitored = false,
+                _episodeRepository.UpdateMany);
         }
 
         private bool IsMusicAncestorUnmonitored(int? artistId)

@@ -35,7 +35,7 @@ namespace Radarr.Api.V3.TVShow
             return new SeasonResource
             {
                 Id = model.Id,
-                TVShowId = model.TVShowId,
+                TVShowId = model.TVShowId ?? 0,
                 SeasonNumber = model.SeasonNumber,
                 Title = model.Title,
                 Overview = model.Overview,

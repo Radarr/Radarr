@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using NLog;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Monitoring;
 using NzbDrone.Core.TV.Events;
 
 namespace NzbDrone.Core.TV
@@ -12,42 +13,47 @@ namespace NzbDrone.Core.TV
         List<TVShow> GetTVShows(IEnumerable<int> tvShowIds);
         TVShow AddTVShow(TVShow newTVShow);
         List<TVShow> AddTVShows(List<TVShow> newTVShows);
+        TVShow FindByTitle(string title);
         TVShow FindByTvdbId(int tvdbId);
         TVShow FindByImdbId(string imdbId);
-        TVShow FindByAniDbId(int aniDbId);
-        TVShow FindByTitle(string title);
-        TVShow FindByPath(string path);
-        List<TVShow> GetMonitored();
-        Dictionary<int, string> AllTVShowPaths();
         void DeleteTVShow(int tvShowId, bool deleteFiles);
         void DeleteTVShows(List<int> tvShowIds, bool deleteFiles);
         List<TVShow> GetAllTVShows();
-        Dictionary<int, List<int>> AllTVShowTags();
+        List<TVShow> GetMonitoredTVShows();
         TVShow UpdateTVShow(TVShow tvShow);
         List<TVShow> UpdateTVShows(List<TVShow> tvShows);
-        bool TVShowPathExists(string folder);
+        bool TVShowPathExists(string path);
     }
 
     public class TVShowService : ITVShowService
     {
         private readonly ITVShowRepository _tvShowRepository;
+        private readonly IHierarchicalMonitoringService _hierarchicalMonitoringService;
         private readonly IEventAggregator _eventAggregator;
-        private readonly Logger _logger;
 
-        public TVShowService(ITVShowRepository tvShowRepository,
-                             IEventAggregator eventAggregator,
-                             Logger logger)
+        public TVShowService(
+            ITVShowRepository tvShowRepository,
+            IHierarchicalMonitoringService hierarchicalMonitoringService,
+            IEventAggregator eventAggregator)
         {
             _tvShowRepository = tvShowRepository;
+            _hierarchicalMonitoringService = hierarchicalMonitoringService;
             _eventAggregator = eventAggregator;
-            _logger = logger;
         }
 
-        public TVShow GetTVShow(int tvShowId) => _tvShowRepository.Get(tvShowId);
-        public List<TVShow> GetTVShows(IEnumerable<int> tvShowIds) => _tvShowRepository.Get(tvShowIds).ToList();
+        public TVShow GetTVShow(int tvShowId)
+        {
+            return _tvShowRepository.Get(tvShowId);
+        }
+
+        public List<TVShow> GetTVShows(IEnumerable<int> tvShowIds)
+        {
+            return _tvShowRepository.Get(tvShowIds).ToList();
+        }
 
         public TVShow AddTVShow(TVShow newTVShow)
         {
+            newTVShow.Added = DateTime.UtcNow;
             var tvShow = _tvShowRepository.Insert(newTVShow);
             _eventAggregator.PublishEvent(new TVShowAddedEvent(tvShow));
             return tvShow;
@@ -55,6 +61,12 @@ namespace NzbDrone.Core.TV
 
         public List<TVShow> AddTVShows(List<TVShow> newTVShows)
         {
+            var now = DateTime.UtcNow;
+            foreach (var tvShow in newTVShows)
+            {
+                tvShow.Added = now;
+            }
+
             _tvShowRepository.InsertMany(newTVShows);
 
             foreach (var tvShow in newTVShows)
@@ -65,16 +77,20 @@ namespace NzbDrone.Core.TV
             return newTVShows;
         }
 
-        public TVShow FindByTvdbId(int tvdbId) => _tvShowRepository.FindByTvdbId(tvdbId);
-        public TVShow FindByImdbId(string imdbId) => _tvShowRepository.FindByImdbId(imdbId);
-        public TVShow FindByAniDbId(int aniDbId) => _tvShowRepository.FindByAniDbId(aniDbId);
-        public TVShow FindByTitle(string title) => _tvShowRepository.FindByTitle(title);
-        public TVShow FindByPath(string path) => _tvShowRepository.FindByPath(path);
-        public List<TVShow> GetMonitored() => _tvShowRepository.GetMonitored();
-        public Dictionary<int, string> AllTVShowPaths() => _tvShowRepository.AllTVShowPaths();
-        public Dictionary<int, List<int>> AllTVShowTags() => _tvShowRepository.AllTVShowTags();
-        public bool TVShowPathExists(string folder) => _tvShowRepository.TVShowPathExists(folder);
-        public List<TVShow> GetAllTVShows() => _tvShowRepository.All().ToList();
+        public TVShow FindByTitle(string title)
+        {
+            return _tvShowRepository.FindByTitle(title);
+        }
+
+        public TVShow FindByTvdbId(int tvdbId)
+        {
+            return _tvShowRepository.FindByTvdbId(tvdbId);
+        }
+
+        public TVShow FindByImdbId(string imdbId)
+        {
+            return _tvShowRepository.FindByImdbId(imdbId);
+        }
 
         public void DeleteTVShow(int tvShowId, bool deleteFiles)
         {
@@ -94,19 +110,39 @@ namespace NzbDrone.Core.TV
             }
         }
 
+        public List<TVShow> GetAllTVShows()
+        {
+            return _tvShowRepository.All().ToList();
+        }
+
+        public List<TVShow> GetMonitoredTVShows()
+        {
+            return _tvShowRepository.GetMonitored();
+        }
+
         public TVShow UpdateTVShow(TVShow tvShow)
         {
-            var storedTVShow = _tvShowRepository.Get(tvShow.Id);
-            _tvShowRepository.Update(tvShow);
-            _eventAggregator.PublishEvent(new TVShowEditedEvent(tvShow, storedTVShow));
-            return tvShow;
+            var existingTVShow = _tvShowRepository.Get(tvShow.Id);
+
+            if (existingTVShow.Monitored != tvShow.Monitored)
+            {
+                _hierarchicalMonitoringService.SetTVShowMonitored(tvShow.Id, tvShow.Monitored);
+            }
+
+            var updatedTVShow = _tvShowRepository.Update(tvShow);
+            _eventAggregator.PublishEvent(new TVShowEditedEvent(updatedTVShow, existingTVShow));
+            return updatedTVShow;
         }
 
         public List<TVShow> UpdateTVShows(List<TVShow> tvShows)
         {
             _tvShowRepository.UpdateMany(tvShows);
-            _eventAggregator.PublishEvent(new TVShowsBulkEditedEvent(tvShows));
             return tvShows;
+        }
+
+        public bool TVShowPathExists(string path)
+        {
+            return _tvShowRepository.TVShowPathExists(path);
         }
     }
 }

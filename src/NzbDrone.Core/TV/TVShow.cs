@@ -12,7 +12,7 @@ namespace NzbDrone.Core.TV
             Genres = new List<string>();
         }
 
-        public int TvdbId { get; set; }
+        public int? TvdbId { get; set; }
         public int? TmdbId { get; set; }
         public string ImdbId { get; set; }
         public int? AniDbId { get; set; }
@@ -23,13 +23,11 @@ namespace NzbDrone.Core.TV
         public string Overview { get; set; }
         public string Network { get; set; }
         public TVShowStatus Status { get; set; }
-
         public int? Runtime { get; set; }
         public string AirTime { get; set; }
         public string Certification { get; set; }
         public DateTime? FirstAired { get; set; }
         public int Year { get; set; }
-
         public List<string> Genres { get; set; }
         public string OriginalLanguage { get; set; }
 
@@ -41,11 +39,10 @@ namespace NzbDrone.Core.TV
         public string RootFolderPath { get; set; }
         public int QualityProfileId { get; set; }
         public bool SeasonFolder { get; set; }
-
         public bool Monitored { get; set; }
         public bool MonitorNewItems { get; set; }
-        public HashSet<int> Tags { get; set; }
         public DateTime Added { get; set; }
+        public HashSet<int> Tags { get; set; }
         public DateTime? LastSearchTime { get; set; }
 
         public override string ToString()

@@ -10,21 +10,15 @@ namespace NzbDrone.Core.TV
     {
         List<Episode> FindByTVShowId(int tvShowId);
         List<Episode> FindBySeasonId(int seasonId);
-        List<Episode> FindByTVShowIdAndSeasonNumber(int tvShowId, int seasonNumber);
-        Episode FindByTVShowIdAndEpisode(int tvShowId, int seasonNumber, int episodeNumber);
+        Episode FindByTVShowIdAndEpisodeNumber(int tvShowId, int seasonNumber, int episodeNumber);
         Episode FindByTVShowIdAndAbsoluteNumber(int tvShowId, int absoluteNumber);
-        Episode FindByAirDate(int tvShowId, string airDate);
-        List<Episode> FindBySeasonAndEpisode(int tvShowId, int seasonNumber, int[] episodeNumbers);
-        List<Episode> FindByAbsoluteEpisodeNumber(int tvShowId, int[] absoluteEpisodeNumbers);
-        List<Episode> EpisodesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
-        Episode FindByPath(string path);
-        Dictionary<int, string> AllEpisodePaths();
+        List<Episode> FindByAirDate(int tvShowId, DateTime airDate);
+        List<Episode> GetMonitored();
     }
 
     public class EpisodeRepository : BasicRepository<Episode>, IEpisodeRepository
     {
-        public EpisodeRepository(IMainDatabase database,
-                                 IEventAggregator eventAggregator)
+        public EpisodeRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
         }
@@ -39,71 +33,29 @@ namespace NzbDrone.Core.TV
             return Query(e => e.SeasonId == seasonId);
         }
 
-        public List<Episode> FindByTVShowIdAndSeasonNumber(int tvShowId, int seasonNumber)
-        {
-            return Query(e => e.TVShowId == tvShowId && e.SeasonNumber == seasonNumber);
-        }
-
-        public Episode FindByTVShowIdAndEpisode(int tvShowId, int seasonNumber, int episodeNumber)
+        public Episode FindByTVShowIdAndEpisodeNumber(int tvShowId, int seasonNumber, int episodeNumber)
         {
             return Query(e => e.TVShowId == tvShowId &&
-                              e.SeasonNumber == seasonNumber &&
-                              e.EpisodeNumber == episodeNumber).FirstOrDefault();
+                             e.SeasonNumber == seasonNumber &&
+                             e.EpisodeNumber == episodeNumber).FirstOrDefault();
         }
 
         public Episode FindByTVShowIdAndAbsoluteNumber(int tvShowId, int absoluteNumber)
         {
             return Query(e => e.TVShowId == tvShowId &&
-                              e.AbsoluteEpisodeNumber == absoluteNumber).FirstOrDefault();
+                             e.AbsoluteEpisodeNumber == absoluteNumber).FirstOrDefault();
         }
 
-        public Episode FindByAirDate(int tvShowId, string airDate)
-        {
-            if (!DateTime.TryParse(airDate, out var date))
-            {
-                return null;
-            }
-
-            return Query(e => e.TVShowId == tvShowId &&
-                              e.AirDate.HasValue &&
-                              e.AirDate.Value.Date == date.Date).FirstOrDefault();
-        }
-
-        public List<Episode> FindBySeasonAndEpisode(int tvShowId, int seasonNumber, int[] episodeNumbers)
+        public List<Episode> FindByAirDate(int tvShowId, DateTime airDate)
         {
             return Query(e => e.TVShowId == tvShowId &&
-                              e.SeasonNumber == seasonNumber &&
-                              episodeNumbers.Contains(e.EpisodeNumber));
+                             e.AirDate.HasValue &&
+                             e.AirDate.Value.Date == airDate.Date);
         }
 
-        public List<Episode> FindByAbsoluteEpisodeNumber(int tvShowId, int[] absoluteEpisodeNumbers)
+        public List<Episode> GetMonitored()
         {
-            return Query(e => e.TVShowId == tvShowId &&
-                              e.AbsoluteEpisodeNumber.HasValue &&
-                              absoluteEpisodeNumbers.Contains(e.AbsoluteEpisodeNumber.Value));
-        }
-
-        public List<Episode> EpisodesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)
-        {
-            var query = Query(e => e.AirDateUtc >= start && e.AirDateUtc <= end);
-
-            if (!includeUnmonitored)
-            {
-                query = query.Where(e => e.Monitored).ToList();
-            }
-
-            return query;
-        }
-
-        public Episode FindByPath(string path)
-        {
-            return Query(e => e.Path == path).FirstOrDefault();
-        }
-
-        public Dictionary<int, string> AllEpisodePaths()
-        {
-            var episodes = All();
-            return episodes.ToDictionary(e => e.Id, e => e.Path);
+            return Query(e => e.Monitored);
         }
     }
 }

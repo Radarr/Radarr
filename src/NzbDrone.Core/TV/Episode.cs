@@ -11,8 +11,8 @@ namespace NzbDrone.Core.TV
             MediaType = MediaType.TV;
         }
 
-        public int TVShowId { get; set; }
-        public int SeasonId { get; set; }
+        public int? TVShowId { get; set; }
+        public int? SeasonId { get; set; }
 
         public int SeasonNumber { get; set; }
         public int EpisodeNumber { get; set; }
@@ -24,12 +24,11 @@ namespace NzbDrone.Core.TV
 
         public string Title { get; set; }
         public string Overview { get; set; }
-
         public DateTime? AirDate { get; set; }
         public DateTime? AirDateUtc { get; set; }
         public int? Runtime { get; set; }
 
-        public bool IsSpecial => SeasonNumber == 0;
+        public bool IsSpecial { get; set; }
         public bool UnverifiedSceneNumbering { get; set; }
 
         public int? EpisodeFileId { get; set; }
@@ -39,12 +38,7 @@ namespace NzbDrone.Core.TV
 
         public override string ToString()
         {
-            if (AbsoluteEpisodeNumber.HasValue && SeasonNumber > 0)
-            {
-                return $"{Title} - S{SeasonNumber:00}E{EpisodeNumber:00} ({AbsoluteEpisodeNumber})";
-            }
-
-            return $"{Title} - S{SeasonNumber:00}E{EpisodeNumber:00}";
+            return $"S{SeasonNumber:00}E{EpisodeNumber:00} - {Title}";
         }
     }
 }

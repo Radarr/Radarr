@@ -3,34 +3,47 @@ namespace NzbDrone.Core.TV
     public enum StreamingSource
     {
         Unknown = 0,
-        Amazon,     // AMZN
-        Netflix,    // NF
-        Disney,     // DSNP
-        AppleTV,    // ATVP
-        Hulu,       // HULU
-        HBO,        // HBO, HMAX
-        Peacock,    // PCOK
-        Paramount,  // PMTP
-        CrunchyRoll, // CR
-        Funimation, // FUNI
-        Hidive,     // HIDV
-        VRV,        // VRV
-        Rakuten,    // RKTN
-        ITunes,     // iTunes
-        Vudu,       // VUDU
-        Stan,       // STAN
-        BBC,        // iP
-        ITV,        // ITV
-        All4,       // 4OD
-        Now,        // NOW
-        Canal,      // CANAL
-        Wakanim,    // WAKA
-        DCUniverse, // DCU
-        Quibi,      // QIBI
-        Spectrum,   // SPEC
-        Showtime,   // SHO
-        Starz,      // STRP
-        TVLand,     // TVLAND
-        BritBox     // BRTBX
+        Amazon,
+        Netflix,
+        Disney,
+        Hulu,
+        AppleTV,
+        Peacock,
+        HBO,
+        HBOMax,
+        Paramount,
+        Crunchyroll,
+        CrunchyRoll,
+        Funimation,
+        Hidive,
+        VRV,
+        YouTube,
+        Tubi,
+        Pluto,
+        Roku,
+        ITV,
+        ITVX,
+        BBC,
+        Channel4,
+        All4,
+        Stan,
+        Binge,
+        Crave,
+        SkyShowtime,
+        Discovery,
+        Showtime,
+        Starz,
+        AMC,
+        BritBox,
+        Acorn,
+        Rakuten,
+        ITunes,
+        Vudu,
+        Now,
+        Canal,
+        Wakanim,
+        DCUniverse,
+        Quibi,
+        Spectrum
     }
 }

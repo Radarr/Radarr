@@ -14,8 +14,7 @@ namespace NzbDrone.Core.TV
 
     public class SeasonRepository : BasicRepository<Season>, ISeasonRepository
     {
-        public SeasonRepository(IMainDatabase database,
-                                IEventAggregator eventAggregator)
+        public SeasonRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
         }

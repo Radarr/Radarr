@@ -14,7 +14,7 @@ namespace Radarr.Api.V3.TVShow
             Monitored = true;
         }
 
-        public int TvdbId { get; set; }
+        public int? TvdbId { get; set; }
         public int? TmdbId { get; set; }
         public string ImdbId { get; set; }
         public int? AniDbId { get; set; }

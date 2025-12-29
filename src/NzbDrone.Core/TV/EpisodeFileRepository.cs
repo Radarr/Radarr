@@ -8,14 +8,13 @@ namespace NzbDrone.Core.TV
     public interface IEpisodeFileRepository : IBasicRepository<EpisodeFile>
     {
         List<EpisodeFile> FindByTVShowId(int tvShowId);
-        List<EpisodeFile> FindByTVShowIdAndSeasonNumber(int tvShowId, int seasonNumber);
-        EpisodeFile FindByPath(string path);
+        List<EpisodeFile> FindBySeasonId(int seasonId);
+        EpisodeFile FindByEpisodeId(int episodeId);
     }
 
     public class EpisodeFileRepository : BasicRepository<EpisodeFile>, IEpisodeFileRepository
     {
-        public EpisodeFileRepository(IMainDatabase database,
-                                     IEventAggregator eventAggregator)
+        public EpisodeFileRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
         }
@@ -25,14 +24,14 @@ namespace NzbDrone.Core.TV
             return Query(f => f.TVShowId == tvShowId);
         }
 
-        public List<EpisodeFile> FindByTVShowIdAndSeasonNumber(int tvShowId, int seasonNumber)
+        public List<EpisodeFile> FindBySeasonId(int seasonId)
         {
-            return Query(f => f.TVShowId == tvShowId && f.SeasonNumber == seasonNumber);
+            return Query(f => f.SeasonId == seasonId);
         }
 
-        public EpisodeFile FindByPath(string path)
+        public EpisodeFile FindByEpisodeId(int episodeId)
         {
-            return Query(f => f.Path == path).FirstOrDefault();
+            return Query(f => f.EpisodeId == episodeId).FirstOrDefault();
         }
     }
 }

@@ -7,7 +7,9 @@ namespace NzbDrone.Core.TV
 {
     public class EpisodeFile : ModelBase
     {
-        public int TVShowId { get; set; }
+        public int? TVShowId { get; set; }
+        public int? SeasonId { get; set; }
+        public int? EpisodeId { get; set; }
         public int SeasonNumber { get; set; }
 
         public string RelativePath { get; set; }
@@ -17,16 +19,15 @@ namespace NzbDrone.Core.TV
 
         public string SceneName { get; set; }
         public string ReleaseGroup { get; set; }
-
         public QualityModel Quality { get; set; }
-        public Language Language { get; set; }
         public StreamingSource StreamingSource { get; set; }
+        public Language Language { get; set; }
 
         public string MediaInfo { get; set; }
 
         public override string ToString()
         {
-            return Path;
+            return RelativePath ?? Path;
         }
     }
 }
