@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.BookSeries;
+using NzbDrone.Core.Datastore.Events;
 using NzbDrone.SignalR;
 using Radarr.Http;
 using Radarr.Http.REST;
