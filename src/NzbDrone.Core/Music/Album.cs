@@ -25,6 +25,7 @@ namespace NzbDrone.Core.Music
         public bool Monitored { get; set; }
         public int QualityProfileId { get; set; }
         public string Path { get; set; }
+        public string RootFolderPath { get; set; }
         public DateTime Added { get; set; }
         public HashSet<int> Tags { get; set; }
         public DateTime? LastSearchTime { get; set; }

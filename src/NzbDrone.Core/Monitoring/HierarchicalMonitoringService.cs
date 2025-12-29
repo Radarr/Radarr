@@ -6,16 +6,22 @@ using NzbDrone.Core.Authors;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Monitoring.Events;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Series;
 
 namespace NzbDrone.Core.Monitoring
 {
+    // S107: Constructor has many parameters - this is consistent with DI patterns in this codebase
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("SonarLint", "S107", Justification = "DI pattern requires injecting services")]
     public class HierarchicalMonitoringService : IHierarchicalMonitoringService
     {
         private readonly IAuthorRepository _authorRepository;
         private readonly ISeriesRepository _seriesRepository;
         private readonly IBookRepository _bookRepository;
         private readonly IAudiobookRepository _audiobookRepository;
+        private readonly IArtistRepository _artistRepository;
+        private readonly IAlbumRepository _albumRepository;
+        private readonly ITrackRepository _trackRepository;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
@@ -24,6 +30,9 @@ namespace NzbDrone.Core.Monitoring
             ISeriesRepository seriesRepository,
             IBookRepository bookRepository,
             IAudiobookRepository audiobookRepository,
+            IArtistRepository artistRepository,
+            IAlbumRepository albumRepository,
+            ITrackRepository trackRepository,
             IEventAggregator eventAggregator,
             Logger logger)
         {
@@ -31,6 +40,9 @@ namespace NzbDrone.Core.Monitoring
             _seriesRepository = seriesRepository;
             _bookRepository = bookRepository;
             _audiobookRepository = audiobookRepository;
+            _artistRepository = artistRepository;
+            _albumRepository = albumRepository;
+            _trackRepository = trackRepository;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -143,6 +155,162 @@ namespace NzbDrone.Core.Monitoring
                 .Where(a => !a.AuthorId.HasValue || monitoredAuthors.Contains(a.AuthorId.Value))
                 .Where(a => !a.SeriesId.HasValue || monitoredSeries.Contains(a.SeriesId.Value))
                 .ToList();
+        }
+
+        public bool IsEffectivelyMonitored(Album album)
+        {
+            return album.Monitored && !IsMusicAncestorUnmonitored(album.ArtistId);
+        }
+
+        public bool IsEffectivelyMonitored(Track track)
+        {
+            return track.Monitored && !IsMusicAncestorUnmonitored(track.AlbumId, null);
+        }
+
+        public void SetArtistMonitored(int artistId, bool monitored)
+        {
+            var artist = _artistRepository.Get(artistId);
+            if (artist == null)
+            {
+                _logger.Warn("Artist with id {0} not found", artistId);
+                return;
+            }
+
+            var previousMonitored = artist.Monitored;
+            if (previousMonitored == monitored)
+            {
+                return;
+            }
+
+            artist.Monitored = monitored;
+            _artistRepository.Update(artist);
+
+            var changeEvent = new ArtistMonitoringChangedEvent(artist, previousMonitored);
+
+            if (previousMonitored && !monitored)
+            {
+                CascadeUnmonitorFromArtist(artistId, changeEvent);
+            }
+
+            _eventAggregator.PublishEvent(changeEvent);
+
+            _logger.Info("Artist {0} monitoring changed from {1} to {2}. Affected: {3} albums, {4} tracks",
+                artist.Name,
+                previousMonitored,
+                monitored,
+                changeEvent.AffectedAlbumsCount,
+                changeEvent.AffectedTracksCount);
+        }
+
+        public void SetAlbumMonitored(int albumId, bool monitored)
+        {
+            var album = _albumRepository.Get(albumId);
+            if (album == null)
+            {
+                _logger.Warn("Album with id {0} not found", albumId);
+                return;
+            }
+
+            var previousMonitored = album.Monitored;
+            if (previousMonitored == monitored)
+            {
+                return;
+            }
+
+            album.Monitored = monitored;
+            _albumRepository.Update(album);
+
+            var changeEvent = new AlbumMonitoringChangedEvent(album, previousMonitored);
+
+            if (previousMonitored && !monitored)
+            {
+                CascadeUnmonitorFromAlbum(albumId, changeEvent);
+            }
+
+            _eventAggregator.PublishEvent(changeEvent);
+
+            _logger.Info("Album {0} monitoring changed from {1} to {2}. Affected: {3} tracks",
+                album.Title,
+                previousMonitored,
+                monitored,
+                changeEvent.AffectedTracksCount);
+        }
+
+        public List<Track> GetEffectivelyMonitoredTracks()
+        {
+            var monitoredArtists = _artistRepository.GetMonitored()
+                .Select(a => a.Id)
+                .ToHashSet();
+
+            var monitoredAlbums = _albumRepository.All()
+                .Where(a => a.Monitored)
+                .Where(a => !a.ArtistId.HasValue || monitoredArtists.Contains(a.ArtistId.Value))
+                .Select(a => a.Id)
+                .ToHashSet();
+
+            return _trackRepository.All()
+                .Where(t => t.Monitored)
+                .Where(t => !t.AlbumId.HasValue || monitoredAlbums.Contains(t.AlbumId.Value))
+                .ToList();
+        }
+
+        private bool IsMusicAncestorUnmonitored(int? artistId)
+        {
+            if (artistId.HasValue)
+            {
+                var artist = _artistRepository.Get(artistId.Value);
+                if (artist != null && !artist.Monitored)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsMusicAncestorUnmonitored(int? albumId, int? artistId)
+        {
+            if (albumId.HasValue)
+            {
+                var album = _albumRepository.Get(albumId.Value);
+                if (album != null)
+                {
+                    if (!album.Monitored)
+                    {
+                        return true;
+                    }
+
+                    if (album.ArtistId.HasValue)
+                    {
+                        return IsMusicAncestorUnmonitored(album.ArtistId);
+                    }
+                }
+            }
+
+            return IsMusicAncestorUnmonitored(artistId);
+        }
+
+        private void CascadeUnmonitorFromArtist(int artistId, ArtistMonitoringChangedEvent changeEvent)
+        {
+            var albumsToUnmonitor = _albumRepository.FindByArtistId(artistId).Where(a => a.Monitored).ToList();
+            changeEvent.AffectedAlbumsCount = UnmonitorEntities(
+                albumsToUnmonitor,
+                a => a.Monitored = false,
+                _albumRepository.UpdateMany);
+
+            var albumIds = albumsToUnmonitor.Select(a => a.Id).ToList();
+            changeEvent.AffectedTracksCount = UnmonitorEntities(
+                albumIds.SelectMany(id => _trackRepository.FindByAlbumId(id)).Where(t => t.Monitored).ToList(),
+                t => t.Monitored = false,
+                _trackRepository.UpdateMany);
+        }
+
+        private void CascadeUnmonitorFromAlbum(int albumId, AlbumMonitoringChangedEvent changeEvent)
+        {
+            changeEvent.AffectedTracksCount = UnmonitorEntities(
+                _trackRepository.FindByAlbumId(albumId).Where(t => t.Monitored).ToList(),
+                t => t.Monitored = false,
+                _trackRepository.UpdateMany);
         }
 
         private bool IsAncestorUnmonitored(int? seriesId, int? authorId)
