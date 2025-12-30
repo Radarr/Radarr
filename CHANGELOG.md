@@ -25,6 +25,17 @@ All notable changes to Aletheia are documented in this file.
   - OpenLibrary metadata provider (BookInfoProxy)
   - AudiobookInfoProxy with narrator support
 
+- **Phase 5: TV Shows** (December 2025) - PR #149
+  - TVShow, Season, Episode entities with hierarchical relationships
+  - EpisodeFile entity for downloaded content tracking
+  - TVShowStatus and SeriesType enums for series metadata
+  - TVDbProxy metadata provider for series/episode lookup
+  - TVParser with scene numbering support
+  - Full CRUD API controllers (TVShowController, SeasonController, EpisodeController)
+  - Frontend pages: TV Shows index, show details with season/episode grids
+  - Season/episode-level monitoring with cascade logic
+  - Integration with existing quality profiles and indexer system
+
 - **Phase 6: Music Foundation** (December 2025) - PR #147
   - Artist, Album, Track entities with hierarchical relationships
   - 60+ music quality definitions covering:

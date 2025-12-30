@@ -82,15 +82,18 @@ See [ROADMAP.md](../ROADMAP.md) for detailed phase planning.
 - Phase 0-1: Privacy & security fixes
 - Phase 2: Foundation (fork, CI/CD, branding)
 - Phase 2.5: Community standards, quality gates, Unpackerr absorption
+- Phase 3: Multi-media foundation (database generalization, base entities)
+- Phase 4: Books & audiobooks support
+- Phase 5: TV shows (foundation)
+- Phase 6: Music (foundation)
 
 **Current:**
-- Phase 3: Multi-media foundation (database generalization, indexer management)
+- Phase 5+: TV shows (advanced: anime, multi-episode, packs)
+- Phase 6+: Music (fingerprinting and quality analysis)
 
 **Planned:**
-- Phase 4: Books & audiobooks support
-- Phase 5: TV shows
-- Phase 6: Music (with fingerprinting and quality analysis)
 - Phase 7: Subtitles (Bazarr replacement), podcasts, comics
+- Phase 8: Advanced indexer integration (Prowlarr absorption)
 
 ## Contributing
 
