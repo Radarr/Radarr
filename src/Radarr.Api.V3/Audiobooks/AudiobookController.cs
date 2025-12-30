@@ -80,7 +80,7 @@ namespace Radarr.Api.V3.Audiobooks
         protected override Audiobook ApplyResourceToModel(AudiobookResource resource, Audiobook audiobook) => resource.ToModel(audiobook);
 
         [HttpGet]
-        public List<AudiobookResource> GetAudiobooks(int? authorId = null, int? seriesId = null, int? bookId = null, string narrator = null)
+        public List<AudiobookResource> GetAudiobooks(int? authorId = null, int? bookSeriesId = null, int? bookId = null, string narrator = null)
         {
             List<Audiobook> audiobooks;
 
@@ -88,9 +88,9 @@ namespace Radarr.Api.V3.Audiobooks
             {
                 audiobooks = _audiobookService.FindByAuthorId(authorId.Value);
             }
-            else if (seriesId.HasValue)
+            else if (bookSeriesId.HasValue)
             {
-                audiobooks = _audiobookService.FindBySeriesId(seriesId.Value);
+                audiobooks = _audiobookService.FindByBookSeriesId(bookSeriesId.Value);
             }
             else if (bookId.HasValue)
             {

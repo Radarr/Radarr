@@ -117,6 +117,7 @@ import {
   faTimes as fasTimes,
   faTimesCircle as fasTimesCircle,
   faTrashAlt as fasTrashAlt,
+  faTv as fasTv,
   faUser as fasUser,
   faUserPlus as fasUserPlus,
   faVial as fasVial,
@@ -258,3 +259,4 @@ export const WARNING = fasExclamationTriangle;
 export const WIKI = fasBookReader;
 export const BLOCKLIST = fasBan;
 export const BOOK = fasBook;
+export const TV = fasTv;

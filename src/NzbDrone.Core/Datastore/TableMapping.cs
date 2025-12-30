@@ -49,6 +49,7 @@ using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Tags;
 using NzbDrone.Core.ThingiProvider;
+using NzbDrone.Core.TV;
 using NzbDrone.Core.Update.History;
 using static Dapper.SqlMapper;
 
@@ -120,7 +121,7 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<Author>("Authors").RegisterModel();
 
-            Mapper.Entity<NzbDrone.Core.Series.Series>("Series").RegisterModel();
+            Mapper.Entity<NzbDrone.Core.BookSeries.BookSeries>("BookSeries").RegisterModel();
 
             Mapper.Entity<Movie>("Movies").RegisterModel()
                   .Ignore(s => s.RootFolderPath)
@@ -162,6 +163,15 @@ namespace NzbDrone.Core.Datastore
             Mapper.Entity<Track>("Tracks").RegisterModel();
 
             Mapper.Entity<MusicFile>("MusicFiles").RegisterModel();
+
+            Mapper.Entity<TVShow>("TVShows").RegisterModel();
+
+            Mapper.Entity<Season>("Seasons").RegisterModel();
+
+            Mapper.Entity<Episode>("Episodes").RegisterModel();
+
+            Mapper.Entity<EpisodeFile>("EpisodeFiles").RegisterModel()
+                  .Ignore(f => f.Path);
 
             Mapper.Entity<QualityDefinition>("QualityDefinitions").RegisterModel()
                   .Ignore(d => d.GroupName)

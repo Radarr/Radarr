@@ -20,7 +20,7 @@ interface Audiobook extends ModelBase {
   tags: number[];
   lastSearchTime?: string;
   authorId?: number;
-  seriesId?: number;
+  bookSeriesId?: number;
   seriesPosition?: number;
   isSaving?: boolean;
 }

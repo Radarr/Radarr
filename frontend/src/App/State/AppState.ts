@@ -5,11 +5,13 @@ import AudiobooksAppState from './AudiobooksAppState';
 import AuthorsAppState from './AuthorsAppState';
 import BlocklistAppState from './BlocklistAppState';
 import BooksAppState from './BooksAppState';
+import BookSeriesAppState from './BookSeriesAppState';
 import CalendarAppState from './CalendarAppState';
 import CaptchaAppState from './CaptchaAppState';
 import CommandAppState from './CommandAppState';
 import CustomFiltersAppState from './CustomFiltersAppState';
 import DashboardAppState from './DashboardAppState';
+import EpisodesAppState from './EpisodesAppState';
 import ExtraFilesAppState from './ExtraFilesAppState';
 import HistoryAppState, { MovieHistoryAppState } from './HistoryAppState';
 import InteractiveImportAppState from './InteractiveImportAppState';
@@ -27,10 +29,11 @@ import ProviderOptionsAppState from './ProviderOptionsAppState';
 import QueueAppState from './QueueAppState';
 import ReleasesAppState from './ReleasesAppState';
 import RootFolderAppState from './RootFolderAppState';
-import SeriesAppState from './SeriesAppState';
+import SeasonsAppState from './SeasonsAppState';
 import SettingsAppState from './SettingsAppState';
 import SystemAppState from './SystemAppState';
 import TagsAppState from './TagsAppState';
+import TVShowsAppState from './TVShowsAppState';
 import WantedAppState from './WantedAppState';
 
 interface FilterBuilderPropOption {
@@ -99,6 +102,7 @@ interface AppState {
   commands: CommandAppState;
   customFilters: CustomFiltersAppState;
   dashboard: DashboardAppState;
+  episodes: EpisodesAppState;
   extraFiles: ExtraFilesAppState;
   history: HistoryAppState;
   interactiveImport: InteractiveImportAppState;
@@ -117,10 +121,12 @@ interface AppState {
   queue: QueueAppState;
   releases: ReleasesAppState;
   rootFolders: RootFolderAppState;
-  series: SeriesAppState;
+  bookSeries: BookSeriesAppState;
+  seasons: SeasonsAppState;
   settings: SettingsAppState;
   system: SystemAppState;
   tags: TagsAppState;
+  tvShows: TVShowsAppState;
   wanted: WantedAppState;
 }
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using NzbDrone.Core.Audiobooks;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.TV;
 
 namespace NzbDrone.Core.Monitoring
 {
@@ -9,17 +10,22 @@ namespace NzbDrone.Core.Monitoring
     {
         bool IsEffectivelyMonitored(Book book);
         bool IsEffectivelyMonitored(Audiobook audiobook);
-        bool IsEffectivelyMonitored(NzbDrone.Core.Series.Series series);
+        bool IsEffectivelyMonitored(NzbDrone.Core.BookSeries.BookSeries bookSeries);
         bool IsEffectivelyMonitored(Album album);
         bool IsEffectivelyMonitored(Track track);
+        bool IsEffectivelyMonitored(Episode episode);
+        bool IsEffectivelyMonitored(Season season);
 
         void SetAuthorMonitored(int authorId, bool monitored);
-        void SetSeriesMonitored(int seriesId, bool monitored);
+        void SetBookSeriesMonitored(int bookSeriesId, bool monitored);
         void SetArtistMonitored(int artistId, bool monitored);
         void SetAlbumMonitored(int albumId, bool monitored);
+        void SetTVShowMonitored(int tvShowId, bool monitored);
+        void SetSeasonMonitored(int seasonId, bool monitored);
 
         List<Book> GetEffectivelyMonitoredBooks();
         List<Audiobook> GetEffectivelyMonitoredAudiobooks();
         List<Track> GetEffectivelyMonitoredTracks();
+        List<Episode> GetEffectivelyMonitoredEpisodes();
     }
 }

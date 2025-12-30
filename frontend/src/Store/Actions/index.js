@@ -12,6 +12,7 @@ import * as captcha from './captchaActions';
 import * as commands from './commandActions';
 import * as customFilters from './customFilterActions';
 import * as discoverMovie from './discoverMovieActions';
+import * as episodes from './episodeActions';
 import * as extraFiles from './extraFileActions';
 import * as history from './historyActions';
 import * as importMovie from './importMovieActions';
@@ -31,10 +32,12 @@ import * as providerOptions from './providerOptionActions';
 import * as queue from './queueActions';
 import * as releases from './releaseActions';
 import * as rootFolders from './rootFolderActions';
-import * as series from './seriesActions';
+import * as bookSeries from './bookSeriesActions';
+import * as seasons from './seasonActions';
 import * as settings from './settingsActions';
 import * as system from './systemActions';
 import * as tags from './tagActions';
+import * as tvShows from './tvShowActions';
 import * as wanted from './wantedActions';
 
 export default [
@@ -52,6 +55,7 @@ export default [
   commands,
   customFilters,
   discoverMovie,
+  episodes,
   movieFiles,
   extraFiles,
   history,
@@ -71,9 +75,11 @@ export default [
   movieHistory,
   movieIndex,
   movieCredits,
-  series,
+  bookSeries,
+  seasons,
   settings,
   system,
   tags,
+  tvShows,
   wanted
 ];
