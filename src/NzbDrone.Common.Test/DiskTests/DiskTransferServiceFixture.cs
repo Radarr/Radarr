@@ -547,17 +547,11 @@ namespace NzbDrone.Common.Test.DiskTests
 
             var root = GetFilledTempFolder();
             var rootDir = root.FullName;
-            var fromFileName = "source-file";
-            var from = Path.Combine(rootDir, fromFileName);
-            var to = Path.Combine(rootDir, "destination-file");
-
-            var oneSlash = new string(Path.DirectorySeparatorChar, 1);
-            var threeSlashes = new string(Path.DirectorySeparatorChar, 3);
-            var overSlashed = Path.Combine(rootDir.Replace(oneSlash, threeSlashes), fromFileName);
-
+            var from = Path.Combine(rootDir, "source-file");
+            var toRootDir = rootDir.Replace(Path.DirectorySeparatorChar.ToString(), new string(Path.DirectorySeparatorChar, 3));
+            var to = Path.Combine(toRootDir, "destination-file");
             File.WriteAllText(from, "Source file");
-
-            var mode = Subject.TransferFile(overSlashed, to, TransferMode.Copy);
+            var mode = Subject.TransferFile(from, to, TransferMode.Copy);
             mode.Should().Be(TransferMode.Copy);
         }
 
