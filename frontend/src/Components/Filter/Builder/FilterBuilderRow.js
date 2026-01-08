@@ -13,6 +13,7 @@ import IndexerFilterBuilderRowValueConnector from './IndexerFilterBuilderRowValu
 import LanguageFilterBuilderRowValue from './LanguageFilterBuilderRowValue';
 import MinimumAvailabilityFilterBuilderRowValue from './MinimumAvailabilityFilterBuilderRowValue';
 import MovieFilterBuilderRowValue from './MovieFilterBuilderRowValue';
+import DownloadStatusFilterBuilderRowValue from './DownloadStatusFilterBuilderRowValue';
 import ProtocolFilterBuilderRowValue from './ProtocolFilterBuilderRowValue';
 import QualityFilterBuilderRowValueConnector from './QualityFilterBuilderRowValueConnector';
 import QualityProfileFilterBuilderRowValue from './QualityProfileFilterBuilderRowValue';
@@ -86,6 +87,9 @@ function getRowValueConnector(selectedFilterBuilderProp) {
 
     case filterBuilderValueTypes.MOVIE:
       return MovieFilterBuilderRowValue;
+
+    case filterBuilderValueTypes.DOWNLOAD_STATUS:
+      return DownloadStatusFilterBuilderRowValue;
 
     case filterBuilderValueTypes.RELEASE_STATUS:
       return ReleaseStatusFilterBuilderRowValue;

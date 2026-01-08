@@ -11,6 +11,7 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Movies.Translations;
+using NzbDrone.Core.Queue;
 using Radarr.Http;
 
 namespace Radarr.Api.V3.Movies
@@ -25,6 +26,7 @@ namespace Radarr.Api.V3.Movies
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly MovieEditorValidator _movieEditorValidator;
         private readonly IUpgradableSpecification _upgradableSpecification;
+        private readonly IQueueService _queueService;
 
         public MovieEditorController(IMovieService movieService,
             IMovieTranslationService movieTranslationService,
@@ -32,7 +34,8 @@ namespace Radarr.Api.V3.Movies
             IConfigService configService,
             IManageCommandQueue commandQueueManager,
             MovieEditorValidator movieEditorValidator,
-            IUpgradableSpecification upgradableSpecification)
+            IUpgradableSpecification upgradableSpecification,
+            IQueueService queueService)
         {
             _movieService = movieService;
             _movieTranslationService = movieTranslationService;
@@ -41,6 +44,7 @@ namespace Radarr.Api.V3.Movies
             _commandQueueManager = commandQueueManager;
             _movieEditorValidator = movieEditorValidator;
             _upgradableSpecification = upgradableSpecification;
+            _queueService = queueService;
         }
 
         [HttpPut]
@@ -125,7 +129,7 @@ namespace Radarr.Api.V3.Movies
             foreach (var movie in updatedMovies)
             {
                 var translation = GetTranslationFromDict(tdict, movie.MovieMetadata, configLanguage);
-                var movieResource = movie.ToResource(availabilityDelay, translation, _upgradableSpecification);
+                    var movieResource = movie.ToResource(availabilityDelay, translation, _upgradableSpecification, null, _queueService);
 
                 MapCoversToLocal(movieResource);
 

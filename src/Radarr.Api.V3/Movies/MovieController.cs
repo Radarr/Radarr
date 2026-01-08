@@ -23,6 +23,7 @@ using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
+using NzbDrone.Core.Queue;
 using Radarr.Http;
 using Radarr.Http.REST;
 using Radarr.Http.REST.Attributes;
@@ -47,6 +48,7 @@ namespace Radarr.Api.V3.Movies
         private readonly IRootFolderService _rootFolderService;
         private readonly IUpgradableSpecification _qualityUpgradableSpecification;
         private readonly IConfigService _configService;
+        private readonly IQueueService _queueService;
 
         public MovieController(IBroadcastSignalRMessage signalRBroadcaster,
                            IMovieService moviesService,
@@ -58,6 +60,7 @@ namespace Radarr.Api.V3.Movies
                            IRootFolderService rootFolderService,
                            IUpgradableSpecification qualityUpgradableSpecification,
                            IConfigService configService,
+                   IQueueService queueService,
                            RootFolderValidator rootFolderValidator,
                            MappedNetworkDriveValidator mappedNetworkDriveValidator,
                            MoviePathValidator moviesPathValidator,
@@ -78,6 +81,7 @@ namespace Radarr.Api.V3.Movies
             _configService = configService;
             _coverMapper = coverMapper;
             _commandQueueManager = commandQueueManager;
+            _queueService = queueService;
             _rootFolderService = rootFolderService;
 
             SharedValidator.RuleFor(s => s.Path).Cascade(CascadeMode.Stop)
@@ -150,8 +154,8 @@ namespace Radarr.Api.V3.Movies
 
                 foreach (var movie in movies)
                 {
-                    var translation = GetTranslationFromDict(tdict, movie.MovieMetadata, translationLanguage);
-                    moviesResources.Add(movie.ToResource(availDelay, translation, _qualityUpgradableSpecification));
+                        var translation = GetTranslationFromDict(tdict, movie.MovieMetadata, translationLanguage);
+                        moviesResources.Add(movie.ToResource(availDelay, translation, _qualityUpgradableSpecification, null, _queueService));
                 }
 
                 if (!excludeLocalCovers)
@@ -191,7 +195,7 @@ namespace Radarr.Api.V3.Movies
             var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
             var translation = GetMovieTranslation(translations, movie.MovieMetadata, translationLanguage);
 
-            var resource = movie.ToResource(availDelay, translation, _qualityUpgradableSpecification);
+            var resource = movie.ToResource(availDelay, translation, _qualityUpgradableSpecification, null, _queueService);
             MapCoversToLocal(resource);
             FetchAndLinkMovieStatistics(resource);
 

@@ -576,6 +576,7 @@
   "DownloadPropersAndRepacksHelpTextCustomFormat": "Use 'Do not Prefer' to sort by custom format  score over Propers/Repacks",
   "DownloadPropersAndRepacksHelpTextWarning": "Use custom formats for automatic upgrades to Propers/Repacks",
   "DownloadStationStatusExtracting": "Extracting: {progress}%",
+  "DownloadStatus": "Download Status",
   "DownloadWarning": "Download warning: {warningMessage}",
   "Downloaded": "Downloaded",
   "DownloadedAndMonitored": "Downloaded (Monitored)",

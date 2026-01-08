@@ -6,6 +6,7 @@ using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.Queue;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles.Events;
@@ -30,6 +31,7 @@ namespace Radarr.Api.V3.Movies
         protected readonly ICustomFormatCalculationService _formatCalculator;
         protected readonly IConfigService _configService;
         protected readonly IMapCoversToLocal _coverMapper;
+        protected readonly IQueueService _queueService;
 
         protected MovieControllerWithSignalR(IMovieService movieService,
                                            IMovieTranslationService movieTranslationService,
@@ -38,7 +40,8 @@ namespace Radarr.Api.V3.Movies
                                            ICustomFormatCalculationService formatCalculator,
                                            IConfigService configService,
                                            IMapCoversToLocal coverMapper,
-                                           IBroadcastSignalRMessage signalRBroadcaster)
+                                           IBroadcastSignalRMessage signalRBroadcaster,
+                                           IQueueService queueService)
             : base(signalRBroadcaster)
         {
             _movieService = movieService;
@@ -48,18 +51,44 @@ namespace Radarr.Api.V3.Movies
             _formatCalculator = formatCalculator;
             _configService = configService;
             _coverMapper = coverMapper;
+            _queueService = queueService;
+        }
+
+        // Back-compat constructor (no queue service)
+        protected MovieControllerWithSignalR(IMovieService movieService,
+                                           IMovieTranslationService movieTranslationService,
+                                           IMovieStatisticsService movieStatisticsService,
+                                           IUpgradableSpecification upgradableSpecification,
+                                           ICustomFormatCalculationService formatCalculator,
+                                           IConfigService configService,
+                                           IMapCoversToLocal coverMapper,
+                                           IBroadcastSignalRMessage signalRBroadcaster)
+            : this(movieService, movieTranslationService, movieStatisticsService, upgradableSpecification, formatCalculator, configService, coverMapper, signalRBroadcaster, null)
+        {
         }
 
         protected MovieControllerWithSignalR(IMovieService movieService,
                                            IUpgradableSpecification upgradableSpecification,
                                            ICustomFormatCalculationService formatCalculator,
                                            IBroadcastSignalRMessage signalRBroadcaster,
+                                           IQueueService queueService,
                                            string resource)
             : base(signalRBroadcaster)
         {
             _movieService = movieService;
             _upgradableSpecification = upgradableSpecification;
             _formatCalculator = formatCalculator;
+            _queueService = queueService;
+        }
+
+        // Back-compat constructor (no queue service)
+        protected MovieControllerWithSignalR(IMovieService movieService,
+                                           IUpgradableSpecification upgradableSpecification,
+                                           ICustomFormatCalculationService formatCalculator,
+                                           IBroadcastSignalRMessage signalRBroadcaster,
+                                           string resource)
+            : this(movieService, upgradableSpecification, formatCalculator, signalRBroadcaster, null, resource)
+        {
         }
 
         protected override MovieResource GetResourceById(int id)
@@ -82,7 +111,7 @@ namespace Radarr.Api.V3.Movies
             var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
             var translation = GetMovieTranslation(translations, movie.MovieMetadata, language);
 
-            var resource = movie.ToResource(availDelay, translation, _upgradableSpecification, _formatCalculator);
+            var resource = movie.ToResource(availDelay, translation, _upgradableSpecification, _formatCalculator, _queueService);
             FetchAndLinkMovieStatistics(resource);
 
             _coverMapper.ConvertToLocalUrls(resource.Id, resource.Images);
@@ -106,7 +135,7 @@ namespace Radarr.Api.V3.Movies
                 var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
                 var translation = GetMovieTranslation(translations, movie.MovieMetadata, language);
 
-                var resource = movie.ToResource(availDelay, translation, _upgradableSpecification, _formatCalculator);
+                var resource = movie.ToResource(availDelay, translation, _upgradableSpecification, _formatCalculator, _queueService);
                 FetchAndLinkMovieStatistics(resource);
 
                 resources.Add(resource);

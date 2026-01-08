@@ -9,6 +9,7 @@ using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Translations;
+using NzbDrone.Core.Queue;
 using Radarr.Api.V3.MovieFiles;
 using Radarr.Http.REST;
 using Swashbuckle.AspNetCore.Annotations;
@@ -60,6 +61,9 @@ namespace Radarr.Api.V3.Movies
         public bool? HasFile { get; set; }
         public int MovieFileId { get; set; }
 
+        // Computed for frontend display/filtering
+        public string DownloadStatus { get; set; }
+
         // Editing Only
         public bool Monitored { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
@@ -99,7 +103,7 @@ namespace Radarr.Api.V3.Movies
 
     public static class MovieResourceMapper
     {
-        public static MovieResource ToResource(this Movie model, int availDelay, MovieTranslation movieTranslation = null, IUpgradableSpecification upgradableSpecification = null, ICustomFormatCalculationService formatCalculationService = null)
+        public static MovieResource ToResource(this Movie model, int availDelay, MovieTranslation movieTranslation = null, IUpgradableSpecification upgradableSpecification = null, ICustomFormatCalculationService formatCalculationService = null, IQueueService queueService = null)
         {
             if (model == null)
             {
@@ -112,6 +116,35 @@ namespace Radarr.Api.V3.Movies
             var translatedOverview = movieTranslation?.Overview ?? model.MovieMetadata.Value.Overview;
 
             var collection = model.MovieMetadata.Value.CollectionTmdbId > 0 ? new MovieCollectionResource { Title = model.MovieMetadata.Value.CollectionTitle, TmdbId = model.MovieMetadata.Value.CollectionTmdbId } : null;
+
+            var hasMovieFile = movieFile != null;
+            var isAvailable = model.IsAvailable(availDelay);
+
+            // detect if this movie has an active queue entry
+            var isQueued = queueService != null && queueService.GetQueue().Any(q => q.Movie != null && q.Movie.Id == model.Id);
+
+            string downloadStatus;
+
+            if (isQueued)
+            {
+                downloadStatus = "queue";
+            }
+            else if (hasMovieFile)
+            {
+                downloadStatus = model.Monitored ? "downloaded" : "unmonitored";
+            }
+            else if (isAvailable && !model.Monitored)
+            {
+                downloadStatus = "missingUnmonitored";
+            }
+            else if (isAvailable)
+            {
+                downloadStatus = "missingMonitored";
+            }
+            else
+            {
+                downloadStatus = "continuing";
+            }
 
             return new MovieResource
             {
@@ -160,6 +193,7 @@ namespace Radarr.Api.V3.Movies
                 AlternateTitles = model.MovieMetadata.Value.AlternativeTitles.ToResource(),
                 Ratings = model.MovieMetadata.Value.Ratings,
                 MovieFile = movieFile,
+                DownloadStatus = downloadStatus,
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
                 Studio = model.MovieMetadata.Value.Studio,
                 Collection = collection,
@@ -225,9 +259,9 @@ namespace Radarr.Api.V3.Movies
             return movie;
         }
 
-        public static List<MovieResource> ToResource(this IEnumerable<Movie> movies, int availDelay, IUpgradableSpecification upgradableSpecification = null, ICustomFormatCalculationService formatCalculationService = null)
+        public static List<MovieResource> ToResource(this IEnumerable<Movie> movies, int availDelay, IUpgradableSpecification upgradableSpecification = null, ICustomFormatCalculationService formatCalculationService = null, IQueueService queueService = null)
         {
-            return movies.Select(x => ToResource(x, availDelay, null, upgradableSpecification, formatCalculationService)).ToList();
+            return movies.Select(x => ToResource(x, availDelay, null, upgradableSpecification, formatCalculationService, queueService)).ToList();
         }
 
         public static List<Movie> ToModel(this IEnumerable<MovieResource> resources)

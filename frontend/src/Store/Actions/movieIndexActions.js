@@ -441,6 +441,12 @@ export const defaultState = {
       valueType: filterBuilderValueTypes.DATE
     },
     {
+      name: 'downloadStatus',
+      label: () => translate('DownloadStatus'),
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.DOWNLOAD_STATUS
+    },
+    {
       name: 'physicalRelease',
       label: () => translate('PhysicalRelease'),
       type: filterBuilderTypes.DATE,

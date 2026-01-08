@@ -13,6 +13,8 @@ export type MovieStatus =
 
 export type MovieAvailability = 'announced' | 'inCinemas' | 'released';
 
+export type DownloadStatus = 'downloaded' | 'unmonitored' | 'missingMonitored' | 'missingUnmonitored' | 'queue' | 'continuing';
+
 export type CoverType = 'poster' | 'fanart' | 'headshot';
 
 export interface Image {
@@ -80,6 +82,7 @@ interface Movie extends ModelBase {
   rootFolderPath: string;
   runtime: number;
   minimumAvailability: MovieAvailability;
+  downloadStatus: DownloadStatus;
   path: string;
   genres: string[];
   keywords: string[];
