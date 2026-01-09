@@ -61,9 +61,6 @@ namespace Radarr.Api.V3.Movies
         public bool? HasFile { get; set; }
         public int MovieFileId { get; set; }
 
-        // Computed for frontend display/filtering
-        public string DownloadStatus { get; set; }
-
         // Editing Only
         public bool Monitored { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
@@ -89,6 +86,7 @@ namespace Radarr.Api.V3.Movies
         public float Popularity { get; set; }
         public DateTime? LastSearchTime { get; set; }
         public MovieStatisticsResource Statistics { get; set; }
+        public string DownloadStatus { get; set; }
 
         // Hiding this so people don't think its usable (only used to set the initial state)
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
@@ -120,31 +118,16 @@ namespace Radarr.Api.V3.Movies
             var hasMovieFile = movieFile != null;
             var isAvailable = model.IsAvailable(availDelay);
 
-            // detect if this movie has an active queue entry
-            var isQueued = queueService != null && queueService.GetQueue().Any(q => q.Movie != null && q.Movie.Id == model.Id);
-
-            string downloadStatus;
-
-            if (isQueued)
+            var isQueued = queueService?.GetQueue().Any(q => q.Movie?.Id == model.Id) == true;
+            var downloadStatus = (isQueued, hasMovieFile, isAvailable, model.Monitored) switch
             {
-                downloadStatus = "queue";
-            }
-            else if (hasMovieFile)
-            {
-                downloadStatus = model.Monitored ? "downloaded" : "unmonitored";
-            }
-            else if (isAvailable && !model.Monitored)
-            {
-                downloadStatus = "missingUnmonitored";
-            }
-            else if (isAvailable)
-            {
-                downloadStatus = "missingMonitored";
-            }
-            else
-            {
-                downloadStatus = "continuing";
-            }
+                (true, _, _, _) => "queue",
+                (_, true, _, true) => "downloaded",
+                (_, true, _, false) => "unmonitored",
+                (_, false, true, false) => "missingUnmonitored",
+                (_, false, true, true) => "missingMonitored",
+                _ => "continuing"
+            };
 
             return new MovieResource
             {

@@ -6,7 +6,6 @@ using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Download;
-using NzbDrone.Core.Queue;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles.Events;
@@ -14,6 +13,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.MovieStats;
+using NzbDrone.Core.Queue;
 using NzbDrone.SignalR;
 using Radarr.Http.REST;
 

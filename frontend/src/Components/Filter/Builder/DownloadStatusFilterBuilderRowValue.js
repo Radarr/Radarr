@@ -38,7 +38,7 @@ const protocols = [
     get name() {
       return translate('Unreleased');
     }
-  },
+  }
 ];
 
 function DownloadStatusFilterBuilderRowValue(props) {

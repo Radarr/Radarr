@@ -19,11 +19,11 @@ using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.MovieStats;
+using NzbDrone.Core.Queue;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
-using NzbDrone.Core.Queue;
 using Radarr.Http;
 using Radarr.Http.REST;
 using Radarr.Http.REST.Attributes;
@@ -60,7 +60,7 @@ namespace Radarr.Api.V3.Movies
                            IRootFolderService rootFolderService,
                            IUpgradableSpecification qualityUpgradableSpecification,
                            IConfigService configService,
-                   IQueueService queueService,
+                           IQueueService queueService,
                            RootFolderValidator rootFolderValidator,
                            MappedNetworkDriveValidator mappedNetworkDriveValidator,
                            MoviePathValidator moviesPathValidator,
@@ -154,8 +154,8 @@ namespace Radarr.Api.V3.Movies
 
                 foreach (var movie in movies)
                 {
-                        var translation = GetTranslationFromDict(tdict, movie.MovieMetadata, translationLanguage);
-                        moviesResources.Add(movie.ToResource(availDelay, translation, _qualityUpgradableSpecification, null, _queueService));
+                    var translation = GetTranslationFromDict(tdict, movie.MovieMetadata, translationLanguage);
+                    moviesResources.Add(movie.ToResource(availDelay, translation, _qualityUpgradableSpecification, null, _queueService));
                 }
 
                 if (!excludeLocalCovers)

@@ -129,7 +129,7 @@ namespace Radarr.Api.V3.Movies
             foreach (var movie in updatedMovies)
             {
                 var translation = GetTranslationFromDict(tdict, movie.MovieMetadata, configLanguage);
-                    var movieResource = movie.ToResource(availabilityDelay, translation, _upgradableSpecification, null, _queueService);
+                var movieResource = movie.ToResource(availabilityDelay, translation, _upgradableSpecification, null, _queueService);
 
                 MapCoversToLocal(movieResource);
 

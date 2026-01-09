@@ -13,7 +13,13 @@ export type MovieStatus =
 
 export type MovieAvailability = 'announced' | 'inCinemas' | 'released';
 
-export type DownloadStatus = 'downloaded' | 'unmonitored' | 'missingMonitored' | 'missingUnmonitored' | 'queue' | 'continuing';
+export type DownloadStatus =
+  | 'downloaded'
+  | 'unmonitored'
+  | 'missingMonitored'
+  | 'missingUnmonitored'
+  | 'queue'
+  | 'continuing';
 
 export type CoverType = 'poster' | 'fanart' | 'headshot';
 

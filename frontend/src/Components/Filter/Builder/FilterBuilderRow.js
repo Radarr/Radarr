@@ -6,6 +6,7 @@ import { filterBuilderTypes, filterBuilderValueTypes, icons } from 'Helpers/Prop
 import sortByProp from 'Utilities/Array/sortByProp';
 import BoolFilterBuilderRowValue from './BoolFilterBuilderRowValue';
 import DateFilterBuilderRowValue from './DateFilterBuilderRowValue';
+import DownloadStatusFilterBuilderRowValue from './DownloadStatusFilterBuilderRowValue';
 import FilterBuilderRowValueConnector from './FilterBuilderRowValueConnector';
 import HistoryEventTypeFilterBuilderRowValue from './HistoryEventTypeFilterBuilderRowValue';
 import ImportListFilterBuilderRowValueConnector from './ImportListFilterBuilderRowValueConnector';
@@ -13,7 +14,6 @@ import IndexerFilterBuilderRowValueConnector from './IndexerFilterBuilderRowValu
 import LanguageFilterBuilderRowValue from './LanguageFilterBuilderRowValue';
 import MinimumAvailabilityFilterBuilderRowValue from './MinimumAvailabilityFilterBuilderRowValue';
 import MovieFilterBuilderRowValue from './MovieFilterBuilderRowValue';
-import DownloadStatusFilterBuilderRowValue from './DownloadStatusFilterBuilderRowValue';
 import ProtocolFilterBuilderRowValue from './ProtocolFilterBuilderRowValue';
 import QualityFilterBuilderRowValueConnector from './QualityFilterBuilderRowValueConnector';
 import QualityProfileFilterBuilderRowValue from './QualityProfileFilterBuilderRowValue';
