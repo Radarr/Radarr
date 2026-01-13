@@ -88,7 +88,30 @@
 .sizeOnDisk {
   composes: cell;
 
+  justify-content: flex-end;
+
   flex: 0 0 120px;
+}
+
+.gigabytesPerHour {
+  composes: cell;
+
+  justify-content: flex-end;
+
+  flex: 0 0 100px;
+}
+
+.audioCodec,
+.videoCodec {
+  composes: cell;
+
+  flex: 0 0 110px;
+}
+
+.resolution {
+  composes: cell;
+
+  flex: 0 0 100px;
 }
 
 .imdbRating,
