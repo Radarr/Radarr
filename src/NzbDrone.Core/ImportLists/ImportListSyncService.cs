@@ -8,6 +8,7 @@ using NzbDrone.Core.ImportLists.ImportExclusions;
 using NzbDrone.Core.ImportLists.ImportListMovies;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Tags;
 
 namespace NzbDrone.Core.ImportLists
 {
@@ -21,6 +22,7 @@ namespace NzbDrone.Core.ImportLists
         private readonly IConfigService _configService;
         private readonly IImportListExclusionService _listExclusionService;
         private readonly IImportListMovieService _listMovieService;
+        private readonly ITagService _tagService;
 
         public ImportListSyncService(IImportListFactory importListFactory,
                                       IFetchAndParseImportList listFetcherAndParser,
@@ -29,6 +31,7 @@ namespace NzbDrone.Core.ImportLists
                                       IConfigService configService,
                                       IImportListExclusionService listExclusionService,
                                       IImportListMovieService listMovieService,
+                                      ITagService tagService,
                                       Logger logger)
         {
             _importListFactory = importListFactory;
@@ -37,6 +40,7 @@ namespace NzbDrone.Core.ImportLists
             _addMovieService = addMovieService;
             _listExclusionService = listExclusionService;
             _listMovieService = listMovieService;
+            _tagService = tagService;
             _logger = logger;
             _configService = configService;
         }
@@ -74,7 +78,7 @@ namespace NzbDrone.Core.ImportLists
             ProcessListItems(listItemsResult);
         }
 
-        private void ProcessMovieReport(ImportListDefinition importList, ImportListMovie report, List<ImportListExclusion> listExclusions, List<int> dbMovies, List<Movie> moviesToAdd)
+        private void ProcessMovieReport(ImportListDefinition importList, ImportListMovie report, List<ImportListExclusion> listExclusions, HashSet<int> dbMovies, Dictionary<int, Movie> moviesToAdd, Dictionary<int, HashSet<int>> existingMovieTagUpdates, Dictionary<int, string> allTags)
         {
             if (report.TmdbId == 0 || !importList.EnableAuto)
             {
@@ -84,7 +88,20 @@ namespace NzbDrone.Core.ImportLists
             // Check to see if movie in DB
             if (dbMovies.Contains(report.TmdbId))
             {
-                _logger.Debug("{0} [{1}] Rejected, Movie Exists in DB", report.TmdbId, report.Title);
+                _logger.Debug("{0} [{1}] Movie Exists in DB, checking tags", report.TmdbId, report.Title);
+
+                // Collect tags to add to existing movies
+                if (importList.Tags.Any())
+                {
+                    if (!existingMovieTagUpdates.TryGetValue(report.TmdbId, out var tagsToAdd))
+                    {
+                        tagsToAdd = new HashSet<int>();
+                        existingMovieTagUpdates[report.TmdbId] = tagsToAdd;
+                    }
+
+                    tagsToAdd.UnionWith(importList.Tags);
+                }
+
                 return;
             }
 
@@ -97,54 +114,59 @@ namespace NzbDrone.Core.ImportLists
                 return;
             }
 
-            // Append Artist if not already in DB or already on add list
-            if (moviesToAdd.All(s => s.TmdbId != report.TmdbId))
+            // Check if movie is already on the add list (from another import list)
+            if (moviesToAdd.TryGetValue(report.TmdbId, out var existingMovie))
             {
-                var monitorType = importList.Monitor;
-
-                moviesToAdd.Add(new Movie
+                // Merge tags from this list into the existing movie
+                if (importList.Tags.Any())
                 {
-                    Monitored = monitorType != MonitorTypes.None,
-                    RootFolderPath = importList.RootFolderPath,
-                    QualityProfileId = importList.QualityProfileId,
-                    MinimumAvailability = importList.MinimumAvailability,
-                    Tags = importList.Tags,
-                    TmdbId = report.TmdbId,
-                    Title = report.Title,
-                    Year = report.Year,
-                    ImdbId = report.ImdbId,
-                    AddOptions = new AddMovieOptions
+                    var newTags = importList.Tags.Except(existingMovie.Tags).ToList();
+
+                    if (newTags.Any())
                     {
-                        SearchForMovie = monitorType != MonitorTypes.None && importList.SearchOnAdd,
-                        Monitor = monitorType,
-                        AddMethod = AddMovieMethod.List
+                        var tagNames = newTags.Select(id => allTags.TryGetValue(id, out var name) ? name : id.ToString());
+                        _logger.Debug("{0} [{1}] Merging {2} tags from list {3}: [{4}]", report.TmdbId, report.Title, newTags.Count, importList.Name, string.Join(", ", tagNames));
+                        existingMovie.Tags = existingMovie.Tags.Union(importList.Tags).ToHashSet();
                     }
-                });
+                }
+
+                return;
             }
+
+            var monitorType = importList.Monitor;
+
+            var initialTagNames = importList.Tags.Select(id => allTags.TryGetValue(id, out var name) ? name : id.ToString());
+            _logger.Debug("{0} [{1}] Adding to import queue from list {2} with tags: [{3}]", report.TmdbId, report.Title, importList.Name, string.Join(", ", initialTagNames));
+
+            moviesToAdd[report.TmdbId] = new Movie
+            {
+                Monitored = monitorType != MonitorTypes.None,
+                RootFolderPath = importList.RootFolderPath,
+                QualityProfileId = importList.QualityProfileId,
+                MinimumAvailability = importList.MinimumAvailability,
+                Tags = importList.Tags,
+                TmdbId = report.TmdbId,
+                Title = report.Title,
+                Year = report.Year,
+                ImdbId = report.ImdbId,
+                AddOptions = new AddMovieOptions
+                {
+                    SearchForMovie = monitorType != MonitorTypes.None && importList.SearchOnAdd,
+                    Monitor = monitorType,
+                    AddMethod = AddMovieMethod.List
+                }
+            };
         }
 
         private void ProcessListItems(ImportListFetchResult listFetchResult)
         {
-            listFetchResult.Movies = listFetchResult.Movies.DistinctBy(x =>
-            {
-                if (x.TmdbId != 0)
-                {
-                    return x.TmdbId.ToString();
-                }
-
-                if (x.ImdbId.IsNotNullOrWhiteSpace())
-                {
-                    return x.ImdbId;
-                }
-
-                return x.Title;
-            }).ToList();
-
             var listedMovies = listFetchResult.Movies.ToList();
 
             var importExclusions = _listExclusionService.All();
-            var dbMovies = _movieService.AllMovieTmdbIds();
-            var moviesToAdd = new List<Movie>();
+            var dbMovies = _movieService.AllMovieTmdbIds().ToHashSet();
+            var moviesToAdd = new Dictionary<int, Movie>();
+            var existingMovieTagUpdates = new Dictionary<int, HashSet<int>>();
+            var allTags = _tagService.All().ToDictionary(t => t.Id, t => t.Label);
 
             var groupedMovies = listedMovies.GroupBy(x => x.ListId);
 
@@ -156,7 +178,7 @@ namespace NzbDrone.Core.ImportLists
                 {
                     if (movie.TmdbId != 0)
                     {
-                        ProcessMovieReport(importList, movie, importExclusions, dbMovies, moviesToAdd);
+                        ProcessMovieReport(importList, movie, importExclusions, dbMovies, moviesToAdd, existingMovieTagUpdates, allTags);
                     }
                 }
             }
@@ -164,7 +186,41 @@ namespace NzbDrone.Core.ImportLists
             if (moviesToAdd.Any())
             {
                 _logger.ProgressInfo("Adding {0} movies from your auto enabled lists to library", moviesToAdd.Count);
-                _addMovieService.AddMovies(moviesToAdd, true);
+                _addMovieService.AddMovies(moviesToAdd.Values.ToList(), true);
+            }
+
+            if (existingMovieTagUpdates.Any())
+            {
+                UpdateTagsForExistingMovies(existingMovieTagUpdates, allTags);
+            }
+        }
+
+        private void UpdateTagsForExistingMovies(Dictionary<int, HashSet<int>> existingMovieTagUpdates, Dictionary<int, string> allTags)
+        {
+            var moviesToUpdate = new List<Movie>();
+            var existingMovies = _movieService.FindByTmdbId(existingMovieTagUpdates.Keys.ToList());
+
+            foreach (var movie in existingMovies)
+            {
+                if (existingMovieTagUpdates.TryGetValue(movie.TmdbId, out var tagsFromLists))
+                {
+                    var newTags = tagsFromLists.Except(movie.Tags).ToList();
+
+                    if (newTags.Any())
+                    {
+                        movie.Tags = movie.Tags.Union(tagsFromLists).ToHashSet();
+                        moviesToUpdate.Add(movie);
+
+                        var tagNames = newTags.Select(id => allTags.TryGetValue(id, out var name) ? name : id.ToString());
+                        _logger.Debug("Adding {0} tags to {1}: {2}", newTags.Count, movie.Title, string.Join(", ", tagNames));
+                    }
+                }
+            }
+
+            if (moviesToUpdate.Any())
+            {
+                _logger.ProgressInfo("Updating tags for {0} movies from import lists", moviesToUpdate.Count);
+                _movieService.UpdateMovie(moviesToUpdate, true);
             }
         }
 
