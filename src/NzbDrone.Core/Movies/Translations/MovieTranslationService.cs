@@ -51,8 +51,10 @@ namespace NzbDrone.Core.Movies.Translations
             // Then throw out any we don't have languages for
             translations = translations.Where(t => t.Language != null).ToList();
 
-            // Then make sure they are all distinct languages
-            translations = translations.DistinctBy(t => t.Language).ToList();
+            // Make sure translations are distinct by their CleanTitle
+            // This allows multiple translations for the same language with different titles
+            // (e.g., fr="À nous quatre" and fr-CA="L'attrape-parents" both map to Language.French)
+            translations = translations.DistinctBy(t => t.CleanTitle).ToList();
 
             // Now find translations to delete, update and insert
             var existingTranslations = _translationRepo.FindByMovieMetadataId(movieMetadataId);

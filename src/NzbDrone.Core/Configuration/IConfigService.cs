@@ -65,6 +65,9 @@ namespace NzbDrone.Core.Configuration
 
         // Metadata Provider
         TMDbCountryCode CertificationCountry { get; set; }
+        bool FetchRegionalTranslations { get; set; }
+        string RegionalTranslationVariants { get; set; }
+        int RegionalTranslationRateLimit { get; set; }
 
         // UI
         int FirstDayOfWeek { get; set; }

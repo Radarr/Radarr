@@ -121,5 +121,23 @@ namespace NzbDrone.Core.Test.Configuration
 
             Mocker.GetMock<IConfigRepository>().Verify(c => c.Upsert("downloadedepisodesfolder", It.IsAny<string>()), Times.Never());
         }
+
+        [Test]
+        public void FetchRegionalTranslations_should_default_to_true()
+        {
+            Subject.FetchRegionalTranslations.Should().BeTrue();
+        }
+
+        [Test]
+        public void RegionalTranslationVariants_should_have_default_value()
+        {
+            Subject.RegionalTranslationVariants.Should().Be("fr-CA,en-CA,es-MX,pt-BR");
+        }
+
+        [Test]
+        public void RegionalTranslationRateLimit_should_default_to_500()
+        {
+            Subject.RegionalTranslationRateLimit.Should().Be(500);
+        }
     }
 }

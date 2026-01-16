@@ -461,6 +461,124 @@ function MediaManagement() {
               </FormGroup>
             </FieldSet>
 
+            <FieldSet legend={translate('MovieInfo')}>
+              <FormGroup
+                advancedSettings={showAdvancedSettings}
+                isAdvanced={true}
+                size={sizes.MEDIUM}
+              >
+                <FormLabel>{translate('FetchRegionalTranslations')}</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="fetchRegionalTranslations"
+                  helpText={translate('FetchRegionalTranslationsHelpText')}
+                  onChange={handleInputChange}
+                  {...settings.fetchRegionalTranslations}
+                />
+              </FormGroup>
+
+              {settings.fetchRegionalTranslations.value ? (
+                <>
+                  <FormGroup
+                    advancedSettings={showAdvancedSettings}
+                    isAdvanced={true}
+                  >
+                    <FormLabel>{translate('RegionalTranslationVariants')}</FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.TEXT}
+                      name="regionalTranslationVariants"
+                      helpTexts={[
+                        translate('RegionalTranslationVariantsHelpText'),
+                        translate('RegionalTranslationVariantsHelpTextExamples'),
+                      ]}
+                      onChange={handleInputChange}
+                      {...settings.regionalTranslationVariants}
+                    />
+                  </FormGroup>
+
+                  <FormGroup
+                    advancedSettings={showAdvancedSettings}
+                    isAdvanced={true}
+                    size={sizes.MEDIUM}
+                  >
+                    <FormLabel>{translate('RegionalTranslationRateLimit')}</FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.NUMBER}
+                      unit="ms"
+                      name="regionalTranslationRateLimit"
+                      helpText={translate('RegionalTranslationRateLimitHelpText')}
+                      min={100}
+                      max={5000}
+                      onChange={handleInputChange}
+                      {...settings.regionalTranslationRateLimit}
+                    />
+                  </FormGroup>
+                </>
+              ) : null}
+            </FieldSet>
+
+            <FieldSet legend={translate('MovieInfo')}>
+              <FormGroup
+                advancedSettings={showAdvancedSettings}
+                isAdvanced={true}
+                size={sizes.MEDIUM}
+              >
+                <FormLabel>{translate('FetchRegionalTranslations')}</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="fetchRegionalTranslations"
+                  helpText={translate('FetchRegionalTranslationsHelpText')}
+                  onChange={handleInputChange}
+                  {...settings.fetchRegionalTranslations}
+                />
+              </FormGroup>
+
+              {settings.fetchRegionalTranslations.value ? (
+                <>
+                  <FormGroup
+                    advancedSettings={showAdvancedSettings}
+                    isAdvanced={true}
+                  >
+                    <FormLabel>{translate('RegionalTranslationVariants')}</FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.TEXT}
+                      name="regionalTranslationVariants"
+                      helpTexts={[
+                        translate('RegionalTranslationVariantsHelpText'),
+                        translate('RegionalTranslationVariantsHelpTextExamples'),
+                      ]}
+                      onChange={handleInputChange}
+                      {...settings.regionalTranslationVariants}
+                    />
+                  </FormGroup>
+
+                  <FormGroup
+                    advancedSettings={showAdvancedSettings}
+                    isAdvanced={true}
+                    size={sizes.MEDIUM}
+                  >
+                    <FormLabel>{translate('RegionalTranslationRateLimit')}</FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.NUMBER}
+                      unit="ms"
+                      name="regionalTranslationRateLimit"
+                      helpText={translate('RegionalTranslationRateLimitHelpText')}
+                      min={100}
+                      max={5000}
+                      onChange={handleInputChange}
+                      {...settings.regionalTranslationRateLimit}
+                    />
+                  </FormGroup>
+                </>
+              ) : null}
+            </FieldSet>
+
             {showAdvancedSettings && !isWindows ? (
               <FieldSet legend={translate('Permissions')}>
                 <FormGroup

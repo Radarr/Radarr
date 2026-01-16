@@ -22,7 +22,6 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("enus")]
         [TestCase("enusa")]
         [TestCase("wo")]
-        [TestCase("fr-CA")]
         public void unknown_or_invalid_code_should_return_null(string isoCode)
         {
             var result = IsoLanguages.Find(isoCode);
@@ -128,6 +127,84 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             var result = IsoLanguages.Find(isoCode);
             result.Language.Should().Be(Language.Georgian);
+        }
+
+        [TestCase("fr-CA")]
+        [TestCase("fr-ca")]
+        [TestCase("FR-CA")]
+        public void should_return_french_for_french_canadian(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Should().NotBeNull();
+            result.Language.Should().Be(Language.French);
+        }
+
+        [TestCase("en-CA")]
+        [TestCase("en-ca")]
+        [TestCase("EN-CA")]
+        public void should_return_english_for_english_canadian(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Should().NotBeNull();
+            result.Language.Should().Be(Language.English);
+        }
+
+        [Test]
+        public void french_canadian_should_map_to_same_language_as_french()
+        {
+            var frCA = IsoLanguages.Find("fr-CA");
+            var fr = IsoLanguages.Find("fr");
+
+            frCA.Should().NotBeNull();
+            fr.Should().NotBeNull();
+            frCA.Language.Should().Be(fr.Language);
+        }
+
+        [Test]
+        public void english_canadian_should_map_to_same_language_as_english()
+        {
+            var enCA = IsoLanguages.Find("en-CA");
+            var en = IsoLanguages.Find("en");
+
+            enCA.Should().NotBeNull();
+            en.Should().NotBeNull();
+            enCA.Language.Should().Be(en.Language);
+        }
+
+        [TestCase("de-AT")]
+        [TestCase("de-at")]
+        public void should_return_german_for_german_austria(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Should().NotBeNull();
+            result.Language.Should().Be(Language.German);
+        }
+
+        [TestCase("de-CH")]
+        [TestCase("de-ch")]
+        public void should_return_german_for_german_switzerland(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Should().NotBeNull();
+            result.Language.Should().Be(Language.German);
+        }
+
+        [TestCase("zh-TW")]
+        [TestCase("zh-tw")]
+        public void should_return_chinese_for_chinese_taiwan(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Should().NotBeNull();
+            result.Language.Should().Be(Language.Chinese);
+        }
+
+        [TestCase("zh-HK")]
+        [TestCase("zh-hk")]
+        public void should_return_chinese_for_chinese_hong_kong(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Should().NotBeNull();
+            result.Language.Should().Be(Language.Chinese);
         }
     }
 }

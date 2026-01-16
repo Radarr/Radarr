@@ -135,6 +135,24 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("CertificationCountry", value); }
         }
 
+        public bool FetchRegionalTranslations
+        {
+            get { return GetValueBoolean("FetchRegionalTranslations", false); }
+            set { SetValue("FetchRegionalTranslations", value); }
+        }
+
+        public string RegionalTranslationVariants
+        {
+            get { return GetValue("RegionalTranslationVariants", "fr-CA,en-CA,es-MX,pt-BR"); }
+            set { SetValue("RegionalTranslationVariants", value); }
+        }
+
+        public int RegionalTranslationRateLimit
+        {
+            get { return GetValueInt("RegionalTranslationRateLimit", 500); }
+            set { SetValue("RegionalTranslationRateLimit", value); }
+        }
+
         public int MaximumSize
         {
             get { return GetValueInt("MaximumSize", 0); }

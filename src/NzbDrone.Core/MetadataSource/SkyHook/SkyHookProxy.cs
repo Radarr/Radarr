@@ -29,6 +29,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly Logger _logger;
 
         private readonly IHttpRequestBuilderFactory _radarrMetadata;
+        private readonly IHttpRequestBuilderFactory _tmdb;
         private readonly IConfigService _configService;
         private readonly IMovieService _movieService;
         private readonly IMovieMetadataService _movieMetadataService;
@@ -44,6 +45,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             _httpClient = httpClient;
             _radarrMetadata = requestBuilder.RadarrMetadata;
+            _tmdb = requestBuilder.TMDB;
             _configService = configService;
             _movieService = movieService;
             _movieMetadataService = movieMetadataService;
@@ -240,6 +242,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.AlternativeTitles.AddRange(resource.AlternativeTitles.Select(MapAlternativeTitle));
 
             movie.Translations.AddRange(resource.Translations.Select(MapTranslation));
+
+            // Fetch additional regional translations from TMDb (fr-CA, en-CA, etc.)
+            // Add these as Translations so they are used for indexer searches
+            var regionalTranslations = FetchRegionalTranslationsFromTMDb(resource.TmdbId);
+            movie.Translations.AddRange(regionalTranslations);
 
             movie.OriginalLanguage = IsoLanguages.Find(resource.OriginalLanguage.ToLower())?.Language ?? Language.English;
 
@@ -637,6 +644,121 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             return newAlternativeTitle;
         }
+
+        private List<MovieTranslation> FetchRegionalTranslationsFromTMDb(int tmdbId)
+        {
+            // Check if feature is enabled
+            if (!_configService.FetchRegionalTranslations)
+            {
+                return new List<MovieTranslation>();
+            }
+
+            // Parse configured variants
+            var wantedVariants = _configService.RegionalTranslationVariants
+                .Split(',')
+                .Select(v => v.Trim().ToLower())
+                .Where(v => !string.IsNullOrEmpty(v))
+                .ToHashSet();
+
+            if (!wantedVariants.Any())
+            {
+                _logger.Debug("No regional translation variants configured, skipping fetch");
+                return new List<MovieTranslation>();
+            }
+
+            try
+            {
+                var request = _tmdb.Create()
+                    .SetSegment("api", "3")
+                    .SetSegment("route", "movie")
+                    .SetSegment("id", tmdbId.ToString())
+                    .SetSegment("secondaryRoute", "/translations")
+                    .Build();
+
+                // Use configured rate limit with coordination across all TMDb requests
+                request.RateLimit = TimeSpan.FromMilliseconds(_configService.RegionalTranslationRateLimit);
+                request.RateLimitKey = "regional-translations";
+
+                _logger.Info("Fetching regional translations for TMDb ID {0}", tmdbId);
+
+                var response = _httpClient.Get<TMDbTranslationsResponse>(request);
+
+                // Filter for configured regional variants and create MovieTranslations
+                var regionalTranslations = new List<MovieTranslation>();
+                _logger.Info("TMDb returned {0} translations, wanted variants: {1}", response.Resource.Translations?.Length ?? 0, string.Join(",", wantedVariants));
+                foreach (var translation in response.Resource.Translations)
+                {
+                    // Build full regional code from iso_639_1 (language) and iso_3166_1 (country)
+                    // e.g., "fr" + "CA" = "fr-ca"
+                    var languageCode = translation.Iso6391?.ToLower();
+                    var countryCode = translation.Iso31661?.ToLower();
+
+                    if (string.IsNullOrEmpty(languageCode))
+                    {
+                        continue;
+                    }
+
+                    // Create regional variant code (e.g., "fr-ca")
+                    var regionalCode = !string.IsNullOrEmpty(countryCode)
+                        ? $"{languageCode}-{countryCode}"
+                        : languageCode;
+
+                    // Check if this is a wanted regional variant
+                    if (wantedVariants.Contains(regionalCode))
+                    {
+                        // Get title and overview from nested data object (TMDb API format)
+                        var title = translation.Data?.Title ?? translation.Title;
+                        var overview = translation.Data?.Overview ?? translation.Overview;
+
+                        if (string.IsNullOrEmpty(title))
+                        {
+                            _logger.Info("Matched {0} but title is empty, skipping", regionalCode);
+                            continue;
+                        }
+
+                        // Map the language code to Radarr's Language enum
+                        var language = IsoLanguages.Find(languageCode)?.Language;
+                        if (language == null)
+                        {
+                            _logger.Info("Could not map language code {0} to Radarr language for regional translation", languageCode);
+                            continue;
+                        }
+
+                        // Create a MovieTranslation so it's used in indexer searches
+                        var movieTranslation = new MovieTranslation
+                        {
+                            Title = title,
+                            Overview = overview,
+                            CleanTitle = title.CleanMovieTitle(),
+                            Language = language
+                        };
+
+                        regionalTranslations.Add(movieTranslation);
+                        _logger.Info("Added regional translation {0} ({1}) for movie {2}", regionalCode, title, tmdbId);
+                    }
+                }
+
+                _logger.Info("Fetched {0} regional translations for TMDb ID {1}", regionalTranslations.Count, tmdbId);
+                return regionalTranslations;
+            }
+            catch (TooManyRequestsException ex)
+            {
+                _logger.Warn("Rate limit hit fetching regional translations for TMDb ID {0}. Will retry on next refresh. Retry after: {1}", tmdbId, ex.RetryAfter);
+                return new List<MovieTranslation>();
+            }
+            catch (HttpException ex)
+            {
+                _logger.Debug(ex, "HTTP error fetching regional translations for TMDb ID {0}", tmdbId);
+                return new List<MovieTranslation>();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unexpected error fetching regional translations for TMDb ID {0}", tmdbId);
+                return new List<MovieTranslation>();
+            }
+        }
+
+
 
         private static Ratings MapRatings(RatingResource ratings)
         {
