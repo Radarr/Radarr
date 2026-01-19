@@ -4,6 +4,7 @@ export default interface IndexerOptions {
   maximumSize: number;
   rssSyncInterval: number;
   preferIndexerFlags: boolean;
+  seedersPreference: string;
   availabilityDelay: number;
   whitelistedHardcodedSubs: string[];
   allowHardcodedSubs: boolean;
