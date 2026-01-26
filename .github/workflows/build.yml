@@ -1,0 +1,492 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+    paths-ignore:
+      - ".github/**"
+      - "src/Radarr.Api.*/openapi.json"
+  pull_request:
+    branches:
+      - develop
+    paths-ignore:
+      - "src/NzbDrone.Core/Localization/Core/**"
+      - "src/Radarr.Api.*/openapi.json"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  FRAMEWORK: net8.0
+  RAW_BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  MAJOR_VERSION: 6.1.1
+  NODE_VERSION: 20.x
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      framework: ${{ steps.variables.outputs.framework }}
+      version: ${{ steps.variables.outputs.version }}
+      branch: ${{ steps.variables.outputs.branch }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - name: Setup Build Variables
+        id: variables
+        shell: bash
+        run: |
+          RADARR_VERSION="${{ env.MAJOR_VERSION }}.$((GITHUB_RUN_NUMBER+2000))"
+          BRANCH_NAME="${RAW_BRANCH_NAME//\//-}"
+
+          echo "RADARRVERSION=$RADARR_VERSION" >> "$GITHUB_ENV"
+          echo "BUILD_SOURCEBRANCHNAME=$BRANCH_NAME" >> "$GITHUB_ENV"
+
+          echo "framework=${{ env.FRAMEWORK }}" >> "$GITHUB_OUTPUT"
+          echo "version=$RADARR_VERSION" >> "$GITHUB_OUTPUT"
+          echo "branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Build Frontend
+        shell: bash
+        run: ./build.sh --frontend
+
+      - name: Build Backend + Packages (linux-musl-x64)
+        shell: bash
+        run: ./build.sh --backend --packages -f ${{ env.FRAMEWORK }} -r linux-musl-x64
+
+      - name: Build Backend + Packages (linux-musl-arm64)
+        shell: bash
+        run: ./build.sh --backend --packages -f ${{ env.FRAMEWORK }} -r linux-musl-arm64      
+      
+      - name: Publish Linux Musl x64 Test Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-linux-musl-x64
+          path: _tests/${{ env.FRAMEWORK }}/linux-musl-x64/publish/**/*
+
+      - name: Publish Linux Musl x64 Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_linux_musl_x64
+          path: _artifacts/linux-musl-x64/${{ env.FRAMEWORK }}/Radarr/**/*
+
+      - name: Publish Linux Musl arm64 Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_linux_musl_arm64
+          path: _artifacts/linux-musl-arm64/${{ env.FRAMEWORK }}/Radarr/**/*
+
+  unit_test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Download Test Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tests-linux-musl-x64
+          path: _tests
+
+      - name: Make Test Binaries Executable
+        shell: bash
+        run: |
+          chmod +x _tests/ffprobe
+          find _tests -name "Radarr.Test.Dummy" -exec chmod +x {} \;
+          chmod +x _tests/test.sh
+
+      - name: Run Unit Tests
+        shell: bash
+        env:
+          TEST_DIR: ${{ github.workspace }}/_tests
+        run: _tests/test.sh Linux Unit Test
+
+      - name: Upload Unit Test Results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-unit-linux
+          path: TestResult.xml
+
+  unit_test_postgres:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        postgres: [14, 15]
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_PASSWORD: radarr
+          POSTGRES_USER: radarr
+          POSTGRES_DB: radarr
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U radarr" --health-interval=10s
+          --health-timeout=5s --health-retries=5
+    env:
+      Radarr__Postgres__Host: localhost
+      Radarr__Postgres__Port: 5432
+      Radarr__Postgres__User: radarr
+      Radarr__Postgres__Password: radarr
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Download Test Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tests-linux-musl-x64
+          path: _tests
+
+      - name: Make Test Binaries Executable
+        shell: bash
+        run: |
+          chmod +x _tests/ffprobe
+          find _tests -name "Radarr.Test.Dummy" -exec chmod +x {} \;
+          chmod +x _tests/test.sh
+
+      - name: Run Unit Tests (Postgres)
+        shell: bash
+        env:
+          TEST_DIR: ${{ github.workspace }}/_tests
+        run: _tests/test.sh Linux Unit Test
+
+      - name: Upload Unit Test Results (Postgres)
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-unit-linux-postgres-${{ matrix.postgres }}
+          path: TestResult.xml
+
+  integration_test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Download Test Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tests-linux-musl-x64
+          path: _tests
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build_linux_musl_x64
+          path: _output
+
+      - name: Prepare Binary Directory
+        shell: bash
+        run: |
+          mkdir -p ./bin
+          cp -r ./_output/linux-musl-x64/${{ env.FRAMEWORK }}/Radarr/. ./bin/
+
+      - name: Make Test Binaries Executable
+        shell: bash
+        run: |
+          chmod +x _tests/ffprobe
+          find _tests -name "Radarr.Test.Dummy" -exec chmod +x {} \;
+          chmod +x _tests/test.sh
+          chmod +x ./bin/Radarr
+
+      - name: Run Integration Tests
+        shell: bash
+        env:
+          TEST_DIR: ${{ github.workspace }}/_tests
+        run: _tests/test.sh Linux Integration Test
+
+      - name: Upload Integration Test Results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-integration-linux
+          path: TestResult.xml
+
+  integration_test_postgres:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        postgres: [14, 15]
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_PASSWORD: radarr
+          POSTGRES_USER: radarr
+          POSTGRES_DB: radarr
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U radarr" --health-interval=10s
+          --health-timeout=5s --health-retries=5
+    env:
+      Radarr__Postgres__Host: localhost
+      Radarr__Postgres__Port: 5432
+      Radarr__Postgres__User: radarr
+      Radarr__Postgres__Password: radarr
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Download Test Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tests-linux-musl-x64
+          path: _tests
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build_linux_musl_x64
+          path: _output
+
+      - name: Prepare Binary Directory
+        shell: bash
+        run: |
+          mkdir -p ./bin
+          cp -r ./_output/linux-musl-x64/${{ env.FRAMEWORK }}/Radarr/. ./bin/
+
+      - name: Make Test Binaries Executable
+        shell: bash
+        run: |
+          chmod +x _tests/ffprobe
+          find _tests -name "Radarr.Test.Dummy" -exec chmod +x {} \;
+          chmod +x _tests/test.sh
+          chmod +x ./bin/Radarr
+
+      - name: Run Integration Tests (Postgres)
+        shell: bash
+        env:
+          TEST_DIR: ${{ github.workspace }}/_tests
+        run: _tests/test.sh Linux Integration Test
+
+      - name: Upload Integration Test Results (Postgres)
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-integration-linux-postgres-${{ matrix.postgres }}
+          path: TestResult.xml
+
+  automation_test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Download Test Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tests-linux-musl-x64
+          path: _tests
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build_linux_musl_x64
+          path: _output
+
+      - name: Prepare Binary Directory
+        shell: bash
+        run: |
+          mkdir -p ./bin
+          cp -r ./_output/linux-musl-x64/${{ env.FRAMEWORK }}/Radarr/. ./bin/
+
+      - name: Make Test Binaries Executable
+        shell: bash
+        run: |
+          chmod +x _tests/ffprobe
+          find _tests -name "Radarr.Test.Dummy" -exec chmod +x {} \;
+          chmod +x _tests/test.sh
+          chmod +x ./bin/Radarr
+
+      - name: Run Automation Tests
+        shell: bash
+        env:
+          TEST_DIR: ${{ github.workspace }}/_tests
+        run: _tests/test.sh Linux Automation Test
+
+      - name: Upload Automation Screenshots
+        if: ${{ hashFiles('**/*_test_screenshot.png') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: automation-screenshots-linux
+          path: '**/*_test_screenshot.png'
+
+      - name: Upload Automation Test Results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-automation-linux
+          path: TestResult.xml
+
+  release:
+    if: ${{ github.event_name == 'push' && (github.ref_name == 'develop' || github.ref_name == 'master') }}
+    needs:
+      - build
+      - unit_test
+      - unit_test_postgres
+      - integration_test
+      - integration_test_postgres
+      - automation_test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build_linux_musl_x64
+          path: _artifacts
+
+      - name: Download Build Artifact (arm64)
+        uses: actions/download-artifact@v4
+        with:
+          name: build_linux_musl_arm64
+          path: _artifacts
+
+      - name: Create Release Package
+        shell: bash
+        run: |
+          mkdir -p _artifacts
+          tar -czf _artifacts/Radarr.${{ needs.build.outputs.branch }}.${{ needs.build.outputs.version }}.linux-musl-core-x64.tar.gz \\
+            -C _artifacts/linux-musl-x64/${{ env.FRAMEWORK }} Radarr
+          tar -czf _artifacts/Radarr.${{ needs.build.outputs.branch }}.${{ needs.build.outputs.version }}.linux-musl-core-arm64.tar.gz \\
+            -C _artifacts/linux-musl-arm64/${{ env.FRAMEWORK }} Radarr
+
+      - name: Upload Release Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release_linux
+          compression-level: 0
+          if-no-files-found: error
+          path: _artifacts/Radarr.*.linux-musl-core-*.tar.gz
+
+      - name: Get Previous Release
+        id: previous-release
+        uses: cardinalby/git-get-release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          latest: true
+          prerelease: ${{ github.ref_name != 'master' }}
+
+      - name: Generate Release Notes
+        id: generate-release-notes
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ github.token }}
+          result-encoding: string
+          script: |
+            const { data } = await github.rest.repos.generateReleaseNotes({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: 'v${{ needs.build.outputs.version }}',
+              target_commitish: '${{ github.sha }}',
+              previous_tag_name: '${{ steps.previous-release.outputs.tag_name }}',
+            })
+            return data.body
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: _artifacts/Radarr.*.linux-musl-core-*.tar.gz
+          commit: ${{ github.sha }}
+          generateReleaseNotes: false
+          body: ${{ steps.generate-release-notes.outputs.result }}
+          name: ${{ needs.build.outputs.version }}
+          prerelease: ${{ github.ref_name != 'master' }}
+          skipIfReleaseExists: true
+          tag: v${{ needs.build.outputs.version }}
+
+  docker:
+    if: ${{ github.event_name == 'push' && (github.ref_name == 'develop' || github.ref_name == 'master') }}
+    needs:
+      - release
+      - build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      IMAGE_NAME: ghcr.io/${{ github.repository }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set Build Date
+        shell: bash
+        run: echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_ENV"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{ needs.build.outputs.version }}
+            type=raw,value=latest,enable=${{ github.ref_name == 'master' }}
+            type=raw,value=develop,enable=${{ github.ref_name == 'develop' }}
+            type=raw,value=${{ github.ref_name }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            BUILD_DATE=${{ env.BUILD_DATE }}
+            VERSION=${{ needs.build.outputs.version }}
+            RADARR_BRANCH=${{ needs.build.outputs.branch }}
+            PACKAGE_AUTHOR=github.com/${{ github.repository }}
+            RADARR_REPO=${{ github.repository }}
