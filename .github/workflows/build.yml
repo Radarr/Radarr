@@ -64,23 +64,19 @@ jobs:
           echo "version=$RADARR_VERSION" >> "$GITHUB_OUTPUT"
           echo "branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
 
-      - name: Build Frontend
+      - name: Build Backend + Frontend + Packages (linux-musl-x64)
         shell: bash
-        run: ./build.sh --frontend
+        run: ./build.sh --backend --frontend --packages -f ${{ env.FRAMEWORK }} -r linux-musl-x64
 
-      - name: Build Backend + Packages (linux-musl-x64)
-        shell: bash
-        run: ./build.sh --backend --packages -f ${{ env.FRAMEWORK }} -r linux-musl-x64
-
-      - name: Build Backend + Packages (linux-musl-arm64)
-        shell: bash
-        run: ./build.sh --backend --packages -f ${{ env.FRAMEWORK }} -r linux-musl-arm64      
-      
       - name: Publish Linux Musl x64 Test Artifact
         uses: actions/upload-artifact@v4
         with:
           name: tests-linux-musl-x64
           path: _tests/${{ env.FRAMEWORK }}/linux-musl-x64/publish/**/*
+
+      - name: Build Backend + Frontend + Packages (linux-musl-arm64)
+        shell: bash
+        run: ./build.sh --backend --frontend --packages -f ${{ env.FRAMEWORK }} -r linux-musl-arm64
 
       - name: Publish Linux Musl x64 Build Artifact
         uses: actions/upload-artifact@v4
