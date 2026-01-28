@@ -8,6 +8,7 @@ on:
       - master
     paths-ignore:
       - ".github/**"
+      - "**/*.md"
       - "src/Radarr.Api.*/openapi.json"
   pull_request:
     branches:
