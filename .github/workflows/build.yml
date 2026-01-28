@@ -64,36 +64,29 @@ jobs:
           echo "version=$RADARR_VERSION" >> "$GITHUB_OUTPUT"
           echo "branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
 
-      - name: Build Backend + Frontend + Packages (linux-musl-x64)
+      - name: Build Backend + Frontend
         shell: bash
-        run: ./build.sh --backend --frontend --packages -f ${{ env.FRAMEWORK }} -r linux-musl-x64
+        run: ./build.sh --backend --frontend --packages
 
-      - name: Publish Linux Musl x64 Test Artifact
+      - name: Publish linux-x64 Test Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: tests-linux-musl-x64
-          path: _tests/${{ env.FRAMEWORK }}/linux-musl-x64/publish/**/*
+          name: tests-linux-x64
+          path: _tests/${{ env.FRAMEWORK }}/linux-x64/publish/**/*
 
-      - name: Build Backend + Frontend + Packages (linux-musl-arm64)
-        shell: bash
-        run: ./build.sh --backend --frontend --packages -f ${{ env.FRAMEWORK }} -r linux-musl-arm64
-
-      - name: Publish Linux Musl x64 Build Artifact
+      - name: Publish Linux Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build_linux_musl_x64
-          path: _artifacts/linux-musl-x64/${{ env.FRAMEWORK }}/Radarr/**/*
-
-      - name: Publish Linux Musl arm64 Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build_linux_musl_arm64
-          path: _artifacts/linux-musl-arm64/${{ env.FRAMEWORK }}/Radarr/**/*
-
+          name: build_linux
+          path: _artifacts/linux-*/**/*
+          
   unit_test:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -102,7 +95,7 @@ jobs:
       - name: Download Test Artifact
         uses: actions/download-artifact@v4
         with:
-          name: tests-linux-musl-x64
+          name: tests-linux-x64
           path: _tests
 
       - name: Make Test Binaries Executable
@@ -150,6 +143,9 @@ jobs:
       Radarr__Postgres__User: radarr
       Radarr__Postgres__Password: radarr
     steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -158,7 +154,7 @@ jobs:
       - name: Download Test Artifact
         uses: actions/download-artifact@v4
         with:
-          name: tests-linux-musl-x64
+          name: tests-linux-x64
           path: _tests
 
       - name: Make Test Binaries Executable
@@ -185,6 +181,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -193,21 +192,21 @@ jobs:
       - name: Download Test Artifact
         uses: actions/download-artifact@v4
         with:
-          name: tests-linux-musl-x64
+          name: tests-linux-x64
           path: _tests
 
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
-          name: build_linux_musl_x64
+          name: build_linux
           path: _output
 
       - name: Prepare Binary Directory
         shell: bash
         run: |
           mkdir -p ./bin
-          cp -r ./_output/linux-musl-x64/${{ env.FRAMEWORK }}/Radarr/. ./bin/
-
+          cp -r ./_output/linux-x64/${{ env.FRAMEWORK }}/Radarr/. ./bin/
+          
       - name: Make Test Binaries Executable
         shell: bash
         run: |
@@ -254,6 +253,9 @@ jobs:
       Radarr__Postgres__User: radarr
       Radarr__Postgres__Password: radarr
     steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -262,20 +264,20 @@ jobs:
       - name: Download Test Artifact
         uses: actions/download-artifact@v4
         with:
-          name: tests-linux-musl-x64
+          name: tests-linux-x64
           path: _tests
 
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
-          name: build_linux_musl_x64
+          name: build_linux
           path: _output
 
       - name: Prepare Binary Directory
         shell: bash
         run: |
           mkdir -p ./bin
-          cp -r ./_output/linux-musl-x64/${{ env.FRAMEWORK }}/Radarr/. ./bin/
+          cp -r ./_output/linux-x64/${{ env.FRAMEWORK }}/Radarr/. ./bin/
 
       - name: Make Test Binaries Executable
         shell: bash
@@ -302,6 +304,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -310,20 +315,20 @@ jobs:
       - name: Download Test Artifact
         uses: actions/download-artifact@v4
         with:
-          name: tests-linux-musl-x64
+          name: tests-linux-x64
           path: _tests
 
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
-          name: build_linux_musl_x64
+          name: build_linux
           path: _output
 
       - name: Prepare Binary Directory
         shell: bash
         run: |
           mkdir -p ./bin
-          cp -r ./_output/linux-musl-x64/${{ env.FRAMEWORK }}/Radarr/. ./bin/
+          cp -r ./_output/linux-x64/${{ env.FRAMEWORK }}/Radarr/. ./bin/
 
       - name: Make Test Binaries Executable
         shell: bash
@@ -369,23 +374,22 @@ jobs:
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
-          name: build_linux_musl_x64
-          path: _artifacts
-
-      - name: Download Build Artifact (arm64)
-        uses: actions/download-artifact@v4
-        with:
-          name: build_linux_musl_arm64
-          path: _artifacts
+          name: build_linux
+          path: _output
+          
+      - name: Make Binaries Executable
+        shell: bash
+        run: |
+          find . -name "ffprobe" -exec chmod a+x {} \;
+          find . -name "Radarr" -exec chmod a+x {} \;
+          find . -name "Radarr.Update" -exec chmod a+x {} \;
 
       - name: Create Release Package
         shell: bash
         run: |
           mkdir -p _artifacts
-          tar -czf _artifacts/Radarr.${{ needs.build.outputs.branch }}.${{ needs.build.outputs.version }}.linux-musl-core-x64.tar.gz \\
-            -C _artifacts/linux-musl-x64/${{ env.FRAMEWORK }} Radarr
-          tar -czf _artifacts/Radarr.${{ needs.build.outputs.branch }}.${{ needs.build.outputs.version }}.linux-musl-core-arm64.tar.gz \\
-            -C _artifacts/linux-musl-arm64/${{ env.FRAMEWORK }} Radarr
+          tar -czf _artifacts/Radarr.${{ needs.build.outputs.branch }}.${{ needs.build.outputs.version }}.linux-musl-core-x64.tar.gz -C _output/linux-musl-x64/${{ env.FRAMEWORK }} Radarr
+          tar -czf _artifacts/Radarr.${{ needs.build.outputs.branch }}.${{ needs.build.outputs.version }}.linux-musl-core-arm64.tar.gz -C _output/linux-musl-arm64/${{ env.FRAMEWORK }} Radarr
 
       - name: Upload Release Artifact
         uses: actions/upload-artifact@v4
