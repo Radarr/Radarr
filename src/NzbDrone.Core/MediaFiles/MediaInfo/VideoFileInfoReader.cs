@@ -119,7 +119,6 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 {
                     var videoStreamIndex = analysis.VideoStreams.FindIndex(stream => stream.Index == primaryVideoStream?.Index);
                     videoStreamIndex = videoStreamIndex == -1 ? 0 : videoStreamIndex;
-                    _logger.Debug("Reading video stream at index {0} with relative index v:{1}", primaryVideoStream?.Index, videoStreamIndex);
                     var frameOutput = FFProbe.GetFrameJson(filename, ffOptions: new () { ExtraArguments = $"-read_intervals \"%+#1\" -select_streams v:{videoStreamIndex}" });
                     mediaInfoModel.RawFrameData = frameOutput;
 
