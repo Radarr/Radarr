@@ -106,8 +106,10 @@ namespace NzbDrone.Core.Download
                 Enum.TryParse(historyItem.Data.GetValueOrDefault(MovieHistory.MOVIE_MATCH_TYPE, MovieMatchType.Unknown.ToString()), out MovieMatchType movieMatchType);
                 Enum.TryParse(historyItem.Data.GetValueOrDefault(MovieHistory.RELEASE_SOURCE, ReleaseSourceType.Unknown.ToString()), out ReleaseSourceType releaseSource);
 
+                var ignoreMatchByIdWarning = bool.TryParse(Environment.GetEnvironmentVariable("IGNORE_MATCH_BY_ID_WARNING"), out var skipWarning) && skipWarning;
+
                 // Show a warning if the release was matched by ID and the source is not interactive search
-                if (movieMatchType == MovieMatchType.Id && releaseSource != ReleaseSourceType.InteractiveSearch)
+                if (movieMatchType == MovieMatchType.Id && releaseSource != ReleaseSourceType.InteractiveSearch && !ignoreMatchByIdWarning)
                 {
                     trackedDownload.Warn("Found matching movie via grab history, but release was matched to movie by ID. Manual Import required.");
                     SetStateToImportBlocked(trackedDownload);
