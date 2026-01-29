@@ -25,7 +25,7 @@ radarr:
 
 ### Why this fork?
 
-This fork aims to improve certain aspects of Radarr to make it work better with remote "infinite" library setups (Debrid/Usenet streaming, etc). This fork will be kept up-to-date with the Radarr develop branch and is designed to be a drop-in replacement if you're using [linuxserver's docker images](https://hub.docker.com/r/linuxserver/radarr). The changes in this fork are fully compatible with the original Radarr configs so you can freely swap back and forth between them.
+This fork aims to improve certain aspects of Radarr to make it work better with remote "infinite" library setups (Debrid/Usenet streaming, etc). This fork will be kept up-to-date with the Radarr develop branch and the changes in this fork are fully compatible with the original Radarr configs so you can freely swap back and forth between them.
 
 This fork provides two categories of changes:
 
