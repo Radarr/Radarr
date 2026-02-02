@@ -37,6 +37,11 @@ namespace NzbDrone.Core.Notifications.Plex.Server
             UpdateIfEnabled(message.Movie);
         }
 
+        public override void OnMovieAdded(Movie movie)
+        {
+            UpdateIfEnabled(movie);
+        }
+
         public override void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles)
         {
             UpdateIfEnabled(movie);
