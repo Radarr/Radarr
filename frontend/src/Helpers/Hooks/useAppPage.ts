@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import AppState from 'App/State/AppState';
+import { useInitializeLanguage } from 'Language/useLanguageName';
 import { fetchTranslations } from 'Store/Actions/appActions';
 import { fetchCustomFilters } from 'Store/Actions/customFilterActions';
 import { fetchMovies } from 'Store/Actions/movieActions';
@@ -77,6 +78,8 @@ const createErrorsSelector = () =>
 
 const useAppPage = () => {
   const dispatch = useDispatch();
+
+  useInitializeLanguage();
 
   const isPopulated = useSelector(
     (state: AppState) =>
