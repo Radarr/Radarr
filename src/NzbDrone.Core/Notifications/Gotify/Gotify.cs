@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Notifications.Gotify
 
                 if (Settings.IncludeInstanceNameInTitle && _configFileProvider.InstanceName.IsNotNullOrWhiteSpace())
                 {
-                    title = $"{title} - {_configFileProvider.InstanceName}";
+                    title += $" - {_configFileProvider.InstanceName}";
                 }
 
                 var payload = new GotifyMessage
@@ -140,7 +140,7 @@ namespace NzbDrone.Core.Notifications.Gotify
 
             if (Settings.IncludeInstanceNameInTitle && _configFileProvider.InstanceName.IsNotNullOrWhiteSpace())
             {
-                title = $"{title} - {_configFileProvider.InstanceName}";
+                title += $" - {_configFileProvider.InstanceName}";
             }
 
             var payload = new GotifyMessage
