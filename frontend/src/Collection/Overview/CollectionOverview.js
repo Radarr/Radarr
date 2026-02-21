@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
-import { Navigation } from 'swiper';
+import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import EditMovieCollectionModal from 'Collection/Edit/EditMovieCollectionModal';
 import CheckInput from 'Components/Form/CheckInput';
@@ -273,7 +273,6 @@ class CollectionOverview extends Component {
                     spaceBetween={10}
                     slidesPerGroup={3}
                     loop={false}
-                    loopFillGroupWithBlank={true}
                     className="mySwiper"
                     modules={[Navigation]}
                     onInit={(swiper) => {
