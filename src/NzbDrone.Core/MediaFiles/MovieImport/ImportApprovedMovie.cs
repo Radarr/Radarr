@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -85,17 +84,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                         continue;
                     }
 
-                    var movieFile = new MovieFile();
-                    movieFile.DateAdded = DateTime.UtcNow;
-                    movieFile.MovieId = localMovie.Movie.Id;
-                    movieFile.Path = localMovie.Path.CleanFilePath();
+                    var movieFile = localMovie.ToMovieFile();
                     movieFile.Size = _diskProvider.GetFileSize(localMovie.Path);
-                    movieFile.Quality = localMovie.Quality;
-                    movieFile.Languages = localMovie.Languages;
-                    movieFile.MediaInfo = localMovie.MediaInfo;
-                    movieFile.Movie = localMovie.Movie;
-                    movieFile.ReleaseGroup = localMovie.ReleaseGroup;
-                    movieFile.Edition = localMovie.Edition;
 
                     if (downloadClientItem?.DownloadId.IsNotNullOrWhiteSpace() == true)
                     {
@@ -130,15 +120,19 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
                     if (newDownload)
                     {
-                        movieFile.SceneName = localMovie.SceneName;
-                        movieFile.OriginalFilePath = GetOriginalFilePath(downloadClientItem, localMovie);
+                        if (downloadClientItem is { OutputPath.IsEmpty: false })
+                        {
+                            var outputDirectory = downloadClientItem.OutputPath.Directory.ToString();
+                            if (outputDirectory.IsParentPath(localMovie.Path))
+                            {
+                                movieFile.OriginalFilePath = outputDirectory.GetRelativePath(localMovie.Path);
+                            }
+                        }
 
                         oldFiles = _movieFileUpgrader.UpgradeMovieFile(movieFile, localMovie, copyOnly).OldFiles;
                     }
                     else
                     {
-                        movieFile.RelativePath = localMovie.Movie.Path.GetRelativePath(movieFile.Path);
-
                         // Delete existing files from the DB mapped to this path
                         var previousFiles = _mediaFileService.GetFilesWithRelativePath(localMovie.Movie.Id, movieFile.RelativePath);
 
@@ -206,43 +200,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                                             .Select(d => new ImportResult(d, d.Rejections.Select(r => r.Message).ToArray())));
 
             return importResults;
-        }
-
-        private string GetOriginalFilePath(DownloadClientItem downloadClientItem, LocalMovie localMovie)
-        {
-            var path = localMovie.Path;
-
-            if (downloadClientItem != null && !downloadClientItem.OutputPath.IsEmpty)
-            {
-                var outputDirectory = downloadClientItem.OutputPath.Directory.ToString();
-
-                if (outputDirectory.IsParentPath(path))
-                {
-                    return outputDirectory.GetRelativePath(path);
-                }
-            }
-
-            var folderMovieInfo = localMovie.FolderMovieInfo;
-
-            if (folderMovieInfo != null)
-            {
-                var folderPath = path.GetAncestorPath(folderMovieInfo.OriginalTitle);
-
-                if (folderPath != null)
-                {
-                    return folderPath.GetParentPath().GetRelativePath(path);
-                }
-            }
-
-            var parentPath = path.GetParentPath();
-            var grandparentPath = parentPath.GetParentPath();
-
-            if (grandparentPath != null)
-            {
-                return grandparentPath.GetRelativePath(path);
-            }
-
-            return Path.GetFileName(path);
         }
     }
 }
