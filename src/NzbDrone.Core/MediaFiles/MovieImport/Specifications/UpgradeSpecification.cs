@@ -63,6 +63,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                 var currentFormatScore = qualityProfile.CalculateCustomFormatScore(currentCustomFormats);
                 var newCustomFormats = localMovie.CustomFormats;
                 var newFormatScore = localMovie.CustomFormatScore;
+                var newFormatsBeforeRename = localMovie.OriginalFileNameCustomFormats;
+                var newFormatScoreBeforeRename = localMovie.OriginalFileNameCustomFormatScore;
 
                 if (qualityCompare == 0 && newFormatScore < currentFormatScore)
                 {
@@ -71,6 +73,18 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                         newFormatScore,
                         currentCustomFormats != null ? currentCustomFormats.ConcatToString() : "",
                         currentFormatScore);
+
+                    if (newFormatScoreBeforeRename > currentFormatScore)
+                    {
+                        return ImportSpecDecision.Reject(ImportRejectionReason.NotCustomFormatUpgradeAfterRename,
+                            "Not a Custom Format upgrade for existing movie file(s). AfterRename: [{0}] ({1}) do not improve on Existing: [{2}] ({3}) even though BeforeRename: [{4}] ({5}) did.",
+                            newCustomFormats != null ? newCustomFormats.ConcatToString() : "",
+                            newFormatScore,
+                            currentCustomFormats != null ? currentCustomFormats.ConcatToString() : "",
+                            currentFormatScore,
+                            newFormatsBeforeRename != null ? newFormatsBeforeRename.ConcatToString() : "",
+                            newFormatScoreBeforeRename);
+                    }
 
                     return ImportSpecDecision.Reject(ImportRejectionReason.NotCustomFormatUpgrade,
                         "Not a Custom Format upgrade for existing movie file(s). New: [{0}] ({1}) do not improve on Existing: [{2}] ({3})",
