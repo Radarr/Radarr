@@ -22,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         private readonly List<FFProbePixelFormat> _pixelFormats;
 
         public const int MINIMUM_MEDIA_INFO_SCHEMA_REVISION = 14;
-        public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 14;
+        public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 15;
 
         private static readonly string[] ValidHdrColourPrimaries = { "bt2020" };
         private static readonly string[] HlgTransferFunctions = { "arib-std-b67" };
@@ -92,6 +92,11 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 mediaInfoModel.AudioCodecID = analysis.PrimaryAudioStream?.CodecTagString;
                 mediaInfoModel.AudioProfile = analysis.PrimaryAudioStream?.Profile;
                 mediaInfoModel.AudioBitrate = GetBitrate(analysis.PrimaryAudioStream);
+
+                var bestAudioStream = GetBestAudioStream(analysis.AudioStreams);
+                mediaInfoModel.BestAudioFormat = bestAudioStream?.CodecName;
+                mediaInfoModel.BestAudioCodecID = bestAudioStream?.CodecTagString;
+                mediaInfoModel.BestAudioProfile = bestAudioStream?.Profile;
                 mediaInfoModel.RunTime = GetBestRuntime(analysis.PrimaryAudioStream?.Duration, primaryVideoStream?.Duration, analysis.Format.Duration);
                 mediaInfoModel.AudioStreamCount = analysis.AudioStreams.Count;
                 mediaInfoModel.AudioChannels = analysis.PrimaryAudioStream?.Channels ?? 0;
@@ -192,6 +197,40 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         private FFProbePixelFormat GetPixelFormat(string format)
         {
             return _pixelFormats.Find(x => x.Name == format);
+        }
+
+        private static AudioStream GetBestAudioStream(List<AudioStream> audioStreams)
+        {
+            if (audioStreams == null || audioStreams.Count == 0)
+            {
+                return null;
+            }
+
+            if (audioStreams.Count == 1)
+            {
+                return audioStreams[0];
+            }
+
+            AudioStream best = null;
+            var bestRank = -1;
+
+            foreach (var stream in audioStreams)
+            {
+                var rank = GetAudioCodecRank(stream.CodecName, stream.CodecTagString, stream.Profile);
+
+                if (rank > bestRank)
+                {
+                    bestRank = rank;
+                    best = stream;
+                }
+            }
+
+            return best;
+        }
+
+        private static int GetAudioCodecRank(string format, string codecID, string profile)
+        {
+            return (int)AudioCodecHelper.Resolve(format, codecID, profile);
         }
 
         public static HdrFormat GetHdrFormat(int bitDepth, string colorPrimaries, string transferFunction, List<SideData> sideData)
