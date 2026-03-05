@@ -201,36 +201,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
         private static AudioStream GetBestAudioStream(List<AudioStream> audioStreams)
         {
-            if (audioStreams == null || audioStreams.Count == 0)
-            {
-                return null;
-            }
-
-            if (audioStreams.Count == 1)
-            {
-                return audioStreams[0];
-            }
-
-            AudioStream best = null;
-            var bestRank = -1;
-
-            foreach (var stream in audioStreams)
-            {
-                var rank = GetAudioCodecRank(stream.CodecName, stream.CodecTagString, stream.Profile);
-
-                if (rank > bestRank)
-                {
-                    bestRank = rank;
-                    best = stream;
-                }
-            }
-
-            return best;
-        }
-
-        private static int GetAudioCodecRank(string format, string codecID, string profile)
-        {
-            return (int)AudioCodecHelper.Resolve(format, codecID, profile);
+            return audioStreams?.MaxBy(stream => AudioCodecHelper.Resolve(stream.CodecName, stream.CodecTagString, stream.Profile));
         }
 
         public static HdrFormat GetHdrFormat(int bitDepth, string colorPrimaries, string transferFunction, List<SideData> sideData)
