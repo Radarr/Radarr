@@ -58,7 +58,6 @@ const filterTypePredicates = {
   },
 
   [filterTypes.IS_EMPTY]: function(itemValue, filterValue) {
-    console.log('isEmpty', { itemValue });
     if (itemValue === null || itemValue === undefined) {
       return true;
     }
