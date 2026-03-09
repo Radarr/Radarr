@@ -14,6 +14,8 @@ export const STARTS_WITH = 'startsWith';
 export const NOT_STARTS_WITH = 'notStartsWith';
 export const ENDS_WITH = 'endsWith';
 export const NOT_ENDS_WITH = 'notEndsWith';
+export const IS_EMPTY = 'isEmpty';
+export const IS_NOT_EMPTY = 'isNotEmpty';
 
 export const all = [
   CONTAINS,
@@ -31,5 +33,7 @@ export const all = [
   STARTS_WITH,
   NOT_STARTS_WITH,
   ENDS_WITH,
-  NOT_ENDS_WITH
+  NOT_ENDS_WITH,
+  IS_EMPTY,
+  IS_NOT_EMPTY
 ];

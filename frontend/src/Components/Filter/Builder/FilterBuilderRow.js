@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import SelectInput from 'Components/Form/SelectInput';
 import IconButton from 'Components/Link/IconButton';
 import { filterBuilderTypes, filterBuilderValueTypes, icons } from 'Helpers/Props';
+import * as filterTypes from 'Helpers/Props/filterTypes';
 import sortByProp from 'Utilities/Array/sortByProp';
 import BoolFilterBuilderRowValue from './BoolFilterBuilderRowValue';
 import DateFilterBuilderRowValue from './DateFilterBuilderRowValue';
@@ -226,6 +227,13 @@ class FilterBuilderRow extends Component {
 
     const selectedFilterBuilderProp = this.selectedFilterBuilderProp;
 
+    const operatorsWithoutValue = [
+      filterTypes.IS_EMPTY,
+      filterTypes.IS_NOT_EMPTY
+    ];
+
+    const requiresValue = !operatorsWithoutValue.includes(filterType);
+
     const keyOptions = filterBuilderProps.map((availablePropFilter) => {
       const { name, label } = availablePropFilter;
 
@@ -262,10 +270,11 @@ class FilterBuilderRow extends Component {
               />
           }
         </div>
-
-        <div className={styles.valueInputContainer}>
-          {
-            filterValue != null && !!selectedFilterBuilderProp &&
+        {
+          requiresValue &&
+          filterValue != null &&
+          !!selectedFilterBuilderProp &&
+            <div className={styles.valueInputContainer}>
               <ValueComponent
                 filterType={filterType}
                 filterValue={filterValue}
@@ -273,8 +282,8 @@ class FilterBuilderRow extends Component {
                 sectionItems={sectionItems}
                 onChange={this.onFilterChange}
               />
-          }
-        </div>
+            </div>
+        }
 
         <div className={styles.actionsContainer}>
           <IconButton

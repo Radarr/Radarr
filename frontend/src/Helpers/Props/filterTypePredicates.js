@@ -55,6 +55,31 @@ const filterTypePredicates = {
 
   [filterTypes.NOT_ENDS_WITH]: function(itemValue, filterValue) {
     return !itemValue.toLowerCase().endsWith(filterValue.toLowerCase());
+  },
+
+  [filterTypes.IS_EMPTY]: function(itemValue, filterValue) {
+    console.log('isEmpty', { itemValue });
+    if (itemValue === null || itemValue === undefined) {
+      return true;
+    }
+
+    if (Array.isArray(itemValue) || typeof itemValue === 'string') {
+      return itemValue.length === 0;
+    }
+
+    return false;
+  },
+
+  [filterTypes.IS_NOT_EMPTY]: function(itemValue, filterValue) {
+    if (itemValue === null || itemValue === undefined) {
+      return false;
+    }
+
+    if (Array.isArray(itemValue) || typeof itemValue === 'string') {
+      return itemValue.length > 0;
+    }
+
+    return true;
   }
 };
 

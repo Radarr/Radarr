@@ -697,6 +697,8 @@
   "FilterNotInLast": "not in the last",
   "FilterNotInNext": "not in the next",
   "FilterStartsWith": "starts with",
+  "FilterIsEmpty": "is empty",
+  "FilterIsNotEmpty": "is NOT empty",
   "Filters": "Filters",
   "FilterMoviePropertiesOnlyNotFileWarning": "Filters are available only for the properties of a movie, they are not available for properties of the file(s) you may have for that movie.",
   "FirstDayOfWeek": "First Day of Week",
