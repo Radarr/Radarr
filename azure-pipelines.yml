@@ -1093,7 +1093,7 @@ stages:
         vmImage: ${{ variables.windowsImage }}
       steps:
       - checkout: self # Need history for Sonar analysis
-      - task: SonarCloudPrepare@3
+      - task: SonarCloudPrepare@4
         env:
           SONAR_SCANNER_OPTS: ''
         inputs:
@@ -1105,7 +1105,7 @@ stages:
           cliProjectName: 'RadarrUI'
           cliProjectVersion: '$(radarrVersion)'
           cliSources: './frontend'
-      - task: SonarCloudAnalyze@3
+      - task: SonarCloudAnalyze@4
 
     - job: Api_Docs
       displayName: API Docs
@@ -1182,7 +1182,7 @@ stages:
         submodules: true
       - powershell: Set-Service SCardSvr -StartupType Manual
         displayName: Enable Windows Test Service
-      - task: SonarCloudPrepare@3
+      - task: SonarCloudPrepare@4
         condition: eq(variables['System.PullRequest.IsFork'], 'False')
         inputs:
           SonarCloud: 'SonarCloud'
@@ -1200,7 +1200,7 @@ stages:
           ./build.sh --backend -f net8.0 -r win-x64
           TEST_DIR=_tests/net8.0/win-x64/publish/ ./test.sh Windows Unit Coverage
         displayName: Coverage Unit Tests
-      - task: SonarCloudAnalyze@3
+      - task: SonarCloudAnalyze@4
         condition: eq(variables['System.PullRequest.IsFork'], 'False')
         displayName: Publish SonarCloud Results
       - task: reportgenerator@5
