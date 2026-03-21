@@ -1932,5 +1932,16 @@
     "IndexerSettingsFailDownloadsHelpText": "완료된 다운로드를 처리하는 동안 {appName}는 선택된 파일 유형을 실패한 다운로드로 처리합니다.",
     "ImportListsRadarrSettingsFullUrl": "전체 URL",
     "DefaultNameCopiedImportList": "{name} - 복사",
-    "NotificationsPushcutSettingsMetadataLinksHelpText": "알림을 보낼 때 시리즈 메타데이터에 대한 링크를 추가"
+    "NotificationsPushcutSettingsMetadataLinksHelpText": "알림을 보낼 때 시리즈 메타데이터에 대한 링크를 추가",
+    "ImportListsTraktSettingsLimitMovieHelpText": "가져올 때 시리즈 개수를 제한",
+    "SelectMovieModalTitle": "{modalTitle} - 폴더 선택",
+    "IndexerNewznabSettingsAdditionalParametersHelpText": "매개 변수 추가",
+    "AutoTaggingSpecificationStudio": "스튜디오",
+    "MovieEditRootFolderHelpText": "동일한 루트 폴더로 시리즈를 이동하면 업데이트된 제목이나 작명 형식과 일치하도록 시리즈 폴더의 이름을 바꿀 수 있습니다",
+    "ShowCinemaRelease": "영화 개봉일 표시",
+    "ShowDigitalRelease": "디지털 출시일 표시",
+    "ShowPhysicalRelease": "실제 출시일 표시",
+    "CloneImportList": "가져오기 목록 삭제",
+    "ReleaseProfile": "출시 프로필",
+    "CinemaRelease": "영화 개봉일 표시"
 }

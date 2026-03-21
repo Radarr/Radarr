@@ -2037,5 +2037,7 @@
     "DownloadClientPriorityHelpText": "下載用戶端優先級，從 1 (最高) 到 50 (最低)，預設為 1。具有相同優先級的用戶端將輪流使用。",
     "EditGroups": "編輯群組",
     "NotificationsNtfySettingsTopics": "主題",
-    "NotificationsSimplepushSettingsKey": "金鑰"
+    "NotificationsSimplepushSettingsKey": "金鑰",
+    "NotificationsPushoverSettingsTtl": "有效期限",
+    "NotificationsPushoverSettingsTtlHelpText": "訊息過期前的秒數。設置為 0 表示無期限"
 }
