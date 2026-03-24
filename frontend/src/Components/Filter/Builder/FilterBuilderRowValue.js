@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import TagInput from 'Components/Form/TagInput';
+import TagInput from 'Components/Form/Tag/TagInput';
 import { filterBuilderTypes, filterBuilderValueTypes, kinds } from 'Helpers/Props';
 import tagShape from 'Helpers/Props/Shapes/tagShape';
 import convertToBytes from 'Utilities/Number/convertToBytes';
@@ -58,7 +58,7 @@ function getValue(input, selectedFilterBuilderProp) {
   if (selectedFilterBuilderProp.type === filterBuilderTypes.NUMBER) {
     const { numberFractionDigits = 0 } = selectedFilterBuilderProp;
 
-    return Number(input).toFixed(numberFractionDigits);
+    return Number(Number(input).toFixed(numberFractionDigits));
   }
 
   return input;

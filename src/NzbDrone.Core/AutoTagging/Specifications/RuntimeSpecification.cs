@@ -24,10 +24,10 @@ namespace NzbDrone.Core.AutoTagging.Specifications
         public override int Order => 1;
         public override string ImplementationName => "Runtime";
 
-        [FieldDefinition(1, Label = "Minimum Runtime", Type = FieldType.Number)]
+        [FieldDefinition(1, Label = "AutoTaggingSpecificationMinimumRuntime", Type = FieldType.Number, Unit = "minutes")]
         public int Min { get; set; }
 
-        [FieldDefinition(2, Label = "Maximum Runtime", Type = FieldType.Number)]
+        [FieldDefinition(2, Label = "AutoTaggingSpecificationMaximumRuntime", Type = FieldType.Number, Unit = "minutes")]
         public int Max { get; set; }
 
         protected override bool IsSatisfiedByWithoutNegate(Movie movie)

@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Movies
         public RatingChild Trakt { get; set; }
     }
 
-    public class RatingChild
+    public class RatingChild : MemberwiseEquatable<RatingChild>
     {
         public int Votes { get; set; }
         public decimal Value { get; set; }

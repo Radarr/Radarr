@@ -10,7 +10,7 @@ import Popover from 'Components/Tooltip/Popover';
 import useModalOpenState from 'Helpers/Hooks/useModalOpenState';
 import { icons, kinds, sizes } from 'Helpers/Props';
 import MovieHeadshot from 'Movie/MovieHeadshot';
-import EditImportListModalConnector from 'Settings/ImportLists/ImportLists/EditImportListModalConnector';
+import EditImportListModal from 'Settings/ImportLists/ImportLists/EditImportListModal';
 import { deleteImportList } from 'Store/Actions/Settings/importLists';
 import ImportList from 'typings/ImportList';
 import MovieCredit from 'typings/MovieCredit';
@@ -152,7 +152,7 @@ function MovieCrewPoster(props: MovieCrewPosterProps) {
       </div>
       <div className={classNames(styles.title, 'swiper-no-swiping')}>{job}</div>
 
-      <EditImportListModalConnector
+      <EditImportListModal
         id={importListId}
         isOpen={isEditImportListModalOpen}
         onModalClose={setEditImportListModalClosed}

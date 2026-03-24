@@ -49,7 +49,7 @@ function isVisible(row, props) {
     valueProp
   } = row;
 
-  return _.has(props, valueProp) && (_.get(props, showProp) || props.sortKey === name);
+  return _.has(props, valueProp) && _.get(props, valueProp) !== null && (props[showProp] || props.sortKey === name);
 }
 
 function getInfoRowProps(row, props) {

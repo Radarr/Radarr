@@ -9,5 +9,7 @@ namespace NzbDrone.Core.Indexers
 
         // TODO: Need to Create UI field for this and turn functionality back on per indexer.
         IEnumerable<int> MultiLanguages { get; set; }
+
+        IEnumerable<int> FailDownloads { get; set; }
     }
 }

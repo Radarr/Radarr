@@ -182,6 +182,12 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'keywords',
+      label: () => translate('Keywords'),
+      isSortable: false,
+      isVisible: false
+    },
+    {
       name: 'movieStatus',
       label: () => translate('Status'),
       isSortable: true,
@@ -473,8 +479,8 @@ export const defaultState = {
       label: () => translate('Genres'),
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
-        const genreList = items.reduce((acc, movie) => {
-          movie.genres.forEach((genre) => {
+        const genreList = items.reduce((acc, { genres = [] }) => {
+          genres.forEach((genre) => {
             acc.push({
               id: genre,
               name: genre
@@ -485,6 +491,27 @@ export const defaultState = {
         }, []);
 
         return genreList.sort(sortByProp('name'));
+      }
+    },
+    {
+      name: 'keywords',
+      label: () => translate('Keywords'),
+      type: filterBuilderTypes.ARRAY,
+      optionsSelector: function(items) {
+        const keywordList = items.reduce((acc, { keywords = [] }) => {
+          keywords.forEach((keyword) => {
+            if (acc.findIndex((a) => a.id === keyword) === -1) {
+              acc.push({
+                id: keyword,
+                name: keyword
+              });
+            }
+          });
+
+          return acc;
+        }, []);
+
+        return keywordList.sort(sortByProp('name'));
       }
     },
     {

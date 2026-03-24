@@ -8,6 +8,7 @@ using NzbDrone.Core.Qualities;
 using Radarr.Api.V3.CustomFormats;
 using Radarr.Api.V3.Movies;
 using Radarr.Http;
+using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.ManualImport
 {
@@ -25,6 +26,11 @@ namespace Radarr.Api.V3.ManualImport
         [Produces("application/json")]
         public List<ManualImportResource> GetMediaFiles(string folder, string downloadId, int? movieId, bool filterExistingFiles = true)
         {
+            if (movieId.HasValue && downloadId.IsNullOrWhiteSpace())
+            {
+                return _manualImportService.GetMediaFiles(movieId.Value).ToResource().Select(AddQualityWeight).ToList();
+            }
+
             return _manualImportService.GetMediaFiles(folder, downloadId, movieId, filterExistingFiles).ToResource().Select(AddQualityWeight).ToList();
         }
 
@@ -32,13 +38,18 @@ namespace Radarr.Api.V3.ManualImport
         [Consumes("application/json")]
         public object ReprocessItems([FromBody] List<ManualImportReprocessResource> items)
         {
+            if (items is { Count: 0 })
+            {
+                throw new BadRequestException("items must be provided");
+            }
+
             foreach (var item in items)
             {
                 var processedItem = _manualImportService.ReprocessItem(item.Path, item.DownloadId, item.MovieId, item.ReleaseGroup, item.Quality, item.Languages, item.IndexerFlags);
 
                 item.Movie = processedItem.Movie.ToResource(0);
                 item.IndexerFlags = processedItem.IndexerFlags;
-                item.Rejections = processedItem.Rejections;
+                item.Rejections = processedItem.Rejections.Select(r => r.ToResource());
                 item.CustomFormats = processedItem.CustomFormats.ToResource(false);
                 item.CustomFormatScore = processedItem.CustomFormatScore;
 

@@ -20,10 +20,10 @@ namespace NzbDrone.Core.CustomFormats
         public override int Order => 10;
         public override string ImplementationName => "Year";
 
-        [FieldDefinition(1, Label = "Minimum Year", Type = FieldType.Number)]
+        [FieldDefinition(1, Label = "CustomFormatsSpecificationMinimumYear", Type = FieldType.Number)]
         public int Min { get; set; }
 
-        [FieldDefinition(2, Label = "Maximum Year", Type = FieldType.Number)]
+        [FieldDefinition(2, Label = "CustomFormatsSpecificationMaximumYear", Type = FieldType.Number)]
         public int Max { get; set; }
 
         protected override bool IsSatisfiedByWithoutNegate(CustomFormatInput input)

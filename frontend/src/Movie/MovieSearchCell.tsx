@@ -6,6 +6,7 @@ import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import useModalOpenState from 'Helpers/Hooks/useModalOpenState';
 import { icons } from 'Helpers/Props';
+import { MovieEntity } from 'Movie/useMovie';
 import { executeCommand } from 'Store/Actions/commandActions';
 import createExecutingCommandsSelector from 'Store/Selectors/createExecutingCommandsSelector';
 import translate from 'Utilities/String/translate';
@@ -14,12 +15,10 @@ import styles from './MovieSearchCell.css';
 
 interface MovieSearchCellProps {
   movieId: number;
-  movieTitle: string;
+  movieEntity?: MovieEntity;
 }
 
-function MovieSearchCell(props: MovieSearchCellProps) {
-  const { movieId, movieTitle } = props;
-
+function MovieSearchCell({ movieId }: MovieSearchCellProps) {
   const executingCommands = useSelector(createExecutingCommandsSelector());
   const isSearching = executingCommands.some(({ name, body }) => {
     const { movieIds = [] } = body;
@@ -61,7 +60,6 @@ function MovieSearchCell(props: MovieSearchCellProps) {
       <MovieInteractiveSearchModal
         isOpen={isInteractiveSearchModalOpen}
         movieId={movieId}
-        movieTitle={movieTitle}
         onModalClose={setInteractiveSearchModalClosed}
       />
     </TableRowCell>

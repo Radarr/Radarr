@@ -5,7 +5,7 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
-    public class LanguageSpecification : IDecisionEngineSpecification
+    public class LanguageSpecification : IDownloadDecisionEngineSpecification
     {
         private readonly Logger _logger;
 
@@ -17,14 +17,14 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public virtual DownloadSpecDecision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             var wantedLanguage = subject.Movie.QualityProfile.Language;
 
             if (wantedLanguage == Language.Any)
             {
                 _logger.Debug("Profile allows any language, accepting release.");
-                return Decision.Accept();
+                return DownloadSpecDecision.Accept();
             }
 
             var originalLanguage = subject.Movie.MovieMetadata.Value.OriginalLanguage;
@@ -34,10 +34,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 if (!subject.Languages.Contains(originalLanguage))
                 {
                     _logger.Debug("Original Language({0}) is wanted, but found {1}", originalLanguage, subject.Languages.ToExtendedString());
-                    return Decision.Reject("Original Language ({0}) is wanted, but found {1}", originalLanguage, subject.Languages.ToExtendedString());
+                    return DownloadSpecDecision.Reject(DownloadRejectionReason.WantedLanguage, "Original Language ({0}) is wanted, but found {1}", originalLanguage, subject.Languages.ToExtendedString());
                 }
 
-                return Decision.Accept();
+                return DownloadSpecDecision.Accept();
             }
 
             _logger.Debug("Checking if report meets language requirements. {0}", subject.ParsedMovieInfo.Languages.ToExtendedString());
@@ -45,10 +45,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             if (!subject.Languages.Contains(wantedLanguage))
             {
                 _logger.Debug("Report Language: {0} rejected because it is not wanted, wanted {1}", subject.Languages.ToExtendedString(), wantedLanguage);
-                return Decision.Reject("{0} is wanted, but found {1}", wantedLanguage, subject.Languages.ToExtendedString());
+                return DownloadSpecDecision.Reject(DownloadRejectionReason.WantedLanguage, "{0} is wanted, but found {1}", wantedLanguage, subject.Languages.ToExtendedString());
             }
 
-            return Decision.Accept();
+            return DownloadSpecDecision.Accept();
         }
     }
 }

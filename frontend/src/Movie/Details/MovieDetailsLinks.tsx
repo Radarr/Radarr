@@ -92,6 +92,19 @@ function MovieDetailsLinks(props: MovieDetailsLinksProps) {
               MDBList
             </Label>
           </Link>
+
+          <Link
+            className={styles.link}
+            to={`https://www.blu-ray.com/search/?quicksearch=1&quicksearch_keyword=${imdbId}&section=theatrical`}
+          >
+            <Label
+              className={styles.linkLabel}
+              kind={kinds.INFO}
+              size={sizes.LARGE}
+            >
+              Blu-ray
+            </Label>
+          </Link>
         </>
       ) : null}
 

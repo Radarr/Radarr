@@ -131,7 +131,7 @@ class ImportMovieSelectMovie extends Component {
               id={this._buttonId}
             >
               <Link
-                ref={ref}
+                // ref={ref}
                 className={styles.button}
                 component="div"
                 onPress={this.onPress}
@@ -255,7 +255,7 @@ class ImportMovieSelectMovie extends Component {
                             items.map((item) => {
                               return (
                                 <ImportMovieSearchResultConnector
-                                  key={item.tvdbId}
+                                  key={item.tmdbId}
                                   tmdbId={item.tmdbId}
                                   title={item.title}
                                   year={item.year}

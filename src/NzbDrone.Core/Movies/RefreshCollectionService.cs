@@ -125,10 +125,14 @@ namespace NzbDrone.Core.Movies
         {
             if (collection.Monitored)
             {
+                var collectionMovies = _movieMetadataService
+                    .GetMoviesByCollectionTmdbId(collection.TmdbId)
+                    .Where(m => m.Status is MovieStatusType.InCinemas or MovieStatusType.Released)
+                    .ToList();
+
                 var existingMovies = _movieService.AllMovieTmdbIds();
-                var collectionMovies = _movieMetadataService.GetMoviesByCollectionTmdbId(collection.TmdbId);
                 var excludedMovies = _importListExclusionService.All().Select(e => e.TmdbId);
-                var moviesToAdd = collectionMovies.Where(m => !existingMovies.Contains(m.TmdbId)).Where(m => !excludedMovies.Contains(m.TmdbId));
+                var moviesToAdd = collectionMovies.Where(m => !existingMovies.Contains(m.TmdbId)).Where(m => !excludedMovies.Contains(m.TmdbId)).ToList();
 
                 if (moviesToAdd.Any())
                 {

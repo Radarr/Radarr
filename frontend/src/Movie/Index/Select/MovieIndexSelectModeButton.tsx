@@ -1,18 +1,16 @@
-import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import React, { useCallback } from 'react';
 import { useSelect } from 'App/SelectContext';
-import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
+import PageToolbarButton, {
+  PageToolbarButtonProps,
+} from 'Components/Page/Toolbar/PageToolbarButton';
 
-interface MovieIndexSelectModeButtonProps {
-  label: string;
-  iconName: IconDefinition;
+interface MovieIndexSelectModeButtonProps extends PageToolbarButtonProps {
   isSelectMode: boolean;
-  overflowComponent: React.FunctionComponent<never>;
   onPress: () => void;
 }
 
 function MovieIndexSelectModeButton(props: MovieIndexSelectModeButtonProps) {
-  const { label, iconName, isSelectMode, onPress } = props;
+  const { label, iconName, isSelectMode, overflowComponent, onPress } = props;
   const [, selectDispatch] = useSelect();
 
   const onPressWrapper = useCallback(() => {
@@ -29,6 +27,7 @@ function MovieIndexSelectModeButton(props: MovieIndexSelectModeButtonProps) {
     <PageToolbarButton
       label={label}
       iconName={iconName}
+      overflowComponent={overflowComponent}
       onPress={onPressWrapper}
     />
   );

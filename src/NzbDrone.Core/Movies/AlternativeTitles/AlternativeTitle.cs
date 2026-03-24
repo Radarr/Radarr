@@ -1,9 +1,8 @@
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Movies.AlternativeTitles
 {
-    public class AlternativeTitle : ModelBase
+    public class AlternativeTitle : Entity<AlternativeTitle>
     {
         public SourceType SourceType { get; set; }
         public int MovieMetadataId { get; set; }
@@ -14,39 +13,22 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
         {
         }
 
-        public AlternativeTitle(string title, SourceType sourceType = SourceType.TMDB, int sourceId = 0)
+        public AlternativeTitle(string title, SourceType sourceType = SourceType.Tmdb)
         {
             Title = title;
             CleanTitle = title.CleanMovieTitle();
             SourceType = sourceType;
         }
 
-        public override bool Equals(object obj)
-        {
-            var item = obj as AlternativeTitle;
-
-            if (item == null)
-            {
-                return false;
-            }
-
-            return item.CleanTitle == CleanTitle;
-        }
-
-        public override int GetHashCode()
-        {
-            return CleanTitle.GetHashCode();
-        }
-
         public override string ToString()
         {
-            return Title;
+            return $"{Title} [{CleanTitle}]";
         }
     }
 
     public enum SourceType
     {
-        TMDB = 0,
+        Tmdb = 0,
         Mappings = 1,
         User = 2,
         Indexer = 3

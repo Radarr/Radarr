@@ -15,6 +15,10 @@
   padding-left: 20px;
 }
 
+.logoLink {
+  line-height: 0;
+}
+
 .logoFull,
 .logo {
   vertical-align: middle;

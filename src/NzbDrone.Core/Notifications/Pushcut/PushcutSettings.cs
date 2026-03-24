@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Validation;
@@ -15,7 +16,7 @@ namespace NzbDrone.Core.Notifications.Pushcut
 
     public class PushcutSettings : NotificationSettingsBase<PushcutSettings>
     {
-        private static readonly PushcutSettingsValidator Validator = new ();
+        private static readonly PushcutSettingsValidator Validator = new PushcutSettingsValidator();
 
         [FieldDefinition(0, Label = "NotificationsPushcutSettingsNotificationName", Type = FieldType.Textbox, HelpText = "NotificationsPushcutSettingsNotificationNameHelpText")]
         public string NotificationName { get; set; }
@@ -25,6 +26,12 @@ namespace NzbDrone.Core.Notifications.Pushcut
 
         [FieldDefinition(2, Label = "NotificationsPushcutSettingsTimeSensitive", Type = FieldType.Checkbox, HelpText = "NotificationsPushcutSettingsTimeSensitiveHelpText")]
         public bool TimeSensitive { get; set; }
+
+        [FieldDefinition(3, Label = "NotificationsPushcutSettingsIncludePoster", Type = FieldType.Checkbox, HelpText = "NotificationsPushcutSettingsIncludePosterHelpText")]
+        public bool IncludePoster { get; set; }
+
+        [FieldDefinition(4, Label = "NotificationsPushcutSettingsMetadataLinks", Type = FieldType.Select, SelectOptions = typeof(MetadataLinkType), HelpText = "NotificationsPushcutSettingsMetadataLinksHelpText")]
+        public IEnumerable<int> MetadataLinks { get; set; } = new List<int>();
 
         public override NzbDroneValidationResult Validate()
         {

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -412,6 +413,35 @@ namespace NzbDrone.Common.Test
         public void unix_path_should_return_clean_path(string path, string cleanPath)
         {
             path.GetCleanPath().Should().Be(cleanPath);
+        }
+
+        [TestCase(@"C:\Test\", @"C:\Test\Series Title", "Series Title")]
+        [TestCase(@"C:\Test\", @"C:\Test\Collection\Series Title", @"Collection\Series Title")]
+        [TestCase(@"C:\Test\mydir\", @"C:\Test\mydir\Collection\Series Title", @"Collection\Series Title")]
+        [TestCase(@"\\server\share", @"\\server\share\Series Title", "Series Title")]
+        [TestCase(@"\\server\share\mydir\", @"\\server\share\mydir\/Collection\Series Title", @"Collection\Series Title")]
+        public void windows_path_should_return_relative_path(string parentPath, string childPath, string relativePath)
+        {
+            parentPath.GetRelativePath(childPath).Should().Be(relativePath);
+        }
+
+        [TestCase(@"/test", "/test/Series Title", "Series Title")]
+        [TestCase(@"/test/", "/test/Collection/Series Title", "Collection/Series Title")]
+        [TestCase(@"/test/mydir", "/test/mydir/Series Title", "Series Title")]
+        [TestCase(@"/test/mydir/", "/test/mydir/Collection/Series Title", "Collection/Series Title")]
+        [TestCase(@"/test/mydir/", @"/test/mydir/\Collection/Series Title", "Collection/Series Title")]
+        public void unix_path_should_return_relative_path(string parentPath, string childPath, string relativePath)
+        {
+            parentPath.GetRelativePath(childPath).Should().Be(relativePath);
+        }
+
+        [Test]
+        public void should_be_equal_with_different_unicode_representations()
+        {
+            var path1 = @"C:\Test\file.mkv".AsOsAgnostic().Normalize(NormalizationForm.FormC);
+            var path2 = @"C:\Test\file.mkv".AsOsAgnostic().Normalize(NormalizationForm.FormD);
+
+            path1.PathEquals(path2);
         }
     }
 }

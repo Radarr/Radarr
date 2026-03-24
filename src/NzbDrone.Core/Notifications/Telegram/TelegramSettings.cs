@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Validation;
@@ -12,12 +15,27 @@ namespace NzbDrone.Core.Notifications.Telegram
             RuleFor(c => c.ChatId).NotEmpty();
             RuleFor(c => c.TopicId).Must(topicId => !topicId.HasValue || topicId > 1)
                                    .WithMessage("Topic ID must be greater than 1 or empty");
+            RuleFor(c => c.MetadataLinks).Custom((links, context) =>
+            {
+                foreach (var link in links)
+                {
+                    if (!Enum.IsDefined(typeof(MetadataLinkType), link))
+                    {
+                        context.AddFailure("MetadataLinks", $"MetadataLink is not valid: {link}");
+                    }
+                }
+            });
         }
     }
 
     public class TelegramSettings : NotificationSettingsBase<TelegramSettings>
     {
         private static readonly TelegramSettingsValidator Validator = new ();
+
+        public TelegramSettings()
+        {
+            MetadataLinks = Enumerable.Empty<int>();
+        }
 
         [FieldDefinition(0, Label = "NotificationsTelegramSettingsBotToken", Privacy = PrivacyLevel.ApiKey, HelpLink = "https://core.telegram.org/bots")]
         public string BotToken { get; set; }
@@ -33,6 +51,12 @@ namespace NzbDrone.Core.Notifications.Telegram
 
         [FieldDefinition(4, Label = "NotificationsTelegramSettingsIncludeAppName", Type = FieldType.Checkbox, HelpText = "NotificationsTelegramSettingsIncludeAppNameHelpText")]
         public bool IncludeAppNameInTitle { get; set; }
+
+        [FieldDefinition(5, Label = "NotificationsTelegramSettingsIncludeInstanceName", Type = FieldType.Checkbox, HelpText = "NotificationsTelegramSettingsIncludeInstanceNameHelpText", Advanced = true)]
+        public bool IncludeInstanceNameInTitle { get; set; }
+
+        [FieldDefinition(6, Label = "NotificationsTelegramSettingsMetadataLinks", Type = FieldType.Select, SelectOptions = typeof(MetadataLinkType), HelpText = "NotificationsTelegramSettingsMetadataLinksMovieHelpText")]
+        public IEnumerable<int> MetadataLinks { get; set; }
 
         public override NzbDroneValidationResult Validate()
         {

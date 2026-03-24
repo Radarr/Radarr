@@ -44,7 +44,7 @@ function ImportMovieRow(props) {
 
       <VirtualTableRowCell className={styles.monitor}>
         <FormInputGroup
-          type={inputTypes.MOVIE_MONITORED_SELECT}
+          type={inputTypes.MONITOR_MOVIES_SELECT}
           name="monitor"
           value={monitor}
           onChange={onInputChange}
@@ -81,7 +81,6 @@ ImportMovieRow.propTypes = {
   selectedMovie: PropTypes.object,
   isExistingMovie: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  queued: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
   onSelectedChange: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired

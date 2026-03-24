@@ -248,44 +248,14 @@ export const actionHandlers = handleThunks({
   },
 
   [UPDATE_MOVIE_FILES]: function(getState, payload, dispatch) {
-
-    const {
-      movieFileIds,
-      languages,
-      indexerFlags,
-      quality,
-      edition,
-      releaseGroup
-    } = payload;
+    const { files } = payload;
 
     dispatch(set({ section, isSaving: true }));
 
-    const requestData = {
-      movieFileIds
-    };
-
-    if (languages) {
-      requestData.languages = languages;
-    }
-
-    if (indexerFlags !== undefined) {
-      requestData.indexerFlags = indexerFlags;
-    }
-
-    if (quality) {
-      requestData.quality = quality;
-    }
-
-    if (releaseGroup !== undefined) {
-      requestData.releaseGroup = releaseGroup;
-    }
-
-    if (edition !== undefined) {
-      requestData.edition = edition;
-    }
+    const requestData = files;
 
     const promise = createAjaxRequest({
-      url: '/movieFile/editor',
+      url: '/movieFile/bulk',
       method: 'PUT',
       dataType: 'json',
       data: JSON.stringify(requestData)
@@ -293,36 +263,25 @@ export const actionHandlers = handleThunks({
 
     promise.done((data) => {
       dispatch(batchActions([
-        ...movieFileIds.map((id) => {
-          const movieFile = data.find((file) => file.id === id);
+        ...files.map((file) => {
+          const id = file.id;
+          const props = {};
+          const movieFile = data.find((f) => f.id === id);
 
-          const props = {
-            customFormats: movieFile.customFormats,
-            customFormatScore: movieFile.customFormatScore,
-            qualityCutoffNotMet: movieFile.qualityCutoffNotMet
-          };
+          props.qualityCutoffNotMet = movieFile.qualityCutoffNotMet;
+          props.customFormats = movieFile.customFormats;
+          props.customFormatScore = movieFile.customFormatScore;
+          props.languages = movieFile.languages;
+          props.quality = movieFile.quality;
+          props.edition = movieFile.edition;
+          props.releaseGroup = movieFile.releaseGroup;
+          props.indexerFlags = movieFile.indexerFlags;
 
-          if (languages) {
-            props.languages = languages;
-          }
-
-          if (indexerFlags !== undefined) {
-            props.indexerFlags = indexerFlags;
-          }
-
-          if (quality) {
-            props.quality = quality;
-          }
-
-          if (edition !== undefined) {
-            props.edition = edition;
-          }
-
-          if (releaseGroup !== undefined) {
-            props.releaseGroup = releaseGroup;
-          }
-
-          return updateItem({ section, id, ...props });
+          return updateItem({
+            section,
+            id,
+            ...props
+          });
         }),
 
         set({

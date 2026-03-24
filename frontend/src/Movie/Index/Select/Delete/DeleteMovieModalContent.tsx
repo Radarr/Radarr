@@ -15,7 +15,7 @@ import { inputTypes, kinds } from 'Helpers/Props';
 import Movie from 'Movie/Movie';
 import { bulkDeleteMovie, setDeleteOption } from 'Store/Actions/movieActions';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
-import { CheckInputChanged } from 'typings/inputs';
+import { InputChanged } from 'typings/inputs';
 import formatBytes from 'Utilities/Number/formatBytes';
 import translate from 'Utilities/String/translate';
 import styles from './DeleteMovieModalContent.css';
@@ -48,7 +48,7 @@ function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
   }, [movieIds, allMovies]);
 
   const onDeleteFilesChange = useCallback(
-    ({ value }: CheckInputChanged) => {
+    ({ value }: InputChanged<boolean>) => {
       setDeleteFiles(value);
     },
     [setDeleteFiles]
@@ -141,7 +141,7 @@ function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
                   ? translate('DeleteMovieFoldersHelpText')
                   : translate('DeleteMovieFolderHelpText')
               }
-              kind={kinds.DANGER}
+              kind="danger"
               onChange={onDeleteFilesChange}
             />
           </FormGroup>

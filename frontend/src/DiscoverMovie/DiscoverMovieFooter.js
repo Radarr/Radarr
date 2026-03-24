@@ -1,14 +1,11 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import AvailabilitySelectInput from 'Components/Form/AvailabilitySelectInput';
 import CheckInput from 'Components/Form/CheckInput';
-import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSelectInputConnector';
-import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
-import SelectInput from 'Components/Form/SelectInput';
+import FormInputGroup from 'Components/Form/FormInputGroup';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
-import { kinds } from 'Helpers/Props';
+import { inputTypes, kinds } from 'Helpers/Props';
 import monitorOptions from 'Utilities/Movie/monitorOptions';
 import translate from 'Utilities/String/translate';
 import DiscoverMovieFooterLabel from './DiscoverMovieFooterLabel';
@@ -146,7 +143,8 @@ class DiscoverMovieFooter extends Component {
             isSaving={isAdding}
           />
 
-          <SelectInput
+          <FormInputGroup
+            type={inputTypes.SELECT}
             name="monitor"
             value={monitor}
             values={monitorOptions}
@@ -161,7 +159,8 @@ class DiscoverMovieFooter extends Component {
             isSaving={isAdding}
           />
 
-          <QualityProfileSelectInputConnector
+          <FormInputGroup
+            type={inputTypes.QUALITY_PROFILE_SELECT}
             name="qualityProfileId"
             value={qualityProfileId}
             isDisabled={!selectedCount}
@@ -175,7 +174,8 @@ class DiscoverMovieFooter extends Component {
             isSaving={isAdding}
           />
 
-          <AvailabilitySelectInput
+          <FormInputGroup
+            type={inputTypes.AVAILABILITY_SELECT}
             name="minimumAvailability"
             value={minimumAvailability}
             isDisabled={!selectedCount}
@@ -189,7 +189,8 @@ class DiscoverMovieFooter extends Component {
             isSaving={isAdding}
           />
 
-          <RootFolderSelectInputConnector
+          <FormInputGroup
+            type={inputTypes.ROOT_FOLDER_SELECT}
             name="rootFolderPath"
             value={rootFolderPath}
             isDisabled={!selectedCount}

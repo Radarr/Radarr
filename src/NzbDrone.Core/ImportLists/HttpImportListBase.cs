@@ -30,6 +30,8 @@ namespace NzbDrone.Core.ImportLists
         public virtual int PageSize => 0;
         public virtual TimeSpan RateLimit => TimeSpan.FromSeconds(2);
 
+        protected virtual bool UsePreGeneratedPages => false;
+
         public abstract IImportListRequestGenerator GetRequestGenerator();
         public abstract IParseImportListResponse GetParser();
 
@@ -79,7 +81,7 @@ namespace NzbDrone.Core.ImportLists
                                 break;
                             }
 
-                            if (!IsFullPage(page))
+                            if (!UsePreGeneratedPages && !IsFullPage(page))
                             {
                                 break;
                             }
@@ -210,7 +212,26 @@ namespace NzbDrone.Core.ImportLists
             {
                 var parser = GetParser();
                 var generator = GetRequestGenerator();
-                var releases = FetchPage(generator.GetMovies().GetAllTiers().First().First(), parser);
+                var pageableRequests = generator.GetMovies();
+
+                var allTiers = pageableRequests.GetAllTiers();
+                if (!allTiers.Any())
+                {
+                    return new NzbDroneValidationFailure(string.Empty,
+                               "No pages were returned from your import list, please check your settings and the log for details.")
+                    { IsWarning = true };
+                }
+
+                var firstTier = allTiers.First();
+                if (!firstTier.Any())
+                {
+                    return new NzbDroneValidationFailure(string.Empty,
+                               "No data could be retrieved from your import list, please check your settings.")
+                    { IsWarning = true };
+                }
+
+                var firstRequest = firstTier.First();
+                var releases = FetchPage(firstRequest, parser);
 
                 if (releases.Empty())
                 {

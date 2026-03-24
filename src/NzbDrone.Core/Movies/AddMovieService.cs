@@ -56,6 +56,8 @@ namespace NzbDrone.Core.Movies
             _movieMetadataService.Upsert(newMovie.MovieMetadata.Value);
             newMovie.MovieMetadataId = newMovie.MovieMetadata.Value.Id;
 
+            _movieService.UpdateTags(newMovie);
+
             _movieService.AddMovie(newMovie);
 
             return newMovie;

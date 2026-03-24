@@ -81,9 +81,9 @@ namespace NzbDrone.Core.MediaCover
                 return new Dictionary<string, FileInfo>();
             }
 
-            return  _diskProvider
-                    .GetFileInfos(_coverRootFolder, true)
-                    .ToDictionary(x => x.FullName, PathEqualityComparer.Instance);
+            return _diskProvider
+                .GetFileInfos(_coverRootFolder, true)
+                .ToDictionary(x => x.FullName, PathEqualityComparer.Instance);
         }
 
         public void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers, Dictionary<string, FileInfo> fileInfos = null)
@@ -109,22 +109,20 @@ namespace NzbDrone.Core.MediaCover
 
                     mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/" + movieId + "/" + mediaCover.CoverType.ToString().ToLower() + GetExtension(mediaCover.CoverType);
 
-                    FileInfo file;
-                    var fileExists = false;
-                    if (fileInfos != null)
+                    DateTime? lastWrite = null;
+
+                    if (fileInfos != null && fileInfos.TryGetValue(filePath, out var file))
                     {
-                        fileExists = fileInfos.TryGetValue(filePath, out file);
+                        lastWrite = file.LastWriteTimeUtc;
                     }
-                    else
+                    else if (_diskProvider.FileExists(filePath))
                     {
-                        file = _diskProvider.GetFileInfo(filePath);
-                        fileExists = file.Exists;
+                        lastWrite = _diskProvider.FileGetLastWrite(filePath);
                     }
 
-                    if (fileExists)
+                    if (lastWrite.HasValue)
                     {
-                        var lastWrite = file.LastWriteTimeUtc;
-                        mediaCover.Url += "?lastWrite=" + lastWrite.Ticks;
+                        mediaCover.Url += "?lastWrite=" + lastWrite.Value.Ticks;
                     }
                 }
             }

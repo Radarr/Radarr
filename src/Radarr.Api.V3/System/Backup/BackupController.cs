@@ -50,7 +50,7 @@ namespace Radarr.Api.V3.System.Backup
         }
 
         [RestDeleteById]
-        public void DeleteBackup(int id)
+        public object DeleteBackup(int id)
         {
             var backup = GetBackup(id);
 
@@ -67,6 +67,8 @@ namespace Radarr.Api.V3.System.Backup
             }
 
             _diskProvider.DeleteFile(path);
+
+            return new { };
         }
 
         [HttpPost("restore/{id:int}")]
@@ -90,7 +92,7 @@ namespace Radarr.Api.V3.System.Backup
         }
 
         [HttpPost("restore/upload")]
-        [RequestFormLimits(MultipartBodyLengthLimit = 500000000)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 5000000000)]
         public object UploadAndRestore()
         {
             var files = Request.Form.Files;

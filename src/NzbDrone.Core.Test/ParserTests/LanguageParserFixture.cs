@@ -11,6 +11,8 @@ namespace NzbDrone.Core.Test.ParserTests
     public class LanguageParserFixture : CoreTest
     {
         [TestCase("Movie.Title.1994.English.1080p.XviD-LOL")]
+        [TestCase("Movie Title 1994 Eng 1080p XviD-GROUP")]
+        [TestCase("Movie Title 1994 EN 1080p XviD-GROUP")]
         public void should_parse_language_english(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -22,6 +24,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.2018.2160p.WEBRip.x265.10bit.HDR.DD5.1-GASMASK")]
         [TestCase("Movie.Title.2010.720p.BluRay.x264.-[YTS.LT]")]
         [TestCase("Movie.Title.2010.SUBFRENCH.1080p.WEB.x264-GROUP")]
+        [TestCase("Movie.Title.2010.En.1080p.WEB.x264-GROUP")]
         public void should_parse_language_unknown(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -52,6 +55,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Title  : Other Title 2010 x264.720p.Blu-ray Rip HD.VOSTFR.VFF. ONLY")]
         [TestCase("Movie Title  2019 HEVC.2160p.Blu-ray 4K.VOSTFR.VFF. JATO")]
         [TestCase("Movie.Title.1956.MULTi.VF.Bluray.1080p.REMUX.AC3.x264")]
+        [TestCase("Movie.Title.2016.ENG-ITA-FRA.AAC.1080p.WebDL.x264")]
+        [TestCase("Movie Title 2016 (BDrip 1080p ENG-ITA-FRA) Multisub x264")]
+        [TestCase("Movie.Title.2016.ENG-ITA-FRE.AAC.1080p.WebDL.x264")]
+        [TestCase("Movie Title 2016 (BDrip 1080p ENG-ITA-FRE) Multisub x264")]
         public void should_parse_language_french(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -76,6 +83,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Title (2016) [UHDRemux 2160p SDR] [Castellano DD 5.1 - Inglés DTS-HD MA 5.1 Subs]")]
         [TestCase("Movie Title 2022 [HDTV 720p][Cap.101][AC3 5.1 Castellano][www.pctnew.ORG]")]
         [TestCase("Movie Title 2022 [HDTV 720p][Cap.206][AC3 5.1 Español Castellano]")]
+        [TestCase("Movie Title 2022 [Remux-1080p 8-bit h264 DTS-HD MA 2.0][ES.EN]-HiFi")]
+        [TestCase("Movie Title 2022 [BDRemux 1080p AVC ES DTS-HD MA 5.1 Subs][HDO].mkv")]
+        [TestCase("Movie.Name.2022.BluRay.1080p.H264.DTS[EN+ES].[EN+ES+IT]")]
         public void should_parse_language_spanish(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -84,7 +94,14 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.German.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.2016.GERMAN.DUBBED.WS.WEBRiP.XviD.REPACK-TVP")]
+        [TestCase("Movie Title 2016 - Kampfhaehne - mkv - by Videomann")]
         [TestCase("Movie.Title.2016.Ger.Dub.AAC.1080p.WebDL.x264-TKP21")]
+        [TestCase("Movie.Title.2016.Ger.AAC.1080p.WebDL.x264-TKP21")]
+        [TestCase("Movie.Title.2016.Hun/Ger/Ita.AAC.1080p.WebDL.x264-TKP21")]
+        [TestCase("Movie.Title.2016.1080p.10Bit.HEVC.WEBRip.HIN-ENG-GER.DD5.1.H.265")]
+        [TestCase("Movie.Title.2016.HU-IT-DE.AAC.1080p.WebDL.x264")]
+        [TestCase("Movie.Title.2016.SwissGerman.WEB-DL.h264-RlsGrp")]
         public void should_parse_language_german(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -93,6 +110,8 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Italian.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.2016.ENG-FRE-ITA.AAC.1080p.WebDL.x264")]
+        [TestCase("Movie Title 2016 (BDrip 1080p ENG-FRE-ITA) Multisub x264")]
         public void should_parse_language_italian(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -117,6 +136,8 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Japanese.1080p.XviD-LOL")]
+        [TestCase("Movie.Title (1988) 2160p HDR 5.1 Eng - Jap x265 10bit")]
+        [TestCase("Movie Title (1985) (1080p.AC3 ITA-ENG-JAP)")]
         public void should_parse_language_japanese(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -188,6 +209,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.1994.Dublado.1080p.XviD-LOL")]
         [TestCase("Movie.Title.2.2019.1080p.Bluray.Dublado.WWW.TPF.GRATIS")]
         [TestCase("Movie.Title.2014.1080p.Bluray.Brazilian.WWW.TPF.GRATIS")]
+        [TestCase("Movie.Title.2014.1080p.AMZN.WEB-DL.DDP2.0.H.264.pt-BR.ENG-LCD")]
         public void should_parse_language_brazilian_portuguese(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -287,6 +309,8 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Korean.1080p.XviD-LOL")]
+        [TestCase("Movie Title [2006] BDRip 720p [Kor Rus] GROUP")]
+        [TestCase("Movie.Title.2019.KOR.1080p.HDRip.H264.AAC-GROUP")]
         public void should_parse_language_korean(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -412,6 +436,10 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Catalan.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.2024.Catalán.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.(2024).(Catala.Spanish.Subs).WEBRip.1080p.x264-EAC3")]
+        [TestCase("Movie.Title.(2024).(Spanish.Catala.English.Subs).BDRip.1080p.x264-EAC3")]
+        [TestCase("Movie Title [2024] [BDrip 1080p-x264-AC3 5.1 català-español-english+sub]")]
         public void should_parse_language_catalan(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -434,6 +462,73 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             var result = LanguageParser.ParseLanguages(postTitle);
             result.Should().Contain(Language.Kannada);
+        }
+
+        [TestCase("Movie Title (2024) Albanian 1080p HD AVC MP4 x264 .9.8GB TEAMTR")]
+        [TestCase("Movie.Title.2024.Albanian.1080p.AMZN.WEB-DL.DD+2.0.x264-Telly")]
+        public void should_parse_language_albanian(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Albanian);
+        }
+
+        [TestCase("Movie Title (2024) Afrikaans 1080p HD AVC MP4 x264 .9.8GB TEAMTR")]
+        [TestCase("Movie.Title.2024.Afrikaans.1080p.AMZN.WEB-DL.DD+2.0.x264-Telly")]
+        public void should_parse_language_afrikaans(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Afrikaans);
+        }
+
+        [TestCase("Movie Title 2015 Marathi 1080p WebRip x264 AC3 5.1 ESubs [TMB]")]
+        [TestCase("Movie.Title.(2018).720p.CensorRip.Marathi.x264.AAC.-.LHDm@Telly")]
+        public void should_parse_language_marathi(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Marathi);
+        }
+
+        [TestCase("Movie Title 2024 1080p Tagalog WEB-DL HEVC x265 BONE")]
+        [TestCase("Movie.Title.2022.720p.Tagalog.WEB-DL.AAC.x264-Mkvking")]
+        public void should_parse_language_tagalog(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Tagalog);
+        }
+
+        [TestCase("Movie Title 2024 1080p Urdu WEB-DL HEVC x265 BONE")]
+        [TestCase("Movie.Title.2022.720p.Urdu.WEB-DL.AAC.x264-Mkvking")]
+        public void should_parse_language_urdu(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Urdu);
+        }
+
+        [TestCase("The.Movie.Name.2016.Romansh.WEB-DL.h264-RlsGrp")]
+        [TestCase("The.Movie.Name.2016.Rumantsch.WEB.DL.h264-RlsGrp")]
+        [TestCase("The Movie Name 2016 Romansch WEB DL h264-RlsGrp")]
+        public void should_parse_language_romansh(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Romansh);
+        }
+
+        [TestCase("Movie.Title.2025.Mongolian.WEB-DL.h264")]
+        [TestCase("Movie.Title.2025.Khalkha.WEB-DL.h264")]
+        public void should_parse_language_mongolian(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Mongolian);
+        }
+
+        [TestCase("Movie.Title.1994.Georgian.WEB-DL.h264")]
+        [TestCase("Movie.Title.2016.Geo.WEB-DL.h264")]
+        [TestCase("Movie.Title.2016.KA.WEB-DL.h264")]
+        [TestCase("Movie.Title.2016.RU-KA.WEB-DL.h264")]
+        public void should_parse_language_georgian(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(Language.Georgian);
         }
 
         [TestCase("Movie.Title.en.sub")]
@@ -471,6 +566,16 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = Parser.Parser.ParseMovieTitle(postTitle);
             result.Languages.Count.Should().Be(1);
             result.Languages.Should().Contain(Language.German);
+        }
+
+        [TestCase("Movie.Title.2025.Original.1080P.WEB.H264-RlsGrp")]
+        [TestCase("Movie.Title.2025.Orig.1080P.WEB.H264-RlsGrp")]
+        [TestCase("Movie Title 2025 [HEVC, HDR10, Dolby Vision, WEB-DL 2160p] [Hybrid] 3 XX + Original")]
+        public void should_parse_original_title_from_release_name(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle);
+            result.Languages.Count.Should().Be(1);
+            result.Languages.Should().Contain(Language.Original);
         }
 
         [TestCase("The.Movie.Name.2023.German.ML.EAC3.720p.NF.WEB.H264-RlsGrp")]

@@ -48,16 +48,16 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 try
                 {
                     var status = client.GetStatus();
-                    var folders = status.OutputRootFolders.Where(folder => rootFolders.Any(r => r.Path.PathEquals(folder.FullPath)));
+                    var folders = rootFolders.Where(r => status.OutputRootFolders.Any(folder => r.Path.PathEquals(folder.FullPath) || r.Path.IsParentPath(folder.FullPath)));
 
                     foreach (var folder in folders)
                     {
                         return new HealthCheck(GetType(),
                             HealthCheckResult.Warning,
-                            _localizationService.GetLocalizedString("DownloadClientCheckDownloadingToRoot", new Dictionary<string, object>
+                            _localizationService.GetLocalizedString("DownloadClientRootFolderHealthCheckMessage", new Dictionary<string, object>
                             {
                                 { "downloadClientName", client.Definition.Name },
-                                { "rootFolderPath", folder.FullPath }
+                                { "rootFolderPath", folder.Path }
                             }),
                             "#downloads-in-root-folder");
                     }

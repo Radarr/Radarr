@@ -9,6 +9,8 @@ namespace NzbDrone.Core.Organizer
 
     public class NamingConfigRepository : BasicRepository<NamingConfig>, INamingConfigRepository
     {
+        protected override bool PublishModelEvents => true;
+
         public NamingConfigRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {

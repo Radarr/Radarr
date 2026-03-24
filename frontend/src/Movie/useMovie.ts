@@ -2,6 +2,13 @@ import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import AppState from 'App/State/AppState';
 
+export type MovieEntity =
+  | 'calendar'
+  | 'movies'
+  | 'interactiveImport.movies'
+  | 'wanted.cutoffUnmet'
+  | 'wanted.missing';
+
 export function createMovieSelector(movieId?: number) {
   return createSelector(
     (state: AppState) => state.movies.itemMap,
@@ -12,7 +19,7 @@ export function createMovieSelector(movieId?: number) {
   );
 }
 
-function useMovie(movieId?: number) {
+function useMovie(movieId: number | undefined) {
   return useSelector(createMovieSelector(movieId));
 }
 

@@ -2,27 +2,34 @@ import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import Modal from 'Components/Modal/Modal';
 import { sizes } from 'Helpers/Props';
+import { clearMovieBlocklist } from 'Store/Actions/movieBlocklistActions';
+import { clearMovieHistory } from 'Store/Actions/movieHistoryActions';
 import {
   cancelFetchReleases,
   clearReleases,
 } from 'Store/Actions/releaseActions';
-import MovieInteractiveSearchModalContent from './MovieInteractiveSearchModalContent';
+import MovieInteractiveSearchModalContent, {
+  MovieInteractiveSearchModalContentProps,
+} from './MovieInteractiveSearchModalContent';
 
-interface MovieInteractiveSearchModalProps {
+interface MovieInteractiveSearchModalProps
+  extends MovieInteractiveSearchModalContentProps {
   isOpen: boolean;
-  movieId: number;
-  movieTitle?: string;
-  onModalClose(): void;
 }
 
-function MovieInteractiveSearchModal(props: MovieInteractiveSearchModalProps) {
-  const { isOpen, movieId, movieTitle, onModalClose } = props;
-
+function MovieInteractiveSearchModal({
+  isOpen,
+  movieId,
+  onModalClose,
+}: MovieInteractiveSearchModalProps) {
   const dispatch = useDispatch();
 
   const handleModalClose = useCallback(() => {
     dispatch(cancelFetchReleases());
     dispatch(clearReleases());
+
+    dispatch(clearMovieBlocklist());
+    dispatch(clearMovieHistory());
 
     onModalClose();
   }, [dispatch, onModalClose]);
@@ -36,7 +43,6 @@ function MovieInteractiveSearchModal(props: MovieInteractiveSearchModalProps) {
     >
       <MovieInteractiveSearchModalContent
         movieId={movieId}
-        movieTitle={movieTitle}
         onModalClose={handleModalClose}
       />
     </Modal>

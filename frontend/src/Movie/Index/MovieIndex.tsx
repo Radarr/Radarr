@@ -6,6 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import { SelectProvider } from 'App/SelectContext';
 import ClientSideCollectionAppState from 'App/State/ClientSideCollectionAppState';
 import MoviesAppState, { MovieIndexAppState } from 'App/State/MoviesAppState';
@@ -14,7 +15,7 @@ import Alert from 'Components/Alert';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
-import PageJumpBar from 'Components/Page/PageJumpBar';
+import PageJumpBar, { PageJumpBarItems } from 'Components/Page/PageJumpBar';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
@@ -22,10 +23,11 @@ import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import withScrollPosition from 'Components/withScrollPosition';
 import { align, icons, kinds } from 'Helpers/Props';
-import SortDirection from 'Helpers/Props/SortDirection';
+import { DESCENDING } from 'Helpers/Props/sortDirections';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import NoMovie from 'Movie/NoMovie';
 import { executeCommand } from 'Store/Actions/commandActions';
+import { fetchMovies } from 'Store/Actions/movieActions';
 import {
   setMovieFilter,
   setMovieSort,
@@ -75,6 +77,8 @@ interface MovieIndexProps {
 }
 
 const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
+  const history = useHistory();
+
   const {
     isFetching,
     isPopulated,
@@ -104,6 +108,12 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
     undefined
   );
   const [isSelectMode, setIsSelectMode] = useState(false);
+
+  useEffect(() => {
+    if (history.action === 'PUSH') {
+      dispatch(fetchMovies());
+    }
+  }, [history, dispatch]);
 
   useEffect(() => {
     dispatch(fetchQueueDetails({ all: true }));
@@ -147,7 +157,7 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
   );
 
   const onFilterSelect = useCallback(
-    (value: string) => {
+    (value: string | number) => {
       dispatch(setMovieFilter({ selectedFilterKey: value }));
     },
     [dispatch]
@@ -184,10 +194,11 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
     [setJumpToCharacter]
   );
 
-  const jumpBarItems = useMemo(() => {
+  const jumpBarItems: PageJumpBarItems = useMemo(() => {
     // Reset if not sorting by sortTitle
     if (sortKey !== 'sortTitle') {
       return {
+        characters: {},
         order: [],
       };
     }
@@ -211,7 +222,7 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
     const order = Object.keys(characters).sort();
 
     // Reverse if sorting descending
-    if (sortDirection === SortDirection.Descending) {
+    if (sortDirection === DESCENDING) {
       order.reverse();
     }
 
@@ -273,7 +284,7 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
             />
 
             <MovieIndexSelectAllButton
-              label="SelectAll"
+              label={translate('SelectAll')}
               isSelectMode={isSelectMode}
               overflowComponent={MovieIndexSelectAllMenuItem}
             />

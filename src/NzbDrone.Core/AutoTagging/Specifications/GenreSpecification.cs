@@ -20,10 +20,10 @@ namespace NzbDrone.Core.AutoTagging.Specifications
     {
         private static readonly GenreSpecificationValidator Validator = new ();
 
-        public override int Order => 1;
+        public override int Order => 2;
         public override string ImplementationName => "Genre";
 
-        [FieldDefinition(1, Label = "Genre(s)", Type = FieldType.Tag)]
+        [FieldDefinition(1, Label = "AutoTaggingSpecificationGenre", Type = FieldType.Tag)]
         public IEnumerable<string> Value { get; set; }
 
         protected override bool IsSatisfiedByWithoutNegate(Movie movie)

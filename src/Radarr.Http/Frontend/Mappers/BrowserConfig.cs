@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
@@ -6,29 +6,29 @@ using NzbDrone.Core.Configuration;
 
 namespace Radarr.Http.Frontend.Mappers
 {
-    public class BrowserConfig : StaticResourceMapperBase
+    public class BrowserConfig : UrlBaseReplacementResourceMapperBase
     {
         private readonly IAppFolderInfo _appFolderInfo;
         private readonly IConfigFileProvider _configFileProvider;
 
         public BrowserConfig(IAppFolderInfo appFolderInfo, IDiskProvider diskProvider, IConfigFileProvider configFileProvider, Logger logger)
-            : base(diskProvider, logger)
+            : base(diskProvider, configFileProvider, logger)
         {
             _appFolderInfo = appFolderInfo;
             _configFileProvider = configFileProvider;
         }
 
-        public override string Map(string resourceUrl)
-        {
-            var path = resourceUrl.Replace('/', Path.DirectorySeparatorChar);
-            path = path.Trim(Path.DirectorySeparatorChar);
+        protected override string FolderPath => Path.Combine(_appFolderInfo.StartUpFolder, _configFileProvider.UiFolder);
+        protected override string FilePath => Path.Combine(FolderPath, "Content", "browserconfig.xml");
 
-            return Path.ChangeExtension(Path.Combine(_appFolderInfo.StartUpFolder, _configFileProvider.UiFolder, path), "xml");
+        protected override string MapPath(string resourceUrl)
+        {
+            return FilePath;
         }
 
         public override bool CanHandle(string resourceUrl)
         {
-            return resourceUrl.StartsWith("/content/images/icons/browserconfig");
+            return resourceUrl.StartsWith("/Content/browserconfig");
         }
     }
 }

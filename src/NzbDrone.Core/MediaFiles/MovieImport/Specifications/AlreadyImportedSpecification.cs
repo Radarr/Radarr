@@ -22,12 +22,12 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
 
         public SpecificationPriority Priority => SpecificationPriority.Database;
 
-        public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        public ImportSpecDecision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             if (downloadClientItem == null)
             {
                 _logger.Debug("No download client information is available, skipping");
-                return Decision.Accept();
+                return ImportSpecDecision.Accept();
             }
 
             var movie = localMovie.Movie;
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             if (!movie.HasFile)
             {
                 _logger.Debug("Skipping already imported check for movie without file");
-                return Decision.Accept();
+                return ImportSpecDecision.Accept();
             }
 
             var movieImportedHistory = _historyService.GetByMovieId(movie.Id, null);
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             if (lastImported == null)
             {
                 _logger.Trace("Movie file has not been imported");
-                return Decision.Accept();
+                return ImportSpecDecision.Accept();
             }
 
             if (lastGrabbed != null)
@@ -57,23 +57,23 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                 if (lastGrabbed.Date.After(lastImported.Date))
                 {
                     _logger.Trace("Movie file was grabbed again after importing");
-                    return Decision.Accept();
+                    return ImportSpecDecision.Accept();
                 }
 
                 // If the release was imported after the last grab reject it
                 if (lastImported.Date.After(lastGrabbed.Date))
                 {
                     _logger.Debug("Movie file previously imported at {0}", lastImported.Date);
-                    return Decision.Reject("Movie file already imported at {0}", lastImported.Date.ToLocalTime());
+                    return ImportSpecDecision.Reject(ImportRejectionReason.MovieAlreadyImported, "Movie file already imported at {0}", lastImported.Date.ToLocalTime());
                 }
             }
             else
             {
                 _logger.Debug("Movie file previously imported at {0}", lastImported.Date);
-                return Decision.Reject("Movie file already imported at {0}", lastImported.Date.ToLocalTime());
+                return ImportSpecDecision.Reject(ImportRejectionReason.MovieAlreadyImported, "Movie file already imported at {0}", lastImported.Date.ToLocalTime());
             }
 
-            return Decision.Accept();
+            return ImportSpecDecision.Accept();
         }
     }
 }

@@ -7,17 +7,24 @@ import styles from './MovieIndexPosterSelect.css';
 
 interface MovieIndexPosterSelectProps {
   movieId: number;
+  titleSlug: string;
 }
 
-function MovieIndexPosterSelect(props: MovieIndexPosterSelectProps) {
-  const { movieId } = props;
+function MovieIndexPosterSelect({
+  movieId,
+  titleSlug,
+}: MovieIndexPosterSelectProps) {
   const [selectState, selectDispatch] = useSelect();
   const isSelected = selectState.selectedState[movieId];
 
   const onSelectPress = useCallback(
-    (event: SyntheticEvent) => {
-      const nativeEvent = event.nativeEvent as PointerEvent;
-      const shiftKey = nativeEvent.shiftKey;
+    (event: SyntheticEvent<HTMLElement, PointerEvent>) => {
+      if (event.nativeEvent.ctrlKey || event.nativeEvent.metaKey) {
+        window.open(`${window.Radarr.urlBase}/movie/${titleSlug}`, '_blank');
+        return;
+      }
+
+      const shiftKey = event.nativeEvent.shiftKey;
 
       selectDispatch({
         type: 'toggleSelected',
@@ -26,7 +33,7 @@ function MovieIndexPosterSelect(props: MovieIndexPosterSelectProps) {
         shiftKey,
       });
     },
-    [movieId, isSelected, selectDispatch]
+    [movieId, titleSlug, isSelected, selectDispatch]
   );
 
   return (

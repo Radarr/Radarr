@@ -12,6 +12,9 @@ namespace NzbDrone.Core.History
         public const string DOWNLOAD_CLIENT = "downloadClient";
         public const string MOVIE_MATCH_TYPE = "movieMatchType";
         public const string RELEASE_SOURCE = "releaseSource";
+        public const string RELEASE_GROUP = "releaseGroup";
+        public const string SIZE = "size";
+        public const string INDEXER = "indexer";
 
         public MovieHistory()
         {

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
 using Radarr.Api.V3.CustomFormats;
@@ -20,6 +19,6 @@ namespace Radarr.Api.V3.ManualImport
         public List<CustomFormatResource> CustomFormats { get; set; }
         public int CustomFormatScore { get; set; }
         public int IndexerFlags { get; set; }
-        public IEnumerable<Rejection> Rejections { get; set; }
+        public IEnumerable<ImportRejectionResource> Rejections { get; set; }
     }
 }

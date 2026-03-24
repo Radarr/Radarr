@@ -36,7 +36,8 @@
 .imdbRating,
 .rottenTomatoesRating,
 .traktRating,
-.runtime {
+.runtime,
+.year {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 0 0 90px;

@@ -8,9 +8,10 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
     {
         public IMDbSettingsValidator()
         {
-            RuleFor(c => c.ListId)
-                .Matches(@"^top250$|^popular$|^ls\d+$|^ur\d+$")
-                .WithMessage("List ID mist be 'top250', 'popular', an IMDb List ID of the form 'ls12345678' or an IMDb user watchlist of the form 'ur12345678'");
+            RuleFor(c => c.ListId).Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .Matches(@"^(top250|popular)$|^ur\d+$")
+                .WithMessage("List ID must be 'top250', 'popular' or an IMDb user watchlist of the form 'ur12345678'");
         }
     }
 
@@ -18,7 +19,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
     {
         private static readonly IMDbSettingsValidator Validator = new ();
 
-        [FieldDefinition(1, Label = "List/User ID", HelpText = "IMDb list ID (e.g ls12345678), IMDb user ID (e.g. ur12345678), 'top250' or 'popular'")]
+        [FieldDefinition(1, Label = "List/User ID", HelpText = "IMDb user ID (e.g. ur12345678), 'top250' or 'popular'")]
         public string ListId { get; set; }
 
         public override NzbDroneValidationResult Validate()

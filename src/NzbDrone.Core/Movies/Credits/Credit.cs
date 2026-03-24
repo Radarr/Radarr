@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Movies.Credits
 {
-    public class Credit : ModelBase
+    public class Credit : Entity<Credit>
     {
         public Credit()
         {

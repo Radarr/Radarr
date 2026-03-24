@@ -1,13 +1,18 @@
+#!/bin/bash
+set -e
+
+FRAMEWORK="net8.0"
 PLATFORM=$1
+ARCHITECTURE="${2:-x64}"
 
 if [ "$PLATFORM" = "Windows" ]; then
-  RUNTIME="win-x64"
+  RUNTIME="win-$ARCHITECTURE"
 elif [ "$PLATFORM" = "Linux" ]; then
-  RUNTIME="linux-x64"
+  RUNTIME="linux-$ARCHITECTURE"
 elif [ "$PLATFORM" = "Mac" ]; then
-  RUNTIME="osx-x64"
+  RUNTIME="osx-$ARCHITECTURE"
 else
-  echo "Platform must be provided as first arguement: Windows, Linux or Mac"
+  echo "Platform must be provided as first argument: Windows, Linux or Mac"
   exit 1
 fi
 
@@ -33,9 +38,9 @@ dotnet clean $slnFile -c Release
 dotnet msbuild -restore $slnFile -p:Configuration=Debug -p:Platform=$platform -p:RuntimeIdentifiers=$RUNTIME -t:PublishAllRids
 
 dotnet new tool-manifest
-dotnet tool install --version 6.6.2 Swashbuckle.AspNetCore.Cli
+dotnet tool install --version 8.1.4 Swashbuckle.AspNetCore.Cli
 
-dotnet tool run swagger tofile --output ./src/Radarr.Api.V3/openapi.json "$outputFolder/net6.0/$RUNTIME/$application" v3 &
+dotnet tool run swagger tofile --output ./src/Radarr.Api.V3/openapi.json "$outputFolder/$FRAMEWORK/$RUNTIME/$application" v3 &
 
 sleep 45
 

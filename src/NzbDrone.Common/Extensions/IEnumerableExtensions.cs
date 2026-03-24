@@ -54,10 +54,8 @@ namespace NzbDrone.Common.Extensions
             foreach (var item in src)
             {
                 var key = keySelector(item);
-                if (!result.ContainsKey(key))
-                {
-                    result[key] = item;
-                }
+
+                result.TryAdd(key, item);
             }
 
             return result;
@@ -69,10 +67,9 @@ namespace NzbDrone.Common.Extensions
             foreach (var item in src)
             {
                 var key = keySelector(item);
-                if (!result.ContainsKey(key))
-                {
-                    result[key] = valueSelector(item);
-                }
+                var value = valueSelector(item);
+
+                result.TryAdd(key, value);
             }
 
             return result;
@@ -147,11 +144,6 @@ namespace NzbDrone.Common.Extensions
         public static string ConcatToString<TSource>(this IEnumerable<TSource> source, Func<TSource, string> predicate, string separator = ", ")
         {
             return string.Join(separator, source.Select(predicate));
-        }
-
-        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> source, IEqualityComparer<T> comparer = null)
-        {
-            return new HashSet<T>(source, comparer);
         }
     }
 }

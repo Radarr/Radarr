@@ -17,7 +17,6 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IMediaFileService _mediaFileService;
         private readonly IMoveMovieFiles _movieFileMover;
-        private readonly IRenameMovieFileService _movieFileRenamer;
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
@@ -25,20 +24,19 @@ namespace NzbDrone.Core.MediaFiles
                                        IMediaFileService mediaFileService,
                                        IMoveMovieFiles movieFileMover,
                                        IDiskProvider diskProvider,
-                                       IRenameMovieFileService movieFileRenamer,
                                        Logger logger)
         {
             _recycleBinProvider = recycleBinProvider;
             _mediaFileService = mediaFileService;
             _movieFileMover = movieFileMover;
             _diskProvider = diskProvider;
-            _movieFileRenamer = movieFileRenamer;
             _logger = logger;
         }
 
         public MovieFileMoveResult UpgradeMovieFile(MovieFile movieFile, LocalMovie localMovie, bool copyOnly = false)
         {
-            _logger.Trace("Upgrading existing movie file.");
+            _logger.Trace("Upgrading movie file.");
+
             var moveFileResult = new MovieFileMoveResult();
 
             var existingFile = localMovie.Movie.MovieFileId > 0 ? localMovie.Movie.MovieFile : null;
@@ -61,6 +59,10 @@ namespace NzbDrone.Core.MediaFiles
                 {
                     _logger.Debug("Removing existing movie file: {0}", existingFile);
                     recycleBinPath = _recycleBinProvider.DeleteFile(movieFilePath, subfolder);
+                }
+                else
+                {
+                    _logger.Warn("Existing movie file missing from disk: {0}", movieFilePath);
                 }
 
                 moveFileResult.OldFiles.Add(new DeletedMovieFile(existingFile, recycleBinPath));

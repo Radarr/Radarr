@@ -12,7 +12,7 @@ using NzbDrone.Core.Parser;
 namespace NzbDrone.Core.Datastore.Migration
 {
     [Migration(208)]
-    public class collections : NzbDroneMigrationBase
+    public class add_collections : NzbDroneMigrationBase
     {
         protected override void MainDbUpgrade()
         {

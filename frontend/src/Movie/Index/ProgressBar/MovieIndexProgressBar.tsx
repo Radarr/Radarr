@@ -13,7 +13,7 @@ import styles from './MovieIndexProgressBar.css';
 
 interface MovieIndexProgressBarProps {
   movieId: number;
-  movieFile: MovieFile;
+  movieFile?: MovieFile;
   monitored: boolean;
   status: MovieStatus;
   hasFile: boolean;
@@ -24,20 +24,18 @@ interface MovieIndexProgressBarProps {
   isStandAlone?: boolean;
 }
 
-function MovieIndexProgressBar(props: MovieIndexProgressBarProps) {
-  const {
-    movieId,
-    movieFile,
-    monitored,
-    status,
-    hasFile,
-    isAvailable,
-    width,
-    detailedProgressBar,
-    bottomRadius,
-    isStandAlone,
-  } = props;
-
+function MovieIndexProgressBar({
+  movieId,
+  movieFile,
+  monitored,
+  status,
+  hasFile,
+  isAvailable,
+  width,
+  detailedProgressBar,
+  bottomRadius,
+  isStandAlone,
+}: MovieIndexProgressBarProps) {
   const queueDetails: MovieQueueDetails = useSelector(
     createMovieQueueItemsDetailsSelector(movieId)
   );

@@ -75,6 +75,17 @@ namespace NzbDrone.Common.EnvironmentInfo
         {
             try
             {
+                if (OsInfo.IsOsx)
+                {
+                    var userAppDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify), ".config", "Radarr");
+
+                    if (_diskProvider.FolderExists(userAppDataFolder) && !_diskProvider.FileExists(_appFolderInfo.GetConfigPath()))
+                    {
+                        _diskTransferService.MirrorFolder(userAppDataFolder, _appFolderInfo.AppDataFolder);
+                        _diskProvider.DeleteFolder(userAppDataFolder, true);
+                    }
+                }
+
                 var oldDbFile = Path.Combine(_appFolderInfo.AppDataFolder, "nzbdrone.db");
 
                 if (_startupContext.Args.ContainsKey(StartupContext.APPDATA))
@@ -111,7 +122,7 @@ namespace NzbDrone.Common.EnvironmentInfo
             catch (Exception ex)
             {
                 _logger.Debug(ex, ex.Message);
-                throw new RadarrStartupException("Unable to migrate DB from nzbdrone.db to {0}. Migrate manually", _appFolderInfo.GetDatabase());
+                throw new RadarrStartupException(ex, "Unable to migrate DB from nzbdrone.db to {0}. Migrate manually", _appFolderInfo.GetDatabase());
             }
         }
 
@@ -188,7 +199,7 @@ namespace NzbDrone.Common.EnvironmentInfo
 
         private void RemovePidFile()
         {
-            if (OsInfo.IsNotWindows)
+            if (OsInfo.IsNotWindows && _diskProvider.FolderExists(_appFolderInfo.AppDataFolder))
             {
                 _diskProvider.DeleteFile(Path.Combine(_appFolderInfo.AppDataFolder, "radarr.pid"));
             }

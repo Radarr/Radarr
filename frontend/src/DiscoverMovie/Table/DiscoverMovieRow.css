@@ -61,7 +61,8 @@
 .imdbRating,
 .rottenTomatoesRating,
 .traktRating,
-.runtime {
+.runtime,
+.year {
   composes: cell;
 
   flex: 0 0 90px;

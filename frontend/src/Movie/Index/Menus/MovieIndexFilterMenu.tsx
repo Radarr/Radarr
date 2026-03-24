@@ -1,15 +1,14 @@
 import React from 'react';
-import { CustomFilter } from 'App/State/AppState';
+import { CustomFilter, Filter } from 'App/State/AppState';
 import FilterMenu from 'Components/Menu/FilterMenu';
-import { align } from 'Helpers/Props';
 import MovieIndexFilterModal from 'Movie/Index/MovieIndexFilterModal';
 
 interface MovieIndexFilterMenuProps {
   selectedFilterKey: string | number;
-  filters: object[];
+  filters: Filter[];
   customFilters: CustomFilter[];
   isDisabled: boolean;
-  onFilterSelect(filterName: string): unknown;
+  onFilterSelect: (filter: number | string) => void;
 }
 
 function MovieIndexFilterMenu(props: MovieIndexFilterMenuProps) {
@@ -23,7 +22,7 @@ function MovieIndexFilterMenu(props: MovieIndexFilterMenuProps) {
 
   return (
     <FilterMenu
-      alignMenu={align.RIGHT}
+      alignMenu="right"
       isDisabled={isDisabled}
       selectedFilterKey={selectedFilterKey}
       filters={filters}
@@ -33,9 +32,5 @@ function MovieIndexFilterMenu(props: MovieIndexFilterMenuProps) {
     />
   );
 }
-
-MovieIndexFilterMenu.defaultProps = {
-  showCustomFilters: false,
-};
 
 export default MovieIndexFilterMenu;

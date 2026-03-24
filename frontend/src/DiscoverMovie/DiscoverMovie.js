@@ -259,6 +259,7 @@ class DiscoverMovie extends Component {
       onSortSelect,
       onFilterSelect,
       onViewSelect,
+      initialScrollTop,
       onScroll,
       onAddMoviesPress,
       isSyncingLists,
@@ -282,7 +283,7 @@ class DiscoverMovie extends Component {
     const hasNoMovie = !totalItems;
 
     return (
-      <PageContent>
+      <PageContent title={translate('Discover')}>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
@@ -369,6 +370,7 @@ class DiscoverMovie extends Component {
             ref={this.scrollerRef}
             className={styles.contentBody}
             innerClassName={styles[`${view}InnerContentBody`]}
+            onScroll={onScroll}
           >
             {
               isFetching && !isPopulated &&
@@ -397,6 +399,7 @@ class DiscoverMovie extends Component {
                     onSelectedChange={this.onSelectedChange}
                     onSelectAllChange={this.onSelectAllChange}
                     selectedState={selectedState}
+                    scrollTop={initialScrollTop}
                     {...otherProps}
                   />
                 </div>
@@ -441,6 +444,7 @@ class DiscoverMovie extends Component {
 }
 
 DiscoverMovie.propTypes = {
+  initialScrollTop: PropTypes.number,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,

@@ -29,7 +29,9 @@ namespace Radarr.Api.V3.Movies
         }
 
         [HttpPost]
-        public object Import([FromBody] List<MovieResource> resource)
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        public IEnumerable<MovieResource> Import([FromBody] List<MovieResource> resource)
         {
             var newMovies = resource.ToModel();
 

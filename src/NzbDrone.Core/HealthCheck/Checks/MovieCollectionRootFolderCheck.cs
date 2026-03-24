@@ -18,17 +18,21 @@ namespace NzbDrone.Core.HealthCheck.Checks
     {
         private readonly IMovieCollectionService _collectionService;
         private readonly IDiskProvider _diskProvider;
+        private readonly IRootFolderService _rootFolderService;
 
-        public MovieCollectionRootFolderCheck(IMovieCollectionService collectionService, IDiskProvider diskProvider, ILocalizationService localizationService)
+        public MovieCollectionRootFolderCheck(IMovieCollectionService collectionService, IDiskProvider diskProvider, IRootFolderService rootFolderService, ILocalizationService localizationService)
             : base(localizationService)
         {
             _collectionService = collectionService;
             _diskProvider = diskProvider;
+            _rootFolderService = rootFolderService;
         }
 
         public override HealthCheck Check()
         {
             var collections = _collectionService.GetAllCollections();
+            var rootFolders = _rootFolderService.All();
+
             var missingRootFolders = new Dictionary<string, List<MovieCollection>>();
 
             foreach (var collection in collections)
@@ -42,7 +46,10 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     continue;
                 }
 
-                if (rootFolderPath.IsNullOrWhiteSpace() || !rootFolderPath.IsPathValid(PathValidationType.CurrentOs) || !_diskProvider.FolderExists(rootFolderPath))
+                if (rootFolderPath.IsNullOrWhiteSpace() ||
+                    !rootFolderPath.IsPathValid(PathValidationType.CurrentOs) ||
+                    !rootFolders.Any(r => r.Path.PathEquals(rootFolderPath)) ||
+                    !_diskProvider.FolderExists(rootFolderPath))
                 {
                     missingRootFolders.Add(rootFolderPath, new List<MovieCollection> { collection });
                 }

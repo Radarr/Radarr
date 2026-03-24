@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Movies
         List<MovieMetadata> FindById(List<int> tmdbIds);
         List<MovieMetadata> GetMoviesWithCollections();
         List<MovieMetadata> GetMoviesByCollectionTmdbId(int collectionId);
-        bool UpsertMany(List<MovieMetadata> data);
+        bool UpsertMany(List<MovieMetadata> metadatas);
     }
 
     public class MovieMetadataRepository : BasicRepository<MovieMetadata>, IMovieMetadataRepository
@@ -51,40 +51,43 @@ namespace NzbDrone.Core.Movies
             return Query(x => x.CollectionTmdbId == collectionId);
         }
 
-        public bool UpsertMany(List<MovieMetadata> data)
+        public bool UpsertMany(List<MovieMetadata> metadatas)
         {
-            var existingMetadata = FindById(data.Select(x => x.TmdbId).ToList());
-            var updateMetadataList = new List<MovieMetadata>();
-            var addMetadataList = new List<MovieMetadata>();
-            var upToDateMetadataCount = 0;
+            var updateList = new List<MovieMetadata>();
+            var addList = new List<MovieMetadata>();
+            var upToDateCount = 0;
 
-            foreach (var meta in data)
+            var existingMetadatas = FindById(metadatas.Select(x => x.TmdbId).ToList());
+
+            foreach (var metadata in metadatas)
             {
-                var existing = existingMetadata.SingleOrDefault(x => x.TmdbId == meta.TmdbId);
-                if (existing != null)
+                var existingMetadata = existingMetadatas.SingleOrDefault(x => x.TmdbId == metadata.TmdbId);
+
+                if (existingMetadata != null)
                 {
-                    meta.UseDbFieldsFrom(existing);
-                    if (!meta.Equals(existing))
+                    metadata.UseDbFieldsFrom(existingMetadata);
+
+                    if (!metadata.Equals(existingMetadata))
                     {
-                        updateMetadataList.Add(meta);
+                        updateList.Add(metadata);
                     }
                     else
                     {
-                        upToDateMetadataCount++;
+                        upToDateCount++;
                     }
                 }
                 else
                 {
-                    addMetadataList.Add(meta);
+                    addList.Add(metadata);
                 }
             }
 
-            UpdateMany(updateMetadataList);
-            InsertMany(addMetadataList);
+            UpdateMany(updateList);
+            InsertMany(addList);
 
-            _logger.Debug($"{upToDateMetadataCount} movie metadata up to date; Updating {updateMetadataList.Count}, Adding {addMetadataList.Count} movie metadata entries.");
+            _logger.Debug("{0} movie metadata up to date; Updating {1}, Adding {2} entries.", upToDateCount, updateList.Count, addList.Count);
 
-            return updateMetadataList.Count > 0 || addMetadataList.Count > 0;
+            return updateList.Count > 0 || addList.Count > 0;
         }
     }
 }

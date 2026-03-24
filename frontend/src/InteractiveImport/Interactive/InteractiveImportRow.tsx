@@ -24,6 +24,7 @@ import {
   reprocessInteractiveImportItems,
   updateInteractiveImportItem,
 } from 'Store/Actions/interactiveImportActions';
+import CustomFormat from 'typings/CustomFormat';
 import { SelectStateInputProps } from 'typings/props';
 import Rejection from 'typings/Rejection';
 import formatBytes from 'Utilities/Number/formatBytes';
@@ -52,7 +53,7 @@ interface InteractiveImportRowProps {
   quality?: QualityModel;
   languages?: Language[];
   size: number;
-  customFormats?: object[];
+  customFormats?: CustomFormat[];
   customFormatScore?: number;
   indexerFlags: number;
   rejections: Rejection[];
@@ -127,8 +128,8 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
     }
   }, [id, movie, quality, languages, isSelected, onValidRowChange]);
 
-  const onSelectedChangeWrapper = useCallback(
-    (result: SelectedChangeProps) => {
+  const handleSelectedChange = useCallback(
+    (result: SelectStateInputProps) => {
       onSelectedChange({
         ...result,
         hasMovieFileId: !!movieFileId,
@@ -270,7 +271,7 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
       <TableSelectCell
         id={id}
         isSelected={isSelected}
-        onSelectedChange={onSelectedChangeWrapper}
+        onSelectedChange={handleSelectedChange}
       />
 
       <TableRowCell className={styles.relativePath} title={relativePath}>

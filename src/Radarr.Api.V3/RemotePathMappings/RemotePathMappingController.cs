@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Validation.Paths;
 using Radarr.Http;
@@ -21,17 +22,28 @@ namespace Radarr.Api.V3.RemotePathMappings
             _remotePathMappingService = remotePathMappingService;
 
             SharedValidator.RuleFor(c => c.Host)
-                           .NotEmpty();
+                .NotEmpty();
 
             // We cannot use IsValidPath here, because it's a remote path, possibly other OS.
             SharedValidator.RuleFor(c => c.RemotePath)
-                           .NotEmpty();
+                .NotEmpty();
+
+            SharedValidator.RuleFor(c => c.RemotePath)
+                .Must(remotePath => remotePath.IsNotNullOrWhiteSpace() && !remotePath.StartsWith(" "))
+                .WithMessage("Remote Path '{PropertyValue}' must not start with a space");
+
+            SharedValidator.RuleFor(c => c.RemotePath)
+                .Must(remotePath => remotePath.IsNotNullOrWhiteSpace() && !remotePath.EndsWith(" "))
+                .WithMessage("Remote Path '{PropertyValue}' must not end with a space");
 
             SharedValidator.RuleFor(c => c.LocalPath)
                 .Cascade(CascadeMode.Stop)
                 .IsValidPath()
-                           .SetValidator(mappedNetworkDriveValidator)
-                           .SetValidator(pathExistsValidator);
+                .SetValidator(mappedNetworkDriveValidator)
+                .SetValidator(pathExistsValidator)
+                .SetValidator(new SystemFolderValidator())
+                .NotEqual("/")
+                .WithMessage("Cannot be set to '/'");
         }
 
         protected override RemotePathMappingResource GetResourceById(int id)

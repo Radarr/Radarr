@@ -1,6 +1,5 @@
 using System;
 using System.Net.Http;
-using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
@@ -16,6 +15,7 @@ namespace NzbDrone.Core.Notifications.Trakt
         void AddToCollection(TraktCollectMoviesResource payload, string accessToken);
         void RemoveFromCollection(TraktCollectMoviesResource payload, string accessToken);
         HttpRequest BuildRequest(string resource, HttpMethod method, string accessToken);
+        HttpRequest BuildRequest(HttpRequest request, string accessToken);
     }
 
     public class TraktProxy : ITraktProxy
@@ -27,12 +27,12 @@ namespace NzbDrone.Core.Notifications.Trakt
         private const string ClientId = "64508a8bf370cee550dde4806469922fd7cd70afb2d5690e3ee7f75ae784b70e";
 
         private readonly IHttpClient _httpClient;
-        private readonly Logger _logger;
 
-        public TraktProxy(IHttpClient httpClient, Logger logger)
+        private static TimeSpan DefaultRateLimit => TimeSpan.FromSeconds(2);
+
+        public TraktProxy(IHttpClient httpClient)
         {
             _httpClient = httpClient;
-            _logger = logger;
         }
 
         public void AddToCollection(TraktCollectMoviesResource payload, string accessToken)
@@ -87,16 +87,27 @@ namespace NzbDrone.Core.Notifications.Trakt
         {
             var request = new HttpRequestBuilder(URL).Resource(resource).Build();
 
-            request.RateLimit = TimeSpan.FromSeconds(2);
-            request.Headers.Accept = HttpAccept.Json.Value;
+            request.RateLimit = DefaultRateLimit;
             request.Method = method;
+
+            return BuildRequest(request, accessToken);
+        }
+
+        public HttpRequest BuildRequest(HttpRequest request, string accessToken)
+        {
+            if (request.RateLimit < DefaultRateLimit)
+            {
+                request.RateLimit = DefaultRateLimit;
+            }
+
+            request.Headers.Accept = HttpAccept.Json.Value;
 
             request.Headers.Add("trakt-api-version", "2");
             request.Headers.Add("trakt-api-key", ClientId);
 
             if (accessToken.IsNotNullOrWhiteSpace())
             {
-                request.Headers.Add("Authorization", "Bearer " + accessToken);
+                request.Headers.Add("Authorization", $"Bearer {accessToken}");
             }
 
             return request;

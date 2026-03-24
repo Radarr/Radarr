@@ -183,7 +183,7 @@ function Queue() {
   });
 
   const handleFilterSelect = useCallback(
-    (selectedFilterKey: string) => {
+    (selectedFilterKey: string | number) => {
       dispatch(setQueueFilter({ selectedFilterKey }));
     },
     [dispatch]
@@ -304,7 +304,7 @@ function Queue() {
       <PageToolbar>
         <PageToolbarSection>
           <PageToolbarButton
-            label="Refresh"
+            label={translate('Refresh')}
             iconName={icons.REFRESH}
             isSpinning={isRefreshing}
             onPress={handleRefreshPress}

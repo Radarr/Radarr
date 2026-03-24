@@ -165,7 +165,7 @@ namespace Radarr.Api.V3.Collections
                 .ToDictionary(x => x.Key, x => (IEnumerable<MovieMetadata>)x);
 
             var translations = _movieTranslationService.GetAllTranslationsForLanguage(configLanguage);
-            var tdict = translations.ToDictionary(x => x.MovieMetadataId);
+            var tdict = translations.ToDictionaryIgnoreDuplicates(x => x.MovieMetadataId);
 
             foreach (var collection in collections)
             {

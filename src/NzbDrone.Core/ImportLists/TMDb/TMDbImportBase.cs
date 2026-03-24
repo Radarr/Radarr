@@ -14,6 +14,7 @@ namespace NzbDrone.Core.ImportLists.TMDb
         public override ImportListType ListType => ImportListType.TMDB;
         public override TimeSpan MinRefreshInterval => TimeSpan.FromHours(12);
         public override int PageSize => 20;
+        protected override bool UsePreGeneratedPages => true;
 
         public readonly ISearchForNewMovie _skyhookProxy;
         public readonly IHttpRequestBuilderFactory _requestBuilder;

@@ -53,9 +53,11 @@ function CustomFiltersModalContent(props) {
 
         <div className={styles.addButtonContainer}>
           <Button onPress={onAddCustomFilter}>
-            Add Custom Filter
+            {translate('AddCustomFilter')}
           </Button>
         </div>
+        <br />
+        {translate('FilterMoviePropertiesOnlyNotFileWarning')}
       </ModalBody>
 
       <ModalFooter>

@@ -14,17 +14,17 @@ const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
 const columnPaddingSmallScreen = parseInt(dimensions.movieIndexColumnPaddingSmallScreen);
 
 function calculatePosterWidth(posterSize, isSmallScreen) {
-  const maxiumPosterWidth = isSmallScreen ? 152 : 162;
+  const maximumPosterWidth = isSmallScreen ? 152 : 162;
 
   if (posterSize === 'large') {
-    return maxiumPosterWidth;
+    return maximumPosterWidth;
   }
 
   if (posterSize === 'medium') {
-    return Math.floor(maxiumPosterWidth * 0.75);
+    return Math.floor(maximumPosterWidth * 0.75);
   }
 
-  return Math.floor(maxiumPosterWidth * 0.5);
+  return Math.floor(maximumPosterWidth * 0.5);
 }
 
 function calculateRowHeight(posterHeight, sortKey, isSmallScreen, overviewOptions) {
@@ -95,8 +95,7 @@ class DiscoverMovieOverviews extends Component {
       const index = getIndexOfFirstCharacter(items, jumpToCharacter);
 
       if (this._grid && index != null) {
-
-        this._grid.scrollToCell({
+        this._gridScrollToCell({
           rowIndex: index,
           columnIndex: 0
         });
@@ -180,6 +179,19 @@ class DiscoverMovieOverviews extends Component {
         />
       </div>
     );
+  };
+
+  _gridScrollToCell = ({ rowIndex = 0, columnIndex = 0 }) => {
+    const scrollOffset = this._grid.getOffsetForCell({
+      rowIndex,
+      columnIndex
+    });
+
+    this._gridScrollToPosition(scrollOffset);
+  };
+
+  _gridScrollToPosition = ({ scrollTop = 0, scrollLeft = 0 }) => {
+    this.props.scroller?.scrollTo({ top: scrollTop, left: scrollLeft });
   };
 
   //

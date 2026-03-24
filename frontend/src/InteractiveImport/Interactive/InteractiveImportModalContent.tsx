@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 import AppState from 'App/State/AppState';
 import InteractiveImportAppState from 'App/State/InteractiveImportAppState';
 import * as commandNames from 'Commands/commandNames';
-import SelectInput from 'Components/Form/SelectInput';
+import SelectInput, { SelectInputOption } from 'Components/Form/SelectInput';
 import Icon from 'Components/Icon';
 import Button from 'Components/Link/Button';
 import SpinnerButton from 'Components/Link/SpinnerButton';
@@ -53,7 +53,7 @@ import {
 } from 'Store/Actions/movieFileActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import { SortCallback } from 'typings/callbacks';
-import { SelectStateInputProps } from 'typings/props';
+import { CheckInputChanged } from 'typings/inputs';
 import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import translate from 'Utilities/String/translate';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
@@ -67,8 +67,6 @@ type SelectType =
   | 'quality'
   | 'language'
   | 'indexerFlags';
-
-type FilterExistingFiles = 'all' | 'new';
 
 // TODO: This feels janky to do, but not sure of a better way currently
 type OnSelectedChangeCallback = React.ComponentProps<
@@ -141,7 +139,7 @@ const COLUMNS = [
   },
 ];
 
-const importModeOptions = [
+const importModeOptions: SelectInputOption[] = [
   {
     key: 'chooseImportMode',
     value: () => translate('ChooseImportMode'),
@@ -192,10 +190,9 @@ const importModeSelector = createSelector(
   }
 );
 
-interface InteractiveImportModalContentProps {
+export interface InteractiveImportModalContentProps {
   downloadId?: string;
   movieId?: number;
-  seasonNumber?: number;
   showMovie?: boolean;
   allowMovieChange?: boolean;
   showDelete?: boolean;
@@ -217,7 +214,6 @@ function InteractiveImportModalContent(
   const {
     downloadId,
     movieId,
-    seasonNumber,
     allowMovieChange = true,
     showMovie = true,
     showFilterExistingFiles = false,
@@ -291,7 +287,7 @@ function InteractiveImportModalContent(
   }, [selectedState]);
 
   const bulkSelectOptions = useMemo(() => {
-    const options = [
+    const options: SelectInputOption[] = [
       {
         key: 'select',
         value: translate('SelectDropdown'),
@@ -343,7 +339,6 @@ function InteractiveImportModalContent(
         fetchInteractiveImportItems({
           downloadId,
           movieId,
-          seasonNumber,
           folder,
           filterExistingFiles,
         })
@@ -365,7 +360,7 @@ function InteractiveImportModalContent(
   }, [previousIsDeleting, isDeleting, deleteError, onModalClose]);
 
   const onSelectAllChange = useCallback(
-    ({ value }: SelectStateInputProps) => {
+    ({ value }: CheckInputChanged) => {
       setSelectState({ type: value ? 'selectAll' : 'unselectAll', items });
     },
     [items, setSelectState]
@@ -383,8 +378,8 @@ function InteractiveImportModalContent(
 
       setWithoutMovieFileIdRowsSelected(
         hasMovieFileId || !value
-          ? without(withoutMovieFileIdRowsSelected, id)
-          : [...withoutMovieFileIdRowsSelected, id]
+          ? without(withoutMovieFileIdRowsSelected, id as number)
+          : [...withoutMovieFileIdRowsSelected, id as number]
       );
     },
     [
@@ -553,10 +548,8 @@ function InteractiveImportModalContent(
     [dispatch]
   );
 
-  const onFilterExistingFilesChange = useCallback<
-    (value: FilterExistingFiles) => void
-  >(
-    (value) => {
+  const onFilterExistingFilesChange = useCallback(
+    (value: string | undefined) => {
       const filter = value !== 'all';
 
       setFilterExistingFiles(filter);

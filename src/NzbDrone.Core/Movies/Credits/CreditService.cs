@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NLog;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.Events;
 
@@ -18,10 +19,12 @@ namespace NzbDrone.Core.Movies.Credits
     public class CreditService : ICreditService, IHandleAsync<MoviesDeletedEvent>
     {
         private readonly ICreditRepository _creditRepo;
+        private readonly Logger _logger;
 
-        public CreditService(ICreditRepository creditRepo)
+        public CreditService(ICreditRepository creditRepo, Logger logger)
         {
             _creditRepo = creditRepo;
+            _logger = logger;
         }
 
         public List<Credit> GetAllCreditsForMovieMetadata(int movieMetadataId)
@@ -64,21 +67,45 @@ namespace NzbDrone.Core.Movies.Credits
             // First update the movie ids so we can correlate them later.
             credits.ForEach(t => t.MovieMetadataId = movieMetadataId);
 
-            // Now find credits to delete, update and insert.
-            var existingCredits = _creditRepo.FindByMovieMetadataId(movieMetadataId);
-
-            // Should never have multiple credits with same credit_id, but check to ensure incase TMDB is on fritz
+            // Should never have multiple credits with same credit_id, but check to ensure in case TMDB is on fritz
             var dupeFreeCredits = credits.DistinctBy(m => m.CreditTmdbId).ToList();
 
-            dupeFreeCredits.ForEach(c => c.Id = existingCredits.FirstOrDefault(t => t.CreditTmdbId == c.CreditTmdbId)?.Id ?? 0);
+            var existingCredits = _creditRepo.FindByMovieMetadataId(movieMetadataId);
 
-            var insert = dupeFreeCredits.Where(t => t.Id == 0).ToList();
-            var update = dupeFreeCredits.Where(t => t.Id > 0).ToList();
-            var delete = existingCredits.Where(t => !dupeFreeCredits.Any(c => c.CreditTmdbId == t.CreditTmdbId)).ToList();
+            var updateList = new List<Credit>();
+            var addList = new List<Credit>();
+            var upToDateCount = 0;
 
-            _creditRepo.DeleteMany(delete);
-            _creditRepo.UpdateMany(update);
-            _creditRepo.InsertMany(insert);
+            foreach (var credit in dupeFreeCredits)
+            {
+                var existingCredit = existingCredits.FirstOrDefault(x => x.CreditTmdbId == credit.CreditTmdbId);
+
+                if (existingCredit != null)
+                {
+                    existingCredits.Remove(existingCredit);
+
+                    credit.UseDbFieldsFrom(existingCredit);
+
+                    if (!credit.Equals(existingCredit))
+                    {
+                        updateList.Add(credit);
+                    }
+                    else
+                    {
+                        upToDateCount++;
+                    }
+                }
+                else
+                {
+                    addList.Add(credit);
+                }
+            }
+
+            _creditRepo.DeleteMany(existingCredits);
+            _creditRepo.UpdateMany(updateList);
+            _creditRepo.InsertMany(addList);
+
+            _logger.Debug("[{0}] {1} credits up to date; Updating {2}, Adding {3}, Deleting {4} entries.", movieMetadata.Title, upToDateCount, updateList.Count, addList.Count, existingCredits.Count);
 
             return credits;
         }

@@ -6,7 +6,7 @@ using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
-    public class AcceptableSizeSpecification : IDecisionEngineSpecification
+    public class AcceptableSizeSpecification : IDownloadDecisionEngineSpecification
     {
         private readonly IQualityDefinitionService _qualityDefinitionService;
         private readonly Logger _logger;
@@ -20,7 +20,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public DownloadSpecDecision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             _logger.Debug("Beginning size check for: {0}", subject);
 
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             if (subject.Release.Size == 0)
             {
                 _logger.Debug("Release has unknown size, skipping size check");
-                return Decision.Accept();
+                return DownloadSpecDecision.Accept();
             }
 
             var qualityDefinition = _qualityDefinitionService.Get(quality);
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     var runtimeMessage = subject.Movie.Title;
 
                     _logger.Debug("Item: {0}, Size: {1} is smaller than minimum allowed size ({2} bytes for {3}), rejecting.", subject, subject.Release.Size, minSize, runtimeMessage);
-                    return Decision.Reject("{0} is smaller than minimum allowed {1} (for {2})", subject.Release.Size.SizeSuffix(), minSize.SizeSuffix(), runtimeMessage);
+                    return DownloadSpecDecision.Reject(DownloadRejectionReason.BelowMinimumSize, "{0} is smaller than minimum allowed {1} (for {2})", subject.Release.Size.SizeSuffix(), minSize.SizeSuffix(), runtimeMessage);
                 }
             }
 
@@ -64,7 +64,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             else if (subject.Movie.MovieMetadata.Value.Runtime == 0)
             {
                 _logger.Debug("Movie runtime is 0, unable to validate size until it is available, rejecting");
-                return Decision.Reject("Movie runtime is 0, unable to validate size until it is available");
+                return DownloadSpecDecision.Reject(DownloadRejectionReason.UnknownRuntime, "Movie runtime is 0, unable to validate size until it is available");
             }
             else
             {
@@ -77,12 +77,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 if (subject.Release.Size > maxSize)
                 {
                     _logger.Debug("Item: {0}, Size: {1} is greater than maximum allowed size ({2} for {3}), rejecting", subject, subject.Release.Size, maxSize, subject.Movie.Title);
-                    return Decision.Reject("{0} is larger than maximum allowed {1} (for {2})", subject.Release.Size.SizeSuffix(), maxSize.SizeSuffix(), subject.Movie.Title);
+                    return DownloadSpecDecision.Reject(DownloadRejectionReason.AboveMaximumSize, "{0} is larger than maximum allowed {1} (for {2})", subject.Release.Size.SizeSuffix(), maxSize.SizeSuffix(), subject.Movie.Title);
                 }
             }
 
             _logger.Debug("Item: {0}, meets size constraints", subject);
-            return Decision.Accept();
+            return DownloadSpecDecision.Accept();
         }
     }
 }

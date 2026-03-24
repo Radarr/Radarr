@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("ar", "", "ara", "Arabic", Language.Arabic),
                                                                new IsoLanguage("uk", "", "ukr", "Ukrainian", Language.Ukrainian),
                                                                new IsoLanguage("fa", "", "fas", "Persian", Language.Persian),
-                                                               new IsoLanguage("be", "", "ben", "Bengali", Language.Bengali),
+                                                               new IsoLanguage("bn", "", "ben", "Bengali", Language.Bengali),
                                                                new IsoLanguage("lt", "", "lit", "Lithuanian", Language.Lithuanian),
                                                                new IsoLanguage("sk", "", "slk", "Slovak", Language.Slovak),
                                                                new IsoLanguage("lv", "", "lav", "Latvian", Language.Latvian),
@@ -59,6 +59,14 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("sl", "", "slv", "Slovenian", Language.Slovenian),
                                                                new IsoLanguage("ml", "", "mal", "Malayalam", Language.Malayalam),
                                                                new IsoLanguage("kn", "", "kan", "Kannada", Language.Kannada),
+                                                               new IsoLanguage("sq", "", "sqi", "Albanian", Language.Albanian),
+                                                               new IsoLanguage("af", "", "afr", "Afrikaans", Language.Afrikaans),
+                                                               new IsoLanguage("mr", "", "mar", "Marathi", Language.Marathi),
+                                                               new IsoLanguage("tl", "", "tgl", "Tagalog", Language.Tagalog),
+                                                               new IsoLanguage("ur", "", "urd", "Urdu", Language.Urdu),
+                                                               new IsoLanguage("rm", "", "roh", "Romansh", Language.Romansh),
+                                                               new IsoLanguage("mn", "", "mon", "Mongolian", Language.Mongolian),
+                                                               new IsoLanguage("ka", "", "kat", "Georgian", Language.Georgian)
                                                            };
 
         private static readonly Dictionary<string, Language> AlternateIsoCodeMappings = new ()

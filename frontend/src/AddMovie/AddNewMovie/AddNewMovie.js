@@ -82,8 +82,7 @@ class AddNewMovie extends Component {
     const {
       error,
       items,
-      hasExistingMovies,
-      colorImpairedMode
+      hasExistingMovies
     } = this.props;
 
     const term = this.state.term;
@@ -131,7 +130,9 @@ class AddNewMovie extends Component {
                 <div className={styles.helpText}>
                   {translate('FailedLoadingSearchResults')}
                 </div>
-                <Alert kind={kinds.WARNING}>{getErrorMessage(error)}</Alert>
+
+                <Alert kind={kinds.DANGER}>{getErrorMessage(error)}</Alert>
+
                 <div>
                   <Link to="https://wiki.servarr.com/radarr/troubleshooting#invalid-response-received-from-tmdb">
                     {translate('WhySearchesCouldBeFailing')}
@@ -148,7 +149,6 @@ class AddNewMovie extends Component {
                     return (
                       <AddNewMovieSearchResultConnector
                         key={item.tmdbId}
-                        colorImpairedMode={colorImpairedMode}
                         {...item}
                       />
                     );
@@ -221,8 +221,7 @@ AddNewMovie.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   hasExistingMovies: PropTypes.bool.isRequired,
   onMovieLookupChange: PropTypes.func.isRequired,
-  onClearMovieLookup: PropTypes.func.isRequired,
-  colorImpairedMode: PropTypes.bool.isRequired
+  onClearMovieLookup: PropTypes.func.isRequired
 };
 
 export default AddNewMovie;

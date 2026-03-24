@@ -69,11 +69,15 @@ namespace Radarr.Http.REST
             var skipValidate = skipAttribute?.Skip ?? false;
             var skipShared = skipAttribute?.SkipShared ?? false;
 
-            if (Request.Method == "POST" || Request.Method == "PUT")
+            if (Request.Method is "POST" or "PUT")
             {
-                var resourceArgs = context.ActionArguments.Values.Where(x => x.GetType() == typeof(TResource))
-                    .Select(x => x as TResource)
-                    .ToList();
+                var resourceArgs = context.ActionArguments.Values
+                    .SelectMany(x => x switch
+                    {
+                        TResource single => new[] { single },
+                        IEnumerable<TResource> multiple => multiple,
+                        _ => Enumerable.Empty<TResource>()
+                    });
 
                 foreach (var resource in resourceArgs)
                 {

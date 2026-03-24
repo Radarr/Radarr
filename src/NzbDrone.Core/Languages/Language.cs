@@ -120,6 +120,14 @@ namespace NzbDrone.Core.Languages
         public static Language Slovenian => new Language(47, "Slovenian");
         public static Language Malayalam => new Language(48, "Malayalam");
         public static Language Kannada => new Language(49, "Kannada");
+        public static Language Albanian => new Language(50, "Albanian");
+        public static Language Afrikaans => new Language(51, "Afrikaans");
+        public static Language Marathi => new Language(52, "Marathi");
+        public static Language Tagalog => new Language(53, "Tagalog");
+        public static Language Urdu => new Language(54, "Urdu");
+        public static Language Romansh => new Language(55, "Romansh");
+        public static Language Mongolian => new Language(56, "Mongolian");
+        public static Language Georgian => new Language(57, "Georgian");
         public static Language Any => new Language(-1, "Any");
         public static Language Original => new Language(-2, "Original");
 
@@ -179,6 +187,14 @@ namespace NzbDrone.Core.Languages
                     Slovenian,
                     Malayalam,
                     Kannada,
+                    Albanian,
+                    Afrikaans,
+                    Marathi,
+                    Tagalog,
+                    Urdu,
+                    Romansh,
+                    Mongolian,
+                    Georgian,
                     Any,
                     Original
                 };

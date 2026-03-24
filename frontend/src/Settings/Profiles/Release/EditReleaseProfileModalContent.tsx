@@ -19,14 +19,16 @@ import {
   setReleaseProfileValue,
 } from 'Store/Actions/Settings/releaseProfiles';
 import selectSettings from 'Store/Selectors/selectSettings';
-import { PendingSection } from 'typings/pending';
+import { InputChanged } from 'typings/inputs';
 import ReleaseProfile from 'typings/Settings/ReleaseProfile';
 import translate from 'Utilities/String/translate';
 import styles from './EditReleaseProfileModalContent.css';
 
 const tagInputDelimiters = ['Tab', 'Enter'];
 
-const newReleaseProfile = {
+const newReleaseProfile: ReleaseProfile = {
+  id: 0,
+  name: '',
   enabled: true,
   required: [],
   ignored: [],
@@ -41,16 +43,19 @@ function createReleaseProfileSelector(id?: number) {
       const { items, isFetching, error, isSaving, saveError, pendingChanges } =
         releaseProfiles;
 
-      const mapping = id ? items.find((i) => i.id === id) : newReleaseProfile;
-      const settings = selectSettings(mapping, pendingChanges, saveError);
+      const mapping = id ? items.find((i) => i.id === id)! : newReleaseProfile;
+      const settings = selectSettings<ReleaseProfile>(
+        mapping,
+        pendingChanges,
+        saveError
+      );
 
       return {
-        id,
         isFetching,
         error,
         isSaving,
         saveError,
-        item: settings.settings as PendingSection<ReleaseProfile>,
+        item: settings.settings,
         ...settings,
       };
     }
@@ -97,9 +102,9 @@ function EditReleaseProfileModalContent({
   }, [dispatch, id]);
 
   const handleInputChange = useCallback(
-    (payload: { name: string; value: string | number }) => {
+    (change: InputChanged) => {
       // @ts-expect-error 'setReleaseProfileValue' isn't typed yet
-      dispatch(setReleaseProfileValue(payload));
+      dispatch(setReleaseProfileValue(change));
     },
     [dispatch]
   );
@@ -120,7 +125,6 @@ function EditReleaseProfileModalContent({
               name="name"
               {...name}
               placeholder={translate('OptionalName')}
-              canEdit={true}
               onChange={handleInputChange}
             />
           </FormGroup>

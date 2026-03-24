@@ -1,28 +1,19 @@
-import ModelBase from 'App/ModelBase';
+import { MovieMonitor } from 'Movie/Movie';
+import Provider from './Provider';
 
-export interface Field {
-  order: number;
-  name: string;
-  label: string;
-  value: boolean | number | string;
-  type: string;
-  advanced: boolean;
-  privacy: string;
-}
-
-interface ImportList extends ModelBase {
+interface ImportList extends Provider {
   enable: boolean;
   enabled: boolean;
   enableAuto: boolean;
   qualityProfileId: number;
   minimumAvailability: string;
   rootFolderPath: string;
+  monitor: MovieMonitor;
+  searchOnAdd: boolean;
+  listType: string;
+  listOrder: number;
+  minRefreshInterval: string;
   name: string;
-  fields: Field[];
-  implementationName: string;
-  implementation: string;
-  configContract: string;
-  infoLink: string;
   tags: number[];
   retroApplyTags: boolean;
 }

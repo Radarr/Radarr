@@ -143,13 +143,14 @@ namespace NzbDrone.Core.History
             history.Data.Add("Age", message.Movie.Release.Age.ToString());
             history.Data.Add("AgeHours", message.Movie.Release.AgeHours.ToString());
             history.Data.Add("AgeMinutes", message.Movie.Release.AgeMinutes.ToString());
-            history.Data.Add("PublishedDate", message.Movie.Release.PublishDate.ToString("s") + "Z");
+            history.Data.Add("PublishedDate", message.Movie.Release.PublishDate.ToUniversalTime().ToString("s") + "Z");
             history.Data.Add("DownloadClient", message.DownloadClient);
             history.Data.Add("DownloadClientName", message.DownloadClientName);
             history.Data.Add("Size", message.Movie.Release.Size.ToString());
             history.Data.Add("DownloadUrl", message.Movie.Release.DownloadUrl);
             history.Data.Add("Guid", message.Movie.Release.Guid);
             history.Data.Add("TmdbId", message.Movie.Release.TmdbId.ToString());
+            history.Data.Add("ImdbId", message.Movie.Release.ImdbId.ToString());
             history.Data.Add("Protocol", ((int)message.Movie.Release.DownloadProtocol).ToString());
             history.Data.Add("CustomFormatScore", message.Movie.CustomFormatScore.ToString());
             history.Data.Add("MovieMatchType", message.Movie.MovieMatchType.ToString());
@@ -281,6 +282,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("Message", message.Message);
             history.Data.Add("ReleaseGroup", message.TrackedDownload?.RemoteMovie?.ParsedMovieInfo?.ReleaseGroup);
             history.Data.Add("Size", message.TrackedDownload?.DownloadItem.TotalSize.ToString());
+            history.Data.Add("Indexer", message.TrackedDownload?.RemoteMovie?.Release?.Indexer);
 
             _historyRepository.Insert(history);
         }
@@ -306,8 +308,9 @@ namespace NzbDrone.Core.History
             history.Data.Add("DownloadClient", message.DownloadClient);
             history.Data.Add("DownloadClientName", message.TrackedDownload?.DownloadItem.DownloadClientInfo.Name);
             history.Data.Add("Message", message.Message);
-            history.Data.Add("ReleaseGroup", message.TrackedDownload?.RemoteMovie?.ParsedMovieInfo?.ReleaseGroup);
-            history.Data.Add("Size", message.TrackedDownload?.DownloadItem.TotalSize.ToString());
+            history.Data.Add("ReleaseGroup", message.TrackedDownload?.RemoteMovie?.ParsedMovieInfo?.ReleaseGroup ?? message.Data.GetValueOrDefault(MovieHistory.RELEASE_GROUP));
+            history.Data.Add("Size", message.TrackedDownload?.DownloadItem.TotalSize.ToString() ?? message.Data.GetValueOrDefault(MovieHistory.SIZE));
+            history.Data.Add("Indexer", message.TrackedDownload?.RemoteMovie?.Release?.Indexer ?? message.Data.GetValueOrDefault(MovieHistory.INDEXER));
 
             _historyRepository.Insert(history);
         }

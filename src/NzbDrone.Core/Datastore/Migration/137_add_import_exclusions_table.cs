@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Datastore.Migration
             if (!Schema.Table("ImportExclusions").Exists())
             {
                 Create.TableForModel("ImportExclusions")
-                    .WithColumn("TmdbId").AsInt64().NotNullable().Unique().PrimaryKey()
+                    .WithColumn("TmdbId").AsInt64().NotNullable().Unique()
                     .WithColumn("MovieTitle").AsString().Nullable()
                     .WithColumn("MovieYear").AsInt64().Nullable().WithDefaultValue(0);
             }

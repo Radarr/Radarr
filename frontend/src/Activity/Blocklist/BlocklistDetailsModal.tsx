@@ -26,7 +26,7 @@ function BlocklistDetailsModal(props: BlocklistDetailsModalProps) {
   return (
     <Modal isOpen={isOpen} onModalClose={onModalClose}>
       <ModalContent onModalClose={onModalClose}>
-        <ModalHeader>Details</ModalHeader>
+        <ModalHeader>{translate('Details')}</ModalHeader>
 
         <ModalBody>
           <DescriptionList>

@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
@@ -6,29 +6,47 @@ using NzbDrone.Core.Configuration;
 
 namespace Radarr.Http.Frontend.Mappers
 {
-    public class ManifestMapper : StaticResourceMapperBase
+    public class ManifestMapper : UrlBaseReplacementResourceMapperBase
     {
         private readonly IAppFolderInfo _appFolderInfo;
         private readonly IConfigFileProvider _configFileProvider;
 
+        private string _generatedContent;
+
         public ManifestMapper(IAppFolderInfo appFolderInfo, IDiskProvider diskProvider, IConfigFileProvider configFileProvider, Logger logger)
-            : base(diskProvider, logger)
+            : base(diskProvider, configFileProvider, logger)
         {
             _appFolderInfo = appFolderInfo;
             _configFileProvider = configFileProvider;
         }
 
-        public override string Map(string resourceUrl)
-        {
-            var path = resourceUrl.Replace('/', Path.DirectorySeparatorChar);
-            path = path.Trim(Path.DirectorySeparatorChar);
+        protected override string FolderPath => Path.Combine(_appFolderInfo.StartUpFolder, _configFileProvider.UiFolder);
+        protected override string FilePath => Path.Combine(FolderPath, "Content", "manifest.json");
 
-            return Path.ChangeExtension(Path.Combine(_appFolderInfo.StartUpFolder, _configFileProvider.UiFolder, path), "json");
+        protected override string MapPath(string resourceUrl)
+        {
+            return FilePath;
         }
 
         public override bool CanHandle(string resourceUrl)
         {
-            return resourceUrl.StartsWith("/Content/Images/Icons/manifest");
+            return resourceUrl.StartsWith("/Content/manifest");
+        }
+
+        protected override string GetFileText()
+        {
+            if (RuntimeInfo.IsProduction && _generatedContent != null)
+            {
+                return _generatedContent;
+            }
+
+            var text = base.GetFileText();
+
+            text = text.Replace("__INSTANCE_NAME__", _configFileProvider.InstanceName);
+
+            _generatedContent = text;
+
+            return _generatedContent;
         }
     }
 }

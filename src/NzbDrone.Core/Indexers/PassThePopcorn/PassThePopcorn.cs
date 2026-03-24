@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using System;
+using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser;
@@ -12,6 +13,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public override bool SupportsRss => true;
         public override bool SupportsSearch => true;
         public override int PageSize => 50;
+        public override TimeSpan RateLimit => TimeSpan.FromSeconds(4);
 
         public PassThePopcorn(IHttpClient httpClient,
             IIndexerStatusService indexerStatusService,
@@ -30,6 +32,16 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public override IParseIndexerResponse GetParser()
         {
             return new PassThePopcornParser(Settings, _logger);
+        }
+
+        public override HttpRequest GetDownloadRequest(string link)
+        {
+            var request = new HttpRequest(link);
+
+            request.Headers.Set("ApiUser", Settings.APIUser);
+            request.Headers.Set("ApiKey", Settings.APIKey);
+
+            return request;
         }
     }
 }

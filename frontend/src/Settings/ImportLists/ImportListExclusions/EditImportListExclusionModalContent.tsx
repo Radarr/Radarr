@@ -22,6 +22,7 @@ import {
 } from 'Store/Actions/settingsActions';
 import selectSettings from 'Store/Selectors/selectSettings';
 import ImportListExclusion from 'typings/ImportListExclusion';
+import { InputChanged } from 'typings/inputs';
 import { PendingSection } from 'typings/pending';
 import translate from 'Utilities/String/translate';
 import styles from './EditImportListExclusionModalContent.css';
@@ -40,12 +41,11 @@ function createImportListExclusionSelector(id?: number) {
         importListExclusions;
 
       const mapping = id
-        ? items.find((i) => i.id === id)
+        ? items.find((i) => i.id === id)!
         : newImportListExclusion;
       const settings = selectSettings(mapping, pendingChanges, saveError);
 
       return {
-        id,
         isFetching,
         error,
         isSaving,
@@ -104,9 +104,9 @@ function EditImportListExclusionModalContent({
   }, [dispatch, id]);
 
   const onInputChange = useCallback(
-    (payload: { name: string; value: string | number }) => {
+    (change: InputChanged) => {
       // @ts-expect-error 'setImportListExclusionValue' isn't typed yet
-      dispatch(setImportListExclusionValue(payload));
+      dispatch(setImportListExclusionValue(change));
     },
     [dispatch]
   );
@@ -170,7 +170,7 @@ function EditImportListExclusionModalContent({
       </ModalBody>
 
       <ModalFooter>
-        {id && (
+        {id ? (
           <Button
             className={styles.deleteButton}
             kind={kinds.DANGER}
@@ -178,7 +178,7 @@ function EditImportListExclusionModalContent({
           >
             {translate('Delete')}
           </Button>
-        )}
+        ) : null}
 
         <Button onPress={onModalClose}>{translate('Cancel')}</Button>
 

@@ -10,7 +10,10 @@ import createTestProviderHandler, { createCancelTestProviderHandler } from 'Stor
 import createSetProviderFieldValueReducer from 'Store/Actions/Creators/Reducers/createSetProviderFieldValueReducer';
 import createSetSettingValueReducer from 'Store/Actions/Creators/Reducers/createSetSettingValueReducer';
 import { createThunk } from 'Store/thunks';
+import getSectionState from 'Utilities/State/getSectionState';
 import selectProviderSchema from 'Utilities/State/selectProviderSchema';
+import updateSectionState from 'Utilities/State/updateSectionState';
+import translate from 'Utilities/String/translate';
 
 //
 // Variables
@@ -31,9 +34,9 @@ export const DELETE_IMPORT_LIST = 'settings/importLists/deleteImportList';
 export const TEST_IMPORT_LIST = 'settings/importLists/testImportList';
 export const CANCEL_TEST_IMPORT_LIST = 'settings/importLists/cancelTestImportList';
 export const TEST_ALL_IMPORT_LISTS = 'settings/importLists/testAllImportLists';
-
-export const BULK_DELETE_IMPORT_LISTS = 'settings/importLists/bulkDeleteImportLists';
 export const BULK_EDIT_IMPORT_LISTS = 'settings/importLists/bulkEditImportLists';
+export const BULK_DELETE_IMPORT_LISTS = 'settings/importLists/bulkDeleteImportLists';
+export const CLONE_IMPORT_LIST = 'settings/importLists/cloneImportList';
 
 //
 // Action Creators
@@ -48,9 +51,8 @@ export const deleteImportList = createThunk(DELETE_IMPORT_LIST);
 export const testImportList = createThunk(TEST_IMPORT_LIST);
 export const cancelTestImportList = createThunk(CANCEL_TEST_IMPORT_LIST);
 export const testAllImportLists = createThunk(TEST_ALL_IMPORT_LISTS);
-
-export const bulkDeleteImportLists = createThunk(BULK_DELETE_IMPORT_LISTS);
 export const bulkEditImportLists = createThunk(BULK_EDIT_IMPORT_LISTS);
+export const bulkDeleteImportLists = createThunk(BULK_DELETE_IMPORT_LISTS);
 
 export const setImportListValue = createAction(SET_IMPORT_LIST_VALUE, (payload) => {
   return {
@@ -65,6 +67,8 @@ export const setImportListFieldValue = createAction(SET_IMPORT_LIST_FIELD_VALUE,
     ...payload
   };
 });
+
+export const cloneImportList = createAction(CLONE_IMPORT_LIST);
 
 //
 // Details
@@ -128,6 +132,37 @@ export default {
 
         return selectedSchema;
       });
+    },
+
+    [CLONE_IMPORT_LIST]: (state, { payload }) => {
+      const id = payload.id;
+      const newState = getSectionState(state, section);
+      const item = newState.items.find((i) => i.id === id);
+
+      const selectedSchema = { ...item };
+      delete selectedSchema.id;
+      delete selectedSchema.name;
+
+      // Use selectedSchema so `createProviderSettingsSelector` works properly
+      selectedSchema.fields = selectedSchema.fields.map((field) => {
+        const newField = { ...field };
+
+        if (newField.privacy === 'apiKey' || newField.privacy === 'password') {
+          newField.value = '';
+        }
+
+        return newField;
+      });
+
+      newState.selectedSchema = selectedSchema;
+
+      const pendingChanges = { ...item, id: 0 };
+      delete pendingChanges.id;
+
+      pendingChanges.name = translate('DefaultNameCopiedImportList', { name: pendingChanges.name });
+      newState.pendingChanges = pendingChanges;
+
+      return updateSectionState(state, section, newState);
     }
   }
 

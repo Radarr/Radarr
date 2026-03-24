@@ -86,18 +86,18 @@ class FileEditModalContentConnector extends Component {
       real: real ? 1 : 0
     };
 
-    const movieFileIds = [this.props.movieFileId];
-
     this.props.dispatchUpdateMovieFiles({
-      movieFileIds,
-      languages,
-      indexerFlags,
-      edition,
-      releaseGroup,
-      quality: {
-        quality,
-        revision
-      }
+      files: [{
+        id: this.props.movieFileId,
+        languages,
+        indexerFlags,
+        edition,
+        releaseGroup,
+        quality: {
+          quality,
+          revision
+        }
+      }]
     });
 
     this.props.onModalClose(true);

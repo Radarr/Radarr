@@ -5,7 +5,8 @@ interface CssExports {
   'buttonContainer': string;
   'buttonIcon': string;
   'buttonsContainer': string;
-  'recentFoldersContainer': string;
+  'foldersContainer': string;
+  'foldersTitle': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

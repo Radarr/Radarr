@@ -85,6 +85,7 @@ namespace Radarr.Api.V3.Indexers
                     {
                         Release = remoteMovie.Release,
                         ParsedMovieInfo = remoteMovie.ParsedMovieInfo.JsonClone(),
+                        MovieRequested = remoteMovie.MovieRequested,
                         DownloadAllowed = remoteMovie.DownloadAllowed,
                         SeedConfiguration = remoteMovie.SeedConfiguration,
                         CustomFormats = remoteMovie.CustomFormats,
@@ -108,7 +109,7 @@ namespace Radarr.Api.V3.Indexers
                     }
                     else
                     {
-                        throw new NzbDroneClientException(HttpStatusCode.NotFound, "Unable to find matching movie");
+                        throw new NzbDroneClientException(HttpStatusCode.NotFound, "Unable to find matching movie, will need to be manually provided");
                     }
                 }
 

@@ -36,4 +36,5 @@ export type Kind =
   | 'primary'
   | 'purple'
   | 'success'
-  | 'warning';
+  | 'warning'
+  | 'queue';

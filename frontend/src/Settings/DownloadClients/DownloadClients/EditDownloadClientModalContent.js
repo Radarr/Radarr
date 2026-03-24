@@ -38,7 +38,6 @@ class EditDownloadClientModalContent extends Component {
       onModalClose,
       onSavePress,
       onTestPress,
-      onAdvancedSettingsPress,
       onDeleteDownloadClientPress,
       ...otherProps
     } = this.props;
@@ -48,7 +47,6 @@ class EditDownloadClientModalContent extends Component {
       implementationName,
       name,
       enable,
-      protocol,
       priority,
       removeCompletedDownloads,
       removeFailedDownloads,
@@ -171,20 +169,17 @@ class EditDownloadClientModalContent extends Component {
                     />
                   </FormGroup>
 
-                  {
-                    protocol.value !== 'torrent' &&
-                      <FormGroup>
-                        <FormLabel>{translate('RemoveFailed')}</FormLabel>
+                  <FormGroup>
+                    <FormLabel>{translate('RemoveFailed')}</FormLabel>
 
-                        <FormInputGroup
-                          type={inputTypes.CHECK}
-                          name="removeFailedDownloads"
-                          helpText={translate('RemoveFailedDownloadsHelpText')}
-                          {...removeFailedDownloads}
-                          onChange={onInputChange}
-                        />
-                      </FormGroup>
-                  }
+                    <FormInputGroup
+                      type={inputTypes.CHECK}
+                      name="removeFailedDownloads"
+                      helpText={translate('RemoveFailedDownloadsHelpText')}
+                      {...removeFailedDownloads}
+                      onChange={onInputChange}
+                    />
+                  </FormGroup>
                 </FieldSet>
               </Form>
           }
@@ -202,8 +197,6 @@ class EditDownloadClientModalContent extends Component {
           }
 
           <AdvancedSettingsButton
-            advancedSettings={advancedSettings}
-            onAdvancedSettingsPress={onAdvancedSettingsPress}
             showLabel={false}
           />
 
@@ -247,7 +240,6 @@ EditDownloadClientModalContent.propTypes = {
   onModalClose: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onTestPress: PropTypes.func.isRequired,
-  onAdvancedSettingsPress: PropTypes.func.isRequired,
   onDeleteDownloadClientPress: PropTypes.func
 };
 

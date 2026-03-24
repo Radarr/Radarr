@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
     public interface IXbmcService
     {
         void Notify(XbmcSettings settings, string title, string message);
-        void UpdateMovie(XbmcSettings settings, Movie movie);
+        void Update(XbmcSettings settings, Movie movie);
         void Clean(XbmcSettings settings);
         ValidationFailure Test(XbmcSettings settings, string message);
     }
@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             _proxy.Notify(settings, title, message);
         }
 
-        public void UpdateMovie(XbmcSettings settings, Movie movie)
+        public void Update(XbmcSettings settings, Movie movie)
         {
             if (CheckIfVideoPlayerOpen(settings))
             {

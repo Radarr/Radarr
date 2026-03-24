@@ -11,6 +11,7 @@ namespace NzbDrone.Core.CustomFormats
         {
             RuleFor(c => c.Min).GreaterThanOrEqualTo(0);
             RuleFor(c => c.Max).GreaterThan(c => c.Min);
+            RuleFor(c => c.Max).LessThanOrEqualTo(double.MaxValue);
         }
     }
 
@@ -21,10 +22,10 @@ namespace NzbDrone.Core.CustomFormats
         public override int Order => 8;
         public override string ImplementationName => "Size";
 
-        [FieldDefinition(1, Label = "Minimum Size", HelpText = "Release must be greater than this size", Unit = "GB", Type = FieldType.Number)]
+        [FieldDefinition(1, Label = "CustomFormatsSpecificationMinimumSize", HelpText = "CustomFormatsSpecificationMinimumSizeHelpText", Unit = "GB", Type = FieldType.Number)]
         public double Min { get; set; }
 
-        [FieldDefinition(1, Label = "Maximum Size", HelpText = "Release must be less than or equal to this size", Unit = "GB", Type = FieldType.Number)]
+        [FieldDefinition(1, Label = "CustomFormatsSpecificationMaximumSize", HelpText = "CustomFormatsSpecificationMaximumSizeHelpText", Unit = "GB", Type = FieldType.Number)]
         public double Max { get; set; }
 
         protected override bool IsSatisfiedByWithoutNegate(CustomFormatInput input)

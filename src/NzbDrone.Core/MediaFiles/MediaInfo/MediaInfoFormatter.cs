@@ -210,7 +210,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             if (videoFormat == "mpeg4" || videoFormat.Contains("msmpeg4"))
             {
-                if (videoCodecID == "XVID")
+                if (videoCodecID.ToUpperInvariant() == "XVID")
                 {
                     return "XviD";
                 }
@@ -293,7 +293,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
         private static string GetSceneNameMatch(string sceneName, params string[] tokens)
         {
-            sceneName = sceneName.IsNotNullOrWhiteSpace() ? Parser.Parser.RemoveFileExtension(sceneName) : string.Empty;
+            sceneName = sceneName.IsNotNullOrWhiteSpace() ? FileExtensions.RemoveFileExtension(sceneName) : string.Empty;
 
             foreach (var token in tokens)
             {

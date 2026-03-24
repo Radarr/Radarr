@@ -10,6 +10,7 @@ import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import MovieStatusLabel from 'Movie/Details/MovieStatusLabel';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
+import MovieGenres from 'Movie/MovieGenres';
 import MoviePoster from 'Movie/MoviePoster';
 import formatRuntime from 'Utilities/Date/formatRuntime';
 import translate from 'Utilities/String/translate';
@@ -73,12 +74,9 @@ class AddNewMovieSearchResult extends Component {
       isExistingMovie,
       isExcluded,
       isSmallScreen,
-      colorImpairedMode,
-      id,
       monitored,
       isAvailable,
       movieFile,
-      queueItem,
       runtime,
       movieRuntimeFormat,
       certification
@@ -249,9 +247,7 @@ class AddNewMovieSearchResult extends Component {
                       name={icons.GENRE}
                       size={13}
                     />
-                    <span className={styles.genres}>
-                      {genres.slice(0, 3).join(', ')}
-                    </span>
+                    <MovieGenres className={styles.genres} genres={genres} />
                   </Label> :
                   null
               }
@@ -280,20 +276,18 @@ class AddNewMovieSearchResult extends Component {
                 }
                 canFlip={true}
                 kind={kinds.INVERSE}
-                position={tooltipPositions.BOTTOM}
+                position={tooltipPositions.TOP}
               />
 
               {
                 isExistingMovie && isSmallScreen &&
                   <MovieStatusLabel
-                    status={status}
-                    hasMovieFiles={hasMovieFile}
+                    movieId={existingMovieId}
                     monitored={monitored}
                     isAvailable={isAvailable}
-                    queueItem={queueItem}
-                    id={id}
+                    hasMovieFiles={hasMovieFile}
+                    status={status}
                     useLabel={true}
-                    colorImpairedMode={colorImpairedMode}
                   />
               }
             </div>
@@ -338,12 +332,9 @@ AddNewMovieSearchResult.propTypes = {
   isExistingMovie: PropTypes.bool.isRequired,
   isExcluded: PropTypes.bool,
   isSmallScreen: PropTypes.bool.isRequired,
-  id: PropTypes.number,
   monitored: PropTypes.bool.isRequired,
   isAvailable: PropTypes.bool.isRequired,
   movieFile: PropTypes.object,
-  queueItem: PropTypes.object,
-  colorImpairedMode: PropTypes.bool,
   runtime: PropTypes.number.isRequired,
   movieRuntimeFormat: PropTypes.string.isRequired,
   certification: PropTypes.string

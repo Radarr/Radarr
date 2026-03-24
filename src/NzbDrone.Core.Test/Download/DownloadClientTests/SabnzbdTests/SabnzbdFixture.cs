@@ -478,6 +478,37 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
             downloadClientInfo.RemovesCompletedDownloads.Should().BeTrue();
         }
 
+        [TestCase("all", 0)]
+        [TestCase("days-archive", 15)]
+        [TestCase("days-delete", 15)]
+        public void should_set_history_removes_completed_downloads_false_for_separate_properties(string option, int number)
+        {
+            _config.Misc.history_retention_option = option;
+            _config.Misc.history_retention_number = number;
+
+            var downloadClientInfo = Subject.GetStatus();
+
+            downloadClientInfo.RemovesCompletedDownloads.Should().BeFalse();
+        }
+
+        [TestCase("number-archive", 10)]
+        [TestCase("number-delete", 10)]
+        [TestCase("number-archive", 0)]
+        [TestCase("number-delete", 0)]
+        [TestCase("days-archive", 3)]
+        [TestCase("days-delete", 3)]
+        [TestCase("all-archive", 0)]
+        [TestCase("all-delete", 0)]
+        public void should_set_history_removes_completed_downloads_true_for_separate_properties(string option, int number)
+        {
+            _config.Misc.history_retention_option = option;
+            _config.Misc.history_retention_number = number;
+
+            var downloadClientInfo = Subject.GetStatus();
+
+            downloadClientInfo.RemovesCompletedDownloads.Should().BeTrue();
+        }
+
         [TestCase(@"Y:\sabnzbd\root", @"completed\downloads", @"vv", @"Y:\sabnzbd\root\completed\downloads", @"Y:\sabnzbd\root\completed\downloads\vv")]
         [TestCase(@"Y:\sabnzbd\root", @"completed", @"vv", @"Y:\sabnzbd\root\completed", @"Y:\sabnzbd\root\completed\vv")]
         [TestCase(@"/sabnzbd/root", @"completed/downloads", @"vv", @"/sabnzbd/root/completed/downloads", @"/sabnzbd/root/completed/downloads/vv")]

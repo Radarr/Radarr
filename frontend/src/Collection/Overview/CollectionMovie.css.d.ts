@@ -10,7 +10,8 @@ interface CssExports {
   'externalLinks': string;
   'link': string;
   'monitorToggleButton': string;
-  'overlay': string;
+  'overlayHover': string;
+  'overlayHoverTitle': string;
   'overlayTitle': string;
   'poster': string;
   'posterContainer': string;

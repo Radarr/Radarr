@@ -18,11 +18,6 @@ namespace Radarr.Http.Authentication
             return authenticationBuilder.AddScheme<ApiKeyAuthenticationOptions, ApiKeyAuthenticationHandler>(name, options);
         }
 
-        public static AuthenticationBuilder AddBasic(this AuthenticationBuilder authenticationBuilder, string name)
-        {
-            return authenticationBuilder.AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(name, options => { });
-        }
-
         public static AuthenticationBuilder AddNone(this AuthenticationBuilder authenticationBuilder, string name)
         {
             return authenticationBuilder.AddScheme<AuthenticationSchemeOptions, NoAuthenticationHandler>(name, options => { });
@@ -35,7 +30,7 @@ namespace Radarr.Http.Authentication
 
         public static AuthenticationBuilder AddAppAuthentication(this IServiceCollection services)
         {
-            services.AddOptions<CookieAuthenticationOptions>(AuthenticationType.Forms.ToString())
+            services.AddOptions<CookieAuthenticationOptions>(nameof(AuthenticationType.Forms))
                 .Configure<IConfigFileProvider>((options, configFileProvider) =>
                 {
                     // Replace diacritics and replace non-word characters to ensure cookie name doesn't contain any valid URL characters not allowed in cookie names
@@ -52,10 +47,9 @@ namespace Radarr.Http.Authentication
                 });
 
             return services.AddAuthentication()
-                .AddNone(AuthenticationType.None.ToString())
-                .AddExternal(AuthenticationType.External.ToString())
-                .AddBasic(AuthenticationType.Basic.ToString())
-                .AddCookie(AuthenticationType.Forms.ToString())
+                .AddNone(nameof(AuthenticationType.None))
+                .AddExternal(nameof(AuthenticationType.External))
+                .AddCookie(nameof(AuthenticationType.Forms))
                 .AddApiKey("API", options =>
                 {
                     options.HeaderName = "X-Api-Key";

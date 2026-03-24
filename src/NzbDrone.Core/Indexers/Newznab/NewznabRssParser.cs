@@ -91,6 +91,8 @@ namespace NzbDrone.Core.Indexers.Newznab
         protected override ReleaseInfo ProcessItem(XElement item, ReleaseInfo releaseInfo)
         {
             releaseInfo = base.ProcessItem(item, releaseInfo);
+
+            releaseInfo.TmdbId = GetTmdbId(item);
             releaseInfo.ImdbId = GetImdbId(item);
             releaseInfo.IndexerFlags = GetFlags(item);
 
@@ -171,6 +173,18 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
 
             return url;
+        }
+
+        protected virtual int GetTmdbId(XElement item)
+        {
+            var tmdbIdString = TryGetNewznabAttribute(item, "tmdbid");
+
+            if (!tmdbIdString.IsNullOrWhiteSpace() && int.TryParse(tmdbIdString, out var tmdbId))
+            {
+                return tmdbId;
+            }
+
+            return 0;
         }
 
         protected virtual int GetImdbId(XElement item)

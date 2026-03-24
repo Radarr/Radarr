@@ -53,6 +53,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [TestCase("The Amazing Race (Latin America)", "Amazing Race, The Latin America")]
         [TestCase("The Rat Pack (A&E)", "Rat Pack, The AandE")]
         [TestCase("The Climax: I (Almost) Got Away With It (2016)", "Climax I Almost Got Away With It, The 2016")]
+        [TestCase(null, "")]
         public void should_get_expected_title_back(string title, string expected)
         {
             _movie.Title = title;

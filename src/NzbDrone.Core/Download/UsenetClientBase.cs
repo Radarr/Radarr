@@ -48,6 +48,7 @@ namespace NzbDrone.Core.Download
             {
                 var request = indexer?.GetDownloadRequest(url) ?? new HttpRequest(url);
                 request.RateLimitKey = remoteMovie?.Release?.IndexerId.ToString();
+                request.AllowAutoRedirect = true;
 
                 var response = await RetryStrategy
                     .ExecuteAsync(static async (state, _) => await state._httpClient.GetAsync(state.request), (_httpClient, request))
@@ -59,7 +60,7 @@ namespace NzbDrone.Core.Download
             }
             catch (HttpException ex)
             {
-                if (ex.Response.StatusCode == HttpStatusCode.NotFound)
+                if (ex.Response.StatusCode is HttpStatusCode.NotFound or HttpStatusCode.Gone)
                 {
                     _logger.Error(ex, "Downloading nzb file for movie '{0}' failed since it no longer exists ({1})", remoteMovie.Release.Title, url);
                     throw new ReleaseUnavailableException(remoteMovie.Release, "Downloading nzb failed", ex);

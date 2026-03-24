@@ -21,6 +21,7 @@ import { scrollDirections } from 'Helpers/Props';
 import Movie from 'Movie/Movie';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import dimensions from 'Styles/Variables/dimensions';
+import { InputChanged } from 'typings/inputs';
 import sortByProp from 'Utilities/Array/sortByProp';
 import translate from 'Utilities/String/translate';
 import SelectMovieModalTableHeader from './SelectMovieModalTableHeader';
@@ -65,7 +66,7 @@ interface RowItemData {
 }
 
 function Row({ index, style, data }: ListChildComponentProps<RowItemData>) {
-  const { items, columns, onMovieSelect } = data;
+  const { items, onMovieSelect } = data;
   const movie = index >= items.length ? null : items[index];
 
   const handlePress = useCallback(() => {
@@ -88,13 +89,11 @@ function Row({ index, style, data }: ListChildComponentProps<RowItemData>) {
       onPress={handlePress}
     >
       <SelectMovieRow
-        id={movie.id}
+        key={movie.id}
         title={movie.title}
         tmdbId={movie.tmdbId}
         imdbId={movie.imdbId}
         year={movie.year}
-        columns={columns}
-        onMovieSelect={onMovieSelect}
       />
     </VirtualTableRowButton>
   );
@@ -148,7 +147,7 @@ function SelectMovieModalContent(props: SelectMovieModalContentProps) {
   }, [listRef, scrollerRef]);
 
   const onFilterChange = useCallback(
-    ({ value }: { value: string }) => {
+    ({ value }: InputChanged<string>) => {
       setFilter(value);
     },
     [setFilter]
@@ -181,7 +180,9 @@ function SelectMovieModalContent(props: SelectMovieModalContentProps) {
 
   return (
     <ModalContent onModalClose={onModalClose}>
-      <ModalHeader>{modalTitle} - Select Movie</ModalHeader>
+      <ModalHeader>
+        {translate('SelectMovieModalTitle', { modalTitle })}
+      </ModalHeader>
 
       <ModalBody
         className={styles.modalBody}
@@ -189,7 +190,7 @@ function SelectMovieModalContent(props: SelectMovieModalContentProps) {
       >
         <TextInput
           className={styles.filterInput}
-          placeholder="Filter movies"
+          placeholder={translate('FilterMoviePlaceholder')}
           name="filter"
           value={filter}
           autoFocus={true}
@@ -225,7 +226,7 @@ function SelectMovieModalContent(props: SelectMovieModalContentProps) {
       </ModalBody>
 
       <ModalFooter>
-        <Button onPress={onModalClose}>Cancel</Button>
+        <Button onPress={onModalClose}>{translate('Cancel')}</Button>
       </ModalFooter>
     </ModalContent>
   );

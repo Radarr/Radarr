@@ -1,14 +1,14 @@
-using System.Runtime.Serialization;
+using NzbDrone.Core.Annotations;
 
 namespace NzbDrone.Core.ImportLists.Trakt.User
 {
     public enum TraktUserListType
     {
-        [EnumMember(Value = "User Watch List")]
+        [FieldOption(Label = "ImportListsTraktSettingsUserListTypeWatch")]
         UserWatchList = 0,
-        [EnumMember(Value = "User Watched List")]
+        [FieldOption(Label = "ImportListsTraktSettingsUserListTypeWatched")]
         UserWatchedList = 1,
-        [EnumMember(Value = "User Collection List")]
+        [FieldOption(Label = "ImportListsTraktSettingsUserListTypeCollection")]
         UserCollectionList = 2
     }
 }

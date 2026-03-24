@@ -8,22 +8,27 @@ using System.Xml.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Metadata.Files;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
 {
     public class MediaBrowserMetadata : MetadataBase<MediaBrowserMetadataSettings>
     {
+        private readonly ILocalizationService _localizationService;
         private readonly Logger _logger;
 
-        public MediaBrowserMetadata(
-                            Logger logger)
+        public MediaBrowserMetadata(ILocalizationService localizationService, Logger logger)
         {
+            _localizationService = localizationService;
             _logger = logger;
         }
 
         public override string Name => "Emby (Legacy)";
+
+        public override ProviderMessage Message => new (_localizationService.GetLocalizedString("MetadataMediaBrowserDeprecated", new Dictionary<string, object> { { "version", "v6" } }), ProviderMessageType.Warning);
 
         public override MetadataFile FindMetadataFile(Movie movie, string path)
         {

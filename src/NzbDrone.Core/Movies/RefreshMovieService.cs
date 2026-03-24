@@ -4,7 +4,6 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
-using NzbDrone.Core.AutoTagging;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles;
@@ -30,13 +29,12 @@ namespace NzbDrone.Core.Movies
         private readonly IMovieMetadataService _movieMetadataService;
         private readonly IRootFolderService _folderService;
         private readonly IMovieTranslationService _movieTranslationService;
-        private readonly IAlternativeTitleService _titleService;
+        private readonly IAlternativeTitleService _alternativeTitleService;
         private readonly ICreditService _creditService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IDiskScanService _diskScanService;
         private readonly ICheckIfMovieShouldBeRefreshed _checkIfMovieShouldBeRefreshed;
         private readonly IConfigService _configService;
-        private readonly IAutoTaggingService _autoTaggingService;
         private readonly Logger _logger;
 
         public RefreshMovieService(IProvideMovieInfo movieInfo,
@@ -45,13 +43,12 @@ namespace NzbDrone.Core.Movies
                                     IMovieMetadataService movieMetadataService,
                                     IRootFolderService folderService,
                                     IMovieTranslationService movieTranslationService,
-                                    IAlternativeTitleService titleService,
+                                    IAlternativeTitleService alternativeTitleService,
                                     ICreditService creditService,
                                     IEventAggregator eventAggregator,
                                     IDiskScanService diskScanService,
                                     ICheckIfMovieShouldBeRefreshed checkIfMovieShouldBeRefreshed,
                                     IConfigService configService,
-                                    IAutoTaggingService autoTaggingService,
                                     Logger logger)
         {
             _movieInfo = movieInfo;
@@ -60,13 +57,12 @@ namespace NzbDrone.Core.Movies
             _movieMetadataService = movieMetadataService;
             _folderService = folderService;
             _movieTranslationService = movieTranslationService;
-            _titleService = titleService;
+            _alternativeTitleService = alternativeTitleService;
             _creditService = creditService;
             _eventAggregator = eventAggregator;
             _diskScanService = diskScanService;
             _checkIfMovieShouldBeRefreshed = checkIfMovieShouldBeRefreshed;
             _configService = configService;
-            _autoTaggingService = autoTaggingService;
             _logger = logger;
         }
 
@@ -117,8 +113,8 @@ namespace NzbDrone.Core.Movies
             movieMetadata.LastInfoSync = DateTime.UtcNow;
             movieMetadata.Runtime = movieInfo.Runtime;
             movieMetadata.Ratings = movieInfo.Ratings;
-
-            // movie.Genres = movieInfo.Genres;
+            movieMetadata.Genres = movieInfo.Genres;
+            movieMetadata.Keywords = movieInfo.Keywords;
             movieMetadata.Certification = movieInfo.Certification;
             movieMetadata.InCinemas = movieInfo.InCinemas;
             movieMetadata.Website = movieInfo.Website;
@@ -162,11 +158,12 @@ namespace NzbDrone.Core.Movies
                 movieMetadata.CollectionTitle = null;
             }
 
-            movieMetadata.AlternativeTitles = _titleService.UpdateTitles(movieInfo.AlternativeTitles, movieMetadata);
+            movieMetadata.AlternativeTitles = _alternativeTitleService.UpdateTitles(movieInfo.AlternativeTitles, movieMetadata);
+
             _movieTranslationService.UpdateTranslations(movieInfo.Translations, movieMetadata);
+            _creditService.UpdateCredits(credits, movieMetadata);
 
             _movieMetadataService.Upsert(movieMetadata);
-            _creditService.UpdateCredits(credits, movieMetadata);
 
             movie.MovieMetadata = movieMetadata;
 
@@ -209,8 +206,14 @@ namespace NzbDrone.Core.Movies
             }
         }
 
-        private void UpdateTags(Movie movie)
+        private void UpdateTags(Movie movie, bool isNew)
         {
+            if (isNew)
+            {
+                _logger.Trace("Skipping tag update for {0}. Reason: New movie", movie);
+                return;
+            }
+
             var tagsUpdated = _movieService.UpdateTags(movie);
 
             if (tagsUpdated)
@@ -234,7 +237,7 @@ namespace NzbDrone.Core.Movies
                     try
                     {
                         movie = RefreshMovieInfo(movieId);
-                        UpdateTags(movie);
+                        UpdateTags(movie, isNew);
                         RescanMovie(movie, isNew, trigger);
                     }
                     catch (MovieNotFoundException)
@@ -244,7 +247,7 @@ namespace NzbDrone.Core.Movies
                     catch (Exception e)
                     {
                         _logger.Error(e, "Couldn't refresh info for {0}", movie);
-                        UpdateTags(movie);
+                        UpdateTags(movie, isNew);
                         RescanMovie(movie, isNew, trigger);
                         throw;
                     }
@@ -253,19 +256,19 @@ namespace NzbDrone.Core.Movies
             else
             {
                 // TODO refresh all moviemetadata here, even if not used by a Movie
-                var allMovie = _movieService.GetAllMovies().OrderBy(c => c.MovieMetadata.Value.SortTitle).ToList();
+                var allMovies = _movieService.GetAllMovies();
 
-                var updatedTMDBMovies = new HashSet<int>();
+                var updatedTmdbMovies = new HashSet<int>();
 
                 if (message.LastStartTime.HasValue && message.LastStartTime.Value.AddDays(14) > DateTime.UtcNow)
                 {
-                    updatedTMDBMovies = _movieInfo.GetChangedMovies(message.LastStartTime.Value);
+                    updatedTmdbMovies = _movieInfo.GetChangedMovies(message.LastStartTime.Value);
                 }
 
-                foreach (var movie in allMovie)
+                foreach (var movie in allMovies)
                 {
                     var movieLocal = movie;
-                    if ((updatedTMDBMovies.Count == 0 && _checkIfMovieShouldBeRefreshed.ShouldRefresh(movie.MovieMetadata)) || updatedTMDBMovies.Contains(movie.TmdbId) || message.Trigger == CommandTrigger.Manual)
+                    if ((updatedTmdbMovies.Count == 0 && _checkIfMovieShouldBeRefreshed.ShouldRefresh(movie.MovieMetadata)) || updatedTmdbMovies.Contains(movie.TmdbId) || message.Trigger == CommandTrigger.Manual)
                     {
                         try
                         {
@@ -281,13 +284,13 @@ namespace NzbDrone.Core.Movies
                             _logger.Error(e, "Couldn't refresh info for {0}", movieLocal);
                         }
 
-                        UpdateTags(movie);
+                        UpdateTags(movie, false);
                         RescanMovie(movieLocal, false, trigger);
                     }
                     else
                     {
                         _logger.Debug("Skipping refresh of movie: {0}", movieLocal.Title);
-                        UpdateTags(movie);
+                        UpdateTags(movie, false);
                         RescanMovie(movieLocal, false, trigger);
                     }
                 }

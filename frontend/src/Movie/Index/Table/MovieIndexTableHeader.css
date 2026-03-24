@@ -36,7 +36,8 @@
 .physicalRelease,
 .digitalRelease,
 .releaseDate,
-.genres {
+.genres,
+.keywords {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 0 0 180px;

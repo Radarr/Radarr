@@ -3,14 +3,15 @@ import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
 import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import EditCollectionModalConnector from 'Collection/Edit/EditCollectionModalConnector';
+import EditMovieCollectionModal from 'Collection/Edit/EditMovieCollectionModal';
 import CheckInput from 'Components/Form/CheckInput';
 import Icon from 'Components/Icon';
 import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
 import { icons, sizes } from 'Helpers/Props';
-import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
+import MovieGenres from 'Movie/MovieGenres';
+import QualityProfileName from 'Settings/Profiles/Quality/QualityProfileName';
 import dimensions from 'Styles/Variables/dimensions';
 import fonts from 'Styles/Variables/fonts';
 import translate from 'Utilities/String/translate';
@@ -195,7 +196,7 @@ class CollectionOverview extends Component {
                       size={13}
                     />
                     <span className={styles.status}>
-                      {`${missingMovies} missing movie(s)`}
+                      {translate('CountMissingMoviesFromLibrary', { count: missingMovies })}
                     </span>
                   </Label>
 
@@ -211,7 +212,7 @@ class CollectionOverview extends Component {
                         />
                         <span className={styles.qualityProfileName}>
                           {
-                            <QualityProfileNameConnector
+                            <QualityProfileName
                               qualityProfileId={qualityProfileId}
                             />
                           }
@@ -242,12 +243,10 @@ class CollectionOverview extends Component {
                         size={sizes.MEDIUM}
                       >
                         <Icon
-                          name={icons.PROFILE}
+                          name={icons.GENRE}
                           size={13}
                         />
-                        <span className={styles.genres}>
-                          {genres.join(', ')}
-                        </span>
+                        <MovieGenres className={styles.genres} genres={genres} />
                       </Label>
                   }
 
@@ -312,7 +311,7 @@ class CollectionOverview extends Component {
           </div>
         </div>
 
-        <EditCollectionModalConnector
+        <EditMovieCollectionModal
           isOpen={isEditCollectionModalOpen}
           collectionId={id}
           onModalClose={this.onEditCollectionModalClose}

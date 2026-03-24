@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using NLog;
 using NzbDrone.Common.Cloud;
@@ -232,7 +233,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.Title = resource.Title;
             movie.OriginalTitle = resource.OriginalTitle;
             movie.CleanTitle = resource.Title.CleanMovieTitle();
-            movie.SortTitle = Parser.Parser.NormalizeTitle(resource.Title);
+            movie.SortTitle = MovieTitleNormalizer.Normalize(resource.Title, resource.TmdbId);
             movie.CleanOriginalTitle = resource.OriginalTitle.CleanMovieTitle();
             movie.Overview = resource.Overview;
 
@@ -271,10 +272,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.Ratings = MapRatings(resource.MovieRatings) ?? new Ratings();
 
             movie.TmdbId = resource.TmdbId;
-            movie.Genres = resource.Genres;
+            movie.Genres = resource.Genres ?? new List<string>();
+            movie.Keywords = resource.Keywords ?? new List<string>();
             movie.Images = resource.Images.Select(MapImage).ToList();
 
-            // movie.Genres = resource.Genres;
             movie.Recommendations = resource.Recommendations?.Select(r => r.TmdbId).ToList() ?? new List<int>();
 
             // Workaround due to metadata change until cache cleans up
@@ -405,6 +406,22 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             try
             {
+                var match = new Regex(@"\bimdb\.com/title/(tt\d{7,})\b", RegexOptions.IgnoreCase).Match(title);
+
+                if (match.Success)
+                {
+                    title = "imdb:" + match.Groups[1].Value;
+                }
+                else
+                {
+                    match = new Regex(@"\bthemoviedb\.org/movie/(\d+)\b", RegexOptions.IgnoreCase).Match(title);
+
+                    if (match.Success)
+                    {
+                        title = "tmdb:" + match.Groups[1].Value;
+                    }
+                }
+
                 var lowerTitle = title.ToLower();
 
                 lowerTitle = lowerTitle.Replace(".", "");
@@ -517,17 +534,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             catch (HttpException ex)
             {
                 _logger.Warn(ex);
-                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with RadarrAPI.", ex, title);
+                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with RadarrAPI. {1}", ex, title, ex.Message);
             }
             catch (WebException ex)
             {
                 _logger.Warn(ex);
-                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with RadarrAPI.", ex, title, ex.Message);
+                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with RadarrAPI. {1}", ex, title, ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.Warn(ex);
-                throw new SkyHookException("Search for '{0}' failed. Invalid response received from RadarrAPI.", ex, title);
+                throw new SkyHookException("Search for '{0}' failed. Invalid response received from RadarrAPI. {1}", ex, title, ex.Message);
             }
         }
 
@@ -601,7 +618,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var newAlternativeTitle = new AlternativeTitle
             {
                 Title = arg.Title,
-                SourceType = SourceType.TMDB,
+                SourceType = SourceType.Tmdb,
                 CleanTitle = arg.Title.CleanMovieTitle()
             };
 

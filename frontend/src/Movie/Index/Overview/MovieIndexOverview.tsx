@@ -6,12 +6,12 @@ import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
-import TagListConnector from 'Components/TagListConnector';
+import MovieTagList from 'Components/MovieTagList';
 import Popover from 'Components/Tooltip/Popover';
 import { icons } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
-import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
+import EditMovieModal from 'Movie/Edit/EditMovieModal';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MovieIndexPosterSelect from 'Movie/Index/Select/MovieIndexPosterSelect';
 import { Statistics } from 'Movie/Movie';
@@ -67,6 +67,7 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
     monitored,
     status,
     path,
+    titleSlug,
     overview,
     statistics = {} as Statistics,
     images,
@@ -141,7 +142,9 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
       <div className={styles.content}>
         <div className={styles.poster}>
           <div className={styles.posterContainer}>
-            {isSelectMode ? <MovieIndexPosterSelect movieId={movieId} /> : null}
+            {isSelectMode ? (
+              <MovieIndexPosterSelect movieId={movieId} titleSlug={titleSlug} />
+            ) : null}
 
             {status === 'deleted' ? (
               <div className={styles.deleted} title={translate('Deleted')} />
@@ -231,7 +234,7 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
 
               {overviewOptions.showTags ? (
                 <div className={styles.tags}>
-                  <TagListConnector tags={tags} />
+                  <MovieTagList tags={tags} />
                 </div>
               ) : null}
             </div>
@@ -250,7 +253,7 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
         </div>
       </div>
 
-      <EditMovieModalConnector
+      <EditMovieModal
         isOpen={isEditMovieModalOpen}
         movieId={movieId}
         onModalClose={onEditMovieModalClose}

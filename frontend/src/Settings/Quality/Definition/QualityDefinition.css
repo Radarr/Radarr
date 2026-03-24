@@ -24,19 +24,19 @@
   height: 20px;
 }
 
-.bar {
+.track {
   top: 9px;
   margin: 0 5px;
   height: 3px;
   background-color: var(--sliderAccentColor);
   box-shadow: 0 0 0 #000;
 
-  &:nth-child(3n+1) {
+  &:nth-child(3n + 1) {
     background-color: #ddd;
   }
 }
 
-.handle {
+.thumb {
   top: 1px;
   z-index: 0 !important;
   width: 18px;

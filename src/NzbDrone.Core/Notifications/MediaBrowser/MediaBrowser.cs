@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using FluentValidation.Results;
+using NLog;
+using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
@@ -9,10 +12,18 @@ namespace NzbDrone.Core.Notifications.Emby
     public class MediaBrowser : NotificationBase<MediaBrowserSettings>
     {
         private readonly IMediaBrowserService _mediaBrowserService;
+        private readonly MediaServerUpdateQueue<MediaBrowser, string> _updateQueue;
+        private readonly Logger _logger;
 
-        public MediaBrowser(IMediaBrowserService mediaBrowserService)
+        private static string Created = "Created";
+        private static string Deleted = "Deleted";
+        private static string Modified = "Modified";
+
+        public MediaBrowser(IMediaBrowserService mediaBrowserService, ICacheManager cacheManager, Logger logger)
         {
             _mediaBrowserService = mediaBrowserService;
+            _updateQueue = new MediaServerUpdateQueue<MediaBrowser, string>(cacheManager);
+            _logger = logger;
         }
 
         public override string Link => "https://emby.media/";
@@ -33,18 +44,12 @@ namespace NzbDrone.Core.Notifications.Emby
                 _mediaBrowserService.Notify(Settings, MOVIE_DOWNLOADED_TITLE_BRANDED, message.Message);
             }
 
-            if (Settings.UpdateLibrary)
-            {
-                _mediaBrowserService.Update(Settings, message.Movie, "Created");
-            }
+            UpdateIfEnabled(message.Movie, Created);
         }
 
         public override void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles)
         {
-            if (Settings.UpdateLibrary)
-            {
-                _mediaBrowserService.Update(Settings, movie, "Modified");
-            }
+            UpdateIfEnabled(movie, Modified);
         }
 
         public override void OnHealthIssue(HealthCheck.HealthCheck message)
@@ -80,10 +85,7 @@ namespace NzbDrone.Core.Notifications.Emby
                     _mediaBrowserService.Notify(Settings, MOVIE_DELETED_TITLE_BRANDED, deleteMessage.Message);
                 }
 
-                if (Settings.UpdateLibrary)
-                {
-                    _mediaBrowserService.Update(Settings, deleteMessage.Movie, "Deleted");
-                }
+                UpdateIfEnabled(deleteMessage.Movie, Deleted);
             }
         }
 
@@ -94,9 +96,34 @@ namespace NzbDrone.Core.Notifications.Emby
                 _mediaBrowserService.Notify(Settings, MOVIE_FILE_DELETED_TITLE_BRANDED, deleteMessage.Message);
             }
 
+            UpdateIfEnabled(deleteMessage.Movie, Deleted);
+        }
+
+        public override void ProcessQueue()
+        {
+            _updateQueue.ProcessQueue(Settings.Host, (items) =>
+            {
+                if (Settings.UpdateLibrary)
+                {
+                    _logger.Debug("Performing library update for {0} movies", items.Count);
+
+                    items.ForEach(item =>
+                    {
+                        // If there is only one update type for the movie use that, otherwise send null and let Emby decide
+                        var updateType = item.Info.Count == 1 ? item.Info.First() : null;
+
+                        _mediaBrowserService.Update(Settings, item.Movie, updateType);
+                    });
+                }
+            });
+        }
+
+        private void UpdateIfEnabled(Movie movie, string updateType)
+        {
             if (Settings.UpdateLibrary)
             {
-                _mediaBrowserService.Update(Settings, deleteMessage.Movie, "Deleted");
+                _logger.Debug("Scheduling library update for movie {0} {1}", movie.Id, movie.Title);
+                _updateQueue.Add(Settings.Host, movie, updateType);
             }
         }
 

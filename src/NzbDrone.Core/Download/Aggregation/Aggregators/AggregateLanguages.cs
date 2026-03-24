@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
             var languages = parsedMovieInfo.Languages;
             var movie = remoteMovie.Movie;
             var releaseTokens = parsedMovieInfo.SimpleReleaseTitle ?? parsedMovieInfo.ReleaseTitle;
-            var normalizedReleaseTokens = Parser.Parser.NormalizeEpisodeTitle(releaseTokens);
+            var normalizedReleaseTokens = Parser.Parser.NormalizeMovieTitle(releaseTokens);
             var languagesToRemove = new List<Language>();
 
             if (movie == null)
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
 
                 if (!movieTitleLanguage.Contains(Language.Unknown))
                 {
-                    var normalizedEpisodeTitle = Parser.Parser.NormalizeEpisodeTitle(movie.Title);
+                    var normalizedEpisodeTitle = Parser.Parser.NormalizeMovieTitle(movie.Title);
                     var movieTitleIndex = normalizedReleaseTokens.IndexOf(normalizedEpisodeTitle, StringComparison.CurrentCultureIgnoreCase);
 
                     if (movieTitleIndex >= 0)
@@ -71,15 +71,16 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
                 languages = languages.Except(languagesToRemove).ToList();
             }
 
-            if ((languages.Count == 0 || (languages.Count == 1 && languages.First() == Language.Unknown)) && releaseInfo?.Title?.IsNotNullOrWhiteSpace() == true)
+            if (releaseInfo?.Title?.IsNotNullOrWhiteSpace() == true)
             {
                 IndexerDefinition indexer = null;
 
                 if (releaseInfo is { IndexerId: > 0 })
                 {
-                    indexer = _indexerFactory.Get(releaseInfo.IndexerId);
+                    indexer = _indexerFactory.Find(releaseInfo.IndexerId);
                 }
-                else if (releaseInfo.Indexer?.IsNotNullOrWhiteSpace() == true)
+
+                if (indexer == null && releaseInfo.Indexer?.IsNotNullOrWhiteSpace() == true)
                 {
                     indexer = _indexerFactory.FindByName(releaseInfo.Indexer);
                 }
@@ -87,7 +88,14 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
                 if (indexer?.Settings is IIndexerSettings settings && settings.MultiLanguages.Any() && Parser.Parser.HasMultipleLanguages(releaseInfo.Title))
                 {
                     // Use indexer setting for Multi-languages
-                    languages = settings.MultiLanguages.Select(i => (Language)i).ToList();
+                    if (languages.Count == 0 || (languages.Count == 1 && languages.First() == Language.Unknown))
+                    {
+                        languages = settings.MultiLanguages.Select(i => (Language)i).ToList();
+                    }
+                    else
+                    {
+                        languages.AddRange(settings.MultiLanguages.Select(i => (Language)i).Except(languages).ToList());
+                    }
                 }
             }
 

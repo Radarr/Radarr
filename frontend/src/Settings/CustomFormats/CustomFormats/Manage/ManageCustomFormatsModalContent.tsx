@@ -10,18 +10,18 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
+import Column from 'Components/Table/Column';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import useSelectState from 'Helpers/Hooks/useSelectState';
 import { kinds } from 'Helpers/Props';
-import SortDirection from 'Helpers/Props/SortDirection';
 import {
   bulkDeleteCustomFormats,
   bulkEditCustomFormats,
   setManageCustomFormatsSort,
 } from 'Store/Actions/settingsActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
-import { SelectStateInputProps } from 'typings/props';
+import { CheckInputChanged } from 'typings/inputs';
 import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import translate from 'Utilities/String/translate';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
@@ -34,7 +34,7 @@ type OnSelectedChangeCallback = React.ComponentProps<
   typeof ManageCustomFormatsModalRow
 >['onSelectedChange'];
 
-const COLUMNS = [
+const COLUMNS: Column[] = [
   {
     name: 'name',
     label: () => translate('Name'),
@@ -47,12 +47,15 @@ const COLUMNS = [
     isSortable: true,
     isVisible: true,
   },
+  {
+    name: 'actions',
+    label: '',
+    isVisible: true,
+  },
 ];
 
 interface ManageCustomFormatsModalContentProps {
   onModalClose(): void;
-  sortKey?: string;
-  sortDirection?: SortDirection;
 }
 
 function ManageCustomFormatsModalContent(
@@ -130,7 +133,7 @@ function ManageCustomFormatsModalContent(
   );
 
   const onSelectAllChange = useCallback(
-    ({ value }: SelectStateInputProps) => {
+    ({ value }: CheckInputChanged) => {
       setSelectState({ type: value ? 'selectAll' : 'unselectAll', items });
     },
     [items, setSelectState]

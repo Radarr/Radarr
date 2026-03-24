@@ -57,15 +57,40 @@ namespace NzbDrone.Core.Movies.Translations
             // Now find translations to delete, update and insert
             var existingTranslations = _translationRepo.FindByMovieMetadataId(movieMetadataId);
 
-            translations.ForEach(c => c.Id = existingTranslations.FirstOrDefault(t => t.Language == c.Language)?.Id ?? 0);
+            var updateList = new List<MovieTranslation>();
+            var addList = new List<MovieTranslation>();
+            var upToDateCount = 0;
 
-            var insert = translations.Where(t => t.Id == 0).ToList();
-            var update = translations.Where(t => t.Id > 0).ToList();
-            var delete = existingTranslations.Where(t => !translations.Any(c => c.Language == t.Language)).ToList();
+            foreach (var translation in translations)
+            {
+                var existingTranslation = existingTranslations.FirstOrDefault(x => x.Language == translation.Language);
 
-            _translationRepo.DeleteMany(delete.ToList());
-            _translationRepo.UpdateMany(update.ToList());
-            _translationRepo.InsertMany(insert.ToList());
+                if (existingTranslation != null)
+                {
+                    existingTranslations.Remove(existingTranslation);
+
+                    translation.UseDbFieldsFrom(existingTranslation);
+
+                    if (!translation.Equals(existingTranslation))
+                    {
+                        updateList.Add(translation);
+                    }
+                    else
+                    {
+                        upToDateCount++;
+                    }
+                }
+                else
+                {
+                    addList.Add(translation);
+                }
+            }
+
+            _translationRepo.DeleteMany(existingTranslations);
+            _translationRepo.UpdateMany(updateList);
+            _translationRepo.InsertMany(addList);
+
+            _logger.Debug("[{0}] {1} translations up to date; Updating {2}, Adding {3}, Deleting {4} entries.", movieMetadata.Title, upToDateCount, updateList.Count, addList.Count, existingTranslations.Count);
 
             return translations;
         }

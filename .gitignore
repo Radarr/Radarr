@@ -165,15 +165,12 @@ Thumbs.db
 /tools/Addins/*
 packages.config.md5sum
 
-
-# Common IntelliJ Platform excludes
-
-# Ignore Rider projects completely for now
-.idea/
-
 # ignore node_modules symlink
 node_modules
 node_modules.nosync
 
 # API doc generation
 .config/
+
+# Ignore Jetbrains IntelliJ Workspace Directories
+.idea/

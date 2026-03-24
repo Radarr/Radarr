@@ -1,5 +1,8 @@
 import React, { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
+import AppState from 'App/State/AppState';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
@@ -8,21 +11,18 @@ import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRow from 'Components/Table/TableRow';
 import Popover from 'Components/Tooltip/Popover';
 import Tooltip from 'Components/Tooltip/Tooltip';
-import type DownloadProtocol from 'DownloadClient/DownloadProtocol';
 import { icons, kinds, tooltipPositions } from 'Helpers/Props';
-import Language from 'Language/Language';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguages from 'Movie/MovieLanguages';
 import MovieQuality from 'Movie/MovieQuality';
-import { QualityModel } from 'Quality/Quality';
-import CustomFormat from 'typings/CustomFormat';
-import MovieBlocklist from 'typings/MovieBlocklist';
-import MovieHistory from 'typings/MovieHistory';
+import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
+import Release from 'typings/Release';
 import formatDateTime from 'Utilities/Date/formatDateTime';
 import formatAge from 'Utilities/Number/formatAge';
 import formatBytes from 'Utilities/Number/formatBytes';
 import formatCustomFormatScore from 'Utilities/Number/formatCustomFormatScore';
 import translate from 'Utilities/String/translate';
+import InteractiveSearchPayload from './InteractiveSearchPayload';
 import OverrideMatchModal from './OverrideMatch/OverrideMatchModal';
 import Peers from './Peers';
 import styles from './InteractiveSearchRow.css';
@@ -71,37 +71,42 @@ function getDownloadTooltip(
   return translate('AddToDownloadQueue');
 }
 
-interface InteractiveSearchRowProps {
-  guid: string;
-  protocol: DownloadProtocol;
-  age: number;
-  ageHours: number;
-  ageMinutes: number;
-  publishDate: string;
-  title: string;
-  infoUrl: string;
-  indexerId: number;
-  indexer: string;
-  size: number;
-  seeders?: number;
-  leechers?: number;
-  quality: QualityModel;
-  languages: Language[];
-  customFormats: CustomFormat[];
-  customFormatScore: number;
-  mappedMovieId?: number;
-  indexerFlags: string[];
-  rejections: string[];
-  downloadAllowed: boolean;
-  isGrabbing: boolean;
-  isGrabbed: boolean;
-  grabError?: string;
-  historyFailedData?: MovieHistory;
-  historyGrabbedData?: MovieHistory;
-  blocklistData?: MovieBlocklist;
-  longDateFormat: string;
-  timeFormat: string;
-  searchPayload: object;
+function releaseHistorySelector({ guid }: Release) {
+  return createSelector(
+    (state: AppState) => state.movieHistory.items,
+    (state: AppState) => state.movieBlocklist.items,
+    (movieHistory, movieBlocklist) => {
+      let historyFailedData = null;
+      let blocklistedData = null;
+
+      const historyGrabbedData = movieHistory.find(
+        ({ eventType, data }) =>
+          eventType === 'grabbed' && 'guid' in data && data.guid === guid
+      );
+
+      if (historyGrabbedData) {
+        historyFailedData = movieHistory.find(
+          ({ eventType, sourceTitle }) =>
+            eventType === 'downloadFailed' &&
+            sourceTitle === historyGrabbedData.sourceTitle
+        );
+
+        blocklistedData = movieBlocklist.find(
+          (item) => item.sourceTitle === historyGrabbedData.sourceTitle
+        );
+      }
+
+      return {
+        historyGrabbedData,
+        historyFailedData,
+        blocklistedData,
+      };
+    }
+  );
+}
+
+interface InteractiveSearchRowProps extends Release {
+  searchPayload: InteractiveSearchPayload;
   onGrabPress(...args: unknown[]): void;
 }
 
@@ -130,15 +135,17 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
     downloadAllowed,
     isGrabbing = false,
     isGrabbed = false,
-    longDateFormat,
-    timeFormat,
     grabError,
-    historyGrabbedData = {} as MovieHistory,
-    historyFailedData = {} as MovieHistory,
-    blocklistData = {} as MovieBlocklist,
     searchPayload,
     onGrabPress,
   } = props;
+
+  const { longDateFormat, timeFormat } = useSelector(
+    createUISettingsSelector()
+  );
+
+  const { historyGrabbedData, historyFailedData, blocklistedData } =
+    useSelector(releaseHistorySelector(props));
 
   const [isConfirmGrabModalOpen, setIsConfirmGrabModalOpen] = useState(false);
   const [isOverrideModalOpen, setIsOverrideModalOpen] = useState(false);
@@ -211,44 +218,52 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
 
       <TableRowCell className={styles.history}>
         {historyGrabbedData?.date && !historyFailedData?.date ? (
-          <Icon
-            name={icons.DOWNLOADING}
-            kind={kinds.DEFAULT}
-            title={`${translate('Grabbed')}: ${formatDateTime(
-              historyGrabbedData.date,
-              longDateFormat,
-              timeFormat,
-              { includeSeconds: true }
-            )}`}
+          <Tooltip
+            anchor={<Icon name={icons.DOWNLOADING} kind={kinds.DEFAULT} />}
+            tooltip={translate('GrabbedAt', {
+              date: formatDateTime(
+                historyGrabbedData.date,
+                longDateFormat,
+                timeFormat,
+                { includeSeconds: true }
+              ),
+            })}
+            kind={kinds.INVERSE}
+            position={tooltipPositions.LEFT}
           />
         ) : null}
 
         {historyFailedData?.date ? (
-          <Icon
-            name={icons.DOWNLOADING}
-            kind={kinds.DANGER}
-            title={`${translate('Failed')}: ${formatDateTime(
-              historyFailedData.date,
-              longDateFormat,
-              timeFormat,
-              { includeSeconds: true }
-            )}`}
+          <Tooltip
+            anchor={<Icon name={icons.DOWNLOADING} kind={kinds.DANGER} />}
+            tooltip={translate('FailedAt', {
+              date: formatDateTime(
+                historyFailedData.date,
+                longDateFormat,
+                timeFormat,
+                { includeSeconds: true }
+              ),
+            })}
+            kind={kinds.INVERSE}
+            position={tooltipPositions.LEFT}
           />
         ) : null}
 
-        {blocklistData?.date ? (
+        {blocklistedData?.date ? (
           <Icon
             className={
               historyGrabbedData || historyFailedData ? styles.blocklist : ''
             }
             name={icons.BLOCKLIST}
             kind={kinds.DANGER}
-            title={`${translate('Blocklisted')}: ${formatDateTime(
-              blocklistData.date,
-              longDateFormat,
-              timeFormat,
-              { includeSeconds: true }
-            )}`}
+            title={translate('BlocklistedAt', {
+              date: formatDateTime(
+                blocklistedData.date,
+                longDateFormat,
+                timeFormat,
+                { includeSeconds: true }
+              ),
+            })}
           />
         ) : null}
       </TableRowCell>

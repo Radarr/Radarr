@@ -15,6 +15,7 @@ namespace NzbDrone.Core.Movies
             Translations = new List<MovieTranslation>();
             Images = new List<MediaCover.MediaCover>();
             Genres = new List<string>();
+            Keywords = new List<string>();
             OriginalLanguage = Language.English;
             Recommendations = new List<int>();
             Ratings = new Ratings();
@@ -24,6 +25,7 @@ namespace NzbDrone.Core.Movies
 
         public List<MediaCover.MediaCover> Images { get; set; }
         public List<string> Genres { get; set; }
+        public List<string> Keywords { get; set; }
         public DateTime? InCinemas { get; set; }
         public DateTime? PhysicalRelease { get; set; }
         public DateTime? DigitalRelease { get; set; }

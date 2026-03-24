@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Extras.Metadata;
+using NzbDrone.SignalR;
 using Radarr.Http;
 
 namespace Radarr.Api.V3.Metadata
@@ -11,8 +12,8 @@ namespace Radarr.Api.V3.Metadata
         public static readonly MetadataResourceMapper ResourceMapper = new ();
         public static readonly MetadataBulkResourceMapper BulkResourceMapper = new ();
 
-        public MetadataController(IMetadataFactory metadataFactory)
-            : base(metadataFactory, "metadata", ResourceMapper, BulkResourceMapper)
+        public MetadataController(IBroadcastSignalRMessage signalRBroadcaster, IMetadataFactory metadataFactory)
+            : base(signalRBroadcaster, metadataFactory, "metadata", ResourceMapper, BulkResourceMapper)
         {
         }
 

@@ -14,7 +14,6 @@ module.exports = (env) => {
   const srcFolder = path.join(frontendFolder, 'src');
   const isProduction = !!env.production;
   const isProfiling = isProduction && !!env.profile;
-  const inlineWebWorkers = 'no-fallback';
 
   const distFolder = path.resolve(frontendFolder, '..', '_output', uiFolder);
 
@@ -26,6 +25,7 @@ module.exports = (env) => {
   const config = {
     mode: isProduction ? 'production' : 'development',
     devtool: isProduction ? 'source-map' : 'eval-source-map',
+    target: 'web',
 
     stats: {
       children: false
@@ -133,6 +133,12 @@ module.exports = (env) => {
               {
                 source: 'frontend/src/Content/robots.txt',
                 destination: path.join(distFolder, 'Content/robots.txt')
+              },
+
+              // manifest.json and browserconfig.xml
+              {
+                source: 'frontend/src/Content/*.(json|xml)',
+                destination: path.join(distFolder, 'Content')
               }
             ]
           }
@@ -154,16 +160,6 @@ module.exports = (env) => {
     module: {
       rules: [
         {
-          test: /\.worker\.js$/,
-          use: {
-            loader: 'worker-loader',
-            options: {
-              filename: '[name].js',
-              inline: inlineWebWorkers
-            }
-          }
-        },
-        {
           test: [/\.jsx?$/, /\.tsx?$/],
           exclude: /(node_modules|JsLibraries)/,
           use: [
@@ -180,7 +176,7 @@ module.exports = (env) => {
                       loose: true,
                       debug: false,
                       useBuiltIns: 'entry',
-                      corejs: 3
+                      corejs: '3.42'
                     }
                   ]
                 ]

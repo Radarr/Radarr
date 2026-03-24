@@ -91,12 +91,8 @@ export const defaultState = {
     genres: function(item, filterValue, type) {
       const predicate = filterTypePredicates[type];
 
-      let allGenres = [];
-      item.movies.forEach((movie) => {
-        allGenres = allGenres.concat(movie.genres);
-      });
-
-      const genres = Array.from(new Set(allGenres)).slice(0, 3);
+      const allGenres = item.movies.flatMap(({ genres }) => genres);
+      const genres = Array.from(new Set(allGenres));
 
       return predicate(genres, filterValue);
     },
@@ -138,12 +134,8 @@ export const defaultState = {
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
         const genreList = items.reduce((acc, collection) => {
-          let collectionGenres = [];
-          collection.movies.forEach((movie) => {
-            collectionGenres = collectionGenres.concat(movie.genres);
-          });
-
-          const genres = Array.from(new Set(collectionGenres)).slice(0, 3);
+          const collectionGenres = collection.movies.flatMap(({ genres }) => genres);
+          const genres = Array.from(new Set(collectionGenres));
 
           genres.forEach((genre) => {
             acc.push({
@@ -258,8 +250,7 @@ export const actionHandlers = handleThunks({
   [ADD_MOVIE]: function(getState, payload, dispatch) {
     dispatch(set({ section, isAdding: true }));
 
-    const tmdbId = payload.tmdbId;
-    const title = payload.title;
+    const { tmdbId, title } = payload;
 
     const newMovie = getNewMovie({ tmdbId, title }, payload);
     newMovie.id = 0;

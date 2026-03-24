@@ -9,6 +9,7 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes } from 'Helpers/Props';
 import MoveMovieModal from 'Movie/MoveMovie/MoveMovieModal';
+import { InputChanged } from 'typings/inputs';
 import translate from 'Utilities/String/translate';
 import styles from './EditMoviesModalContent.css';
 
@@ -104,19 +105,19 @@ function EditMoviesModalContent(props: EditMoviesModalContentProps) {
   );
 
   const onInputChange = useCallback(
-    ({ name, value }: { name: string; value: string }) => {
+    ({ name, value }: InputChanged) => {
       switch (name) {
         case 'monitored':
-          setMonitored(value);
+          setMonitored(value as string);
           break;
         case 'qualityProfileId':
-          setQualityProfileId(value);
+          setQualityProfileId(value as string);
           break;
         case 'minimumAvailability':
-          setMinimumAvailability(value);
+          setMinimumAvailability(value as string);
           break;
         case 'rootFolderPath':
-          setRootFolderPath(value);
+          setRootFolderPath(value as string);
           break;
         default:
           console.warn('EditMoviesModalContent Unknown Input');
@@ -202,7 +203,7 @@ function EditMoviesModalContent(props: EditMoviesModalContentProps) {
             includeNoChange={true}
             includeNoChangeDisabled={false}
             selectedValueOptions={{ includeFreeSpace: false }}
-            helpText="Moving movies to the same root folder can be used to rename movie folders to match updated title or naming format"
+            helpText={translate('MovieEditRootFolderHelpText')}
             onChange={onInputChange}
           />
         </FormGroup>

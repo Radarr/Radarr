@@ -4,7 +4,7 @@
     <DataCollectors>
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
-          <Format>opencover</Format>
+          <Format>cobertura</Format>
           <Exclude>[Radarr.*.Test]*,[Radarr.Test.*]*,[Radarr.Api*]*,[Marr.Data]*,[MonoTorrent]*</Exclude>
         </Configuration>
       </DataCollector>

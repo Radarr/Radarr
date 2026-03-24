@@ -7,15 +7,15 @@ import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import MovieTagList from 'Components/MovieTagList';
 import RottenTomatoRating from 'Components/RottenTomatoRating';
-import TagListConnector from 'Components/TagListConnector';
 import TmdbRating from 'Components/TmdbRating';
 import Popover from 'Components/Tooltip/Popover';
 import TraktRating from 'Components/TraktRating';
 import { icons } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
-import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
+import EditMovieModal from 'Movie/Edit/EditMovieModal';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MovieIndexPosterSelect from 'Movie/Index/Select/MovieIndexPosterSelect';
 import { Statistics } from 'Movie/Movie';
@@ -69,6 +69,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     monitored,
     status,
     images,
+    titleSlug,
     tmdbId,
     imdbId,
     youTubeTrailerId,
@@ -141,7 +142,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     setIsDeleteMovieModalOpen(false);
   }, [setIsDeleteMovieModalOpen]);
 
-  const link = `/movie/${tmdbId}`;
+  const link = `/movie/${titleSlug}`;
 
   const elementStyle = {
     width: `${posterWidth}px`,
@@ -151,7 +152,9 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
   return (
     <div className={styles.content}>
       <div className={styles.posterContainer} title={title}>
-        {isSelectMode ? <MovieIndexPosterSelect movieId={movieId} /> : null}
+        {isSelectMode ? (
+          <MovieIndexPosterSelect movieId={movieId} titleSlug={titleSlug} />
+        ) : null}
 
         <Label className={styles.controls}>
           <SpinnerIconButton
@@ -346,7 +349,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
       {showTags && tags.length ? (
         <div className={styles.tags}>
           <div className={styles.tagsList}>
-            <TagListConnector tags={tags} />
+            <MovieTagList tags={tags} />
           </div>
         </div>
       ) : null}
@@ -384,7 +387,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         showTags={showTags}
       />
 
-      <EditMovieModalConnector
+      <EditMovieModal
         isOpen={isEditMovieModalOpen}
         movieId={movieId}
         onModalClose={onEditMovieModalClose}

@@ -2,6 +2,7 @@ import ModelBase from 'App/ModelBase';
 import Language from 'Language/Language';
 import Movie from 'Movie/Movie';
 import { QualityModel } from 'Quality/Quality';
+import CustomFormat from 'typings/CustomFormat';
 import Rejection from 'typings/Rejection';
 
 export interface InteractiveImportCommandOptions {
@@ -27,7 +28,7 @@ interface InteractiveImport extends ModelBase {
   languages: Language[];
   movie?: Movie;
   qualityWeight: number;
-  customFormats: object[];
+  customFormats: CustomFormat[];
   indexerFlags: number;
   rejections: Rejection[];
   movieFileId?: number;

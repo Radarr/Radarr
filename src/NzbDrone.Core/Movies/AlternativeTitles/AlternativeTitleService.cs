@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.Events;
 
@@ -20,18 +19,11 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
     public class AlternativeTitleService : IAlternativeTitleService, IHandleAsync<MoviesDeletedEvent>
     {
         private readonly IAlternativeTitleRepository _titleRepo;
-        private readonly IConfigService _configService;
-        private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
-        public AlternativeTitleService(IAlternativeTitleRepository titleRepo,
-                             IEventAggregator eventAggregator,
-                             IConfigService configService,
-                             Logger logger)
+        public AlternativeTitleService(IAlternativeTitleRepository titleRepo, Logger logger)
         {
             _titleRepo = titleRepo;
-            _eventAggregator = eventAggregator;
-            _configService = configService;
             _logger = logger;
         }
 
@@ -82,18 +74,45 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             titles = titles.DistinctBy(t => t.CleanTitle).ToList();
 
             // Make sure we are not adding titles that exist for other movies (until language PR goes in)
-            titles = titles.Where(t => !_titleRepo.All().Any(e => e.CleanTitle == t.CleanTitle && e.MovieMetadataId != t.MovieMetadataId)).ToList();
+            var allTitlesByCleanTitles = _titleRepo.FindByCleanTitles(titles.Select(t => t.CleanTitle).ToList());
+            titles = titles.Where(t => !allTitlesByCleanTitles.Any(e => e.CleanTitle == t.CleanTitle && e.MovieMetadataId != t.MovieMetadataId)).ToList();
 
-            // Now find titles to delete, update and insert.
             var existingTitles = _titleRepo.FindByMovieMetadataId(movieMetadataId);
 
-            var insert = titles.Where(t => !existingTitles.Contains(t));
-            var update = existingTitles.Where(t => titles.Contains(t));
-            var delete = existingTitles.Where(t => !titles.Contains(t));
+            var updateList = new List<AlternativeTitle>();
+            var addList = new List<AlternativeTitle>();
+            var upToDateCount = 0;
 
-            _titleRepo.DeleteMany(delete.ToList());
-            _titleRepo.UpdateMany(update.ToList());
-            _titleRepo.InsertMany(insert.ToList());
+            foreach (var title in titles)
+            {
+                var existingTitle = existingTitles.FirstOrDefault(x => x.CleanTitle == title.CleanTitle);
+
+                if (existingTitle != null)
+                {
+                    existingTitles.Remove(existingTitle);
+
+                    title.UseDbFieldsFrom(existingTitle);
+
+                    if (!title.Equals(existingTitle))
+                    {
+                        updateList.Add(title);
+                    }
+                    else
+                    {
+                        upToDateCount++;
+                    }
+                }
+                else
+                {
+                    addList.Add(title);
+                }
+            }
+
+            _titleRepo.DeleteMany(existingTitles);
+            _titleRepo.UpdateMany(updateList);
+            _titleRepo.InsertMany(addList);
+
+            _logger.Debug("[{0}] {1} alternative titles up to date; Updating {2}, Adding {3}, Deleting {4} entries.", movieMetadata.Title, upToDateCount, updateList.Count, addList.Count, existingTitles.Count);
 
             return titles;
         }

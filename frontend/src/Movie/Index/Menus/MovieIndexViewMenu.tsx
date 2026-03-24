@@ -8,7 +8,7 @@ import translate from 'Utilities/String/translate';
 interface MovieIndexViewMenuProps {
   view: string;
   isDisabled: boolean;
-  onViewSelect(value: string): unknown;
+  onViewSelect(value: string): void;
 }
 
 function MovieIndexViewMenu(props: MovieIndexViewMenuProps) {

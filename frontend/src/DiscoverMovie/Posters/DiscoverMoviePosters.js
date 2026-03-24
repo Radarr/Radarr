@@ -22,12 +22,12 @@ const additionalColumnCount = {
 };
 
 function calculateColumnWidth(width, posterSize, isSmallScreen) {
-  const maxiumColumnWidth = isSmallScreen ? 172 : 182;
-  const columns = Math.floor(width / maxiumColumnWidth);
-  const remainder = width % maxiumColumnWidth;
+  const maximumColumnWidth = isSmallScreen ? 172 : 182;
+  const columns = Math.floor(width / maximumColumnWidth);
+  const remainder = width % maximumColumnWidth;
 
   if (remainder === 0 && posterSize === 'large') {
-    return maxiumColumnWidth;
+    return maximumColumnWidth;
   }
 
   return Math.floor(width / (columns + additionalColumnCount[posterSize]));
@@ -170,7 +170,7 @@ class DiscoverMoviePosters extends Component {
       if (this._grid && index != null) {
         const row = Math.floor(index / columnCount);
 
-        this._grid.scrollToCell({
+        this._gridScrollToCell({
           rowIndex: row,
           columnIndex: 0
         });
@@ -269,6 +269,19 @@ class DiscoverMoviePosters extends Component {
         />
       </div>
     );
+  };
+
+  _gridScrollToCell = ({ rowIndex = 0, columnIndex = 0 }) => {
+    const scrollOffset = this._grid.getOffsetForCell({
+      rowIndex,
+      columnIndex
+    });
+
+    this._gridScrollToPosition(scrollOffset);
+  };
+
+  _gridScrollToPosition = ({ scrollTop = 0, scrollLeft = 0 }) => {
+    this.props.scroller?.scrollTo({ top: scrollTop, left: scrollLeft });
   };
 
   //

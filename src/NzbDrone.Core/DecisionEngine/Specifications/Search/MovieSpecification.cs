@@ -4,7 +4,7 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications.Search
 {
-    public class MovieSpecification : IDecisionEngineSpecification
+    public class MovieSpecification : IDownloadDecisionEngineSpecification
     {
         private readonly Logger _logger;
 
@@ -16,11 +16,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public DownloadSpecDecision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria == null)
             {
-                return Decision.Accept();
+                return DownloadSpecDecision.Accept();
             }
 
             _logger.Debug("Checking if movie matches searched movie");
@@ -28,10 +28,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
             if (subject.Movie.Id != searchCriteria.Movie.Id)
             {
                 _logger.Debug("Movie {0} does not match {1}", subject.Movie, searchCriteria.Movie);
-                return Decision.Reject("Wrong movie");
+                return DownloadSpecDecision.Reject(DownloadRejectionReason.WrongMovie, "Wrong movie");
             }
 
-            return Decision.Accept();
+            return DownloadSpecDecision.Accept();
         }
     }
 }

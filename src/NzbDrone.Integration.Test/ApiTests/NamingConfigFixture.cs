@@ -20,12 +20,19 @@ namespace NzbDrone.Integration.Test.ApiTests
             NamingConfig.Get(config.Id).Id.Should().Be(config.Id);
         }
 
-        [Test]
-        public void should_be_able_to_update()
+        [TestCase("{Movie Title} {Release Year}")]
+        [TestCase("{Movie Title} {(Release Year)}")]
+        [TestCase("{Movie Title} {[Release Year]}")]
+        [TestCase("{Movie Title} {{Release Year}}")]
+        [TestCase("{Movie Title}{ Release Year }")]
+        [TestCase("{Movie-Title}{-Release-Year-}")]
+        [TestCase("{Movie_Title}{_Release_Year_}")]
+        [TestCase("{Movie.Title}{.Release.Year.}")]
+        public void should_be_able_to_update(string standardMovieFormat)
         {
             var config = NamingConfig.GetSingle();
             config.RenameMovies = false;
-            config.StandardMovieFormat = "{Movie Title}";
+            config.StandardMovieFormat = standardMovieFormat;
 
             var result = NamingConfig.Put(config);
             result.RenameMovies.Should().BeFalse();

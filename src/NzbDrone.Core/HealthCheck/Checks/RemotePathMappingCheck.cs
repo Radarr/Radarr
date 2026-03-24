@@ -169,7 +169,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(ex, "Unknown error occured in RemotePathMapping HealthCheck");
+                    _logger.Error(ex, "Unknown error occurred in RemotePathMapping HealthCheck");
                 }
             }
 
@@ -217,7 +217,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                         "#remote-path-file-removed");
                 }
 
-                // If the previous case did not match then the failure occured in DownloadedMovieImportService,
+                // If the previous case did not match then the failure occurred in DownloadedMovieImportService,
                 // while trying to locate the files reported by the download client
                 // Only check clients not in failure status, those get another message
                 var client = _downloadClientProvider.GetDownloadClients(true).FirstOrDefault(x => x.Definition.Name == failureMessage.DownloadClientInfo.Name);
@@ -359,7 +359,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(ex, "Unknown error occured in RemotePathMapping HealthCheck");
+                    _logger.Error(ex, "Unknown error occurred in RemotePathMapping HealthCheck");
                 }
 
                 return new HealthCheck(GetType());

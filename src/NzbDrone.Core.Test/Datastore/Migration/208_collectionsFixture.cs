@@ -9,7 +9,7 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.Datastore.Migration
 {
     [TestFixture]
-    public class collectionsFixture : MigrationTest<collections>
+    public class collectionsFixture : MigrationTest<add_collections>
     {
         [Test]
         public void should_add_collection_from_movie_and_link_back_to_movie()

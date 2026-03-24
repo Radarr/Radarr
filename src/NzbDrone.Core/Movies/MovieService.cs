@@ -279,6 +279,7 @@ namespace NzbDrone.Core.Movies
 
             _movieRepository.UpdateMany(movies);
             _logger.Debug("{0} movies updated", movies.Count);
+            _eventAggregator.PublishEvent(new MoviesBulkEditedEvent(movies));
 
             return movies;
         }
@@ -330,6 +331,8 @@ namespace NzbDrone.Core.Movies
 
                 return true;
             }
+
+            _logger.Debug("Tags not updated for '{0}'", movie.Title);
 
             return false;
         }

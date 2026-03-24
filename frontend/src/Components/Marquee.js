@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
@@ -7,26 +8,15 @@ const TIMEOUT = 1 / FPS * 1000;
 
 class Marquee extends Component {
 
-  static propTypes = {
-    text: PropTypes.string,
-    title: PropTypes.string,
-    hoverToStop: PropTypes.bool,
-    loop: PropTypes.bool,
-    className: PropTypes.string
-  };
+  constructor(props, context) {
+    super(props, context);
 
-  static defaultProps = {
-    text: '',
-    title: '',
-    hoverToStop: true,
-    loop: false
-  };
-
-  state = {
-    animatedWidth: 0,
-    overflowWidth: 0,
-    direction: 0
-  };
+    this.state = {
+      animatedWidth: 0,
+      overflowWidth: 0,
+      direction: 0
+    };
+  }
 
   componentDidMount() {
     this.measureText();
@@ -138,7 +128,7 @@ class Marquee extends Component {
           ref={(el) => {
             this.container = el;
           }}
-          className={`ui-marquee ${this.props.className}`}
+          className={classNames('ui-marquee', this.props.className)}
           style={{ overflow: 'hidden' }}
         >
           <span
@@ -159,7 +149,7 @@ class Marquee extends Component {
         ref={(el) => {
           this.container = el;
         }}
-        className={`ui-marquee ${this.props.className}`.trim()}
+        className={classNames('ui-marquee', this.props.className)}
         style={{ overflow: 'hidden' }}
         onMouseEnter={this.onHandleMouseEnter}
         onMouseLeave={this.onHandleMouseLeave}
@@ -177,5 +167,21 @@ class Marquee extends Component {
     );
   }
 }
+
+Marquee.propTypes = {
+  text: PropTypes.string,
+  title: PropTypes.string,
+  hoverToStop: PropTypes.bool,
+  loop: PropTypes.bool,
+  className: PropTypes.string
+};
+
+Marquee.defaultProps = {
+  text: '',
+  title: '',
+  hoverToStop: true,
+  loop: false,
+  className: ''
+};
 
 export default Marquee;

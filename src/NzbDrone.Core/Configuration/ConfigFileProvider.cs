@@ -66,6 +66,7 @@ namespace NzbDrone.Core.Configuration
         string PostgresMainDb { get; }
         string PostgresLogDb { get; }
         string Theme { get; }
+        bool TrustCgnatIpAddresses { get; }
     }
 
     public class ConfigFileProvider : IConfigFileProvider
@@ -205,13 +206,24 @@ namespace NzbDrone.Core.Configuration
 
                 if (enabled)
                 {
-                    SetValue("AuthenticationMethod", AuthenticationType.Basic);
-                    return AuthenticationType.Basic;
+                    SetValue("AuthenticationMethod", AuthenticationType.Forms);
+                    return AuthenticationType.Forms;
                 }
 
-                return Enum.TryParse<AuthenticationType>(_authOptions.Method, out var enumValue)
+                var value = Enum.TryParse<AuthenticationType>(_authOptions.Method, out var enumValue)
                     ? enumValue
                     : GetValueEnum("AuthenticationMethod", AuthenticationType.None);
+
+#pragma warning disable CS0618 // Type or member is obsolete
+                if (value == AuthenticationType.Basic)
+#pragma warning restore CS0618 // Type or member is obsolete
+                {
+                    SetValue("AuthenticationMethod", AuthenticationType.Forms);
+
+                    return AuthenticationType.Forms;
+                }
+
+                return value;
             }
         }
 
@@ -263,7 +275,21 @@ namespace NzbDrone.Core.Configuration
         }
 
         public string UiFolder => BuildInfo.IsDebug ? Path.Combine("..", "UI") : "UI";
-        public string InstanceName => _appOptions.InstanceName ?? GetValue("InstanceName", BuildInfo.AppName);
+
+        public string InstanceName
+        {
+            get
+            {
+                var instanceName = _appOptions.InstanceName ?? GetValue("InstanceName", BuildInfo.AppName);
+
+                if (instanceName.Contains(BuildInfo.AppName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return instanceName;
+                }
+
+                return BuildInfo.AppName;
+            }
+        }
 
         public bool UpdateAutomatically => _updateOptions.Automatically ?? GetValueBoolean("UpdateAutomatically", OsInfo.IsWindows, false);
 
@@ -371,6 +397,12 @@ namespace NzbDrone.Core.Configuration
             {
                 SetValue("EnableSsl", false);
             }
+#pragma warning disable CS0618 // Type or member is obsolete
+            if (AuthenticationMethod == AuthenticationType.Basic)
+#pragma warning restore CS0618 // Type or member is obsolete
+            {
+                SetValue("AuthenticationMethod", AuthenticationType.Forms);
+            }
         }
 
         private void DeleteOldValues()
@@ -461,5 +493,7 @@ namespace NzbDrone.Core.Configuration
         {
             SetValue("ApiKey", GenerateApiKey());
         }
+
+        public bool TrustCgnatIpAddresses => _authOptions.TrustCgnatIpAddresses ?? GetValueBoolean("TrustCgnatIpAddresses", false, persist: false);
     }
 }

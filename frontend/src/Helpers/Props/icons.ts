@@ -15,6 +15,7 @@ import {
   faFileVideo as farFileVideo,
   faFolder as farFolder,
   faHdd as farHdd,
+  faHeart as farHeart,
   faKeyboard as farKeyboard,
   faObjectGroup as farObjectGroup,
   faObjectUngroup as farObjectUngroup,
@@ -70,6 +71,7 @@ import {
   faFire as fasFire,
   faFlag as fasFlag,
   faFolderOpen as fasFolderOpen,
+  faFolderTree as farFolderTree,
   faForward as fasForward,
   faHeart as fasHeart,
   faHistory as fasHistory,
@@ -174,6 +176,7 @@ export const GENRE = fasTheaterMasks;
 export const GROUP = farObjectGroup;
 export const HEALTH = fasMedkit;
 export const HEART = fasHeart;
+export const HEART_OUTLINE = farHeart;
 export const HISTORY = fasHistory;
 export const HOUSEKEEPING = fasHome;
 export const IGNORE = fasTimesCircle;
@@ -214,6 +217,7 @@ export const REMOVE = fasTimes;
 export const RESTART = fasRedoAlt;
 export const RESTORE = fasHistory;
 export const REORDER = fasBars;
+export const ROOT_FOLDER = farFolderTree;
 export const RSS = fasRss;
 export const SAVE = fasSave;
 export const SCHEDULED = farClock;

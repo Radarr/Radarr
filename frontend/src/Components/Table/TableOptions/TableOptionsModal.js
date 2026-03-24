@@ -170,11 +170,11 @@ class TableOptionsModal extends Component {
                     {
                       canModifyColumns ?
                         <FormGroup>
-                          <FormLabel>{translate('Columns')}</FormLabel>
+                          <FormLabel>{translate('TableColumns')}</FormLabel>
 
                           <div>
                             <FormInputHelpText
-                              text={translate('TableOptionsColumnsMessage')}
+                              text={translate('TableColumnsHelpText')}
                             />
 
                             <div className={styles.columns}>

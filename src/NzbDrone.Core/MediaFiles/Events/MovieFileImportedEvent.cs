@@ -20,6 +20,7 @@ namespace NzbDrone.Core.MediaFiles.Events
             ImportedMovie = importedMovie;
             OldFiles = oldFiles;
             NewDownload = newDownload;
+
             if (downloadClientItem != null)
             {
                 DownloadClientInfo = downloadClientItem.DownloadClientInfo;

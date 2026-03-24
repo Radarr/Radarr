@@ -17,7 +17,7 @@ import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes, kinds } from 'Helpers/Props';
 import Quality, { QualityModel } from 'Quality/Quality';
 import { fetchQualityProfileSchema } from 'Store/Actions/settingsActions';
-import { CheckInputChanged } from 'typings/inputs';
+import { InputChanged } from 'typings/inputs';
 import getQualities from 'Utilities/Quality/getQualities';
 import translate from 'Utilities/String/translate';
 
@@ -86,21 +86,21 @@ function SelectQualityModalContent(props: SelectQualityModalContentProps) {
   }, [items]);
 
   const onQualityChange = useCallback(
-    ({ value }: { value: string }) => {
-      setQualityId(parseInt(value));
+    ({ value }: { value: number }) => {
+      setQualityId(value);
     },
     [setQualityId]
   );
 
   const onProperChange = useCallback(
-    ({ value }: CheckInputChanged) => {
+    ({ value }: InputChanged<boolean>) => {
       setProper(value);
     },
     [setProper]
   );
 
   const onRealChange = useCallback(
-    ({ value }: CheckInputChanged) => {
+    ({ value }: InputChanged<boolean>) => {
       setReal(value);
     },
     [setReal]
@@ -128,7 +128,7 @@ function SelectQualityModalContent(props: SelectQualityModalContentProps) {
       </ModalHeader>
 
       <ModalBody>
-        {isFetching && <LoadingIndicator />}
+        {isFetching ? <LoadingIndicator /> : null}
 
         {!isFetching && error ? (
           <Alert kind={kinds.DANGER}>{translate('QualitiesLoadError')}</Alert>

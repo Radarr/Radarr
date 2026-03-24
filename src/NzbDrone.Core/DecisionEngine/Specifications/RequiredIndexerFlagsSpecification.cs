@@ -7,7 +7,7 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
-    public class RequiredIndexerFlagsSpecification : IDecisionEngineSpecification
+    public class RequiredIndexerFlagsSpecification : IDownloadDecisionEngineSpecification
     {
         private readonly IIndexerFactory _indexerFactory;
         private readonly Logger _logger;
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public DownloadSpecDecision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             var torrentInfo = subject.Release;
 
@@ -37,34 +37,35 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             if (torrentInfo == null || indexerSettings == null)
             {
-                return Decision.Accept();
+                return DownloadSpecDecision.Accept();
             }
 
             if (indexerSettings is ITorrentIndexerSettings torrentIndexerSettings)
             {
                 var requiredFlags = torrentIndexerSettings.RequiredFlags;
-                var requiredFlag = (IndexerFlags)0;
 
                 if (requiredFlags == null || !requiredFlags.Any())
                 {
-                    return Decision.Accept();
+                    return DownloadSpecDecision.Accept();
                 }
+
+                var requiredFlag = (IndexerFlags)0;
 
                 foreach (var flag in requiredFlags)
                 {
                     if (torrentInfo.IndexerFlags.HasFlag((IndexerFlags)flag))
                     {
-                        return Decision.Accept();
+                        return DownloadSpecDecision.Accept();
                     }
 
                     requiredFlag |= (IndexerFlags)flag;
                 }
 
                 _logger.Debug("None of the required indexer flags {0} where found. Found flags: {1}", requiredFlag, torrentInfo.IndexerFlags);
-                return Decision.Reject("None of the required indexer flags {0} where found. Found flags: {1}", requiredFlag, torrentInfo.IndexerFlags);
+                return DownloadSpecDecision.Reject(DownloadRejectionReason.RequiredFlags, "None of the required indexer flags {0} where found. Found flags: {1}", requiredFlag, torrentInfo.IndexerFlags);
             }
 
-            return Decision.Accept();
+            return DownloadSpecDecision.Accept();
         }
     }
 }

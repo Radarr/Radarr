@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
 import CheckInput from 'Components/Form/CheckInput';
 import Icon from 'Components/Icon';
-import ImportListListConnector from 'Components/ImportListListConnector';
+import ImportListList from 'Components/ImportListList';
 import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
@@ -133,14 +133,20 @@ class DiscoverMovieOverview extends Component {
                 />
               </div>
 
-              <MoviePoster
-                className={styles.poster}
+              <Link
+                className={styles.link}
                 style={elementStyle}
-                images={images}
-                size={250}
-                lazy={false}
-                overflow={true}
-              />
+                {...linkProps}
+              >
+                <MoviePoster
+                  className={styles.poster}
+                  style={elementStyle}
+                  images={images}
+                  size={250}
+                  lazy={false}
+                  overflow={true}
+                />
+              </Link>
             </div>
           </div>
 
@@ -236,17 +242,19 @@ class DiscoverMovieOverview extends Component {
                   null
               }
 
-              <ImportListListConnector
+              <ImportListList
                 lists={lists}
               />
             </div>
 
             <div className={styles.details}>
-              <div className={styles.overview}>
-                <TextTruncate
-                  line={Math.floor(overviewHeight / (defaultFontSize * lineHeight))}
-                  text={overview}
-                />
+              <div className={styles.overviewContainer}>
+                <Link className={styles.overview} {...linkProps}>
+                  <TextTruncate
+                    line={Math.floor(overviewHeight / (defaultFontSize * lineHeight))}
+                    text={overview}
+                  />
+                </Link>
               </div>
 
               <DiscoverMovieOverviewInfo
@@ -255,7 +263,6 @@ class DiscoverMovieOverview extends Component {
                 {...overviewOptions}
                 {...otherProps}
               />
-
             </div>
           </div>
         </div>

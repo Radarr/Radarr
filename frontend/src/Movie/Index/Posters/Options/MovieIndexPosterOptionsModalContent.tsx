@@ -140,37 +140,37 @@ function MovieIndexPosterOptionsModalContent(
           </FormGroup>
 
           <FormGroup size={sizes.MEDIUM}>
-            <FormLabel>{translate('ShowCinemaRelease')}</FormLabel>
+            <FormLabel>{translate('ShowCinemaReleaseDate')}</FormLabel>
 
             <FormInputGroup
               type={inputTypes.CHECK}
               name="showCinemaRelease"
               value={showCinemaRelease}
-              helpText={translate('ShowCinemaReleaseHelpText')}
+              helpText={translate('ShowCinemaReleaseDatePosterHelpText')}
               onChange={onPosterOptionChange}
             />
           </FormGroup>
 
           <FormGroup size={sizes.MEDIUM}>
-            <FormLabel>{translate('ShowDigitalRelease')}</FormLabel>
+            <FormLabel>{translate('ShowDigitalReleaseDate')}</FormLabel>
 
             <FormInputGroup
               type={inputTypes.CHECK}
               name="showDigitalRelease"
               value={showDigitalRelease}
-              helpText={translate('ShowDigitalReleaseHelpText')}
+              helpText={translate('ShowDigitalReleaseDatePosterHelpText')}
               onChange={onPosterOptionChange}
             />
           </FormGroup>
 
           <FormGroup size={sizes.MEDIUM}>
-            <FormLabel>{translate('ShowPhysicalRelease')}</FormLabel>
+            <FormLabel>{translate('ShowPhysicalReleaseDate')}</FormLabel>
 
             <FormInputGroup
               type={inputTypes.CHECK}
               name="showPhysicalRelease"
               value={showPhysicalRelease}
-              helpText={translate('ShowPhysicalReleaseHelpText')}
+              helpText={translate('ShowPhysicalReleaseDatePosterHelpText')}
               onChange={onPosterOptionChange}
             />
           </FormGroup>
@@ -182,7 +182,7 @@ function MovieIndexPosterOptionsModalContent(
               type={inputTypes.CHECK}
               name="showReleaseDate"
               value={showReleaseDate}
-              helpText={translate('ShowReleaseDateHelpText')}
+              helpText={translate('ShowReleaseDatePosterHelpText')}
               onChange={onPosterOptionChange}
             />
           </FormGroup>

@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import AddNewMovieCollectionMovieModal from 'Collection/AddNewMovieCollectionMovieModal';
 import Link from 'Components/Link/Link';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
-import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
+import EditMovieModal from 'Movie/Edit/EditMovieModal';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MoviePoster from 'Movie/MoviePoster';
 import translate from 'Utilities/String/translate';
-import AddNewCollectionMovieModal from './../AddNewCollectionMovieModal';
 import styles from './CollectionMovie.css';
 
 class CollectionMovie extends Component {
@@ -82,6 +82,7 @@ class CollectionMovie extends Component {
     } = this.props;
 
     const {
+      hasPosterError,
       isEditMovieModalOpen,
       isNewAddMovieModalOpen
     } = this.state;
@@ -134,33 +135,38 @@ class CollectionMovie extends Component {
               onLoad={this.onPosterLoad}
             />
 
-            <div className={styles.overlay}>
-              <div className={styles.overlayTitle}>
+            {
+              hasPosterError &&
+                <div className={styles.overlayTitle}>
+                  {title}
+                </div>
+            }
+
+            <div className={styles.overlayHover}>
+              <div className={styles.overlayHoverTitle}>
                 {title} {year > 0 ? `(${year})` : ''}
               </div>
 
               {
                 id ?
-                  <div className={styles.overlayStatus}>
-                    <MovieIndexProgressBar
-                      movieId={id}
-                      movieFile={movieFile}
-                      monitored={monitored}
-                      hasFile={hasFile}
-                      status={status}
-                      bottomRadius={true}
-                      width={posterWidth}
-                      detailedProgressBar={detailedProgressBar}
-                      isAvailable={isAvailable}
-                    />
-                  </div> :
+                  <MovieIndexProgressBar
+                    movieId={id}
+                    movieFile={movieFile}
+                    monitored={monitored}
+                    hasFile={hasFile}
+                    status={status}
+                    bottomRadius={true}
+                    width={posterWidth}
+                    detailedProgressBar={detailedProgressBar}
+                    isAvailable={isAvailable}
+                  /> :
                   null
               }
             </div>
           </Link>
         </div>
 
-        <AddNewCollectionMovieModal
+        <AddNewMovieCollectionMovieModal
           isOpen={isNewAddMovieModalOpen && !isExistingMovie}
           tmdbId={tmdbId}
           title={title}
@@ -172,7 +178,7 @@ class CollectionMovie extends Component {
           collectionId={collectionId}
         />
 
-        <EditMovieModalConnector
+        <EditMovieModal
           isOpen={isEditMovieModalOpen}
           movieId={id}
           onModalClose={this.onEditMovieModalClose}
@@ -188,7 +194,7 @@ CollectionMovie.propTypes = {
   title: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
-  overview: PropTypes.string.isRequired,
+  overview: PropTypes.string,
   monitored: PropTypes.bool,
   collectionId: PropTypes.number.isRequired,
   hasFile: PropTypes.bool,

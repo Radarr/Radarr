@@ -9,7 +9,7 @@ function createMapStateToProps() {
     createCollectionSelector(),
     (collection) => {
       // If a movie is deleted this selector may fire before the parent
-      // selecors, which will result in an undefined movie, if that happens
+      // selectors, which will result in an undefined movie, if that happens
       // we want to return early here and again in the render function to avoid
       // trying to show a movie that has no information available.
 
@@ -22,7 +22,7 @@ function createMapStateToProps() {
       return {
         ...collection,
         movies: [...collection.movies].sort((a, b) => b.year - a.year),
-        genres: Array.from(new Set(allGenres)).slice(0, 3)
+        genres: Array.from(new Set(allGenres))
       };
     }
   );

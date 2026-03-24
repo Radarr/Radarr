@@ -3,7 +3,7 @@ import AppSectionState, {
   AppSectionSaveState,
 } from 'App/State/AppSectionState';
 import Column from 'Components/Table/Column';
-import SortDirection from 'Helpers/Props/SortDirection';
+import { SortDirection } from 'Helpers/Props/sortDirections';
 import Movie from 'Movie/Movie';
 import { Filter, FilterBuilderProp } from './AppState';
 
@@ -64,6 +64,8 @@ interface MoviesAppState
   deleteOptions: {
     addImportExclusion: boolean;
   };
+
+  pendingChanges: Partial<Movie>;
 }
 
 export default MoviesAppState;

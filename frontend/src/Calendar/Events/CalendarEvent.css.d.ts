@@ -4,6 +4,7 @@ interface CssExports {
   'continuing': string;
   'downloaded': string;
   'event': string;
+  'eventType': string;
   'genres': string;
   'info': string;
   'missingMonitored': string;

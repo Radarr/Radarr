@@ -17,30 +17,30 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         public XbmcMetadataSettings()
         {
             MovieMetadata = true;
-            MovieMetadataURL = false;
-            MovieMetadataLanguage = (int)Language.English;
-            MovieImages = true;
             UseMovieNfo = false;
+            MovieMetadataLanguage = (int)Language.English;
+            MovieMetadataURL = false;
             AddCollectionName = true;
+            MovieImages = true;
         }
 
-        [FieldDefinition(0, Label = "Movie Metadata", Type = FieldType.Checkbox)]
+        [FieldDefinition(0, Label = "MetadataSettingsMovieMetadata", Type = FieldType.Checkbox, Section = MetadataSectionType.Metadata, HelpText = "MetadataXmbcSettingsMovieMetadataHelpText")]
         public bool MovieMetadata { get; set; }
 
-        [FieldDefinition(1, Label = "Movie Metadata URL", Type = FieldType.Checkbox, HelpText = "Radarr will write the tmdb/imdb url in the .nfo file", Advanced = true)]
-        public bool MovieMetadataURL { get; set; }
-
-        [FieldDefinition(2, Label = "Metadata Language", Type = FieldType.Select, SelectOptions = typeof(RealLanguageFieldConverter), HelpText = "Radarr will write metadata in the selected language if available")]
-        public int MovieMetadataLanguage { get; set; }
-
-        [FieldDefinition(3, Label = "Movie Images", Type = FieldType.Checkbox)]
-        public bool MovieImages { get; set; }
-
-        [FieldDefinition(4, Label = "Use Movie.nfo", Type = FieldType.Checkbox, HelpText = "Radarr will write metadata to movie.nfo instead of the default <movie-filename>.nfo")]
+        [FieldDefinition(1, Label = "MetadataSettingsMovieMetadataNfo", Type = FieldType.Checkbox, Section = MetadataSectionType.Metadata, HelpText = "MetadataXmbcSettingsMovieMetadataNfoHelpText")]
         public bool UseMovieNfo { get; set; }
 
-        [FieldDefinition(5, Label = "Collection Name", Type = FieldType.Checkbox, HelpText = "Radarr will write the collection name to the .nfo file", Advanced = true)]
+        [FieldDefinition(2, Label = "MetadataSettingsMovieMetadataLanguage", Type = FieldType.Select, SelectOptions = typeof(RealLanguageFieldConverter), Section = MetadataSectionType.Metadata, HelpText = "MetadataXmbcSettingsMovieMetadataLanguageHelpText")]
+        public int MovieMetadataLanguage { get; set; }
+
+        [FieldDefinition(3, Label = "MetadataSettingsMovieMetadataUrl", Type = FieldType.Checkbox, Section = MetadataSectionType.Metadata, HelpText = "MetadataXmbcSettingsMovieMetadataUrlHelpText", Advanced = true)]
+        public bool MovieMetadataURL { get; set; }
+
+        [FieldDefinition(4, Label = "MetadataSettingsMovieMetadataCollectionName", Type = FieldType.Checkbox, Section = MetadataSectionType.Metadata, HelpText = "MetadataXmbcSettingsMovieMetadataCollectionNameHelpText", Advanced = true)]
         public bool AddCollectionName { get; set; }
+
+        [FieldDefinition(5, Label = "MetadataSettingsMovieImages", Type = FieldType.Checkbox, Section = MetadataSectionType.Image, HelpText = "fanart.jpg, poster.jpg")]
+        public bool MovieImages { get; set; }
 
         public bool IsValid => true;
 

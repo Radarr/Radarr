@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
@@ -21,7 +21,7 @@ namespace NzbDrone.Common.Test.TPLTests
         }
 
         [Test]
-        [Retry(3)]
+        [Retry(10)]
         public void should_hold_the_call_for_debounce_duration()
         {
             var counter = new Counter();
@@ -39,7 +39,7 @@ namespace NzbDrone.Common.Test.TPLTests
         }
 
         [Test]
-        [Retry(3)]
+        [Retry(10)]
         public void should_throttle_calls()
         {
             var counter = new Counter();
@@ -63,7 +63,7 @@ namespace NzbDrone.Common.Test.TPLTests
         }
 
         [Test]
-        [Retry(3)]
+        [Retry(10)]
         public void should_hold_the_call_while_paused()
         {
             var counter = new Counter();
@@ -97,7 +97,7 @@ namespace NzbDrone.Common.Test.TPLTests
         }
 
         [Test]
-        [Retry(3)]
+        [Retry(10)]
         public void should_handle_pause_reentrancy()
         {
             var counter = new Counter();

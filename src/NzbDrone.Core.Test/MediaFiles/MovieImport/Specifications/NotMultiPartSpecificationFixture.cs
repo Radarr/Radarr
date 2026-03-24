@@ -54,6 +54,17 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             @"C:\Test\Downloaded\Bad Boys (2006) part1.mkv",
             @"C:\Test\Downloaded\Bad Boys (2006) part2.mkv"
         })]
+
+        [TestCase(new object[]
+        {
+            @"C:\Test\Downloaded\Bad Boys (2006) pt1.mkv",
+            @"C:\Test\Downloaded\Bad Boys (2006) pt2.mkv"
+        })]
+        [TestCase(new object[]
+        {
+            @"C:\Test\Downloaded\Bad Boys (2006) P1.mkv",
+            @"C:\Test\Downloaded\Bad Boys (2006) P2.mkv"
+        })]
         [TestCase(new object[]
         {
             @"C:\Test\Downloaded\blah blah - cd 1.mvk",

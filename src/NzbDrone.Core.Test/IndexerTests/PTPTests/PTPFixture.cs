@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Test.IndexerTests.PTPTests
             first.Guid.Should().Be("PassThePopcorn-452135");
             first.Title.Should().Be("The.Night.Of.S01.BluRay.AAC2.0.x264-DEPTH");
             first.DownloadProtocol.Should().Be(DownloadProtocol.Torrent);
-            first.DownloadUrl.Should().Be("https://passthepopcorn.me/torrents.php?action=download&id=452135&authkey=00000000000000000000000000000000&torrent_pass=00000000000000000000000000000000");
+            first.DownloadUrl.Should().Be("https://passthepopcorn.me/torrents.php?action=download&id=452135");
             first.InfoUrl.Should().Be("https://passthepopcorn.me/torrents.php?id=148131&torrentid=452135");
 
             first.PublishDate.Should().Be(DateTime.Parse("2016-10-18T23:40:59+0000").ToUniversalTime());

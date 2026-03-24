@@ -17,6 +17,7 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Integration.Test.Client;
 using NzbDrone.SignalR;
 using NzbDrone.Test.Common.Categories;
+using Radarr.Api.V3.AutoTagging;
 using Radarr.Api.V3.Blocklist;
 using Radarr.Api.V3.Config;
 using Radarr.Api.V3.DownloadClient;
@@ -36,6 +37,7 @@ namespace NzbDrone.Integration.Test
     {
         protected RestClient RestClient { get; private set; }
 
+        public ClientBase<AutoTaggingResource> AutoTagging;
         public ClientBase<BlocklistResource> Blocklist;
         public CommandClient Commands;
         public ClientBase<TaskResource> Tasks;
@@ -53,6 +55,7 @@ namespace NzbDrone.Integration.Test
         public ClientBase<TagResource> Tags;
         public ClientBase<MovieResource> WantedMissing;
         public ClientBase<MovieResource> WantedCutoffUnmet;
+        public QueueClient Queue;
 
         private List<SignalRMessage> _signalRReceived;
 
@@ -98,6 +101,7 @@ namespace NzbDrone.Integration.Test
             RestClient.AddDefaultHeader("Authentication", ApiKey);
             RestClient.AddDefaultHeader("X-Api-Key", ApiKey);
 
+            AutoTagging = new ClientBase<AutoTaggingResource>(RestClient, ApiKey);
             Blocklist = new ClientBase<BlocklistResource>(RestClient, ApiKey);
             Commands = new CommandClient(RestClient, ApiKey);
             Tasks = new ClientBase<TaskResource>(RestClient, ApiKey, "system/task");
@@ -115,6 +119,7 @@ namespace NzbDrone.Integration.Test
             Tags = new ClientBase<TagResource>(RestClient, ApiKey);
             WantedMissing = new ClientBase<MovieResource>(RestClient, ApiKey, "wanted/missing");
             WantedCutoffUnmet = new ClientBase<MovieResource>(RestClient, ApiKey, "wanted/cutoff");
+            Queue = new QueueClient(RestClient, ApiKey);
         }
 
         [OneTimeTearDown]

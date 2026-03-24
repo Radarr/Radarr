@@ -108,6 +108,25 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
+        public void should_return_false_if_proper_and_autoDownloadPropers_is_do_not_prefer()
+        {
+            GivenAutoDownloadPropers(ProperDownloadTypes.DoNotPrefer);
+
+            var profile = new QualityProfile
+            {
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+            };
+
+            Subject.IsUpgradable(
+                       profile,
+                       new QualityModel(Quality.DVD, new Revision(version: 1)),
+                       new List<CustomFormat>(),
+                       new QualityModel(Quality.DVD, new Revision(version: 2)),
+                       new List<CustomFormat>())
+                   .Should().Be(UpgradeableRejectReason.UpgradesNotAllowed);
+        }
+
+        [Test]
         public void should_return_false_if_release_and_existing_file_are_the_same()
         {
             var profile = new QualityProfile
@@ -121,7 +140,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                        new List<CustomFormat>(),
                        new QualityModel(Quality.HDTV720p, new Revision(version: 1)),
                        new List<CustomFormat>())
-                   .Should().Be(UpgradeableRejectReason.CustomFormatScore);
+                   .Should().Be(UpgradeableRejectReason.UpgradesNotAllowed);
         }
 
         [Test]

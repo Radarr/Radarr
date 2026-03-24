@@ -47,7 +47,7 @@ namespace NzbDrone.Core.ImportLists.Radarr
                         continue;
                     }
 
-                    if (Settings.TagIds.Any() && !Settings.TagIds.Any(x => remoteMovie.Tags.Any(y => y == x)))
+                    if (Settings.TagIds.Any() && !Settings.TagIds.Any(tagId => remoteMovie.Tags.Any(itemTagId => itemTagId == tagId)))
                     {
                         continue;
                     }

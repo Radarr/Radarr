@@ -3,14 +3,14 @@ import MenuContent from 'Components/Menu/MenuContent';
 import SortMenu from 'Components/Menu/SortMenu';
 import SortMenuItem from 'Components/Menu/SortMenuItem';
 import { align } from 'Helpers/Props';
-import SortDirection from 'Helpers/Props/SortDirection';
+import { SortDirection } from 'Helpers/Props/sortDirections';
 import translate from 'Utilities/String/translate';
 
 interface MovieIndexSortMenuProps {
   sortKey?: string;
   sortDirection?: SortDirection;
   isDisabled: boolean;
-  onSortSelect(sortKey: string): unknown;
+  onSortSelect(sortKey: string): void;
 }
 
 function MovieIndexSortMenu(props: MovieIndexSortMenuProps) {

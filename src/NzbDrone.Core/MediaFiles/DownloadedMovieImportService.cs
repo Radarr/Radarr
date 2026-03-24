@@ -7,7 +7,6 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles.MovieImport;
@@ -186,7 +185,7 @@ namespace NzbDrone.Core.MediaFiles
                 _logger.Warn("Unable to process folder that is mapped to an existing movie");
                 return new List<ImportResult>
                 {
-                    RejectionResult("Import path is mapped to a movie folder")
+                    RejectionResult(ImportRejectionReason.MovieFolder, "Import path is mapped to a movie folder")
                 };
             }
 
@@ -272,11 +271,31 @@ namespace NzbDrone.Core.MediaFiles
 
                 return new List<ImportResult>
                        {
-                           new ImportResult(new ImportDecision(new LocalMovie { Path = fileInfo.FullName }, new Rejection("Invalid video file, filename starts with '._'")), "Invalid video file, filename starts with '._'")
+                           new ImportResult(new ImportDecision(new LocalMovie { Path = fileInfo.FullName }, new ImportRejection(ImportRejectionReason.InvalidFilePath, "Invalid video file, filename starts with '._'")), "Invalid video file, filename starts with '._'")
                        };
             }
 
             var extension = Path.GetExtension(fileInfo.Name);
+
+            if (FileExtensions.DangerousExtensions.Contains(extension))
+            {
+                return new List<ImportResult>
+                {
+                    new ImportResult(new ImportDecision(new LocalMovie { Path = fileInfo.FullName },
+                            new ImportRejection(ImportRejectionReason.DangerousFile, $"Caution: Found potentially dangerous file with extension: {extension}")),
+                        $"Caution: Found potentially dangerous file with extension: {extension}")
+                };
+            }
+
+            if (FileExtensions.ExecutableExtensions.Contains(extension))
+            {
+                return new List<ImportResult>
+                {
+                    new ImportResult(new ImportDecision(new LocalMovie { Path = fileInfo.FullName },
+                            new ImportRejection(ImportRejectionReason.ExecutableFile, $"Caution: Found executable file with extension: '{extension}'")),
+                        $"Caution: Found executable file with extension: '{extension}'")
+                };
+            }
 
             if (extension.IsNullOrWhiteSpace() || !MediaFileExtensions.Extensions.Contains(extension))
             {
@@ -285,7 +304,7 @@ namespace NzbDrone.Core.MediaFiles
                 return new List<ImportResult>
                        {
                            new ImportResult(new ImportDecision(new LocalMovie { Path = fileInfo.FullName },
-                               new Rejection($"Invalid video file, unsupported extension: '{extension}'")),
+                               new ImportRejection(ImportRejectionReason.UnsupportedExtension, $"Invalid video file, unsupported extension: '{extension}'")),
                                $"Invalid video file, unsupported extension: '{extension}'")
                        };
             }
@@ -317,33 +336,38 @@ namespace NzbDrone.Core.MediaFiles
         private ImportResult FileIsLockedResult(string videoFile)
         {
             _logger.Debug("[{0}] is currently locked by another process, skipping", videoFile);
-            return new ImportResult(new ImportDecision(new LocalMovie { Path = videoFile }, new Rejection("Locked file, try again later")), "Locked file, try again later");
+            return new ImportResult(new ImportDecision(new LocalMovie { Path = videoFile }, new ImportRejection(ImportRejectionReason.FileLocked, "Locked file, try again later")), "Locked file, try again later");
         }
 
         private ImportResult UnknownMovieResult(string message, string videoFile = null)
         {
             var localMovie = videoFile == null ? null : new LocalMovie { Path = videoFile };
 
-            return new ImportResult(new ImportDecision(localMovie, new Rejection("Unknown Movie")), message);
+            return new ImportResult(new ImportDecision(localMovie, new ImportRejection(ImportRejectionReason.UnknownMovie, "Unknown Movie")), message);
         }
 
-        private ImportResult RejectionResult(string message)
+        private ImportResult RejectionResult(ImportRejectionReason reason, string message)
         {
-            return new ImportResult(new ImportDecision(null, new Rejection(message)), message);
+            return new ImportResult(new ImportDecision(null, new ImportRejection(reason, message)), message);
         }
 
         private ImportResult CheckEmptyResultForIssue(string folder)
         {
             var files = _diskProvider.GetFiles(folder, true);
 
+            if (files.Any(file => FileExtensions.DangerousExtensions.Contains(Path.GetExtension(file))))
+            {
+                return RejectionResult(ImportRejectionReason.DangerousFile, "Caution: Found potentially dangerous file");
+            }
+
             if (files.Any(file => FileExtensions.ExecutableExtensions.Contains(Path.GetExtension(file))))
             {
-                return RejectionResult("Caution: Found executable file");
+                return RejectionResult(ImportRejectionReason.ExecutableFile, "Caution: Found executable file");
             }
 
             if (files.Any(file => FileExtensions.ArchiveExtensions.Contains(Path.GetExtension(file))))
             {
-                return RejectionResult("Found archive file, might need to be extracted");
+                return RejectionResult(ImportRejectionReason.ArchiveFile, "Found archive file, might need to be extracted");
             }
 
             return null;

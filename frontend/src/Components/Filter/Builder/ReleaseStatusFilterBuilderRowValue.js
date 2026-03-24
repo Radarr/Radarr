@@ -2,8 +2,11 @@ import React from 'react';
 import translate from 'Utilities/String/translate';
 import FilterBuilderRowValue from './FilterBuilderRowValue';
 
-const protocols = [
-  { id: 'tba', name: 'TBA' },
+const statusTagList = [
+  { id: 'tba',
+    get name() {
+      return translate('Tba');
+    } },
   {
     id: 'announced',
     get name() {
@@ -33,7 +36,7 @@ const protocols = [
 function ReleaseStatusFilterBuilderRowValue(props) {
   return (
     <FilterBuilderRowValue
-      tagList={protocols}
+      tagList={statusTagList}
       {...props}
     />
   );

@@ -1,14 +1,15 @@
 import classNames from 'classnames';
 import { throttle } from 'lodash';
 import React, {
+  ComponentProps,
   ForwardedRef,
   forwardRef,
-  MutableRefObject,
   ReactNode,
   useEffect,
+  useImperativeHandle,
   useRef,
 } from 'react';
-import ScrollDirection from 'Helpers/Props/ScrollDirection';
+import { ScrollDirection } from 'Helpers/Props/scrollDirections';
 import styles from './Scroller.css';
 
 export interface OnScroll {
@@ -24,6 +25,7 @@ interface ScrollerProps {
   scrollTop?: number;
   initialScrollTop?: number;
   children?: ReactNode;
+  style?: ComponentProps<'div'>['style'];
   onScroll?: (payload: OnScroll) => void;
 }
 
@@ -33,7 +35,7 @@ const Scroller = forwardRef(
       className,
       autoFocus = false,
       autoScroll = true,
-      scrollDirection = ScrollDirection.Vertical,
+      scrollDirection = 'vertical',
       children,
       scrollTop,
       initialScrollTop,
@@ -41,13 +43,14 @@ const Scroller = forwardRef(
       ...otherProps
     } = props;
 
-    const internalRef = useRef();
-    const currentRef = (ref as MutableRefObject<HTMLDivElement>) ?? internalRef;
+    const internalRef = useRef<HTMLDivElement>(null);
+
+    useImperativeHandle(ref, () => internalRef.current!, []);
 
     useEffect(
       () => {
         if (initialScrollTop != null) {
-          currentRef.current.scrollTop = initialScrollTop;
+          internalRef.current!.scrollTop = initialScrollTop;
         }
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,16 +59,16 @@ const Scroller = forwardRef(
 
     useEffect(() => {
       if (scrollTop != null) {
-        currentRef.current.scrollTop = scrollTop;
+        internalRef.current!.scrollTop = scrollTop;
       }
 
-      if (autoFocus && scrollDirection !== ScrollDirection.None) {
-        currentRef.current.focus({ preventScroll: true });
+      if (autoFocus && scrollDirection !== 'none') {
+        internalRef.current!.focus({ preventScroll: true });
       }
-    }, [autoFocus, currentRef, scrollDirection, scrollTop]);
+    }, [autoFocus, scrollDirection, scrollTop]);
 
     useEffect(() => {
-      const div = currentRef.current;
+      const div = internalRef.current!;
 
       const handleScroll = throttle(() => {
         const scrollLeft = div.scrollLeft;
@@ -74,17 +77,17 @@ const Scroller = forwardRef(
         onScroll?.({ scrollLeft, scrollTop });
       }, 10);
 
-      div.addEventListener('scroll', handleScroll);
+      div?.addEventListener('scroll', handleScroll);
 
       return () => {
-        div.removeEventListener('scroll', handleScroll);
+        div?.removeEventListener('scroll', handleScroll);
       };
-    }, [currentRef, onScroll]);
+    }, [onScroll]);
 
     return (
       <div
         {...otherProps}
-        ref={currentRef}
+        ref={internalRef}
         className={classNames(
           className,
           styles.scroller,

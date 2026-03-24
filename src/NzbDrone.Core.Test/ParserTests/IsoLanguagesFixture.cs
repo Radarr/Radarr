@@ -53,5 +53,81 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = IsoLanguages.Find(isoCode);
             result.Language.Should().Be(Language.Telugu);
         }
+
+        [TestCase("af")]
+        [TestCase("afr")]
+        [TestCase("af-ZA")]
+        public void should_return_afrikaans(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Language.Should().Be(Language.Afrikaans);
+        }
+
+        [TestCase("mr")]
+        [TestCase("mar")]
+        [TestCase("mr-IN")]
+        public void should_return_marathi(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Language.Should().Be(Language.Marathi);
+        }
+
+        [TestCase("tl")]
+        [TestCase("tgl")]
+        [TestCase("tl-PH")]
+        public void should_return_tagalog(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Language.Should().Be(Language.Tagalog);
+        }
+
+        [TestCase("ur")]
+        [TestCase("urd")]
+        [TestCase("ur-PK")]
+        public void should_return_urdu(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Language.Should().Be(Language.Urdu);
+        }
+
+        [TestCase("rm")]
+        [TestCase("roh")]
+        [TestCase("rm-CH")]
+        public void should_return_romansh(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Language.Should().Be(Language.Romansh);
+        }
+
+        [TestCase("mn")]
+        [TestCase("mon")]
+        [TestCase("khk")]
+        [TestCase("mvf")]
+        [TestCase("mn-Cyrl")]
+        public void should_return_mongolian(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Language.Should().Be(Language.Mongolian);
+        }
+
+        [TestCase("bn")]
+        [TestCase("ben")]
+        [TestCase("bn-BD")]
+        [TestCase("bn-IN")]
+        public void should_return_bengali(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Language.Should().Be(Language.Bengali);
+        }
+
+        [TestCase("ka")]
+        [TestCase("geo")]
+        [TestCase("kat")]
+        [TestCase("ka-GE")]
+        public void should_return_georgian(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Language.Should().Be(Language.Georgian);
+        }
     }
 }

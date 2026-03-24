@@ -9,6 +9,7 @@ interface CssExports {
   'genres': string;
   'imdbRating': string;
   'inCinemas': string;
+  'keywords': string;
   'minimumAvailability': string;
   'movieStatus': string;
   'originalLanguage': string;

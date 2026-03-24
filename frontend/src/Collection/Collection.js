@@ -18,9 +18,9 @@ import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
 import CollectionFooter from './CollectionFooter';
-import CollectionFilterMenu from './Menus/CollectionFilterMenu';
-import CollectionSortMenu from './Menus/CollectionSortMenu';
-import NoCollection from './NoCollection';
+import MovieCollectionFilterMenu from './Menus/MovieCollectionFilterMenu';
+import MovieCollectionSortMenu from './Menus/MovieCollectionSortMenu';
+import NoMovieCollections from './NoMovieCollections';
 import CollectionOverviewsConnector from './Overview/CollectionOverviewsConnector';
 import CollectionOverviewOptionsModal from './Overview/Options/CollectionOverviewOptionsModal';
 
@@ -224,6 +224,7 @@ class Collection extends Component {
       view,
       onSortSelect,
       onFilterSelect,
+      initialScrollTop,
       onScroll,
       isRefreshingCollections,
       isSaving,
@@ -247,7 +248,7 @@ class Collection extends Component {
     const hasNoCollection = !totalItems;
 
     return (
-      <PageContent>
+      <PageContent title={translate('Collections')}>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
@@ -284,14 +285,14 @@ class Collection extends Component {
                 <PageToolbarSeparator />
             }
 
-            <CollectionSortMenu
+            <MovieCollectionSortMenu
               sortKey={sortKey}
               sortDirection={sortDirection}
               isDisabled={hasNoCollection}
               onSortSelect={onSortSelect}
             />
 
-            <CollectionFilterMenu
+            <MovieCollectionFilterMenu
               selectedFilterKey={selectedFilterKey}
               filters={filters}
               customFilters={customFilters}
@@ -306,6 +307,7 @@ class Collection extends Component {
             ref={this.scrollerRef}
             className={styles.contentBody}
             innerClassName={styles[`${view}InnerContentBody`]}
+            onScroll={onScroll}
           >
             {
               isFetching && !isPopulated &&
@@ -334,6 +336,7 @@ class Collection extends Component {
                     onSelectedChange={this.onSelectedChange}
                     onSelectAllChange={this.onSelectAllChange}
                     selectedState={selectedState}
+                    scrollTop={initialScrollTop}
                     {...otherProps}
                   />
                 </div>
@@ -341,7 +344,7 @@ class Collection extends Component {
 
             {
               !error && isPopulated && !items.length &&
-                <NoCollection totalItems={totalItems} />
+                <NoMovieCollections totalItems={totalItems} />
             }
           </PageContentBody>
 
@@ -374,6 +377,7 @@ class Collection extends Component {
 }
 
 Collection.propTypes = {
+  initialScrollTop: PropTypes.number,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,

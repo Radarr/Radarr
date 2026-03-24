@@ -17,6 +17,7 @@ using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Queue;
 
 namespace NzbDrone.Core.Download.Pending
 {
@@ -254,10 +255,7 @@ namespace NzbDrone.Core.Download.Pending
             {
                 foreach (var movie in knownRemoteMovies.Values.Select(v => v.Movie))
                 {
-                    if (!movieMap.ContainsKey(movie.Id))
-                    {
-                        movieMap[movie.Id] = movie;
-                    }
+                    movieMap.TryAdd(movie.Id, movie);
                 }
             }
 
@@ -273,7 +271,7 @@ namespace NzbDrone.Core.Download.Pending
                 // Just in case the movie was removed, but wasn't cleaned up yet (housekeeper will clean it up)
                 if (movie == null)
                 {
-                    return null;
+                    continue;
                 }
 
                 // Languages will be empty if added before upgrading to v4, reparsing the languages if they're empty will set it to Unknown or better.
@@ -313,11 +311,11 @@ namespace NzbDrone.Core.Download.Pending
                 ect = ect.AddMinutes(_configService.RssSyncInterval);
             }
 
-            var timeleft = ect.Subtract(DateTime.UtcNow);
+            var timeLeft = ect.Subtract(DateTime.UtcNow);
 
-            if (timeleft.TotalSeconds < 0)
+            if (timeLeft.TotalSeconds < 0)
             {
-                timeleft = TimeSpan.Zero;
+                timeLeft = TimeSpan.Zero;
             }
 
             string downloadClientName = null;
@@ -338,12 +336,12 @@ namespace NzbDrone.Core.Download.Pending
                 Languages = pendingRelease.RemoteMovie.Languages,
                 Title = pendingRelease.Title,
                 Size = pendingRelease.RemoteMovie.Release.Size,
-                Sizeleft = pendingRelease.RemoteMovie.Release.Size,
+                SizeLeft = pendingRelease.RemoteMovie.Release.Size,
                 RemoteMovie = pendingRelease.RemoteMovie,
-                Timeleft = timeleft,
+                TimeLeft = timeLeft,
                 EstimatedCompletionTime = ect,
                 Added = pendingRelease.Added,
-                Status = pendingRelease.Reason.ToString(),
+                Status = Enum.TryParse(pendingRelease.Reason.ToString(), out QueueStatus outValue) ? outValue : QueueStatus.Unknown,
                 Protocol = pendingRelease.RemoteMovie.Release.DownloadProtocol,
                 Indexer = pendingRelease.RemoteMovie.Release.Indexer,
                 DownloadClient = downloadClientName

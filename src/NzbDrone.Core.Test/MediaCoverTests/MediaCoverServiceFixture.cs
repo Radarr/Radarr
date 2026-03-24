@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -41,16 +40,15 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                     new MediaCover.MediaCover { CoverType = MediaCoverTypes.Banner }
                 };
 
-            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "H264_sample.mp4");
-            var fileInfo = new FileInfo(path);
+            Mocker.GetMock<IDiskProvider>().Setup(c => c.FileGetLastWrite(It.IsAny<string>()))
+                .Returns(new DateTime(1234));
 
-            Mocker.GetMock<IDiskProvider>()
-                .Setup(c => c.GetFileInfo(It.IsAny<string>()))
-                .Returns(fileInfo);
+            Mocker.GetMock<IDiskProvider>().Setup(c => c.FileExists(It.IsAny<string>()))
+                .Returns(true);
 
             Subject.ConvertToLocalUrls(12, covers);
 
-            covers.Single().Url.Should().Be($"/MediaCover/12/banner.jpg?lastWrite={fileInfo.LastWriteTimeUtc.Ticks}");
+            covers.Single().Url.Should().Be("/MediaCover/12/banner.jpg?lastWrite=1234");
         }
 
         [Test]
@@ -60,13 +58,6 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                 {
                     new MediaCover.MediaCover { CoverType = MediaCoverTypes.Banner }
                 };
-
-            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "NonExistant.mp4");
-            var fileInfo = new FileInfo(path);
-
-            Mocker.GetMock<IDiskProvider>()
-                .Setup(c => c.GetFileInfo(It.IsAny<string>()))
-                .Returns(fileInfo);
 
             Subject.ConvertToLocalUrls(12, covers);
 

@@ -14,6 +14,7 @@ namespace NzbDrone.Core.Parser.Model
         public int CustomFormatScore { get; set; }
         public MovieMatchType MovieMatchType { get; set; }
         public Movie Movie { get; set; }
+        public bool MovieRequested { get; set; }
         public bool DownloadAllowed { get; set; }
         public TorrentSeedConfiguration SeedConfiguration { get; set; }
         public List<Language> Languages { get; set; }

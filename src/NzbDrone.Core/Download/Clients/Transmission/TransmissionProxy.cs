@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net;
 using Newtonsoft.Json.Linq;
 using NLog;
 using NzbDrone.Common.Cache;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
@@ -12,15 +16,16 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 {
     public interface ITransmissionProxy
     {
-        List<TransmissionTorrent> GetTorrents(TransmissionSettings settings);
+        IReadOnlyCollection<TransmissionTorrent> GetTorrents(IReadOnlyCollection<string> hashStrings, TransmissionSettings settings);
         void AddTorrentFromUrl(string torrentUrl, string downloadDirectory, TransmissionSettings settings);
         void AddTorrentFromData(byte[] torrentData, string downloadDirectory, TransmissionSettings settings);
         void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfiguration, TransmissionSettings settings);
         TransmissionConfig GetConfig(TransmissionSettings settings);
         string GetProtocolVersion(TransmissionSettings settings);
-        string GetClientVersion(TransmissionSettings settings);
+        string GetClientVersion(TransmissionSettings settings, bool force = false);
         void RemoveTorrent(string hash, bool removeData, TransmissionSettings settings);
         void MoveTorrentToTopInQueue(string hashString, TransmissionSettings settings);
+        void SetTorrentLabels(string hash, IEnumerable<string> labels, TransmissionSettings settings);
     }
 
     public class TransmissionProxy : ITransmissionProxy
@@ -28,34 +33,43 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
-        private ICached<string> _authSessionIDCache;
+        private readonly ICached<string> _authSessionIdCache;
+        private readonly ICached<string> _versionCache;
 
         public TransmissionProxy(ICacheManager cacheManager, IHttpClient httpClient, Logger logger)
         {
             _httpClient = httpClient;
             _logger = logger;
 
-            _authSessionIDCache = cacheManager.GetCache<string>(GetType(), "authSessionID");
+            _authSessionIdCache = cacheManager.GetCache<string>(GetType(), "authSessionID");
+            _versionCache = cacheManager.GetCache<string>(GetType(), "versions");
         }
 
-        public List<TransmissionTorrent> GetTorrents(TransmissionSettings settings)
+        public IReadOnlyCollection<TransmissionTorrent> GetTorrents(IReadOnlyCollection<string> hashStrings, TransmissionSettings settings)
         {
-            var result = GetTorrentStatus(settings);
+            var result = GetTorrentStatus(hashStrings, settings);
 
-            var torrents = ((JArray)result.Arguments["torrents"]).ToObject<List<TransmissionTorrent>>();
+            var torrents = ((JArray)result.Arguments["torrents"]).ToObject<ReadOnlyCollection<TransmissionTorrent>>();
 
             return torrents;
         }
 
         public void AddTorrentFromUrl(string torrentUrl, string downloadDirectory, TransmissionSettings settings)
         {
-            var arguments = new Dictionary<string, object>();
-            arguments.Add("filename", torrentUrl);
-            arguments.Add("paused", settings.AddPaused);
+            var arguments = new Dictionary<string, object>
+            {
+                { "filename", torrentUrl },
+                { "paused", settings.AddPaused }
+            };
 
             if (!downloadDirectory.IsNullOrWhiteSpace())
             {
                 arguments.Add("download-dir", downloadDirectory);
+            }
+
+            if (settings.MovieCategory.IsNotNullOrWhiteSpace())
+            {
+                arguments.Add("labels", new List<string> { settings.MovieCategory });
             }
 
             ProcessRequest("torrent-add", arguments, settings);
@@ -63,13 +77,20 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         public void AddTorrentFromData(byte[] torrentData, string downloadDirectory, TransmissionSettings settings)
         {
-            var arguments = new Dictionary<string, object>();
-            arguments.Add("metainfo", Convert.ToBase64String(torrentData));
-            arguments.Add("paused", settings.AddPaused);
+            var arguments = new Dictionary<string, object>
+            {
+                { "metainfo", Convert.ToBase64String(torrentData) },
+                { "paused", settings.AddPaused }
+            };
 
             if (!downloadDirectory.IsNullOrWhiteSpace())
             {
                 arguments.Add("download-dir", downloadDirectory);
+            }
+
+            if (settings.MovieCategory.IsNotNullOrWhiteSpace())
+            {
+                arguments.Add("labels", new List<string> { settings.MovieCategory });
             }
 
             ProcessRequest("torrent-add", arguments, settings);
@@ -82,8 +103,10 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 return;
             }
 
-            var arguments = new Dictionary<string, object>();
-            arguments.Add("ids", new[] { hash });
+            var arguments = new Dictionary<string, object>
+            {
+                { "ids", new List<string> { hash } }
+            };
 
             if (seedConfiguration.Ratio != null)
             {
@@ -97,6 +120,12 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 arguments.Add("seedIdleMode", 1);
             }
 
+            // Avoid extraneous request if no limits are to be set
+            if (arguments.All(arg => arg.Key == "ids"))
+            {
+                return;
+            }
+
             ProcessRequest("torrent-set", arguments, settings);
         }
 
@@ -107,11 +136,16 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             return config.RpcVersion;
         }
 
-        public string GetClientVersion(TransmissionSettings settings)
+        public string GetClientVersion(TransmissionSettings settings, bool force = false)
         {
-            var config = GetConfig(settings);
+            var cacheKey = $"version:{$"{GetBaseUrl(settings)}:{settings.Password}".SHA256Hash()}";
 
-            return config.Version;
+            if (force)
+            {
+                _versionCache.Remove(cacheKey);
+            }
+
+            return _versionCache.Get(cacheKey, () => GetConfig(settings).Version, TimeSpan.FromHours(6));
         }
 
         public TransmissionConfig GetConfig(TransmissionSettings settings)
@@ -124,19 +158,34 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         public void RemoveTorrent(string hashString, bool removeData, TransmissionSettings settings)
         {
-            var arguments = new Dictionary<string, object>();
-            arguments.Add("ids", new string[] { hashString });
-            arguments.Add("delete-local-data", removeData);
+            var arguments = new Dictionary<string, object>
+            {
+                { "ids", new List<string> { hashString } },
+                { "delete-local-data", removeData }
+            };
 
             ProcessRequest("torrent-remove", arguments, settings);
         }
 
         public void MoveTorrentToTopInQueue(string hashString, TransmissionSettings settings)
         {
-            var arguments = new Dictionary<string, object>();
-            arguments.Add("ids", new string[] { hashString });
+            var arguments = new Dictionary<string, object>
+            {
+                { "ids", new List<string> { hashString } }
+            };
 
             ProcessRequest("queue-move-top", arguments, settings);
+        }
+
+        public void SetTorrentLabels(string hash, IEnumerable<string> labels, TransmissionSettings settings)
+        {
+            var arguments = new Dictionary<string, object>
+            {
+                { "ids", new List<string> { hash } },
+                { "labels", labels.ToImmutableHashSet() }
+            };
+
+            ProcessRequest("torrent-set", arguments, settings);
         }
 
         private TransmissionResponse GetSessionVariables(TransmissionSettings settings)
@@ -151,14 +200,9 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             return ProcessRequest("session-stats", null, settings);
         }
 
-        private TransmissionResponse GetTorrentStatus(TransmissionSettings settings)
-        {
-            return GetTorrentStatus(null, settings);
-        }
-
         private TransmissionResponse GetTorrentStatus(IEnumerable<string> hashStrings, TransmissionSettings settings)
         {
-            var fields = new string[]
+            var fields = new List<string>
             {
                 "id",
                 "hashString", // Unique torrent ID. Use this instead of the client id?
@@ -179,11 +223,14 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 "seedIdleLimit",
                 "seedIdleMode",
                 "fileCount",
-                "file-count"
+                "file-count",
+                "labels"
             };
 
-            var arguments = new Dictionary<string, object>();
-            arguments.Add("fields", fields);
+            var arguments = new Dictionary<string, object>
+            {
+                { "fields", fields }
+            };
 
             if (hashStrings != null)
             {
@@ -195,9 +242,14 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             return result;
         }
 
+        private string GetBaseUrl(TransmissionSettings settings)
+        {
+            return HttpRequestBuilder.BuildBaseUrl(settings.UseSsl, settings.Host, settings.Port, settings.UrlBase);
+        }
+
         private HttpRequestBuilder BuildRequest(TransmissionSettings settings)
         {
-            var requestBuilder = new HttpRequestBuilder(settings.UseSsl, settings.Host, settings.Port, settings.UrlBase)
+            var requestBuilder = new HttpRequestBuilder(GetBaseUrl(settings))
                 .Resource("rpc")
                 .Accept(HttpAccept.Json);
 
@@ -210,41 +262,43 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         private void AuthenticateClient(HttpRequestBuilder requestBuilder, TransmissionSettings settings, bool reauthenticate = false)
         {
-            var authKey = string.Format("{0}:{1}", requestBuilder.BaseUrl, settings.Password);
+            var authKey = $"{requestBuilder.BaseUrl}:{settings.Password}";
 
-            var sessionId = _authSessionIDCache.Find(authKey);
+            var sessionId = _authSessionIdCache.Find(authKey);
 
             if (sessionId == null || reauthenticate)
             {
-                _authSessionIDCache.Remove(authKey);
+                _authSessionIdCache.Remove(authKey);
 
                 var authLoginRequest = BuildRequest(settings).Build();
                 authLoginRequest.SuppressHttpError = true;
 
                 var response = _httpClient.Execute(authLoginRequest);
-                if (response.StatusCode == HttpStatusCode.MovedPermanently)
-                {
-                    var url = response.Headers.GetSingleValue("Location");
 
-                    throw new DownloadClientException("Remote site redirected to " + url);
-                }
-                else if (response.StatusCode == HttpStatusCode.Conflict)
+                switch (response.StatusCode)
                 {
-                    sessionId = response.Headers.GetSingleValue("X-Transmission-Session-Id");
+                    case HttpStatusCode.MovedPermanently:
+                        var url = response.Headers.GetSingleValue("Location");
 
-                    if (sessionId == null)
-                    {
-                        throw new DownloadClientException("Remote host did not return a Session Id.");
-                    }
-                }
-                else
-                {
-                    throw new DownloadClientAuthenticationException("Failed to authenticate with Transmission.");
+                        throw new DownloadClientException("Remote site redirected to " + url);
+                    case HttpStatusCode.Forbidden:
+                        throw new DownloadClientException($"Failed to authenticate with Transmission. It may be necessary to add {BuildInfo.AppName}'s IP address to RPC whitelist.");
+                    case HttpStatusCode.Conflict:
+                        sessionId = response.Headers.GetSingleValue("X-Transmission-Session-Id");
+
+                        if (sessionId == null)
+                        {
+                            throw new DownloadClientException("Remote host did not return a Session Id.");
+                        }
+
+                        break;
+                    default:
+                        throw new DownloadClientAuthenticationException("Failed to authenticate with Transmission.");
                 }
 
                 _logger.Debug("Transmission authentication succeeded.");
 
-                _authSessionIDCache.Set(authKey, sessionId);
+                _authSessionIdCache.Set(authKey, sessionId);
             }
 
             requestBuilder.SetHeader("X-Transmission-Session-Id", sessionId);
