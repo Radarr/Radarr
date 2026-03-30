@@ -43,14 +43,9 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
             return new AugmentQualityResult(QualitySource.UNKNOWN, Confidence.Default, resolution, resolutionConfidence, Modifier.NONE, Confidence.Default, null, Confidence.Default);
         }
 
-        public static AugmentQualityResult ModifierOnly(Modifier modifier, Confidence modifierConfidence)
+        public static AugmentQualityResult SourceAndResolutionOnly(QualitySource source, Confidence sourceConfidence, int resolution, Confidence resolutionConfidence, Modifier modifier, Confidence modifierConfidence)
         {
-            return new AugmentQualityResult(QualitySource.UNKNOWN, Confidence.Default, 0, Confidence.Default, modifier, modifierConfidence, null, Confidence.Default);
-        }
-
-        public static AugmentQualityResult SourceAndResolutionOnly(QualitySource source, Confidence sourceConfidence, int resolution, Confidence resolutionConfidence)
-        {
-            return new AugmentQualityResult(source, sourceConfidence, resolution, resolutionConfidence, Modifier.NONE, Confidence.Default, null, Confidence.Default);
+            return new AugmentQualityResult(source, sourceConfidence, resolution, resolutionConfidence, modifier, modifierConfidence, null, Confidence.Default);
         }
     }
 }
