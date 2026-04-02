@@ -64,7 +64,6 @@ function ManageImportListsEditModalContent(
   const [minimumAvailability, setMinimumAvailability] = useState(NO_CHANGE);
   const [rootFolderPath, setRootFolderPath] = useState(NO_CHANGE);
   const [retroApplyTags, setRetroApplyTags] = useState(NO_CHANGE);
-  
   const save = useCallback(() => {
     let hasChanges = false;
     const payload: SavePayload = {};
