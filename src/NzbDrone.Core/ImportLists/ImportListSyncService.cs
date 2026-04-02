@@ -76,7 +76,7 @@ namespace NzbDrone.Core.ImportLists
 
         private void ProcessMovieReport(ImportListDefinition importList, ImportListMovie report, List<ImportListExclusion> listExclusions, List<int> dbMovies, List<Movie> moviesToAdd)
         {
-            if (report.TmdbId == 0 || !importList.EnableAuto)
+            if (report.TmdbId == 0)
             {
                 return;
             }
@@ -86,6 +86,12 @@ namespace NzbDrone.Core.ImportLists
             {
                 RetroApplyTags(importList, report);
                 _logger.Debug("{0} [{1}] Rejected, Movie Exists in DB", report.TmdbId, report.Title);
+                return;
+            }
+
+            // Now that retro-tags are applied, end if auto import is disabled
+            if (!importList.EnableAuto)
+            {
                 return;
             }
 
