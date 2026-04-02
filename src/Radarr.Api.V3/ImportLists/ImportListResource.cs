@@ -16,6 +16,7 @@ namespace Radarr.Api.V3.ImportLists
         public ImportListType ListType { get; set; }
         public int ListOrder { get; set; }
         public TimeSpan MinRefreshInterval { get; set; }
+        public bool RetroApplyTags { get; set; }
     }
 
     public class ImportListResourceMapper : ProviderResourceMapper<ImportListResource, ImportListDefinition>
@@ -39,6 +40,7 @@ namespace Radarr.Api.V3.ImportLists
             resource.ListType = definition.ListType;
             resource.ListOrder = (int)definition.ListType;
             resource.MinRefreshInterval = definition.MinRefreshInterval;
+            resource.RetroApplyTags = definition.RetroApplyTags;
 
             return resource;
         }
@@ -61,6 +63,7 @@ namespace Radarr.Api.V3.ImportLists
             definition.MinimumAvailability = resource.MinimumAvailability;
             definition.ListType = resource.ListType;
             definition.MinRefreshInterval = resource.MinRefreshInterval;
+            definition.RetroApplyTags = resource.RetroApplyTags;
 
             return definition;
         }
