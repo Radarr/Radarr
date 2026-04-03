@@ -954,7 +954,7 @@
     "Blocklist": "Lista de bloqueos",
     "BlocklistRelease": "Lista de bloqueos de lanzamiento",
     "RemoveFromBlocklist": "Eliminar de la lista de bloqueo",
-    "Blocklisted": "Bloqueados",
+    "Blocklisted": "Bloqueado",
     "BlocklistReleases": "Lista de bloqueos de lanzamientos",
     "RemotePathMappingCheckDownloadPermissions": "{appName} puede ver pero no acceder a la película descargada {path}.  Probablemente sea un error de permisos.",
     "RemotePathMappingCheckFilesGenericPermissions": "El cliente de descarga {downloadClientName} informó de la existencia de archivos en {path} pero {appName} no puede ver este directorio.  Es posible que tengas que ajustar los permisos de la carpeta.",
@@ -2037,5 +2037,7 @@
     "NotificationsPushcutSettingsIncludePosterHelpText": "Incluir póster con notificación",
     "NotificationsPushcutSettingsMetadataLinks": "Enlaces de metadatos",
     "NotificationsPushcutSettingsMetadataLinksHelpText": "Añade un enlace a los metadatos de las series cuando se envían notificaciones",
-    "FilterMoviePropertiesOnlyNotFileWarning": "Los filtros están disponibles solo para las propiedades de una película, no para las propiedades del archivo(s) que puedas tener para esa película."
+    "FilterMoviePropertiesOnlyNotFileWarning": "Los filtros están disponibles solo para las propiedades de una película, no para las propiedades del archivo(s) que puedas tener para esa película.",
+    "NotificationsPushoverSettingsTtl": "Tiempo de vida",
+    "NotificationsPushoverSettingsTtlHelpText": "Tiempo en segundos antes de que el mensaje expire. Establecer en 0 para una duración ilimitada"
 }

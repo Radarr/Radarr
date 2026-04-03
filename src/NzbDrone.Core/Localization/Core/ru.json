@@ -1458,7 +1458,7 @@
     "NotificationsPushBulletSettingsAccessToken": "Токен доступа",
     "SecretToken": "Секретный токен",
     "TorrentBlackholeSaveMagnetFilesReadOnlyHelpText": "Вместо перемещения файлов это даст указание {appName} скопировать или установить жесткую ссылку (в зависимости от настроек/конфигурации системы)",
-    "NotificationsPushoverSettingsExpireHelpText": "Максимальное время повторной попытки экстренных оповещений, максимум 86400 секунд\"",
+    "NotificationsPushoverSettingsExpireHelpText": "Максимальное время повторной попытки экстренных оповещений, максимум 86400 секунд",
     "NotificationsPlexSettingsAuthToken": "Токен авторизации",
     "NotificationsNtfySettingsTagsEmojisHelpText": "Опциональный список тегов или эмодзи для использования",
     "NotificationsTwitterSettingsConnectToTwitter": "Подключиться к Твиттеру / X",
@@ -2037,5 +2037,7 @@
     "NotificationsPushcutSettingsIncludePosterHelpText": "Добавляет постер в уведомление",
     "NotificationsPushcutSettingsMetadataLinks": "Ссылки на метаданные",
     "NotificationsPushcutSettingsMetadataLinksHelpText": "Добавляет ссылки на метаданные сериала при отправке уведомлений",
-    "FilterMoviePropertiesOnlyNotFileWarning": "Фильтры доступны только для свойств фильма, они недоступны для свойств файл(ов), которые могут быть у вас для этого фильма."
+    "FilterMoviePropertiesOnlyNotFileWarning": "Фильтры доступны только для свойств фильма, они недоступны для свойств файл(ов), которые могут быть у вас для этого фильма.",
+    "NotificationsPushoverSettingsTtl": "Время актуальности",
+    "NotificationsPushoverSettingsTtlHelpText": "Время в секундах до потери актуальности сообщения. Установите в 0 для отключения ограничения"
 }
