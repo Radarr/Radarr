@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common;
@@ -9,6 +10,7 @@ using NzbDrone.Common.Cache;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Organizer;
 
@@ -47,6 +49,8 @@ namespace NzbDrone.Core.RootFolders
                                                                      "@eadir",
                                                                      ".grab"
                                                                  };
+
+        private static readonly Regex MovieFolderYearRegex = new Regex(@"\(\d{4}\)", RegexOptions.Compiled);
 
         public RootFolderService(IRootFolderRepository rootFolderRepository,
                                  IDiskProvider diskProvider,
@@ -157,16 +161,7 @@ namespace NzbDrone.Core.RootFolders
                 return results;
             }
 
-            var subFolderDepth = _namingConfigService.GetConfig().MovieFolderFormat.Count(f => f == Path.DirectorySeparatorChar);
-            var possibleMovieFolders = _diskProvider.GetDirectories(path).ToList();
-
-            if (subFolderDepth > 0)
-            {
-                for (var i = 0; i < subFolderDepth; i++)
-                {
-                    possibleMovieFolders = possibleMovieFolders.SelectMany(_diskProvider.GetDirectories).ToList();
-                }
-            }
+            var possibleMovieFolders = GetPossibleMovieFolders(path);
 
             var unmappedFolders = possibleMovieFolders.Except(moviePaths.Select(s => s.Value), PathEqualityComparer.Instance).ToList();
 
@@ -195,6 +190,91 @@ namespace NzbDrone.Core.RootFolders
 
             _logger.Debug("{0} unmapped folders detected.", results.Count);
             return results.OrderBy(u => u.Name, StringComparer.InvariantCultureIgnoreCase).ToList();
+        }
+
+        private List<string> GetPossibleMovieFolders(string path)
+        {
+            var subFolderDepth = _namingConfigService.GetConfig().MovieFolderFormat.Count(f => f == Path.DirectorySeparatorChar);
+            var possibleMovieFolders = new List<string>();
+
+            FindPossibleMovieFolders(path, 0, subFolderDepth, possibleMovieFolders);
+
+            return possibleMovieFolders;
+        }
+
+        private void FindPossibleMovieFolders(string path, int currentDepth, int expectedMovieFolderDepth, List<string> possibleMovieFolders)
+        {
+            var directories = (_diskProvider.GetDirectories(path) ?? Enumerable.Empty<string>()).ToList();
+
+            foreach (var directory in directories)
+            {
+                var childDirectories = (_diskProvider.GetDirectories(directory) ?? Enumerable.Empty<string>()).ToList();
+
+                if (currentDepth < expectedMovieFolderDepth)
+                {
+                    FindPossibleMovieFolders(directory, currentDepth + 1, expectedMovieFolderDepth, possibleMovieFolders);
+                    continue;
+                }
+
+                if (ShouldRecurseIntoGroupingFolder(directory, childDirectories))
+                {
+                    FindPossibleMovieFolders(directory, currentDepth + 1, expectedMovieFolderDepth, possibleMovieFolders);
+                    continue;
+                }
+
+                if (IsPossibleMovieFolder(directory, childDirectories))
+                {
+                    possibleMovieFolders.Add(directory);
+                }
+            }
+        }
+
+        private bool IsPossibleMovieFolder(string path, List<string> childDirectories)
+        {
+            if (HasVideoFiles(path))
+            {
+                return true;
+            }
+
+            if (!childDirectories.Any())
+            {
+                return true;
+            }
+
+            return MovieFolderYearRegex.IsMatch(new DirectoryInfo(path).Name);
+        }
+
+        private bool ShouldRecurseIntoGroupingFolder(string path, List<string> childDirectories)
+        {
+            if (HasVideoFiles(path) || !childDirectories.Any())
+            {
+                return false;
+            }
+
+            var directoryName = new DirectoryInfo(path).Name;
+
+            if (MovieFolderYearRegex.IsMatch(directoryName))
+            {
+                return false;
+            }
+
+            return childDirectories.All(ContainsMovieFolder);
+        }
+
+        private bool ContainsMovieFolder(string path)
+        {
+            if (HasVideoFiles(path))
+            {
+                return true;
+            }
+
+            return MovieFolderYearRegex.IsMatch(new DirectoryInfo(path).Name);
+        }
+
+        private bool HasVideoFiles(string path)
+        {
+            return (_diskProvider.GetFiles(path, false) ?? Enumerable.Empty<string>())
+                                .Any(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file)));
         }
 
         public RootFolder Get(int id, bool timeout)

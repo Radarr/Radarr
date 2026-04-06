@@ -51,6 +51,17 @@ namespace NzbDrone.Core.Test.RootFolderTests
                 .Returns(false);
         }
 
+        private void GivenRootFolder(RootFolder rootFolder)
+        {
+            Mocker.GetMock<IRootFolderRepository>()
+                .Setup(s => s.Get(It.IsAny<int>()))
+                .Returns(rootFolder);
+
+            Mocker.GetMock<IMovieRepository>()
+                .Setup(s => s.AllMoviePaths())
+                .Returns(new Dictionary<int, string>());
+        }
+
         [TestCase("D:\\TV Shows\\")]
         [TestCase("//server//folder")]
         public void should_be_able_to_add_root_dir(string path)
@@ -278,20 +289,14 @@ namespace NzbDrone.Core.Test.RootFolderTests
 
             var subFolders = new[]
             {
-                "Movie1",
-                "Movie2",
-                "Movie3",
+                "Movie 1 (2001)",
+                "Movie 2 (2002)",
+                "Movie 3 (2003)",
             };
 
             var folders = subFolders.Select(f => Path.Combine(subFolderPath, f)).ToArray();
 
-            Mocker.GetMock<IRootFolderRepository>()
-                .Setup(s => s.Get(It.IsAny<int>()))
-                .Returns(rootFolder);
-
-            Mocker.GetMock<IMovieRepository>()
-                .Setup(s => s.AllMoviePaths())
-                .Returns(new Dictionary<int, string>());
+            GivenRootFolder(rootFolder);
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(s => s.GetDirectories(rootFolder.Path))
@@ -304,6 +309,206 @@ namespace NzbDrone.Core.Test.RootFolderTests
             var unmappedFolders = Subject.Get(rootFolder.Id, false).UnmappedFolders;
 
             unmappedFolders.Count.Should().Be(3);
+        }
+
+        [Test]
+        public void should_get_top_level_movie_folders()
+        {
+            var rootFolderPath = @"C:\Test\Movies".AsOsAgnostic();
+            var rootFolder = Builder<RootFolder>.CreateNew()
+                .With(r => r.Path = rootFolderPath)
+                .Build();
+
+            var movieFolders = new[]
+            {
+                "Movie 1 (2001)",
+                "Movie 2 (2002)",
+                "Movie 3 (2003)",
+            };
+
+            var folders = movieFolders.Select(f => Path.Combine(rootFolderPath, f)).ToArray();
+
+            GivenRootFolder(rootFolder);
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetDirectories(rootFolder.Path))
+                .Returns(folders);
+
+            foreach (var folder in folders)
+            {
+                Mocker.GetMock<IDiskProvider>()
+                    .Setup(s => s.GetDirectories(folder))
+                    .Returns(Array.Empty<string>());
+            }
+
+            var unmappedFolders = Subject.Get(rootFolder.Id, false).UnmappedFolders;
+
+            unmappedFolders.Select(f => f.Name).Should().BeEquivalentTo(movieFolders);
+        }
+
+        [Test]
+        public void should_get_nested_movie_folder_when_parent_is_only_a_grouping_folder()
+        {
+            var rootFolderPath = @"C:\Test\Movies".AsOsAgnostic();
+            var rootFolder = Builder<RootFolder>.CreateNew()
+                .With(r => r.Path = rootFolderPath)
+                .Build();
+
+            var groupingFolder = Path.Combine(rootFolderPath, "L");
+            var movieFolder = Path.Combine(groupingFolder, "Ladder 49 (2004)");
+            var movieFile = Path.Combine(movieFolder, "Ladder 49 (2004) [Bluray-1080p].mkv").AsOsAgnostic();
+
+            GivenRootFolder(rootFolder);
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetDirectories(rootFolder.Path))
+                .Returns(new[] { groupingFolder });
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetDirectories(groupingFolder))
+                .Returns(new[] { movieFolder });
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetDirectories(movieFolder))
+                .Returns(Array.Empty<string>());
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetFiles(groupingFolder, false))
+                .Returns(Array.Empty<string>());
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetFiles(movieFolder, false))
+                .Returns(new[] { movieFile });
+
+            var unmappedFolders = Subject.Get(rootFolder.Id, false).UnmappedFolders;
+
+            unmappedFolders.Should().HaveCount(1);
+            unmappedFolders[0].Name.Should().Be("Ladder 49 (2004)");
+            unmappedFolders[0].Path.Should().Be(movieFolder);
+            unmappedFolders[0].RelativePath.Should().Be(Path.Combine("L", "Ladder 49 (2004)").AsOsAgnostic());
+        }
+
+        [Test]
+        public void should_not_return_grouping_folder_when_only_child_folder_contains_video_file()
+        {
+            var rootFolderPath = @"C:\Test\Movies".AsOsAgnostic();
+            var rootFolder = Builder<RootFolder>.CreateNew()
+                .With(r => r.Path = rootFolderPath)
+                .Build();
+
+            var groupingFolder = Path.Combine(rootFolderPath, "L");
+            var movieFolder = Path.Combine(groupingFolder, "Ladder 49 (2004)");
+            var movieFile = Path.Combine(movieFolder, "Ladder 49 (2004).mkv").AsOsAgnostic();
+
+            GivenRootFolder(rootFolder);
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetDirectories(rootFolder.Path))
+                .Returns(new[] { groupingFolder });
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetDirectories(groupingFolder))
+                .Returns(new[] { movieFolder });
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetDirectories(movieFolder))
+                .Returns(Array.Empty<string>());
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetFiles(groupingFolder, false))
+                .Returns(Array.Empty<string>());
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetFiles(movieFolder, false))
+                .Returns(new[] { movieFile });
+
+            var unmappedFolders = Subject.Get(rootFolder.Id, false).UnmappedFolders;
+
+            unmappedFolders.Should().NotContain(u => u.Name == "L");
+        }
+
+        [Test]
+        public void should_not_return_already_mapped_nested_movie_folder()
+        {
+            var rootFolderPath = @"C:\Test\Movies".AsOsAgnostic();
+            var rootFolder = Builder<RootFolder>.CreateNew()
+                .With(r => r.Path = rootFolderPath)
+                .Build();
+
+            var groupingFolder = Path.Combine(rootFolderPath, "L");
+            var movieFolder = Path.Combine(groupingFolder, "Ladder 49 (2004)");
+            var movieFile = Path.Combine(movieFolder, "Ladder 49 (2004).mkv").AsOsAgnostic();
+
+            Mocker.GetMock<IRootFolderRepository>()
+                .Setup(s => s.Get(It.IsAny<int>()))
+                .Returns(rootFolder);
+
+            Mocker.GetMock<IMovieRepository>()
+                .Setup(s => s.AllMoviePaths())
+                .Returns(new Dictionary<int, string> { { 1, movieFolder } });
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetDirectories(rootFolder.Path))
+                .Returns(new[] { groupingFolder });
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetDirectories(groupingFolder))
+                .Returns(new[] { movieFolder });
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetDirectories(movieFolder))
+                .Returns(Array.Empty<string>());
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetFiles(groupingFolder, false))
+                .Returns(Array.Empty<string>());
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetFiles(movieFolder, false))
+                .Returns(new[] { movieFile });
+
+            var unmappedFolders = Subject.Get(rootFolder.Id, false).UnmappedFolders;
+
+            unmappedFolders.Should().BeEmpty();
+        }
+
+        [Test]
+        public void should_not_recurse_into_movie_folder_with_disc_subfolders()
+        {
+            var rootFolderPath = @"C:\Test\Movies".AsOsAgnostic();
+            var rootFolder = Builder<RootFolder>.CreateNew()
+                .With(r => r.Path = rootFolderPath)
+                .Build();
+
+            var movieFolder = Path.Combine(rootFolderPath, "Movie 1 (2001)");
+            var discFolder = Path.Combine(movieFolder, "BDMV");
+
+            GivenRootFolder(rootFolder);
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetDirectories(rootFolder.Path))
+                .Returns(new[] { movieFolder });
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetDirectories(movieFolder))
+                .Returns(new[] { discFolder });
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetDirectories(discFolder))
+                .Returns(Array.Empty<string>());
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetFiles(movieFolder, false))
+                .Returns(Array.Empty<string>());
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetFiles(discFolder, false))
+                .Returns(Array.Empty<string>());
+
+            var unmappedFolders = Subject.Get(rootFolder.Id, false).UnmappedFolders;
+
+            unmappedFolders.Should().HaveCount(1);
+            unmappedFolders[0].Name.Should().Be("Movie 1 (2001)");
         }
     }
 }
