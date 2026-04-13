@@ -190,7 +190,7 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
 
             if (Settings.Category.IsNotNullOrWhiteSpace())
             {
-                destDir = $"{destDir}/{Settings.Category}"; 
+                destDir = $"{destDir}/{Settings.Category}";
             }
 
             if (remoteMovie?.Release?.Title.IsNotNullOrWhiteSpace() ?? false)
