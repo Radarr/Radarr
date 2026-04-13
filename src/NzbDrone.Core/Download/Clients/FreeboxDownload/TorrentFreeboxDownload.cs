@@ -127,27 +127,25 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
             return queueItems;
         }
 
-        protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
-        {
-            return _proxy.AddTaskFromUrl(magnetLink,
-                                         GetDownloadDirectory().EncodeBase64(),
-                                         ToBePaused(),
-                                         ToBeQueuedFirst(remoteMovie),
-                                         GetSeedRatio(remoteMovie),
-                                         Settings);
-        }
-
-        protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
-        {
-            return _proxy.AddTaskFromFile(filename,
-                                          fileContent,
-                                          GetDownloadDirectory().EncodeBase64(),
-                                          ToBePaused(),
-                                          ToBeQueuedFirst(remoteMovie),
-                                          GetSeedRatio(remoteMovie),
-                                          Settings);
-        }
-
+		protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
+		{
+			return _proxy.AddTaskFromUrl(magnetLink,
+				                         GetDownloadDirectory(remoteMovie).EncodeBase64(),
+				                         ToBePaused(),
+				                         ToBeQueuedFirst(remoteMovie),
+				                         GetSeedRatio(remoteMovie),
+				                         Settings);
+		}
+		protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
+		{
+			return _proxy.AddTaskFromFile(filename,
+				                          fileContent,
+				                          GetDownloadDirectory(remoteMovie).EncodeBase64(),
+				                          ToBePaused(),
+				                          ToBeQueuedFirst(remoteMovie),
+				                          GetSeedRatio(remoteMovie),
+				                          Settings);
+		}
         public override void RemoveItem(DownloadClientItem item, bool deleteData)
         {
             _proxy.DeleteTask(item.DownloadId, deleteData, Settings);
@@ -186,22 +184,33 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
             }
         }
 
-        private string GetDownloadDirectory()
-        {
-            if (Settings.DestinationDirectory.IsNotNullOrWhiteSpace())
-            {
-                return Settings.DestinationDirectory.TrimEnd('/');
-            }
+		private string GetDownloadDirectory(RemoteMovie remoteMovie = null)
+		{
+			string destDir;
 
-            var destDir = _proxy.GetDownloadConfiguration(Settings).DecodedDownloadDirectory.TrimEnd('/');
+			if (Settings.DestinationDirectory.IsNotNullOrWhiteSpace())
+			{
+				destDir = Settings.DestinationDirectory.TrimEnd('/');
+			}
+			else
+			{
+				destDir = _proxy.GetDownloadConfiguration(Settings).DecodedDownloadDirectory.TrimEnd('/');
+			}
 
-            if (Settings.Category.IsNotNullOrWhiteSpace())
-            {
-                destDir = $"{destDir}/{Settings.Category}";
-            }
+			if (Settings.Category.IsNotNullOrWhiteSpace())
+			{
+				destDir = $"{destDir}/{Settings.Category}";
+			}
 
-            return destDir;
-        }
+			// Ajout du sous-dossier spécifique au film si un film est fourni
+			if (remoteMovie != null)
+			{
+				var folderName = remoteMovie.Release.Title.Replace("/", "-").Replace("\\", "-");
+				destDir = $"{destDir}/{folderName}";
+			}
+
+			return destDir;
+		}
 
         private bool ToBePaused()
         {
