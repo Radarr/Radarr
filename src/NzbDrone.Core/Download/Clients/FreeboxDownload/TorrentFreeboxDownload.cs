@@ -141,7 +141,6 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
         {
             _proxy.DeleteTask(item.DownloadId, deleteData, Settings);
         }
-        
         public override DownloadClientInfo GetStatus()
         {
             var destDir = GetDownloadDirectory();
