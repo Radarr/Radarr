@@ -202,7 +202,6 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
 				destDir = $"{destDir}/{Settings.Category}";
 			}
 
-			// Ajout du sous-dossier spécifique au film si un film est fourni
 			if (remoteMovie != null)
 			{
 				var folderName = remoteMovie.Release.Title.Replace("/", "-").Replace("\\", "-");
