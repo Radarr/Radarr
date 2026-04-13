@@ -126,7 +126,6 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
 
             return queueItems;
         }
-        
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             return _proxy.AddTaskFromUrl(magnetLink, GetDownloadDirectory(remoteMovie).EncodeBase64(), ToBePaused(), ToBeQueuedFirst(remoteMovie), GetSeedRatio(remoteMovie), Settings);
