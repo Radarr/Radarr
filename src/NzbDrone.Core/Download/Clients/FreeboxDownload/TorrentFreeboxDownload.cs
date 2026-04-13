@@ -193,7 +193,7 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
                 destDir = $"{destDir}/{Settings.Category}"; 
             }
 
-            if (remoteMovie != null)
+            if (remoteMovie?.Release?.Title.IsNotNullOrWhiteSpace() ?? false)
             {
                 var folderName = FileNameExtensions.CleanFileName(remoteMovie.Release.Title);
                 destDir = $"{destDir}/{folderName}";
