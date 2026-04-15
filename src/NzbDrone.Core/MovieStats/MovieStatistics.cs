@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.MovieStats
 {
@@ -11,6 +13,7 @@ namespace NzbDrone.Core.MovieStats
         public int MovieFileCount { get; set; }
         public long SizeOnDisk { get; set; }
         public string ReleaseGroupsString { get; set; }
+        public string MovieFileQualitiesString { get; set; }
 
         public List<string> ReleaseGroups
         {
@@ -29,6 +32,24 @@ namespace NzbDrone.Core.MovieStats
                 }
 
                 return releaseGroups;
+            }
+        }
+
+        public List<Quality> MovieFileQualities
+        {
+            get
+            {
+                if (MovieFileQualitiesString.IsNullOrWhiteSpace())
+                {
+                    return new List<Quality>();
+                }
+
+                return MovieFileQualitiesString
+                    .Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    .Select(int.Parse)
+                    .Distinct()
+                    .Select(Quality.FindById)
+                    .ToList();
             }
         }
     }

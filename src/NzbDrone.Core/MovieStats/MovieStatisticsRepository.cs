@@ -45,6 +45,7 @@ namespace NzbDrone.Core.MovieStats
 
                 e.SizeOnDisk = file?.SizeOnDisk ?? 0;
                 e.ReleaseGroupsString = file?.ReleaseGroupsString;
+                e.MovieFileQualitiesString = file?.MovieFileQualitiesString;
             });
 
             return moviesResult;
@@ -74,14 +75,16 @@ namespace NzbDrone.Core.MovieStats
                 return new SqlBuilder(_database.DatabaseType)
                     .Select(@"""MovieId"",
                             SUM(COALESCE(""Size"", 0)) AS SizeOnDisk,
-                            GROUP_CONCAT(""ReleaseGroup"", '|') AS ReleaseGroupsString")
+                            GROUP_CONCAT(""ReleaseGroup"", '|') AS ReleaseGroupsString,
+                            GROUP_CONCAT(JSON_EXTRACT(""Quality"", '$.quality'), '|') AS MovieFileQualitiesString")
                     .GroupBy<MovieFile>(x => x.MovieId);
             }
 
             return new SqlBuilder(_database.DatabaseType)
                 .Select(@"""MovieId"",
                         SUM(COALESCE(""Size"", 0)) AS SizeOnDisk,
-                        string_agg(""ReleaseGroup"", '|') AS ReleaseGroupsString")
+                        string_agg(""ReleaseGroup"", '|') AS ReleaseGroupsString,
+                        string_agg(""Quality""::json->>'quality', '|') AS MovieFileQualitiesString")
                 .GroupBy<MovieFile>(x => x.MovieId);
         }
     }

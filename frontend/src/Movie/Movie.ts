@@ -1,6 +1,7 @@
 import ModelBase from 'App/ModelBase';
 import Language from 'Language/Language';
 import { MovieFile } from 'MovieFile/MovieFile';
+import Quality from 'Quality/Quality';
 
 export type MovieMonitor = 'movieOnly' | 'movieAndCollection' | 'none';
 
@@ -29,6 +30,7 @@ export interface Collection {
 export interface Statistics {
   movieFileCount: number;
   releaseGroups: string[];
+  movieFileQualities: Quality[];
   sizeOnDisk: number;
 }
 
