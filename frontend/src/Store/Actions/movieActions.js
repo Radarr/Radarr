@@ -136,6 +136,14 @@ export const filterPredicates = {
     return predicate(releaseGroups, filterValue);
   },
 
+  movieFileQualities: function(item, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+    const movieFileQualities = (
+      item.statistics?.movieFileQualities ?? []
+    ).map((q) => q.id);
+    return predicate(movieFileQualities, filterValue);
+  },
+
   sizeOnDisk: function(item, filterValue, type) {
     const predicate = filterTypePredicates[type];
     const { statistics = {} } = item;

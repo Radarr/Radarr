@@ -86,7 +86,11 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     isSaving = false,
   } = movie;
 
-  const { sizeOnDisk = 0, releaseGroups = [] } = statistics;
+  const {
+    sizeOnDisk = 0,
+    releaseGroups = [],
+    movieFileQualities = [],
+  } = statistics;
 
   const dispatch = useDispatch();
   const [isEditMovieModalOpen, setIsEditMovieModalOpen] = useState(false);
@@ -433,6 +437,25 @@ function MovieIndexRow(props: MovieIndexRowProps) {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
               <span title={joinedReleaseGroups}>{truncatedReleaseGroups}</span>
+            </VirtualTableRowCell>
+          );
+        }
+
+        if (name === 'movieFileQualities') {
+          const joinedQualities = movieFileQualities
+            .map((q) => q.name)
+            .join(', ');
+          const truncatedQualities =
+            movieFileQualities.length > 3
+              ? `${movieFileQualities
+                  .slice(0, 3)
+                  .map((q) => q.name)
+                  .join(', ')}...`
+              : joinedQualities;
+
+          return (
+            <VirtualTableRowCell key={name} className={styles[name]}>
+              <span title={joinedQualities}>{truncatedQualities}</span>
             </VirtualTableRowCell>
           );
         }

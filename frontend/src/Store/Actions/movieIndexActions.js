@@ -236,6 +236,12 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'movieFileQualities',
+      label: () => translate('MovieFileQualities'),
+      isSortable: false,
+      isVisible: false
+    },
+    {
       name: 'tags',
       label: () => translate('Tags'),
       isSortable: true,
@@ -372,6 +378,12 @@ export const defaultState = {
 
         return groupList.sort(sortByProp('name'));
       }
+    },
+    {
+      name: 'movieFileQualities',
+      label: () => translate('MovieFileQualities'),
+      type: filterBuilderTypes.ARRAY,
+      valueType: filterBuilderValueTypes.QUALITY
     },
     {
       name: 'status',

@@ -67,6 +67,12 @@
   flex-direction: column;
 }
 
+.movieFileQualities {
+  composes: cell;
+
+  flex: 0 0 220px;
+}
+
 .certification {
   composes: cell;
 

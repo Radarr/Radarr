@@ -11,6 +11,7 @@ interface CssExports {
   'inCinemas': string;
   'keywords': string;
   'minimumAvailability': string;
+  'movieFileQualities': string;
   'movieStatus': string;
   'originalLanguage': string;
   'originalTitle': string;

@@ -57,6 +57,12 @@
   flex: 0 0 150px;
 }
 
+.movieFileQualities {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 0 220px;
+}
+
 .certification {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using NzbDrone.Core.MovieStats;
+using NzbDrone.Core.Qualities;
 
 namespace Radarr.Api.V3.Movies
 {
@@ -8,6 +9,7 @@ namespace Radarr.Api.V3.Movies
         public int MovieFileCount { get; set; }
         public long SizeOnDisk { get; set; }
         public List<string> ReleaseGroups { get; set; }
+        public List<Quality> MovieFileQualities { get; set; }
     }
 
     public static class MovieStatisticsResourceMapper
@@ -23,7 +25,8 @@ namespace Radarr.Api.V3.Movies
             {
                 MovieFileCount = model.MovieFileCount,
                 SizeOnDisk = model.SizeOnDisk,
-                ReleaseGroups = model.ReleaseGroups
+                ReleaseGroups = model.ReleaseGroups,
+                MovieFileQualities = model.MovieFileQualities,
             };
         }
     }
