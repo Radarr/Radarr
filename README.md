@@ -34,6 +34,7 @@ These are universal bug-fixes that should be fixed in the original Radarr projec
 
 - ffprobe issues: There's a bug in VideoFileInfoReader that causes ffprobe to read the entire file during HDR analysis if the video stream is at a non-zero index. This is especially problematic for remote files since it uses bandwidth unnecessarily: https://github.com/Radarr/Radarr/pull/11364
 - RefreshMonitoredDownloadsCommand: Tools like decypharr and nzbdav issue this command after processing a download. But when this command is issued through the API or through the UI, it has a `Normal` priority, causing a buildup of queue items if lots of searches are triggered at once: https://github.com/Radarr/Radarr/pull/11365
+- Fix a bug where Radarr silently ignores torrents that have been previously imported, deleted and then grabbed again. Without this, repairs from tools like decypharr don't work reliably.
 
 ### Tweaks
 
