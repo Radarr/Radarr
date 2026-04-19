@@ -132,13 +132,19 @@ public class mediainfo_multiple_streams : NzbDroneMigrationBase
             {
                 Language = language,
             })
-            .ToList();
-        audioStreams?.FirstOrDefault()?.Format = old.AudioFormat;
-        audioStreams?.FirstOrDefault()?.CodecId = old.AudioCodecID;
-        audioStreams?.FirstOrDefault()?.Profile = old.AudioProfile;
-        audioStreams?.FirstOrDefault()?.Bitrate = old.AudioBitrate;
-        audioStreams?.FirstOrDefault()?.Channels = old.AudioChannels;
-        audioStreams?.FirstOrDefault()?.ChannelPositions = old.AudioChannelPositions;
+            .ToList() ?? [];
+
+        if (audioStreams.Count == 0)
+        {
+            audioStreams.Add(new MediaInfoAudioStream225 { Language = "und" });
+        }
+
+        audioStreams.FirstOrDefault()?.Format = old.AudioFormat;
+        audioStreams.FirstOrDefault()?.CodecId = old.AudioCodecID;
+        audioStreams.FirstOrDefault()?.Profile = old.AudioProfile;
+        audioStreams.FirstOrDefault()?.Bitrate = old.AudioBitrate;
+        audioStreams.FirstOrDefault()?.Channels = old.AudioChannels;
+        audioStreams.FirstOrDefault()?.ChannelPositions = old.AudioChannelPositions;
 
         return audioStreams;
     }
@@ -150,7 +156,7 @@ public class mediainfo_multiple_streams : NzbDroneMigrationBase
             {
                 Language = language,
             })
-            .ToList();
+            .ToList() ?? [];
 
         return subtitleStreams;
     }
