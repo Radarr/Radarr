@@ -50,8 +50,6 @@ public class mediainfo_multiple_streams : NzbDroneMigrationBase
     {
         var existing = conn.Query<MovieFile224>("SELECT \"Id\", \"MediaInfo\" FROM \"MovieFiles\"");
 
-        var updated = new List<object>();
-
         foreach (var row in existing)
         {
             if (row.MediaInfo.IsNullOrWhiteSpace())
@@ -68,7 +66,7 @@ public class mediainfo_multiple_streams : NzbDroneMigrationBase
             {
                 _logger.Warn(ex, "Movie {MovieId} contains invalid JSON data, skipping.", row.Id);
 
-                updated.Add(new MovieFile225 { Id = row.Id, MediaInfo = null });
+                UpdateMediaInfoForMovieFile(conn, tran, new MovieFile225 { Id = row.Id, MediaInfo = null });
 
                 continue;
             }
@@ -87,17 +85,17 @@ public class mediainfo_multiple_streams : NzbDroneMigrationBase
                 continue;
             }
 
-            updated.Add(new MovieFile225
+            UpdateMediaInfoForMovieFile(conn, tran, new MovieFile225
             {
                 Id = row.Id,
                 MediaInfo = JsonSerializer.Serialize(newMediaInfo, _serializerSettings)
             });
         }
+    }
 
-        conn.Execute(
-            "UPDATE \"MovieFiles\" SET \"MediaInfo\" = @MediaInfo WHERE \"Id\" = @Id",
-            updated,
-            transaction: tran);
+    private static void UpdateMediaInfoForMovieFile(IDbConnection conn, IDbTransaction tran, MovieFile225 updated)
+    {
+        conn.Execute("UPDATE \"MovieFiles\" SET \"MediaInfo\" = @MediaInfo WHERE \"Id\" = @Id", updated, transaction: tran);
     }
 
     private static MediaInfo225 MigrateMediaInfo(MediaInfo224 old)
