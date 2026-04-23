@@ -89,38 +89,15 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
                   });
         }
 
-        [Test]
-        public void should_reuse_stable_queued_downloading_tracked_download()
+        [TestCase(DownloadItemStatus.Queued)]
+        [TestCase(DownloadItemStatus.Paused)]
+        public void should_reuse_stable_waiting_downloading_tracked_download(DownloadItemStatus status)
         {
             GivenTrackedDownloadCanBeMapped();
 
             var client = CreateDownloadClient();
-            var item = CreateDownloadItem(DownloadItemStatus.Queued);
-            var updatedItem = CreateDownloadItem(DownloadItemStatus.Queued);
-            updatedItem.RemainingSize = 250;
-
-            var trackedDownload = Subject.TrackDownload(client, item);
-            var refreshedTrackedDownload = Subject.TrackDownload(client, updatedItem);
-
-            trackedDownload.State.Should().Be(TrackedDownloadState.Downloading);
-            refreshedTrackedDownload.Should().BeSameAs(trackedDownload);
-            refreshedTrackedDownload.DownloadItem.Should().BeSameAs(updatedItem);
-
-            Mocker.GetMock<IHistoryService>()
-                  .Verify(s => s.FindByDownloadId(It.IsAny<string>()), Times.Once());
-
-            Mocker.GetMock<IParsingService>()
-                  .Verify(s => s.Map(It.IsAny<ParsedMovieInfo>(), It.IsAny<string>(), It.IsAny<int>(), null), Times.Once());
-        }
-
-        [Test]
-        public void should_reuse_stable_paused_downloading_tracked_download()
-        {
-            GivenTrackedDownloadCanBeMapped();
-
-            var client = CreateDownloadClient();
-            var item = CreateDownloadItem(DownloadItemStatus.Paused);
-            var updatedItem = CreateDownloadItem(DownloadItemStatus.Paused);
+            var item = CreateDownloadItem(status);
+            var updatedItem = CreateDownloadItem(status);
             updatedItem.RemainingSize = 250;
 
             var trackedDownload = Subject.TrackDownload(client, item);
@@ -407,6 +384,70 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
             var trackedDownloads = Subject.GetTrackedDownloads();
             trackedDownloads.Should().HaveCount(1);
             trackedDownloads.First().RemoteMovie.Should().BeNull();
+        }
+
+        [Test]
+        public void should_update_tracked_download_when_movie_edited()
+        {
+            var originalMovie = new Movie { Id = 3, TmdbId = 10, Title = "A Movie" };
+            var updatedMovie = new Movie { Id = 3, TmdbId = 10, Title = "A Movie Updated" };
+
+            var remoteMovie = new RemoteMovie
+            {
+                Movie = originalMovie,
+                ParsedMovieInfo = new ParsedMovieInfo
+                {
+                    MovieTitles = { "A Movie" },
+                    Year = 1998
+                }
+            };
+
+            var updatedRemoteMovie = new RemoteMovie
+            {
+                Movie = updatedMovie,
+                ParsedMovieInfo = new ParsedMovieInfo
+                {
+                    MovieTitles = { "A Movie" },
+                    Year = 1998
+                }
+            };
+
+            Mocker.GetMock<IParsingService>()
+                  .SetupSequence(s => s.Map(It.IsAny<ParsedMovieInfo>(), It.IsAny<string>(), It.IsAny<int>(), null))
+                  .Returns(remoteMovie)
+                  .Returns(updatedRemoteMovie);
+
+            Mocker.GetMock<IHistoryService>()
+                  .Setup(s => s.FindByDownloadId(It.IsAny<string>()))
+                  .Returns(new List<MovieHistory>());
+
+            var client = new DownloadClientDefinition
+            {
+                Id = 1,
+                Protocol = DownloadProtocol.Torrent
+            };
+
+            var item = new DownloadClientItem
+            {
+                Title = "A Movie 1998",
+                DownloadId = "12345",
+                DownloadClientInfo = new DownloadClientItemClientInfo
+                {
+                    Id = 1,
+                    Type = "Blackhole",
+                    Name = "Blackhole Client",
+                    Protocol = DownloadProtocol.Torrent
+                }
+            };
+
+            Subject.TrackDownload(client, item);
+
+            Subject.Handle(new MovieEditedEvent(updatedMovie, originalMovie));
+
+            var trackedDownloads = Subject.GetTrackedDownloads();
+            trackedDownloads.Should().HaveCount(1);
+            trackedDownloads.First().RemoteMovie.Should().BeSameAs(updatedRemoteMovie);
+            trackedDownloads.First().RemoteMovie.Movie.Title.Should().Be("A Movie Updated");
         }
 
         [Test]
