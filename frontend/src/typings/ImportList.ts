@@ -15,7 +15,7 @@ interface ImportList extends Provider {
   minRefreshInterval: string;
   name: string;
   tags: number[];
-  retroApplyTags: boolean;
+  tagExisting: boolean;
 }
 
 export default ImportList;

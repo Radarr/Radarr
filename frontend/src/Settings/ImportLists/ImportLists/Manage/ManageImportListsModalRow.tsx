@@ -19,7 +19,7 @@ interface ManageImportListsModalRowProps {
   minimumAvailability: string;
   implementation: string;
   tags: number[];
-  retroApplyTags: boolean;
+  tagExisting: boolean;
   enabled: boolean;
   enableAuto: boolean;
   columns: Column[];
@@ -39,7 +39,7 @@ function ManageImportListsModalRow(props: ManageImportListsModalRowProps) {
     enabled,
     enableAuto,
     tags,
-    retroApplyTags,
+    tagExisting,
     onSelectedChange,
   } = props;
 
@@ -94,8 +94,8 @@ function ManageImportListsModalRow(props: ManageImportListsModalRowProps) {
         <MovieTagList tags={tags} />
       </TableRowCell>
 
-      <TableRowCell className={styles.enabled}>
-        {retroApplyTags ? translate('Yes') : translate('No')}
+      <TableRowCell className={styles.tagExisting}>
+        {tagExisting ? translate('Yes') : translate('No')}
       </TableRowCell>
     </TableRow>
   );
