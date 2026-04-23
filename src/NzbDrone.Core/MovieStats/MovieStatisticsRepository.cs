@@ -83,8 +83,8 @@ namespace NzbDrone.Core.MovieStats
             return new SqlBuilder(_database.DatabaseType)
                 .Select(@"""MovieId"",
                         SUM(COALESCE(""Size"", 0)) AS SizeOnDisk,
-                        string_agg(""ReleaseGroup"", '|') AS ReleaseGroupsString,
-                        string_agg(""Quality""::json->>'quality', '|') AS MovieFileQualitiesString")
+                        string_agg(DISTINCT ""ReleaseGroup"", '|') AS ReleaseGroupsString,
+                        string_agg(DISTINCT ""Quality""::json->>'quality', '|') AS MovieFileQualitiesString")
                 .GroupBy<MovieFile>(x => x.MovieId);
         }
     }
