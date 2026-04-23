@@ -229,13 +229,20 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             }
 
             return IsStableWaitingDownload(downloadItem) &&
-                   HasSameDownloadIdentity(existingItem.DownloadItem, downloadItem);
+                   HasSameDownloadIdentity(existingItem.DownloadItem, downloadItem) &&
+                   HasHealthyWaitingCache(existingItem);
         }
 
         private static bool IsStableWaitingDownload(DownloadClientItem downloadItem)
         {
             return downloadItem.Status == DownloadItemStatus.Queued ||
                    downloadItem.Status == DownloadItemStatus.Paused;
+        }
+
+        private static bool HasHealthyWaitingCache(TrackedDownload existingItem)
+        {
+            return existingItem.Status == TrackedDownloadStatus.Ok &&
+                   existingItem.RemoteMovie?.Movie != null;
         }
 
         private static bool HasSameDownloadIdentity(DownloadClientItem existingItem, DownloadClientItem downloadItem)
