@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Organizer;
@@ -17,16 +19,16 @@ public class MovieFolderController : Controller
         _fileNameBuilder = fileNameBuilder;
     }
 
-    [HttpGet("{id}/folder")]
+    [HttpGet("{id:int}/folder")]
     [Produces("application/json")]
-    public object GetFolder([FromRoute] int id)
+    public Ok<MovieFolderResource> GetFolder([FromRoute] int id)
     {
         var series = _movieService.GetMovie(id);
         var folder = _fileNameBuilder.GetMovieFolder(series);
 
-        return new
+        return TypedResults.Ok(new MovieFolderResource
         {
-            folder
-        };
+            Folder = folder
+        });
     }
 }

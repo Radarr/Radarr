@@ -1,5 +1,8 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Internal;
@@ -54,9 +57,10 @@ namespace Radarr.Api.V3.System
         }
 
         [HttpGet("status")]
-        public SystemResource GetStatus()
+        [Produces("application/json")]
+        public Ok<SystemResource> GetStatus()
         {
-            return new SystemResource
+            return TypedResults.Ok(new SystemResource
             {
                 AppName = BuildInfo.AppName,
                 InstanceName = _configFileProvider.InstanceName,
@@ -90,38 +94,48 @@ namespace Radarr.Api.V3.System
                 PackageAuthor = _deploymentInfoProvider.PackageAuthor,
                 PackageUpdateMechanism = _deploymentInfoProvider.PackageUpdateMechanism,
                 PackageUpdateMechanismMessage = _deploymentInfoProvider.PackageUpdateMechanismMessage
-            };
+            });
         }
 
         [HttpGet("routes")]
-        public IActionResult GetRoutes()
+        [Produces("text/plain")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        public ContentHttpResult GetRoutes()
         {
-            using (var sw = new StringWriter())
-            {
-                _graphWriter.Write(_endpointData, sw);
-                var graph = sw.ToString();
-                return Content(graph, "text/plain");
-            }
+            using var sw = new StringWriter();
+            _graphWriter.Write(_endpointData, sw);
+            var graph = sw.ToString();
+
+            return TypedResults.Content(graph, "text/plain");
         }
 
         [HttpGet("routes/duplicate")]
-        public object DuplicateRoutes()
+        [Produces("application/json")]
+        public Ok<Dictionary<string, List<string>>> DuplicateRoutes()
         {
-            return _detector.GetDuplicateEndpoints(_endpointData);
+            return TypedResults.Ok(_detector.GetDuplicateEndpoints(_endpointData));
         }
 
         [HttpPost("shutdown")]
-        public object Shutdown()
+        public Ok<SystemShutdownResource> Shutdown()
         {
             Task.Factory.StartNew(() => _lifecycleService.Shutdown());
-            return new { ShuttingDown = true };
+
+            return TypedResults.Ok(new SystemShutdownResource
+            {
+                ShuttingDown = true
+            });
         }
 
         [HttpPost("restart")]
-        public object Restart()
+        public Ok<SystemRestartResource> Restart()
         {
             Task.Factory.StartNew(() => _lifecycleService.Restart());
-            return new { Restarting = true };
+
+            return TypedResults.Ok(new SystemRestartResource
+            {
+                Restarting = true
+            });
         }
     }
 }

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Tags;
 using Radarr.Http;
@@ -22,9 +24,10 @@ namespace Radarr.Api.V3.Tags
         }
 
         [HttpGet]
-        public List<TagDetailsResource> GetAll()
+        [Produces("application/json")]
+        public Ok<List<TagDetailsResource>> GetAll()
         {
-            return _tagService.Details().ToResource();
+            return TypedResults.Ok(_tagService.Details().ToResource());
         }
     }
 }

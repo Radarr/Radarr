@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Configuration;
@@ -24,7 +26,8 @@ namespace Radarr.Api.V3.Update
         }
 
         [HttpGet]
-        public List<UpdateResource> GetRecentUpdates()
+        [Produces("application/json")]
+        public Ok<List<UpdateResource>> GetRecentUpdates()
         {
             var resources = _recentUpdateProvider.GetRecentUpdatePackages()
                                                  .OrderByDescending(u => u.Version)
@@ -49,7 +52,7 @@ namespace Radarr.Api.V3.Update
 
                 if (!_configFileProvider.LogDbEnabled)
                 {
-                    return resources;
+                    return TypedResults.Ok(resources);
                 }
 
                 var installDates = _updateHistoryService.InstalledSince(resources.Last().ReleaseDate)
@@ -65,7 +68,7 @@ namespace Radarr.Api.V3.Update
                 }
             }
 
-            return resources;
+            return TypedResults.Ok(resources);
         }
     }
 }

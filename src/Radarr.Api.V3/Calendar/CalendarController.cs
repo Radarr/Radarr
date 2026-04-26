@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -39,14 +41,14 @@ namespace Radarr.Api.V3.Calendar
         }
 
         [NonAction]
-        public override ActionResult<MovieResource> GetResourceByIdWithErrorHandler(int id)
+        public override Results<Ok<MovieResource>, NotFound> GetResourceByIdWithErrorHandler(int id)
         {
             throw new NotImplementedException();
         }
 
         [HttpGet]
         [Produces("application/json")]
-        public List<MovieResource> GetCalendar(DateTime? start, DateTime? end, bool unmonitored = false, string tags = "")
+        public Ok<List<MovieResource>> GetCalendar(DateTime? start, DateTime? end, bool unmonitored = false, string tags = "")
         {
             var startUse = start ?? DateTime.Today;
             var endUse = end ?? DateTime.Today.AddDays(2);
@@ -76,11 +78,11 @@ namespace Radarr.Api.V3.Calendar
 
             var resources = MapToResource(results);
 
-            return resources
+            return TypedResults.Ok(resources
                 .OrderBy(m => m.InCinemas)
                 .ThenBy(m => m.DigitalRelease)
                 .ThenBy(m => m.PhysicalRelease)
-                .ToList();
+                .ToList());
         }
     }
 }

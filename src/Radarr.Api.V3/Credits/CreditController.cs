@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
@@ -28,21 +30,21 @@ namespace Radarr.Api.V3.Credits
         }
 
         [HttpGet]
-        public object GetCredits(int? movieId, int? movieMetadataId)
+        public Ok<IEnumerable<CreditResource>> GetCredits(int? movieId, int? movieMetadataId)
         {
             if (movieMetadataId.HasValue)
             {
-                return MapToResource(_creditService.GetAllCreditsForMovieMetadata(movieMetadataId.Value));
+                return TypedResults.Ok(MapToResource(_creditService.GetAllCreditsForMovieMetadata(movieMetadataId.Value)));
             }
 
             if (movieId.HasValue)
             {
                 var movie = _movieService.GetMovie(movieId.Value);
 
-                return MapToResource(_creditService.GetAllCreditsForMovieMetadata(movie.MovieMetadataId));
+                return TypedResults.Ok(MapToResource(_creditService.GetAllCreditsForMovieMetadata(movie.MovieMetadataId)));
             }
 
-            return MapToResource(_creditService.GetAllCredits());
+            return TypedResults.Ok(MapToResource(_creditService.GetAllCredits()));
         }
 
         private IEnumerable<CreditResource> MapToResource(IEnumerable<Credit> credits)

@@ -1,5 +1,7 @@
 using System.Linq;
 using System.Reflection;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Configuration;
 using Radarr.Http.REST;
@@ -19,22 +21,22 @@ namespace Radarr.Api.V3.Config
 
         protected override TResource GetResourceById(int id)
         {
-            return GetConfig();
-        }
-
-        [HttpGet]
-        [Produces("application/json")]
-        public TResource GetConfig()
-        {
             var resource = ToResource(_configService);
-            resource.Id = 1;
+            resource.Id = id;
 
             return resource;
         }
 
+        [HttpGet]
+        [Produces("application/json")]
+        public Ok<TResource> GetConfig()
+        {
+            return TypedResults.Ok(GetResourceById(1));
+        }
+
         [RestPutById]
         [Consumes("application/json")]
-        public virtual ActionResult<TResource> SaveConfig([FromBody] TResource resource)
+        public virtual Results<Accepted<TResource>, NotFound> SaveConfig([FromBody] TResource resource)
         {
             var dictionary = resource.GetType()
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)

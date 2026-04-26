@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
@@ -48,7 +50,7 @@ namespace Radarr.Api.V3.Profiles.Quality
 
         [RestPostById]
         [Consumes("application/json")]
-        public ActionResult<QualityProfileResource> Create([FromBody] QualityProfileResource resource)
+        public Results<Created<QualityProfileResource>, NotFound> Create([FromBody] QualityProfileResource resource)
         {
             var model = resource.ToModel();
             model = _qualityProfileService.Add(model);
@@ -56,14 +58,16 @@ namespace Radarr.Api.V3.Profiles.Quality
         }
 
         [RestDeleteById]
-        public void DeleteProfile(int id)
+        public Ok DeleteProfile(int id)
         {
             _qualityProfileService.Delete(id);
+
+            return TypedResults.Ok();
         }
 
         [RestPutById]
         [Consumes("application/json")]
-        public ActionResult<QualityProfileResource> Update([FromBody] QualityProfileResource resource)
+        public Results<Accepted<QualityProfileResource>, NotFound> Update([FromBody] QualityProfileResource resource)
         {
             var model = resource.ToModel();
 
@@ -78,9 +82,10 @@ namespace Radarr.Api.V3.Profiles.Quality
         }
 
         [HttpGet]
-        public List<QualityProfileResource> GetAll()
+        [Produces("application/json")]
+        public Ok<List<QualityProfileResource>> GetAll()
         {
-            return _qualityProfileService.All().ToResource();
+            return TypedResults.Ok(_qualityProfileService.All().ToResource());
         }
     }
 }

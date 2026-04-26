@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFormats;
@@ -36,14 +38,14 @@ namespace Radarr.Api.V3.Wanted
         }
 
         [NonAction]
-        public override ActionResult<MovieResource> GetResourceByIdWithErrorHandler(int id)
+        public override Results<Ok<MovieResource>, NotFound> GetResourceByIdWithErrorHandler(int id)
         {
             throw new NotImplementedException();
         }
 
         [HttpGet]
         [Produces("application/json")]
-        public PagingResource<MovieResource> GetCutoffUnmetMovies([FromQuery] PagingRequestResource paging, bool monitored = true)
+        public Ok<PagingResource<MovieResource>> GetCutoffUnmetMovies([FromQuery] PagingRequestResource paging, bool monitored = true)
         {
             var pagingResource = new PagingResource<MovieResource>(paging);
             var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Movie>(
@@ -63,7 +65,7 @@ namespace Radarr.Api.V3.Wanted
 
             var resource = pagingSpec.ApplyToPage(_movieCutoffService.MoviesWhereCutoffUnmet, v => MapToResource(v));
 
-            return resource;
+            return TypedResults.Ok(resource);
         }
     }
 }

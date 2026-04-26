@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Indexers;
@@ -47,7 +49,8 @@ namespace Radarr.Api.V3.Profiles.Release
         }
 
         [RestPostById]
-        public ActionResult<ReleaseProfileResource> Create([FromBody] ReleaseProfileResource resource)
+        [Consumes("application/json")]
+        public Results<Created<ReleaseProfileResource>, NotFound> Create([FromBody] ReleaseProfileResource resource)
         {
             var model = resource.ToModel();
             model = _profileService.Add(model);
@@ -55,13 +58,16 @@ namespace Radarr.Api.V3.Profiles.Release
         }
 
         [RestDeleteById]
-        public void DeleteProfile(int id)
+        public Ok DeleteProfile(int id)
         {
             _profileService.Delete(id);
+
+            return TypedResults.Ok();
         }
 
         [RestPutById]
-        public ActionResult<ReleaseProfileResource> Update([FromBody] ReleaseProfileResource resource)
+        [Consumes("application/json")]
+        public Results<Accepted<ReleaseProfileResource>, NotFound> Update([FromBody] ReleaseProfileResource resource)
         {
             var model = resource.ToModel();
 
@@ -76,9 +82,10 @@ namespace Radarr.Api.V3.Profiles.Release
         }
 
         [HttpGet]
-        public List<ReleaseProfileResource> GetAll()
+        [Produces("application/json")]
+        public Ok<List<ReleaseProfileResource>> GetAll()
         {
-            return _profileService.All().ToResource();
+            return TypedResults.Ok(_profileService.All().ToResource());
         }
     }
 }

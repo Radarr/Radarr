@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
@@ -61,7 +63,7 @@ namespace Radarr.Api.V3.History
 
         [HttpGet]
         [Produces("application/json")]
-        public PagingResource<HistoryResource> GetHistory([FromQuery] PagingRequestResource paging, bool includeMovie, [FromQuery(Name = "eventType")] int[] eventTypes, string downloadId, [FromQuery] int[] movieIds = null, [FromQuery] int[] languages = null, [FromQuery] int[] quality = null)
+        public Ok<PagingResource<HistoryResource>> GetHistory([FromQuery] PagingRequestResource paging, bool includeMovie, [FromQuery(Name = "eventType")] int[] eventTypes, string downloadId, [FromQuery] int[] movieIds = null, [FromQuery] int[] languages = null, [FromQuery] int[] quality = null)
         {
             var pagingResource = new PagingResource<HistoryResource>(paging);
             var pagingSpec = pagingResource.MapToPagingSpec<HistoryResource, MovieHistory>(
@@ -90,28 +92,28 @@ namespace Radarr.Api.V3.History
                 pagingSpec.FilterExpressions.Add(h => movieIds.Contains(h.MovieId));
             }
 
-            return pagingSpec.ApplyToPage(h => _historyService.Paged(pagingSpec, languages, quality), h => MapToResource(h, includeMovie));
+            return TypedResults.Ok(pagingSpec.ApplyToPage(h => _historyService.Paged(pagingSpec, languages, quality), h => MapToResource(h, includeMovie)));
         }
 
         [HttpGet("since")]
         [Produces("application/json")]
-        public List<HistoryResource> GetHistorySince(DateTime date, MovieHistoryEventType? eventType = null, bool includeMovie = false)
+        public Ok<List<HistoryResource>> GetHistorySince(DateTime date, MovieHistoryEventType? eventType = null, bool includeMovie = false)
         {
-            return _historyService.Since(date, eventType).Select(h => MapToResource(h, includeMovie)).ToList();
+            return TypedResults.Ok(_historyService.Since(date, eventType).Select(h => MapToResource(h, includeMovie)).ToList());
         }
 
         [HttpGet("movie")]
         [Produces("application/json")]
-        public List<HistoryResource> GetMovieHistory(int movieId, MovieHistoryEventType? eventType = null, bool includeMovie = false)
+        public Ok<List<HistoryResource>> GetMovieHistory(int movieId, MovieHistoryEventType? eventType = null, bool includeMovie = false)
         {
-            return _historyService.GetByMovieId(movieId, eventType).Select(h => MapToResource(h, includeMovie)).ToList();
+            return TypedResults.Ok(_historyService.GetByMovieId(movieId, eventType).Select(h => MapToResource(h, includeMovie)).ToList());
         }
 
         [HttpPost("failed/{id}")]
-        public object MarkAsFailed([FromRoute] int id)
+        public Ok<object> MarkAsFailed([FromRoute] int id)
         {
             _failedDownloadService.MarkAsFailed(id);
-            return new { };
+            return TypedResults.Ok<object>(new { });
         }
     }
 }

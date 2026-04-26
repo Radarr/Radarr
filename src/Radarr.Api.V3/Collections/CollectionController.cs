@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -67,7 +69,7 @@ namespace Radarr.Api.V3.Collections
 
         [HttpGet]
         [Produces("application/json")]
-        public List<CollectionResource> GetCollections(int? tmdbId)
+        public Ok<List<CollectionResource>> GetCollections(int? tmdbId)
         {
             var collectionResources = new List<CollectionResource>();
 
@@ -85,12 +87,12 @@ namespace Radarr.Api.V3.Collections
                 collectionResources = MapToResource(_collectionService.GetAllCollections()).ToList();
             }
 
-            return collectionResources;
+            return TypedResults.Ok(collectionResources);
         }
 
         [RestPutById]
         [Consumes("application/json")]
-        public ActionResult<CollectionResource> UpdateCollection([FromBody] CollectionResource collectionResource)
+        public Results<Accepted<CollectionResource>, NotFound> UpdateCollection([FromBody] CollectionResource collectionResource)
         {
             var collection = _collectionService.GetCollection(collectionResource.Id);
 
@@ -103,7 +105,7 @@ namespace Radarr.Api.V3.Collections
 
         [HttpPut]
         [Consumes("application/json")]
-        public ActionResult UpdateCollections([FromBody] CollectionUpdateResource resource)
+        public Ok<List<CollectionResource>> UpdateCollections([FromBody] CollectionUpdateResource resource)
         {
             var collectionsToUpdate = _collectionService.GetCollections(resource.CollectionIds).ToList();
 
@@ -148,7 +150,7 @@ namespace Radarr.Api.V3.Collections
 
             _commandQueueManager.Push(new RefreshCollectionsCommand());
 
-            return Accepted(updated);
+            return TypedResults.Ok(updated);
         }
 
         private IEnumerable<CollectionResource> MapToResource(List<MovieCollection> collections)

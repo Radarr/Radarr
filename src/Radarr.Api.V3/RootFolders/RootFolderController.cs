@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Validation.Paths;
@@ -50,7 +52,7 @@ namespace Radarr.Api.V3.RootFolders
 
         [RestPostById]
         [Consumes("application/json")]
-        public ActionResult<RootFolderResource> CreateRootFolder([FromBody] RootFolderResource rootFolderResource)
+        public Results<Created<RootFolderResource>, NotFound> CreateRootFolder([FromBody] RootFolderResource rootFolderResource)
         {
             var model = rootFolderResource.ToModel();
 
@@ -58,15 +60,18 @@ namespace Radarr.Api.V3.RootFolders
         }
 
         [HttpGet]
-        public List<RootFolderResource> GetRootFolders()
+        [Produces("application/json")]
+        public Ok<List<RootFolderResource>> GetRootFolders()
         {
-            return _rootFolderService.AllWithUnmappedFolders().ToResource();
+            return TypedResults.Ok(_rootFolderService.AllWithUnmappedFolders().ToResource());
         }
 
         [RestDeleteById]
-        public void DeleteFolder(int id)
+        public Ok DeleteFolder(int id)
         {
             _rootFolderService.Remove(id);
+
+            return TypedResults.Ok();
         }
     }
 }

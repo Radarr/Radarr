@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download.Pending;
@@ -27,7 +29,7 @@ namespace Radarr.Api.V3.Queue
         }
 
         [NonAction]
-        public override ActionResult<QueueResource> GetResourceByIdWithErrorHandler(int id)
+        public override Results<Ok<QueueResource>, NotFound> GetResourceByIdWithErrorHandler(int id)
         {
             return base.GetResourceByIdWithErrorHandler(id);
         }
@@ -38,7 +40,8 @@ namespace Radarr.Api.V3.Queue
         }
 
         [HttpGet]
-        public List<QueueResource> GetQueue(int? movieId, bool includeMovie = false)
+        [Produces("application/json")]
+        public Ok<List<QueueResource>> GetQueue(int? movieId, bool includeMovie = false)
         {
             var queue = _queueService.GetQueue();
             var pending = _pendingReleaseService.GetPendingQueue();
@@ -46,10 +49,10 @@ namespace Radarr.Api.V3.Queue
 
             if (movieId.HasValue)
             {
-                return fullQueue.Where(q => q.Movie?.Id == movieId.Value).ToResource(includeMovie);
+                return TypedResults.Ok(fullQueue.Where(q => q.Movie?.Id == movieId.Value).ToResource(includeMovie));
             }
 
-            return fullQueue.ToResource(includeMovie);
+            return TypedResults.Ok(fullQueue.ToResource(includeMovie));
         }
 
         [NonAction]

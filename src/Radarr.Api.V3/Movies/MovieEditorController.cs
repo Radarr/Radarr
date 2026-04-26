@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -44,7 +46,9 @@ namespace Radarr.Api.V3.Movies
         }
 
         [HttpPut]
-        public IActionResult SaveAll([FromBody] MovieEditorResource resource)
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        public Results<Ok<List<MovieResource>>, BadRequest> SaveAll([FromBody] MovieEditorResource resource)
         {
             var moviesToUpdate = _movieService.GetMovies(resource.MovieIds);
             var moviesToMove = new List<BulkMoveMovie>();
@@ -132,15 +136,16 @@ namespace Radarr.Api.V3.Movies
                 moviesResources.Add(movieResource);
             }
 
-            return Accepted(moviesResources);
+            return TypedResults.Ok(moviesResources);
         }
 
         [HttpDelete]
-        public object DeleteMovies([FromBody] MovieEditorResource resource)
+        [Consumes("application/json")]
+        public Ok<object> DeleteMovies([FromBody] MovieEditorResource resource)
         {
             _movieService.DeleteMovies(resource.MovieIds, resource.DeleteFiles, resource.AddImportExclusion);
 
-            return new { };
+            return TypedResults.Ok<object>(new { });
         }
 
         private MovieTranslation GetTranslationFromDict(Dictionary<int, MovieTranslation> translations, MovieMetadata movie, Language configLanguage)

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -30,7 +32,8 @@ namespace Radarr.Api.V3.Parse
         }
 
         [HttpGet]
-        public ParseResource Parse(string title)
+        [Produces("application/json")]
+        public Ok<ParseResource> Parse(string title)
         {
             if (title.IsNullOrWhiteSpace())
             {
@@ -41,10 +44,10 @@ namespace Radarr.Api.V3.Parse
 
             if (parsedMovieInfo == null)
             {
-                return new ParseResource
+                return TypedResults.Ok(new ParseResource
                 {
                     Title = title
-                };
+                });
             }
 
             var remoteMovie = _parsingService.Map(parsedMovieInfo, "", 0);
@@ -56,7 +59,7 @@ namespace Radarr.Api.V3.Parse
                 remoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(remoteMovie, 0);
                 remoteMovie.CustomFormatScore = remoteMovie.Movie?.QualityProfile?.CalculateCustomFormatScore(remoteMovie.CustomFormats) ?? 0;
 
-                return new ParseResource
+                return TypedResults.Ok(new ParseResource
                 {
                     Title = title,
                     ParsedMovieInfo = remoteMovie.ParsedMovieInfo,
@@ -64,15 +67,15 @@ namespace Radarr.Api.V3.Parse
                     Languages = remoteMovie.Languages,
                     CustomFormats = remoteMovie.CustomFormats?.ToResource(false),
                     CustomFormatScore = remoteMovie.CustomFormatScore
-                };
+                });
             }
             else
             {
-                return new ParseResource
+                return TypedResults.Ok(new ParseResource
                 {
                     Title = title,
                     ParsedMovieInfo = parsedMovieInfo
-                };
+                });
             }
         }
     }

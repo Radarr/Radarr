@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Organizer;
@@ -32,20 +34,19 @@ namespace Radarr.Api.V3.Config
 
         protected override NamingConfigResource GetResourceById(int id)
         {
-            return GetNamingConfig();
+            return _namingConfigService.GetConfig().ToResource();
         }
 
         [HttpGet]
-        public NamingConfigResource GetNamingConfig()
+        [Produces("application/json")]
+        public Ok<NamingConfigResource> GetNamingConfig()
         {
-            var nameSpec = _namingConfigService.GetConfig();
-            var resource = nameSpec.ToResource();
-
-            return resource;
+            return TypedResults.Ok(GetResourceById(1));
         }
 
         [RestPutById]
-        public ActionResult<NamingConfigResource> UpdateNamingConfig([FromBody] NamingConfigResource resource)
+        [Consumes("application/json")]
+        public Results<Accepted<NamingConfigResource>, NotFound> UpdateNamingConfig([FromBody] NamingConfigResource resource)
         {
             var nameSpec = resource.ToModel();
             ValidateFormatResult(nameSpec);
@@ -56,11 +57,12 @@ namespace Radarr.Api.V3.Config
         }
 
         [HttpGet("examples")]
-        public object GetExamples([FromQuery]NamingConfigResource config)
+        [Produces("application/json")]
+        public Ok<NamingExampleResource> GetExamples([FromQuery] NamingConfigResource config)
         {
             if (config.Id == 0)
             {
-                config = GetNamingConfig();
+                config = GetResourceById(1);
             }
 
             var nameSpec = config.ToModel();
@@ -76,7 +78,7 @@ namespace Radarr.Api.V3.Config
                 ? null
                 : _filenameSampleService.GetMovieFolderSample(nameSpec);
 
-            return sampleResource;
+            return TypedResults.Ok(sampleResource);
         }
 
         private void ValidateFormatResult(NamingConfig nameSpec)

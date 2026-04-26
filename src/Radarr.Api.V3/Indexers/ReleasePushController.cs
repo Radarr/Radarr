@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -49,7 +51,7 @@ namespace Radarr.Api.V3.Indexers
 
         [HttpPost]
         [Consumes("application/json")]
-        public ActionResult<List<ReleaseResource>> Create([FromBody] ReleaseResource release)
+        public Results<Ok<List<ReleaseResource>>, BadRequest> Create([FromBody] ReleaseResource release)
         {
             _logger.Info("Release pushed: {0} - {1}", release.Title, release.DownloadUrl ?? release.MagnetUrl);
 
@@ -79,7 +81,7 @@ namespace Radarr.Api.V3.Indexers
                 throw new ValidationException(new List<ValidationFailure> { new("Title", "Unable to parse", release.Title) });
             }
 
-            return MapDecisions(new[] { decision });
+            return TypedResults.Ok(MapDecisions(new[] { decision }));
         }
 
         private void ResolveIndexer(ReleaseInfo release)

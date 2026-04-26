@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore.Events;
@@ -60,7 +62,7 @@ namespace Radarr.Api.V3.MovieFiles
 
         [HttpGet]
         [Produces("application/json")]
-        public List<MovieFileResource> GetMovieFiles([FromQuery(Name = "movieId")] List<int> movieIds, [FromQuery] List<int> movieFileIds)
+        public Results<Ok<List<MovieFileResource>>, BadRequest> GetMovieFiles([FromQuery(Name = "movieId")] List<int> movieIds, [FromQuery] List<int> movieFileIds)
         {
             if (!movieIds.Any() && !movieFileIds.Any())
             {
@@ -73,18 +75,18 @@ namespace Radarr.Api.V3.MovieFiles
 
             if (movieFiles == null)
             {
-                return new List<MovieFileResource>();
+                return TypedResults.Ok(new List<MovieFileResource>());
             }
 
-            return movieFiles.GroupBy(e => e.MovieId)
+            return TypedResults.Ok(movieFiles.GroupBy(e => e.MovieId)
                 .SelectMany(f => f.ToList()
                     .ConvertAll(e => e.ToResource(_movieService.GetMovie(f.Key), _upgradableSpecification, _formatCalculator)))
-                .ToList();
+                .ToList());
         }
 
         [RestPutById]
         [Consumes("application/json")]
-        public ActionResult<MovieFileResource> SetMovieFile([FromBody] MovieFileResource movieFileResource)
+        public Results<Accepted<MovieFileResource>, NotFound> SetMovieFile([FromBody] MovieFileResource movieFileResource)
         {
             var movieFile = _mediaFileService.GetMovie(movieFileResource.Id);
             movieFile.IndexerFlags = (IndexerFlags)movieFileResource.IndexerFlags;
@@ -108,7 +110,7 @@ namespace Radarr.Api.V3.MovieFiles
         [Obsolete("Use bulk endpoint instead")]
         [HttpPut("editor")]
         [Consumes("application/json")]
-        public object SetMovieFile([FromBody] MovieFileListResource resource)
+        public Ok<List<MovieFileResource>> SetMovieFile([FromBody] MovieFileListResource resource)
         {
             var movieFiles = _mediaFileService.GetMovies(resource.MovieFileIds);
 
@@ -150,11 +152,11 @@ namespace Radarr.Api.V3.MovieFiles
 
             var movie = _movieService.GetMovie(movieFiles.First().MovieId);
 
-            return Accepted(movieFiles.ConvertAll(f => f.ToResource(movie, _upgradableSpecification, _formatCalculator)));
+            return TypedResults.Ok(movieFiles.ConvertAll(f => f.ToResource(movie, _upgradableSpecification, _formatCalculator)));
         }
 
         [RestDeleteById]
-        public void DeleteMovieFile(int id)
+        public Results<Ok, NotFound> DeleteMovieFile(int id)
         {
             var movieFile = _mediaFileService.GetMovie(id);
 
@@ -166,11 +168,13 @@ namespace Radarr.Api.V3.MovieFiles
             var movie = _movieService.GetMovie(movieFile.MovieId);
 
             _mediaFileDeletionService.DeleteMovieFile(movie, movieFile);
+
+            return TypedResults.Ok();
         }
 
         [HttpDelete("bulk")]
         [Consumes("application/json")]
-        public object DeleteMovieFiles([FromBody] MovieFileListResource resource)
+        public Results<Ok<object>, BadRequest> DeleteMovieFiles([FromBody] MovieFileListResource resource)
         {
             if (!resource.MovieFileIds.Any())
             {
@@ -185,12 +189,12 @@ namespace Radarr.Api.V3.MovieFiles
                 _mediaFileDeletionService.DeleteMovieFile(movie, movieFile);
             }
 
-            return new { };
+            return TypedResults.Ok<object>(new { });
         }
 
         [HttpPut("bulk")]
         [Consumes("application/json")]
-        public object SetPropertiesBulk([FromBody] List<MovieFileResource> resources)
+        public Ok<List<MovieFileResource>> SetPropertiesBulk([FromBody] List<MovieFileResource> resources)
         {
             var movieFiles = _mediaFileService.GetMovies(resources.Select(r => r.Id));
 
@@ -234,7 +238,7 @@ namespace Radarr.Api.V3.MovieFiles
 
             var movie = _movieService.GetMovie(movieFiles.First().MovieId);
 
-            return Accepted(movieFiles.ConvertAll(f => f.ToResource(movie, _upgradableSpecification, _formatCalculator)));
+            return TypedResults.Ok(movieFiles.ConvertAll(f => f.ToResource(movie, _upgradableSpecification, _formatCalculator)));
         }
 
         [NonAction]

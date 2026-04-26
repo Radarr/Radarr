@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
@@ -59,7 +61,7 @@ namespace Radarr.Api.V3
 
         [HttpGet]
         [Produces("application/json")]
-        public List<TProviderResource> GetAll()
+        public Ok<List<TProviderResource>> GetAll()
         {
             var providerDefinitions = _providerFactory.All();
 
@@ -72,13 +74,13 @@ namespace Radarr.Api.V3
                 result.Add(_resourceMapper.ToResource(definition));
             }
 
-            return result.OrderBy(p => p.Name).ToList();
+            return TypedResults.Ok(result.OrderBy(p => p.Name).ToList());
         }
 
         [RestPostById]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public ActionResult<TProviderResource> CreateProvider([FromBody] TProviderResource providerResource, [FromQuery] bool forceSave = false)
+        public Results<Created<TProviderResource>, NotFound> CreateProvider([FromBody] TProviderResource providerResource, [FromQuery] bool forceSave = false)
         {
             var providerDefinition = GetDefinition(providerResource, null, true, !forceSave, false);
 
@@ -95,14 +97,14 @@ namespace Radarr.Api.V3
         [RestPutById]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public ActionResult<TProviderResource> UpdateProvider([FromRoute] int id, [FromBody] TProviderResource providerResource, [FromQuery] bool forceSave = false)
+        public Results<Accepted<TProviderResource>, NotFound> UpdateProvider([FromRoute] int id, [FromBody] TProviderResource providerResource, [FromQuery] bool forceSave = false)
         {
             // TODO: Remove fallback to Id from body in next API version bump
             var existingDefinition = _providerFactory.Find(id) ?? _providerFactory.Find(providerResource.Id);
 
             if (existingDefinition == null)
             {
-                return NotFound();
+                return TypedResults.NotFound();
             }
 
             var providerDefinition = GetDefinition(providerResource, existingDefinition, true, !forceSave, false);
@@ -127,7 +129,7 @@ namespace Radarr.Api.V3
         [HttpPut("bulk")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public virtual ActionResult<TProviderResource> UpdateProvider([FromBody] TBulkProviderResource providerResource)
+        public virtual Results<Ok<IEnumerable<TProviderResource>>, BadRequest> UpdateProvider([FromBody] TBulkProviderResource providerResource)
         {
             if (!providerResource.Ids.Any())
             {
@@ -162,7 +164,7 @@ namespace Radarr.Api.V3
 
             _bulkResourceMapper.UpdateModel(providerResource, definitionsToUpdate);
 
-            return Accepted(_providerFactory.Update(definitionsToUpdate).Select(x => _resourceMapper.ToResource(x)));
+            return TypedResults.Ok(_providerFactory.Update(definitionsToUpdate).Select(x => _resourceMapper.ToResource(x)));
         }
 
         private TProviderDefinition GetDefinition(TProviderResource providerResource, TProviderDefinition existingDefinition, bool validate, bool includeWarnings, bool forceValidate)
@@ -178,25 +180,25 @@ namespace Radarr.Api.V3
         }
 
         [RestDeleteById]
-        public object DeleteProvider(int id)
+        public Ok<object> DeleteProvider(int id)
         {
             _providerFactory.Delete(id);
 
-            return new { };
+            return TypedResults.Ok<object>(new { });
         }
 
         [HttpDelete("bulk")]
         [Consumes("application/json")]
-        public virtual object DeleteProviders([FromBody] TBulkProviderResource resource)
+        public virtual Ok<object> DeleteProviders([FromBody] TBulkProviderResource resource)
         {
             _providerFactory.Delete(resource.Ids);
 
-            return new { };
+            return TypedResults.Ok<object>(new { });
         }
 
         [HttpGet("schema")]
         [Produces("application/json")]
-        public List<TProviderResource> GetTemplates()
+        public Ok<List<TProviderResource>> GetTemplates()
         {
             var defaultDefinitions = _providerFactory.GetDefaultDefinitions().OrderBy(p => p.ImplementationName).ToList();
 
@@ -214,25 +216,25 @@ namespace Radarr.Api.V3
                 result.Add(providerResource);
             }
 
-            return result;
+            return TypedResults.Ok(result);
         }
 
         [SkipValidation(true, false)]
         [HttpPost("test")]
         [Consumes("application/json")]
-        public object Test([FromBody] TProviderResource providerResource, [FromQuery] bool forceTest = false)
+        public NoContent Test([FromBody] TProviderResource providerResource, [FromQuery] bool forceTest = false)
         {
             var existingDefinition = providerResource.Id > 0 ? _providerFactory.Find(providerResource.Id) : null;
             var providerDefinition = GetDefinition(providerResource, existingDefinition, true, !forceTest, true);
 
             Test(providerDefinition, true);
 
-            return "{}";
+            return TypedResults.NoContent();
         }
 
         [HttpPost("testall")]
         [Produces("application/json")]
-        public IActionResult TestAll()
+        public Results<Ok<List<ProviderTestAllResult>>, BadRequest<List<ProviderTestAllResult>>> TestAll()
         {
             var providerDefinitions = _providerFactory.All()
                                                       .Where(c => c.Settings.Validate().IsValid && c.Enable)
@@ -253,14 +255,14 @@ namespace Radarr.Api.V3
                 });
             }
 
-            return result.Any(c => !c.IsValid) ? BadRequest(result) : Ok(result);
+            return result.Any(c => !c.IsValid) ? TypedResults.BadRequest(result) : TypedResults.Ok(result);
         }
 
         [SkipValidation]
         [HttpPost("action/{name}")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public IActionResult RequestAction([FromRoute] string name, [FromBody] TProviderResource providerResource)
+        public Results<ContentHttpResult, BadRequest> RequestAction([FromRoute] string name, [FromBody] TProviderResource providerResource)
         {
             var existingDefinition = providerResource.Id > 0 ? _providerFactory.Find(providerResource.Id) : null;
             var providerDefinition = GetDefinition(providerResource, existingDefinition, false, false, false);
@@ -269,7 +271,7 @@ namespace Radarr.Api.V3
 
             var data = _providerFactory.RequestAction(providerDefinition, name, query);
 
-            return Content(data.ToJson(), "application/json");
+            return TypedResults.Content(data.ToJson(), "application/json");
         }
 
         [NonAction]

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.CustomFormats;
@@ -27,7 +29,7 @@ namespace Radarr.Api.V3.Blocklist
 
         [HttpGet]
         [Produces("application/json")]
-        public PagingResource<BlocklistResource> GetBlocklist([FromQuery] PagingRequestResource paging, [FromQuery] int[] movieIds = null, [FromQuery] DownloadProtocol[] protocols = null)
+        public Ok<PagingResource<BlocklistResource>> GetBlocklist([FromQuery] PagingRequestResource paging, [FromQuery] int[] movieIds = null, [FromQuery] DownloadProtocol[] protocols = null)
         {
             var pagingResource = new PagingResource<BlocklistResource>(paging);
             var pagingSpec = pagingResource.MapToPagingSpec<BlocklistResource, NzbDrone.Core.Blocklisting.Blocklist>(
@@ -53,28 +55,32 @@ namespace Radarr.Api.V3.Blocklist
                 pagingSpec.FilterExpressions.Add(b => protocols.Contains(b.Protocol));
             }
 
-            return pagingSpec.ApplyToPage(b => _blocklistService.Paged(pagingSpec), b => BlocklistResourceMapper.MapToResource(b, _formatCalculator));
+            return TypedResults.Ok(pagingSpec.ApplyToPage(b => _blocklistService.Paged(pagingSpec), b => BlocklistResourceMapper.MapToResource(b, _formatCalculator)));
         }
 
         [HttpGet("movie")]
-        public List<BlocklistResource> GetMovieBlocklist(int movieId)
+        [Produces("application/json")]
+        public Ok<List<BlocklistResource>> GetMovieBlocklist(int movieId)
         {
-            return _blocklistService.GetByMovieId(movieId).Select(h => BlocklistResourceMapper.MapToResource(h, _formatCalculator)).ToList();
+            return TypedResults.Ok(_blocklistService.GetByMovieId(movieId).Select(h => BlocklistResourceMapper.MapToResource(h, _formatCalculator)).ToList());
         }
 
         [RestDeleteById]
-        public void DeleteBlocklist(int id)
+        public Ok DeleteBlocklist(int id)
         {
             _blocklistService.Delete(id);
+
+            return TypedResults.Ok();
         }
 
         [HttpDelete("bulk")]
+        [Consumes("application/json")]
         [Produces("application/json")]
-        public object Remove([FromBody] BlocklistBulkResource resource)
+        public Ok<object> Remove([FromBody] BlocklistBulkResource resource)
         {
             _blocklistService.Delete(resource.Ids);
 
-            return new { };
+            return TypedResults.Ok<object>(new { });
         }
     }
 }

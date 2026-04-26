@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Movies;
 using Radarr.Http;
@@ -18,7 +20,7 @@ namespace Radarr.Api.V3.Movies
         }
 
         [NonAction]
-        public override ActionResult<MovieResource> GetResourceByIdWithErrorHandler(int id)
+        public override Results<Ok<MovieResource>, NotFound> GetResourceByIdWithErrorHandler(int id)
         {
             throw new NotImplementedException();
         }
@@ -31,11 +33,11 @@ namespace Radarr.Api.V3.Movies
         [HttpPost]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public IEnumerable<MovieResource> Import([FromBody] List<MovieResource> resource)
+        public Ok<List<MovieResource>> Import([FromBody] List<MovieResource> resource)
         {
             var newMovies = resource.ToModel();
 
-            return _addMovieService.AddMovies(newMovies).ToResource(0);
+            return TypedResults.Ok(_addMovieService.AddMovies(newMovies).ToResource(0));
         }
     }
 }

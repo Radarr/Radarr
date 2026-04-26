@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -112,7 +114,8 @@ namespace Radarr.Api.V3.Movies
         }
 
         [HttpGet]
-        public List<MovieResource> AllMovie(int? tmdbId, bool excludeLocalCovers = false, int? languageId = null)
+        [Produces("application/json")]
+        public Ok<List<MovieResource>> AllMovie(int? tmdbId, bool excludeLocalCovers = false, int? languageId = null)
         {
             var moviesResources = new List<MovieResource>();
 
@@ -164,7 +167,7 @@ namespace Radarr.Api.V3.Movies
                 moviesResources.ForEach(m => m.RootFolderPath = _rootFolderService.GetBestRootFolderPath(m.Path, rootFolders));
             }
 
-            return moviesResources;
+            return TypedResults.Ok(moviesResources);
         }
 
         protected override MovieResource GetResourceById(int id)
@@ -236,7 +239,7 @@ namespace Radarr.Api.V3.Movies
         [RestPostById]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public ActionResult<MovieResource> AddMovie([FromBody] MovieResource moviesResource)
+        public Results<Created<MovieResource>, NotFound> AddMovie([FromBody] MovieResource moviesResource)
         {
             var movie = _addMovieService.AddMovie(moviesResource.ToModel());
 
@@ -246,7 +249,7 @@ namespace Radarr.Api.V3.Movies
         [RestPutById]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public ActionResult<MovieResource> UpdateMovie([FromBody] MovieResource moviesResource, [FromQuery] bool moveFiles = false)
+        public Results<Accepted<MovieResource>, NotFound> UpdateMovie([FromBody] MovieResource moviesResource, [FromQuery] bool moveFiles = false)
         {
             var movie = _moviesService.GetMovie(moviesResource.Id);
 
@@ -274,9 +277,11 @@ namespace Radarr.Api.V3.Movies
         }
 
         [RestDeleteById]
-        public void DeleteMovie(int id, bool deleteFiles = false, bool addImportExclusion = false)
+        public Ok DeleteMovie(int id, bool deleteFiles = false, bool addImportExclusion = false)
         {
             _moviesService.DeleteMovie(id, deleteFiles, addImportExclusion);
+
+            return TypedResults.Ok();
         }
 
         private void MapCoversToLocal(params MovieResource[] movies)

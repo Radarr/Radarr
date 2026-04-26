@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.RemotePathMappings;
@@ -53,7 +55,7 @@ namespace Radarr.Api.V3.RemotePathMappings
 
         [RestPostById]
         [Consumes("application/json")]
-        public ActionResult<RemotePathMappingResource> CreateMapping([FromBody] RemotePathMappingResource resource)
+        public Results<Created<RemotePathMappingResource>, NotFound> CreateMapping([FromBody] RemotePathMappingResource resource)
         {
             var model = resource.ToModel();
 
@@ -61,23 +63,28 @@ namespace Radarr.Api.V3.RemotePathMappings
         }
 
         [HttpGet]
-        public List<RemotePathMappingResource> GetMappings()
+        [Produces("application/json")]
+        public Ok<List<RemotePathMappingResource>> GetMappings()
         {
-            return _remotePathMappingService.All().ToResource();
+            return TypedResults.Ok(_remotePathMappingService.All().ToResource());
         }
 
         [RestDeleteById]
-        public void DeleteMapping(int id)
+        public Ok DeleteMapping(int id)
         {
             _remotePathMappingService.Remove(id);
+
+            return TypedResults.Ok();
         }
 
         [RestPutById]
-        public ActionResult<RemotePathMappingResource> UpdateMapping([FromBody] RemotePathMappingResource resource)
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        public Results<Ok<RemotePathMappingResource>, NotFound> UpdateMapping([FromBody] RemotePathMappingResource resource)
         {
             var mapping = resource.ToModel();
 
-            return Accepted(_remotePathMappingService.Update(mapping));
+            return TypedResults.Ok(_remotePathMappingService.Update(mapping).ToResource());
         }
     }
 }

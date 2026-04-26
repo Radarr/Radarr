@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Reflection;
 using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Languages;
@@ -37,7 +38,7 @@ namespace Radarr.Api.V3.Config
         }
 
         [RestPutById]
-        public override ActionResult<UiConfigResource> SaveConfig([FromBody] UiConfigResource resource)
+        public override Results<Accepted<UiConfigResource>, NotFound> SaveConfig([FromBody] UiConfigResource resource)
         {
             var dictionary = resource.GetType()
                                      .GetProperties(BindingFlags.Instance | BindingFlags.Public)

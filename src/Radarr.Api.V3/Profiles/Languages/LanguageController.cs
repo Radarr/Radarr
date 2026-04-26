@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Languages;
 using Radarr.Http;
@@ -22,7 +24,8 @@ namespace Radarr.Api.V3.Profiles.Languages
         }
 
         [HttpGet]
-        public List<LanguageResource> GetAll()
+        [Produces("application/json")]
+        public Ok<List<LanguageResource>> GetAll()
         {
             var languageResources = Language.All.Select(l => new LanguageResource
             {
@@ -32,7 +35,7 @@ namespace Radarr.Api.V3.Profiles.Languages
                                     .OrderBy(l => l.Id > 0).ThenBy(l => l.Name)
                                     .ToList();
 
-            return languageResources;
+            return TypedResults.Ok(languageResources);
         }
     }
 }

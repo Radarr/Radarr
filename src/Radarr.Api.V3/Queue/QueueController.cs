@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Blocklisting;
@@ -60,7 +62,7 @@ namespace Radarr.Api.V3.Queue
         }
 
         [NonAction]
-        public override ActionResult<QueueResource> GetResourceByIdWithErrorHandler(int id)
+        public override Results<Ok<QueueResource>, NotFound> GetResourceByIdWithErrorHandler(int id)
         {
             return base.GetResourceByIdWithErrorHandler(id);
         }
@@ -71,7 +73,7 @@ namespace Radarr.Api.V3.Queue
         }
 
         [RestDeleteById]
-        public void RemoveAction(int id, bool removeFromClient = true, bool blocklist = false, bool skipRedownload = false, bool changeCategory = false)
+        public Results<Ok, NotFound> RemoveAction(int id, bool removeFromClient = true, bool blocklist = false, bool skipRedownload = false, bool changeCategory = false)
         {
             var pendingRelease = _pendingReleaseService.FindPendingQueueItem(id);
 
@@ -79,7 +81,7 @@ namespace Radarr.Api.V3.Queue
             {
                 Remove(pendingRelease, blocklist);
 
-                return;
+                return TypedResults.Ok();
             }
 
             var trackedDownload = GetTrackedDownload(id);
@@ -91,10 +93,13 @@ namespace Radarr.Api.V3.Queue
 
             Remove(trackedDownload, removeFromClient, blocklist, skipRedownload, changeCategory);
             _trackedDownloadService.StopTracking(trackedDownload.DownloadItem.DownloadId);
+
+            return TypedResults.Ok();
         }
 
         [HttpDelete("bulk")]
-        public object RemoveMany([FromBody] QueueBulkResource resource, [FromQuery] bool removeFromClient = true, [FromQuery] bool blocklist = false, [FromQuery] bool skipRedownload = false, [FromQuery] bool changeCategory = false)
+        [Consumes("application/json")]
+        public Ok<object> RemoveMany([FromBody] QueueBulkResource resource, [FromQuery] bool removeFromClient = true, [FromQuery] bool blocklist = false, [FromQuery] bool skipRedownload = false, [FromQuery] bool changeCategory = false)
         {
             var trackedDownloadIds = new List<string>();
             var pendingToRemove = new List<NzbDrone.Core.Queue.Queue>();
@@ -131,12 +136,12 @@ namespace Radarr.Api.V3.Queue
 
             _trackedDownloadService.StopTracking(trackedDownloadIds);
 
-            return new { };
+            return TypedResults.Ok<object>(new { });
         }
 
         [HttpGet]
         [Produces("application/json")]
-        public PagingResource<QueueResource> GetQueue([FromQuery] PagingRequestResource paging, bool includeUnknownMovieItems = false, bool includeMovie = false, [FromQuery] int[] movieIds = null, DownloadProtocol? protocol = null, [FromQuery] int[] languages = null, [FromQuery] int[] quality = null, [FromQuery] QueueStatus[] status = null)
+        public Ok<PagingResource<QueueResource>> GetQueue([FromQuery] PagingRequestResource paging, bool includeUnknownMovieItems = false, bool includeMovie = false, [FromQuery] int[] movieIds = null, DownloadProtocol? protocol = null, [FromQuery] int[] languages = null, [FromQuery] int[] quality = null, [FromQuery] QueueStatus[] status = null)
         {
             var pagingResource = new PagingResource<QueueResource>(paging);
             var pagingSpec = pagingResource.MapToPagingSpec<QueueResource, NzbDrone.Core.Queue.Queue>(
@@ -160,7 +165,7 @@ namespace Radarr.Api.V3.Queue
                 "timeleft",
                 SortDirection.Ascending);
 
-            return pagingSpec.ApplyToPage((spec) => GetQueue(spec, movieIds?.ToHashSet(), protocol, languages?.ToHashSet(), quality?.ToHashSet(), status?.ToHashSet(), includeUnknownMovieItems), (q) => MapToResource(q, includeMovie));
+            return TypedResults.Ok(pagingSpec.ApplyToPage((spec) => GetQueue(spec, movieIds?.ToHashSet(), protocol, languages?.ToHashSet(), quality?.ToHashSet(), status?.ToHashSet(), includeUnknownMovieItems), (q) => MapToResource(q, includeMovie)));
         }
 
         private PagingSpec<NzbDrone.Core.Queue.Queue> GetQueue(PagingSpec<NzbDrone.Core.Queue.Queue> pagingSpec, HashSet<int> movieIds, DownloadProtocol? protocol, HashSet<int> languages, HashSet<int> quality, HashSet<QueueStatus> status, bool includeUnknownMovieItems)
