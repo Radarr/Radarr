@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.HealthCheck;
@@ -23,7 +25,7 @@ namespace Radarr.Api.V3.Health
         }
 
         [NonAction]
-        public override ActionResult<HealthResource> GetResourceByIdWithErrorHandler(int id)
+        public override Results<Ok<HealthResource>, NotFound> GetResourceByIdWithErrorHandler(int id)
         {
             return base.GetResourceByIdWithErrorHandler(id);
         }
@@ -34,9 +36,10 @@ namespace Radarr.Api.V3.Health
         }
 
         [HttpGet]
-        public List<HealthResource> GetHealth()
+        [Produces("application/json")]
+        public Ok<List<HealthResource>> GetHealth()
         {
-            return _healthCheckService.Results().ToResource();
+            return TypedResults.Ok(_healthCheckService.Results().ToResource());
         }
 
         [NonAction]

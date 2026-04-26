@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
@@ -24,7 +26,8 @@ namespace Radarr.Api.V3.ExtraFiles
         }
 
         [HttpGet]
-        public List<ExtraFileResource> GetFiles(int movieId)
+        [Produces("application/json")]
+        public Ok<List<ExtraFileResource>> GetFiles(int movieId)
         {
             var extraFiles = new List<ExtraFileResource>();
 
@@ -36,7 +39,7 @@ namespace Radarr.Api.V3.ExtraFiles
             extraFiles.AddRange(metadataFiles.ToResource());
             extraFiles.AddRange(otherExtraFiles.ToResource());
 
-            return extraFiles;
+            return TypedResults.Ok(extraFiles);
         }
     }
 }

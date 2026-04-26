@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.DiskSpace;
 using Radarr.Http;
@@ -16,9 +18,10 @@ namespace Radarr.Api.V3.DiskSpace
         }
 
         [HttpGet]
-        public List<DiskSpaceResource> GetFreeSpace()
+        [Produces("application/json")]
+        public Ok<List<DiskSpaceResource>> GetFreeSpace()
         {
-            return _diskSpaceService.GetFreeSpace().ConvertAll(DiskSpaceResourceMapper.MapToResource);
+            return TypedResults.Ok(_diskSpaceService.GetFreeSpace().ConvertAll(DiskSpaceResourceMapper.MapToResource));
         }
     }
 }

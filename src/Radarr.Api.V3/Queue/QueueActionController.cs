@@ -1,4 +1,6 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
@@ -21,7 +23,7 @@ namespace Radarr.Api.V3.Queue
         }
 
         [HttpPost("grab/{id:int}")]
-        public async Task<object> Grab([FromRoute] int id)
+        public async Task<Results<Ok<object>, NotFound>> Grab([FromRoute] int id)
         {
             var pendingRelease = _pendingReleaseService.FindPendingQueueItem(id);
 
@@ -32,12 +34,12 @@ namespace Radarr.Api.V3.Queue
 
             await _downloadService.DownloadReport(pendingRelease.RemoteMovie, null);
 
-            return new { };
+            return TypedResults.Ok<object>(new { });
         }
 
         [HttpPost("grab/bulk")]
         [Consumes("application/json")]
-        public async Task<object> Grab([FromBody] QueueBulkResource resource)
+        public async Task<Results<Ok<object>, NotFound>> Grab([FromBody] QueueBulkResource resource)
         {
             foreach (var id in resource.Ids)
             {
@@ -51,7 +53,7 @@ namespace Radarr.Api.V3.Queue
                 await _downloadService.DownloadReport(pendingRelease.RemoteMovie, null);
             }
 
-            return new { };
+            return TypedResults.Ok<object>(new { });
         }
     }
 }

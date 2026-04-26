@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.Serializer;
@@ -51,7 +53,7 @@ namespace Radarr.Api.V3.Commands
         [RestPostById]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public ActionResult<CommandResource> StartCommand([FromBody] CommandResource commandResource)
+        public Results<Created<CommandResource>, NotFound> StartCommand([FromBody] CommandResource commandResource)
         {
             var commandType =
                 _knownTypes.GetImplementations(typeof(Command))
@@ -79,18 +81,20 @@ namespace Radarr.Api.V3.Commands
         }
 
         [HttpGet]
-        public List<CommandResource> GetStartedCommands()
+        public Ok<List<CommandResource>> GetStartedCommands()
         {
-            return _commandQueueManager.All()
+            return TypedResults.Ok(_commandQueueManager.All()
                 .OrderBy(c => c.Status, _commandPriorityComparer)
                 .ThenByDescending(c => c.Priority)
-                .ToResource();
+                .ToResource());
         }
 
         [RestDeleteById]
-        public void CancelCommand(int id)
+        public Ok CancelCommand(int id)
         {
             _commandQueueManager.Cancel(id);
+
+            return TypedResults.Ok();
         }
 
         [NonAction]

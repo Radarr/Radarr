@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
@@ -48,14 +50,14 @@ namespace Radarr.Api.V3.CustomFormats
 
         [HttpGet]
         [Produces("application/json")]
-        public List<CustomFormatResource> GetAll()
+        public Ok<List<CustomFormatResource>> GetAll()
         {
-            return _formatService.All().ToResource(true);
+            return TypedResults.Ok(_formatService.All().ToResource(true));
         }
 
         [RestPostById]
         [Consumes("application/json")]
-        public ActionResult<CustomFormatResource> Create([FromBody] CustomFormatResource customFormatResource)
+        public Results<Created<CustomFormatResource>, NotFound> Create([FromBody] CustomFormatResource customFormatResource)
         {
             var model = customFormatResource.ToModel(_specifications);
 
@@ -66,7 +68,7 @@ namespace Radarr.Api.V3.CustomFormats
 
         [RestPutById]
         [Consumes("application/json")]
-        public ActionResult<CustomFormatResource> Update([FromBody] CustomFormatResource resource)
+        public Results<Accepted<CustomFormatResource>, NotFound> Update([FromBody] CustomFormatResource resource)
         {
             var model = resource.ToModel(_specifications);
 
@@ -80,7 +82,7 @@ namespace Radarr.Api.V3.CustomFormats
         [HttpPut("bulk")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public virtual ActionResult<CustomFormatResource> Update([FromBody] CustomFormatBulkResource resource)
+        public virtual Results<Ok<List<CustomFormatResource>>, BadRequest> Update([FromBody] CustomFormatBulkResource resource)
         {
             if (!resource.Ids.Any())
             {
@@ -96,26 +98,29 @@ namespace Radarr.Api.V3.CustomFormats
 
             _formatService.Update(customFormats);
 
-            return Accepted(customFormats.ConvertAll(cf => cf.ToResource(true)));
+            return TypedResults.Ok(customFormats.ConvertAll(cf => cf.ToResource(true)));
         }
 
         [RestDeleteById]
-        public void DeleteFormat(int id)
+        public Ok DeleteFormat(int id)
         {
             _formatService.Delete(id);
+
+            return TypedResults.Ok();
         }
 
         [HttpDelete("bulk")]
         [Consumes("application/json")]
-        public virtual object DeleteFormats([FromBody] CustomFormatBulkResource resource)
+        public virtual Ok<object> DeleteFormats([FromBody] CustomFormatBulkResource resource)
         {
             _formatService.Delete(resource.Ids.ToList());
 
-            return new { };
+            return TypedResults.Ok<object>(new { });
         }
 
         [HttpGet("schema")]
-        public object GetTemplates()
+        [Produces("application/json")]
+        public Ok<List<CustomFormatSpecificationSchema>> GetTemplates()
         {
             var schema = _specifications.OrderBy(x => x.Order).Select(x => x.ToSchema()).ToList();
 
@@ -126,7 +131,7 @@ namespace Radarr.Api.V3.CustomFormats
                 item.Presets = presets.Where(x => x.GetType().Name == item.Implementation).Select(x => x.ToSchema()).ToList();
             }
 
-            return schema;
+            return TypedResults.Ok(schema);
         }
 
         private void Validate(CustomFormat definition)

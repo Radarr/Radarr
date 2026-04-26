@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.AutoTagging;
 using NzbDrone.Core.Datastore.Events;
@@ -38,30 +40,33 @@ namespace Radarr.Api.V3.Tags
         }
 
         [HttpGet]
-        public List<TagResource> GetAll()
+        [Produces("application/json")]
+        public Ok<List<TagResource>> GetAll()
         {
-            return _tagService.All().ToResource();
+            return TypedResults.Ok(_tagService.All().ToResource());
         }
 
         [RestPostById]
         [Consumes("application/json")]
-        public ActionResult<TagResource> Create([FromBody] TagResource resource)
+        public Results<Created<TagResource>, NotFound> Create([FromBody] TagResource resource)
         {
             return Created(_tagService.Add(resource.ToModel()).Id);
         }
 
         [RestPutById]
         [Consumes("application/json")]
-        public ActionResult<TagResource> Update([FromBody] TagResource resource)
+        public Results<Accepted<TagResource>, NotFound> Update([FromBody] TagResource resource)
         {
             _tagService.Update(resource.ToModel());
             return Accepted(resource.Id);
         }
 
         [RestDeleteById]
-        public void DeleteTag(int id)
+        public Ok DeleteTag(int id)
         {
             _tagService.Delete(id);
+
+            return TypedResults.Ok();
         }
 
         [NonAction]

@@ -1,6 +1,8 @@
-using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
@@ -26,37 +28,40 @@ namespace Radarr.Api.V3.FileSystem
         }
 
         [HttpGet]
-        public IActionResult GetContents(string path, bool includeFiles = false, bool allowFoldersWithoutTrailingSlashes = false)
+        [Produces("application/json")]
+        public Ok<FileSystemResult> GetContents(string path, bool includeFiles = false, bool allowFoldersWithoutTrailingSlashes = false)
         {
-            return Ok(_fileSystemLookupService.LookupContents(path, includeFiles, allowFoldersWithoutTrailingSlashes));
+            return TypedResults.Ok(_fileSystemLookupService.LookupContents(path, includeFiles, allowFoldersWithoutTrailingSlashes));
         }
 
         [HttpGet("type")]
-        public object GetEntityType(string path)
+        [Produces("application/json")]
+        public Ok<FileSystemTypeResource> GetEntityType(string path)
         {
             if (_diskProvider.FileExists(path))
             {
-                return new { type = "file" };
+                return TypedResults.Ok(new FileSystemTypeResource { Type = FileSystemEntityType.File });
             }
 
             // Return folder even if it doesn't exist on disk to avoid leaking anything from the UI about the underlying system
-            return new { type = "folder" };
+            return TypedResults.Ok(new FileSystemTypeResource { Type = FileSystemEntityType.Folder });
         }
 
         [HttpGet("mediafiles")]
-        public object GetMediaFiles(string path)
+        [Produces("application/json")]
+        public Ok<IEnumerable<FileSystemMediaFileResource>> GetMediaFiles(string path)
         {
             if (!_diskProvider.FolderExists(path))
             {
-                return Array.Empty<string>();
+                return TypedResults.Ok(Enumerable.Empty<FileSystemMediaFileResource>());
             }
 
-            return _diskScanService.GetVideoFiles(path).Select(f => new
+            return TypedResults.Ok(_diskScanService.GetVideoFiles(path).Select(f => new FileSystemMediaFileResource
             {
                 Path = f,
                 RelativePath = path.GetRelativePath(f),
                 Name = Path.GetFileName(f)
-            });
+            }));
         }
     }
 }

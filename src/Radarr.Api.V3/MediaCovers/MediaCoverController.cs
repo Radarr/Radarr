@@ -1,5 +1,7 @@
 using System.IO;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using NzbDrone.Common.Disk;
@@ -26,7 +28,7 @@ namespace Radarr.Api.V3.MediaCovers
         }
 
         [HttpGet(@"{movieId:int}/{filename:regex((.+)\.(jpg|png|gif))}")]
-        public IActionResult GetMediaCover(int movieId, string filename)
+        public Results<PhysicalFileHttpResult, NotFound> GetMediaCover(int movieId, string filename)
         {
             var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", movieId.ToString(), filename);
 
@@ -37,13 +39,13 @@ namespace Radarr.Api.V3.MediaCovers
                 var basefilePath = RegexResizedImage.Replace(filePath, ".jpg");
                 if (basefilePath == filePath || !_diskProvider.FileExists(basefilePath))
                 {
-                    return NotFound();
+                    return TypedResults.NotFound();
                 }
 
                 filePath = basefilePath;
             }
 
-            return PhysicalFile(filePath, GetContentType(filePath));
+            return TypedResults.PhysicalFile(filePath, GetContentType(filePath));
         }
 
         private string GetContentType(string filePath)

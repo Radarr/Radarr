@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reflection;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -47,15 +49,16 @@ namespace Radarr.Http.REST
         }
 
         [RestGetById]
-        public virtual ActionResult<TResource> GetResourceByIdWithErrorHandler(int id)
+        [Produces("application/json")]
+        public virtual Results<Ok<TResource>, NotFound> GetResourceByIdWithErrorHandler(int id)
         {
             try
             {
-                return GetResourceById(id);
+                return TypedResults.Ok(GetResourceById(id));
             }
             catch (ModelNotFoundException)
             {
-                return NotFound();
+                return TypedResults.NotFound();
             }
         }
 
@@ -140,16 +143,18 @@ namespace Radarr.Http.REST
             }
         }
 
-        protected ActionResult<TResource> Accepted(int id)
+        protected Results<Accepted<TResource>, NotFound> Accepted(int id)
         {
             var result = GetResourceById(id);
-            return AcceptedAtAction(nameof(GetResourceByIdWithErrorHandler), new { id = id }, result);
+
+            return TypedResults.Accepted(Url.Action(nameof(GetResourceByIdWithErrorHandler), new { id }), result);
         }
 
-        protected ActionResult<TResource> Created(int id)
+        protected Results<Created<TResource>, NotFound> Created(int id)
         {
             var result = GetResourceById(id);
-            return CreatedAtAction(nameof(GetResourceByIdWithErrorHandler), new { id = id }, result);
+
+            return TypedResults.Created(Url.Action(nameof(GetResourceByIdWithErrorHandler), new { id }), result);
         }
     }
 }

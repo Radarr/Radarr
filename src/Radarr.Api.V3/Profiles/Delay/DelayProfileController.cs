@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Profiles.Delay;
 using Radarr.Http;
@@ -35,7 +37,7 @@ namespace Radarr.Api.V3.Profiles.Delay
 
         [RestPostById]
         [Consumes("application/json")]
-        public ActionResult<DelayProfileResource> Create([FromBody] DelayProfileResource resource)
+        public Results<Created<DelayProfileResource>, NotFound> Create([FromBody] DelayProfileResource resource)
         {
             var model = resource.ToModel();
             model = _delayProfileService.Add(model);
@@ -44,7 +46,7 @@ namespace Radarr.Api.V3.Profiles.Delay
         }
 
         [RestDeleteById]
-        public void DeleteProfile(int id)
+        public Ok DeleteProfile(int id)
         {
             if (id == 1)
             {
@@ -52,11 +54,13 @@ namespace Radarr.Api.V3.Profiles.Delay
             }
 
             _delayProfileService.Delete(id);
+
+            return TypedResults.Ok();
         }
 
         [RestPutById]
         [Consumes("application/json")]
-        public ActionResult<DelayProfileResource> Update([FromBody] DelayProfileResource resource)
+        public Results<Accepted<DelayProfileResource>, NotFound> Update([FromBody] DelayProfileResource resource)
         {
             var model = resource.ToModel();
             _delayProfileService.Update(model);
@@ -69,17 +73,19 @@ namespace Radarr.Api.V3.Profiles.Delay
         }
 
         [HttpGet]
-        public List<DelayProfileResource> GetAll()
+        [Produces("application/json")]
+        public Ok<List<DelayProfileResource>> GetAll()
         {
-            return _delayProfileService.All().ToResource();
+            return TypedResults.Ok(_delayProfileService.All().ToResource());
         }
 
-        [HttpPut("reorder/{id}")]
-        public List<DelayProfileResource> Reorder([FromRoute] int id, [FromQuery] int? after)
+        [HttpPut("reorder/{id:int}")]
+        [Produces("application/json")]
+        public Ok<List<DelayProfileResource>> Reorder([FromRoute] int id, [FromQuery] int? after)
         {
             ValidateId(id);
 
-            return _delayProfileService.Reorder(id, after).ToResource();
+            return TypedResults.Ok(_delayProfileService.Reorder(id, after).ToResource());
         }
     }
 }

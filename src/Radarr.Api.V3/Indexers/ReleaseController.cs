@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using NzbDrone.Common.Cache;
@@ -67,7 +69,7 @@ namespace Radarr.Api.V3.Indexers
 
         [HttpPost]
         [Consumes("application/json")]
-        public async Task<object> DownloadRelease([FromBody] ReleaseResource release)
+        public async Task<Results<Ok<ReleaseResource>, NotFound>> DownloadRelease([FromBody] ReleaseResource release)
         {
             var remoteMovie = _remoteMovieCache.Find(GetCacheKey(release));
 
@@ -127,19 +129,19 @@ namespace Radarr.Api.V3.Indexers
                 throw new NzbDroneClientException(HttpStatusCode.Conflict, "Getting release from indexer failed");
             }
 
-            return release;
+            return TypedResults.Ok(release);
         }
 
         [HttpGet]
         [Produces("application/json")]
-        public async Task<List<ReleaseResource>> GetReleases(int? movieId)
+        public async Task<Results<Ok<List<ReleaseResource>>, BadRequest>> GetReleases(int? movieId)
         {
             if (movieId.HasValue)
             {
-                return await GetMovieReleases(movieId.Value);
+                return TypedResults.Ok(await GetMovieReleases(movieId.Value));
             }
 
-            return await GetRss();
+            return TypedResults.Ok(await GetRss());
         }
 
         private async Task<List<ReleaseResource>> GetMovieReleases(int movieId)

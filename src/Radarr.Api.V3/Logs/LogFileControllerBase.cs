@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -26,7 +28,8 @@ namespace Radarr.Api.V3.Logs
         }
 
         [HttpGet]
-        public List<LogFileResource> GetLogFilesResponse()
+        [Produces("application/json")]
+        public Ok<List<LogFileResource>> GetLogFilesResponse()
         {
             var result = new List<LogFileResource>();
 
@@ -47,11 +50,13 @@ namespace Radarr.Api.V3.Logs
                 });
             }
 
-            return result.OrderByDescending(l => l.LastWriteTime).ToList();
+            return TypedResults.Ok(result.OrderByDescending(l => l.LastWriteTime).ToList());
         }
 
         [HttpGet(@"{filename:regex([[-.a-zA-Z0-9]]+?\.txt)}")]
-        public IActionResult GetLogFileResponse(string filename)
+        [Produces("text/plain")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        public Results<PhysicalFileHttpResult, NotFound> GetLogFileResponse(string filename)
         {
             LogManager.Flush();
 
@@ -59,10 +64,10 @@ namespace Radarr.Api.V3.Logs
 
             if (!_diskProvider.FileExists(filePath))
             {
-                return NotFound();
+                return TypedResults.NotFound();
             }
 
-            return PhysicalFile(filePath, "text/plain");
+            return TypedResults.PhysicalFile(filePath, "text/plain");
         }
 
         protected abstract IEnumerable<string> GetLogFiles();

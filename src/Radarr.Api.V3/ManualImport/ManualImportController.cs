@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Languages;
@@ -24,19 +26,19 @@ namespace Radarr.Api.V3.ManualImport
 
         [HttpGet]
         [Produces("application/json")]
-        public List<ManualImportResource> GetMediaFiles(string folder, string downloadId, int? movieId, bool filterExistingFiles = true)
+        public Ok<List<ManualImportResource>> GetMediaFiles(string folder, string downloadId, int? movieId, bool filterExistingFiles = true)
         {
             if (movieId.HasValue && downloadId.IsNullOrWhiteSpace())
             {
-                return _manualImportService.GetMediaFiles(movieId.Value).ToResource().Select(AddQualityWeight).ToList();
+                return TypedResults.Ok(_manualImportService.GetMediaFiles(movieId.Value).ToResource().Select(AddQualityWeight).ToList());
             }
 
-            return _manualImportService.GetMediaFiles(folder, downloadId, movieId, filterExistingFiles).ToResource().Select(AddQualityWeight).ToList();
+            return TypedResults.Ok(_manualImportService.GetMediaFiles(folder, downloadId, movieId, filterExistingFiles).ToResource().Select(AddQualityWeight).ToList());
         }
 
         [HttpPost]
         [Consumes("application/json")]
-        public object ReprocessItems([FromBody] List<ManualImportReprocessResource> items)
+        public Results<Ok<List<ManualImportReprocessResource>>, BadRequest> ReprocessItems([FromBody] List<ManualImportReprocessResource> items)
         {
             if (items is { Count: 0 })
             {
@@ -70,7 +72,7 @@ namespace Radarr.Api.V3.ManualImport
                 }
             }
 
-            return items;
+            return TypedResults.Ok(items);
         }
 
         private ManualImportResource AddQualityWeight(ManualImportResource item)

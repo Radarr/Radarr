@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Notifications;
 using NzbDrone.SignalR;
@@ -18,13 +20,13 @@ namespace Radarr.Api.V3.Notifications
         }
 
         [NonAction]
-        public override ActionResult<NotificationResource> UpdateProvider([FromBody] NotificationBulkResource providerResource)
+        public override Results<Ok<IEnumerable<NotificationResource>>, BadRequest> UpdateProvider([FromBody] NotificationBulkResource providerResource)
         {
             throw new NotImplementedException();
         }
 
         [NonAction]
-        public override object DeleteProviders([FromBody] NotificationBulkResource resource)
+        public override Ok<object> DeleteProviders([FromBody] NotificationBulkResource resource)
         {
             throw new NotImplementedException();
         }

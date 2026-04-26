@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Profiles.Qualities;
 using Radarr.Http;
@@ -15,11 +17,12 @@ namespace Radarr.Api.V3.Profiles.Quality
         }
 
         [HttpGet]
-        public QualityProfileResource GetSchema()
+        [Produces("application/json")]
+        public Ok<QualityProfileResource> GetSchema()
         {
             var qualityProfile = _qualityProfileService.GetDefaultProfile(string.Empty);
 
-            return qualityProfile.ToResource();
+            return TypedResults.Ok(qualityProfile.ToResource());
         }
     }
 }

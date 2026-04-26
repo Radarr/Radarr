@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.AutoTagging;
@@ -51,7 +53,7 @@ namespace Radarr.Api.V3.AutoTagging
 
         [RestPostById]
         [Consumes("application/json")]
-        public ActionResult<AutoTaggingResource> Create([FromBody] AutoTaggingResource autoTagResource)
+        public Results<Created<AutoTaggingResource>, NotFound> Create([FromBody] AutoTaggingResource autoTagResource)
         {
             var model = autoTagResource.ToModel(_specifications);
 
@@ -62,7 +64,7 @@ namespace Radarr.Api.V3.AutoTagging
 
         [RestPutById]
         [Consumes("application/json")]
-        public ActionResult<AutoTaggingResource> Update([FromBody] AutoTaggingResource resource)
+        public Results<Accepted<AutoTaggingResource>, NotFound> Update([FromBody] AutoTaggingResource resource)
         {
             var model = resource.ToModel(_specifications);
 
@@ -75,23 +77,25 @@ namespace Radarr.Api.V3.AutoTagging
 
         [HttpGet]
         [Produces("application/json")]
-        public List<AutoTaggingResource> GetAll()
+        public Ok<List<AutoTaggingResource>> GetAll()
         {
-            return _autoTaggingService.All().ToResource();
+            return TypedResults.Ok(_autoTaggingService.All().ToResource());
         }
 
         [RestDeleteById]
-        public void DeleteFormat(int id)
+        public Ok DeleteFormat(int id)
         {
             _autoTaggingService.Delete(id);
+
+            return TypedResults.Ok();
         }
 
         [HttpGet("schema")]
-        public object GetTemplates()
+        public Ok<List<AutoTaggingSpecificationSchema>> GetTemplates()
         {
             var schema = _specifications.OrderBy(x => x.Order).Select(x => x.ToSchema()).ToList();
 
-            return schema;
+            return TypedResults.Ok(schema);
         }
 
         private void Validate(AutoTag definition)

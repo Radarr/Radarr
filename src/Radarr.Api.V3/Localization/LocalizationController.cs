@@ -1,4 +1,6 @@
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Localization;
@@ -21,21 +23,22 @@ namespace Radarr.Api.V3.Localization
         }
 
         [HttpGet]
-        public string GetLocalizationDictionary()
+        [Produces("application/json")]
+        public JsonHttpResult<LocalizationResource> GetLocalizationDictionary()
         {
-            return JsonSerializer.Serialize(_localizationService.GetLocalizationDictionary().ToResource(), _serializerSettings);
+            return TypedResults.Json(_localizationService.GetLocalizationDictionary().ToResource(), _serializerSettings);
         }
 
         [HttpGet("language")]
         [Produces("application/json")]
-        public LocalizationLanguageResource GetLanguage()
+        public Ok<LocalizationLanguageResource> GetLanguage()
         {
             var identifier = _localizationService.GetLanguageIdentifier();
 
-            return new LocalizationLanguageResource
+            return TypedResults.Ok(new LocalizationLanguageResource
             {
                 Identifier = identifier
-            };
+            });
         }
     }
 }

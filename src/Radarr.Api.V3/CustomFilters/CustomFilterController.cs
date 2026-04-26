@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.CustomFilters;
 using Radarr.Http;
@@ -23,14 +25,15 @@ namespace Radarr.Api.V3.CustomFilters
         }
 
         [HttpGet]
-        public List<CustomFilterResource> GetCustomFilters()
+        [Produces("application/json")]
+        public Ok<List<CustomFilterResource>> GetCustomFilters()
         {
-            return _customFilterService.All().ToResource();
+            return TypedResults.Ok(_customFilterService.All().ToResource());
         }
 
         [RestPostById]
         [Consumes("application/json")]
-        public ActionResult<CustomFilterResource> AddCustomFilter([FromBody] CustomFilterResource resource)
+        public Results<Created<CustomFilterResource>, NotFound> AddCustomFilter([FromBody] CustomFilterResource resource)
         {
             var customFilter = _customFilterService.Add(resource.ToModel());
 
@@ -39,16 +42,18 @@ namespace Radarr.Api.V3.CustomFilters
 
         [RestPutById]
         [Consumes("application/json")]
-        public ActionResult<CustomFilterResource> UpdateCustomFilter([FromBody] CustomFilterResource resource)
+        public Results<Accepted<CustomFilterResource>, NotFound> UpdateCustomFilter([FromBody] CustomFilterResource resource)
         {
             _customFilterService.Update(resource.ToModel());
             return Accepted(resource.Id);
         }
 
         [RestDeleteById]
-        public void DeleteCustomResource(int id)
+        public Ok DeleteCustomResource(int id)
         {
             _customFilterService.Delete(id);
+
+            return TypedResults.Ok();
         }
     }
 }

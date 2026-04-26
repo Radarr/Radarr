@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.ImportLists;
@@ -54,7 +56,8 @@ namespace Radarr.Api.V3.ImportLists
         }
 
         [HttpGet]
-        public object GetDiscoverMovies(bool includeRecommendations = false, bool includeTrending = false, bool includePopular = false)
+        [Produces("application/json")]
+        public Ok<List<ImportListMoviesResource>> GetDiscoverMovies(bool includeRecommendations = false, bool includeTrending = false, bool includePopular = false)
         {
             var movieLanguage = (Language)_configService.MovieInfoLanguage;
 
@@ -112,15 +115,17 @@ namespace Radarr.Api.V3.ImportLists
                 return movie;
             }).ToList();
 
-            return realResults;
+            return TypedResults.Ok(realResults);
         }
 
         [HttpPost]
-        public object AddMovies([FromBody] List<MovieResource> resource)
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        public Ok<List<MovieResource>> AddMovies([FromBody] List<MovieResource> resource)
         {
             var newMovies = resource.ToModel();
 
-            return _addMovieService.AddMovies(newMovies, true).ToResource(0);
+            return TypedResults.Ok(_addMovieService.AddMovies(newMovies, true).ToResource(0));
         }
 
         private IEnumerable<ImportListMoviesResource> MapToResource(IEnumerable<Movie> movies, Language language, bool isRecommendation = false, bool isTrending = false, bool isPopular = false)

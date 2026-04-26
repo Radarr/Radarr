@@ -23,7 +23,7 @@ namespace NzbDrone.Integration.Test.Client
         {
             var request = BuildRequest("editor");
             request.AddJsonBody(movie);
-            return Put<List<MovieResource>>(request);
+            return Put<List<MovieResource>>(request, HttpStatusCode.OK);
         }
 
         public MovieResource Get(string slug, HttpStatusCode statusCode = HttpStatusCode.OK)

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.ImportLists.ImportExclusions;
@@ -43,7 +45,7 @@ namespace Radarr.Api.V3.Movies
         }
 
         [NonAction]
-        public override ActionResult<MovieResource> GetResourceByIdWithErrorHandler(int id)
+        public override Results<Ok<MovieResource>, NotFound> GetResourceByIdWithErrorHandler(int id)
         {
             throw new NotImplementedException();
         }
@@ -55,32 +57,34 @@ namespace Radarr.Api.V3.Movies
 
         [HttpGet("tmdb")]
         [Produces("application/json")]
-        public MovieResource SearchByTmdbId(int tmdbId)
+        public Ok<MovieResource> SearchByTmdbId(int tmdbId)
         {
             var availDelay = _configService.AvailabilityDelay;
             var result = new Movie { MovieMetadata = _movieInfo.GetMovieInfo(tmdbId).Item1 };
             var translation = result.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
-            return result.ToResource(availDelay, translation);
+
+            return TypedResults.Ok(result.ToResource(availDelay, translation));
         }
 
         [HttpGet("imdb")]
         [Produces("application/json")]
-        public MovieResource SearchByImdbId(string imdbId)
+        public Ok<MovieResource> SearchByImdbId(string imdbId)
         {
             var result = new Movie { MovieMetadata = _movieInfo.GetMovieByImdbId(imdbId) };
 
             var availDelay = _configService.AvailabilityDelay;
             var translation = result.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
-            return result.ToResource(availDelay, translation);
+
+            return TypedResults.Ok(result.ToResource(availDelay, translation));
         }
 
         [HttpGet]
         [Produces("application/json")]
-        public IEnumerable<MovieResource> Search([FromQuery] string term)
+        public Ok<IEnumerable<MovieResource>> Search([FromQuery] string term)
         {
             var searchResults = _searchProxy.SearchForNewMovie(term);
 
-            return MapToResource(searchResults);
+            return TypedResults.Ok(MapToResource(searchResults));
         }
 
         private IEnumerable<MovieResource> MapToResource(IEnumerable<Movie> movies)

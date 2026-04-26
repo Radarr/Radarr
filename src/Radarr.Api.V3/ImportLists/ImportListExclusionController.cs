@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.ImportLists.ImportExclusions;
@@ -33,9 +35,9 @@ namespace Radarr.Api.V3.ImportLists
         [HttpGet]
         [Produces("application/json")]
         [Obsolete("Deprecated")]
-        public List<ImportListExclusionResource> GetImportListExclusions()
+        public Ok<List<ImportListExclusionResource>> GetImportListExclusions()
         {
-            return _importListExclusionService.All().ToResource();
+            return TypedResults.Ok(_importListExclusionService.All().ToResource());
         }
 
         protected override ImportListExclusionResource GetResourceById(int id)
@@ -45,7 +47,7 @@ namespace Radarr.Api.V3.ImportLists
 
         [HttpGet("paged")]
         [Produces("application/json")]
-        public PagingResource<ImportListExclusionResource> GetImportListExclusionsPaged([FromQuery] PagingRequestResource paging)
+        public Ok<PagingResource<ImportListExclusionResource>> GetImportListExclusionsPaged([FromQuery] PagingRequestResource paging)
         {
             var pagingResource = new PagingResource<ImportListExclusionResource>(paging);
             var pageSpec = pagingResource.MapToPagingSpec<ImportListExclusionResource, ImportListExclusion>(
@@ -59,12 +61,12 @@ namespace Radarr.Api.V3.ImportLists
                 "id",
                 SortDirection.Descending);
 
-            return pageSpec.ApplyToPage(_importListExclusionService.Paged, ImportListExclusionResourceMapper.ToResource);
+            return TypedResults.Ok(pageSpec.ApplyToPage(_importListExclusionService.Paged, ImportListExclusionResourceMapper.ToResource));
         }
 
         [RestPostById]
         [Consumes("application/json")]
-        public ActionResult<ImportListExclusionResource> AddImportListExclusion([FromBody] ImportListExclusionResource resource)
+        public Results<Created<ImportListExclusionResource>, NotFound> AddImportListExclusion([FromBody] ImportListExclusionResource resource)
         {
             var importListExclusion = _importListExclusionService.Add(resource.ToModel());
 
@@ -73,33 +75,36 @@ namespace Radarr.Api.V3.ImportLists
 
         [RestPutById]
         [Consumes("application/json")]
-        public ActionResult<ImportListExclusionResource> UpdateImportListExclusion([FromBody] ImportListExclusionResource resource)
+        public Results<Accepted<ImportListExclusionResource>, NotFound> UpdateImportListExclusion([FromBody] ImportListExclusionResource resource)
         {
             _importListExclusionService.Update(resource.ToModel());
             return Accepted(resource.Id);
         }
 
         [HttpPost("bulk")]
-        public object AddImportListExclusions([FromBody] List<ImportListExclusionResource> resources)
+        [Consumes("application/json")]
+        public Ok<List<ImportListExclusionResource>> AddImportListExclusions([FromBody] List<ImportListExclusionResource> resources)
         {
             var importListExclusions = _importListExclusionService.Add(resources.ToModel());
 
-            return importListExclusions.ToResource();
+            return TypedResults.Ok(importListExclusions.ToResource());
         }
 
         [RestDeleteById]
-        public void DeleteImportListExclusion(int id)
+        public Ok DeleteImportListExclusion(int id)
         {
             _importListExclusionService.Delete(id);
+
+            return TypedResults.Ok();
         }
 
         [HttpDelete("bulk")]
-        [Produces("application/json")]
-        public object DeleteImportListExclusions([FromBody] ImportListExclusionBulkResource resource)
+        [Consumes("application/json")]
+        public Ok<object> DeleteImportListExclusions([FromBody] ImportListExclusionBulkResource resource)
         {
             _importListExclusionService.Delete(resource.Ids.ToList());
 
-            return new { };
+            return TypedResults.Ok<object>(new { });
         }
     }
 }

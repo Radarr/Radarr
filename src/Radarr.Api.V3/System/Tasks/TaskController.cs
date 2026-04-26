@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
@@ -23,12 +25,13 @@ namespace Radarr.Api.V3.System.Tasks
         }
 
         [HttpGet]
-        public List<TaskResource> GetAll()
+        [Produces("application/json")]
+        public Ok<List<TaskResource>> GetAll()
         {
-            return _taskManager.GetAll()
+            return TypedResults.Ok(_taskManager.GetAll()
                                .Select(ConvertToResource)
                                .OrderBy(t => t.Name)
-                               .ToList();
+                               .ToList());
         }
 
         protected override TaskResource GetResourceById(int id)
