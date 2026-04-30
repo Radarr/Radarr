@@ -927,7 +927,7 @@ namespace NzbDrone.Common.Test.DiskTests
             var sourceFiles = Directory.GetFileSystemEntries(source, "*", SearchOption.AllDirectories).Select(v => v.Substring(source.Length + 1)).ToArray();
             var destFiles = Directory.GetFileSystemEntries(destination, "*", SearchOption.AllDirectories).Select(v => v.Substring(destination.Length + 1)).ToArray();
 
-            CollectionAssert.AreEquivalent(sourceFiles, destFiles);
+            Assert.That(sourceFiles, Is.EquivalentTo(destFiles));
         }
 
         private void VerifyMoveFolder(string source, string from, string destination)
@@ -937,7 +937,7 @@ namespace NzbDrone.Common.Test.DiskTests
             var sourceFiles = Directory.GetFileSystemEntries(source, "*", SearchOption.AllDirectories).Select(v => v.Substring(source.Length + 1)).ToArray();
             var destFiles = Directory.GetFileSystemEntries(destination, "*", SearchOption.AllDirectories).Select(v => v.Substring(destination.Length + 1)).ToArray();
 
-            CollectionAssert.AreEquivalent(sourceFiles, destFiles);
+            Assert.That(sourceFiles, Is.EquivalentTo(destFiles));
         }
 
         private void VerifyDeletedFile(string filePath)

@@ -11,6 +11,7 @@ using NzbDrone.Core.Download.Clients.Hadouken;
 using NzbDrone.Core.Download.Clients.Hadouken.Models;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Test.Common;
+using Assert = NUnit.Framework.Legacy.ClassicAssert;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.HadoukenTests
 {
