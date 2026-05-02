@@ -36,7 +36,7 @@ namespace Radarr.Api.V3.Movies
                 return true;
             }
 
-            var rootFolder = new DirectoryInfo(rootFolderPath!).Name;
+            var rootFolder = new DirectoryInfo(rootFolderPath).Name;
             var movie = movieResource.ToModel();
             var movieFolder = _fileNameBuilder.GetMovieFolder(movie);
 
