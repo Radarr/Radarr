@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
+using System.Linq;
+using System.Net.Security;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -192,7 +194,13 @@ namespace NzbDrone.Host
                         {
                             options.ConfigureHttpsDefaults(configureOptions =>
                             {
-                                configureOptions.ServerCertificate = ValidateSslCertificate(sslCertPath, sslCertPassword);
+                                var sslContext = ValidateSslCertificate(sslCertPath, sslCertPassword);
+
+                                configureOptions.ServerCertificate = sslContext.TargetCertificate;
+                                configureOptions.OnAuthenticate = (context, authOptions) =>
+                                {
+                                    authOptions.ServerCertificateContext = sslContext;
+                                };
                             });
                         }
                     });
@@ -272,13 +280,13 @@ namespace NzbDrone.Host
             return $"{scheme}://{bindAddress}:{port}";
         }
 
-        private static X509Certificate2 ValidateSslCertificate(string cert, string password)
+        private static SslStreamCertificateContext ValidateSslCertificate(string cert, string password)
         {
-            X509Certificate2 certificate;
+            var certificateCollection = new X509Certificate2Collection();
 
             try
             {
-                certificate = new X509Certificate2(cert, password, X509KeyStorageFlags.DefaultKeySet);
+                certificateCollection.Import(cert, password, X509KeyStorageFlags.DefaultKeySet);
             }
             catch (CryptographicException ex)
             {
@@ -291,7 +299,17 @@ namespace NzbDrone.Host
                 throw new RadarrStartupException(ex);
             }
 
-            return certificate;
+            var leafCert = certificateCollection.FirstOrDefault(c => c.HasPrivateKey);
+
+            if (leafCert == null)
+            {
+                throw new RadarrStartupException(
+                    $"The SSL certificate file {cert} does not contain a certificate with an associated private key");
+            }
+
+            certificateCollection.Remove(leafCert);
+
+            return SslStreamCertificateContext.Create(leafCert, certificateCollection, offline: true);
         }
     }
 }
