@@ -1,9 +1,8 @@
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
+using System;
 using FluentValidation;
 using FluentValidation.Validators;
 using NLog;
-using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
 using NzbDrone.Common.Instrumentation;
 
 namespace Radarr.Api.V3.Config
@@ -34,13 +33,13 @@ namespace Radarr.Api.V3.Config
                 return true;
             }
 
-            var certificateCollection = new X509Certificate2Collection();
-
             try
             {
-                certificateCollection.Import(resource.SslCertPath, resource.SslCertPassword, X509KeyStorageFlags.DefaultKeySet);
+                SslCertificateLoader.LoadCertificateContext(resource.SslCertPath, resource.SslCertPassword);
+
+                return true;
             }
-            catch (CryptographicException ex)
+            catch (Exception ex)
             {
                 Logger.Debug(ex, "Invalid SSL certificate file or password. {0}", ex.Message);
 
@@ -48,19 +47,6 @@ namespace Radarr.Api.V3.Config
 
                 return false;
             }
-
-            if (certificateCollection.None(c => c.HasPrivateKey))
-            {
-                var message = $"The SSL certificate file {resource.SslCertPath} does not contain a certificate with an associated private key";
-
-                Logger.Debug($"{message}");
-
-                context.MessageFormatter.AppendArgument("message", message);
-
-                return false;
-            }
-
-            return true;
         }
     }
 }
