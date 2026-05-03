@@ -70,6 +70,7 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("[MTBB] Kimi no Na wa. (2016) v2 [97681524].mkv", "Kimi no Na wa", "MTBB", 2016)]
         [TestCase("[sam] Toward the Terra (1980) [BD 1080p TrueHD].mkv", "Toward the Terra", "sam", 1980)]
+        [TestCase("[Inka-Subs] Rokudenashi Blues 1993 (1993) [VHS]", "Rokudenashi Blues 1993", "Inka-Subs", 1993)]
         public void should_parse_anime_movie_title(string postTitle, string title, string releaseGroup, int year)
         {
             var movie = Parser.Parser.ParseMovieTitle(postTitle);
