@@ -42,9 +42,30 @@ then re-run `python3 run.py` to bring up the importer at <http://localhost:8080>
 
 Other commands:
 ```
+python3 run.py drive   # pick which mounted drive (e.g. external USB) holds movies/downloads
 python3 run.py down    # stop the stack
 python3 run.py logs    # tail logs
 ```
+
+### Using an external drive
+
+Plug it in and let your file manager mount it (Fedora normally mounts under
+`/run/media/$USER/<label>`), then:
+
+```
+python3 run.py drive
+```
+
+Pick the drive from the list. The launcher creates `<mount>/Radarr/movies`
+and `<mount>/Radarr/downloads`, and rewrites `MOVIES_PATH` / `DOWNLOADS_PATH`
+in `.env` to point at them. If the stack is already running, restart it:
+```
+python3 run.py down && python3 run.py
+```
+
+If the drive isn't writable by your user (common with NTFS/exFAT formatted
+drives), the picker tells you and prints the fix. The cleanest setup is
+ext4/btrfs/xfs owned by your user.
 
 ### Manual setup (if you prefer)
 

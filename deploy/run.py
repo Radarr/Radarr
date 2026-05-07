@@ -3,6 +3,7 @@
 
 Usage:
     python3 run.py            # bring stack up and open browser
+    python3 run.py drive      # pick which mounted drive holds movies/downloads
     python3 run.py down       # stop the stack
     python3 run.py logs       # tail logs
 
@@ -13,6 +14,7 @@ Fedora prereqs (one-time):
 """
 from __future__ import annotations
 
+import json
 import os
 import shutil
 import socket
@@ -142,9 +144,153 @@ def cmd_logs() -> None:
     subprocess.run(compose + ["logs", "-f", "--tail=100"], cwd=DEPLOY_DIR)
 
 
+# ---------- drive picker ----------
+
+SYSTEM_MOUNTS = {"/", "/boot", "/boot/efi", "/home", "/var", "/tmp"}
+
+
+def list_mounted_drives() -> list[dict]:
+    """Return mounted block-device partitions usable for media storage.
+
+    Uses `lsblk -J` so we get structured data. Each entry has:
+      name, size, mountpoint, fstype, label, removable (bool)
+    """
+    if not shutil.which("lsblk"):
+        sys.exit("`lsblk` not found; can't enumerate drives.")
+    out = subprocess.run(
+        ["lsblk", "-J", "-b", "-o", "NAME,SIZE,MOUNTPOINT,MOUNTPOINTS,TYPE,RM,LABEL,FSTYPE"],
+        capture_output=True, text=True, check=True,
+    ).stdout
+    data = json.loads(out)
+
+    drives: list[dict] = []
+
+    def visit(node: dict, parent_removable: bool = False) -> None:
+        rm = bool(node.get("rm")) or parent_removable
+        mp = node.get("mountpoint")
+        mps = node.get("mountpoints") or ([mp] if mp else [])
+        mps = [m for m in mps if m]
+        for m in mps:
+            if m in SYSTEM_MOUNTS or m.startswith("/boot") or m.startswith("[SWAP]"):
+                continue
+            drives.append({
+                "name": node.get("name", ""),
+                "size_bytes": node.get("size") or 0,
+                "mountpoint": m,
+                "fstype": node.get("fstype") or "",
+                "label": node.get("label") or "",
+                "removable": rm,
+            })
+        for child in node.get("children") or []:
+            visit(child, rm)
+
+    for top in data.get("blockdevices", []):
+        visit(top)
+
+    seen = set()
+    unique = []
+    for d in drives:
+        if d["mountpoint"] in seen:
+            continue
+        seen.add(d["mountpoint"])
+        unique.append(d)
+    return unique
+
+
+def human_size(n: int) -> str:
+    n = int(n or 0)
+    for unit in ("B", "K", "M", "G", "T", "P"):
+        if n < 1024:
+            return f"{n:.1f}{unit}"
+        n /= 1024
+    return f"{n:.1f}E"
+
+
+def write_env_paths(movies: str, downloads: str) -> None:
+    """Update MOVIES_PATH / DOWNLOADS_PATH in .env, preserving everything else."""
+    if not ENV_FILE.exists():
+        ENV_FILE.write_text(ENV_EXAMPLE.read_text())
+    lines = ENV_FILE.read_text().splitlines()
+    updates = {"MOVIES_PATH": movies, "DOWNLOADS_PATH": downloads}
+    seen = set()
+    new_lines: list[str] = []
+    for line in lines:
+        stripped = line.strip()
+        if stripped and not stripped.startswith("#") and "=" in stripped:
+            key = stripped.split("=", 1)[0].strip()
+            if key in updates:
+                new_lines.append(f"{key}={updates[key]}")
+                seen.add(key)
+                continue
+        new_lines.append(line)
+    for k, v in updates.items():
+        if k not in seen:
+            new_lines.append(f"{k}={v}")
+    ENV_FILE.write_text("\n".join(new_lines) + "\n")
+
+
+def cmd_drive() -> None:
+    drives = list_mounted_drives()
+    if not drives:
+        sys.exit(
+            "No mounted non-system drives found.\n"
+            "Plug in your external drive and make sure it's mounted (Files app or `udisksctl mount`)."
+        )
+
+    print("Mounted drives available for media storage:\n")
+    print(f"  {'#':<3} {'Size':>8}  {'FS':<8} {'Removable':<10} {'Label':<16} Mountpoint")
+    print(f"  {'-'*3} {'-'*8}  {'-'*8} {'-'*10} {'-'*16} {'-'*40}")
+    for i, d in enumerate(drives, 1):
+        print(
+            f"  {i:<3} {human_size(d['size_bytes']):>8}  "
+            f"{d['fstype']:<8} {('yes' if d['removable'] else 'no'):<10} "
+            f"{(d['label'] or '-')[:16]:<16} {d['mountpoint']}"
+        )
+    print()
+    choice = input(f"Pick a drive [1-{len(drives)}] (or 'q' to cancel): ").strip()
+    if choice.lower() in ("q", ""):
+        print("Cancelled.")
+        return
+    try:
+        idx = int(choice) - 1
+        chosen = drives[idx]
+    except (ValueError, IndexError):
+        sys.exit(f"Invalid choice: {choice!r}")
+
+    base = Path(chosen["mountpoint"]) / "Radarr"
+    movies = base / "movies"
+    downloads = base / "downloads"
+
+    if not os.access(chosen["mountpoint"], os.W_OK):
+        print(f"[!] {chosen['mountpoint']} isn't writable by you ({os.environ.get('USER')}).")
+        print("    Common fixes:")
+        print(f"      sudo chown -R $USER:$USER {chosen['mountpoint']}")
+        print("    or for an NTFS/exFAT drive, remount with uid=$(id -u),gid=$(id -g).")
+        if input("Continue anyway? [y/N] ").strip().lower() != "y":
+            return
+
+    try:
+        movies.mkdir(parents=True, exist_ok=True)
+        downloads.mkdir(parents=True, exist_ok=True)
+    except PermissionError as e:
+        sys.exit(f"Could not create {base}: {e}")
+
+    write_env_paths(str(movies), str(downloads))
+    print(f"[+] Updated {ENV_FILE}:")
+    print(f"      MOVIES_PATH={movies}")
+    print(f"      DOWNLOADS_PATH={downloads}")
+    print()
+    print("Now run `python3 run.py down && python3 run.py` to apply the new mounts.")
+
+
 def main() -> None:
     cmd = sys.argv[1] if len(sys.argv) > 1 else "up"
-    {"up": cmd_up, "down": cmd_down, "logs": cmd_logs}.get(cmd, cmd_up)()
+    {
+        "up": cmd_up,
+        "down": cmd_down,
+        "logs": cmd_logs,
+        "drive": cmd_drive,
+    }.get(cmd, cmd_up)()
 
 
 if __name__ == "__main__":
