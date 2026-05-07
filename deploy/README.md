@@ -17,25 +17,47 @@ deploy/
         └── index.html    # upload form
 ```
 
-## First-time setup
+## Quick start (Fedora)
+
+One-time, install Docker + the compose plugin:
+```
+sudo dnf install -y docker docker-compose-plugin
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER       # then log out / back in
+```
+
+Then from this `deploy/` folder:
+```
+python3 run.py
+```
+
+That single command:
+1. Creates `.env` from `.env.example` if missing.
+2. Brings up Radarr (and the importer, once `RADARR_API_KEY` is set).
+3. Opens the right URL in your browser.
+
+On first run it opens Radarr at <http://localhost:7878>. Complete the wizard,
+copy the API Key (Settings → General) into `.env` as `RADARR_API_KEY=...`,
+then re-run `python3 run.py` to bring up the importer at <http://localhost:8080>.
+
+Other commands:
+```
+python3 run.py down    # stop the stack
+python3 run.py logs    # tail logs
+```
+
+### Manual setup (if you prefer)
 
 1. `cp .env.example .env` and edit `MOVIES_PATH` / `DOWNLOADS_PATH` / `TZ`.
-   Leave `RADARR_API_KEY` blank for now.
 2. `docker compose up -d radarr`
-3. Open <http://localhost:7878>, complete the setup wizard:
-   - Set an admin password.
-   - Settings → General → copy the **API Key**.
-   - Settings → Indexers → add at least one (Prowlarr recommended).
-   - Settings → Download Clients → add one.
-   - Settings → Profiles → create/select a Quality Profile (e.g. Remux-2160p cutoff).
-   - Settings → Media Management → confirm the root folder is `/movies`.
-4. Put the API key into `.env` as `RADARR_API_KEY=...`.
-5. Find your quality-profile ID:
+3. Configure Radarr at <http://localhost:7878> (admin password, indexer,
+   download client, quality profile, root folder = `/movies`).
+4. Copy the API key into `.env` as `RADARR_API_KEY=...`. Find your
+   quality-profile ID via:
    ```
    curl -H "X-Api-Key: $RADARR_API_KEY" http://localhost:7878/api/v3/qualityprofile
    ```
-   Put the chosen `id` in `.env` as `QUALITY_PROFILE_ID=...`.
-6. `docker compose up -d` (starts the importer on :8080).
+5. `docker compose up -d` to start the importer on :8080.
 
 ## Using the importer
 
