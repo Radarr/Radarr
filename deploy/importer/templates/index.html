@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Radarr Bulk Importer</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+  h1 { margin-bottom: 0.25rem; }
+  .sub { color: #666; margin-top: 0; }
+  form { border: 1px dashed #aaa; padding: 1rem; border-radius: 8px; }
+  button { padding: 0.5rem 1rem; font-size: 1rem; cursor: pointer; }
+  table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.4rem 0.5rem; border-bottom: 1px solid #eee; }
+  .added   { color: #0a7d2c; }
+  .exists  { color: #888; }
+  .not_found, .error { color: #b00020; }
+  .summary { margin-top: 1rem; padding: 0.75rem; background: #f4f4f4; border-radius: 6px; }
+  details pre { background: #fafafa; padding: 0.5rem; overflow: auto; }
+</style>
+</head>
+<body>
+  <h1>Radarr Bulk Importer</h1>
+  <p class="sub">Upload one or more JSON files; each entry is resolved via Radarr's lookup and added with your default profile.</p>
+
+  <form id="f">
+    <input type="file" name="files" multiple accept=".json,application/json" required>
+    <button type="submit">Import</button>
+  </form>
+
+  <div id="status"></div>
+  <div id="out"></div>
+
+  <details style="margin-top:2rem">
+    <summary>Accepted JSON shapes</summary>
+<pre>["The Matrix", "Inception"]
+
+[{"title": "The Matrix", "year": 1999}, {"title": "Inception"}]
+
+{"movies": [{"tmdbId": 27205}, {"title": "The Dark Knight", "year": 2008}]}
+</pre>
+  </details>
+
+<script>
+const form = document.getElementById('f');
+const out = document.getElementById('out');
+const statusEl = document.getElementById('status');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  out.innerHTML = '';
+  statusEl.textContent = 'Importing...';
+  const fd = new FormData(form);
+  const res = await fetch('/import', { method: 'POST', body: fd });
+  if (!res.ok) {
+    statusEl.textContent = 'Request failed: ' + res.status;
+    return;
+  }
+  const data = await res.json();
+  statusEl.textContent = '';
+  render(data);
+});
+
+function render(data) {
+  const s = data.summary || {};
+  const parts = Object.entries(s).map(([k, v]) => `${k}: <b>${v}</b>`).join(' &middot; ');
+  let html = `<div class="summary">${parts}</div>`;
+
+  if (data.parse_errors && data.parse_errors.length) {
+    html += '<h3>Parse errors</h3><ul>';
+    for (const pe of data.parse_errors) html += `<li><b>${pe.file}</b>: ${pe.error}</li>`;
+    html += '</ul>';
+  }
+
+  html += '<table><thead><tr><th>Input</th><th>Resolved</th><th>Status</th><th>Detail</th></tr></thead><tbody>';
+  for (const r of data.results || []) {
+    const inp = r.input.title || r.input.tmdbId || JSON.stringify(r.input);
+    const resolved = r.title ? `${r.title} (${r.year || '?'}) [tmdb:${r.tmdbId}]` : '—';
+    html += `<tr>
+      <td>${escapeHtml(String(inp))}</td>
+      <td>${escapeHtml(resolved)}</td>
+      <td class="${r.status}">${r.status}</td>
+      <td>${escapeHtml(r.message || '')}</td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+  out.innerHTML = html;
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+</script>
+</body>
+</html>

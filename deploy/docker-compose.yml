@@ -1,0 +1,31 @@
+services:
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-Etc/UTC}
+    volumes:
+      - ./data/radarr:/config
+      - ${MOVIES_PATH:-./data/movies}:/movies
+      - ${DOWNLOADS_PATH:-./data/downloads}:/downloads
+    ports:
+      - "7878:7878"
+    restart: unless-stopped
+
+  importer:
+    build: ./importer
+    container_name: radarr-importer
+    depends_on:
+      - radarr
+    environment:
+      - RADARR_URL=http://radarr:7878
+      - RADARR_API_KEY=${RADARR_API_KEY}
+      - QUALITY_PROFILE_ID=${QUALITY_PROFILE_ID:-1}
+      - ROOT_FOLDER_PATH=${ROOT_FOLDER_PATH:-/movies}
+      - MIN_AVAILABILITY=${MIN_AVAILABILITY:-released}
+      - SEARCH_ON_ADD=${SEARCH_ON_ADD:-true}
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
