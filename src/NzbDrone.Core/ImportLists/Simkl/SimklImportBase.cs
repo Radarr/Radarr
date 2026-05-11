@@ -4,6 +4,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.ImportLists.Simkl.User;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Validation;
 
@@ -104,7 +105,16 @@ namespace NzbDrone.Core.ImportLists.Simkl
 
                 if (response?.Resource != null)
                 {
-                    return response.Resource.Movies.All;
+                    var movieType = SimklUserMovieType.Movies;
+
+                    if (Settings is SimklUserSettings userSettings)
+                    {
+                        movieType = (SimklUserMovieType)userSettings.MovieType;
+                    }
+
+                    return movieType == SimklUserMovieType.Movies
+                        ? response.Resource.Movies.All
+                        : response.Resource.Anime.All;
                 }
             }
             catch (HttpException)

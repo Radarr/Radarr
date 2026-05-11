@@ -70,7 +70,11 @@ namespace NzbDrone.Core.ImportLists.Simkl
 
     public class SimklSyncActivityResource
     {
+        [JsonProperty("movies")]
         public SimklMoviesSyncActivityResource Movies { get; set; }
+
+        [JsonProperty("anime")]
+        public SimklMoviesSyncActivityResource Anime { get; set; }
     }
 
     public class SimklMoviesSyncActivityResource
