@@ -231,10 +231,12 @@ namespace NzbDrone.Core.Extras.Metadata
             _otherExtraFileRenamer.RenameOtherExtraFile(movie, fullPath);
 
             var existingMetadata = GetMetadataFile(movie, existingMetadataFiles, c => c.Type == MetadataType.MovieMetadata &&
-                                                                                  c.MovieFileId == (movieFile?.Id ?? 0));
+                                                                                  (c.MovieFileId == (movieFile?.Id ?? 0) || c.RelativePath == movieFileMetadata.RelativePath));
 
             if (existingMetadata != null)
             {
+                existingMetadata.MovieFileId = movieFile?.Id ?? 0;
+
                 var existingFullPath = Path.Combine(movie.Path, existingMetadata.RelativePath);
                 if (fullPath.PathNotEquals(existingFullPath))
                 {
