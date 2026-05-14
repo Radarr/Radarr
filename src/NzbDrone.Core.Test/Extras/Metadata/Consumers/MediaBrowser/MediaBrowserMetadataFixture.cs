@@ -7,7 +7,6 @@ namespace NzbDrone.Core.Test.Extras.Metadata.Consumers.MediaBrowser
     using NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser;
     using NzbDrone.Core.Movies;
     using NzbDrone.Core.Test.Framework;
-    using NzbDrone.Core.ThingiProvider;
     using NzbDrone.Test.Common;
 
     [TestFixture]

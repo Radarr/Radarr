@@ -11,7 +11,6 @@ namespace NzbDrone.Core.Test.Extras.Metadata.Consumers.Xbmc
     using NzbDrone.Core.Movies;
     using NzbDrone.Core.Movies.Credits;
     using NzbDrone.Core.Test.Framework;
-    using NzbDrone.Core.ThingiProvider;
     using NzbDrone.Test.Common;
 
     [TestFixture]

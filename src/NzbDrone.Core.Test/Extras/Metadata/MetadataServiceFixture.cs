@@ -2,6 +2,7 @@ namespace NzbDrone.Core.Test.Extras.Metadata
 {
     using System.Collections.Generic;
     using FizzWare.NBuilder;
+    using FluentAssertions;
     using Moq;
     using NUnit.Framework;
     using NzbDrone.Common.Disk;
@@ -27,6 +28,8 @@ namespace NzbDrone.Core.Test.Extras.Metadata
 
             _consumer = new Mock<IMetadata>();
             _consumer.SetupGet(c => c.SupportsMetadataWithoutVideoFile).Returns(true);
+            _consumer.Setup(v => v.MovieImages(It.IsAny<Movie>()))
+                     .Returns(new List<ImageFileResult>());
 
             Mocker.GetMock<IMetadataFactory>()
                   .Setup(v => v.Enabled())
@@ -75,6 +78,34 @@ namespace NzbDrone.Core.Test.Extras.Metadata
             Subject.CreateAfterMovieFolder(_movie, _movie.Path);
 
             _consumer.Verify(v => v.MovieMetadata(_movie, null), Times.Never());
+        }
+
+        [Test]
+        public void CreateAfterMovieScan_should_update_existing_metadata_with_MovieFileId_0_if_path_matches()
+        {
+            var movieFile = Builder<MovieFile>.CreateNew().With(f => f.Id = 123).Build();
+            var existingMetadata = new MetadataFile
+            {
+                Id = 456,
+                MovieId = _movie.Id,
+                MovieFileId = 0,
+                RelativePath = "movie.nfo",
+                Type = MetadataType.MovieMetadata,
+                Consumer = _consumer.Object.GetType().Name
+            };
+
+            Mocker.GetMock<IMetadataFileService>()
+                  .Setup(v => v.GetFilesByMovie(_movie.Id))
+                  .Returns(new List<MetadataFile> { existingMetadata });
+
+            _consumer.Setup(c => c.MovieMetadata(_movie, movieFile))
+                     .Returns(new MetadataFileResult("movie.nfo", "content"));
+
+            Subject.CreateAfterMovieScan(_movie, new List<MovieFile> { movieFile });
+
+            existingMetadata.MovieFileId.Should().Be(movieFile.Id);
+            Mocker.GetMock<IMetadataFileService>()
+                  .Verify(v => v.Upsert(It.Is<List<MetadataFile>>(l => l.Contains(existingMetadata))), Times.Once());
         }
     }
 }
