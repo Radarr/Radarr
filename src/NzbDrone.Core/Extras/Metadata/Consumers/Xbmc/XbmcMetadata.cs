@@ -54,6 +54,8 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
         public override string Name => "Kodi (XBMC) / Emby";
 
+        public override bool SupportsMetadataWithoutVideoFile => Settings.UseMovieNfo;
+
         public override string GetFilenameAfterMove(Movie movie, MovieFile movieFile, MetadataFile metadataFile)
         {
             var movieFilePath = Path.Combine(movie.Path, movieFile.RelativePath);
@@ -115,13 +117,20 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             return null;
         }
 
-        public override MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile)
+        public override MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile = null)
         {
             var xmlResult = string.Empty;
 
             if (Settings.MovieMetadata)
             {
-                _logger.Debug("Generating Movie Metadata for: {0}", Path.Combine(movie.Path, movieFile.RelativePath));
+                if (movieFile != null)
+                {
+                    _logger.Debug("Generating Movie Metadata for: {0}", Path.Combine(movie.Path, movieFile.RelativePath));
+                }
+                else
+                {
+                    _logger.Debug("Generating Movie Metadata for: {0}", movie.Path);
+                }
 
                 var movieMetadataLanguage = Settings.MovieMetadataLanguage == (int)Language.Original ?
                     (int)movie.MovieMetadata.Value.OriginalLanguage :
@@ -133,7 +142,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                 var credits = _creditService.GetAllCreditsForMovieMetadata(movie.MovieMetadataId);
 
-                var watched = GetExistingWatchedStatus(movie, movieFile.RelativePath);
+                var watched = movieFile != null && GetExistingWatchedStatus(movie, movieFile.RelativePath);
 
                 var thumbnail = movie.MovieMetadata.Value.Images.SingleOrDefault(i => i.CoverType == MediaCoverTypes.Screenshot);
                 var posters = movie.MovieMetadata.Value.Images.Where(i => i.CoverType == MediaCoverTypes.Poster).ToList();
@@ -328,7 +337,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                 details.Add(new XElement("watched", watched));
 
-                if (movieFile.MediaInfo != null)
+                if (movieFile?.MediaInfo != null)
                 {
                     var sceneName = movieFile.GetSceneOrFileName();
 
@@ -440,7 +449,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 xmlResult += Environment.NewLine;
             }
 
-            var metadataFileName = GetMovieMetadataFilename(movieFile.RelativePath);
+            var metadataFileName = GetMovieMetadataFilename(movieFile?.RelativePath);
 
             return string.IsNullOrEmpty(xmlResult) ? null : new MetadataFileResult(metadataFileName, xmlResult.Trim(Environment.NewLine.ToCharArray()));
         }
@@ -470,10 +479,15 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         {
             if (Settings.UseMovieNfo)
             {
-                return Path.Combine(Path.GetDirectoryName(movieFilePath), "movie.nfo");
+                return Path.Combine(Path.GetDirectoryName(movieFilePath) ?? string.Empty, "movie.nfo");
             }
             else
             {
+                if (movieFilePath.IsNullOrWhiteSpace())
+                {
+                    throw new ArgumentException("movieFilePath cannot be null or empty when UseMovieNfo is false");
+                }
+
                 return Path.ChangeExtension(movieFilePath, "nfo");
             }
         }

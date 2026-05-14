@@ -10,7 +10,8 @@ namespace NzbDrone.Core.Extras.Metadata
     {
         string GetFilenameAfterMove(Movie movie, MovieFile movieFile, MetadataFile metadataFile);
         MetadataFile FindMetadataFile(Movie movie, string path);
-        MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile);
+        MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile = null);
         List<ImageFileResult> MovieImages(Movie movie);
+        bool SupportsMetadataWithoutVideoFile { get; }
     }
 }

@@ -105,6 +105,11 @@ namespace NzbDrone.Core.Extras.Metadata
                 {
                     files.AddIfNotNull(ProcessMovieMetadata(consumer, movie, movieFile, consumerFiles));
                 }
+
+                if (movieFiles.Empty() && consumer.SupportsMetadataWithoutVideoFile)
+                {
+                    files.AddIfNotNull(ProcessMovieMetadata(consumer, movie, null, consumerFiles));
+                }
             }
 
             _metadataFileService.Upsert(files);
@@ -144,6 +149,11 @@ namespace NzbDrone.Core.Extras.Metadata
                 if (movieFolder.IsNotNullOrWhiteSpace())
                 {
                     files.AddRange(ProcessMovieImages(consumer, movie, consumerFiles));
+
+                    if (consumer.SupportsMetadataWithoutVideoFile)
+                    {
+                        files.AddIfNotNull(ProcessMovieMetadata(consumer, movie, null, consumerFiles));
+                    }
                 }
             }
 
@@ -221,7 +231,7 @@ namespace NzbDrone.Core.Extras.Metadata
             _otherExtraFileRenamer.RenameOtherExtraFile(movie, fullPath);
 
             var existingMetadata = GetMetadataFile(movie, existingMetadataFiles, c => c.Type == MetadataType.MovieMetadata &&
-                                                                                  c.MovieFileId == movieFile.Id);
+                                                                                  c.MovieFileId == (movieFile?.Id ?? 0));
 
             if (existingMetadata != null)
             {
@@ -239,7 +249,7 @@ namespace NzbDrone.Core.Extras.Metadata
                            new MetadataFile
                            {
                                MovieId = movie.Id,
-                               MovieFileId = movieFile.Id,
+                               MovieFileId = movieFile?.Id ?? 0,
                                Consumer = consumer.GetType().Name,
                                Type = MetadataType.MovieMetadata,
                                RelativePath = movieFileMetadata.RelativePath,

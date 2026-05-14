@@ -28,6 +28,8 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
 
         public override string Name => "Emby (Legacy)";
 
+        public override bool SupportsMetadataWithoutVideoFile => true;
+
         public override ProviderMessage Message => new (_localizationService.GetLocalizedString("MetadataMediaBrowserDeprecated", new Dictionary<string, object> { { "version", "v6" } }), ProviderMessageType.Warning);
 
         public override MetadataFile FindMetadataFile(Movie movie, string path)
@@ -55,7 +57,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
             return null;
         }
 
-        public override MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile)
+        public override MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile = null)
         {
             if (!Settings.MovieMetadata)
             {
