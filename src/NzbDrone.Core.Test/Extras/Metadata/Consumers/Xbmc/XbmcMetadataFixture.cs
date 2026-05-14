@@ -1,18 +1,18 @@
+using System;
+using System.Collections.Generic;
+using FizzWare.NBuilder;
+using FluentAssertions;
+using Moq;
+using NUnit.Framework;
+using NzbDrone.Core.Extras.Metadata;
+using NzbDrone.Core.Extras.Metadata.Consumers.Xbmc;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Credits;
+using NzbDrone.Core.Test.Framework;
+using NzbDrone.Test.Common;
+
 namespace NzbDrone.Core.Test.Extras.Metadata.Consumers.Xbmc
 {
-    using System;
-    using System.Collections.Generic;
-    using FizzWare.NBuilder;
-    using FluentAssertions;
-    using Moq;
-    using NUnit.Framework;
-    using NzbDrone.Core.Extras.Metadata;
-    using NzbDrone.Core.Extras.Metadata.Consumers.Xbmc;
-    using NzbDrone.Core.Movies;
-    using NzbDrone.Core.Movies.Credits;
-    using NzbDrone.Core.Test.Framework;
-    using NzbDrone.Test.Common;
-
     [TestFixture]
     public class XbmcMetadataFixture : CoreTest<XbmcMetadata>
     {

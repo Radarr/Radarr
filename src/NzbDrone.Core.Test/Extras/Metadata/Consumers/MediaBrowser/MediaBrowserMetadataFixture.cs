@@ -1,14 +1,14 @@
+using FizzWare.NBuilder;
+using FluentAssertions;
+using NUnit.Framework;
+using NzbDrone.Core.Extras.Metadata;
+using NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Test.Framework;
+using NzbDrone.Test.Common;
+
 namespace NzbDrone.Core.Test.Extras.Metadata.Consumers.MediaBrowser
 {
-    using FizzWare.NBuilder;
-    using FluentAssertions;
-    using NUnit.Framework;
-    using NzbDrone.Core.Extras.Metadata;
-    using NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser;
-    using NzbDrone.Core.Movies;
-    using NzbDrone.Core.Test.Framework;
-    using NzbDrone.Test.Common;
-
     [TestFixture]
     public class MediaBrowserMetadataFixture : CoreTest<MediaBrowserMetadata>
     {
