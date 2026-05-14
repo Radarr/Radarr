@@ -405,6 +405,7 @@
   "Directory": "Directory",
   "Disabled": "Disabled",
   "DisabledForLocalAddresses": "Disabled for Local Addresses",
+  "DisabledForLocalhost": "Disabled for Localhost",
   "Discord": "Discord",
   "DiscordUrlInSlackNotification": "You have a Discord notification setup as a Slack notification. Set this up as a Discord notification for better functionality. The effected notifications are: {0}",
   "Discover": "Discover",
