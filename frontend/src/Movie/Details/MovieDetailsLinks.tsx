@@ -13,7 +13,7 @@ type MovieDetailsLinksProps = Pick<
 >;
 
 interface MovieDetailsLink {
-  externalId: string | number;
+  externalId?: string | number;
   name: string;
   url: string;
   kind?: LabelProps['kind'];
@@ -33,7 +33,6 @@ function MovieDetailsLinks(props: MovieDetailsLinksProps) {
           url: `https://www.themoviedb.org/movie/${tmdbId}`,
         },
         {
-          externalId: tmdbId,
           name: 'Letterboxd',
           url: `https://letterboxd.com/tmdb/${tmdbId}`,
         }
@@ -48,22 +47,18 @@ function MovieDetailsLinks(props: MovieDetailsLinksProps) {
           url: `https://imdb.com/title/${imdbId}/`,
         },
         {
-          externalId: tmdbId,
           name: 'Trakt',
           url: `https://trakt.tv/movies/${imdbId}`,
         },
         {
-          externalId: imdbId,
           name: 'Movie Chat',
           url: `https://moviechat.org/${imdbId}/`,
         },
         {
-          externalId: imdbId,
           name: 'MDBList',
           url: `https://mdblist.com/movie/${imdbId}`,
         },
         {
-          externalId: imdbId,
           name: 'Blu-ray',
           url: `https://www.blu-ray.com/search/?quicksearch=1&quicksearch_keyword=${imdbId}&section=theatrical`,
         }
@@ -72,14 +67,15 @@ function MovieDetailsLinks(props: MovieDetailsLinksProps) {
 
     if (youTubeTrailerId) {
       validLinks.push({
-        externalId: youTubeTrailerId,
         name: translate('Trailer'),
         url: `https://www.youtube.com/watch?v=${youTubeTrailerId}`,
         kind: kinds.DANGER,
       });
     }
 
-    return validLinks;
+    return validLinks.sort(
+      (a, b) => Number(!a.externalId) - Number(!b.externalId)
+    );
   }, [tmdbId, imdbId, youTubeTrailerId]);
 
   return (
@@ -96,13 +92,15 @@ function MovieDetailsLinks(props: MovieDetailsLinksProps) {
             </Label>
           </Link>
 
-          <ClipboardButton
-            value={`${link.externalId}`}
-            title={translate('CopyToClipboard')}
-            kind={kinds.DEFAULT}
-            size={sizes.SMALL}
-            label={link.externalId}
-          />
+          {link.externalId ? (
+            <ClipboardButton
+              value={`${link.externalId}`}
+              title={translate('CopyToClipboard')}
+              kind={kinds.DEFAULT}
+              size={sizes.SMALL}
+              label={link.externalId}
+            />
+          ) : null}
         </div>
       ))}
     </div>
