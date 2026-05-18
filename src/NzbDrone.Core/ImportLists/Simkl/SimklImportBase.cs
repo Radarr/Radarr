@@ -107,16 +107,17 @@ namespace NzbDrone.Core.ImportLists.Simkl
 
                 if (response?.Resource != null)
                 {
-                    var movieType = SimklUserMovieType.Movies;
-
-                    if (Settings is SimklUserSettings userSettings)
+                    var movieType = Settings switch
                     {
-                        movieType = (SimklUserMovieType)userSettings.MovieType;
-                    }
+                        SimklUserSettings userSettings => (SimklUserMovieType)userSettings.MovieType,
+                        _ => SimklUserMovieType.Movies
+                    };
 
-                    return movieType == SimklUserMovieType.Movies
-                        ? response.Resource.Movies.All
-                        : response.Resource.Anime.All;
+                    return movieType switch
+                    {
+                        SimklUserMovieType.Movies => response.Resource.Anime.All,
+                        _ => response.Resource.Movies.All
+                    };
                 }
             }
             catch (HttpException)
