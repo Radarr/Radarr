@@ -48,7 +48,7 @@ namespace NzbDrone.Core.ImportLists.Simkl
         [FieldDefinition(0, Label = "Auth User", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
         public string AuthUser { get; set; }
 
-        [FieldDefinition(99, Label = "Authenticate with Simkl", Type = FieldType.OAuth)]
+        [FieldDefinition(99, Label = "ImportListsSimklSettingsAuthenticatewithSimkl", Type = FieldType.OAuth)]
         public string SignIn { get; set; }
 
         public override NzbDroneValidationResult Validate()
