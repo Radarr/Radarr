@@ -162,7 +162,7 @@ namespace NzbDrone.Core.ImportLists
                 _logger.Error(ex, "An error occurred while processing feed. {0}", url);
             }
 
-            return new ImportListFetchResult { Movies = CleanupListItems(movies), AnyFailure = anyFailure };
+            return new ImportListFetchResult(CleanupListItems(movies), anyFailure);
         }
 
         protected virtual bool IsValidItem(ImportListMovie listItem)

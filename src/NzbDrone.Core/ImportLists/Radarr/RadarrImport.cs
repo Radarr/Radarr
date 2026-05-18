@@ -76,7 +76,7 @@ namespace NzbDrone.Core.ImportLists.Radarr
                 _importListStatusService.RecordFailure(Definition.Id);
             }
 
-            return new ImportListFetchResult { Movies = CleanupListItems(movies), AnyFailure = anyFailure };
+            return new ImportListFetchResult(CleanupListItems(movies), anyFailure);
         }
 
         public override object RequestAction(string action, IDictionary<string, string> query)
