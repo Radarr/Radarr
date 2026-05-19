@@ -63,7 +63,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation
                 }
                 catch (Exception ex)
                 {
-                    _logger.Warn(ex, "Unable to read media info for '{0}'. Continuing without media info.", localMovie.Path);
+                    _logger.Warn(ex, "Unable to read media info for '{0}'", localMovie.Path);
                 }
             }
 
