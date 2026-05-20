@@ -16,7 +16,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
         public override string Name => "IMDb Lists";
 
         public override ImportListType ListType => ImportListType.Other;
-        public override TimeSpan MinRefreshInterval => TimeSpan.FromHours(12);
+        public override TimeSpan MinRefreshInterval => TimeSpan.FromMinutes(30);
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
