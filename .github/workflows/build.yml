@@ -26,7 +26,7 @@ env:
   RAW_BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
   MAJOR_VERSION: 6.5.1
   NODE_VERSION: 20.x
-  INNOVERSION: 7.0.0
+  INNOVERSION: 6.7.2
 
 jobs:
   build:
