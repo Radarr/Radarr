@@ -29,7 +29,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     outputs:
       framework: ${{ steps.variables.outputs.framework }}
       version: ${{ steps.variables.outputs.version }}
@@ -75,11 +75,23 @@ jobs:
           name: tests-linux-x64
           path: _tests/${{ env.FRAMEWORK }}/linux-x64/publish/**/*
 
+      - name: Publish win-x64 Test Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-win-x64
+          path: _tests/${{ env.FRAMEWORK }}/win-x64/publish/**/*
+
       - name: Publish Linux Artifact
         uses: actions/upload-artifact@v4
         with:
           name: build_linux
           path: _artifacts/linux-*/**/*
+
+      - name: Publish Windows Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_windows
+          path: _artifacts/win-*/**/*
           
   unit_test:
     needs: build
@@ -372,33 +384,43 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Download Build Artifact
+      - name: Download Linux Build Artifact
         uses: actions/download-artifact@v4
         with:
           name: build_linux
           path: _output
-          
-      - name: Make Binaries Executable
+
+      - name: Download Windows Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build_windows
+          path: _output
+
+      - name: Make Linux Binaries Executable
         shell: bash
         run: |
           find . -name "ffprobe" -exec chmod a+x {} \;
           find . -name "Radarr" -exec chmod a+x {} \;
           find . -name "Radarr.Update" -exec chmod a+x {} \;
 
-      - name: Create Release Package
+      - name: Create Release Packages
         shell: bash
         run: |
           mkdir -p _artifacts
           tar -czf _artifacts/Radarr.${{ needs.build.outputs.branch }}.${{ needs.build.outputs.version }}.linux-musl-core-x64.tar.gz -C _output/linux-musl-x64/${{ env.FRAMEWORK }} Radarr
           tar -czf _artifacts/Radarr.${{ needs.build.outputs.branch }}.${{ needs.build.outputs.version }}.linux-musl-core-arm64.tar.gz -C _output/linux-musl-arm64/${{ env.FRAMEWORK }} Radarr
+          (cd _output/win-x64/${{ env.FRAMEWORK }} && zip -r ${{ github.workspace }}/_artifacts/Radarr.${{ needs.build.outputs.branch }}.${{ needs.build.outputs.version }}.windows-core-x64.zip Radarr)
+          (cd _output/win-x86/${{ env.FRAMEWORK }} && zip -r ${{ github.workspace }}/_artifacts/Radarr.${{ needs.build.outputs.branch }}.${{ needs.build.outputs.version }}.windows-core-x86.zip Radarr)
 
-      - name: Upload Release Artifact
+      - name: Upload Release Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: release_linux
+          name: release_packages
           compression-level: 0
           if-no-files-found: error
-          path: _artifacts/Radarr.*.linux-musl-core-*.tar.gz
+          path: |
+            _artifacts/Radarr.*.linux-musl-core-*.tar.gz
+            _artifacts/Radarr.*.windows-core-*.zip
 
       - name: Get Previous Release
         id: previous-release
@@ -428,7 +450,7 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: _artifacts/Radarr.*.linux-musl-core-*.tar.gz
+          artifacts: "_artifacts/Radarr.*.linux-musl-core-*.tar.gz,_artifacts/Radarr.*.windows-core-*.zip"
           commit: ${{ github.sha }}
           generateReleaseNotes: false
           body: ${{ steps.generate-release-notes.outputs.result }}
