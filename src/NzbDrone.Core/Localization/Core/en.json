@@ -37,7 +37,7 @@
   "AddNewMovie": "Add New Movie",
   "AddNewMovieRootFolderHelpText": "'{folder}' subfolder will be created automatically",
   "AddNewRestriction": "Add new restriction",
-  "AddNewTmdbIdMessage": "You can also search using TMDb Id of a movie. e.g. 'tmdb:71663'",
+  "AddNewTmdbIdMessage": "You can also search using the TMDb Id or IMDb Id of a movie. e.g. 'tmdb:71663' or 'tt0468569'",
   "AddNotificationError": "Unable to add a new notification, please try again.",
   "AddQualityProfile": "Add Quality Profile",
   "AddQualityProfileError": "Unable to add a new quality profile, please try again.",
