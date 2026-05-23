@@ -48,6 +48,7 @@ export interface Ratings {
 export interface AlternativeTitle extends ModelBase {
   sourceType: string;
   title: string;
+  language: Language;
 }
 
 export interface MovieAddOptions {

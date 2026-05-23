@@ -1,3 +1,4 @@
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Movies.AlternativeTitles
@@ -8,6 +9,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
         public int MovieMetadataId { get; set; }
         public string Title { get; set; }
         public string CleanTitle { get; set; }
+        public Language Language { get; set; }
 
         public AlternativeTitle()
         {

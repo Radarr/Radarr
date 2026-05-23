@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using Radarr.Http.REST;
 
@@ -14,6 +15,7 @@ namespace Radarr.Api.V3.Movies
         public int MovieMetadataId { get; set; }
         public string Title { get; set; }
         public string CleanTitle { get; set; }
+        public Language Language { get; set; }
 
         // TODO: Add series statistics as a property of the series (instead of individual properties)
     }
@@ -32,7 +34,8 @@ namespace Radarr.Api.V3.Movies
                 Id = model.Id,
                 SourceType = model.SourceType,
                 MovieMetadataId = model.MovieMetadataId,
-                Title = model.Title
+                Title = model.Title,
+                Language = model.Language
             };
         }
 
@@ -48,7 +51,8 @@ namespace Radarr.Api.V3.Movies
                 Id = resource.Id,
                 SourceType = resource.SourceType,
                 MovieMetadataId = resource.MovieMetadataId,
-                Title = resource.Title
+                Title = resource.Title,
+                Language = resource.Language
             };
         }
 

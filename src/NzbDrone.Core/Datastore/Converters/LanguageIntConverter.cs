@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Datastore.Converters
         {
             if (value == null)
             {
-                throw new InvalidOperationException("Attempted to save a language that isn't really a language");
+                parameter.Value = DBNull.Value;
             }
             else
             {
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Datastore.Converters
         {
             if (value == null || value is DBNull)
             {
-                return Language.Unknown;
+                return null;
             }
 
             return (Language)Convert.ToInt32(value);

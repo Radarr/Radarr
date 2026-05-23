@@ -76,6 +76,11 @@ namespace NzbDrone.Core.Parser
 
         public static IsoLanguage Find(string isoCode)
         {
+            if (isoCode == null)
+            {
+                return null;
+            }
+
             var isoArray = isoCode.Split('-');
             var langCode = isoArray[0].ToLower();
 

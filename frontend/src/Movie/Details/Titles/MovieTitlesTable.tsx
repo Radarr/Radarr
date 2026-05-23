@@ -20,6 +20,11 @@ const columns: Column[] = [
     isVisible: true,
   },
   {
+    name: 'language',
+    label: () => translate('Language'),
+    isVisible: true,
+  },
+  {
     name: 'sourceType',
     label: () => translate('Type'),
     isVisible: true,
@@ -81,6 +86,7 @@ function MovieTitlesTable({ movieId }: MovieTitlesProps) {
               <MovieTitlesRow
                 key={item.id}
                 title={item.title}
+                language={item.language?.name}
                 sourceType={item.sourceType}
               />
             ))}
