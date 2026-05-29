@@ -31,9 +31,9 @@ namespace NzbDrone.Core.Parser.Model
         public string Edition { get; set; }
         public string SceneName { get; set; }
         public bool OtherVideoFiles { get; set; }
-        public List<CustomFormat> CustomFormats { get; set; } = new();
+        public List<CustomFormat> CustomFormats { get; set; } = [];
         public int CustomFormatScore { get; set; }
-        public List<CustomFormat> OriginalFileNameCustomFormats { get; set; } = new();
+        public List<CustomFormat> OriginalFileNameCustomFormats { get; set; } = [];
         public int OriginalFileNameCustomFormatScore { get; set; }
         public GrabbedReleaseInfo Release { get; set; }
         public bool ScriptImported { get; set; }

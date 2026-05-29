@@ -122,7 +122,7 @@ namespace NzbDrone.Core.CustomFormats
             var movieInfo = new ParsedMovieInfo
             {
                 MovieTitles = new List<string> { localMovie.Movie.Title },
-                SimpleReleaseTitle = localMovie.SceneName.IsNotNullOrWhiteSpace() ? localMovie.SceneName.SimplifyReleaseTitle() : fileName.SimplifyReleaseTitle(),
+                SimpleReleaseTitle = localMovie.SceneName.IsNotNullOrWhiteSpace() ? localMovie.SceneName.SimplifyReleaseTitle() : Path.GetFileName(localMovie.Path).SimplifyReleaseTitle(),
                 ReleaseTitle = localMovie.SceneName,
                 Year = localMovie.Movie.Year,
                 Quality = localMovie.Quality,
