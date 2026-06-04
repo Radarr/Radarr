@@ -26,10 +26,11 @@ env:
   RAW_BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
   MAJOR_VERSION: 6.5.1
   NODE_VERSION: 20.x
+  INNOVERSION: 6.7.2
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     outputs:
       framework: ${{ steps.variables.outputs.framework }}
       version: ${{ steps.variables.outputs.version }}
@@ -60,14 +61,16 @@ jobs:
 
           echo "RADARRVERSION=$RADARR_VERSION" >> "$GITHUB_ENV"
           echo "BUILD_SOURCEBRANCHNAME=$BRANCH_NAME" >> "$GITHUB_ENV"
+          echo "MAJORVERSION=${{ env.MAJOR_VERSION }}" >> "$GITHUB_ENV"
+          echo "MINORVERSION=$((GITHUB_RUN_NUMBER+2000))" >> "$GITHUB_ENV"
 
           echo "framework=${{ env.FRAMEWORK }}" >> "$GITHUB_OUTPUT"
           echo "version=$RADARR_VERSION" >> "$GITHUB_OUTPUT"
           echo "branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
 
-      - name: Build Backend + Frontend
+      - name: Build Backend + Frontend + Installer
         shell: bash
-        run: ./build.sh --backend --frontend --packages
+        run: ./build.sh --backend --frontend --packages --installer
 
       - name: Publish linux-x64 Test Artifact
         uses: actions/upload-artifact@v4
@@ -75,12 +78,30 @@ jobs:
           name: tests-linux-x64
           path: _tests/${{ env.FRAMEWORK }}/linux-x64/publish/**/*
 
+      - name: Publish win-x64 Test Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-win-x64
+          path: _tests/${{ env.FRAMEWORK }}/win-x64/publish/**/*
+
       - name: Publish Linux Artifact
         uses: actions/upload-artifact@v4
         with:
           name: build_linux
           path: _artifacts/linux-*/**/*
-          
+
+      - name: Publish Windows Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_windows
+          path: _artifacts/win-*/**/*
+
+      - name: Publish Windows Installer Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_windows_installer
+          path: distribution/windows/setup/output/Radarr.*.exe
+
   unit_test:
     needs: build
     runs-on: ubuntu-latest
@@ -360,7 +381,7 @@ jobs:
           path: TestResult.xml
 
   release:
-    if: ${{ github.event_name == 'push' && (github.ref_name == 'develop' || github.ref_name == 'master') }}
+    if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref_name == 'develop' || github.ref_name == 'master') }}
     needs:
       - build
       - unit_test
@@ -372,36 +393,54 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Download Build Artifact
+      - name: Download Linux Build Artifact
         uses: actions/download-artifact@v4
         with:
           name: build_linux
           path: _output
-          
-      - name: Make Binaries Executable
+
+      - name: Download Windows Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build_windows
+          path: _output
+
+      - name: Download Windows Installer Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build_windows_installer
+          path: _artifacts
+
+      - name: Make Linux Binaries Executable
         shell: bash
         run: |
           find . -name "ffprobe" -exec chmod a+x {} \;
           find . -name "Radarr" -exec chmod a+x {} \;
           find . -name "Radarr.Update" -exec chmod a+x {} \;
 
-      - name: Create Release Package
+      - name: Create Release Packages
         shell: bash
         run: |
           mkdir -p _artifacts
           tar -czf _artifacts/Radarr.${{ needs.build.outputs.branch }}.${{ needs.build.outputs.version }}.linux-musl-core-x64.tar.gz -C _output/linux-musl-x64/${{ env.FRAMEWORK }} Radarr
           tar -czf _artifacts/Radarr.${{ needs.build.outputs.branch }}.${{ needs.build.outputs.version }}.linux-musl-core-arm64.tar.gz -C _output/linux-musl-arm64/${{ env.FRAMEWORK }} Radarr
+          (cd _output/win-x64/${{ env.FRAMEWORK }} && zip -r ${{ github.workspace }}/_artifacts/Radarr.${{ needs.build.outputs.branch }}.${{ needs.build.outputs.version }}.windows-core-x64.zip Radarr)
+          (cd _output/win-x86/${{ env.FRAMEWORK }} && zip -r ${{ github.workspace }}/_artifacts/Radarr.${{ needs.build.outputs.branch }}.${{ needs.build.outputs.version }}.windows-core-x86.zip Radarr)
 
-      - name: Upload Release Artifact
+      - name: Upload Release Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: release_linux
+          name: release_packages
           compression-level: 0
           if-no-files-found: error
-          path: _artifacts/Radarr.*.linux-musl-core-*.tar.gz
+          path: |
+            _artifacts/Radarr.*.linux-musl-core-*.tar.gz
+            _artifacts/Radarr.*.windows-core-*.zip
+            _artifacts/Radarr.*.exe
 
       - name: Get Previous Release
         id: previous-release
+        continue-on-error: true
         uses: cardinalby/git-get-release-action@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -416,19 +455,21 @@ jobs:
           github-token: ${{ github.token }}
           result-encoding: string
           script: |
-            const { data } = await github.rest.repos.generateReleaseNotes({
+            const params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: 'v${{ needs.build.outputs.version }}',
               target_commitish: '${{ github.sha }}',
-              previous_tag_name: '${{ steps.previous-release.outputs.tag_name }}',
-            })
+            }
+            const previousTag = '${{ steps.previous-release.outputs.tag_name }}'
+            if (previousTag) params.previous_tag_name = previousTag
+            const { data } = await github.rest.repos.generateReleaseNotes(params)
             return data.body
 
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: _artifacts/Radarr.*.linux-musl-core-*.tar.gz
+          artifacts: "_artifacts/Radarr.*.linux-musl-core-*.tar.gz,_artifacts/Radarr.*.windows-core-*.zip,_artifacts/Radarr.*.exe"
           commit: ${{ github.sha }}
           generateReleaseNotes: false
           body: ${{ steps.generate-release-notes.outputs.result }}
@@ -438,7 +479,7 @@ jobs:
           tag: v${{ needs.build.outputs.version }}
 
   docker:
-    if: ${{ github.event_name == 'push' && (github.ref_name == 'develop' || github.ref_name == 'master') }}
+    if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref_name == 'develop' || github.ref_name == 'master') }}
     needs:
       - release
       - build
