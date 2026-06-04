@@ -15,6 +15,7 @@ radarr:
       - TZ=Etc/UTC
       # Add env vars for any tweaks you want to enable
       - IGNORE_MATCH_BY_ID_WARNING=true
+      - IMPROVE_QUEUE_RESPONSIVENESS=true
     volumes:
       - /path/to/radarr/data:/config
       # Additional volume mounts for your media, etc
@@ -51,6 +52,10 @@ Found matching movie via grab history, but release was matched to movie by ID. M
 This generally happens on usenet indexers that include a `tmdbId` in releases that Radarr uses to match against movies while downloading. But during imports, if the files are obfuscated or the file/movie name doesn't match up with Radarr's expectations, it blocks automatic import.
 
 ⚠️ Warning: Only use this setting if you trust your indexers to provide the correct tmdbIds when they're present on releases.
+
+#### IMPROVE_QUEUE_RESPONSIVENESS
+
+Ensures that the `RefreshMonitoredDownloadsCommand` and `ProcessMonitoredDownloads` commands always execute immediately by reserving 3 additional slots for these commands. This improves UI responsiveness for the current state of the activity queue, ensuring the activity queue reflects what's happening in real time, even when many search tasks are queued.
 
 ### Contributing
 

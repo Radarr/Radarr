@@ -134,9 +134,12 @@ namespace NzbDrone.Core.Messaging.Commands
             threadLimit = Math.Max(THREAD_LOWER_BOUND, threadLimit);
             threadLimit = Math.Min(THREAD_UPPER_BOUND, threadLimit);
 
-            _logger.Info("Starting {} threads for tasks.", threadLimit);
+            var improvedQueue = bool.TryParse(Environment.GetEnvironmentVariable("IMPROVE_QUEUE_RESPONSIVENESS"), out var qe) && qe;
+            var totalThreads = threadLimit + 1 + (improvedQueue ? 3 : 0);
 
-            for (var i = 0; i < threadLimit + 1; i++)
+            _logger.Info("Starting {} threads for tasks.", totalThreads);
+
+            for (var i = 0; i < totalThreads; i++)
             {
                 var thread = new Thread(ExecuteCommands);
                 thread.Start();
