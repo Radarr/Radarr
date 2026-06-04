@@ -55,7 +55,7 @@ This generally happens on usenet indexers that include a `tmdbId` in releases th
 
 #### IMPROVE_QUEUE_RESPONSIVENESS
 
-Improves UI responsiveness for the current state of the activity queue, ensuring the activity queue reflects what's happening in real time, even when many search tasks are queued.
+Ensures that the `RefreshMonitoredDownloadsCommand` and `ProcessMonitoredDownloads` commands always execute immediately by reserving 3 additional slots for these commands. This improves UI responsiveness for the current state of the activity queue, ensuring the activity queue reflects what's happening in real time, even when many search tasks are queued.
 
 ### Contributing
 
