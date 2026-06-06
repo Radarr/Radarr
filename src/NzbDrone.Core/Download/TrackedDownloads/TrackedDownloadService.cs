@@ -4,7 +4,6 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Download.Aggregation;
 using NzbDrone.Core.Download.History;
@@ -35,33 +34,32 @@ namespace NzbDrone.Core.Download.TrackedDownloads
     {
         private readonly IParsingService _parsingService;
         private readonly IHistoryService _historyService;
-        private readonly IEventAggregator _eventAggregator;
         private readonly IDownloadHistoryService _downloadHistoryService;
-        private readonly IConfigService _config;
         private readonly IRemoteMovieAggregationService _aggregationService;
         private readonly ICustomFormatCalculationService _formatCalculator;
+        private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
+
         private readonly ICached<TrackedDownload> _cache;
 
         public TrackedDownloadService(IParsingService parsingService,
-                                      ICacheManager cacheManager,
                                       IHistoryService historyService,
-                                      IConfigService config,
+                                      IDownloadHistoryService downloadHistoryService,
                                       IRemoteMovieAggregationService aggregationService,
                                       ICustomFormatCalculationService formatCalculator,
                                       IEventAggregator eventAggregator,
-                                      IDownloadHistoryService downloadHistoryService,
+                                      ICacheManager cacheManager,
                                       Logger logger)
         {
             _parsingService = parsingService;
             _historyService = historyService;
-            _cache = cacheManager.GetCache<TrackedDownload>(GetType());
-            _config = config;
+            _downloadHistoryService = downloadHistoryService;
             _aggregationService = aggregationService;
             _formatCalculator = formatCalculator;
             _eventAggregator = eventAggregator;
-            _downloadHistoryService = downloadHistoryService;
             _logger = logger;
+
+            _cache = cacheManager.GetCache<TrackedDownload>(GetType());
         }
 
         public TrackedDownload Find(string downloadId)
@@ -117,17 +115,6 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
             try
             {
-                var historyItems = _historyService.FindByDownloadId(downloadItem.DownloadId)
-                    .OrderByDescending(h => h.Date)
-                    .ToList();
-
-                var parsedMovieInfo = Parser.Parser.ParseMovieTitle(trackedDownload.DownloadItem.Title);
-
-                if (parsedMovieInfo != null)
-                {
-                    trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", 0, null);
-                }
-
                 var downloadHistory = _downloadHistoryService.GetLatestDownloadHistoryItem(downloadItem.DownloadId);
 
                 if (downloadHistory != null)
@@ -135,6 +122,19 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     var state = GetStateFromHistory(downloadHistory.EventType);
                     trackedDownload.State = state;
                 }
+
+                var parsedMovieInfo = Parser.Parser.ParseMovieTitle(trackedDownload.DownloadItem.Title);
+
+                if (parsedMovieInfo != null)
+                {
+                    trackedDownload.RemoteMovie = downloadHistory is { EventType: DownloadHistoryEventType.DownloadImported }
+                        ? _parsingService.Map(parsedMovieInfo, downloadHistory.MovieId)
+                        : _parsingService.Map(parsedMovieInfo, "", 0, null);
+                }
+
+                var historyItems = _historyService.FindByDownloadId(downloadItem.DownloadId)
+                    .OrderByDescending(h => h.Date)
+                    .ToList();
 
                 if (historyItems.Any())
                 {

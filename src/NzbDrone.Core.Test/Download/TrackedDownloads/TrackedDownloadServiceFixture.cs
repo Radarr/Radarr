@@ -4,6 +4,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.Download.History;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Indexers;
@@ -269,6 +270,62 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
             var trackedDownloads = Subject.GetTrackedDownloads();
             trackedDownloads.Should().HaveCount(1);
             trackedDownloads.First().RemoteMovie.Should().BeNull();
+        }
+
+        [Test]
+        public void should_track_downloads_using_the_movie_id_for_already_imported_downloads()
+        {
+            Mocker.GetMock<IHistoryService>()
+                .Setup(s => s.FindByDownloadId(It.Is<string>(sr => sr == "35238")))
+                .Returns([]);
+
+            Mocker.GetMock<IDownloadHistoryService>()
+                .Setup(s => s.GetLatestDownloadHistoryItem(It.Is<string>(sr => sr == "35238")))
+                .Returns(new DownloadHistory
+                {
+                    MovieId = 5,
+                    EventType = DownloadHistoryEventType.DownloadImported,
+                });
+
+            var remoteMovie = new RemoteMovie
+            {
+                Movie = new Movie { Id = 5 },
+                ParsedMovieInfo = new ParsedMovieInfo
+                {
+                    MovieTitles = { "A Movie" },
+                    Year = 1998
+                },
+            };
+
+            Mocker.GetMock<IParsingService>()
+                .Setup(s => s.Map(It.Is<ParsedMovieInfo>(i => i.Year == 1998 && i.MovieTitle == "A Movie"), It.IsAny<int>()))
+                .Returns(remoteMovie);
+
+            var client = new DownloadClientDefinition
+            {
+                Id = 1,
+                Protocol = DownloadProtocol.Torrent
+            };
+
+            var item = new DownloadClientItem
+            {
+                Title = "A Movie 1998",
+                DownloadId = "35238",
+                DownloadClientInfo = new DownloadClientItemClientInfo
+                {
+                    Protocol = client.Protocol,
+                    Id = client.Id,
+                    Name = client.Name
+                }
+            };
+
+            var trackedDownload = Subject.TrackDownload(client, item);
+
+            trackedDownload.Should().NotBeNull();
+            trackedDownload.RemoteMovie.Should().NotBeNull();
+            trackedDownload.RemoteMovie.Movie.Should().NotBeNull();
+            trackedDownload.RemoteMovie.Movie.Id.Should().Be(5);
+            trackedDownload.RemoteMovie.ParsedMovieInfo.Year.Should().Be(1998);
         }
     }
 }
