@@ -15,18 +15,13 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
         public long Size { get; set; }
         public Movie Movie { get; set; }
         public int? MovieFileId { get; set; }
-        public QualityModel Quality { get; set; }
-        public List<Language> Languages { get; set; }
+        public QualityModel Quality { get; set; } = new();
+        public List<Language> Languages { get; set; } = new();
         public string ReleaseGroup { get; set; }
         public string DownloadId { get; set; }
-        public List<CustomFormat> CustomFormats { get; set; }
+        public List<CustomFormat> CustomFormats { get; set; } = new();
         public int CustomFormatScore { get; set; }
         public int IndexerFlags { get; set; }
-        public IEnumerable<ImportRejection> Rejections { get; set; }
-
-        public ManualImportItem()
-        {
-            CustomFormats = new List<CustomFormat>();
-        }
+        public IEnumerable<ImportRejection> Rejections { get; set; } = new List<ImportRejection>();
     }
 }
