@@ -197,7 +197,8 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             catch (Exception e)
             {
                 _logger.Debug(e, "Failed to find movie for " + downloadItem.Title);
-                return null;
+
+                trackedDownload.Warn("Unable to parse movie from title");
             }
 
             LogItemChange(trackedDownload, existingItem?.DownloadItem, trackedDownload.DownloadItem);
