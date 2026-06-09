@@ -130,6 +130,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Title (2024) (1080p BluRay x265 SDR DDP 5.1 English - DarQ)", "DarQ")]
         [TestCase("Movie Title (2024) (1080p BluRay x265 SDR DDP 5.1 English -BEN THE MEN", "BEN THE MEN")]
         [TestCase("Movie Title 2024 2160p WEB-DL DoVi HDR10+ H265 DDP 5.1 Atmos-126811", "126811")]
+        [TestCase("Movie Title (2025) (1080p BluRay x265 SDR DDP Atmos 7.1 English - Celdra QxR)", "QxR")]
+        [TestCase("Movie Title (2025) (1080p BluRay x265 Celdra)", "Celdra")]
         public void should_parse_exception_release_group(string title, string expected)
         {
             Parser.ReleaseGroupParser.ParseReleaseGroup(title).Should().Be(expected);
