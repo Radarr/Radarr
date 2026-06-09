@@ -28,7 +28,7 @@ namespace NzbDrone.Core.CustomFormats
 
         protected override bool IsSatisfiedByWithoutNegate(CustomFormatInput input)
         {
-            var year = input.MovieInfo?.Year ?? input.Movie?.MovieMetadata?.Value?.Year;
+            var year = input.MovieInfo?.Year is > 0 ? input.MovieInfo.Year : input.Movie?.MovieMetadata?.Value?.Year;
 
             return year >= Min && year <= Max;
         }
