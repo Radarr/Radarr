@@ -1,3 +1,4 @@
+using System.Globalization;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
@@ -15,6 +16,32 @@ namespace NzbDrone.Common.Test.Http
         {
             var newUri = new HttpUri(uri);
             newUri.FullUri.Should().Be(uri);
+        }
+
+        [Test]
+        public void should_parse_uri_template_regardless_of_culture()
+        {
+            var currentCulture = CultureInfo.CurrentCulture;
+            var currentUiCulture = CultureInfo.CurrentUICulture;
+
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
+            CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("tr-TR");
+
+            try
+            {
+                var uri = "https://api.themoviedb.org/{api}/{route}/{id}{secondaryRoute}";
+                var newUri = new HttpUri(uri);
+
+                newUri.FullUri.Should().Be(uri);
+                newUri.Scheme.Should().Be("https");
+                newUri.Host.Should().Be("api.themoviedb.org");
+                newUri.Path.Should().Be("/{api}/{route}/{id}{secondaryRoute}");
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = currentCulture;
+                CultureInfo.CurrentUICulture = currentUiCulture;
+            }
         }
 
         [TestCase("", "", "")]
