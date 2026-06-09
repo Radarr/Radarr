@@ -38,8 +38,10 @@ namespace NzbDrone.Core.Extras.Metadata
 
         public abstract MetadataFile FindMetadataFile(Movie movie, string path);
 
-        public abstract MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile);
+        public abstract MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile = null);
         public abstract List<ImageFileResult> MovieImages(Movie movie);
+
+        public virtual bool SupportsMetadataWithoutVideoFile => false;
 
         public virtual object RequestAction(string action, IDictionary<string, string> query)
         {

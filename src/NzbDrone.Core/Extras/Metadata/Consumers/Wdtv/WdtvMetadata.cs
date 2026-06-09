@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
             return null;
         }
 
-        public override MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile)
+        public override MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile = null)
         {
             if (!Settings.MovieMetadata)
             {

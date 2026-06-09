@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Kometa
             return null;
         }
 
-        public override MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile)
+        public override MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile = null)
         {
             return null;
         }
