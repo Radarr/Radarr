@@ -51,6 +51,25 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, QualitySource.CAM, proper, Resolution.Unknown);
         }
 
+        [TestCase("Movie.Name.2024.TC.x264-GROUP")]
+        [TestCase("Movie.Name.2024.[TC].x264-GROUP")]
+        [TestCase("Movie.Name.2024.HD-TC.x264-GROUP")]
+        [TestCase("Movie.Name.2024.HDTC.x264-GROUP")]
+        [TestCase("Movie.Name.2024.TELECINE.x264-GROUP")]
+        public void should_parse_telecine_quality(string title)
+        {
+            ParseAndVerifyQuality(title, QualitySource.TELECINE, false, Resolution.Unknown);
+        }
+
+        [TestCase("Movie.Name.2024.[TC-00]-torrentclaw")]
+        [TestCase("Movie.Name.2024.[TC-12].torrentclaw")]
+        public void should_not_parse_torrentclaw_tc_number_as_telecine(string title)
+        {
+            var result = QualityParser.ParseQuality(title);
+
+            result.Quality.Source.Should().NotBe(QualitySource.TELECINE);
+        }
+
         [TestCase("S07E23 .avi ", false)]
         [TestCase("Movie Name S02E01 HDTV XviD 2HD", false)]
         [TestCase("Movie Name S05E11 PROPER HDTV XviD 2HD", true)]
