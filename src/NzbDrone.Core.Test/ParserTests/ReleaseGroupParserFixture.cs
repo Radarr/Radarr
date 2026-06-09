@@ -128,6 +128,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Title(2023) 1080p SkySHO WEB-DL ESP DD+ 5.1 H.264-EML HDTeam", "EML HDTeam")]
         [TestCase("Movie Title (2022) BDFull 1080p DTS-HD MA 5.1 AVC LMain", "LMain")]
         [TestCase("Movie Title (2024) (1080p BluRay x265 SDR DDP 5.1 English - DarQ)", "DarQ")]
+        [TestCase("Movie Title (2025) (2160p UHD BluRay x265 DV HDR DDP Atmos 7.1 English - DarQ HONE)", "HONE")]
+        [TestCase("Movie Title (2015) (2160p UHD BluRay x265 HDR10+ DDP Atmos 7.1 English - DiscoD HONE)", "HONE")]
+        [TestCase("Movie Title (2021) (2160p UHD BluRay x265 DV HDR10+ DDP 7.1 English - Weasley HONE)", "HONE")]
         [TestCase("Movie Title (2024) (1080p BluRay x265 SDR DDP 5.1 English -BEN THE MEN", "BEN THE MEN")]
         [TestCase("Movie Title 2024 2160p WEB-DL DoVi HDR10+ H265 DDP 5.1 Atmos-126811", "126811")]
         public void should_parse_exception_release_group(string title, string expected)
