@@ -15,7 +15,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.Company
 
     public class TMDbCompanySettings : TMDbSettingsBase<TMDbCompanySettings>
     {
-        private static readonly TMDbCompanySettingsValidator Validator = new ();
+        private static readonly TMDbCompanySettingsValidator Validator = new();
 
         public TMDbCompanySettings()
         {

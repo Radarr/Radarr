@@ -16,7 +16,7 @@ namespace NzbDrone.Core.ImportLists.CouchPotato
 
     public class CouchPotatoSettings : ImportListSettingsBase<CouchPotatoSettings>
     {
-        private static readonly CouchPotatoSettingsValidator Validator = new ();
+        private static readonly CouchPotatoSettingsValidator Validator = new();
 
         public CouchPotatoSettings()
         {

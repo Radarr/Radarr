@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Notifications.Pushsafer
 
     public class PushsaferSettings : NotificationSettingsBase<PushsaferSettings>
     {
-        private static readonly PushsaferSettingsValidator Validator = new ();
+        private static readonly PushsaferSettingsValidator Validator = new();
 
         public PushsaferSettings()
         {

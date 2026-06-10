@@ -17,7 +17,7 @@ namespace NzbDrone.Core.ImportLists.Radarr
 
     public class RadarrSettings : ImportListSettingsBase<RadarrSettings>
     {
-        private static readonly RadarrSettingsValidator Validator = new ();
+        private static readonly RadarrSettingsValidator Validator = new();
 
         public RadarrSettings()
         {

@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Notifications
     {
         private class UpdateQueue
         {
-            public Dictionary<int, UpdateQueueItem<TItemInfo>> Pending { get; } = new ();
+            public Dictionary<int, UpdateQueueItem<TItemInfo>> Pending { get; } = new();
             public bool Refreshing { get; set; }
         }
 

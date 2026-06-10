@@ -18,8 +18,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
     public class UpgradeSpecificationFixture : CoreTest<UpgradableSpecification>
     {
-        private static readonly CustomFormat CustomFormat1 = new ("My Format 1", new ResolutionSpecification { Value = (int)Resolution.R1080p }) { Id = 1 };
-        private static readonly CustomFormat CustomFormat2 = new ("My Format 2", new ResolutionSpecification { Value = (int)Resolution.R480p }) { Id = 2 };
+        private static readonly CustomFormat CustomFormat1 = new("My Format 1", new ResolutionSpecification { Value = (int)Resolution.R1080p }) { Id = 1 };
+        private static readonly CustomFormat CustomFormat2 = new("My Format 2", new ResolutionSpecification { Value = (int)Resolution.R480p }) { Id = 2 };
 
         public static object[] IsUpgradeTestCases =
         {

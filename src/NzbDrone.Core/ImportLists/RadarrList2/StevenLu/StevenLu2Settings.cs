@@ -16,7 +16,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.StevenLu
 
     public class StevenLu2Settings : ImportListSettingsBase<StevenLu2Settings>
     {
-        private static readonly StevenLu2SettingsValidator Validator = new ();
+        private static readonly StevenLu2SettingsValidator Validator = new();
 
         public StevenLu2Settings()
         {

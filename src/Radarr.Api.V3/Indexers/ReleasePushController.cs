@@ -76,7 +76,7 @@ namespace Radarr.Api.V3.Indexers
 
             if (decision?.RemoteMovie.ParsedMovieInfo == null)
             {
-                throw new ValidationException(new List<ValidationFailure> { new ("Title", "Unable to parse", release.Title) });
+                throw new ValidationException(new List<ValidationFailure> { new("Title", "Unable to parse", release.Title) });
             }
 
             return MapDecisions(new[] { decision });

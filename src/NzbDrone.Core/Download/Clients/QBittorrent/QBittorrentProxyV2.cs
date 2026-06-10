@@ -397,7 +397,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
             var request = requestBuilder.Build();
             request.LogResponseContent = true;
-            request.SuppressHttpErrorStatusCodes = new[] { HttpStatusCode.Forbidden };
+            request.SuppressHttpErrorStatusCodes = [HttpStatusCode.Forbidden];
 
             try
             {

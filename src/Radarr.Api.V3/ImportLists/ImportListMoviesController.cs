@@ -177,7 +177,8 @@ namespace Radarr.Api.V3.ImportLists
                 resource.Folder = _fileNameBuilder.GetMovieFolder(new Movie
                 {
                     MovieMetadata = currentMovie.MovieMetadata
-                }, namingConfig);
+                },
+                    namingConfig);
 
                 yield return resource;
             }

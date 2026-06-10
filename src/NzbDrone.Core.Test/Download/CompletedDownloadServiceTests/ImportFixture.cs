@@ -101,17 +101,21 @@ namespace NzbDrone.Core.Test.Download
         public void should_not_mark_as_imported_if_all_files_were_rejected()
         {
             Mocker.GetMock<IDownloadedMovieImportService>()
-                  .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>()))
-                  .Returns(new List<ImportResult>
-                           {
-                               new ImportResult(
-                                   new ImportDecision(
-                                       new LocalMovie { Path = @"C:\TestPath\Droned.1998.mkv" }, new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")), "Test Failure"),
+                .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>()))
+                .Returns(new List<ImportResult>
+                {
+                    new ImportResult(
+                        new ImportDecision(
+                            new LocalMovie { Path = @"C:\TestPath\Droned.1998.mkv" },
+                            new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")),
+                        "Test Failure"),
 
-                               new ImportResult(
-                                   new ImportDecision(
-                                       new LocalMovie { Path = @"C:\TestPath\Droned.1999.mkv" }, new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")), "Test Failure")
-                           });
+                    new ImportResult(
+                        new ImportDecision(
+                            new LocalMovie { Path = @"C:\TestPath\Droned.1999.mkv" },
+                            new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")),
+                        "Test Failure")
+                });
 
             Subject.Import(_trackedDownload);
 
@@ -125,17 +129,21 @@ namespace NzbDrone.Core.Test.Download
         public void should_not_mark_as_imported_if_no_movies_were_parsed()
         {
             Mocker.GetMock<IDownloadedMovieImportService>()
-                  .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>()))
-                  .Returns(new List<ImportResult>
-                           {
-                               new ImportResult(
-                                   new ImportDecision(
-                                       new LocalMovie { Path = @"C:\TestPath\Droned.1998.mkv" }, new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")), "Test Failure"),
+                .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>()))
+                .Returns(new List<ImportResult>
+                {
+                    new ImportResult(
+                        new ImportDecision(
+                            new LocalMovie { Path = @"C:\TestPath\Droned.1998.mkv" },
+                            new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")),
+                        "Test Failure"),
 
-                               new ImportResult(
-                                   new ImportDecision(
-                                       new LocalMovie { Path = @"C:\TestPath\Droned.1998.mkv" }, new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")), "Test Failure")
-                           });
+                    new ImportResult(
+                        new ImportDecision(
+                            new LocalMovie { Path = @"C:\TestPath\Droned.1998.mkv" },
+                            new ImportRejection(ImportRejectionReason.Unknown, "Rejected!")),
+                        "Test Failure")
+                });
 
             _trackedDownload.RemoteMovie.Movie = new Movie();
 

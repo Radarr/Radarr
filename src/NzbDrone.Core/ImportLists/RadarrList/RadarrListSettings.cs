@@ -14,7 +14,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList
 
     public class RadarrListSettings : ImportListSettingsBase<RadarrListSettings>
     {
-        private static readonly RadarrSettingsValidator Validator = new ();
+        private static readonly RadarrSettingsValidator Validator = new();
 
         [FieldDefinition(0, Label = "List URL", HelpText = "The URL for the movie list")]
         public string Url { get; set; }

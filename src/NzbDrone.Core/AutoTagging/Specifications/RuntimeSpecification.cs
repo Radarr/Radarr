@@ -19,7 +19,7 @@ namespace NzbDrone.Core.AutoTagging.Specifications
 
     public class RuntimeSpecification : AutoTaggingSpecificationBase
     {
-        private static readonly RuntimeSpecificationValidator Validator = new ();
+        private static readonly RuntimeSpecificationValidator Validator = new();
 
         public override int Order => 1;
         public override string ImplementationName => "Runtime";

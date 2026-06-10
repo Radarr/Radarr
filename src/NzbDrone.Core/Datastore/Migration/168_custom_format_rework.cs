@@ -107,7 +107,7 @@ namespace NzbDrone.Core.Datastore.Migration
                     return new IndexerFlagSpecification { Value = (int)ParseIndexerFlag(value) };
                 case "g":
                     var minMax = ParseSize(value);
-                    return new SizeSpecification { Min = minMax.Item1, Max = minMax.Item2 };
+                    return new SizeSpecification { Min = minMax.Min, Max = minMax.Max };
                 case "c":
                 default:
                     return new ReleaseTitleSpecification { Value = ParseString(value, isRegex) };
@@ -195,7 +195,7 @@ namespace NzbDrone.Core.Datastore.Migration
             return default;
         }
 
-        private (double, double) ParseSize(string value)
+        private (double Min, double Max) ParseSize(string value)
         {
             var matches = SizeTagRegex.Match(value);
             var min = double.Parse(matches.Groups["min"].Value, CultureInfo.InvariantCulture);
