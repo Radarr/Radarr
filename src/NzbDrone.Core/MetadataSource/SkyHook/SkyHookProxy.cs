@@ -516,16 +516,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 var searchTerm = parserTitle.Replace("_", "+").Replace(" ", "+").Replace(".", "+");
 
-                var firstChar = searchTerm.First();
-
                 var request = _radarrMetadata.Create()
                     .SetSegment("route", "search")
                     .AddQueryParam("q", searchTerm)
                     .AddQueryParam("year", yearTerm)
                     .Build();
-
-                request.AllowAutoRedirect = true;
-                request.SuppressHttpError = true;
 
                 var httpResponse = _httpClient.Get<List<MovieResource>>(request);
 
