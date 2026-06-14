@@ -310,10 +310,6 @@ export const defaultState = {
 
     traktRating: function({ ratings = {} }) {
       return ratings.trakt ? ratings.trakt.value : 0;
-    },
-
-    runtime: function(item) {
-      return item.runtime ?? 0;
     }
   },
 
