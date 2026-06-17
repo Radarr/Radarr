@@ -374,7 +374,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     audio.Add(new XElement("bitrate", movieFile.MediaInfo.AudioBitrate));
                     audio.Add(new XElement("channels", audioChannelCount));
                     audio.Add(new XElement("codec", XbmcMetadataFormatter.FormatAudioCodec(movieFile.MediaInfo)));
-                    audio.Add(new XElement("language", movieFile.MediaInfo.AudioLanguages));
+                    audio.Add(new XElement("language", movieFile.MediaInfo.AudioLanguages.FirstOrDefault()));
                     streamDetails.Add(audio);
 
                     if (movieFile.MediaInfo.Subtitles is { Count: > 0 })
