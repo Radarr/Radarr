@@ -8,6 +8,7 @@ import TraktRating from 'Components/TraktRating';
 import { icons } from 'Helpers/Props';
 import Language from 'Language/Language';
 import { Ratings } from 'Movie/Movie';
+import MoviePopularityIndex from 'Movie/MoviePopularityIndex';
 import QualityProfile from 'typings/QualityProfile';
 import formatDate from 'Utilities/Date/formatDate';
 import formatDateTime from 'Utilities/Date/formatDateTime';
@@ -28,6 +29,7 @@ interface MovieIndexPosterInfoProps {
   releaseDate?: string;
   path: string;
   ratings: Ratings;
+  popularity: number;
   certification: string;
   originalTitle: string;
   originalLanguage: Language;
@@ -62,6 +64,7 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     releaseDate,
     path,
     ratings,
+    popularity,
     certification,
     originalTitle,
     originalLanguage,
@@ -279,6 +282,14 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     return (
       <div className={styles.info} title={translate('SizeOnDisk')}>
         {formatBytes(sizeOnDisk)}
+      </div>
+    );
+  }
+
+  if (sortKey === 'popularity') {
+    return (
+      <div className={styles.info}>
+        <MoviePopularityIndex popularity={popularity} />
       </div>
     );
   }

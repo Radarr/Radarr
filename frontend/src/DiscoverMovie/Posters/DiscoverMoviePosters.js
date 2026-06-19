@@ -75,6 +75,7 @@ function calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions)
     case 'digitalRelease':
     case 'physicalRelease':
     case 'runtime':
+    case 'popularity':
     case 'certification':
       heights.push(19);
       break;
