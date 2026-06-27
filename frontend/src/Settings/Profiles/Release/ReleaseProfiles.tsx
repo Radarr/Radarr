@@ -50,6 +50,7 @@ function ReleaseProfiles() {
         <div className={styles.releaseProfiles}>
           <Card
             className={styles.addReleaseProfile}
+            ariaLabel={translate('AddReleaseProfile')}
             onPress={setAddReleaseProfileModalOpen}
           >
             <div className={styles.center}>
