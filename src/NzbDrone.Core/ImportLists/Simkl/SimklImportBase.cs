@@ -115,7 +115,7 @@ namespace NzbDrone.Core.ImportLists.Simkl
 
                     return movieType switch
                     {
-                        SimklUserMovieType.Movies => response.Resource.Anime.All,
+                        SimklUserMovieType.Anime => response.Resource.Anime.All,
                         _ => response.Resource.Movies.All
                     };
                 }
