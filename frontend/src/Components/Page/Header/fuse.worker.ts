@@ -7,7 +7,15 @@ const fuseOptions = {
   ignoreLocation: true,
   threshold: 0.3,
   minMatchCharLength: 1,
-  keys: ['title', 'alternateTitles.title', 'tmdbId', 'imdbId', 'tags.label'],
+  keys: [
+    'title',
+    'originalTitle',
+    'year',
+    'alternateTitles.title',
+    'tmdbId',
+    'imdbId',
+    'tags.label',
+  ],
 };
 
 function getSuggestions(movies: SuggestedMovie[], value: string) {
