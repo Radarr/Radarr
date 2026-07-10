@@ -27,6 +27,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
     }
 
     public class TrackedDownloadService : ITrackedDownloadService,
+                                          IHandle<MovieGrabbedEvent>,
                                           IHandle<MovieAddedEvent>,
                                           IHandle<MovieEditedEvent>,
                                           IHandle<MoviesBulkEditedEvent>,
@@ -222,6 +223,24 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             }
         }
 
+        private void LogItemChange(TrackedDownload trackedDownload, DownloadClientItem existingItem, DownloadClientItem downloadItem)
+        {
+            if (existingItem == null ||
+                existingItem.Status != downloadItem.Status ||
+                existingItem.CanBeRemoved != downloadItem.CanBeRemoved ||
+                existingItem.CanMoveFiles != downloadItem.CanMoveFiles)
+            {
+                _logger.Debug("Tracking '{0}:{1}': ClientState={2}{3} RadarrStage={4} Movie='{5}' OutputPath={6}.",
+                    downloadItem.DownloadClientInfo.Name,
+                    downloadItem.Title,
+                    downloadItem.Status,
+                    downloadItem.CanBeRemoved ? "" : downloadItem.CanMoveFiles ? " (busy)" : " (readonly)",
+                    trackedDownload.State,
+                    trackedDownload.RemoteMovie?.ParsedMovieInfo,
+                    downloadItem.OutputPath);
+            }
+        }
+
         private void UpdateCachedItem(TrackedDownload trackedDownload)
         {
             var parsedMovieInfo = Parser.Parser.ParseMovieTitle(trackedDownload.DownloadItem.Title);
@@ -246,21 +265,20 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             }
         }
 
-        private void LogItemChange(TrackedDownload trackedDownload, DownloadClientItem existingItem, DownloadClientItem downloadItem)
+        public void Handle(MovieGrabbedEvent message)
         {
-            if (existingItem == null ||
-                existingItem.Status != downloadItem.Status ||
-                existingItem.CanBeRemoved != downloadItem.CanBeRemoved ||
-                 existingItem.CanMoveFiles != downloadItem.CanMoveFiles)
+            if (message.DownloadId.IsNullOrWhiteSpace())
             {
-                _logger.Debug("Tracking '{0}:{1}': ClientState={2}{3} RadarrStage={4} Movie='{5}' OutputPath={6}.",
-                    downloadItem.DownloadClientInfo.Name,
-                    downloadItem.Title,
-                    downloadItem.Status,
-                    downloadItem.CanBeRemoved ? "" : downloadItem.CanMoveFiles ? " (busy)" : " (readonly)",
-                    trackedDownload.State,
-                    trackedDownload.RemoteMovie?.ParsedMovieInfo,
-                    downloadItem.OutputPath);
+                return;
+            }
+
+            var trackedDownload = _cache.Find(message.DownloadId);
+
+            if (trackedDownload is { State: TrackedDownloadState.Imported or
+                                            TrackedDownloadState.Failed or
+                                            TrackedDownloadState.Ignored })
+            {
+                _cache.Remove(message.DownloadId);
             }
         }
 
