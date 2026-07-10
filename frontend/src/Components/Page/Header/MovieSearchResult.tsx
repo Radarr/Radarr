@@ -16,8 +16,17 @@ interface MovieSearchResultProps extends SuggestedMovie {
 }
 
 function MovieSearchResult(props: MovieSearchResultProps) {
-  const { match, title, year, images, alternateTitles, tmdbId, imdbId, tags } =
-    props;
+  const {
+    match,
+    title,
+    originalTitle,
+    year,
+    images,
+    alternateTitles,
+    tmdbId,
+    imdbId,
+    tags,
+  } = props;
 
   let alternateTitle = null;
   let tag: Tag | null = null;
@@ -42,6 +51,10 @@ function MovieSearchResult(props: MovieSearchResultProps) {
         <div className={styles.title}>
           {title} {year > 0 ? `(${year})` : ''}
         </div>
+
+        {match.key === 'originalTitle' && originalTitle ? (
+          <div className={styles.originalTitle}>{originalTitle}</div>
+        ) : null}
 
         {alternateTitle ? (
           <div className={styles.alternateTitle}>{alternateTitle.title}</div>

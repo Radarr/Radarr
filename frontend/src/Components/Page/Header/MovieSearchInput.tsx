@@ -43,6 +43,7 @@ export interface SuggestedMovie
   extends Pick<
     Movie,
     | 'title'
+    | 'originalTitle'
     | 'year'
     | 'titleSlug'
     | 'sortTitle'
@@ -77,6 +78,7 @@ function createUnoptimizedSelector() {
       return allMovies.map((movie): SuggestedMovie => {
         const {
           title,
+          originalTitle,
           year,
           titleSlug,
           sortTitle,
@@ -89,6 +91,7 @@ function createUnoptimizedSelector() {
 
         return {
           title,
+          originalTitle,
           year,
           titleSlug,
           sortTitle,
