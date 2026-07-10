@@ -1817,7 +1817,7 @@
     "SmartReplaceHint": "Tiret ou espace puis tiret selon le nom",
     "AnnouncedMovieAvailabilityDescription": "Les films sont considérés disponibles dès qu'ils sont ajouté à {appName}.",
     "CustomFormatsSpecificationExceptLanguage": "Excepté Langue",
-    "CustomFormatsSpecificationExceptLanguageHelpText": "Corresponf si l'autre langue que celle sélectionné est présente",
+    "CustomFormatsSpecificationExceptLanguageHelpText": "Corresponds si l'autre langue que celle sélectionnée est présente",
     "FolderNameTokens": "Jetons de nom de fichier",
     "Install": "Installer",
     "InstallMajorVersionUpdate": "Installer la mise à jour",
@@ -2039,5 +2039,15 @@
     "ReleasePush": "Poussée de version",
     "FilterMoviePropertiesOnlyNotFileWarning": "Les filtres sont seulement disponibles pour les propriétés d'un film, ils ne sont pas disponibles pour les propriétés du ou des fichiers que vous pouvez avoir pour ce film.",
     "NotificationsPushoverSettingsTtl": "Temps de vie",
-    "NotificationsPushoverSettingsTtlHelpText": "Temps en secondes avant que le message expire. Mettre à 0 pour illimité"
+    "NotificationsPushoverSettingsTtlHelpText": "Temps en secondes avant que le message expire. Mettre à 0 pour illimité",
+    "ImportListsSimklSettingsAuthenticatewithSimkl": "S'authentifier avec Simkl",
+    "ImportListsSimklSettingsListType": "Type de liste",
+    "ImportListsSimklSettingsListTypeHelpText": "Type de liste à partir de laquelle vous cherchez à importer",
+    "ImportListsSimklSettingsUserListTypeCompleted": "Terminé",
+    "ImportListsSimklSettingsUserListTypeDropped": "Abandonné",
+    "ImportListsSimklSettingsUserListTypeHold": "Tenir",
+    "ImportListsSimklSettingsUserListTypePlanToWatch": "Plan de surveillance",
+    "ImportListsSimklSettingsUserListTypeWatching": "Regarder",
+    "ImportListsSimklSettingsMovieType": "type film",
+    "ImportListsSimklSettingsMovieTypeHelpText": "Type de film que vous souhaitez importer depuis"
 }

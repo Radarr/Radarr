@@ -1691,7 +1691,7 @@
     "ShowUnknownMovieItemsHelpText": "Mostrar elementos sin una película en la cola. Esto podría incluir películas eliminadas o cualquier otra cosa en la categoría de {appName}",
     "AutoTaggingLoadError": "No se pudo cargar el etiquetado automático",
     "DownloadClientRTorrentProviderMessage": "rTorrent no pausará torrents cuando cumplan el criterio de sembrado. {appName} manejará la eliminación automática de torrents basados en el criterio de sembrado actual en Opciones -> Indexadores solo cuando Eliminar completados esté habilitado. Después de importarlo también se establecerá {importedView} como una vista de rTorrent, lo que puede ser usado en los scripts de rTorrent para personalizar su comportamiento.",
-    "DownloadClientValidationAuthenticationFailureDetail": "Por favor verifica tu usuario y contraseña. Verifica también si al host que ejecuta {appName} no se le ha bloqueado el acceso a {clientName} por limitaciones en la lista blanca en la configuración de {clientName}.",
+    "DownloadClientValidationAuthenticationFailureDetail": "Por favor verifica tus credenciales. Verifica también si al host que ejecuta {appName} no se le ha bloqueado el acceso a {clientName} por limitaciones en la lista blanca en la configuración de {clientName}.",
     "ErrorLoadingPage": "Hubo un error cargando esta página",
     "MovieIsTrending": "La película es tendencia en TMDb",
     "MovieIsPopular": "La película es popular en TMDb",
@@ -2039,5 +2039,15 @@
     "NotificationsPushcutSettingsMetadataLinksHelpText": "Añade un enlace a los metadatos de las series cuando se envían notificaciones",
     "FilterMoviePropertiesOnlyNotFileWarning": "Los filtros están disponibles solo para las propiedades de una película, no para las propiedades del archivo(s) que puedas tener para esa película.",
     "NotificationsPushoverSettingsTtl": "Tiempo de vida",
-    "NotificationsPushoverSettingsTtlHelpText": "Tiempo en segundos antes de que el mensaje expire. Establecer en 0 para una duración ilimitada"
+    "NotificationsPushoverSettingsTtlHelpText": "Tiempo en segundos antes de que el mensaje expire. Establecer en 0 para una duración ilimitada",
+    "ImportListsSimklSettingsAuthenticatewithSimkl": "Autenticar con Simkl",
+    "ImportListsSimklSettingsListType": "Tipo de lista",
+    "ImportListsSimklSettingsListTypeHelpText": "Tipo de lista de la que deseas importar",
+    "ImportListsSimklSettingsUserListTypeCompleted": "Completados",
+    "ImportListsSimklSettingsUserListTypeDropped": "Abandonados",
+    "ImportListsSimklSettingsUserListTypeHold": "En espera",
+    "ImportListsSimklSettingsUserListTypePlanToWatch": "Planeado ver",
+    "ImportListsSimklSettingsUserListTypeWatching": "Viendo",
+    "ImportListsSimklSettingsMovieType": "Tipo de Película",
+    "ImportListsSimklSettingsMovieTypeHelpText": "Tipo de película que quieres importar"
 }

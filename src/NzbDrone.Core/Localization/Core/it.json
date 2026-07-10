@@ -1625,5 +1625,19 @@
     "AutoTaggingSpecificationKeyword": "Parole Chiave",
     "AutoTaggingSpecificationMaximumRuntime": "Tempo di esecuzione massimo",
     "AutoTaggingSpecificationMinimumRuntime": "Tempo di esecuzione minimo",
-    "CountMissingMoviesFromLibrary": "{count} film mancanti dalla libreria"
+    "CountMissingMoviesFromLibrary": "{count} film mancanti dalla libreria",
+    "RemotePathMappingCheckLocalFolderMissing": "Il client di download remoto {downloadClientName} inserisce gli scaricamenti in {path} ma questa cartella non sembra esistere. Probabilmente la mappatura dei percorsi remoti è incorretta o mancante.",
+    "RemotePathMappingCheckFileRemoved": "Il file {path} è stato rimosso durante l'elaborazione.",
+    "RemotePathMappingCheckRemoteDownloadClient": "Il client di download remoto {downloadClientName} riporta files in {path} ma questa cartella non sembra esistere. Probabilmente manca la mappatura dei percorsi remoti.",
+    "IndexerJackettAll": "Indici che usano l'endpoint non supportato 'all' di Hackett: {indexerNames}",
+    "RecycleBinUnableToWriteHealthCheck": "Impossibile scrivere nella cartella cestino configurata: {path}. Assicurarsi che questo percorso esista e che sia scrivibile dall'utente che esegue {appName}",
+    "ManageImportLists": "Gestisci Liste di Importazione",
+    "NoImportListsFound": "Nessuna lista di importazione trovata",
+    "TestParsing": "Prova l'Analisi",
+    "FailedToFetchUpdates": "Impossibile recuperare aggiornamenti",
+    "Repack": "Repack",
+    "CustomFormatsSpecificationFlag": "Flag",
+    "CustomFormatsSettingsTriggerInfo": "Un Formato Personalizzato sarà applicato ad un'uscita o a un file quando corrisponde ad almeno una delle diverse tipologie di condizioni selezionate.",
+    "ImportListsSimklSettingsListType": "Tipo Lista",
+    "ImportListsSimklSettingsUserListTypeCompleted": "Completato"
 }

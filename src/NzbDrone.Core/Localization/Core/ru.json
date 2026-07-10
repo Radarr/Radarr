@@ -2039,5 +2039,13 @@
     "NotificationsPushcutSettingsMetadataLinksHelpText": "Добавляет ссылки на метаданные сериала при отправке уведомлений",
     "FilterMoviePropertiesOnlyNotFileWarning": "Фильтры доступны только для свойств фильма, они недоступны для свойств файл(ов), которые могут быть у вас для этого фильма.",
     "NotificationsPushoverSettingsTtl": "Время актуальности",
-    "NotificationsPushoverSettingsTtlHelpText": "Время в секундах до потери актуальности сообщения. Установите в 0 для отключения ограничения"
+    "NotificationsPushoverSettingsTtlHelpText": "Время в секундах до потери актуальности сообщения. Установите в 0 для отключения ограничения",
+    "ImportListsSimklSettingsAuthenticatewithSimkl": "Аутентификация с помощью Simkl",
+    "ImportListsSimklSettingsListType": "Тип списка",
+    "ImportListsSimklSettingsListTypeHelpText": "Тип списка, из которого вы хотите импортировать",
+    "ImportListsSimklSettingsUserListTypeCompleted": "Завершенный",
+    "ImportListsSimklSettingsUserListTypeDropped": "Попущенный",
+    "ImportListsSimklSettingsUserListTypeHold": "Оставить",
+    "ImportListsSimklSettingsUserListTypePlanToWatch": "Планирую посмотреть",
+    "ImportListsSimklSettingsUserListTypeWatching": "Смотрю"
 }

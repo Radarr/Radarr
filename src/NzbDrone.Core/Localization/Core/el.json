@@ -1317,5 +1317,7 @@
     "MovieDownloaded": "Λήψη Εισήχθη",
     "ShowTraktRating": "Βαθμολογία ντομάτας",
     "ReleasePush": "Ημερομηνίες κυκλοφορίας",
-    "CinemaRelease": "Εμφάνιση ημερομηνίας κυκλοφορίας κινηματογράφου"
+    "CinemaRelease": "Εμφάνιση ημερομηνίας κυκλοφορίας κινηματογράφου",
+    "ImportListsSimklSettingsListType": "Τύπος καλλιτέχνη",
+    "ImportListsSimklSettingsUserListTypeCompleted": "Ολοκληρώθηκαν"
 }

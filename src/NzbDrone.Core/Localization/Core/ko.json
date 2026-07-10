@@ -1943,5 +1943,10 @@
     "ShowPhysicalRelease": "실제 출시일 표시",
     "CloneImportList": "가져오기 목록 삭제",
     "ReleaseProfile": "출시 프로필",
-    "CinemaRelease": "영화 개봉일 표시"
+    "CinemaRelease": "영화 개봉일 표시",
+    "ImportListsSimklSettingsListType": "목록 유형",
+    "ImportListsSimklSettingsUserListTypeCompleted": "완료됨",
+    "ImportListsSimklSettingsUserListTypeDropped": "드랍함",
+    "ImportListsSimklSettingsUserListTypeHold": "대기중",
+    "ImportListsSimklSettingsUserListTypeWatching": "시청중"
 }

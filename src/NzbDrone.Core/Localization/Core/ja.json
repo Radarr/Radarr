@@ -323,7 +323,7 @@
     "Clear": "晴れ",
     "MovieIsMonitored": "映画が監視されています",
     "Activity": "アクティビティ",
-    "About": "約",
+    "About": "このソフトウェアについて",
     "MovieIsUnmonitored": "映画は監視されていません",
     "MoviesSelectedInterp": "{0}選択された映画",
     "Added": "追加",
@@ -1156,5 +1156,6 @@
     "SelectReleaseGroup": "リリースグループ",
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "複数のルートフォルダがありません：{0}",
     "ReleasePush": "リリース日",
-    "CinemaRelease": "シネマのリリース日を表示"
+    "CinemaRelease": "シネマのリリース日を表示",
+    "UseSsl": "SSLを使用する"
 }

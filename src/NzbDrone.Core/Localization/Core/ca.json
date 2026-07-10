@@ -1831,7 +1831,7 @@
     "DownloadClientValidationApiKeyRequired": "Clau API requerida",
     "DownloadClientValidationAuthenticationFailure": "Error d'autenticació",
     "DownloadClientValidationSslConnectFailure": "No s'ha pogut connectar a través de SSL",
-    "DownloadClientValidationAuthenticationFailureDetail": "Verifiqueu el vostre nom d'usuari i contrasenya. Verifiqueu també si el servidor que executa {appName} no està bloquejat per accedir a {clientName} per les limitacions de WhiteList a la configuració {clientName}.",
+    "DownloadClientValidationAuthenticationFailureDetail": "Verifiqueu les vostre credencials. Verifiqueu també si el servidor que executa {appName} no està bloquejat per accedir a {clientName} per les limitacions de WhiteList a la configuració {clientName}.",
     "DownloadClientValidationCategoryMissingDetail": "La categoria que heu introduït no existeix a {clientName}. Primer creeu-lo a {clientName}.",
     "DownloadClientVuzeValidationErrorVersion": "La versió del protocol no és compatible, utilitzeu Vuze 5.0.0.0 o superior amb el connector Vuze Web Remote.",
     "ErrorLoadingItem": "S'ha produït un error en carregar aquest element",
@@ -2039,5 +2039,15 @@
     "NotificationsPushcutSettingsMetadataLinksHelpText": "Afegeix un enllaç a les metadades de les sèries quan s'enviïn notificacions",
     "NotificationsPushoverSettingsTtl": "Temps de vida",
     "NotificationsPushoverSettingsTtlHelpText": "Temps en segons abans que el missatge caduqui. Establiu-lo a 0 per a una durada il·limitada",
-    "FilterMoviePropertiesOnlyNotFileWarning": "Els filtres només estan disponibles per a les propietats d'una pel·lícula, no estan disponibles per a les propietats dels fitxers d'aquesta pel·lícula."
+    "FilterMoviePropertiesOnlyNotFileWarning": "Els filtres només estan disponibles per a les propietats d'una pel·lícula, no estan disponibles per a les propietats dels fitxers d'aquesta pel·lícula.",
+    "ImportListsSimklSettingsAuthenticatewithSimkl": "Autentica amb Simkl",
+    "ImportListsSimklSettingsListType": "Tipus de llista",
+    "ImportListsSimklSettingsListTypeHelpText": "Tipus de llista des de la qual voleu importar",
+    "ImportListsSimklSettingsUserListTypeCompleted": "Completat",
+    "ImportListsSimklSettingsUserListTypeDropped": "Descartat",
+    "ImportListsSimklSettingsUserListTypeHold": "Mantén",
+    "ImportListsSimklSettingsUserListTypePlanToWatch": "Planifica per veure",
+    "ImportListsSimklSettingsUserListTypeWatching": "Vigilant",
+    "ImportListsSimklSettingsMovieType": "Tipus de pel·lícula",
+    "ImportListsSimklSettingsMovieTypeHelpText": "Tipus de pel·lícula que voleu importar"
 }
