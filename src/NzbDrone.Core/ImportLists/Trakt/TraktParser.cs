@@ -37,7 +37,7 @@ namespace NzbDrone.Core.ImportLists.Trakt
                 {
                     Title = movie.Movie.Title,
                     ImdbId = movie.Movie.Ids.Imdb,
-                    TmdbId = movie.Movie.Ids.Tmdb,
+                    TmdbId = movie.Movie.Ids.Tmdb ?? 0,
                     Year = movie.Movie.Year ?? 0
                 });
             }
