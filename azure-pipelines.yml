@@ -92,6 +92,13 @@ stages:
         # Disable stylecop here - linting errors get caught by the analyze task
         EnableAnalyzers: $(enableAnalysis)
       steps:
+      - bash: |
+          sudo apt-get --purge autoremove microsoft-edge-stable firefox google-chrome-stable temurin-8-jdk temurin-11-jdk temurin-17-jdk temurin-21-jdk temurin-25-jdk ca-certificates-java google-cloud-cli snapd kubectl
+          sudo apt autoremove
+          sudo apt clean
+          df -h
+        displayName: Reclaim disk space
+        condition: eq(variables['osName'], 'Linux')
       - checkout: self
         submodules: true
         fetchDepth: 1
