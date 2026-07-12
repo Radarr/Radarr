@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Movies
         Dictionary<int, List<int>> AllMovieTags();
         Movie UpdateMovie(Movie movie);
         List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder);
-        List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder, HashSet<int> pendingMoveMovieIds);
+        List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder, bool deferPathUpdate);
         void UpdateLastSearchTime(Movie movie);
         List<int> GetRecommendedTmdbIds();
         bool MoviePathExists(string folder);
@@ -258,10 +258,10 @@ namespace NzbDrone.Core.Movies
 
         public List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder)
         {
-            return UpdateMovie(movies, useExistingRelativeFolder, null);
+            return UpdateMovie(movies, useExistingRelativeFolder, false);
         }
 
-        public List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder, HashSet<int> pendingMoveMovieIds)
+        public List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder, bool deferPathUpdate)
         {
             _logger.Debug("Updating {0} movies", movies.Count);
 
@@ -269,7 +269,7 @@ namespace NzbDrone.Core.Movies
             {
                 _logger.Trace("Updating: {0}", m.Title);
 
-                if (pendingMoveMovieIds != null && pendingMoveMovieIds.Contains(m.Id))
+                if (deferPathUpdate)
                 {
                     // The file move is queued as a separate, asynchronous command. Path is
                     // updated by MoveMovieService once the move has actually completed, so an

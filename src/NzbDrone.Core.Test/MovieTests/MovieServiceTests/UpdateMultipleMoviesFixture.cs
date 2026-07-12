@@ -76,15 +76,10 @@ namespace NzbDrone.Core.Test.MovieTests.MovieServiceTests
                 .Returns<Movie, bool>((s, u) => Path.Combine(s.RootFolderPath, s.Title));
 
             var originalPaths = _movies.ToDictionary(s => s.Id, s => s.Path);
-            var pendingMoveMovieIds = new HashSet<int> { _movies[0].Id, _movies[1].Id };
 
-            var result = Subject.UpdateMovie(_movies, false, pendingMoveMovieIds);
+            var result = Subject.UpdateMovie(_movies, false, true);
 
-            result.Where(s => pendingMoveMovieIds.Contains(s.Id))
-                  .Should().OnlyContain(s => s.Path == originalPaths[s.Id]);
-
-            result.Where(s => !pendingMoveMovieIds.Contains(s.Id))
-                  .Should().OnlyContain(s => s.Path.StartsWith(newRoot));
+            result.Should().OnlyContain(s => s.Path == originalPaths[s.Id]);
         }
 
         [Test]
