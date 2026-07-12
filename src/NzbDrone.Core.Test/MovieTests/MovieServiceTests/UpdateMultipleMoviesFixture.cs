@@ -66,6 +66,28 @@ namespace NzbDrone.Core.Test.MovieTests.MovieServiceTests
         }
 
         [Test]
+        public void should_not_update_path_for_movies_pending_a_file_move()
+        {
+            var newRoot = @"C:\Test\Movies2".AsOsAgnostic();
+            _movies.ForEach(s => s.RootFolderPath = newRoot);
+
+            Mocker.GetMock<IBuildMoviePaths>()
+                .Setup(s => s.BuildPath(It.IsAny<Movie>(), false))
+                .Returns<Movie, bool>((s, u) => Path.Combine(s.RootFolderPath, s.Title));
+
+            var originalPaths = _movies.ToDictionary(s => s.Id, s => s.Path);
+            var pendingMoveMovieIds = new HashSet<int> { _movies[0].Id, _movies[1].Id };
+
+            var result = Subject.UpdateMovie(_movies, false, pendingMoveMovieIds);
+
+            result.Where(s => pendingMoveMovieIds.Contains(s.Id))
+                  .Should().OnlyContain(s => s.Path == originalPaths[s.Id]);
+
+            result.Where(s => !pendingMoveMovieIds.Contains(s.Id))
+                  .Should().OnlyContain(s => s.Path.StartsWith(newRoot));
+        }
+
+        [Test]
         public void should_be_able_to_update_many_movies()
         {
             var movies = Builder<Movie>.CreateListOfSize(50)

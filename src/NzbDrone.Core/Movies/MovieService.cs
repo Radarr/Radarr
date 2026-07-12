@@ -42,6 +42,7 @@ namespace NzbDrone.Core.Movies
         Dictionary<int, List<int>> AllMovieTags();
         Movie UpdateMovie(Movie movie);
         List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder);
+        List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder, HashSet<int> pendingMoveMovieIds);
         void UpdateLastSearchTime(Movie movie);
         List<int> GetRecommendedTmdbIds();
         bool MoviePathExists(string folder);
@@ -257,13 +258,26 @@ namespace NzbDrone.Core.Movies
 
         public List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder)
         {
+            return UpdateMovie(movies, useExistingRelativeFolder, null);
+        }
+
+        public List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder, HashSet<int> pendingMoveMovieIds)
+        {
             _logger.Debug("Updating {0} movies", movies.Count);
 
             foreach (var m in movies)
             {
                 _logger.Trace("Updating: {0}", m.Title);
 
-                if (!m.RootFolderPath.IsNullOrWhiteSpace())
+                if (pendingMoveMovieIds != null && pendingMoveMovieIds.Contains(m.Id))
+                {
+                    // The file move is queued as a separate, asynchronous command. Path is
+                    // updated by MoveMovieService once the move has actually completed, so an
+                    // interrupted move (crash, full disk) doesn't leave the DB pointing at files
+                    // that were never actually relocated.
+                    _logger.Trace("Path update for {0} deferred until file move completes", m.Title);
+                }
+                else if (!m.RootFolderPath.IsNullOrWhiteSpace())
                 {
                     m.Path = _moviePathBuilder.BuildPath(m, useExistingRelativeFolder);
 
