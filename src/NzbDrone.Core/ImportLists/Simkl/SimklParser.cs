@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Net;
+using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Instrumentation;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.ImportLists.Exceptions;
 using NzbDrone.Core.ImportLists.ImportListMovies;
@@ -10,41 +12,61 @@ namespace NzbDrone.Core.ImportLists.Simkl
     public class SimklParser : IParseImportListResponse
     {
         private ImportListResponse _importResponse;
-
-        public SimklParser()
-        {
-        }
+        private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(SimklParser));
 
         public virtual IList<ImportListMovie> ParseResponse(ImportListResponse importResponse)
         {
             _importResponse = importResponse;
 
-            var movie = new List<ImportListMovie>();
+            var movies = new List<ImportListMovie>();
 
             if (!PreProcess(_importResponse))
             {
-                return movie;
+                return movies;
             }
 
-            var jsonResponse = STJson.Deserialize<SimklResponse>(_importResponse.Content);
+            var jsonResponse = Json.Deserialize<SimklResponse>(_importResponse.Content);
 
-            // no shows were return
+            // no movies were returned
             if (jsonResponse == null)
             {
-                return movie;
+                return movies;
             }
 
-            foreach (var show in jsonResponse.Movies)
+            if (jsonResponse.Anime != null)
             {
-                movie.AddIfNotNull(new ImportListMovie()
+                foreach (var movie in jsonResponse.Anime)
                 {
-                    Title = show.Movie.Title,
-                    TmdbId = int.TryParse(show.Movie.Ids.Tmdb, out var tmdbId) ? tmdbId : 0,
-                    ImdbId = show.Movie.Ids.Imdb
-                });
+                    if (int.TryParse(movie.Show.Ids.Tmdb, out var tmdbId) && tmdbId > 0 && movie.AnimeType is SimklAnimeType.Movie)
+                    {
+                        movies.AddIfNotNull(new ImportListMovie
+                        {
+                            Title = movie.Show.Title,
+                            ImdbId = movie.Show.Ids.Imdb,
+                            TmdbId = tmdbId,
+                        });
+                    }
+                    else
+                    {
+                        Logger.Warn("Skipping info grabbing for '{0}' because it is an unsupported content type.", movie.Show.Title);
+                    }
+                }
             }
 
-            return movie;
+            if (jsonResponse.Movies != null)
+            {
+                foreach (var movie in jsonResponse.Movies)
+                {
+                    movies.AddIfNotNull(new ImportListMovie
+                    {
+                        Title = movie.Movie.Title,
+                        TmdbId = int.TryParse(movie.Movie.Ids.Tmdb, out var tmdbId) ? tmdbId : 0,
+                        ImdbId = movie.Movie.Ids.Imdb,
+                    });
+                }
+            }
+
+            return movies;
         }
 
         protected virtual bool PreProcess(ImportListResponse netImportResponse)

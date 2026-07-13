@@ -17,6 +17,12 @@ namespace NzbDrone.Core.ImportLists
             Movies = new List<ImportListMovie>();
         }
 
+        public ImportListFetchResult(List<ImportListMovie> movies, bool anyFailure)
+        {
+            Movies = movies;
+            AnyFailure = anyFailure;
+        }
+
         public List<ImportListMovie> Movies { get; set; }
         public bool AnyFailure { get; set; }
         public int SyncedLists { get; set; }

@@ -2039,5 +2039,8 @@
     "NotificationsNtfySettingsTopics": "主題",
     "NotificationsSimplepushSettingsKey": "金鑰",
     "NotificationsPushoverSettingsTtl": "有效期限",
-    "NotificationsPushoverSettingsTtlHelpText": "訊息過期前的秒數。設置為 0 表示無期限"
+    "NotificationsPushoverSettingsTtlHelpText": "訊息過期前的秒數。設置為 0 表示無期限",
+    "ImportListsSimklSettingsListType": "清單類型",
+    "ImportListsSimklSettingsListTypeHelpText": "要匯入的清單類型",
+    "ImportListsSimklSettingsUserListTypeCompleted": "已完成"
 }

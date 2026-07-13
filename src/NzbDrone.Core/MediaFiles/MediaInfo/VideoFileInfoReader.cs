@@ -55,7 +55,9 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 throw new FileNotFoundException("Media file does not exist: " + filename);
             }
 
-            if (MediaFileExtensions.DiskExtensions.Contains(Path.GetExtension(filename)))
+            if (MediaFileExtensions.DiskExtensions
+                .Concat(MediaFileExtensions.StreamingExtensions)
+                .Contains(Path.GetExtension(filename)))
             {
                 return null;
             }
@@ -126,8 +128,8 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     frames = FFProbe.AnalyseFrameJson(frameOutput);
                 }
 
-                var streamSideData = primaryVideoStream?.SideDataList ?? new ();
-                var framesSideData = frames?.Frames?.Count > 0 ? frames?.Frames[0]?.SideDataList ?? new () : new ();
+                var streamSideData = primaryVideoStream?.SideDataList ?? new();
+                var framesSideData = frames?.Frames?.Count > 0 ? frames?.Frames[0]?.SideDataList ?? new() : new();
 
                 var sideData = streamSideData.Concat(framesSideData).ToList();
                 mediaInfoModel.VideoHdrFormat = GetHdrFormat(mediaInfoModel.VideoBitDepth, mediaInfoModel.VideoColourPrimaries, mediaInfoModel.VideoTransferCharacteristics, sideData);

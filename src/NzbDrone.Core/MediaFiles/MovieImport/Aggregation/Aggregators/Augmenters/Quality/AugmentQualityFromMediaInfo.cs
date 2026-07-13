@@ -30,11 +30,15 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
             var height = localMovie.MediaInfo.Height;
             var source = QualitySource.UNKNOWN;
             var sourceConfidence = Confidence.Default;
-            var title = localMovie.MediaInfo.Title;
+            var modifier = Modifier.NONE;
+            var modifierConfidence = Confidence.Default;
+            var title = localMovie.MediaInfo.Title?.Trim();
 
             if (title.IsNotNullOrWhiteSpace())
             {
-                var parsedQuality = QualityParser.ParseQualityName(title.Trim());
+                _logger.Debug("Parsing quality from media info title '{0}'", title);
+
+                var parsedQuality = QualityParser.ParseQualityName(title);
 
                 // Only use the quality if it's not unknown and the source is from the name (which is MediaInfo's title in this case)
                 if (parsedQuality.Quality.Source != QualitySource.UNKNOWN &&
@@ -42,37 +46,39 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
                 {
                     source = parsedQuality.Quality.Source;
                     sourceConfidence = Confidence.MediaInfo;
+                    modifier = parsedQuality.Quality.Modifier;
+                    modifierConfidence = Confidence.MediaInfo;
                 }
             }
 
             if (width >= 3200 || height >= 2100)
             {
                 _logger.Trace("Resolution {0}x{1} considered 2160p", width, height);
-                return AugmentQualityResult.SourceAndResolutionOnly(source, sourceConfidence, (int)Resolution.R2160p, Confidence.MediaInfo);
+                return AugmentQualityResult.SourceAndResolutionOnly(source, sourceConfidence, (int)Resolution.R2160p, Confidence.MediaInfo, modifier, modifierConfidence);
             }
 
             if (width >= 1800 || height >= 1000)
             {
                 _logger.Trace("Resolution {0}x{1} considered 1080p", width, height);
-                return AugmentQualityResult.SourceAndResolutionOnly(source, sourceConfidence, (int)Resolution.R1080p, Confidence.MediaInfo);
+                return AugmentQualityResult.SourceAndResolutionOnly(source, sourceConfidence, (int)Resolution.R1080p, Confidence.MediaInfo, modifier, modifierConfidence);
             }
 
             if (width >= 1200 || height >= 700)
             {
                 _logger.Trace("Resolution {0}x{1} considered 720p", width, height);
-                return AugmentQualityResult.SourceAndResolutionOnly(source, sourceConfidence, (int)Resolution.R720p, Confidence.MediaInfo);
+                return AugmentQualityResult.SourceAndResolutionOnly(source, sourceConfidence, (int)Resolution.R720p, Confidence.MediaInfo, modifier, modifierConfidence);
             }
 
             if (width >= 1000 || height >= 560)
             {
                 _logger.Trace("Resolution {0}x{1} considered 576p", width, height);
-                return AugmentQualityResult.SourceAndResolutionOnly(source, sourceConfidence, (int)Resolution.R576p, Confidence.MediaInfo);
+                return AugmentQualityResult.SourceAndResolutionOnly(source, sourceConfidence, (int)Resolution.R576p, Confidence.MediaInfo, modifier, modifierConfidence);
             }
 
             if (width > 0 && height > 0)
             {
                 _logger.Trace("Resolution {0}x{1} considered 480p", width, height);
-                return AugmentQualityResult.SourceAndResolutionOnly(source, sourceConfidence, (int)Resolution.R480p, Confidence.MediaInfo);
+                return AugmentQualityResult.SourceAndResolutionOnly(source, sourceConfidence, (int)Resolution.R480p, Confidence.MediaInfo, modifier, modifierConfidence);
             }
 
             _logger.Trace("Resolution {0}x{1}", width, height);

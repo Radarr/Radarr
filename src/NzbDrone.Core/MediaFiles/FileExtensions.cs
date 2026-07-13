@@ -6,7 +6,7 @@ namespace NzbDrone.Core.MediaFiles
 {
     public static class FileExtensions
     {
-        private static readonly Regex FileExtensionRegex = new (@"\.[a-z0-9]{2,4}$",
+        private static readonly Regex FileExtensionRegex = new(@"\.[a-z0-9]{2,4}$",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly HashSet<string> UsenetExtensions = new HashSet<string>()
@@ -15,7 +15,7 @@ namespace NzbDrone.Core.MediaFiles
             ".nzb"
         };
 
-        public static HashSet<string> ArchiveExtensions => new (StringComparer.OrdinalIgnoreCase)
+        public static HashSet<string> ArchiveExtensions => new(StringComparer.OrdinalIgnoreCase)
         {
             ".7z",
             ".bz2",
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.MediaFiles
             ".tgz",
             ".zip"
         };
-        public static HashSet<string> DangerousExtensions => new (StringComparer.OrdinalIgnoreCase)
+        public static HashSet<string> DangerousExtensions => new(StringComparer.OrdinalIgnoreCase)
         {
             ".arj",
             ".lnk",
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.MediaFiles
             ".vbs",
             ".zipx"
         };
-        public static HashSet<string> ExecutableExtensions => new (StringComparer.OrdinalIgnoreCase)
+        public static HashSet<string> ExecutableExtensions => new(StringComparer.OrdinalIgnoreCase)
         {
             ".bat",
             ".cmd",

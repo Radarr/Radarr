@@ -49,43 +49,50 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     {
                         APIURL = url,
                         Path = "/imdb/top250"
-                    }, _serializerSettings))
+                    },
+                        _serializerSettings))
                     .TheNext(1)
                     .With(x => x.Settings = JsonSerializer.Serialize(new new_list_server.RadarrListSettings177
                     {
                         APIURL = url,
                         Path = "/imdb/popular"
-                    }, _serializerSettings))
+                    },
+                        _serializerSettings))
                     .TheNext(1)
                     .With(x => x.Settings = JsonSerializer.Serialize(new new_list_server.RadarrListSettings177
                     {
                         APIURL = url,
                         Path = "/imdb/missing"
-                    }, _serializerSettings))
+                    },
+                        _serializerSettings))
                     .TheNext(1)
                     .With(x => x.Settings = JsonSerializer.Serialize(new new_list_server.RadarrListSettings177
                     {
                         APIURL = url,
                         Path = "/imdb/list?listId=ls001"
-                    }, _serializerSettings))
+                    },
+                        _serializerSettings))
                     .TheNext(1)
                     .With(x => x.Settings = JsonSerializer.Serialize(new new_list_server.RadarrListSettings177
                     {
                         APIURL = url,
                         Path = "/imdb/list?listId=ls00ad"
-                    }, _serializerSettings))
+                    },
+                        _serializerSettings))
                     .TheNext(1)
                     .With(x => x.Settings = JsonSerializer.Serialize(new new_list_server.RadarrListSettings177
                     {
                         APIURL = url,
                         Path = "/imdb/list?listId=ur002"
-                    }, _serializerSettings))
+                    },
+                        _serializerSettings))
                     .TheNext(1)
                     .With(x => x.Settings = JsonSerializer.Serialize(new new_list_server.RadarrListSettings177
                     {
                         APIURL = url,
                         Path = "/imdb/list?listId=ur002/"
-                    }, _serializerSettings))
+                    },
+                        _serializerSettings))
                     .BuildListOfNew();
 
                 var i = 1;
@@ -119,32 +126,38 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 .With(x => x.Settings = JsonSerializer.Serialize(new new_list_server.StevenLuSettings178
                     {
                         Link = "https://s3.amazonaws.com/popular-movies/movies.json"
-                    }, _serializerSettings))
+                    },
+                    _serializerSettings))
                 .TheNext(1)
                 .With(x => x.Settings = JsonSerializer.Serialize(new new_list_server.StevenLuSettings178
                     {
                         Link = "https://s3.amazonaws.com/popular-movies/movies-metacritic-min50.json"
-                    }, _serializerSettings))
+                    },
+                    _serializerSettings))
                 .TheNext(1)
                 .With(x => x.Settings = JsonSerializer.Serialize(new new_list_server.StevenLuSettings178
                     {
                         Link = "https://s3.amazonaws.com/popular-movies/movies-imdb-min8.json"
-                    }, _serializerSettings))
+                    },
+                    _serializerSettings))
                 .TheNext(1)
                 .With(x => x.Settings = JsonSerializer.Serialize(new new_list_server.StevenLuSettings178
                     {
                         Link = "https://s3.amazonaws.com/popular-movies/movies-rottentomatoes-min70.json"
-                    }, _serializerSettings))
+                    },
+                    _serializerSettings))
                 .TheNext(1)
                 .With(x => x.Settings = JsonSerializer.Serialize(new new_list_server.StevenLuSettings178
                     {
                         Link = "https://s3.amazonaws.com/popular-movies/movies-min70.json"
-                    }, _serializerSettings))
+                    },
+                    _serializerSettings))
                 .TheNext(1)
                 .With(x => x.Settings = JsonSerializer.Serialize(new new_list_server.StevenLuSettings178
                     {
                         Link = "https://aapjeisbaas.nl/api/v1/popular-movies/imdb?fresh=True&max=20&rating=6&votes=50000"
-                    }, _serializerSettings))
+                    },
+                    _serializerSettings))
                 .BuildListOfNew();
 
             var db = WithMigrationTestDb(c =>

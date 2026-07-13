@@ -4,7 +4,7 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.27" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Test.Common\Radarr.Test.Common.csproj" />

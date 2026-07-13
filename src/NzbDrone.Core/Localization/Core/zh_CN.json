@@ -2039,5 +2039,13 @@
     "CloneImportList": "複製匯入清單",
     "DownloadClientItemErrorMessage": "{clientName}回報錯誤：{message}",
     "NotificationsPushoverSettingsTtl": "有效期",
-    "NotificationsPushoverSettingsTtlHelpText": "消息过期前的秒数。设为 0 表示永久有效（永不过期）"
+    "NotificationsPushoverSettingsTtlHelpText": "消息过期前的秒数。设为 0 表示永久有效（永不过期）",
+    "ImportListsSimklSettingsAuthenticatewithSimkl": "验证 Simkl 账户",
+    "ImportListsSimklSettingsListType": "列表类型",
+    "ImportListsSimklSettingsListTypeHelpText": "你想导入的列表类型",
+    "ImportListsSimklSettingsUserListTypeCompleted": "已观看",
+    "ImportListsSimklSettingsUserListTypeDropped": "已弃剧",
+    "ImportListsSimklSettingsUserListTypeHold": "暂停观看",
+    "ImportListsSimklSettingsUserListTypePlanToWatch": "计划观看",
+    "ImportListsSimklSettingsUserListTypeWatching": "观看中"
 }

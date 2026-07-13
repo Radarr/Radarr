@@ -1387,5 +1387,7 @@
     "MovieDownloaded": "Transferência Ignorada",
     "ShowTraktRating": "Avaliação Tomato",
     "ReleasePush": "Datas de lançamento",
-    "CinemaRelease": "Mostrar data de lançamento no cinema"
+    "CinemaRelease": "Mostrar data de lançamento no cinema",
+    "ImportListsSimklSettingsListType": "Tipo de artista",
+    "ImportListsSimklSettingsUserListTypeCompleted": "Completo"
 }

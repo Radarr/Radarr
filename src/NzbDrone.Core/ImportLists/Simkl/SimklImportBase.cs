@@ -4,6 +4,8 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.ImportLists.ImportListMovies;
+using NzbDrone.Core.ImportLists.Simkl.User;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Validation;
 
@@ -50,7 +52,8 @@ namespace NzbDrone.Core.ImportLists.Simkl
             // Check to see if user has any activity since last sync, if not return empty to avoid work
             if (lastFetch.HasValue && lastActivity < lastFetch.Value.AddHours(-2))
             {
-                return new ImportListFetchResult();
+                // mark failure to avoid deleting movies due to emptiness
+                return new ImportListFetchResult(new List<ImportListMovie>(), true);
             }
 
             return FetchMovies(g => g.GetMovies());
@@ -104,7 +107,17 @@ namespace NzbDrone.Core.ImportLists.Simkl
 
                 if (response?.Resource != null)
                 {
-                    return response.Resource.Movies.All;
+                    var movieType = Settings switch
+                    {
+                        SimklUserSettings userSettings => (SimklUserMovieType)userSettings.MovieType,
+                        _ => SimklUserMovieType.Movies
+                    };
+
+                    return movieType switch
+                    {
+                        SimklUserMovieType.Anime => response.Resource.Anime.All,
+                        _ => response.Resource.Movies.All
+                    };
                 }
             }
             catch (HttpException)

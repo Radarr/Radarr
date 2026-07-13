@@ -5,7 +5,7 @@ namespace NzbDrone.Core.Extras.Subtitles
 {
     public static class SubtitleFileExtensions
     {
-        public static HashSet<string> Extensions => new (StringComparer.OrdinalIgnoreCase)
+        public static HashSet<string> Extensions => new(StringComparer.OrdinalIgnoreCase)
         {
             ".aqt",
             ".ass",

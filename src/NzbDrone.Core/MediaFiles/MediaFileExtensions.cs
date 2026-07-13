@@ -6,82 +6,75 @@ namespace NzbDrone.Core.MediaFiles
 {
     public static class MediaFileExtensions
     {
-        private static Dictionary<string, Quality> _fileExtensions;
-
-        static MediaFileExtensions()
+        private static readonly Dictionary<string, Quality> FileExtensions = new(StringComparer.OrdinalIgnoreCase)
         {
-            _fileExtensions = new Dictionary<string, Quality>(StringComparer.OrdinalIgnoreCase)
-            {
-                // Unknown
-                { ".webm", Quality.Unknown },
+            // Unknown
+            { ".webm", Quality.Unknown },
 
-                // SDTV
-                { ".m4v", Quality.SDTV },
-                { ".3gp", Quality.SDTV },
-                { ".nsv", Quality.SDTV },
-                { ".ty", Quality.SDTV },
-                { ".strm", Quality.SDTV },
-                { ".rm", Quality.SDTV },
-                { ".rmvb", Quality.SDTV },
-                { ".m3u", Quality.SDTV },
-                { ".ifo", Quality.SDTV },
-                { ".mov", Quality.SDTV },
-                { ".qt", Quality.SDTV },
-                { ".divx", Quality.SDTV },
-                { ".xvid", Quality.SDTV },
-                { ".bivx", Quality.SDTV },
-                { ".nrg", Quality.SDTV },
-                { ".pva", Quality.SDTV },
-                { ".wmv", Quality.SDTV },
-                { ".asf", Quality.SDTV },
-                { ".asx", Quality.SDTV },
-                { ".ogm", Quality.SDTV },
-                { ".ogv", Quality.SDTV },
-                { ".m2v", Quality.SDTV },
-                { ".avi", Quality.SDTV },
-                { ".bin", Quality.SDTV },
-                { ".dat", Quality.SDTV },
-                { ".dvr-ms", Quality.SDTV },
-                { ".mpg", Quality.SDTV },
-                { ".mpeg", Quality.SDTV },
-                { ".mp4", Quality.SDTV },
-                { ".avc", Quality.SDTV },
-                { ".vp3", Quality.SDTV },
-                { ".svq3", Quality.SDTV },
-                { ".nuv", Quality.SDTV },
-                { ".viv", Quality.SDTV },
-                { ".dv", Quality.SDTV },
-                { ".fli", Quality.SDTV },
-                { ".flv", Quality.SDTV },
-                { ".wpl", Quality.SDTV },
+            // SDTV
+            { ".m4v", Quality.SDTV },
+            { ".3gp", Quality.SDTV },
+            { ".nsv", Quality.SDTV },
+            { ".ty", Quality.SDTV },
+            { ".strm", Quality.SDTV },
+            { ".rm", Quality.SDTV },
+            { ".rmvb", Quality.SDTV },
+            { ".m3u", Quality.SDTV },
+            { ".ifo", Quality.SDTV },
+            { ".mov", Quality.SDTV },
+            { ".qt", Quality.SDTV },
+            { ".divx", Quality.SDTV },
+            { ".xvid", Quality.SDTV },
+            { ".bivx", Quality.SDTV },
+            { ".nrg", Quality.SDTV },
+            { ".pva", Quality.SDTV },
+            { ".wmv", Quality.SDTV },
+            { ".asf", Quality.SDTV },
+            { ".asx", Quality.SDTV },
+            { ".ogm", Quality.SDTV },
+            { ".ogv", Quality.SDTV },
+            { ".m2v", Quality.SDTV },
+            { ".avi", Quality.SDTV },
+            { ".bin", Quality.SDTV },
+            { ".dat", Quality.SDTV },
+            { ".dvr-ms", Quality.SDTV },
+            { ".mpg", Quality.SDTV },
+            { ".mpeg", Quality.SDTV },
+            { ".mp4", Quality.SDTV },
+            { ".avc", Quality.SDTV },
+            { ".vp3", Quality.SDTV },
+            { ".svq3", Quality.SDTV },
+            { ".nuv", Quality.SDTV },
+            { ".viv", Quality.SDTV },
+            { ".dv", Quality.SDTV },
+            { ".fli", Quality.SDTV },
+            { ".flv", Quality.SDTV },
+            { ".wpl", Quality.SDTV },
 
-                // DVD
-                { ".img", Quality.DVD },
-                { ".iso", Quality.DVD },
-                { ".vob", Quality.DVD },
+            // DVD
+            { ".img", Quality.DVD },
+            { ".iso", Quality.DVD },
+            { ".vob", Quality.DVD },
 
-                // HD
-                { ".mkv", Quality.WEBDL720p },
-                { ".mk3d", Quality.WEBDL720p },
-                { ".ts", Quality.SDTV },
-                { ".wtv", Quality.SDTV },
+            // HD
+            { ".mkv", Quality.WEBDL720p },
+            { ".mk3d", Quality.WEBDL720p },
+            { ".ts", Quality.SDTV },
+            { ".wtv", Quality.SDTV },
 
-                // Bluray
-                { ".m2ts", Quality.Bluray720p }
-            };
-        }
+            // Bluray
+            { ".m2ts", Quality.Bluray720p },
+        };
 
-        public static HashSet<string> Extensions => new HashSet<string>(_fileExtensions.Keys, StringComparer.OrdinalIgnoreCase);
-        public static HashSet<string> DiskExtensions => new HashSet<string>(new[] { ".img", ".iso", ".vob" }, StringComparer.OrdinalIgnoreCase);
+        public static HashSet<string> Extensions => new(FileExtensions.Keys, StringComparer.OrdinalIgnoreCase);
+
+        public static HashSet<string> DiskExtensions => new([".img", ".iso", ".vob"], StringComparer.OrdinalIgnoreCase);
+
+        public static HashSet<string> StreamingExtensions => new([".m3u", ".strm"], StringComparer.OrdinalIgnoreCase);
 
         public static Quality GetQualityForExtension(string extension)
         {
-            if (_fileExtensions.TryGetValue(extension, out var quality))
-            {
-                return quality;
-            }
-
-            return Quality.Unknown;
+            return FileExtensions.TryGetValue(extension, out var quality) ? quality : Quality.Unknown;
         }
     }
 }

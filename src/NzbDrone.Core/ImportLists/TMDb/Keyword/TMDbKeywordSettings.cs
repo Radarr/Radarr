@@ -15,7 +15,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.Keyword
 
     public class TMDbKeywordSettings : TMDbSettingsBase<TMDbKeywordSettings>
     {
-        private static readonly TMDbKeywordSettingsValidator Validator = new ();
+        private static readonly TMDbKeywordSettingsValidator Validator = new();
 
         public TMDbKeywordSettings()
         {

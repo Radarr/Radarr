@@ -2,6 +2,7 @@ using System;
 using System.Data.SQLite;
 using Npgsql;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 
@@ -22,11 +23,25 @@ namespace NzbDrone.Core.Datastore
         {
             _configFileProvider = configFileProvider;
 
-            MainDbConnection = _configFileProvider.PostgresHost.IsNotNullOrWhiteSpace() ? GetPostgresConnectionString(_configFileProvider.PostgresMainDb) :
-                GetConnectionString(appFolderInfo.GetDatabase());
+            var connectionStringType = GetConnectionStringType();
 
-            LogDbConnection = _configFileProvider.PostgresHost.IsNotNullOrWhiteSpace() ? GetPostgresConnectionString(_configFileProvider.PostgresLogDb) :
-                GetConnectionString(appFolderInfo.GetLogDatabase());
+            switch (connectionStringType)
+            {
+                case ConnectionStringType.PostgreSqlVars:
+                    MainDbConnection = GetPostgresConnectionString(_configFileProvider.PostgresMainDb);
+                    LogDbConnection = GetPostgresConnectionString(_configFileProvider.PostgresLogDb);
+                    break;
+                case ConnectionStringType.PostgreSqlConnectionString:
+                    MainDbConnection = GetPostgresConnectionInfoFromConnectionString(_configFileProvider.PostgresMainDbConnectionString);
+                    LogDbConnection = GetPostgresConnectionInfoFromConnectionString(_configFileProvider.PostgresLogDbConnectionString);
+                    break;
+                case ConnectionStringType.Sqlite:
+                    MainDbConnection = GetConnectionString(appFolderInfo.GetDatabase());
+                    LogDbConnection = GetConnectionString(appFolderInfo.GetLogDatabase());
+                    break;
+                default:
+                    throw new RadarrStartupException("Unable to determine database connection string for type {0}.", connectionStringType.ToString());
+            }
         }
 
         public DatabaseConnectionInfo MainDbConnection { get; private set; }
@@ -49,7 +64,7 @@ namespace NzbDrone.Core.Datastore
                 JournalMode = OsInfo.IsOsx ? SQLiteJournalModeEnum.Truncate : SQLiteJournalModeEnum.Wal,
                 Pooling = true,
                 Version = 3,
-                BusyTimeout = 100
+                BusyTimeout = 1000
             };
 
             if (OsInfo.IsOsx)
@@ -73,6 +88,56 @@ namespace NzbDrone.Core.Datastore
             };
 
             return new DatabaseConnectionInfo(DatabaseType.PostgreSQL, connectionBuilder.ConnectionString);
+        }
+
+        private DatabaseConnectionInfo GetPostgresConnectionInfoFromConnectionString(string connectionString)
+        {
+            var connectionBuilder = new NpgsqlConnectionStringBuilder(connectionString)
+            {
+                Enlist = false
+            };
+
+            return new DatabaseConnectionInfo(DatabaseType.PostgreSQL, connectionBuilder.ConnectionString);
+        }
+
+        private ConnectionStringType GetConnectionStringType()
+        {
+            var isMainDBConnectionStringSet = !_configFileProvider.PostgresMainDbConnectionString.IsNullOrWhiteSpace();
+            var isLogDBConnectionStringSet = !_configFileProvider.PostgresLogDbConnectionString.IsNullOrWhiteSpace();
+            var isHostSet = !_configFileProvider.PostgresHost.IsNullOrWhiteSpace();
+
+            if (!isHostSet && !isMainDBConnectionStringSet && !isLogDBConnectionStringSet)
+            {
+                // No Postgres settings are set, so nothing to validate
+                return ConnectionStringType.Sqlite;
+            }
+
+            if (_configFileProvider.LogDbEnabled)
+            {
+                if (!isMainDBConnectionStringSet && isLogDBConnectionStringSet)
+                {
+                    throw new RadarrStartupException("Postgres MainDbConnectionString is set but LogDbConnectionString is not. Both must be set or neither.");
+                }
+
+                if (isLogDBConnectionStringSet && !isMainDBConnectionStringSet)
+                {
+                    throw new RadarrStartupException("Postgres LogDbConnectionString is set but MainDbConnectionString is not. Both must be set or neither.");
+                }
+            }
+
+            if (isMainDBConnectionStringSet && _configFileProvider.PostgresHost.IsNotNullOrWhiteSpace())
+            {
+                throw new RadarrStartupException($"Either both Postgres connection strings must be set, or the other Postgres settings must be set, but not both.");
+            }
+
+            return isMainDBConnectionStringSet ? ConnectionStringType.PostgreSqlConnectionString : ConnectionStringType.PostgreSqlVars;
+        }
+
+        private enum ConnectionStringType
+        {
+            Sqlite,
+            PostgreSqlVars,
+            PostgreSqlConnectionString
         }
     }
 }

@@ -2039,5 +2039,13 @@
     "RemoveRootFolderMoviesMessageText": "Ви впевнені, що бажаєте видалити кореневу папку '{path}'? Файли та папки не будуть видалені, доки також не вибрано 'Видалити існуючі фільми' у {appName}.",
     "ShowCinemaReleaseCalendarHelpText": "Показувати кінопрем'єри в подіях календаря",
     "ShowDigitalReleaseCalendarHelpText": "Показувати цифрові релізи в подіях календаря",
-    "ShowPhysicalReleaseCalendarHelpText": "Показувати фізичні релізи в подіях календаря"
+    "ShowPhysicalReleaseCalendarHelpText": "Показувати фізичні релізи в подіях календаря",
+    "ImportListsSimklSettingsAuthenticatewithSimkl": "Аутентифікація через Simkl",
+    "ImportListsSimklSettingsListType": "Тип списку",
+    "ImportListsSimklSettingsListTypeHelpText": "Тип списку, з якого ви хочете імпортувати",
+    "ImportListsSimklSettingsUserListTypeCompleted": "Завершено",
+    "ImportListsSimklSettingsUserListTypeDropped": "Втрачено",
+    "ImportListsSimklSettingsUserListTypeHold": "Утримано",
+    "ImportListsSimklSettingsUserListTypePlanToWatch": "Планую подивитися",
+    "ImportListsSimklSettingsUserListTypeWatching": "Дивлюся"
 }

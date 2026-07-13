@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Notifications.Telegram
 
     public class TelegramSettings : NotificationSettingsBase<TelegramSettings>
     {
-        private static readonly TelegramSettingsValidator Validator = new ();
+        private static readonly TelegramSettingsValidator Validator = new();
 
         public TelegramSettings()
         {

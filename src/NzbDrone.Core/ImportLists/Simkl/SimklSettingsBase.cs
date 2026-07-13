@@ -27,7 +27,7 @@ namespace NzbDrone.Core.ImportLists.Simkl
     public class SimklSettingsBase<TSettings> : ImportListSettingsBase<TSettings>
         where TSettings : SimklSettingsBase<TSettings>
     {
-        private static readonly SimklSettingsBaseValidator<TSettings> Validator = new ();
+        private static readonly SimklSettingsBaseValidator<TSettings> Validator = new();
 
         public SimklSettingsBase()
         {
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.ImportLists.Simkl
         [FieldDefinition(0, Label = "Auth User", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
         public string AuthUser { get; set; }
 
-        [FieldDefinition(99, Label = "Authenticate with Simkl", Type = FieldType.OAuth)]
+        [FieldDefinition(99, Label = "ImportListsSimklSettingsAuthenticatewithSimkl", Type = FieldType.OAuth)]
         public string SignIn { get; set; }
 
         public override NzbDroneValidationResult Validate()

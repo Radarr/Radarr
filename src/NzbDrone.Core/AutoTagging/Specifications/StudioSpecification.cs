@@ -18,7 +18,7 @@ namespace NzbDrone.Core.AutoTagging.Specifications
 
     public class StudioSpecification : AutoTaggingSpecificationBase
     {
-        private static readonly StudioSpecificationValidator Validator = new ();
+        private static readonly StudioSpecificationValidator Validator = new();
 
         public override int Order => 1;
         public override string ImplementationName => "Studio";

@@ -93,7 +93,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieFileMovingServiceTests
 
             Mocker.GetMock<IEventAggregator>()
                   .Verify(s => s.PublishEvent<MovieFolderCreatedEvent>(It.Is<MovieFolderCreatedEvent>(p =>
-                      p.MovieFolder.IsNotNullOrWhiteSpace())), Times.Once());
+                      p.MovieFolder.IsNotNullOrWhiteSpace())),
+                      Times.Once());
         }
 
         [Test]
@@ -107,7 +108,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieFileMovingServiceTests
 
             Mocker.GetMock<IEventAggregator>()
                   .Verify(s => s.PublishEvent<MovieFolderCreatedEvent>(It.Is<MovieFolderCreatedEvent>(p =>
-                      p.MovieFolder.IsNotNullOrWhiteSpace())), Times.Never());
+                      p.MovieFolder.IsNotNullOrWhiteSpace())),
+                      Times.Never());
         }
     }
 }

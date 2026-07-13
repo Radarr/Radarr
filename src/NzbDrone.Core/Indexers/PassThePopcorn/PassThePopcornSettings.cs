@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
     public class PassThePopcornSettings : PropertywiseEquatable<PassThePopcornSettings>, ITorrentIndexerSettings
     {
-        private static readonly PassThePopcornSettingsValidator Validator = new ();
+        private static readonly PassThePopcornSettingsValidator Validator = new();
 
         public PassThePopcornSettings()
         {
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public int MinimumSeeders { get; set; }
 
         [FieldDefinition(4)]
-        public SeedCriteriaSettings SeedCriteria { get; set; } = new ();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new();
 
         [FieldDefinition(5, Type = FieldType.Checkbox, Label = "IndexerSettingsRejectBlocklistedTorrentHashes", HelpText = "IndexerSettingsRejectBlocklistedTorrentHashesHelpText", Advanced = true)]
         public bool RejectBlocklistedTorrentHashesWhileGrabbing { get; set; }

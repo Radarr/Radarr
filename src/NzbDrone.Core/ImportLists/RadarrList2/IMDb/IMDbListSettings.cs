@@ -17,7 +17,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
 
     public class IMDbListSettings : ImportListSettingsBase<IMDbListSettings>
     {
-        private static readonly IMDbSettingsValidator Validator = new ();
+        private static readonly IMDbSettingsValidator Validator = new();
 
         [FieldDefinition(1, Label = "List/User ID", HelpText = "IMDb user ID (e.g. ur12345678), 'top250' or 'popular'")]
         public string ListId { get; set; }

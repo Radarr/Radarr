@@ -14,14 +14,18 @@ namespace NzbDrone.Core.ImportLists.Simkl.User
 
     public class SimklUserSettings : SimklSettingsBase<SimklUserSettings>
     {
-        private static readonly SimklUserSettingsValidator Validator = new ();
+        private static readonly SimklUserSettingsValidator Validator = new();
 
         public SimklUserSettings()
         {
+            MovieType = (int)SimklUserMovieType.Movies;
             ListType = (int)SimklUserListType.Watching;
         }
 
-        [FieldDefinition(1, Label = "List Type", Type = FieldType.Select, SelectOptions = typeof(SimklUserListType), HelpText = "Type of list you're seeking to import from")]
+        [FieldDefinition(1, Label = "ImportListsSimklSettingsMovieType", Type = FieldType.Select, SelectOptions = typeof(SimklUserMovieType), HelpText = "ImportListsSimklSettingsMovieTypeHelpText")]
+        public int MovieType { get; set; }
+
+        [FieldDefinition(2, Label = "ImportListsSimklSettingsListType", Type = FieldType.Select, SelectOptions = typeof(SimklUserListType), HelpText = "ImportListsSimklSettingsListTypeHelpText")]
         public int ListType { get; set; }
 
         public override NzbDroneValidationResult Validate()

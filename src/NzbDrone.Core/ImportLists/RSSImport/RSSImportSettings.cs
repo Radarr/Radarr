@@ -14,7 +14,7 @@ namespace NzbDrone.Core.ImportLists.RSSImport
 
     public class RSSImportSettings : ImportListSettingsBase<RSSImportSettings>
     {
-        private static readonly RSSImportSettingsValidator Validator = new ();
+        private static readonly RSSImportSettingsValidator Validator = new();
 
         public RSSImportSettings()
         {

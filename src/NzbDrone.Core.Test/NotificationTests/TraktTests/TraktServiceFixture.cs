@@ -84,7 +84,8 @@ namespace NzbDrone.Core.Test.NotificationTests
                     t.Movies.First().Resolution == "uhd_4k" &&
                     t.Movies.First().MediaType == "bluray" &&
                     t.Movies.First().Hdr == "hdr10"),
-                  It.IsAny<string>()), Times.Once());
+                  It.IsAny<string>()),
+                      Times.Once());
         }
 
         [Test]
@@ -101,7 +102,8 @@ namespace NzbDrone.Core.Test.NotificationTests
                     t.Movies.First().Resolution == "uhd_4k" &&
                     t.Movies.First().MediaType == "bluray" &&
                     t.Movies.First().Hdr == "hdr10"),
-                  It.IsAny<string>()), Times.Once());
+                  It.IsAny<string>()),
+                      Times.Once());
         }
     }
 }

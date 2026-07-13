@@ -16,7 +16,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
 
     public class TMDbPopularSettings : TMDbSettingsBase<TMDbPopularSettings>
     {
-        private static readonly TMDbPopularSettingsValidator Validator = new ();
+        private static readonly TMDbPopularSettingsValidator Validator = new();
 
         public TMDbPopularSettings()
         {
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
         public int TMDbListType { get; set; }
 
         [FieldDefinition(2)]
-        public TMDbFilterSettings FilterCriteria { get; set; } = new ();
+        public TMDbFilterSettings FilterCriteria { get; set; } = new();
 
         public override NzbDroneValidationResult Validate()
         {

@@ -5,21 +5,21 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DryIoc.dll" Version="5.4.3" />
-    <PackageReference Include="IPAddressRange" Version="6.2.0" />
+    <PackageReference Include="IPAddressRange" Version="6.3.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="NLog" Version="5.4.0" />
-    <PackageReference Include="NLog.Layouts.ClefJsonLayout" Version="1.0.3" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="5.4.0" />
-    <PackageReference Include="Npgsql" Version="9.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="NLog" Version="5.5.1" />
+    <PackageReference Include="NLog.Layouts.ClefJsonLayout" Version="1.0.5" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.5.0" />
+    <PackageReference Include="Npgsql" Version="9.0.5" />
     <PackageReference Include="Sentry" Version="4.0.2" />
     <PackageReference Include="NLog.Targets.Syslog" Version="7.0.0" />
     <PackageReference Include="SharpZipLib" Version="1.4.2" />
-    <PackageReference Include="SourceGear.sqlite3" Version="3.50.4.2" />
-    <PackageReference Include="System.Data.SQLite" Version="2.0.2" />
-    <PackageReference Include="System.Text.Json" Version="8.0.5" />
-    <PackageReference Include="System.ValueTuple" Version="4.6.1" />
+    <PackageReference Include="SourceGear.sqlite3" Version="3.50.4.5" />
+    <PackageReference Include="System.Data.SQLite" Version="2.0.3" />
+    <PackageReference Include="System.Text.Json" Version="8.0.6" />
+    <PackageReference Include="System.ValueTuple" Version="4.6.2" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />

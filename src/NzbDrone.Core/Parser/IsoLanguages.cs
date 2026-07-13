@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("ka", "", "kat", "Georgian", Language.Georgian)
                                                            };
 
-        private static readonly Dictionary<string, Language> AlternateIsoCodeMappings = new ()
+        private static readonly Dictionary<string, Language> AlternateIsoCodeMappings = new()
         {
             { "cn", Language.Chinese }
         };

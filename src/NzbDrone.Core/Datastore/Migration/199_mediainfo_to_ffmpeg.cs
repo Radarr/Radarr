@@ -365,7 +365,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 }
             }
 
-            return VideoFileInfoReader.GetHdrFormat(mediaInfo.VideoBitDepth, mediaInfo.VideoColourPrimaries, mediaInfo.VideoTransferCharacteristics, new ());
+            return VideoFileInfoReader.GetHdrFormat(mediaInfo.VideoBitDepth, mediaInfo.VideoColourPrimaries, mediaInfo.VideoTransferCharacteristics, new());
         }
 
         private void MigrateAudioCodec(MediaInfo198 mediaInfo, MediaInfo199 m)

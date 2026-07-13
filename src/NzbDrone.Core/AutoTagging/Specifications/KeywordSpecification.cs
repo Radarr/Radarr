@@ -18,7 +18,7 @@ namespace NzbDrone.Core.AutoTagging.Specifications
 
     public class KeywordSpecification : AutoTaggingSpecificationBase
     {
-        private static readonly KeywordSpecificationValidator Validator = new ();
+        private static readonly KeywordSpecificationValidator Validator = new();
 
         public override int Order => 2;
         public override string ImplementationName => "Keyword";
