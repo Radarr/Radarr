@@ -116,6 +116,24 @@ function DownloadClientOptions(props) {
                     </FormGroup> :
                     null
                 }
+
+                <FormGroup
+                  advancedSettings={advancedSettings}
+                  isAdvanced={true}
+                  size={sizes.MEDIUM}
+                >
+                  <FormLabel>{translate('StalledTorrentTimeout')}</FormLabel>
+
+                  <FormInputGroup
+                    type={inputTypes.NUMBER}
+                    name="stalledTorrentTimeout"
+                    min={0}
+                    unit="minutes"
+                    helpText={translate('StalledTorrentTimeoutHelpText')}
+                    onChange={onInputChange}
+                    {...settings.stalledTorrentTimeout}
+                  />
+                </FormGroup>
               </Form>
 
               <Alert kind={kinds.INFO}>
