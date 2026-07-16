@@ -42,7 +42,7 @@ namespace NzbDrone.Core.IndexerSearch
             var userInvokedSearch = message.Trigger == CommandTrigger.Manual;
 
             var movies = _movieService.GetMovies(message.MovieIds)
-                .Where(m => (m.Monitored && m.IsAvailable()) || userInvokedSearch)
+                .Where(m => (!m.HasFile || m.QualityProfile.UpgradeAllowed) && ((m.Monitored && m.IsAvailable()) || userInvokedSearch))
                 .ToList();
 
             SearchForBulkMovies(movies, userInvokedSearch).GetAwaiter().GetResult();
