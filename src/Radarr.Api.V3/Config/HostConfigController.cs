@@ -14,6 +14,7 @@ using NzbDrone.Core.Validation.Paths;
 using Radarr.Http;
 using Radarr.Http.REST;
 using Radarr.Http.REST.Attributes;
+using Radarr.Http.Validation;
 
 namespace Radarr.Api.V3.Config
 {
