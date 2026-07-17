@@ -4,10 +4,11 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Security;
 using NzbDrone.Core.Update;
 using Radarr.Http.REST;
+using Radarr.Http.Validation;
 
 namespace Radarr.Api.V3.Config
 {
-    public class HostConfigResource : RestResource
+    public class HostConfigResource : RestResource, ISslCertificateResource
     {
         public string BindAddress { get; set; }
         public int Port { get; set; }
