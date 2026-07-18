@@ -36,6 +36,11 @@ export const fetchPaths = createThunk(FETCH_PATHS);
 export const updatePaths = createAction(UPDATE_PATHS);
 export const clearPaths = createAction(CLEAR_PATHS);
 
+// Short-lived listing cache: segment resolution re-fetches the same
+// parent directories on nearly every keystroke.
+const LISTING_CACHE_TTL = 5000;
+const listingCache = new Map();
+
 //
 // Action Handlers
 
@@ -51,6 +56,13 @@ export const actionHandlers = handleThunks({
     } = payload;
 
     const fetchChildren = (queryPath) => {
+      const cacheKey = `${includeFiles}:${allowFoldersWithoutTrailingSlashes}:${queryPath}`;
+      const cached = listingCache.get(cacheKey);
+
+      if (cached && Date.now() - cached.timestamp < LISTING_CACHE_TTL) {
+        return Promise.resolve(cached.data);
+      }
+
       return createAjaxRequest({
         url: '/filesystem',
         data: {
@@ -59,7 +71,11 @@ export const actionHandlers = handleThunks({
           includeFiles
         }
       }).request.then(
-        (data) => data,
+        (data) => {
+          listingCache.set(cacheKey, { data, timestamp: Date.now() });
+
+          return data;
+        },
         () => ({ parent: '', directories: [], files: [] })
       );
     };
@@ -93,7 +109,10 @@ export const actionHandlers = handleThunks({
 
         const listings = await Promise.all(parents.map(fetchChildren));
         const directories = listings.flatMap((data) => data.directories);
-        parent = listings[listings.length - 1].parent;
+
+        if (listings.length) {
+          parent = listings[listings.length - 1].parent;
+        }
 
         const matched = directories.filter(({ name }) =>
           name.toLowerCase().includes(segment)

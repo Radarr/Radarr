@@ -12,6 +12,7 @@ import {
 } from 'react-autosuggest';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import { useDebouncedCallback } from 'use-debounce';
 import AppState from 'App/State/AppState';
 import { Path } from 'App/State/PathsAppState';
 import FileBrowserModal from 'Components/FileBrowser/FileBrowserModal';
@@ -118,6 +119,10 @@ export function PathInputInternal(props: PathInputInternalProps) {
     [includeFiles, dispatch]
   );
 
+  // Typing resolves every keystroke server-side; debounce so a pause
+  // fetches once instead of once per character.
+  const debouncedFetchPaths = useDebouncedCallback(handleFetchPaths, 150);
+
   const handleInputChange = useCallback(
     (_event: SyntheticEvent, { newValue }: ChangeEvent) => {
       setValue(newValue);
@@ -183,9 +188,9 @@ export function PathInputInternal(props: PathInputInternalProps) {
 
   const handleSuggestionsFetchRequested = useCallback(
     ({ value: newValue }: SuggestionsFetchRequestedParams) => {
-      handleFetchPaths(newValue);
+      debouncedFetchPaths(newValue);
     },
-    [handleFetchPaths]
+    [debouncedFetchPaths]
   );
 
   const handleFileBrowserOpenPress = useCallback(() => {
