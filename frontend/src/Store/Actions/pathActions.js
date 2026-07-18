@@ -50,32 +50,111 @@ export const actionHandlers = handleThunks({
       includeFiles = false
     } = payload;
 
-    const promise = createAjaxRequest({
-      url: '/filesystem',
-      data: {
-        path,
-        allowFoldersWithoutTrailingSlashes,
-        includeFiles
-      }
-    }).request;
+    const fetchChildren = (queryPath) => {
+      return createAjaxRequest({
+        url: '/filesystem',
+        data: {
+          path: queryPath,
+          allowFoldersWithoutTrailingSlashes,
+          includeFiles
+        }
+      }).request.then(
+        (data) => data,
+        () => ({ parent: '', directories: [], files: [] })
+      );
+    };
 
-    promise.done((data) => {
-      dispatch(updatePaths({ path, ...data }));
+    // Resolve the query segment by segment: each segment is a
+    // case-insensitive containment filter for its directory level, so
+    // `/down/dbd` descends into `/downloads/` and matches `[DBD-Raws]...`.
+    let rootPath = '/';
+
+    if ((/^[a-zA-Z]:[\\/]/).test(path)) {
+      rootPath = path.slice(0, 3);
+    } else if (path.startsWith('\\')) {
+      rootPath = '\\';
+    }
+
+    const segments = path.split(/[\\/]/).filter((segment) => segment.length);
+    const hasTrailingSeparator = (/[\\/]$/).test(path);
+
+    const resolve = async() => {
+      if (!segments.length) {
+        return fetchChildren(rootPath);
+      }
+
+      let parents = [rootPath];
+      let parent = '';
+      let results = [];
+
+      for (let i = 0; i < segments.length; i++) {
+        const segment = segments[i].toLowerCase();
+        const isLast = i === segments.length - 1;
+
+        const listings = await Promise.all(parents.map(fetchChildren));
+        const directories = listings.flatMap((data) => data.directories);
+        parent = listings[listings.length - 1].parent;
+
+        const matched = directories.filter(({ name }) =>
+          name.toLowerCase().includes(segment)
+        );
+
+        if (isLast) {
+          if (includeFiles) {
+            const files = listings.flatMap((data) => data.files);
+            matched.push(
+              ...files.filter(({ name }) => name.toLowerCase().includes(segment))
+            );
+          }
+
+          if (!hasTrailingSeparator) {
+            results = matched;
+            break;
+          }
+
+          // Trailing separator after an exact directory name lists its
+          // children (`/config/`); after a partial name the match itself
+          // stays the suggestion (`/downloads/Kung/`).
+          const exactDirs = matched.filter(
+            ({ name, type }) => type === 'folder' && name.toLowerCase() === segment
+          );
+          results = matched.filter((entry) => !exactDirs.includes(entry));
+
+          if (exactDirs.length) {
+            const subListings = await Promise.all(
+              exactDirs.map(({ path: dirPath }) => fetchChildren(dirPath))
+            );
+            parent = subListings[subListings.length - 1].parent;
+            results.push(
+              ...subListings.flatMap((data) =>
+                (includeFiles ? [...data.directories, ...data.files] : data.directories)
+              )
+            );
+          }
+        } else {
+          parents = matched
+            .filter(({ type }) => type === 'folder')
+            .map(({ path: matchedPath }) => matchedPath);
+        }
+      }
+
+      return {
+        parent,
+        directories: results.filter(({ type }) => type === 'folder'),
+        files: results.filter(({ type }) => type === 'file')
+      };
+    };
+
+    resolve().then((data) => {
+      // `currentPath` stays empty so the prefix-based selectors pass the
+      // resolved entries through; matching happens against the typed value.
+      dispatch(updatePaths({ path: '', ...data }));
 
       dispatch(set({
         section,
         isFetching: false,
         isPopulated: true,
         error: null
-      }));
-    });
-
-    promise.fail((xhr) => {
-      dispatch(set({
-        section,
-        isFetching: false,
-        isPopulated: false,
-        error: xhr
       }));
     });
   }

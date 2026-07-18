@@ -125,11 +125,31 @@ export function PathInputInternal(props: PathInputInternalProps) {
     [setValue]
   );
 
+  // Match each typed segment against the candidate's segment at the same
+  // depth, so any contiguous part of any directory name matches its level
+  // (`/down/dbd` matches `/downloads/[DBD-Raws].../`).
+  const searchSegments = value
+    .split(/[\\/]/)
+    .filter((segment) => segment.length)
+    .map((segment) => segment.toLowerCase());
+
+  const filteredPaths = searchSegments.length
+    ? paths.filter(({ path: candidatePath }) => {
+        const candidateSegments = candidatePath
+          .split(/[\\/]/)
+          .filter((segment) => segment.length);
+
+        return searchSegments.every((segment, index) =>
+          candidateSegments[index]?.toLowerCase().includes(segment)
+        );
+      })
+    : paths;
+
   const handleInputKeyDown = useCallback(
     (event: KeyboardEvent<HTMLElement>) => {
       if (event.key === 'Tab') {
         event.preventDefault();
-        const path = paths[0];
+        const path = filteredPaths[0];
 
         if (path) {
           onChange({
@@ -143,7 +163,7 @@ export function PathInputInternal(props: PathInputInternalProps) {
         }
       }
     },
-    [name, paths, handleFetchPaths, onChange]
+    [name, filteredPaths, handleFetchPaths, onChange]
   );
   const handleInputBlur = useCallback(() => {
     onChange({
@@ -187,19 +207,45 @@ export function PathInputInternal(props: PathInputInternalProps) {
 
   const renderSuggestion = useCallback(
     ({ path }: Path, { query }: { query: string }) => {
-      const lastSeparatorIndex =
-        query.lastIndexOf('\\') || query.lastIndexOf('/');
+      // Strip one trailing separator so `/downloads/Kung/` still
+      // highlights `Kung` (the segment being searched).
+      const trimmedQuery = /[\\/]$/.test(query) ? query.slice(0, -1) : query;
+      const searchValue = trimmedQuery
+        .slice(
+          Math.max(
+            trimmedQuery.lastIndexOf('/'),
+            trimmedQuery.lastIndexOf('\\')
+          ) + 1
+        )
+        .toLowerCase();
 
-      if (lastSeparatorIndex === -1) {
+      // Highlight the match within the entry name (after its parent
+      // separator), not the shared parent portion of the path.
+      const parentEnd =
+        path.endsWith('/') || path.endsWith('\\')
+          ? path.length - 1
+          : path.length;
+      const nameStart =
+        Math.max(
+          path.lastIndexOf('/', parentEnd - 1),
+          path.lastIndexOf('\\', parentEnd - 1)
+        ) + 1;
+
+      const matchIndex = searchValue
+        ? path.toLowerCase().indexOf(searchValue, nameStart)
+        : -1;
+
+      if (matchIndex === -1) {
         return <span>{path}</span>;
       }
 
       return (
         <span>
+          {path.substring(0, matchIndex)}
           <span className={styles.pathMatch}>
-            {path.substring(0, lastSeparatorIndex)}
+            {path.substring(matchIndex, matchIndex + searchValue.length)}
           </span>
-          {path.substring(lastSeparatorIndex)}
+          {path.substring(matchIndex + searchValue.length)}
         </span>
       );
     },
@@ -219,7 +265,7 @@ export function PathInputInternal(props: PathInputInternalProps) {
         className={hasFileBrowser ? styles.hasFileBrowser : undefined}
         name={name}
         value={value}
-        suggestions={paths}
+        suggestions={filteredPaths}
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
         onInputKeyDown={handleInputKeyDown}
