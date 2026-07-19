@@ -47,6 +47,40 @@ function handleSuggestionsClearRequested() {
   // because we don't want to reset the paths after a path is selected.
 }
 
+function splitPathSegments(path: string) {
+  return path
+    .split(/[\\/]/)
+    .filter((segment) => segment.length)
+    .map((segment) => segment.toLowerCase());
+}
+
+function comparePathMatches(left: Path, right: Path, searchSegments: string[]) {
+  const getRank = (candidate: Path) => {
+    const candidateSegments = splitPathSegments(candidate.path);
+    const segmentIndex = Math.max(candidateSegments.length - 1, 0);
+    const searchValue = searchSegments[segmentIndex] ?? '';
+    const candidateValue = candidate.name.toLowerCase();
+
+    return [
+      candidateValue === searchValue ? 0 : 1,
+      candidateValue.startsWith(searchValue) ? 0 : 1,
+      Math.max(candidateValue.length - searchValue.length, 0),
+      candidate.type === 'file' ? 1 : 0,
+    ];
+  };
+
+  const leftRank = getRank(left);
+  const rightRank = getRank(right);
+
+  for (let i = 0; i < leftRank.length; i++) {
+    if (leftRank[i] !== rightRank[i]) {
+      return leftRank[i] - rightRank[i];
+    }
+  }
+
+  return left.path.toLowerCase().localeCompare(right.path.toLowerCase());
+}
+
 function createPathsSelector() {
   return createSelector(
     (state: AppState) => state.paths,
@@ -130,29 +164,45 @@ export function PathInputInternal(props: PathInputInternalProps) {
   // Match each typed segment against the candidate's segment at the same
   // depth, so any contiguous part of any directory name matches its level
   // (`/down/dbd` matches `/downloads/[DBD-Raws].../`).
-  const searchSegments = value
-    .split(/[\\/]/)
-    .filter((segment) => segment.length)
-    .map((segment) => segment.toLowerCase());
+  const searchSegments = splitPathSegments(value);
 
-  const filteredPaths = searchSegments.length
-    ? paths.filter(({ path: candidatePath }) => {
-        const candidateSegments = candidatePath
-          .split(/[\\/]/)
-          .filter((segment) => segment.length);
+  const filteredPaths = (
+    searchSegments.length
+      ? paths.filter(({ path: candidatePath }) => {
+          const candidateSegments = splitPathSegments(candidatePath);
 
-        return searchSegments.every((segment, index) => {
-          const candidateSegment = candidateSegments[index];
+          return searchSegments.every((segment, index) => {
+            const candidateSegment = candidateSegments[index];
 
-          // A bounded search can stop at a broad intermediate segment and
-          // return those parent candidates instead of listing every child.
-          return (
-            candidateSegment === undefined ||
-            candidateSegment.toLowerCase().includes(segment)
-          );
-        });
-      })
-    : paths;
+            // Exact-prefix resolution can stop before later typed segments and
+            // return the unresolved parent candidate for explicit selection.
+            return (
+              candidateSegment === undefined ||
+              candidateSegment.includes(segment)
+            );
+          });
+        })
+      : paths
+  )
+    .slice()
+    .sort((left, right) => comparePathMatches(left, right, searchSegments));
+
+  const selectPath = useCallback(
+    (path: Path) => {
+      handleSuggestionsFetchRequested.cancel();
+      setValue(path.path);
+
+      onChange({
+        name,
+        value: path.path,
+      });
+
+      if (path.type !== 'file') {
+        onFetchPaths(path.path);
+      }
+    },
+    [name, handleSuggestionsFetchRequested, onFetchPaths, onChange]
+  );
 
   const handleInputKeyDown = useCallback(
     (event: KeyboardEvent<HTMLElement>) => {
@@ -166,26 +216,10 @@ export function PathInputInternal(props: PathInputInternalProps) {
       // otherwise let it move focus to the next field.
       if (path && path.path !== value) {
         event.preventDefault();
-        handleSuggestionsFetchRequested.cancel();
-
-        onChange({
-          name,
-          value: path.path,
-        });
-
-        if (path.type !== 'file') {
-          onFetchPaths(path.path);
-        }
+        selectPath(path);
       }
     },
-    [
-      name,
-      value,
-      filteredPaths,
-      handleSuggestionsFetchRequested,
-      onFetchPaths,
-      onChange,
-    ]
+    [value, filteredPaths, selectPath]
   );
   const handleInputBlur = useCallback(() => {
     handleSuggestionsFetchRequested.cancel();
@@ -200,10 +234,9 @@ export function PathInputInternal(props: PathInputInternalProps) {
 
   const handleSuggestionSelected = useCallback(
     (_event: SyntheticEvent, { suggestion }: { suggestion: Path }) => {
-      handleSuggestionsFetchRequested.cancel();
-      onFetchPaths(suggestion.path);
+      selectPath(suggestion);
     },
-    [handleSuggestionsFetchRequested, onFetchPaths]
+    [selectPath]
   );
 
   const handleFileBrowserOpenPress = useCallback(() => {
@@ -213,13 +246,6 @@ export function PathInputInternal(props: PathInputInternalProps) {
   const handleFileBrowserModalClose = useCallback(() => {
     setIsFileBrowserModalOpen(false);
   }, [setIsFileBrowserModalOpen]);
-
-  const handleChange = useCallback(
-    (change: InputChanged<Path>) => {
-      onChange({ name, value: change.value.path });
-    },
-    [name, onChange]
-  );
 
   const getSuggestionValue = useCallback(({ path }: Path) => path, []);
 
@@ -307,7 +333,6 @@ export function PathInputInternal(props: PathInputInternalProps) {
         onSuggestionSelected={handleSuggestionSelected}
         onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
         onSuggestionsClearRequested={handleSuggestionsClearRequested}
-        onChange={handleChange}
       />
 
       {hasFileBrowser ? (

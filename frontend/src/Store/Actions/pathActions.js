@@ -11,13 +11,8 @@ export const section = 'paths';
 
 const LISTING_CACHE_TTL = 5000;
 const LISTING_CACHE_MAX_SIZE = 256;
-const MAX_CONCURRENT_LISTING_REQUESTS = 8;
-const MIN_FUZZY_INTERMEDIATE_SEGMENT_LENGTH = 2;
-const MAX_FUZZY_INTERMEDIATE_MATCHES = 20;
 const listingCache = new Map();
 const inFlightListings = new Map();
-const listingRequestQueue = [];
-let activeListingRequests = 0;
 let latestFetchId = 0;
 
 //
@@ -90,56 +85,6 @@ function cacheListing(cacheKey, data) {
   }
 }
 
-function startListingRequest({ requestFactory, resolve, reject }) {
-  activeListingRequests++;
-
-  Promise.resolve()
-    .then(requestFactory)
-    .then(resolve, reject)
-    .finally(() => {
-      activeListingRequests--;
-      runListingRequestQueue();
-    });
-}
-
-function runListingRequestQueue() {
-  while (
-    activeListingRequests < MAX_CONCURRENT_LISTING_REQUESTS &&
-    listingRequestQueue.length
-  ) {
-    startListingRequest(listingRequestQueue.shift());
-  }
-}
-
-function scheduleListingRequest(requestFactory) {
-  return new Promise((resolve, reject) => {
-    listingRequestQueue.push({ requestFactory, resolve, reject });
-    runListingRequestQueue();
-  });
-}
-
-async function mapWithConcurrency(items, mapper) {
-  const results = new Array(items.length);
-  let nextIndex = 0;
-
-  async function worker() {
-    while (nextIndex < items.length) {
-      const index = nextIndex++;
-
-      results[index] = await mapper(items[index]);
-    }
-  }
-
-  const workers = Array.from(
-    { length: Math.min(MAX_CONCURRENT_LISTING_REQUESTS, items.length) },
-    worker
-  );
-
-  await Promise.all(workers);
-
-  return results;
-}
-
 //
 // Action Handlers
 
@@ -170,16 +115,16 @@ export const actionHandlers = handleThunks({
         return inFlight;
       }
 
-      const listingPromise = scheduleListingRequest(() => {
-        return createAjaxRequest({
+      const listingPromise = Promise.resolve(
+        createAjaxRequest({
           url: '/filesystem',
           data: {
             path: queryPath,
             allowFoldersWithoutTrailingSlashes,
             includeFiles
           }
-        }).request;
-      })
+        }).request
+      )
         .then((data) => {
           cacheListing(cacheKey, data);
 
@@ -198,18 +143,22 @@ export const actionHandlers = handleThunks({
       return listingPromise;
     };
 
-    // Resolve the query segment by segment: each segment is a
-    // case-insensitive containment filter for its directory level, so
-    // `/down/dbd` descends into `/downloads/` and matches `[DBD-Raws]...`.
+    // Resolve one directory level at a time. Intermediate segments must be
+    // exact, so fuzzy input cannot fan out into multiple child listings.
     let rootPath = '/';
+    let pathWithoutRoot = path;
 
     if ((/^[a-zA-Z]:[\\/]/).test(path)) {
       rootPath = path.slice(0, 3);
+      pathWithoutRoot = path.slice(3);
     } else if (path.startsWith('\\')) {
       rootPath = '\\';
+      pathWithoutRoot = path.slice(1);
     }
 
-    const segments = path.split(/[\\/]/).filter((segment) => segment.length);
+    const segments = pathWithoutRoot
+      .split(/[\\/]/)
+      .filter((segment) => segment.length);
     const hasTrailingSeparator = (/[\\/]$/).test(path);
 
     const resolve = async() => {
@@ -217,21 +166,17 @@ export const actionHandlers = handleThunks({
         return fetchChildren(rootPath);
       }
 
-      let parents = [rootPath];
+      let queryPath = rootPath;
       let parent = '';
       let results = [];
-      const limitedResults = [];
 
       for (let i = 0; i < segments.length; i++) {
         const segment = segments[i].toLowerCase();
         const isLast = i === segments.length - 1;
 
-        const listings = await mapWithConcurrency(parents, fetchChildren);
-        const directories = listings.flatMap((data) => data.directories);
-
-        if (listings.length) {
-          parent = listings[listings.length - 1].parent;
-        }
+        const listing = await fetchChildren(queryPath);
+        const { directories, files } = listing;
+        parent = listing.parent;
 
         const matched = directories.filter(({ name }) =>
           name.toLowerCase().includes(segment)
@@ -239,7 +184,6 @@ export const actionHandlers = handleThunks({
 
         if (isLast) {
           if (includeFiles) {
-            const files = listings.flatMap((data) => data.files);
             matched.push(
               ...files.filter(({ name }) => name.toLowerCase().includes(segment))
             );
@@ -250,61 +194,40 @@ export const actionHandlers = handleThunks({
             break;
           }
 
-          // Trailing separator after an exact directory name lists its
-          // children (`/config/`); after a partial name the match itself
-          // stays the suggestion (`/downloads/Kung/`).
+          // A trailing separator lists children only when the directory name
+          // is unambiguous. Partial or ambiguous names remain suggestions.
           const exactDirs = matched.filter(
             ({ name, type }) => type === 'folder' && name.toLowerCase() === segment
           );
-          results = matched.filter((entry) => !exactDirs.includes(entry));
 
-          if (exactDirs.length) {
-            const subListings = await mapWithConcurrency(
-              exactDirs,
-              ({ path: dirPath }) => fetchChildren(dirPath)
-            );
-            parent = subListings[subListings.length - 1].parent;
-            results.push(
-              ...subListings.flatMap((data) =>
-                (includeFiles ? [...data.directories, ...data.files] : data.directories)
-              )
-            );
+          if (exactDirs.length !== 1) {
+            results = matched;
+            break;
           }
+
+          const subListing = await fetchChildren(exactDirs[0].path);
+          parent = subListing.parent;
+          results = includeFiles ?
+            [...subListing.directories, ...subListing.files] :
+            subListing.directories;
         } else {
           const matchedFolders = matched.filter(({ type }) => type === 'folder');
           const exactFolders = matchedFolders.filter(
             ({ name }) => name.toLowerCase() === segment
           );
-          const canFollowFuzzyMatches =
-            segment.length >= MIN_FUZZY_INTERMEDIATE_SEGMENT_LENGTH &&
-            matchedFolders.length <= MAX_FUZZY_INTERMEDIATE_MATCHES;
 
-          // Exact path segments are safe to follow. Fuzzy intermediate
-          // segments must be specific and bounded so a broad match cannot
-          // turn the next segment into hundreds of filesystem requests.
-          if (canFollowFuzzyMatches) {
-            parents = matchedFolders.map(({ path: matchedPath }) => matchedPath);
-          } else {
-            limitedResults.push(
-              ...matchedFolders.filter(
-                ({ name }) => name.toLowerCase() !== segment
-              )
-            );
-
-            if (!exactFolders.length) {
-              break;
-            }
-
-            parents = exactFolders.map(({ path: matchedPath }) => matchedPath);
+          if (exactFolders.length !== 1) {
+            results = matchedFolders;
+            break;
           }
+
+          queryPath = exactFolders[0].path;
         }
       }
 
       return {
         parent,
-        directories: [...limitedResults, ...results].filter(
-          ({ type }) => type === 'folder'
-        ),
+        directories: results.filter(({ type }) => type === 'folder'),
         files: results.filter(({ type }) => type === 'file')
       };
     };
