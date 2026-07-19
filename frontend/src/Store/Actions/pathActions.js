@@ -12,6 +12,8 @@ export const section = 'paths';
 const LISTING_CACHE_TTL = 5000;
 const LISTING_CACHE_MAX_SIZE = 256;
 const MAX_CONCURRENT_LISTING_REQUESTS = 8;
+const MIN_FUZZY_INTERMEDIATE_SEGMENT_LENGTH = 2;
+const MAX_FUZZY_INTERMEDIATE_MATCHES = 20;
 const listingCache = new Map();
 const inFlightListings = new Map();
 const listingRequestQueue = [];
@@ -218,6 +220,7 @@ export const actionHandlers = handleThunks({
       let parents = [rootPath];
       let parent = '';
       let results = [];
+      const limitedResults = [];
 
       for (let i = 0; i < segments.length; i++) {
         const segment = segments[i].toLowerCase();
@@ -268,15 +271,40 @@ export const actionHandlers = handleThunks({
             );
           }
         } else {
-          parents = matched
-            .filter(({ type }) => type === 'folder')
-            .map(({ path: matchedPath }) => matchedPath);
+          const matchedFolders = matched.filter(({ type }) => type === 'folder');
+          const exactFolders = matchedFolders.filter(
+            ({ name }) => name.toLowerCase() === segment
+          );
+          const canFollowFuzzyMatches =
+            segment.length >= MIN_FUZZY_INTERMEDIATE_SEGMENT_LENGTH &&
+            matchedFolders.length <= MAX_FUZZY_INTERMEDIATE_MATCHES;
+
+          // Exact path segments are safe to follow. Fuzzy intermediate
+          // segments must be specific and bounded so a broad match cannot
+          // turn the next segment into hundreds of filesystem requests.
+          if (canFollowFuzzyMatches) {
+            parents = matchedFolders.map(({ path: matchedPath }) => matchedPath);
+          } else {
+            limitedResults.push(
+              ...matchedFolders.filter(
+                ({ name }) => name.toLowerCase() !== segment
+              )
+            );
+
+            if (!exactFolders.length) {
+              break;
+            }
+
+            parents = exactFolders.map(({ path: matchedPath }) => matchedPath);
+          }
         }
       }
 
       return {
         parent,
-        directories: results.filter(({ type }) => type === 'folder'),
+        directories: [...limitedResults, ...results].filter(
+          ({ type }) => type === 'folder'
+        ),
         files: results.filter(({ type }) => type === 'file')
       };
     };

@@ -141,9 +141,16 @@ export function PathInputInternal(props: PathInputInternalProps) {
           .split(/[\\/]/)
           .filter((segment) => segment.length);
 
-        return searchSegments.every((segment, index) =>
-          candidateSegments[index]?.toLowerCase().includes(segment)
-        );
+        return searchSegments.every((segment, index) => {
+          const candidateSegment = candidateSegments[index];
+
+          // A bounded search can stop at a broad intermediate segment and
+          // return those parent candidates instead of listing every child.
+          return (
+            candidateSegment === undefined ||
+            candidateSegment.toLowerCase().includes(segment)
+          );
+        });
       })
     : paths;
 
