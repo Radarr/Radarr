@@ -152,23 +152,28 @@ export function PathInputInternal(props: PathInputInternalProps) {
 
   const handleInputKeyDown = useCallback(
     (event: KeyboardEvent<HTMLElement>) => {
-      if (event.key === 'Tab') {
+      if (event.key !== 'Tab') {
+        return;
+      }
+
+      const path = filteredPaths[0];
+
+      // Only capture Tab when it would complete a different path;
+      // otherwise let it move focus to the next field.
+      if (path && path.path !== value) {
         event.preventDefault();
-        const path = filteredPaths[0];
 
-        if (path) {
-          onChange({
-            name,
-            value: path.path,
-          });
+        onChange({
+          name,
+          value: path.path,
+        });
 
-          if (path.type !== 'file') {
-            handleFetchPaths(path.path);
-          }
+        if (path.type !== 'file') {
+          handleFetchPaths(path.path);
         }
       }
     },
-    [name, filteredPaths, handleFetchPaths, onChange]
+    [name, value, filteredPaths, handleFetchPaths, onChange]
   );
   const handleInputBlur = useCallback(() => {
     onChange({
