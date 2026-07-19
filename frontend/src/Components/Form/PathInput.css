@@ -9,6 +9,9 @@
 
 .pathMatch {
   font-weight: bold;
+  border-radius: 3px;
+  background-color: color-mix(in srgb, var(--radarrYellow) 30%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--radarrYellow) 40%, transparent);
 }
 
 .fileBrowserButton {

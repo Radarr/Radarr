@@ -217,47 +217,62 @@ export function PathInputInternal(props: PathInputInternalProps) {
 
   const renderSuggestion = useCallback(
     ({ path }: Path, { query }: { query: string }) => {
-      // Strip one trailing separator so `/downloads/Kung/` still
-      // highlights `Kung` (the segment being searched).
-      const trimmedQuery = /[\\/]$/.test(query) ? query.slice(0, -1) : query;
-      const searchValue = trimmedQuery
-        .slice(
-          Math.max(
-            trimmedQuery.lastIndexOf('/'),
-            trimmedQuery.lastIndexOf('\\')
-          ) + 1
-        )
-        .toLowerCase();
+      // Same segment rules as filteredPaths: each typed segment matches
+      // the candidate's segment at the same depth.
+      const searchSegments = query
+        .split(/[\\/]/)
+        .filter((segment) => segment.length)
+        .map((segment) => segment.toLowerCase());
 
-      // Highlight the match within the entry name (after its parent
-      // separator), not the shared parent portion of the path.
-      const parentEnd =
-        path.endsWith('/') || path.endsWith('\\')
-          ? path.length - 1
-          : path.length;
-      const nameStart =
-        Math.max(
-          path.lastIndexOf('/', parentEnd - 1),
-          path.lastIndexOf('\\', parentEnd - 1)
-        ) + 1;
+      // Capture separator runs so every token is re-emitted unchanged
+      // and only candidate segments are matched against.
+      const tokens = path.split(/([\\/]+)/);
+      const rendered: React.ReactNode[] = [];
+      let segmentIndex = -1;
 
-      const matchIndex = searchValue
-        ? path.toLowerCase().indexOf(searchValue, nameStart)
-        : -1;
+      tokens.forEach((token, tokenIndex) => {
+        // Odd indexes are separator runs; render them untouched.
+        // Empty edge tokens consume no search segment.
+        if (tokenIndex % 2 === 1 || token.length === 0) {
+          rendered.push(token);
+          return;
+        }
 
-      if (matchIndex === -1) {
-        return <span>{path}</span>;
-      }
+        segmentIndex += 1;
 
-      return (
-        <span>
-          {path.substring(0, matchIndex)}
-          <span className={styles.pathMatch}>
-            {path.substring(matchIndex, matchIndex + searchValue.length)}
-          </span>
-          {path.substring(matchIndex + searchValue.length)}
-        </span>
-      );
+        const searchValue = searchSegments[segmentIndex];
+
+        if (!searchValue) {
+          rendered.push(token);
+          return;
+        }
+
+        const lowerToken = token.toLowerCase();
+        let offset = 0;
+        let matchIndex = lowerToken.indexOf(searchValue);
+
+        while (matchIndex !== -1) {
+          if (matchIndex > offset) {
+            rendered.push(token.substring(offset, matchIndex));
+          }
+
+          rendered.push(
+            <span
+              key={`${tokenIndex}-${matchIndex}`}
+              className={styles.pathMatch}
+            >
+              {token.substring(matchIndex, matchIndex + searchValue.length)}
+            </span>
+          );
+
+          offset = matchIndex + searchValue.length;
+          matchIndex = lowerToken.indexOf(searchValue, offset);
+        }
+
+        rendered.push(token.substring(offset));
+      });
+
+      return <span>{rendered}</span>;
     },
     []
   );
