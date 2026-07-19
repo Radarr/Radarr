@@ -10,6 +10,7 @@ import CollectionConnector from 'Collection/CollectionConnector';
 import NotFound from 'Components/NotFound';
 import Switch from 'Components/Router/Switch';
 import DiscoverMovieConnector from 'DiscoverMovie/DiscoverMovieConnector';
+import DashboardPage from 'Dashboard/DashboardPage';
 import MovieDetailsPage from 'Movie/Details/MovieDetailsPage';
 import MovieIndex from 'Movie/Index/MovieIndex';
 import CustomFormatSettingsPage from 'Settings/CustomFormats/CustomFormatSettingsPage';
@@ -47,6 +48,7 @@ function AppRoutes() {
       */}
 
       <Route exact={true} path="/" component={MovieIndex} />
+      <Route path="/dashboard" component={DashboardPage} />
 
       {window.Radarr.urlBase && (
         <Route

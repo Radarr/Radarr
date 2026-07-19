@@ -1,0 +1,17 @@
+.toolbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 18px; }
+.toolbar h1 { margin: 0; font-size: 24px; } .toolbar p { margin: 4px 0 0; color: var(--helpTextColor); }
+.toolbar button, .widgetControls button { border: 1px solid var(--defaultBorderColor); border-radius: calc(var(--cardRadius) / 2); background: var(--defaultBackgroundColor); color: var(--textColor); padding: 8px 12px; cursor: pointer; }
+.visibility { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 16px; padding: 12px; border: 1px solid var(--borderColor); border-radius: var(--cardRadius); background: var(--cardAlternateBackgroundColor); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--uiSpace); align-items: start; }
+.widget { min-height: 150px; overflow: hidden; border: 1px solid var(--borderColor); border-radius: var(--cardRadius); background: var(--cardBackgroundColor); box-shadow: 0 2px 8px var(--cardShadowColor); }
+.widget[draggable='true'] { cursor: grab; }
+.widget header { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-bottom: 1px solid var(--borderColor); padding: 12px 14px; }
+.widget h2 { margin: 0; font-size: 16px; }
+.widgetBody { display: grid; gap: 8px; padding: 14px; }
+.widgetBody > div { display: flex; justify-content: space-between; gap: 12px; }
+.widgetBody span { color: var(--helpTextColor); }
+.widgetControls { display: flex; gap: 4px; }
+.widgetControls button { padding: 4px 7px; font-size: $smallFontSize; }
+.stats { display: grid !important; grid-template-columns: repeat(3, 1fr); text-align: center; }
+.stats span { display: grid; gap: 4px; }
+@media only screen and (max-width: $breakpointSmall) { .toolbar { align-items: flex-start; } .grid { grid-template-columns: 1fr; } }
