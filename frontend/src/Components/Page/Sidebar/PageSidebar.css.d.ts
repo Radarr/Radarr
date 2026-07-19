@@ -3,6 +3,7 @@
 interface CssExports {
   'sidebar': string;
   'sidebarContainer': string;
+  'isCollapsed': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

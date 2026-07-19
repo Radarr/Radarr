@@ -1,0 +1,7 @@
+.content { composes: modalContent from '~Components/Modal/ModalContent.css'; padding: 16px; }
+.input { width: 100%; border: 1px solid var(--inputBorderColor); border-radius: var(--cardRadius); background: var(--inputBackgroundColor); color: var(--textColor); padding: 14px 16px; font-size: 18px; }
+.results { max-height: 420px; margin-top: 10px; }
+.result { display: block; width: 100%; border: 0; border-radius: calc(var(--cardRadius) / 2); background: transparent; color: var(--textColor); padding: 12px; text-align: left; cursor: pointer; }
+.result:hover, .result:focus { background: var(--inputSelectedBackgroundColor); color: var(--accentColor); }
+.empty { padding: 24px; color: var(--dimColor); text-align: center; }
+.hint { padding-top: 10px; color: var(--helpTextColor); font-size: $smallFontSize; }

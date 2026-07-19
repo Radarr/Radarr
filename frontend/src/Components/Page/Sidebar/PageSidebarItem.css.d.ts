@@ -5,9 +5,11 @@ interface CssExports {
   'iconContainer': string;
   'isActiveItem': string;
   'isActiveLink': string;
+  'isCollapsed': string;
   'isActiveParentLink': string;
   'item': string;
   'link': string;
+  'label': string;
   'status': string;
 }
 export const cssExports: CssExports;

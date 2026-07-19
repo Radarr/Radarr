@@ -45,6 +45,11 @@ interface SidebarItem {
 
 const LINKS: SidebarItem[] = [
   {
+    iconName: icons.HOUSEKEEPING,
+    title: 'Dashboard',
+    to: '/dashboard',
+  },
+  {
     iconName: icons.MOVIE_CONTINUING,
     title: () => translate('Movies'),
     to: '/',
@@ -217,9 +222,10 @@ function hasActiveChildLink(link: SidebarItem, pathname: string) {
 interface PageSidebarProps {
   isSmallScreen: boolean;
   isSidebarVisible: boolean;
+  isCollapsed: boolean;
 }
 
-function PageSidebar({ isSidebarVisible, isSmallScreen }: PageSidebarProps) {
+function PageSidebar({ isSidebarVisible, isSmallScreen, isCollapsed }: PageSidebarProps) {
   const dispatch = useDispatch();
   const location = useLocation();
   const sidebarRef = useRef(null);
@@ -460,7 +466,7 @@ function PageSidebar({ isSidebarVisible, isSmallScreen }: PageSidebarProps) {
   return (
     <div
       ref={sidebarRef}
-      className={classNames(styles.sidebarContainer)}
+      className={classNames(styles.sidebarContainer, isCollapsed && styles.isCollapsed)}
       style={containerStyle}
     >
       <ScrollerComponent
@@ -496,6 +502,7 @@ function PageSidebar({ isSidebarVisible, isSmallScreen }: PageSidebarProps) {
                 isActiveParent={isActiveParent}
                 isParentItem={!!link.children}
                 onPress={handleItemPress}
+                isCollapsed={isCollapsed}
               >
                 {link.children &&
                   link.to === activeParent &&
@@ -510,6 +517,7 @@ function PageSidebar({ isSidebarVisible, isSmallScreen }: PageSidebarProps) {
                         isChildItem={true}
                         statusComponent={child.statusComponent}
                         onPress={handleItemPress}
+                        isCollapsed={isCollapsed}
                       />
                     );
                   })}

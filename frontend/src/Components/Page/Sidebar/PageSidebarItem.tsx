@@ -15,6 +15,7 @@ export interface PageSidebarItemProps {
   statusComponent?: React.ElementType;
   children?: React.ReactNode;
   onPress?: () => void;
+  isCollapsed?: boolean;
 }
 
 function PageSidebarItem({
@@ -28,6 +29,7 @@ function PageSidebarItem({
   statusComponent: StatusComponent,
   children,
   onPress,
+  isCollapsed = false,
 }: PageSidebarItemProps) {
   const handlePress = useCallback(() => {
     if (isChildItem || !isParentItem) {
@@ -37,7 +39,7 @@ function PageSidebarItem({
 
   return (
     <div
-      className={classNames(styles.item, isActiveParent && styles.isActiveItem)}
+      className={classNames(styles.item, isActiveParent && styles.isActiveItem, isCollapsed && styles.isCollapsed)}
     >
       <Link
         className={classNames(
@@ -47,6 +49,8 @@ function PageSidebarItem({
         )}
         to={to}
         onPress={handlePress}
+        title={isCollapsed ? (typeof title === 'function' ? title() : title) : undefined}
+        aria-label={isCollapsed ? (typeof title === 'function' ? title() : title) : undefined}
       >
         {!!iconName && (
           <span className={styles.iconContainer}>
@@ -54,7 +58,7 @@ function PageSidebarItem({
           </span>
         )}
 
-        {typeof title === 'function' ? title() : title}
+        <span className={styles.label}>{typeof title === 'function' ? title() : title}</span>
 
         {!!StatusComponent && (
           <span className={styles.status}>
@@ -63,7 +67,7 @@ function PageSidebarItem({
         )}
       </Link>
 
-      {children
+      {!isCollapsed && children
         ? Children.map(children, (child) => {
             if (!React.isValidElement(child)) {
               return child;

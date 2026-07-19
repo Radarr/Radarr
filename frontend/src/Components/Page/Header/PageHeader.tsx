@@ -6,6 +6,7 @@ import Link from 'Components/Link/Link';
 import useKeyboardShortcuts from 'Helpers/Hooks/useKeyboardShortcuts';
 import { icons } from 'Helpers/Props';
 import { setIsSidebarVisible } from 'Store/Actions/appActions';
+import { setPersonalizedUiValue } from 'Store/Actions/personalizedUiActions';
 import translate from 'Utilities/String/translate';
 import KeyboardShortcutsModal from './KeyboardShortcutsModal';
 import MovieSearchInput from './MovieSearchInput';
@@ -20,6 +21,7 @@ function PageHeader({ isSmallScreen }: PageHeaderProps) {
   const dispatch = useDispatch();
 
   const { isSidebarVisible } = useSelector((state: AppState) => state.app);
+  const { isSidebarCollapsed } = useSelector((state: AppState) => state.personalizedUi);
 
   const [isKeyboardShortcutsModalOpen, setIsKeyboardShortcutsModalOpen] =
     useState(false);
@@ -27,8 +29,12 @@ function PageHeader({ isSmallScreen }: PageHeaderProps) {
   const { bindShortcut, unbindShortcut } = useKeyboardShortcuts();
 
   const handleSidebarToggle = useCallback(() => {
-    dispatch(setIsSidebarVisible({ isSidebarVisible: !isSidebarVisible }));
-  }, [isSidebarVisible, dispatch]);
+    if (isSmallScreen) {
+      dispatch(setIsSidebarVisible({ isSidebarVisible: !isSidebarVisible }));
+    } else {
+      dispatch(setPersonalizedUiValue({ isSidebarCollapsed: !isSidebarCollapsed }));
+    }
+  }, [isSmallScreen, isSidebarVisible, isSidebarCollapsed, dispatch]);
 
   const handleOpenKeyboardShortcutsModal = useCallback(() => {
     setIsKeyboardShortcutsModalOpen(true);
@@ -70,6 +76,8 @@ function PageHeader({ isSmallScreen }: PageHeaderProps) {
           id="sidebar-toggle-button"
           name={icons.NAVBAR_COLLAPSE}
           onPress={handleSidebarToggle}
+          title={isSmallScreen ? 'Toggle navigation' : isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          aria-label={isSmallScreen ? 'Toggle navigation' : isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         />
       </div>
 

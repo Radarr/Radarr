@@ -36,7 +36,7 @@
 }
 
 .sidebarToggleContainer {
-  display: none;
+  display: flex;
   justify-content: center;
   flex: 0 0 45px;
   margin-right: 14px;
@@ -85,9 +85,6 @@
     flex: 0 0 60px;
   }
 
-  .sidebarToggleContainer {
-    display: flex;
-  }
 }
 
 @media only screen and (max-width: $breakpointExtraSmall) {

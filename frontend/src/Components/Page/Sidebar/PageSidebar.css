@@ -7,6 +7,13 @@
   transform: translateX(0);
 }
 
+.isCollapsed {
+  flex-basis: 58px;
+  width: 58px;
+
+  .sidebar { width: 58px; }
+}
+
 .sidebar {
   display: flex;
   flex-direction: column;

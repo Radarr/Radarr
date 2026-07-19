@@ -11,6 +11,8 @@ import { saveDimensions } from 'Store/Actions/appActions';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
+import createPersonalizedUiSelector from 'Store/Selectors/createPersonalizedUiSelector';
+import CommandPalette from './CommandPalette/CommandPalette';
 import ErrorPage from './ErrorPage';
 import PageHeader from './Header/PageHeader';
 import LoadingPage from './LoadingPage';
@@ -31,6 +33,7 @@ function Page({ children }: PageProps) {
 
   const { enableColorImpairedMode } = useSelector(createUISettingsSelector());
   const { isSmallScreen } = useSelector(createDimensionsSelector());
+  const { isSidebarCollapsed } = useSelector(createPersonalizedUiSelector());
   const { authentication } = useSelector(createSystemStatusSelector());
   const authenticationEnabled = authentication !== 'none';
   const { isSidebarVisible, isUpdated, isDisconnected, version } = useSelector(
@@ -95,6 +98,7 @@ function Page({ children }: PageProps) {
           <PageSidebar
             isSmallScreen={isSmallScreen}
             isSidebarVisible={isSidebarVisible}
+            isCollapsed={!isSmallScreen && isSidebarCollapsed}
           />
 
           {children}
@@ -108,6 +112,7 @@ function Page({ children }: PageProps) {
         <ConnectionLostModal isOpen={isConnectionLostModalOpen} />
 
         <AuthenticationRequiredModal isOpen={!authenticationEnabled} />
+        <CommandPalette />
       </div>
     </ColorImpairedContext.Provider>
   );

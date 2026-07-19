@@ -20,6 +20,18 @@
   }
 }
 
+.label { vertical-align: middle; }
+
+:global([data-density='compact']) .link { padding-top: 9px; padding-bottom: 9px; }
+:global([data-density='spacious']) .link { padding-top: 15px; padding-bottom: 15px; }
+
+.isCollapsed {
+  .label { display: none; }
+  .link { padding-right: 18px; padding-left: 18px; }
+  .iconContainer { margin-right: 0; }
+  .status { display: none; }
+}
+
 .childLink {
   composes: link;
 
