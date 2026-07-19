@@ -77,7 +77,7 @@ function PathInput(props: PathInputProps) {
   );
 
   const handleClearPaths = useCallback(() => {
-    dispatch(clearPaths);
+    dispatch(clearPaths());
   }, [dispatch]);
 
   return (
@@ -110,18 +110,15 @@ export function PathInputInternal(props: PathInputInternalProps) {
   const [value, setValue] = useState(inputValue);
   const [isFileBrowserModalOpen, setIsFileBrowserModalOpen] = useState(false);
   const previousInputValue = usePrevious(inputValue);
-  const dispatch = useDispatch();
-
-  const handleFetchPaths = useCallback(
-    (path: string) => {
-      dispatch(fetchPaths({ path, includeFiles }));
-    },
-    [includeFiles, dispatch]
-  );
 
   // Typing resolves every keystroke server-side; debounce so a pause
   // fetches once instead of once per character.
-  const debouncedFetchPaths = useDebouncedCallback(handleFetchPaths, 150);
+  const handleSuggestionsFetchRequested = useDebouncedCallback(
+    ({ value: newValue }: SuggestionsFetchRequestedParams) => {
+      onFetchPaths(newValue);
+    },
+    150
+  );
 
   const handleInputChange = useCallback(
     (_event: SyntheticEvent, { newValue }: ChangeEvent) => {
@@ -162,6 +159,7 @@ export function PathInputInternal(props: PathInputInternalProps) {
       // otherwise let it move focus to the next field.
       if (path && path.path !== value) {
         event.preventDefault();
+        handleSuggestionsFetchRequested.cancel();
 
         onChange({
           name,
@@ -169,33 +167,36 @@ export function PathInputInternal(props: PathInputInternalProps) {
         });
 
         if (path.type !== 'file') {
-          handleFetchPaths(path.path);
+          onFetchPaths(path.path);
         }
       }
     },
-    [name, value, filteredPaths, handleFetchPaths, onChange]
+    [
+      name,
+      value,
+      filteredPaths,
+      handleSuggestionsFetchRequested,
+      onFetchPaths,
+      onChange,
+    ]
   );
   const handleInputBlur = useCallback(() => {
+    handleSuggestionsFetchRequested.cancel();
+
     onChange({
       name,
       value,
     });
 
     onClearPaths();
-  }, [name, value, onClearPaths, onChange]);
+  }, [name, value, handleSuggestionsFetchRequested, onClearPaths, onChange]);
 
   const handleSuggestionSelected = useCallback(
     (_event: SyntheticEvent, { suggestion }: { suggestion: Path }) => {
-      handleFetchPaths(suggestion.path);
+      handleSuggestionsFetchRequested.cancel();
+      onFetchPaths(suggestion.path);
     },
-    [handleFetchPaths]
-  );
-
-  const handleSuggestionsFetchRequested = useCallback(
-    ({ value: newValue }: SuggestionsFetchRequestedParams) => {
-      debouncedFetchPaths(newValue);
-    },
-    [debouncedFetchPaths]
+    [handleSuggestionsFetchRequested, onFetchPaths]
   );
 
   const handleFileBrowserOpenPress = useCallback(() => {

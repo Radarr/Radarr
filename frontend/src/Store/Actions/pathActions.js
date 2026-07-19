@@ -9,6 +9,15 @@ import createHandleActions from './Creators/createHandleActions';
 
 export const section = 'paths';
 
+const LISTING_CACHE_TTL = 5000;
+const LISTING_CACHE_MAX_SIZE = 256;
+const MAX_CONCURRENT_LISTING_REQUESTS = 8;
+const listingCache = new Map();
+const inFlightListings = new Map();
+const listingRequestQueue = [];
+let activeListingRequests = 0;
+let latestFetchId = 0;
+
 //
 // State
 
@@ -34,12 +43,100 @@ export const CLEAR_PATHS = 'paths/clearPaths';
 
 export const fetchPaths = createThunk(FETCH_PATHS);
 export const updatePaths = createAction(UPDATE_PATHS);
-export const clearPaths = createAction(CLEAR_PATHS);
+const createClearPathsAction = createAction(CLEAR_PATHS);
 
-// Short-lived listing cache: segment resolution re-fetches the same
-// parent directories on nearly every keystroke.
-const LISTING_CACHE_TTL = 5000;
-const listingCache = new Map();
+export function clearPaths() {
+  latestFetchId++;
+
+  return createClearPathsAction();
+}
+
+function getCachedListing(cacheKey) {
+  const now = Date.now();
+
+  listingCache.forEach(({ expiresAt }, key) => {
+    if (expiresAt <= now) {
+      listingCache.delete(key);
+    }
+  });
+
+  const cached = listingCache.get(cacheKey);
+
+  if (!cached) {
+    return undefined;
+  }
+
+  // Refresh insertion order so the size bound evicts the least recently used
+  // listing first.
+  listingCache.delete(cacheKey);
+  listingCache.set(cacheKey, cached);
+
+  return cached.data;
+}
+
+function cacheListing(cacheKey, data) {
+  listingCache.delete(cacheKey);
+  listingCache.set(cacheKey, {
+    data,
+    expiresAt: Date.now() + LISTING_CACHE_TTL
+  });
+
+  while (listingCache.size > LISTING_CACHE_MAX_SIZE) {
+    const oldestKey = listingCache.keys().next().value;
+
+    listingCache.delete(oldestKey);
+  }
+}
+
+function startListingRequest({ requestFactory, resolve, reject }) {
+  activeListingRequests++;
+
+  Promise.resolve()
+    .then(requestFactory)
+    .then(resolve, reject)
+    .finally(() => {
+      activeListingRequests--;
+      runListingRequestQueue();
+    });
+}
+
+function runListingRequestQueue() {
+  while (
+    activeListingRequests < MAX_CONCURRENT_LISTING_REQUESTS &&
+    listingRequestQueue.length
+  ) {
+    startListingRequest(listingRequestQueue.shift());
+  }
+}
+
+function scheduleListingRequest(requestFactory) {
+  return new Promise((resolve, reject) => {
+    listingRequestQueue.push({ requestFactory, resolve, reject });
+    runListingRequestQueue();
+  });
+}
+
+async function mapWithConcurrency(items, mapper) {
+  const results = new Array(items.length);
+  let nextIndex = 0;
+
+  async function worker() {
+    while (nextIndex < items.length) {
+      const index = nextIndex++;
+
+      results[index] = await mapper(items[index]);
+    }
+  }
+
+  const workers = Array.from(
+    { length: Math.min(MAX_CONCURRENT_LISTING_REQUESTS, items.length) },
+    worker
+  );
+
+  await Promise.all(workers);
+
+  return results;
+}
 
 //
 // Action Handlers
@@ -47,6 +144,8 @@ const listingCache = new Map();
 export const actionHandlers = handleThunks({
 
   [FETCH_PATHS]: function(getState, payload, dispatch) {
+    const fetchId = ++latestFetchId;
+
     dispatch(set({ section, isFetching: true }));
 
     const {
@@ -57,27 +156,44 @@ export const actionHandlers = handleThunks({
 
     const fetchChildren = (queryPath) => {
       const cacheKey = `${includeFiles}:${allowFoldersWithoutTrailingSlashes}:${queryPath}`;
-      const cached = listingCache.get(cacheKey);
+      const cached = getCachedListing(cacheKey);
 
-      if (cached && Date.now() - cached.timestamp < LISTING_CACHE_TTL) {
-        return Promise.resolve(cached.data);
+      if (cached !== undefined) {
+        return Promise.resolve(cached);
       }
 
-      return createAjaxRequest({
-        url: '/filesystem',
-        data: {
-          path: queryPath,
-          allowFoldersWithoutTrailingSlashes,
-          includeFiles
-        }
-      }).request.then(
-        (data) => {
-          listingCache.set(cacheKey, { data, timestamp: Date.now() });
+      const inFlight = inFlightListings.get(cacheKey);
+
+      if (inFlight) {
+        return inFlight;
+      }
+
+      const listingPromise = scheduleListingRequest(() => {
+        return createAjaxRequest({
+          url: '/filesystem',
+          data: {
+            path: queryPath,
+            allowFoldersWithoutTrailingSlashes,
+            includeFiles
+          }
+        }).request;
+      })
+        .then((data) => {
+          cacheListing(cacheKey, data);
 
           return data;
-        },
-        () => ({ parent: '', directories: [], files: [] })
-      );
+        }, () => {
+          return { parent: '', directories: [], files: [] };
+        })
+        .finally(() => {
+          if (inFlightListings.get(cacheKey) === listingPromise) {
+            inFlightListings.delete(cacheKey);
+          }
+        });
+
+      inFlightListings.set(cacheKey, listingPromise);
+
+      return listingPromise;
     };
 
     // Resolve the query segment by segment: each segment is a
@@ -107,7 +223,7 @@ export const actionHandlers = handleThunks({
         const segment = segments[i].toLowerCase();
         const isLast = i === segments.length - 1;
 
-        const listings = await Promise.all(parents.map(fetchChildren));
+        const listings = await mapWithConcurrency(parents, fetchChildren);
         const directories = listings.flatMap((data) => data.directories);
 
         if (listings.length) {
@@ -140,8 +256,9 @@ export const actionHandlers = handleThunks({
           results = matched.filter((entry) => !exactDirs.includes(entry));
 
           if (exactDirs.length) {
-            const subListings = await Promise.all(
-              exactDirs.map(({ path: dirPath }) => fetchChildren(dirPath))
+            const subListings = await mapWithConcurrency(
+              exactDirs,
+              ({ path: dirPath }) => fetchChildren(dirPath)
             );
             parent = subListings[subListings.length - 1].parent;
             results.push(
@@ -165,6 +282,10 @@ export const actionHandlers = handleThunks({
     };
 
     resolve().then((data) => {
+      if (fetchId !== latestFetchId) {
+        return;
+      }
+
       // `currentPath` stays empty so the prefix-based selectors pass the
       // resolved entries through; matching happens against the typed value.
       dispatch(updatePaths({ path: '', ...data }));
@@ -196,10 +317,13 @@ export const reducers = createHandleActions({
     return newState;
   },
 
-  [CLEAR_PATHS]: (state, { payload }) => {
+  [CLEAR_PATHS]: (state) => {
     const newState = Object.assign({}, state);
 
-    newState.path = '';
+    newState.currentPath = '';
+    newState.isFetching = false;
+    newState.isPopulated = false;
+    newState.error = null;
     newState.directories = [];
     newState.files = [];
     newState.parent = '';
