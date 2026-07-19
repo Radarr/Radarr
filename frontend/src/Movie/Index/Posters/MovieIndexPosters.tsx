@@ -53,9 +53,10 @@ interface MovieIndexPostersProps {
 
 const movieIndexSelector = createSelector(
   (state: AppState) => state.movieIndex.posterOptions,
-  (posterOptions) => {
+  (state: AppState) => state.personalizedUi.posterSize,
+  (posterOptions, personalizedPosterSize) => {
     return {
-      posterOptions,
+      posterOptions: { ...posterOptions, size: personalizedPosterSize },
     };
   }
 );

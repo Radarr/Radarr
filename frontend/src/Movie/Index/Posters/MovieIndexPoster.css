@@ -1,9 +1,13 @@
 $hoverScale: 1.05;
 
 .content {
+  overflow: hidden;
+  border-radius: var(--cardRadius);
+  background: var(--movieBackgroundColor);
   transition: all 200ms ease-in;
 
-  &:hover {
+  &:hover,
+  &:focus-within {
     z-index: 2;
     box-shadow: 0 0 12px var(--black);
     transition: all 200ms ease-in;
@@ -54,12 +58,28 @@ $hoverScale: 1.05;
   left: 10px;
   z-index: 3;
   border-radius: 4px;
-  background-color: #707070;
+  background-color: color-mix(in srgb, var(--black) 78%, transparent);
   color: var(--white);
   font-size: $smallFontSize;
   opacity: 0;
   transition: opacity 0;
 }
+
+.summary {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 28px 8px 8px;
+  background: linear-gradient(transparent, color-mix(in srgb, var(--black) 90%, transparent));
+  color: var(--white);
+  text-align: left;
+}
+
+.summaryTitle { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.summaryTitle span { color: var(--lightGray); font-weight: 400; }
+.badges { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 5px; }
+.badges span { border: 1px solid color-mix(in srgb, var(--white) 30%, transparent); border-radius: calc(var(--cardRadius) / 2); background: color-mix(in srgb, var(--black) 65%, transparent); padding: 1px 4px; font-size: 10px; }
 
 .action {
   composes: button from '~Components/Link/IconButton.css';
@@ -73,7 +93,11 @@ $hoverScale: 1.05;
   .container {
     padding: 5px;
   }
+
+  .controls { opacity: 0.9; }
 }
+
+@media (hover: none) { .controls { opacity: 0.9; } }
 
 .tags {
   display: flex;

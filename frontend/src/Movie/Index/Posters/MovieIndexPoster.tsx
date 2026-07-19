@@ -21,6 +21,7 @@ import MovieIndexPosterSelect from 'Movie/Index/Select/MovieIndexPosterSelect';
 import { Statistics } from 'Movie/Movie';
 import MoviePoster from 'Movie/MoviePoster';
 import { executeCommand } from 'Store/Actions/commandActions';
+import { toggleMovieMonitored } from 'Store/Actions/movieActions';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import formatDate from 'Utilities/Date/formatDate';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
@@ -117,6 +118,10 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     );
   }, [movieId, dispatch]);
 
+  const onMonitorPress = useCallback(() => {
+    dispatch(toggleMovieMonitored({ movieId, monitored: !monitored }));
+  }, [movieId, monitored, dispatch]);
+
   const onPosterLoadError = useCallback(() => {
     setHasPosterError(true);
   }, [setHasPosterError]);
@@ -180,6 +185,12 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
             onPress={onEditMoviePress}
           />
 
+          <IconButton
+            name={monitored ? icons.MONITORED : icons.UNMONITORED}
+            title={monitored ? 'Unmonitor movie' : 'Monitor movie'}
+            onPress={onMonitorPress}
+          />
+
           <span className={styles.externalLinks}>
             <Popover
               anchor={<Icon name={icons.EXTERNAL_LINK} size={12} />}
@@ -213,6 +224,17 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
           {hasPosterError ? (
             <div className={styles.overlayTitle}>{title}</div>
           ) : null}
+
+          <div className={styles.summary}>
+            <div className={styles.summaryTitle}>{title} <span>{year}</span></div>
+            <div className={styles.badges}>
+              <span>{monitored ? 'Monitored' : 'Unmonitored'}</span>
+              <span>{isAvailable ? 'Available' : status}</span>
+              {movieFile?.quality?.quality?.name ? <span>{movieFile.quality.quality.name}</span> : null}
+              {movieFile ? <span>{movieFile.qualityCutoffNotMet ? 'Cutoff unmet' : 'Cutoff met'}</span> : null}
+              {hasFile ? <span>In library</span> : <span>Missing</span>}
+            </div>
+          </div>
         </Link>
       </div>
 

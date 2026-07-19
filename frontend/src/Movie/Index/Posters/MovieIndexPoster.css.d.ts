@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'action': string;
+  'badges': string;
   'container': string;
   'content': string;
   'controls': string;
@@ -13,6 +14,8 @@ interface CssExports {
   'overlayTitle': string;
   'poster': string;
   'posterContainer': string;
+  'summary': string;
+  'summaryTitle': string;
   'tags': string;
   'tagsList': string;
   'title': string;
