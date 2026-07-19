@@ -1,22 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
-import AppState from 'App/State/AppState';
+import createPersonalizedUiSelector from 'Store/Selectors/createPersonalizedUiSelector';
 import themes from 'Styles/Themes';
 
-function createThemeSelector() {
-  return createSelector(
-    (state: AppState) => state.settings.ui.item.theme || window.Radarr.theme,
-    (theme) => theme
-  );
-}
-
 const useTheme = () => {
-  const selectedTheme = useSelector(createThemeSelector());
+  const { theme: selectedTheme } = useSelector(createPersonalizedUiSelector());
   const [resolvedTheme, setResolvedTheme] = useState(selectedTheme);
 
   useEffect(() => {
-    if (selectedTheme !== 'auto') {
+    if (selectedTheme !== 'system') {
       setResolvedTheme(selectedTheme);
       return;
     }

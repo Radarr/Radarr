@@ -11,7 +11,8 @@
     "lint": "eslint --config frontend/.eslintrc.js --ignore-path frontend/.eslintignore frontend/",
     "lint-fix": "yarn lint --fix",
     "stylelint-linux": "stylelint $(find frontend -name '*.css') --config frontend/.stylelintrc",
-    "stylelint-windows": "stylelint \"frontend/**/*.css\" --config frontend/.stylelintrc"
+    "stylelint-windows": "stylelint \"frontend/**/*.css\" --config frontend/.stylelintrc",
+    "test:ui-foundation": "node --test frontend/test/preferences.test.cjs"
   },
   "repository": "https://github.com/Radarr/Radarr",
   "author": "Team Radarr",

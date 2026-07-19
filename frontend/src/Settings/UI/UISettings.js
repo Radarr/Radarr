@@ -11,9 +11,8 @@ import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import { inputTypes, kinds } from 'Helpers/Props';
 import SettingsToolbar from 'Settings/SettingsToolbar';
-import themes from 'Styles/Themes';
-import titleCase from 'Utilities/String/titleCase';
 import translate from 'Utilities/String/translate';
+import AppearanceSettings from './AppearanceSettings';
 
 export const firstDayOfWeekOptions = [
   {
@@ -78,9 +77,6 @@ class UISettings extends Component {
       ...otherProps
     } = this.props;
 
-    const themeOptions = Object.keys(themes)
-      .map((theme) => ({ key: theme, value: titleCase(theme) }));
-
     const uiLanguages = languages.filter((item) => item.value !== 'Original');
 
     return (
@@ -111,6 +107,8 @@ class UISettings extends Component {
                 id="uiSettings"
                 {...otherProps}
               >
+                <AppearanceSettings />
+
                 <FieldSet legend={translate('Calendar')}>
                   <FormGroup>
                     <FormLabel>{translate('FirstDayOfWeek')}</FormLabel>
@@ -206,18 +204,6 @@ class UISettings extends Component {
                 <FieldSet
                   legend={translate('Style')}
                 >
-                  <FormGroup>
-                    <FormLabel>{translate('Theme')}</FormLabel>
-                    <FormInputGroup
-                      type={inputTypes.SELECT}
-                      name="theme"
-                      helpText={translate('ThemeHelpText')}
-                      values={themeOptions}
-                      onChange={onInputChange}
-                      {...settings.theme}
-                    />
-                  </FormGroup>
-
                   <FormGroup>
                     <FormLabel>{translate('EnableColorImpairedMode')}</FormLabel>
                     <FormInputGroup

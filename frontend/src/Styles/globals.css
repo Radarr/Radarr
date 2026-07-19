@@ -3,4 +3,35 @@
 @import "~normalize.css/normalize.css";
 @import "scaffolding.css";
 
+:root {
+  --accentColor: var(--themeBlue);
+  --uiSpace: 12px;
+  --cardRadius: 6px;
+}
+
+:root[data-density='compact'] { --uiSpace: 8px; }
+:root[data-density='spacious'] { --uiSpace: 16px; }
+:root[data-card-style='square'] { --cardRadius: 0; }
+
+:root[data-animations='off'] *,
+:root[data-animations='off'] *::before,
+:root[data-animations='off'] *::after {
+  scroll-behavior: auto !important;
+  transition-duration: 0s !important;
+  animation-duration: 0s !important;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accentColor);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+  }
+}
+
 /* stylelint-enable */
