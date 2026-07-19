@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using NLog;
-using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
@@ -19,9 +17,7 @@ namespace NzbDrone.Core.MediaCover
 {
     public interface IMapCoversToLocal
     {
-        Dictionary<string, FileInfo> GetCoverFileInfos();
-        void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers, Dictionary<string, FileInfo> fileInfos = null);
-        void ConvertToLocalUrls(IEnumerable<Tuple<int, IEnumerable<MediaCover>>> items, Dictionary<string, FileInfo> coverFileInfos);
+        void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers);
         string GetCoverPath(int movieId, MediaCoverTypes coverType, int? height = null);
     }
 
@@ -43,7 +39,7 @@ namespace NzbDrone.Core.MediaCover
 
         // ImageSharp is slow on ARM (no hardware acceleration on mono yet)
         // So limit the number of concurrent resizing tasks
-        private static SemaphoreSlim _semaphore = new SemaphoreSlim((int)Math.Ceiling(Environment.ProcessorCount / 2.0));
+        private static readonly SemaphoreSlim Semaphore = new((int)Math.Ceiling(Environment.ProcessorCount / 2.0));
 
         public MediaCoverService(IMediaCoverProxy mediaCoverProxy,
                                  IImageResizer resizer,
@@ -69,28 +65,16 @@ namespace NzbDrone.Core.MediaCover
 
         public string GetCoverPath(int movieId, MediaCoverTypes coverType, int? height = null)
         {
-            var heightSuffix = height.HasValue ? "-" + height.ToString() : "";
+            var heightSuffix = height.HasValue ? $"-{height}" : "";
 
-            return Path.Combine(GetMovieCoverPath(movieId), coverType.ToString().ToLower() + heightSuffix + GetExtension(coverType));
+            return Path.Combine(GetMovieCoverPath(movieId), coverType.ToString().ToLowerInvariant() + heightSuffix + GetExtension(coverType));
         }
 
-        public Dictionary<string, FileInfo> GetCoverFileInfos()
-        {
-            if (!_diskProvider.FolderExists(_coverRootFolder))
-            {
-                return new Dictionary<string, FileInfo>();
-            }
-
-            return _diskProvider
-                .GetFileInfos(_coverRootFolder, true)
-                .ToDictionary(x => x.FullName, PathEqualityComparer.Instance);
-        }
-
-        public void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers, Dictionary<string, FileInfo> fileInfos = null)
+        public void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers)
         {
             if (movieId == 0)
             {
-                // Movie isn't in Radarr yet, map via a proxy to circument referrer issues
+                // Movie isn't in Radarr yet, map via a proxy to circumvent referrer issues
                 foreach (var mediaCover in covers)
                 {
                     mediaCover.Url = _mediaCoverProxy.RegisterUrl(mediaCover.RemoteUrl);
@@ -105,34 +89,13 @@ namespace NzbDrone.Core.MediaCover
                         continue;
                     }
 
-                    var filePath = GetCoverPath(movieId, mediaCover.CoverType);
+                    mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/" + movieId + "/" + mediaCover.CoverType.ToString().ToLowerInvariant() + GetExtension(mediaCover.CoverType);
 
-                    mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/" + movieId + "/" + mediaCover.CoverType.ToString().ToLower() + GetExtension(mediaCover.CoverType);
-
-                    DateTime? lastWrite = null;
-
-                    if (fileInfos != null && fileInfos.TryGetValue(filePath, out var file))
+                    if (mediaCover.RemoteUrl.IsNotNullOrWhiteSpace())
                     {
-                        lastWrite = file.LastWriteTimeUtc;
-                    }
-                    else if (_diskProvider.FileExists(filePath))
-                    {
-                        lastWrite = _diskProvider.FileGetLastWrite(filePath);
-                    }
-
-                    if (lastWrite.HasValue)
-                    {
-                        mediaCover.Url += "?lastWrite=" + lastWrite.Value.Ticks;
+                        mediaCover.Url += "?h=" + mediaCover.RemoteUrl.SHA256Hash()[..20];
                     }
                 }
-            }
-        }
-
-        public void ConvertToLocalUrls(IEnumerable<Tuple<int, IEnumerable<MediaCover>>> items, Dictionary<string, FileInfo> coverFileInfos)
-        {
-            foreach (var movie in items)
-            {
-                ConvertToLocalUrls(movie.Item1, movie.Item2, coverFileInfos);
             }
         }
 
@@ -184,7 +147,7 @@ namespace NzbDrone.Core.MediaCover
 
             try
             {
-                _semaphore.Wait();
+                Semaphore.Wait();
 
                 foreach (var tuple in toResize)
                 {
@@ -193,7 +156,7 @@ namespace NzbDrone.Core.MediaCover
             }
             finally
             {
-                _semaphore.Release();
+                Semaphore.Release();
             }
 
             return updated;
@@ -252,7 +215,7 @@ namespace NzbDrone.Core.MediaCover
             }
         }
 
-        private string GetExtension(MediaCoverTypes coverType)
+        private static string GetExtension(MediaCoverTypes coverType)
         {
             return coverType switch
             {
