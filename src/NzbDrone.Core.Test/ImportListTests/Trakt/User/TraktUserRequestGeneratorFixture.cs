@@ -20,20 +20,22 @@ namespace NzbDrone.Core.Test.ImportListTests.Trakt.User
                 .Returns((HttpRequest request, string accessToken) => request);
         }
 
-        private TraktUserSettings CreateSettings(int limit, string username = "testuser", string accessToken = "token")
+        private static TraktUserSettings CreateDefaultSettings()
         {
             return new TraktUserSettings
             {
-                Username = username,
-                AccessToken = accessToken,
-                Limit = limit
+                Username = "testuser",
+                AccessToken = "token",
             };
         }
 
         [Test]
         public void should_request_single_page_when_limit_is_250_or_less()
         {
-            var generator = new TraktUserRequestGenerator(_traktProxy.Object, CreateSettings(100));
+            var settings = CreateDefaultSettings();
+            settings.Limit = 100;
+
+            var generator = new TraktUserRequestGenerator(_traktProxy.Object, settings);
 
             var requests = generator.GetMovies().GetAllTiers().First().ToList();
 
@@ -45,7 +47,10 @@ namespace NzbDrone.Core.Test.ImportListTests.Trakt.User
         [Test]
         public void should_request_multiple_pages_when_limit_exceeds_250()
         {
-            var generator = new TraktUserRequestGenerator(_traktProxy.Object, CreateSettings(300));
+            var settings = CreateDefaultSettings();
+            settings.Limit = 300;
+
+            var generator = new TraktUserRequestGenerator(_traktProxy.Object, settings);
 
             var requests = generator.GetMovies().GetAllTiers().First().ToList();
 

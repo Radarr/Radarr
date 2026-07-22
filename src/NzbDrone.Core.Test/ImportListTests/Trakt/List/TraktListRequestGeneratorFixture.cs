@@ -21,21 +21,26 @@ namespace NzbDrone.Core.Test.ImportListTests.Trakt.List
                 .Returns((string resource, HttpMethod method, string accessToken) => new HttpRequest($"https://api.trakt.tv/{resource}"));
         }
 
-        private TraktListSettings CreateSettings(int limit, string username = "testuser", string listname = "my list", string accessToken = "token")
+        private static TraktListSettings CreateDefaultSettings()
         {
             return new TraktListSettings
             {
-                Username = username,
-                Listname = listname,
-                AccessToken = accessToken,
-                Limit = limit
+                Username = "testuser",
+                Listname = "my list",
+                AccessToken = "token",
             };
         }
 
         [Test]
         public void should_request_single_page_when_limit_is_250_or_less()
         {
-            var generator = new TraktListRequestGenerator(_traktProxy.Object) { Settings = CreateSettings(100) };
+            var settings = CreateDefaultSettings();
+            settings.Limit = 100;
+
+            var generator = new TraktListRequestGenerator(_traktProxy.Object)
+            {
+                Settings = settings
+            };
 
             var requests = generator.GetMovies().GetAllTiers().First().ToList();
 
@@ -47,7 +52,10 @@ namespace NzbDrone.Core.Test.ImportListTests.Trakt.List
         [Test]
         public void should_request_multiple_pages_when_limit_exceeds_250()
         {
-            var generator = new TraktListRequestGenerator(_traktProxy.Object) { Settings = CreateSettings(300) };
+            var settings = CreateDefaultSettings();
+            settings.Limit = 300;
+
+            var generator = new TraktListRequestGenerator(_traktProxy.Object) { Settings = settings };
 
             var requests = generator.GetMovies().GetAllTiers().First().ToList();
 
