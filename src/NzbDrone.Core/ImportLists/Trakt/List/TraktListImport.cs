@@ -22,6 +22,7 @@ namespace NzbDrone.Core.ImportLists.Trakt.List
         public override string Name => "Trakt List";
         public override bool Enabled => true;
         public override bool EnableAuto => false;
+        public override int PageSize => 250;
 
         public override IImportListRequestGenerator GetRequestGenerator()
         {

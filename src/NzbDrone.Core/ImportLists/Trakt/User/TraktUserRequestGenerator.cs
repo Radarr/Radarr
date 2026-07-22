@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
@@ -56,10 +57,25 @@ namespace NzbDrone.Core.ImportLists.Trakt.User
 
             requestBuilder
                 .SetSegment("userName", userName)
-                .WithRateLimit(4)
-                .AddQueryParam("limit", _settings.Limit.ToString());
+                .WithRateLimit(4);
 
-            yield return new ImportListRequest(_traktProxy.BuildRequest(requestBuilder.Build(), _settings.AccessToken));
+            const int maxPageSize = 250;
+            var itemsRemaining = _settings.Limit;
+            var pageNumber = 1;
+
+            while (itemsRemaining > 0)
+            {
+                var pageLimit = Math.Min(maxPageSize, itemsRemaining);
+
+                requestBuilder
+                    .AddQueryParam("page", pageNumber, true)
+                    .AddQueryParam("limit", pageLimit, true);
+
+                yield return new ImportListRequest(_traktProxy.BuildRequest(requestBuilder.Build(), _settings.AccessToken));
+
+                itemsRemaining -= pageLimit;
+                pageNumber++;
+            }
         }
     }
 }

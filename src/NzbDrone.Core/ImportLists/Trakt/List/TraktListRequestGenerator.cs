@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using NzbDrone.Core.Notifications.Trakt;
@@ -34,11 +35,22 @@ namespace NzbDrone.Core.ImportLists.Trakt.List
             // - does not trim underscore from the end
             // - allows multiple underscores in a row
             var listName = Parser.Parser.ToUrlSlug(Settings.Listname.Trim(), true, "-", "-");
-            link += $"users/{Settings.Username.Trim()}/lists/{listName}/items/movies?limit={Settings.Limit}";
+            link += $"users/{Settings.Username.Trim()}/lists/{listName}/items/movies";
 
-            var request = new ImportListRequest(_traktProxy.BuildRequest(link, HttpMethod.Get, Settings.AccessToken));
+            const int maxPageSize = 250;
+            var itemsRemaining = Settings.Limit;
+            var pageNumber = 1;
 
-            yield return request;
+            while (itemsRemaining > 0)
+            {
+                var pageLimit = Math.Min(maxPageSize, itemsRemaining);
+                var pagedLink = $"{link}?limit={pageLimit}&page={pageNumber}";
+
+                yield return new ImportListRequest(_traktProxy.BuildRequest(pagedLink, HttpMethod.Get, Settings.AccessToken));
+
+                itemsRemaining -= pageLimit;
+                pageNumber++;
+            }
         }
     }
 }
