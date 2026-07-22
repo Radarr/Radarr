@@ -21,13 +21,13 @@ namespace NzbDrone.Core.Test.ImportListTests.Trakt.List
                 .Returns((string resource, HttpMethod method, string accessToken) => new HttpRequest($"https://api.trakt.tv/{resource}"));
         }
 
-        private TraktListSettings CreateSettings(int limit)
+        private TraktListSettings CreateSettings(int limit, string username = "testuser", string listname = "my list", string accessToken = "token")
         {
             return new TraktListSettings
             {
-                Username = "testuser",
-                Listname = "my list",
-                AccessToken = "token",
+                Username = username,
+                Listname = listname,
+                AccessToken = accessToken,
                 Limit = limit
             };
         }

@@ -20,12 +20,12 @@ namespace NzbDrone.Core.Test.ImportListTests.Trakt.User
                 .Returns((HttpRequest request, string accessToken) => request);
         }
 
-        private TraktUserSettings CreateSettings(int limit)
+        private TraktUserSettings CreateSettings(int limit, string username = "testuser", string accessToken = "token")
         {
             return new TraktUserSettings
             {
-                Username = "testuser",
-                AccessToken = "token",
+                Username = username,
+                AccessToken = accessToken,
                 Limit = limit
             };
         }
