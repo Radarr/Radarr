@@ -59,22 +59,21 @@ namespace NzbDrone.Core.ImportLists.Trakt.User
                 .SetSegment("userName", userName)
                 .WithRateLimit(4);
 
+            // Trakt paginates by offset = (page - 1) * limit server-side, so limit must stay
+            // constant across pages of the same fetch or later pages land on the wrong offset
+            // (see #11563 review discussion). Only shrink it below maxPageSize when a single
+            // page covers the whole Settings.Limit.
             const int maxPageSize = 250;
-            var itemsRemaining = _settings.Limit;
-            var pageNumber = 1;
+            var pagesNeeded = (int)Math.Ceiling((double)_settings.Limit / maxPageSize);
+            var pageSize = pagesNeeded > 1 ? maxPageSize : _settings.Limit;
 
-            while (itemsRemaining > 0)
+            for (var pageNumber = 1; pageNumber <= pagesNeeded; pageNumber++)
             {
-                var pageLimit = Math.Min(maxPageSize, itemsRemaining);
-
                 requestBuilder
                     .AddQueryParam("page", pageNumber, true)
-                    .AddQueryParam("limit", pageLimit, true);
+                    .AddQueryParam("limit", pageSize, true);
 
                 yield return new ImportListRequest(_traktProxy.BuildRequest(requestBuilder.Build(), _settings.AccessToken));
-
-                itemsRemaining -= pageLimit;
-                pageNumber++;
             }
         }
     }

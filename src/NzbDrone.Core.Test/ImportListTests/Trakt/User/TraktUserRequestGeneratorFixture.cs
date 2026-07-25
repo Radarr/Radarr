@@ -45,8 +45,12 @@ namespace NzbDrone.Core.Test.ImportListTests.Trakt.User
         }
 
         [Test]
-        public void should_request_multiple_pages_when_limit_exceeds_250()
+        public void should_request_multiple_pages_with_constant_limit_when_limit_exceeds_250()
         {
+            // Trakt paginates by offset = (page - 1) * limit server-side, so limit must be the
+            // same value on every page of the same fetch, even on the last, shorter page -
+            // shrinking it (e.g. to 50) would make the server compute the wrong offset and
+            // return the wrong items instead of the intended continuation.
             var settings = CreateDefaultSettings();
             settings.Limit = 300;
 
@@ -58,7 +62,7 @@ namespace NzbDrone.Core.Test.ImportListTests.Trakt.User
             requests[0].Url.FullUri.Should().Contain("page=1");
             requests[0].Url.FullUri.Should().Contain("limit=250");
             requests[1].Url.FullUri.Should().Contain("page=2");
-            requests[1].Url.FullUri.Should().Contain("limit=50");
+            requests[1].Url.FullUri.Should().Contain("limit=250");
         }
     }
 }

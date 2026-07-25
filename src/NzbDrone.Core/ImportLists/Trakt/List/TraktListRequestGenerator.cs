@@ -37,19 +37,19 @@ namespace NzbDrone.Core.ImportLists.Trakt.List
             var listName = Parser.Parser.ToUrlSlug(Settings.Listname.Trim(), true, "-", "-");
             link += $"users/{Settings.Username.Trim()}/lists/{listName}/items/movies";
 
+            // Trakt paginates by offset = (page - 1) * limit server-side, so limit must stay
+            // constant across pages of the same fetch or later pages land on the wrong offset
+            // (see #11563 review discussion). Only shrink it below maxPageSize when a single
+            // page covers the whole Settings.Limit.
             const int maxPageSize = 250;
-            var itemsRemaining = Settings.Limit;
-            var pageNumber = 1;
+            var pagesNeeded = (int)Math.Ceiling((double)Settings.Limit / maxPageSize);
+            var pageSize = pagesNeeded > 1 ? maxPageSize : Settings.Limit;
 
-            while (itemsRemaining > 0)
+            for (var pageNumber = 1; pageNumber <= pagesNeeded; pageNumber++)
             {
-                var pageLimit = Math.Min(maxPageSize, itemsRemaining);
-                var pagedLink = $"{link}?limit={pageLimit}&page={pageNumber}";
+                var pagedLink = $"{link}?limit={pageSize}&page={pageNumber}";
 
                 yield return new ImportListRequest(_traktProxy.BuildRequest(pagedLink, HttpMethod.Get, Settings.AccessToken));
-
-                itemsRemaining -= pageLimit;
-                pageNumber++;
             }
         }
     }
