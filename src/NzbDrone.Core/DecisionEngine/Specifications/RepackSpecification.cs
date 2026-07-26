@@ -43,6 +43,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             {
                 var file = subject.Movie.MovieFile;
 
+                if (file == null)
+                {
+                    _logger.Debug("File is no longer available, skipping this file.");
+                    return DownloadSpecDecision.Accept();
+                }
+
                 if (_upgradableSpecification.IsRevisionUpgrade(file.Quality, subject.ParsedMovieInfo.Quality))
                 {
                     var releaseGroup = subject.ParsedMovieInfo.ReleaseGroup;
