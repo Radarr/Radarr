@@ -15,6 +15,7 @@ namespace NzbDrone.Core.MediaFiles
     public interface IUpdateMovieFileService
     {
         void ChangeFileDateForFile(MovieFile movieFile, Movie movie);
+        void ChangeFileDateForFile(MovieFile movieFile, Movie movie, DateTime? preservedFileDate);
     }
 
     public class UpdateMovieFileService : IUpdateMovieFileService,
@@ -38,15 +39,31 @@ namespace NzbDrone.Core.MediaFiles
 
         public void ChangeFileDateForFile(MovieFile movieFile, Movie movie)
         {
-            ChangeFileDate(movieFile, movie);
+            ChangeFileDate(movieFile, movie, null);
         }
 
-        private bool ChangeFileDate(MovieFile movieFile, Movie movie)
+        public void ChangeFileDateForFile(MovieFile movieFile, Movie movie, DateTime? preservedFileDate)
+        {
+            ChangeFileDate(movieFile, movie, preservedFileDate);
+        }
+
+        private bool ChangeFileDate(MovieFile movieFile, Movie movie, DateTime? preservedFileDate = null)
         {
             var movieFilePath = Path.Combine(movie.Path, movieFile.RelativePath);
 
             switch (_configService.FileDate)
             {
+                case FileDateType.PreserveOriginal:
+                    {
+                        if (preservedFileDate.HasValue == false)
+                        {
+                            _logger.Debug("Preserve original file date is enabled but no preserved date available for [{0}]", movieFilePath);
+                            return false;
+                        }
+
+                        return ChangeFileDate(movieFilePath, preservedFileDate.Value);
+                    }
+
                 case FileDateType.Release:
                     {
                         var releaseDate = movie.MovieMetadata.Value.PhysicalRelease ?? movie.MovieMetadata.Value.DigitalRelease;
