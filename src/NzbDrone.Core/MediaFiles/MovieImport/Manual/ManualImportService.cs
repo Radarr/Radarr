@@ -452,8 +452,12 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 localMovie.Movie = movie;
                 localMovie.ReleaseGroup = file.ReleaseGroup;
                 localMovie.Quality = file.Quality;
-                localMovie.Languages = file.Languages;
                 localMovie.IndexerFlags = (IndexerFlags)file.IndexerFlags;
+
+                if (file.Languages is { Count: > 0 } && file.Languages.All(l => l is not null && l.IsValid()))
+                {
+                    localMovie.Languages = file.Languages;
+                }
 
                 localMovie.CustomFormats = _formatCalculator.ParseCustomFormat(localMovie);
                 localMovie.CustomFormatScore = localMovie.Movie.QualityProfile?.CalculateCustomFormatScore(localMovie.CustomFormats) ?? 0;
