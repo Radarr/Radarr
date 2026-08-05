@@ -1,10 +1,12 @@
 .menuItem {
   @add-mixin truncate;
-  display: block;
+  display: flex;
+  align-items: center;
   flex-shrink: 0;
   padding: 10px 20px;
   min-width: 150px;
-  max-width: 250px;
+  min-height: 44px;
+  max-width: min(250px, calc(100vw - 16px));
   background-color: var(--toolbarMenuItemBackgroundColor);
   color: var(--menuItemColor);
   line-height: 20px;
@@ -20,4 +22,15 @@
 .isDisabled {
   color: var(--disabledColor);
   pointer-events: none;
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .menuItem {
+    overflow: visible;
+    min-width: min(240px, calc(100vw - 16px));
+    max-width: calc(100vw - 16px);
+    text-overflow: clip;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
 }

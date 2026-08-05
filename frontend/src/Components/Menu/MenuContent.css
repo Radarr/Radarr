@@ -2,11 +2,24 @@
   z-index: $popperZIndex;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  max-width: calc(100vw - 16px - env(safe-area-inset-left) - env(safe-area-inset-right));
+  max-height: calc(100svh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   background-color: var(--toolbarMenuItemBackgroundColor);
   line-height: 20px;
+}
+
+@supports (max-height: 100dvh) {
+  .menuContent {
+    max-height: calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
 }
 
 .scroller {
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: inherit;
+  overscroll-behavior: contain;
 }

@@ -1,32 +1,53 @@
 .header {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-width: 0;
+  max-width: 100%;
+  gap: 8px;
 }
 
 .navigationButtons {
+  display: flex;
+  align-items: center;
   flex: 1 1 33%;
+  flex-wrap: wrap;
+  min-width: 0;
   text-align: left;
+  gap: 5px;
 }
 
 .todayButton {
   composes: button from '~Components/Link/Button.css';
 
-  margin-left: 5px;
+  margin-left: 0;
 }
 
 .titleDesktop,
 .titleMobile {
+  min-width: 0;
   text-align: center;
   font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.titleDesktop {
+  flex: 1 1 33%;
 }
 
 .titleMobile {
+  flex: 1 1 100%;
   margin-bottom: 5px;
 }
 
 .viewButtonsContainer {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   flex: 1 1 33%;
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 5px;
 }
 
 .viewMenu {
@@ -43,11 +64,35 @@
 }
 
 @media only screen and (max-width: $breakpointSmall) {
+  .header {
+    align-items: stretch;
+  }
+
   .navigationButtons {
-    flex: 1 0 50%;
+    flex: 1 1 calc(100% - 108px);
+  }
+
+  .todayButton {
+    min-height: 44px;
   }
 
   .viewButtonsContainer {
-    flex: 0 0 100px;
+    flex: 0 1 100px;
+  }
+
+  .viewMenu {
+    min-height: 44px;
+    line-height: 44px;
+  }
+}
+
+@media only screen and (max-width: $breakpointExtraSmall) {
+  .navigationButtons,
+  .viewButtonsContainer {
+    flex-basis: 100%;
+  }
+
+  .viewButtonsContainer {
+    justify-content: flex-start;
   }
 }

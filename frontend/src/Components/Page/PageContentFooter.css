@@ -1,13 +1,26 @@
 .contentFooter {
   display: flex;
   flex: 0 0 auto;
+  flex-wrap: wrap;
   padding: 20px;
+  max-width: 100%;
   background-color: var(--pageFooterBackground);
+  gap: 10px;
 }
 
 @media only screen and (max-width: $breakpointSmall) {
   .contentFooter {
-    display: block;
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    overflow-y: auto;
+    padding: 15px;
+    padding-right: calc(15px + env(safe-area-inset-right));
+    padding-bottom: calc(15px + env(safe-area-inset-bottom));
+    padding-left: calc(15px + env(safe-area-inset-left));
+    max-height: 50svh;
+    overscroll-behavior: contain;
   }
 }
 

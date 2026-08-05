@@ -3,14 +3,24 @@
   justify-content: space-between;
   flex: 0 0 auto;
   padding: 0 20px;
+  min-width: 0;
+  min-height: $toolbarHeight;
   height: $toolbarHeight;
   background-color: var(--toolbarBackgroundColor);
   color: var(--toolbarColor);
-  line-height: 60px;
+  line-height: $toolbarHeight;
 }
 
 @media only screen and (max-width: $breakpointSmall) {
   .toolbar {
-    padding: 0 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 5px 10px;
+    padding-right: calc(10px + env(safe-area-inset-right));
+    padding-left: calc(10px + env(safe-area-inset-left));
+    min-height: $toolbarHeight;
+    height: auto;
+    line-height: normal;
+    gap: 4px;
   }
 }

@@ -3,6 +3,10 @@
 interface CssExports {
   'alert': string;
   'filterMenuContainer': string;
+  'mobileSort': string;
+  'mobileSortLabel': string;
+  'mobileSortSelect': string;
+  'results': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

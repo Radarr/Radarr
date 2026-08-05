@@ -11,6 +11,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-width: 0;
   background-color: var(--sidebarBackgroundColor);
   color: var(--white);
 }
@@ -18,16 +19,22 @@
 @media only screen and (max-width: $breakpointSmall) {
   .sidebarContainer {
     position: fixed;
-    top: 0;
+    top: env(safe-area-inset-top);
+    bottom: 0;
     z-index: 2;
-    height: 100vh;
+    max-width: calc(100% - 44px - env(safe-area-inset-right));
+    height: auto;
   }
 
   .sidebar {
-    position: fixed;
+    position: absolute;
+    inset: 0;
     z-index: 2;
+    overflow-x: hidden;
     overflow-y: auto;
+    padding-bottom: env(safe-area-inset-bottom);
     width: 100%;
     height: 100%;
+    overscroll-behavior: contain;
   }
 }

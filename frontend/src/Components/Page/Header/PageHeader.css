@@ -3,7 +3,9 @@
   display: flex;
   align-items: center;
   flex: 0 0 auto;
-  height: $headerHeight;
+  padding-top: env(safe-area-inset-top);
+  min-width: 0;
+  height: calc($headerHeight + env(safe-area-inset-top));
   background-color: var(--pageHeaderBackgroundColor);
   color: var(--white);
 }
@@ -12,7 +14,8 @@
   display: flex;
   align-items: center;
   flex: 0 0 $sidebarWidth;
-  padding-left: 20px;
+  padding-left: calc(20px + env(safe-area-inset-left));
+  min-width: 0;
 }
 
 .logoLink {
@@ -37,15 +40,20 @@
 
 .sidebarToggleContainer {
   display: none;
+  align-items: center;
   justify-content: center;
   flex: 0 0 45px;
   margin-right: 14px;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .right {
   display: flex;
   justify-content: flex-end;
   flex-grow: 1;
+  padding-right: env(safe-area-inset-right);
+  min-width: 0;
 }
 
 .translate {
@@ -54,10 +62,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 35px;
-  color: #fff;
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  color: var(--white);
   text-align: center;
-  line-height: 60px;
+  line-height: $headerHeight;
 
   &:hover {
     color: var(--toobarButtonHoverColor);
@@ -70,19 +80,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
   color: var(--themeRed);
   text-align: center;
-  line-height: 60px;
+  line-height: $headerHeight;
 
   &:hover {
-    color: #9c1f30;
+    color: var(--dangerHoverBackgroundColor);
   }
 }
 
 @media only screen and (max-width: $breakpointSmall) {
   .logoContainer {
     flex: 0 0 60px;
+    padding-left: calc(14px + env(safe-area-inset-left));
   }
 
   .sidebarToggleContainer {
@@ -91,8 +104,16 @@
 }
 
 @media only screen and (max-width: $breakpointExtraSmall) {
-  .donate,
-  .translate {
-    display: none;
+  .logoContainer {
+    flex-basis: 52px;
+    padding-left: calc(10px + env(safe-area-inset-left));
+  }
+
+  .sidebarToggleContainer {
+    margin-right: 4px;
+  }
+
+  .right {
+    flex-wrap: wrap;
   }
 }

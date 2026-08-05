@@ -6,6 +6,10 @@ function titleCase(input) {
   }
 
   return input.replace(regex, (match) => {
+    if (match.toLowerCase() === 'oled') {
+      return 'OLED';
+    }
+
     return match.charAt(0).toUpperCase() + match.substr(1).toLowerCase();
   });
 }

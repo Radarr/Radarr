@@ -1,11 +1,14 @@
 .cell {
   padding: 8px;
+  min-width: 0;
   border-top: 1px solid var(--borderColor);
   line-height: 1.52857143;
 }
 
 @media only screen and (max-width: $breakpointMedium) {
   .cell {
-    white-space: nowrap;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: anywhere;
   }
 }

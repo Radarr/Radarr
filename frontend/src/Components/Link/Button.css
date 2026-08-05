@@ -1,13 +1,15 @@
 .button {
   composes: link from '~./Link.css';
 
-  overflow: hidden;
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid;
   border-radius: 4px;
   vertical-align: middle;
   text-align: center;
-  white-space: nowrap;
+  white-space: normal;
   line-height: normal;
+  overflow-wrap: anywhere;
 
   &:global(.isDisabled) {
     opacity: 0.65;
@@ -116,4 +118,15 @@
   margin-left: -1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    min-height: 44px;
+  }
 }

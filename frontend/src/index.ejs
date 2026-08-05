@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <meta name="color-scheme" content="light dark" />
     <!-- Chrome, Safari, Opera, and Firefox OS -->
     <meta name="theme-color" content="#595959" />
     <!-- Windows Phone -->
@@ -13,9 +13,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="format-detection" content="telephone=no">
-
     <meta name="description" content="Radarr" />
-
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -49,27 +47,81 @@
       name="msapplication-config"
       content="/Content/browserconfig.xml"
     />
-
     <link rel="stylesheet" type="text/css" href="/Content/Fonts/fonts.css">
 
     <script>
-      window.Radarr = {
-        urlBase: '__URL_BASE__'
-      };
+      (function () {
+        var storageKey = 'radarr-ui-theme';
+        var supportedThemes = ['auto', 'light', 'dark', 'oled'];
+        var selectedTheme = 'auto';
+
+        try {
+          var storedTheme = window.localStorage.getItem(storageKey);
+
+          if (supportedThemes.indexOf(storedTheme) !== -1) {
+            selectedTheme = storedTheme;
+          }
+        } catch (error) {
+          // Storage can be unavailable in private or hardened browsing modes.
+        }
+
+        var prefersDark = window.matchMedia &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var resolvedTheme = selectedTheme === 'auto' ?
+          (prefersDark ? 'dark' : 'light') : selectedTheme;
+        var pageBackgrounds = {
+          light: '#f5f7fa',
+          dark: '#202020',
+          oled: '#000000'
+        };
+        var headerBackgrounds = {
+          light: '#464b51',
+          dark: '#2a2a2a',
+          oled: '#050505'
+        };
+        var documentElement = document.documentElement;
+        var themeColor = pageBackgrounds[resolvedTheme];
+
+        documentElement.dataset.theme = selectedTheme;
+        documentElement.dataset.resolvedTheme = resolvedTheme.toLowerCase();
+        documentElement.style.colorScheme = resolvedTheme === 'light' ?
+          'light' : 'dark';
+        documentElement.style.backgroundColor = themeColor;
+
+        var themeColorMeta = document.querySelector('meta[name="theme-color"]');
+        var navButtonMeta = document.querySelector(
+          'meta[name="msapplication-navbutton-color"]'
+        );
+
+        if (themeColorMeta) {
+          themeColorMeta.setAttribute('content', themeColor);
+        }
+
+        if (navButtonMeta) {
+          navButtonMeta.setAttribute(
+            'content',
+            headerBackgrounds[resolvedTheme]
+          );
+        }
+
+        window.Radarr = {
+          urlBase: '__URL_BASE__',
+          theme: selectedTheme
+        };
+      }());
     </script>
 
     <% for (key in htmlWebpackPlugin.files.js) { %><script type="text/javascript" src="<%= htmlWebpackPlugin.files.js[key] %>" data-no-hash></script><% } %>
     <% for (key in htmlWebpackPlugin.files.css) { %><link href="<%= htmlWebpackPlugin.files.css[key] %>" rel="stylesheet"></link><% } %>
 
     <title>Radarr</title>
-
     <!--
       The super basic styling for .root  will live here,
       saves fighting with CSS Modules for ~10 lines
     -->
     <style>
       .root {
-        overflow: hidden;
+        min-width: 0;
         height: 100%; /* needed for proper layout */
       }
 
@@ -83,7 +135,6 @@
       }
     </style>
   </head>
-
   <body>
     <div id="portal-root"></div>
     <div id="root" class="root"></div>

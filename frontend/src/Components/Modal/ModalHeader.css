@@ -2,7 +2,21 @@
   @add-mixin truncate;
 
   flex-shrink: 0;
-  padding: 15px 50px 15px 30px;
+  padding: 15px 60px 15px 30px;
+  padding-top: calc(15px + env(safe-area-inset-top));
+  min-width: 0;
   border-bottom: 1px solid var(--borderColor);
   font-size: 18px;
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .modalHeader {
+    overflow: visible;
+    padding-right: calc(60px + env(safe-area-inset-right));
+    padding-left: calc(15px + env(safe-area-inset-left));
+    min-height: calc(60px + env(safe-area-inset-top));
+    text-overflow: clip;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
 }

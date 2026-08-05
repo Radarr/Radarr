@@ -1,5 +1,7 @@
 .innerContentBody {
   padding: 0;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .header {
@@ -12,6 +14,7 @@
   margin-top: 20px;
   text-align: center;
   font-size: 20px;
+  overflow-wrap: anywhere;
 }
 
 .backdrop {
@@ -19,6 +22,7 @@
   z-index: -1;
   width: 100%;
   height: 100%;
+  background-position: center;
   background-size: cover;
 }
 
@@ -33,6 +37,7 @@
 .headerContent {
   display: flex;
   padding: 30px;
+  min-width: 0;
   width: 100%;
   height: 100%;
   color: var(--white);
@@ -51,6 +56,7 @@
   flex-direction: column;
   flex-grow: 1;
   overflow: hidden;
+  min-width: 0;
 }
 
 .titleRow {
@@ -58,21 +64,28 @@
   display: flex;
   justify-content: space-between;
   flex: 0 0 auto;
+  min-width: 0;
+  gap: 10px;
 }
 
 .titleContainer {
   display: flex;
+  flex-wrap: wrap;
   margin-bottom: 5px;
+  min-width: 0;
 }
 
 .title {
+  min-width: 0;
   font-weight: 300;
   font-size: 50px;
   line-height: 60px;
+  overflow-wrap: anywhere;
 }
 
 .toggleMonitoredContainer {
   align-self: center;
+  flex-shrink: 0;
   margin-right: 10px;
 }
 
@@ -98,7 +111,12 @@
 .movieNavigationButtons {
   position: absolute;
   right: 0;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  white-space: normal;
+  gap: 4px;
 }
 
 .movieNavigationButton {
@@ -106,7 +124,7 @@
 
   margin-left: 5px;
   width: 30px;
-  color: #e1e2e3;
+  color: var(--sidebarColor);
   white-space: nowrap;
 
   &:hover {
@@ -115,8 +133,12 @@
 }
 
 .details {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   margin-bottom: 8px;
   padding-left: 7px;
+  min-width: 0;
   font-weight: 300;
   font-size: 20px;
 }
@@ -155,33 +177,48 @@
 .studio,
 .collection,
 .genres {
+  min-width: 0;
+  max-width: 100%;
+  word-break: break-word;
   font-weight: 300;
   font-size: 17px;
+  overflow-wrap: anywhere;
 }
 
 .overview {
   flex: 1 0 0;
   margin-top: 8px;
+  min-width: 0;
   min-height: 0;
   text-wrap: balance;
   font-size: $intermediateFontSize;
+  overflow-wrap: anywhere;
 }
 
 .contentContainer {
   padding: 20px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .tabList {
+  display: flex;
+  overflow-x: auto;
   margin: 0;
   padding: 0;
+  max-width: 100%;
   border-bottom: 1px solid var(--lightGray);
+  overscroll-behavior-inline: contain;
 }
 
 .tab {
   position: relative;
   bottom: -1px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
   padding: 6px 12px;
+  min-height: 44px;
   border: 1px solid transparent;
   border-top: none;
   list-style: none;
@@ -194,28 +231,44 @@
 
 .tabContent {
   margin-top: 20px;
-}
-
-@media only screen and (max-width: $breakpointSmall) {
-  .contentContainer {
-    padding: 20px 0;
-  }
-
-  .headerContent {
-    padding: 15px;
-  }
-
-  .title {
-    font-weight: 300;
-    font-size: 30px;
-    line-height: 30px;
-  }
+  min-width: 0;
+  max-width: 100%;
 }
 
 @media only screen and (max-width: $breakpointLarge) {
-  .poster,
-  .movieNavigationButtons {
+  .header {
+    min-height: 300px;
+    height: auto;
+  }
+
+  .headerContent {
+    min-height: 300px;
+    height: auto;
+  }
+
+  .poster {
     display: none;
+  }
+
+  .info {
+    overflow: visible;
+  }
+
+  .titleRow {
+    flex-wrap: wrap;
+  }
+
+  .movieNavigationButtons {
+    position: static;
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+
+  .movieNavigationButton {
+    margin-left: 0;
+    min-width: 44px;
+    min-height: 44px;
+    width: 44px;
   }
 
   .certification,
@@ -227,6 +280,71 @@
   }
 
   .details {
+    padding-left: 0;
     font-size: 19px;
+  }
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .header {
+    min-height: 0;
+  }
+
+  .headerContent {
+    padding: 15px;
+    padding-right: calc(15px + env(safe-area-inset-right));
+    padding-left: calc(15px + env(safe-area-inset-left));
+    min-height: 0;
+  }
+
+  .titleRow {
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .titleContainer {
+    flex: 1 1 100%;
+  }
+
+  .title {
+    font-weight: 300;
+    font-size: clamp(28px, 9vw, 38px);
+    line-height: 1.1;
+  }
+
+  .movieNavigationButtons {
+    justify-content: flex-start;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .details {
+    font-size: 17px;
+    gap: 2px 0;
+  }
+
+  .path,
+  .sizeOnDisk,
+  .qualityProfileName,
+  .statusName,
+  .originalLanguage,
+  .studio,
+  .collection,
+  .genres {
+    font-size: 16px;
+  }
+
+  .overview {
+    flex: 0 0 auto;
+    text-wrap: pretty;
+  }
+
+  .contentContainer {
+    padding: 15px 0;
+  }
+
+  .tabContent {
+    padding-right: 10px;
+    padding-left: 10px;
   }
 }

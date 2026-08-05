@@ -1,11 +1,20 @@
 .links {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   margin: 0;
+  min-width: 0;
+  max-width: 100%;
+  gap: 4px 8px;
 }
 
 .link {
-  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .linkLabel {
@@ -16,7 +25,11 @@
 
 @media only screen and (max-width: $breakpointExtraSmall) {
   .links {
-    display: flex;
-    flex-flow: column wrap;
+    align-items: flex-start;
+    flex-flow: column nowrap;
+  }
+
+  .link {
+    width: 100%;
   }
 }

@@ -1,9 +1,16 @@
 .toolbarButton {
   composes: link from '~Components/Link/Link.css';
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 1 auto;
+  flex-direction: column;
   padding-top: 4px;
   min-width: $toolbarButtonWidth;
-  width: min-content;
+  min-height: 44px;
+  max-width: 100%;
+  width: max-content;
   text-align: center;
 
   &:hover {
@@ -23,15 +30,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  height: 24px;
+  min-height: 24px;
+  height: auto;
 }
 
 .label {
   padding: 0 3px;
   max-width: 100%;
-  max-height: 100%;
   color: var(--toolbarLabelColor);
   font-size: $extraSmallFontSize;
   line-height: calc($extraSmallFontSize + 1px);
+  overflow-wrap: anywhere;
+}
+
+@media only screen and (max-width: $breakpointMedium) {
+  .toolbarButton {
+    padding: 4px;
+    min-width: 52px;
+    width: auto;
+    white-space: normal;
+  }
 }

@@ -2,16 +2,22 @@
   display: flex;
   flex-wrap: wrap;
   margin-top: 20px;
+  min-width: 0;
   font-size: $smallFontSize;
+  gap: 4px 16px;
 }
 
 .legendItem {
   display: flex;
+  align-items: center;
   margin-bottom: 4px;
+  min-width: 0;
   line-height: 16px;
+  overflow-wrap: anywhere;
 }
 
 .legendItemColor {
+  flex-shrink: 0;
   margin-right: 8px;
   width: 30px;
   height: 16px;
@@ -66,6 +72,8 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  min-width: 0;
+  gap: 8px 16px;
 }
 
 @media (max-width: $breakpointLarge) {

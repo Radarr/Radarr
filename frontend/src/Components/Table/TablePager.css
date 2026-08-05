@@ -2,12 +2,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-width: 0;
+  gap: 10px;
 }
 
 .loadingContainer,
 .controlsContainer,
 .recordsContainer {
   flex: 0 1 33%;
+  min-width: 0;
 }
 
 .controlsContainer {
@@ -31,7 +34,10 @@
 .controls {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   text-align: center;
+  gap: 2px;
 }
 
 .pageNumber {
@@ -39,6 +45,9 @@
 }
 
 .pageLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0;
   width: 30px;
   height: 30px;
@@ -47,6 +56,7 @@
 
 .records {
   color: var(--disabledColor);
+  overflow-wrap: anywhere;
 }
 
 .disabledPageButton {
@@ -67,11 +77,33 @@
 
   .loadingContainer,
   .recordsContainer {
-    flex: 0 1 50%;
+    flex: 1 1 calc(50% - 5px);
   }
 
   .controlsContainer {
-    flex: 0 1 100%;
+    flex: 1 1 100%;
     order: -1;
+  }
+
+  .pageLink {
+    min-width: 44px;
+    min-height: 44px;
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+  }
+
+  .pageSelect {
+    min-height: 44px;
+    height: 44px;
+  }
+}
+
+@media only screen and (max-width: $breakpointExtraSmall) {
+  .loadingContainer,
+  .recordsContainer {
+    justify-content: center;
+    flex-basis: 100%;
+    text-align: center;
   }
 }

@@ -3,21 +3,29 @@
   align-items: center;
   justify-content: flex-end;
   flex-shrink: 0;
+  flex-wrap: wrap;
   padding: 15px 30px;
+  min-width: 0;
   border-top: 1px solid var(--borderColor);
+  gap: 10px;
 
   a,
   button {
-    margin-left: 10px;
-
-    &:first-child {
-      margin-left: 0;
-    }
+    margin-left: 0;
   }
 }
 
 @media only screen and (max-width: $breakpointSmall) {
   .modalFooter {
     padding: 15px;
+    padding-right: calc(15px + env(safe-area-inset-right));
+    padding-bottom: calc(15px + env(safe-area-inset-bottom));
+    padding-left: calc(15px + env(safe-area-inset-left));
+  }
+
+  .modalFooter a,
+  .modalFooter button {
+    flex: 1 1 120px;
+    min-height: 44px;
   }
 }

@@ -121,6 +121,85 @@ const columns: Column[] = [
   },
 ];
 
+const reversibleSortDirections: SortDirection[] = [
+  sortDirections.ASCENDING,
+  sortDirections.DESCENDING,
+];
+
+interface MobileSortOption {
+  name: string;
+  label: () => string;
+  directions: SortDirection[];
+}
+
+const mobileSortOptions: MobileSortOption[] = [
+  {
+    name: 'protocol',
+    label: () => translate('Source'),
+    directions: reversibleSortDirections,
+  },
+  {
+    name: 'age',
+    label: () => translate('Age'),
+    directions: reversibleSortDirections,
+  },
+  {
+    name: 'title',
+    label: () => translate('Title'),
+    directions: reversibleSortDirections,
+  },
+  {
+    name: 'indexer',
+    label: () => translate('Indexer'),
+    directions: reversibleSortDirections,
+  },
+  {
+    name: 'history',
+    label: () => translate('History'),
+    directions: [sortDirections.ASCENDING],
+  },
+  {
+    name: 'size',
+    label: () => translate('Size'),
+    directions: reversibleSortDirections,
+  },
+  {
+    name: 'peers',
+    label: () => translate('Peers'),
+    directions: reversibleSortDirections,
+  },
+  {
+    name: 'languages',
+    label: () => translate('Language'),
+    directions: reversibleSortDirections,
+  },
+  {
+    name: 'qualityWeight',
+    label: () => translate('Quality'),
+    directions: reversibleSortDirections,
+  },
+  {
+    name: 'customFormatScore',
+    label: () => translate('CustomFormatScore'),
+    directions: reversibleSortDirections,
+  },
+  {
+    name: 'indexerFlags',
+    label: () => translate('IndexerFlags'),
+    directions: reversibleSortDirections,
+  },
+  {
+    name: 'rejections',
+    label: () => translate('Rejections'),
+    directions: [sortDirections.ASCENDING],
+  },
+  {
+    name: 'releaseWeight',
+    label: () => translate('AddToDownloadQueue'),
+    directions: [sortDirections.ASCENDING],
+  },
+];
+
 interface InteractiveSearchProps {
   searchPayload: InteractiveSearchPayload;
 }
@@ -155,6 +234,15 @@ function InteractiveSearch({ searchPayload }: InteractiveSearchProps) {
       dispatch(setReleasesSort({ sortKey, sortDirection }));
     },
     [dispatch]
+  );
+
+  const handleMobileSortChange = useCallback(
+    ({ currentTarget }: React.ChangeEvent<HTMLSelectElement>) => {
+      const [nextSortKey, nextSortDirection] = currentTarget.value.split('|');
+
+      handleSortPress(nextSortKey, nextSortDirection as SortDirection);
+    },
+    [handleSortPress]
   );
 
   const handleGrabPress = useCallback(
@@ -200,6 +288,39 @@ function InteractiveSearch({ searchPayload }: InteractiveSearchProps) {
         />
       </div>
 
+      <div className={styles.mobileSort}>
+        <label
+          className={styles.mobileSortLabel}
+          htmlFor="interactive-search-sort"
+        >
+          {translate('Sort')}
+        </label>
+        <select
+          id="interactive-search-sort"
+          className={styles.mobileSortSelect}
+          value={`${sortKey}|${sortDirection || sortDirections.ASCENDING}`}
+          onChange={handleMobileSortChange}
+        >
+          {mobileSortOptions.flatMap((option) => {
+            const label = option.label();
+
+            return option.directions.map((direction) => {
+              const directionIndicator =
+                direction === sortDirections.ASCENDING ? '↑' : '↓';
+
+              return (
+                <option
+                  key={`${option.name}-${direction}`}
+                  value={`${option.name}|${direction}`}
+                >
+                  {label} {directionIndicator}
+                </option>
+              );
+            });
+          })}
+        </select>
+      </div>
+
       {isFetching ? <LoadingIndicator /> : null}
 
       {!isFetching && error ? (
@@ -230,25 +351,27 @@ function InteractiveSearch({ searchPayload }: InteractiveSearchProps) {
       ) : null}
 
       {isPopulated && !!items.length ? (
-        <Table
-          columns={columns}
-          sortKey={sortKey}
-          sortDirection={sortDirection}
-          onSortPress={handleSortPress}
-        >
-          <TableBody>
-            {items.map((item) => {
-              return (
-                <InteractiveSearchRow
-                  key={`${item.indexerId}-${item.guid}`}
-                  {...item}
-                  searchPayload={searchPayload}
-                  onGrabPress={handleGrabPress}
-                />
-              );
-            })}
-          </TableBody>
-        </Table>
+        <div className={styles.results}>
+          <Table
+            columns={columns}
+            sortKey={sortKey}
+            sortDirection={sortDirection}
+            onSortPress={handleSortPress}
+          >
+            <TableBody>
+              {items.map((item) => {
+                return (
+                  <InteractiveSearchRow
+                    key={`${item.indexerId}-${item.guid}`}
+                    {...item}
+                    searchPayload={searchPayload}
+                    onGrabPress={handleGrabPress}
+                  />
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
       ) : null}
 
       {totalItems !== items.length && !!items.length ? (

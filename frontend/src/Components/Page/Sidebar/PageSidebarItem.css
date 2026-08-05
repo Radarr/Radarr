@@ -9,9 +9,12 @@
 }
 
 .link {
-  display: block;
-  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  padding: 10px 24px;
+  min-height: 44px;
   color: var(--sidebarColor);
+  overflow-wrap: anywhere;
 
   &:hover,
   &:focus {
@@ -37,11 +40,14 @@
 
 .iconContainer {
   display: inline-block;
+  flex: 0 0 18px;
   margin-right: 7px;
   width: 18px;
   text-align: center;
 }
 
 .status {
-  float: right;
+  flex-shrink: 0;
+  float: none;
+  margin-left: auto;
 }

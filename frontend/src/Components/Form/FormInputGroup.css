@@ -1,18 +1,22 @@
 .inputGroupContainer {
   flex: 1 1 auto;
   min-width: 0;
+  max-width: 100%;
 }
 
 .inputGroup {
   display: flex;
   flex: 1 1 auto;
   flex-wrap: wrap;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .inputContainer {
   position: relative;
   flex: 1 1 auto;
   min-width: 0;
+  max-width: 100%;
 }
 
 .inputUnit {
@@ -21,7 +25,7 @@
   right: 20px;
   margin-top: 7px;
   width: 75px;
-  color: #c6c6c6;
+  color: var(--helpTextColor);
   text-align: right;
   pointer-events: none;
   user-select: none;
@@ -35,7 +39,9 @@
 
 .pendingChangesContainer {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
+  flex: 0 0 30px;
   width: 30px;
 }
 
@@ -48,4 +54,25 @@
 .helpLink {
   margin-top: 5px;
   line-height: 20px;
+  overflow-wrap: anywhere;
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .inputGroup {
+    row-gap: 5px;
+  }
+
+  .inputUnit {
+    margin-top: 11px;
+  }
+
+  .pendingChangesContainer {
+    flex-basis: 44px;
+    min-height: 44px;
+    width: 44px;
+  }
+
+  .pendingChangesIcon {
+    line-height: 44px;
+  }
 }

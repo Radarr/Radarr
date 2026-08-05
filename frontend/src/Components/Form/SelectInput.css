@@ -2,6 +2,7 @@
   composes: input from '~Components/Form/Input.css';
 
   padding: 0 11px;
+  max-width: 100%;
 }
 
 .hasError {
@@ -15,4 +16,11 @@
 .isDisabled {
   opacity: 0.7;
   cursor: not-allowed;
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .select {
+    min-height: 44px;
+    height: 44px;
+  }
 }

@@ -2,27 +2,35 @@
   composes: contentFooter from '~Components/Page/PageContentFooter.css';
 
   align-items: center;
+  min-width: 0;
 }
 
 .buttons {
   display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 10px;
 }
 
 .actionButtons,
 .deleteButtons {
   display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
   gap: 10px;
 }
 
 .deleteButtons {
-  margin-left: 50px;
+  margin-left: 40px;
 }
 
 .selected {
   display: flex;
   justify-content: flex-end;
   flex-grow: 1;
+  min-width: 0;
   font-weight: bold;
+  overflow-wrap: anywhere;
 }
 
 @media only screen and (max-width: $breakpointMedium) {
@@ -33,7 +41,7 @@
 
   .selected {
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     width: 100%;
     order: -1;
   }
@@ -42,31 +50,33 @@
 @media only screen and (max-width: $breakpointSmall) {
   .footer {
     display: flex;
+    align-items: stretch;
     flex-direction: column;
   }
 
   .buttons {
     flex-direction: column;
-    margin-top: 20px;
-    gap: 20px;
-  }
-
-  .actionButtons {
-    flex-wrap: wrap;
+    margin-top: 0;
+    gap: 12px;
   }
 
   .actionButtons,
   .deleteButtons {
     display: flex;
-    justify-content: center;
+    justify-content: stretch;
+    margin-left: 0;
+    width: 100%;
   }
 
-  .deleteButtons {
-    margin-left: 0;
+  .actionButtons > button,
+  .deleteButtons > button {
+    flex: 1 1 120px;
+    min-height: 44px;
   }
 
   .selected {
     justify-content: center;
+    margin-bottom: 0;
     order: -1;
   }
 }

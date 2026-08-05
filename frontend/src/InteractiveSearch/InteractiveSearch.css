@@ -1,11 +1,91 @@
 .filterMenuContainer {
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
   margin-bottom: 10px;
+  min-width: 0;
+  max-width: 100%;
+  gap: 8px;
+}
+
+.mobileSort {
+  display: none;
+}
+
+.results {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .alert {
   composes: alert from '~Components/Alert.css';
 
   margin-top: 10px;
+  overflow-wrap: anywhere;
+}
+
+@media only screen and (max-width: $breakpointMedium) {
+  .mobileSort {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    min-width: 0;
+    max-width: 100%;
+    gap: 8px;
+  }
+
+  .mobileSortLabel {
+    flex: 0 0 auto;
+    font-weight: bold;
+  }
+
+  .mobileSortSelect {
+    flex: 1 1 auto;
+    padding: 0 11px;
+    min-width: 0;
+    min-height: 44px;
+    max-width: 100%;
+    height: 44px;
+    border: 1px solid var(--inputBorderColor);
+    border-radius: 4px;
+    background-color: var(--inputBackgroundColor);
+    color: var(--textColor);
+    font-size: 16px;
+  }
+
+  .results > div {
+    overflow: visible;
+  }
+
+  .results table,
+  .results tbody {
+    display: block;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .results thead {
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    margin: -1px;
+    padding: 0;
+    width: 1px;
+    height: 1px;
+    border: 0;
+    white-space: nowrap;
+  }
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .filterMenuContainer {
+    justify-content: stretch;
+  }
+
+  .mobileSort {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 4px;
+  }
 }

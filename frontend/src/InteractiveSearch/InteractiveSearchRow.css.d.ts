@@ -16,7 +16,9 @@ interface CssExports {
   'protocol': string;
   'quality': string;
   'rejected': string;
+  'releaseRow': string;
   'size': string;
+  'title': string;
   'titleContent': string;
 }
 export const cssExports: CssExports;

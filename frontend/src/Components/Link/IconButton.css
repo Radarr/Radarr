@@ -1,8 +1,12 @@
 .button {
   composes: link from '~Components/Link/Link.css';
 
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin: 0 2px;
+  min-width: 22px;
+  min-height: 22px;
   width: 22px;
   border-radius: 4px;
   background-color: transparent;
@@ -17,5 +21,21 @@
 
   &.isDisabled {
     color: var(--iconButtonDisabledColor);
+  }
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .button {
+    min-width: 44px;
+    min-height: 44px;
+    width: 44px;
+  }
+}
+
+@media (pointer: coarse) {
+  .button {
+    min-width: 44px;
+    min-height: 44px;
+    width: 44px;
   }
 }

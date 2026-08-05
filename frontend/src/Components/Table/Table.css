@@ -1,10 +1,16 @@
 .tableContainer {
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+
   &.horizontalScroll {
     overflow-x: auto;
+    overscroll-behavior-inline: contain;
   }
 }
 
 .table {
+  min-width: 100%;
   max-width: 100%;
   width: 100%;
   border-collapse: collapse;
@@ -12,12 +18,15 @@
 
 @media only screen and (max-width: $breakpointMedium) {
   .tableContainer {
-    min-width: 100%;
-    width: fit-content;
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    overscroll-behavior-inline: contain;
+  }
 
-    &.horizontalScroll {
-      overflow-y: hidden;
-      width: 100%;
-    }
+  .table {
+    min-width: 100%;
   }
 }

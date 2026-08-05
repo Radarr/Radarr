@@ -43,6 +43,7 @@ module.exports = {
   themeDarkColor: '#595959',
   themeLightColor: '#707070',
   pageBackground: '#f5f7fa',
+  pageFooterBackground: '#f1f1f1',
   pageFooterBackgroud: '#f1f1f1',
 
   torrentColor: '#00853d',

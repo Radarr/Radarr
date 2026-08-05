@@ -3,9 +3,12 @@
   justify-content: flex-end;
   margin-right: $formLabelRightMarginWidth;
   padding-top: 8px;
+  min-width: 0;
   min-height: 35px;
+  max-width: 100%;
   text-align: end;
   font-weight: bold;
+  overflow-wrap: anywhere;
 }
 
 .hasError {
@@ -19,6 +22,11 @@
 @media only screen and (max-width: $breakpointLarge) {
   .label {
     justify-content: flex-start;
+    margin-right: 0;
+    padding-top: 0;
+    padding-bottom: 6px;
+    min-height: 0;
+    text-align: start;
   }
 }
 

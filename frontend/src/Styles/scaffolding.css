@@ -8,20 +8,44 @@
   box-sizing: border-box;
 }
 
-*:focus {
+*:focus-visible {
+  outline: 2px solid var(--inputFocusBorderColor);
+  outline-offset: 2px;
+}
+
+[tabindex='-1']:focus-visible {
   outline: none;
+}
+
+::selection {
+  background-color: var(--selectedColor);
+  color: var(--black);
 }
 /* stylelint-enable */
 
 html,
 body {
+  min-width: 0;
+  width: 100%;
   color: var(--textColor);
   font-family: 'Roboto', 'open sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
+html {
+  background-color: var(--pageBackground);
+}
+
 body {
+  min-height: 100vh;
+  background-color: var(--pageBackground);
   font-size: 14px;
   line-height: 1.528571429; /* 20/14 */
+}
+
+@supports (min-height: 100dvh) {
+  body {
+    min-height: 100dvh;
+  }
 }
 
 /* Override normalize */
@@ -37,6 +61,11 @@ textarea {
   line-height: 1.528571429; /* 20/14 */
 }
 
+button,
+a {
+  touch-action: manipulation;
+}
+
 /* Better defaults for unordererd lists */
 
 ul {
@@ -44,11 +73,32 @@ ul {
   padding-left: 20px;
 }
 
-@media only screen and (min-device-width: 375px) and (max-device-width: 812px) {
+@media only screen and (max-width: $breakpointSmall), (pointer: coarse) {
   input,
   optgroup,
   select,
   textarea {
     font-size: 16px;
+  }
+}
+
+/* stylelint-disable selector-max-universal, time-min-milliseconds */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* stylelint-enable selector-max-universal, time-min-milliseconds */
+
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
   }
 }

@@ -1,14 +1,25 @@
+.releaseRow {
+  min-width: 0;
+}
+
 .protocol {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 
   width: 80px;
 }
 
+.title {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+}
+
 .titleContent {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  word-break: break-all;
+  min-width: 0;
+  word-break: normal;
+  gap: 8px;
+  overflow-wrap: anywhere;
 }
 
 .indexer {
@@ -92,7 +103,6 @@
   position: absolute;
   top: 4px;
   left: 0;
-  /* width: 100%; */
   text-align: center;
 }
 
@@ -100,6 +110,137 @@
   position: absolute;
   top: 7px;
   left: 8px;
-  /* width: 100%; */
   text-align: center;
+}
+
+@media only screen and (max-width: $breakpointMedium) {
+  .releaseRow {
+    display: grid;
+    margin-bottom: 12px;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    border: 1px solid var(--borderColor);
+    border-radius: 6px;
+    background-color: var(--cardBackgroundColor);
+    box-shadow: 0 1px 3px var(--cardShadowColor);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .releaseRow > td {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 8px 10px;
+    min-width: 0;
+    width: auto;
+    border-top: 0;
+    border-bottom: 1px solid var(--borderColor);
+    white-space: normal;
+    gap: 2px;
+    overflow-wrap: anywhere;
+  }
+
+  .releaseRow > td::before {
+    color: var(--helpTextColor);
+    content: attr(data-label);
+    font-weight: bold;
+    font-size: $smallFontSize;
+    line-height: 1.25;
+  }
+
+  .releaseRow .title,
+  .releaseRow .download {
+    grid-column: 1 / -1;
+  }
+
+  .releaseRow .title {
+    grid-row: 1;
+  }
+
+  .releaseRow .download {
+    grid-row: 2;
+  }
+
+  .releaseRow .title {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: var(--cardAlternateBackgroundColor);
+    font-size: $defaultFontSize;
+  }
+
+  .titleContent {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .quality,
+  .age,
+  .size {
+    white-space: normal;
+  }
+
+  .download {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: row;
+    min-width: 0;
+    width: auto;
+    border-bottom: 0;
+    background-color: var(--cardAlternateBackgroundColor);
+    text-align: end;
+    gap: 4px;
+  }
+
+  .download::before {
+    flex: 1 1 auto;
+    margin-right: auto;
+    text-align: start;
+  }
+
+  .download > button,
+  .download > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .manualDownloadContent {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    min-width: 44px;
+    min-height: 44px;
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+  }
+
+  .interactiveIcon {
+    top: 50%;
+    left: 6px;
+    transform: translateY(-50%);
+  }
+
+  .downloadIcon {
+    top: 50%;
+    left: 22px;
+    transform: translateY(-50%);
+  }
+}
+
+@media only screen and (max-width: 340px) {
+  .releaseRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .releaseRow .title,
+  .releaseRow .download {
+    grid-column: 1;
+  }
 }

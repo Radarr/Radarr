@@ -1,4 +1,5 @@
 .info {
+  min-width: 0;
   background-color: var(--movieBackgroundColor);
   text-align: center;
   font-size: $smallFontSize;
@@ -16,4 +17,15 @@
 
 .tagsList {
   composes: tagsList from '~./MovieIndexPoster.css';
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .title {
+    overflow: visible;
+    padding: 4px;
+    min-height: 34px;
+    text-overflow: clip;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
 }

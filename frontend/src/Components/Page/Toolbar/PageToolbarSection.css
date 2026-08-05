@@ -1,13 +1,14 @@
 .sectionContainer {
   display: flex;
   flex: 1 1 auto;
-  overflow: hidden;
+  min-width: 0;
 }
 
 .section {
   display: flex;
   align-items: stretch;
   flex-grow: 1;
+  min-width: 0;
 }
 
 .left {
@@ -30,8 +31,21 @@
   margin-right: 8px;
 }
 
-@media only screen and (max-width: $breakpointSmall) {
+@media only screen and (max-width: $breakpointMedium) {
+  .sectionContainer,
+  .section {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+
+  .sectionContainer {
+    flex: 1 1 auto;
+  }
+
   .overflowMenuButton {
+    min-width: 44px;
+    min-height: 44px;
+
     &::after {
       margin-left: 0;
       content: '\25BE';

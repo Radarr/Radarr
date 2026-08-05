@@ -192,13 +192,17 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
   }, [setIsOverrideModalOpen]);
 
   return (
-    <TableRow>
-      <TableRowCell className={styles.protocol}>
+    <TableRow className={styles.releaseRow}>
+      <TableRowCell
+        className={styles.protocol}
+        data-label={translate('Source')}
+      >
         <ProtocolLabel protocol={protocol} />
       </TableRowCell>
 
       <TableRowCell
         className={styles.age}
+        data-label={translate('Age')}
         title={formatDateTime(publishDate, longDateFormat, timeFormat, {
           includeSeconds: true,
         })}
@@ -206,7 +210,7 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
         {formatAge(age, ageHours, ageMinutes)}
       </TableRowCell>
 
-      <TableRowCell>
+      <TableRowCell className={styles.title} data-label={translate('Title')}>
         <div className={styles.titleContent}>
           <Link to={infoUrl} title={title}>
             {title}
@@ -214,9 +218,17 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
         </div>
       </TableRowCell>
 
-      <TableRowCell className={styles.indexer}>{indexer}</TableRowCell>
+      <TableRowCell
+        className={styles.indexer}
+        data-label={translate('Indexer')}
+      >
+        {indexer}
+      </TableRowCell>
 
-      <TableRowCell className={styles.history}>
+      <TableRowCell
+        className={styles.history}
+        data-label={translate('History')}
+      >
         {historyGrabbedData?.date && !historyFailedData?.date ? (
           <Tooltip
             anchor={<Icon name={icons.DOWNLOADING} kind={kinds.DEFAULT} />}
@@ -268,23 +280,34 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
         ) : null}
       </TableRowCell>
 
-      <TableRowCell className={styles.size}>{formatBytes(size)}</TableRowCell>
+      <TableRowCell className={styles.size} data-label={translate('Size')}>
+        {formatBytes(size)}
+      </TableRowCell>
 
-      <TableRowCell className={styles.peers}>
+      <TableRowCell className={styles.peers} data-label={translate('Peers')}>
         {protocol === 'torrent' ? (
           <Peers seeders={seeders} leechers={leechers} />
         ) : null}
       </TableRowCell>
 
-      <TableRowCell className={styles.languages}>
+      <TableRowCell
+        className={styles.languages}
+        data-label={translate('Language')}
+      >
         <MovieLanguages languages={languages} />
       </TableRowCell>
 
-      <TableRowCell className={styles.quality}>
+      <TableRowCell
+        className={styles.quality}
+        data-label={translate('Quality')}
+      >
         <MovieQuality quality={quality} showRevision={true} />
       </TableRowCell>
 
-      <TableRowCell className={styles.customFormatScore}>
+      <TableRowCell
+        className={styles.customFormatScore}
+        data-label={translate('CustomFormatScore')}
+      >
         <Tooltip
           anchor={formatCustomFormatScore(
             customFormatScore,
@@ -295,7 +318,10 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
         />
       </TableRowCell>
 
-      <TableRowCell className={styles.indexerFlags}>
+      <TableRowCell
+        className={styles.indexerFlags}
+        data-label={translate('IndexerFlags')}
+      >
         {indexerFlags.length ? (
           <Popover
             anchor={<Icon name={icons.FLAG} />}
@@ -312,7 +338,10 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
         ) : null}
       </TableRowCell>
 
-      <TableRowCell className={styles.rejected}>
+      <TableRowCell
+        className={styles.rejected}
+        data-label={translate('Rejections')}
+      >
         {rejections.length ? (
           <Popover
             anchor={<Icon name={icons.DANGER} kind={kinds.DANGER} />}
@@ -329,7 +358,10 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
         ) : null}
       </TableRowCell>
 
-      <TableRowCell className={styles.download}>
+      <TableRowCell
+        className={styles.download}
+        data-label={translate('AddToDownloadQueue')}
+      >
         <SpinnerIconButton
           name={getDownloadIcon(isGrabbing, isGrabbed, grabError)}
           kind={getDownloadKind(isGrabbed, grabError)}

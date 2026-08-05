@@ -1,5 +1,7 @@
 .input {
   padding: 6px 16px;
+  min-width: 0;
+  max-width: 100%;
   width: 100%;
   height: 35px;
   border: 1px solid var(--inputBorderColor);
@@ -7,11 +9,17 @@
   background-color: var(--inputBackgroundColor);
   box-shadow: inset 0 1px 1px var(--inputBoxShadowColor);
   color: var(--textColor);
+  scroll-margin-block: 80px;
 
   &:focus {
     outline: 0;
     border-color: var(--inputFocusBorderColor);
     box-shadow: inset 0 1px 1px var(--inputBoxShadowColor), 0 0 8px var(--inputFocusBoxShadowColor);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--themeBlue);
+    outline-offset: 1px;
   }
 }
 
@@ -28,4 +36,12 @@
 .hasButton {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .input {
+    min-height: 44px;
+    height: 44px;
+    font-size: 16px;
+  }
 }
