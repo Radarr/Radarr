@@ -131,7 +131,7 @@ namespace Radarr.Http.ClientSchema
 
                     var field = new Field
                     {
-                        Name = prefix + GetCamelCaseName(propertyInfo.Name),
+                        Name = prefix + propertyInfo.Name.FirstCharToLower(),
                         Label = label,
                         Unit = fieldAttribute.Unit,
                         HelpText = helpText,
@@ -179,7 +179,7 @@ namespace Radarr.Http.ClientSchema
                 }
                 else
                 {
-                    result.AddRange(GetFieldMapping(propertyInfo.PropertyType, GetCamelCaseName(propertyInfo.Name) + ".", t => propertyInfo.GetValue(targetSelector(t), null)));
+                    result.AddRange(GetFieldMapping(propertyInfo.PropertyType, propertyInfo.Name.FirstCharToLower() + ".", t => propertyInfo.GetValue(targetSelector(t), null)));
                 }
             }
 
@@ -339,11 +339,6 @@ namespace Radarr.Http.ClientSchema
                     return STJson.Deserialize(json, propertyType);
                 };
             }
-        }
-
-        private static string GetCamelCaseName(string name)
-        {
-            return char.ToLowerInvariant(name[0]) + name.Substring(1);
         }
     }
 }
