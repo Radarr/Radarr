@@ -615,12 +615,12 @@ namespace NzbDrone.Core.Notifications.Discord
 
             var links = new List<string>
             {
-                $"[TMDb](https://themoviedb.org/movie/{movie.MovieMetadata.Value.TmdbId})",
-                $"[Trakt](https://trakt.tv/search/tmdb/{movie.MovieMetadata.Value.TmdbId}?id_type=movie)"
+                $"[TMDb](https://themoviedb.org/movie/{movie.MovieMetadata.Value.TmdbId})"
             };
 
             if (movie.MovieMetadata.Value.ImdbId.IsNotNullOrWhiteSpace())
             {
+                links.Add($"[Trakt](https://trakt.tv/movies/{movie.MovieMetadata.Value.ImdbId})");
                 links.Add($"[IMDb](https://imdb.com/title/{movie.MovieMetadata.Value.ImdbId}/)");
             }
 
