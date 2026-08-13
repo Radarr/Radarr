@@ -29,18 +29,17 @@ function MovieDetailsLinks(props: MovieDetailsLinksProps) {
         </Label>
       </Link>
 
-      <Link
-        className={styles.link}
-        to={`https://trakt.tv/search/tmdb/${tmdbId}?id_type=movie`}
-      >
-        <Label
-          className={styles.linkLabel}
-          kind={kinds.INFO}
-          size={sizes.LARGE}
-        >
-          {translate('Trakt')}
-        </Label>
-      </Link>
+      {imdbId ? (
+        <Link className={styles.link} to={`https://trakt.tv/movies/${imdbId}`}>
+          <Label
+            className={styles.linkLabel}
+            kind={kinds.INFO}
+            size={sizes.LARGE}
+          >
+            {translate('Trakt')}
+          </Label>
+        </Link>
+      ) : null}
 
       <Link
         className={styles.link}

@@ -173,10 +173,10 @@ namespace NzbDrone.Core.Notifications.Gotify
                             linkUrl = $"https://www.imdb.com/title/{movie.ImdbId}";
                         }
 
-                        if (linkType == MetadataLinkType.Trakt && movie.TmdbId > 0)
+                        if (linkType == MetadataLinkType.Trakt && movie.ImdbId.IsNotNullOrWhiteSpace())
                         {
                             linkText = "Trakt";
-                            linkUrl = $"https://trakt.tv/search/tmdb/{movie.TmdbId}?id_type=movie";
+                            linkUrl = $"https://trakt.tv/movies/{movie.ImdbId}";
                         }
 
                         sb.AppendLine($"[{linkText}]({linkUrl})");
