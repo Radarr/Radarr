@@ -191,6 +191,7 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
                       tmdbId={tmdbId}
                       imdbId={imdbId}
                       youTubeTrailerId={youTubeTrailerId}
+                      title={title}
                     />
                   }
                 />

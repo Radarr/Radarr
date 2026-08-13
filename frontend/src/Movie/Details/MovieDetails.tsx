@@ -743,6 +743,7 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
                           tmdbId={tmdbId}
                           imdbId={imdbId}
                           youTubeTrailerId={youTubeTrailerId}
+                          title={title}
                         />
                       }
                       position={tooltipPositions.BOTTOM}

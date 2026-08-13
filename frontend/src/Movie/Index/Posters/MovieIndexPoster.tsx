@@ -189,6 +189,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
                   tmdbId={tmdbId}
                   imdbId={imdbId}
                   youTubeTrailerId={youTubeTrailerId}
+                  title={title}
                 />
               }
             />

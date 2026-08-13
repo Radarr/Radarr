@@ -423,6 +423,7 @@ class DiscoverMovieRow extends Component {
                           tmdbId={tmdbId}
                           imdbId={imdbId}
                           youTubeTrailerId={youTubeTrailerId}
+                          title={title}
                         />
                       }
                     />
