@@ -74,6 +74,7 @@ class QualityProfiles extends Component {
 
             <Card
               className={styles.addQualityProfile}
+              ariaLabel={translate('AddQualityProfile')}
               onPress={this.onEditQualityProfilePress}
             >
               <div className={styles.center}>

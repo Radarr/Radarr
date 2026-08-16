@@ -44,6 +44,7 @@ function Metadata({ id, name, enable, fields }: MetadataProps) {
     <Card
       className={styles.metadata}
       overlayContent={true}
+      ariaLabel={translate('MetadataName', { name })}
       onPress={handleOpenPress}
     >
       <div className={styles.name}>{name}</div>
