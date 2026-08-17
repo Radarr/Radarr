@@ -32,6 +32,7 @@ function createMapStateToProps() {
       const isMonitorMixed = isMixed(items, selectedIds, defaultMonitor, 'monitor');
       const isQualityProfileIdMixed = isMixed(items, selectedIds, defaultQualityProfileId, 'qualityProfileId');
       const isMinimumAvailabilityMixed = isMixed(items, selectedIds, defaultMinimumAvailability, 'minimumAvailability');
+      const isRenameFolderOnImportMixed = isMixed(items, selectedIds, false, 'renameFolderOnImport');
       const hasUnsearchedItems = !isLookingUpMovie && items.some((item) => !item.isPopulated);
 
       return {
@@ -41,9 +42,11 @@ function createMapStateToProps() {
         defaultMonitor,
         defaultQualityProfileId,
         defaultMinimumAvailability,
+        defaultRenameFolderOnImport: false,
         isMonitorMixed,
         isQualityProfileIdMixed,
         isMinimumAvailabilityMixed,
+        isRenameFolderOnImportMixed,
         importError,
         hasUnsearchedItems
       };
