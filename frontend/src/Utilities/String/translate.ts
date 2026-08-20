@@ -1,3 +1,4 @@
+import moment from 'moment';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 
 function getTranslations() {
@@ -8,12 +9,51 @@ function getTranslations() {
   }).request;
 }
 
+interface LanguageResponse {
+  identifier: string;
+}
+
+function getLanguage() {
+  return createAjaxRequest({
+    global: false,
+    dataType: 'json',
+    url: '/localization/language',
+  }).request;
+}
+
+async function setMomentLocale() {
+  const { identifier } = (await getLanguage()) as LanguageResponse;
+  const locale = identifier.toLowerCase();
+
+  if (locale === 'en') {
+    moment.locale(locale);
+    return;
+  }
+
+  try {
+    await import(`moment/locale/${locale}`);
+    moment.locale(locale);
+  } catch {
+    const language = locale.split('-')[0];
+
+    try {
+      await import(`moment/locale/${language}`);
+      moment.locale(language);
+    } catch {
+      moment.locale('en');
+    }
+  }
+}
+
 let translations: Record<string, string> = {};
 
 export async function fetchTranslations(): Promise<boolean> {
   return new Promise(async (resolve) => {
     try {
-      const data = await getTranslations();
+      const [data] = await Promise.all([
+        getTranslations(),
+        setMomentLocale().catch(() => moment.locale('en')),
+      ]);
       translations = data.Strings;
 
       resolve(true);

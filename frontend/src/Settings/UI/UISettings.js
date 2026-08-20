@@ -1,3 +1,4 @@
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Alert from 'Components/Alert';
@@ -31,24 +32,94 @@ export const firstDayOfWeekOptions = [
 ];
 
 export const weekColumnOptions = [
-  { key: 'ddd M/D', value: 'Tue 3/25', hint: 'ddd M/D' },
-  { key: 'ddd MM/DD', value: 'Tue 03/25', hint: 'ddd MM/DD' },
-  { key: 'ddd D/M', value: 'Tue 25/3', hint: 'ddd D/M' },
-  { key: 'ddd DD/MM', value: 'Tue 25/03', hint: 'ddd DD/MM' }
+  {
+    key: 'ddd M/D',
+    get value() {
+      return moment('2014-03-25').format(this.key);
+    },
+    hint: 'ddd M/D'
+  },
+  {
+    key: 'ddd MM/DD',
+    get value() {
+      return moment('2014-03-25').format(this.key);
+    },
+    hint: 'ddd MM/DD'
+  },
+  {
+    key: 'ddd D/M',
+    get value() {
+      return moment('2014-03-25').format(this.key);
+    },
+    hint: 'ddd D/M'
+  },
+  {
+    key: 'ddd DD/MM',
+    get value() {
+      return moment('2014-03-25').format(this.key);
+    },
+    hint: 'ddd DD/MM'
+  }
 ];
 
 const shortDateFormatOptions = [
-  { key: 'MMM D YYYY', value: 'Mar 25 2014', hint: 'MMM D YYYY' },
-  { key: 'DD MMM YYYY', value: '25 Mar 2014', hint: 'DD MMM YYYY' },
-  { key: 'MM/D/YYYY', value: '03/25/2014', hint: 'MM/D/YYYY' },
-  { key: 'MM/DD/YYYY', value: '03/25/2014', hint: 'MM/DD/YYYY' },
-  { key: 'DD/MM/YYYY', value: '25/03/2014', hint: 'DD/MM/YYYY' },
-  { key: 'YYYY-MM-DD', value: '2014-03-25', hint: 'YYYY-MM-DD' }
+  {
+    key: 'MMM D YYYY',
+    get value() {
+      return moment('2014-03-25').format(this.key);
+    },
+    hint: 'MMM D YYYY'
+  },
+  {
+    key: 'DD MMM YYYY',
+    get value() {
+      return moment('2014-03-25').format(this.key);
+    },
+    hint: 'DD MMM YYYY'
+  },
+  {
+    key: 'MM/D/YYYY',
+    get value() {
+      return moment('2014-03-25').format(this.key);
+    },
+    hint: 'MM/D/YYYY'
+  },
+  {
+    key: 'MM/DD/YYYY',
+    get value() {
+      return moment('2014-03-25').format(this.key);
+    },
+    hint: 'MM/DD/YYYY'
+  },
+  {
+    key: 'DD/MM/YYYY',
+    get value() {
+      return moment('2014-03-25').format(this.key);
+    },
+    hint: 'DD/MM/YYYY'
+  },
+  {
+    key: 'YYYY-MM-DD',
+    get value() {
+      return moment('2014-03-25').format(this.key);
+    },
+    hint: 'YYYY-MM-DD'
+  }
 ];
 
 const longDateFormatOptions = [
-  { key: 'dddd, MMMM D YYYY', value: 'Tuesday, March 25, 2014' },
-  { key: 'dddd, D MMMM YYYY', value: 'Tuesday, 25 March, 2014' }
+  {
+    key: 'dddd, MMMM D YYYY',
+    get value() {
+      return moment('2014-03-25').format(this.key);
+    }
+  },
+  {
+    key: 'dddd, D MMMM YYYY',
+    get value() {
+      return moment('2014-03-25').format(this.key);
+    }
+  }
 ];
 
 export const timeFormatOptions = [
