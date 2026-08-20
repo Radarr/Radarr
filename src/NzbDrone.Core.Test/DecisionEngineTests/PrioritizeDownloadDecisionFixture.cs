@@ -588,5 +588,136 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             qualifiedReports.Skip(2).First().RemoteMovie.Should().Be(remoteMovie1);
             qualifiedReports.Last().RemoteMovie.Should().Be(remoteMovie3);
         }
+
+        [Test]
+        public void should_prefer_quality_over_seeders_when_seeders_preference_is_default()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.SeedersPreference)
+                  .Returns(SeedersPreferenceType.Default);
+
+            var remoteMovie1 = GivenRemoteMovie(new QualityModel(Quality.Bluray1080p));
+            var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.SDTV));
+
+            var torrentInfo1 = new TorrentInfo();
+            torrentInfo1.PublishDate = DateTime.Now;
+            torrentInfo1.DownloadProtocol = DownloadProtocol.Torrent;
+            torrentInfo1.Seeders = 10;
+            torrentInfo1.Size = 200.Megabytes();
+
+            var torrentInfo2 = torrentInfo1.JsonClone();
+            torrentInfo2.Seeders = 1000;
+
+            remoteMovie1.Release = torrentInfo1;
+            remoteMovie1.Release.Title = "A Movie 1998";
+            remoteMovie2.Release = torrentInfo2;
+            remoteMovie2.Release.Title = "A Movie 1998";
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteMovie1));
+            decisions.Add(new DownloadDecision(remoteMovie2));
+
+            var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
+            qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Quality.Should().Be(Quality.Bluray1080p);
+        }
+
+        [Test]
+        public void should_prefer_seeders_over_quality_when_seeders_preference_is_highest()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.SeedersPreference)
+                  .Returns(SeedersPreferenceType.Highest);
+
+            var remoteMovie1 = GivenRemoteMovie(new QualityModel(Quality.Bluray1080p));
+            var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.SDTV));
+
+            var torrentInfo1 = new TorrentInfo();
+            torrentInfo1.PublishDate = DateTime.Now;
+            torrentInfo1.DownloadProtocol = DownloadProtocol.Torrent;
+            torrentInfo1.Seeders = 10;
+            torrentInfo1.Size = 200.Megabytes();
+
+            var torrentInfo2 = torrentInfo1.JsonClone();
+            torrentInfo2.Seeders = 1000;
+
+            remoteMovie1.Release = torrentInfo1;
+            remoteMovie1.Release.Title = "A Movie 1998";
+            remoteMovie2.Release = torrentInfo2;
+            remoteMovie2.Release.Title = "A Movie 1998";
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteMovie1));
+            decisions.Add(new DownloadDecision(remoteMovie2));
+
+            var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
+            ((TorrentInfo)qualifiedReports.First().RemoteMovie.Release).Seeders.Should().Be(1000);
+        }
+
+        [Test]
+        public void should_prefer_quality_over_seeders_when_seeders_preference_is_high()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.SeedersPreference)
+                  .Returns(SeedersPreferenceType.High);
+
+            var remoteMovie1 = GivenRemoteMovie(new QualityModel(Quality.Bluray1080p));
+            var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.SDTV));
+
+            var torrentInfo1 = new TorrentInfo();
+            torrentInfo1.PublishDate = DateTime.Now;
+            torrentInfo1.DownloadProtocol = DownloadProtocol.Torrent;
+            torrentInfo1.Seeders = 10;
+            torrentInfo1.Size = 200.Megabytes();
+
+            var torrentInfo2 = torrentInfo1.JsonClone();
+            torrentInfo2.Seeders = 1000;
+
+            remoteMovie1.Release = torrentInfo1;
+            remoteMovie1.Release.Title = "A Movie 1998";
+            remoteMovie2.Release = torrentInfo2;
+            remoteMovie2.Release.Title = "A Movie 1998";
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteMovie1));
+            decisions.Add(new DownloadDecision(remoteMovie2));
+
+            var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
+            qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Quality.Should().Be(Quality.Bluray1080p);
+        }
+
+        [Test]
+        public void should_prefer_seeders_over_custom_format_score_when_seeders_preference_is_high()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.SeedersPreference)
+                  .Returns(SeedersPreferenceType.High);
+
+            var remoteMovie1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
+            var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
+
+            remoteMovie1.CustomFormatScore = 100;
+            remoteMovie2.CustomFormatScore = 0;
+
+            var torrentInfo1 = new TorrentInfo();
+            torrentInfo1.PublishDate = DateTime.Now;
+            torrentInfo1.DownloadProtocol = DownloadProtocol.Torrent;
+            torrentInfo1.Seeders = 10;
+            torrentInfo1.Size = 200.Megabytes();
+
+            var torrentInfo2 = torrentInfo1.JsonClone();
+            torrentInfo2.Seeders = 1000;
+
+            remoteMovie1.Release = torrentInfo1;
+            remoteMovie1.Release.Title = "A Movie 1998";
+            remoteMovie2.Release = torrentInfo2;
+            remoteMovie2.Release.Title = "A Movie 1998";
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteMovie1));
+            decisions.Add(new DownloadDecision(remoteMovie2));
+
+            var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
+            ((TorrentInfo)qualifiedReports.First().RemoteMovie.Release).Seeders.Should().Be(1000);
+        }
     }
 }
