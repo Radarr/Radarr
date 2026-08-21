@@ -271,10 +271,6 @@ namespace NzbDrone.Core.Movies
 
                 if (deferPathUpdate)
                 {
-                    // The file move is queued as a separate, asynchronous command. Path is
-                    // updated by MoveMovieService once the move has actually completed, so an
-                    // interrupted move (crash, full disk) doesn't leave the DB pointing at files
-                    // that were never actually relocated.
                     _logger.Trace("Path update for {0} deferred until file move completes", m.Title);
                 }
                 else if (!m.RootFolderPath.IsNullOrWhiteSpace())
