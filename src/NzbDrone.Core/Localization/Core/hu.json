@@ -102,7 +102,7 @@
     "CouldNotFindResults": "Nem található találat a következőre: „{term}”",
     "CopyUsingHardlinksHelpTextWarning": "Előfordulhat, hogy a fájl zárolások megakadályozzák a seedelés alatt álló fájlok átnevezését. Ideiglenesen kikapcsolhatja a seedelést, és kerülőmegoldásként használhatja a {appName} átnevezési funkcióját.",
     "CopyUsingHardlinksMovieHelpText": "A hardlinkek lehetővé teszik, hogy a {appName} a seedelő torrenteket a filmek mappájába importálja anélkül, hogy extra lemezterületet foglalna, vagy a fájl teljes tartalmát lemásolná. A hardlinkek csak akkor működnek, ha a forrás és a cél ugyanazon a köteten található",
-    "CopyToClipboard": "Másolja a vágólapra",
+    "CopyToClipboard": "Másolás a vágólapra",
     "ConnectSettingsSummary": "Értesítések, médiakiszolgálók/lejátszók kapcsolatai és egyéni szkriptek",
     "ConnectSettings": "Kapcsolati beállítások",
     "Connections": "Kapcsolatok",

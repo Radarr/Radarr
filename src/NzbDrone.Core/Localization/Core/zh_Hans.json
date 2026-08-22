@@ -30,5 +30,6 @@
     "AddQualityProfileError": "添加",
     "AddRemotePathMappingError": "添加",
     "Backups": "备份",
-    "AddCondition": "001"
+    "AddCondition": "001",
+    "AddConnection": "Add Connection"
 }
