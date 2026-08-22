@@ -1214,7 +1214,7 @@
     "Completed": "Завършено",
     "DelayMinutes": "{delay} Минути",
     "Category": "Категория",
-    "AutoTaggingSpecificationKeyword": "Ключова(и) дума(и)",
+    "AutoTaggingSpecificationKeyword": "Ключова/и дума/и",
     "ChangeCategory": "Промени категорията",
     "DefaultNotFoundMessage": "Трябва да сте се изгубили, няма какво да видите тук.",
     "ClearBlocklist": "Изчисти списъка с блокирани",
