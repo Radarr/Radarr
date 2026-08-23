@@ -201,7 +201,7 @@ namespace NzbDrone.Core.Download
             {
                 _logger.Debug("All movies were imported for {0}", trackedDownload.DownloadItem.Title);
                 trackedDownload.State = TrackedDownloadState.Imported;
-                _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload, trackedDownload.RemoteMovie.Movie.Id));
+                PublishDownloadCompleted(trackedDownload, GetMovieId(trackedDownload, importResults, null));
                 return true;
             }
 
@@ -218,6 +218,8 @@ namespace NzbDrone.Core.Download
 
             if (allMoviesImportedInHistory)
             {
+                var movieId = GetMovieId(trackedDownload, importResults, historyItems);
+
                 // Log different error messages depending on the circumstances, but treat both as fully imported, because that's the reality.
                 // The second message shouldn't be logged in most cases, but continued reporting would indicate an ongoing issue.
                 if (atLeastOneMovieImported)
@@ -228,7 +230,7 @@ namespace NzbDrone.Core.Download
                 {
                     _logger.ForDebugEvent()
                            .Message("No Movies were just imported, but all movies were previously imported, possible issue with download history.")
-                           .Property("MovieId", trackedDownload.RemoteMovie.Movie.Id)
+                           .Property("MovieId", movieId)
                            .Property("DownloadId", trackedDownload.DownloadItem.DownloadId)
                            .Property("Title", trackedDownload.DownloadItem.Title)
                            .Property("Path", trackedDownload.ImportItem.OutputPath.ToString())
@@ -237,13 +239,48 @@ namespace NzbDrone.Core.Download
                 }
 
                 trackedDownload.State = TrackedDownloadState.Imported;
-                _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload, trackedDownload.RemoteMovie.Movie.Id));
+                PublishDownloadCompleted(trackedDownload, movieId);
 
                 return true;
             }
 
             _logger.Debug("Not all movies have been imported for {0}", trackedDownload.DownloadItem.Title);
             return false;
+        }
+
+        private void PublishDownloadCompleted(TrackedDownload trackedDownload, int movieId)
+        {
+            if (movieId <= 0)
+            {
+                _logger.Warn("Unable to determine which movie was imported for {0}, skipping download completed event", trackedDownload.DownloadItem.Title);
+
+                return;
+            }
+
+            _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload, movieId));
+        }
+
+        private int GetMovieId(TrackedDownload trackedDownload, List<ImportResult> importResults, List<MovieHistory> historyItems)
+        {
+            // The tracked download can lose its movie link while it's being processed, the cached
+            // item is rebuilt from the download title alone when the movie is refreshed or edited.
+            var movieId = trackedDownload.RemoteMovie?.Movie?.Id ?? 0;
+
+            if (movieId > 0)
+            {
+                return movieId;
+            }
+
+            movieId = importResults.Where(c => c.Result == ImportResultType.Imported)
+                                   .Select(c => c.ImportDecision?.LocalMovie?.Movie?.Id ?? 0)
+                                   .FirstOrDefault(id => id > 0);
+
+            if (movieId > 0 || historyItems == null)
+            {
+                return movieId;
+            }
+
+            return historyItems.Select(h => h.MovieId).FirstOrDefault(id => id > 0);
         }
 
         private void SetStateToImportBlocked(TrackedDownload trackedDownload)
