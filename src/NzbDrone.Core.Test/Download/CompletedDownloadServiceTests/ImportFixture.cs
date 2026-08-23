@@ -209,6 +209,26 @@ namespace NzbDrone.Core.Test.Download
             AssertImported();
         }
 
+        [Test]
+        public void should_use_movie_from_import_results_when_tracked_download_is_no_longer_linked_to_a_movie()
+        {
+            var movie = new Movie { Id = 7 };
+
+            _trackedDownload.RemoteMovie.Movie = null;
+
+            var importResults = new List<ImportResult>
+                                {
+                                    new ImportResult(new ImportDecision(new LocalMovie { Path = @"C:\TestPath\Droned.1998.mkv".AsOsAgnostic(), Movie = movie }))
+                                };
+
+            Subject.VerifyImport(_trackedDownload, importResults).Should().BeTrue();
+
+            _trackedDownload.State.Should().Be(TrackedDownloadState.Imported);
+
+            Mocker.GetMock<IEventAggregator>()
+                  .Verify(v => v.PublishEvent(It.Is<DownloadCompletedEvent>(c => c.MovieId == movie.Id)), Times.Once());
+        }
+
         private void AssertNotImported()
         {
             Mocker.GetMock<IEventAggregator>()
