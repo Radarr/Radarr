@@ -201,7 +201,7 @@ namespace NzbDrone.Core.Download
             {
                 _logger.Debug("All movies were imported for {0}", trackedDownload.DownloadItem.Title);
                 trackedDownload.State = TrackedDownloadState.Imported;
-                PublishDownloadCompleted(trackedDownload, GetMovieId(trackedDownload, importResults, null));
+                _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload, GetMovieId(trackedDownload, importResults, null)));
                 return true;
             }
 
@@ -239,7 +239,7 @@ namespace NzbDrone.Core.Download
                 }
 
                 trackedDownload.State = TrackedDownloadState.Imported;
-                PublishDownloadCompleted(trackedDownload, movieId);
+                _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload, movieId));
 
                 return true;
             }
@@ -248,39 +248,30 @@ namespace NzbDrone.Core.Download
             return false;
         }
 
-        private void PublishDownloadCompleted(TrackedDownload trackedDownload, int movieId)
-        {
-            if (movieId <= 0)
-            {
-                _logger.Warn("Unable to determine which movie was imported for {0}, skipping download completed event", trackedDownload.DownloadItem.Title);
-
-                return;
-            }
-
-            _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload, movieId));
-        }
-
         private int GetMovieId(TrackedDownload trackedDownload, List<ImportResult> importResults, List<MovieHistory> historyItems)
         {
-            // The tracked download can lose its movie link while it's being processed, the cached
-            // item is rebuilt from the download title alone when the movie is refreshed or edited.
-            var movieId = trackedDownload.RemoteMovie?.Movie?.Id ?? 0;
-
-            if (movieId > 0)
+            // The tracked download can lose its movie link while it's being processed, the cached item
+            // is rebuilt from the download title alone whenever a movie is added, edited or deleted.
+            if (trackedDownload.RemoteMovie?.Movie != null)
             {
-                return movieId;
+                return trackedDownload.RemoteMovie.Movie.Id;
             }
 
-            movieId = importResults.Where(c => c.Result == ImportResultType.Imported)
-                                   .Select(c => c.ImportDecision?.LocalMovie?.Movie?.Id ?? 0)
-                                   .FirstOrDefault(id => id > 0);
+            var movieId = importResults.Where(c => c.Result == ImportResultType.Imported)
+                                       .Select(c => c.ImportDecision?.LocalMovie?.Movie?.Id ?? 0)
+                                       .FirstOrDefault(id => id > 0);
 
-            if (movieId > 0 || historyItems == null)
+            if (movieId == 0 && historyItems != null)
             {
-                return movieId;
+                movieId = historyItems.Select(h => h.MovieId).FirstOrDefault(id => id > 0);
             }
 
-            return historyItems.Select(h => h.MovieId).FirstOrDefault(id => id > 0);
+            if (movieId == 0)
+            {
+                _logger.Warn("Unable to determine which movie was imported for {0}", trackedDownload.DownloadItem.Title);
+            }
+
+            return movieId;
         }
 
         private void SetStateToImportBlocked(TrackedDownload trackedDownload)
