@@ -456,6 +456,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
                       tmdbId={tmdbId}
                       imdbId={imdbId}
                       youTubeTrailerId={youTubeTrailerId}
+                      title={title}
                     />
                   }
                   canFlip={true}

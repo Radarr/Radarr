@@ -8,11 +8,11 @@ import styles from './MovieDetailsLinks.css';
 
 type MovieDetailsLinksProps = Pick<
   Movie,
-  'tmdbId' | 'imdbId' | 'youTubeTrailerId'
+  'tmdbId' | 'imdbId' | 'youTubeTrailerId' | 'title'
 >;
 
 function MovieDetailsLinks(props: MovieDetailsLinksProps) {
-  const { tmdbId, imdbId, youTubeTrailerId } = props;
+  const { tmdbId, imdbId, youTubeTrailerId, title } = props;
 
   return (
     <div className={styles.links}>
@@ -105,6 +105,23 @@ function MovieDetailsLinks(props: MovieDetailsLinksProps) {
             </Label>
           </Link>
         </>
+      ) : null}
+
+      {title ? (
+        <Link
+          className={styles.link}
+          to={`https://www.rottentomatoes.com/search?search=${encodeURIComponent(
+            title
+          )}`}
+        >
+          <Label
+            className={styles.linkLabel}
+            kind={kinds.INFO}
+            size={sizes.LARGE}
+          >
+            {translate('RottenTomatoes')}
+          </Label>
+        </Link>
       ) : null}
 
       {youTubeTrailerId ? (
