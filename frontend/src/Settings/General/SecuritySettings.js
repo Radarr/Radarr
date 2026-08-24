@@ -128,7 +128,8 @@ class SecuritySettings extends Component {
       password,
       passwordConfirmation,
       apiKey,
-      certificateValidation
+      certificateValidation,
+      trustedNetworks
     } = settings;
 
     const authenticationEnabled = authenticationMethod && authenticationMethod.value !== 'none';
@@ -253,6 +254,19 @@ class SecuritySettings extends Component {
             helpText={translate('CertificateValidationHelpText')}
             onChange={onInputChange}
             {...certificateValidation}
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <FormLabel>{translate('TrustedNetworks')}</FormLabel>
+
+          <FormInputGroup
+            type={inputTypes.TEXT}
+            name="trustedNetworks"
+            helpText={translate('TrustedNetworksHelpText')}
+            helpTextWarning={translate('RestartRequiredHelpTextWarning')}
+            onChange={onInputChange}
+            {...trustedNetworks}
           />
         </FormGroup>
 
