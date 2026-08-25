@@ -22,15 +22,15 @@ namespace Radarr.Http.Authentication
 
     public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthenticationOptions>
     {
-        private readonly string _apiKey;
+        private readonly IConfigFileProvider _configFileProvider;
 
         public ApiKeyAuthenticationHandler(IOptionsMonitor<ApiKeyAuthenticationOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
-            IConfigFileProvider config)
+            IConfigFileProvider configFileProvider)
             : base(options, logger, encoder)
         {
-            _apiKey = config.ApiKey;
+            _configFileProvider = configFileProvider;
         }
 
         private string ParseApiKey()
@@ -59,7 +59,7 @@ namespace Radarr.Http.Authentication
                 return Task.FromResult(AuthenticateResult.NoResult());
             }
 
-            if (_apiKey == providedApiKey)
+            if (_configFileProvider.ApiKey == providedApiKey)
             {
                 var claims = new List<Claim>
                 {
