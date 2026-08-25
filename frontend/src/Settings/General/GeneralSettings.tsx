@@ -72,6 +72,7 @@ function GeneralSettings() {
 
   const [isRestartRequiredModalOpen, setIsRestartRequiredModalOpen] =
     useState(false);
+  const [isReloadRequired, setIsReloadRequired] = useState(false);
 
   const handleInputChange = useCallback(
     (change: InputChanged) => {
@@ -123,9 +124,15 @@ function GeneralSettings() {
 
   useEffect(() => {
     if (!isResettingApiKey && wasResettingApiKey) {
-      setIsRestartRequiredModalOpen(true);
+      setIsReloadRequired(true);
     }
   }, [isResettingApiKey, wasResettingApiKey]);
+
+  useEffect(() => {
+    if (isReloadRequired && !isSaving) {
+      location.reload();
+    }
+  }, [isReloadRequired, isSaving]);
 
   return (
     <PageContent title={translate('GeneralSettings')}>

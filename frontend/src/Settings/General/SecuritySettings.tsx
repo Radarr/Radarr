@@ -218,7 +218,7 @@ function SecuritySettings({
           type={inputTypes.TEXT}
           name="apiKey"
           readOnly={true}
-          helpTextWarning={translate('RestartRequiredHelpTextWarning')}
+          helpTextWarning={translate('BrowserReloadRequired')}
           buttons={[
             <ClipboardButton
               key="copy"
