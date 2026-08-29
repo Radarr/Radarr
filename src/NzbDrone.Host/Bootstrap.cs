@@ -175,7 +175,6 @@ namespace NzbDrone.Host
                 .ConfigureServices(services =>
                 {
                     services.Configure<PostgresOptions>(config.GetSection("Radarr:Postgres"));
-                    services.Configure<PostgresOptions>(config.GetSection("Radarr:Postgres"));
                     services.Configure<AppOptions>(config.GetSection("Radarr:App"));
                     services.Configure<AuthOptions>(config.GetSection("Radarr:Auth"));
                     services.Configure<ServerOptions>(config.GetSection("Radarr:Server"));
