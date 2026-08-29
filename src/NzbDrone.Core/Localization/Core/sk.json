@@ -1558,5 +1558,10 @@
     "PopularityIndex": "Aktuálny index popularity",
     "MatchedToMovie": "Zhodné s filmom",
     "ShowImdbRating": "Zobraziť hodnotenie IMDb",
-    "ShowRottenTomatoesRating": "Zobraziť hodnotenie Tomato"
+    "ShowRottenTomatoesRating": "Zobraziť hodnotenie Tomato",
+    "Friday": "Piatok",
+    "Saturday": "Sobota",
+    "Thursday": "Štvrtok",
+    "Tuesday": "Utorok",
+    "Wednesday": "Streda"
 }

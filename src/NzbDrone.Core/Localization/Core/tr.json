@@ -2049,5 +2049,10 @@
     "ImportListsSimklSettingsUserListTypePlanToWatch": "İzlemeyi Planla",
     "ImportListsSimklSettingsUserListTypeWatching": "İzlenen",
     "ImportListsSimklSettingsMovieType": "Film Türü",
-    "ImportListsSimklSettingsMovieTypeHelpText": "İçe aktarmak istediğiniz film türü"
+    "ImportListsSimklSettingsMovieTypeHelpText": "İçe aktarmak istediğiniz film türü",
+    "Friday": "Cuma",
+    "Saturday": "Cumartesi",
+    "Thursday": "Perşembe",
+    "Tuesday": "Salı",
+    "Wednesday": "Çarşamba"
 }

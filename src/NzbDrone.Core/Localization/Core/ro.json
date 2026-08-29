@@ -1195,7 +1195,7 @@
     "NotificationStatusAllClientHealthCheckMessage": "Toate listele sunt indisponibile datorită erorilor",
     "RemoveQueueItemsRemovalMethodHelpTextWarning": "Eliminarea va elimina descărcarea și fișierele din clientul de descărcare.",
     "ResetTitles": "Titlul Apariției",
-    "FormatRuntimeMinutes": "minute",
+    "FormatRuntimeMinutes": "{minutes}m",
     "ImportListsTraktSettingsYears": "An",
     "ManageCustomFormats": "Formate personalizate",
     "ManageDownloadClients": "Clienți de descărcare",
@@ -1241,5 +1241,11 @@
     "BlocklistedAt": "Blocat la {date}",
     "FailedAt": "Eșuat la: {date}",
     "GrabbedAt": "Preluat la: {date}",
-    "TomorrowAt": "Mâine la {time}"
+    "TomorrowAt": "Mâine la {time}",
+    "Friday": "Vineri",
+    "Saturday": "Sâmbătă",
+    "Thursday": "Joi",
+    "Tuesday": "Marți",
+    "Wednesday": "Miercuri",
+    "FormatRuntimeHours": "{hours}h"
 }

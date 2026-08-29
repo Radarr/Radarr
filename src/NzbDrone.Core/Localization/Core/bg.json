@@ -1891,5 +1891,10 @@
     "DownloadClientSabnzbdValidationEnableDisableTvSorting": "Изключете сортирането на ТВ предавания",
     "IgnoreDownloads": "Игнориране на изтеглянията",
     "ImportListMissingRoot": "Липсваща основна папка за списъка(ците) за импортиране: {rootFolderInfo}",
-    "RegularExpressionsTutorialLink": "Повече подробности за регулярните изрази могат да бъдат намерени [тук]({url})."
+    "RegularExpressionsTutorialLink": "Повече подробности за регулярните изрази могат да бъдат намерени [тук]({url}).",
+    "Friday": "Петък",
+    "Saturday": "Събота",
+    "Thursday": "Четвъртък",
+    "Tuesday": "Вторник",
+    "Wednesday": "Сряда"
 }

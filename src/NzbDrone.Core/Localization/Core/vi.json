@@ -1195,5 +1195,7 @@
     "SelectReleaseGroup": "Nhóm phát hành",
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "Nhiều thư mục gốc bị thiếu: {0}",
     "ReleasePush": "Ngày phát hành",
-    "CinemaRelease": "Ngày phát hành rạp chiếu phim"
+    "CinemaRelease": "Ngày phát hành rạp chiếu phim",
+    "AddANewPath": "Thên đường dẫn mới",
+    "Any": "bất kỳ"
 }

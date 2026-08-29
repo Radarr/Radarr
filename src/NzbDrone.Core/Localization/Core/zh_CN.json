@@ -2049,5 +2049,6 @@
     "ImportListsSimklSettingsUserListTypePlanToWatch": "计划观看",
     "ImportListsSimklSettingsUserListTypeWatching": "观看中",
     "ImportListsSimklSettingsMovieType": "电影类型",
-    "ImportListsSimklSettingsMovieTypeHelpText": "选择你要从中导入的电影类型"
+    "ImportListsSimklSettingsMovieTypeHelpText": "选择你要从中导入的电影类型",
+    "Friday": "星期五"
 }

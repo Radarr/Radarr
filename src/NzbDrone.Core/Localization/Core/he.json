@@ -1889,5 +1889,10 @@
     "RemotePathMappingCheckGenericPermissions": "לקוח ההורדות {downloadClientName} ממקם הורדות ב-{path} אך {appName} אינו יכול לראות תיקייה זו. ייתכן שתצטרך להתאים את הרשאות התיקייה.",
     "DownloadClientFloodSettingsAddPaused": "הוסף כמושהה",
     "DownloadClientSortingCheckMessage": "לקליינט ההורדות {downloadClientName} יש מיון {sortingMode} מופעל עבור הקטגוריה של {appName}. עליך להשבית מיון בקליינט ההורדות שלך כדי למנוע בעיות ייבוא.",
-    "FailedAt": "נכשל בתאריך: {date}"
+    "FailedAt": "נכשל בתאריך: {date}",
+    "Friday": "שישי",
+    "Saturday": "שבת",
+    "Thursday": "חמישי",
+    "Tuesday": "שלישי",
+    "Wednesday": "רביעי"
 }
