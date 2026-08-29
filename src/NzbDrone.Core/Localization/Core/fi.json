@@ -833,7 +833,7 @@
     "Table": "Taulukko",
     "TableOptions": "Taulukkonäkymän asetukset",
     "TagDetails": "Tunnisteen tiedot – {label}",
-    "TagIsNotUsedAndCanBeDeleted": "Tunniste ei ole käytössä ja voidaan poistaa.",
+    "TagIsNotUsedAndCanBeDeleted": "Tunniste on käyttämätön ja voidaan poistaa.",
     "Tags": "Tunnisteet",
     "ICalTagsMoviesHelpText": "Käytetään vähintään yhdellä täsmäävällä tunnisteella merkityille elokuville.",
     "TagsSettingsSummary": "Täältä näet kaikki tunnisteet käyttökohteineen ja voit poistaa käyttämättömät tunnisteet.",
@@ -2049,5 +2049,10 @@
     "ImportListsSimklSettingsUserListTypePlanToWatch": "Aiotaan katsella",
     "ImportListsSimklSettingsUserListTypeWatching": "Katselussa",
     "ImportListsSimklSettingsMovieType": "Elokuvan tyyppi",
-    "ImportListsSimklSettingsMovieTypeHelpText": "Tutoavan elokuvan tyyppi."
+    "ImportListsSimklSettingsMovieTypeHelpText": "Tutoavan elokuvan tyyppi.",
+    "Friday": "Perjantai",
+    "Saturday": "Lauantai",
+    "Thursday": "Torstai",
+    "Tuesday": "Tiistai",
+    "Wednesday": "Keskiviikko"
 }

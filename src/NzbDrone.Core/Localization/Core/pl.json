@@ -2030,5 +2030,10 @@
     "MetadataXmbcSettingsMovieMetadataCollectionNameHelpText": "Dodaj nazwę kolekcji do pliku .nfo",
     "ImportListsTraktSettingsPopularListTypeTrendingMovies": "Zyskujące popularność",
     "Popular": "Popularne",
-    "NoMovieFilesToManage": "Nie ma żadnych plików filmowych do zarządzania."
+    "NoMovieFilesToManage": "Nie ma żadnych plików filmowych do zarządzania.",
+    "Friday": "Piątek",
+    "Saturday": "Sobota",
+    "Thursday": "Czwartek",
+    "Tuesday": "Wtorek",
+    "Wednesday": "Środa"
 }

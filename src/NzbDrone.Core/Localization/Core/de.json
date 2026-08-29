@@ -2049,5 +2049,10 @@
     "NamingConfigMovieFolderFormatDeprecatedHealthCheckMessage": "Filmordner-Format darf keine veralteten Datei-assoziierten Tokens enthalten: {tokens}",
     "ShowCinemaReleaseCalendarHelpText": "Zeige Kino Veröffentlichungen in den Kalenderereignissen",
     "ShowDigitalReleaseCalendarHelpText": "Zeige digitale Veröffentlichungen in den Kalenderereignissen",
-    "ShowPhysicalReleaseCalendarHelpText": "Zeige physische Veröffentlichungen in den Kalenderereignissen"
+    "ShowPhysicalReleaseCalendarHelpText": "Zeige physische Veröffentlichungen in den Kalenderereignissen",
+    "Friday": "Freitag",
+    "Saturday": "Samstag",
+    "Thursday": "Donnerstag",
+    "Tuesday": "Dienstag",
+    "Wednesday": "Mittwoch"
 }

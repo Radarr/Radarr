@@ -2049,5 +2049,11 @@
     "ImportListsSimklSettingsUserListTypePlanToWatch": "Plan de surveillance",
     "ImportListsSimklSettingsUserListTypeWatching": "Regarder",
     "ImportListsSimklSettingsMovieType": "type film",
-    "ImportListsSimklSettingsMovieTypeHelpText": "Type de film que vous souhaitez importer depuis"
+    "ImportListsSimklSettingsMovieTypeHelpText": "Type de film que vous souhaitez importer depuis",
+    "Friday": "Vendredi",
+    "Saturday": "Samedi",
+    "Thursday": "Jeudi",
+    "Tuesday": "Mardi",
+    "Wednesday": "Mercredi",
+    "AllowedHosts": "Hôtes autorisés"
 }

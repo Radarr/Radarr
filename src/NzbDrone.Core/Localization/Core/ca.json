@@ -2049,5 +2049,10 @@
     "ImportListsSimklSettingsUserListTypePlanToWatch": "Planifica per veure",
     "ImportListsSimklSettingsUserListTypeWatching": "Vigilant",
     "ImportListsSimklSettingsMovieType": "Tipus de pel·lícula",
-    "ImportListsSimklSettingsMovieTypeHelpText": "Tipus de pel·lícula que voleu importar"
+    "ImportListsSimklSettingsMovieTypeHelpText": "Tipus de pel·lícula que voleu importar",
+    "Friday": "Divendres",
+    "Saturday": "Dissabte",
+    "Thursday": "Dijous",
+    "Tuesday": "Dimarts",
+    "Wednesday": "Dimecres"
 }
