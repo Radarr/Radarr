@@ -66,8 +66,7 @@ class ImportMovieTable extends Component {
       const selectedMovie = item.selectedMovie;
       const isSelected = selectedState[id];
 
-      const isExistingMovie = !!selectedMovie &&
-        _.some(prevProps.allMovies, { tmdbId: selectedMovie.tmdbId });
+      const isExistingMovie = !!selectedMovie?.id;
 
       // Props doesn't have a selected movie or
       // the selected movie is an existing movie.
@@ -173,7 +172,6 @@ ImportMovieTable.propTypes = {
   allUnselected: PropTypes.bool.isRequired,
   selectedState: PropTypes.object.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
-  allMovies: PropTypes.arrayOf(PropTypes.object),
   scroller: PropTypes.instanceOf(Element).isRequired,
   onSelectAllChange: PropTypes.func.isRequired,
   onSelectedChange: PropTypes.func.isRequired,

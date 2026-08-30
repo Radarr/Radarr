@@ -60,6 +60,23 @@ interface MoviesAppState
     AppSectionDeleteState,
     AppSectionSaveState {
   itemMap: Record<number, number>;
+  page: number;
+  pageSize: number;
+  totalRecords: number;
+  allIds: number[];
+  facets: {
+    certifications?: string[];
+    collections?: string[];
+    genres?: string[];
+    keywords?: string[];
+    originalLanguages?: string[];
+    releaseGroups?: string[];
+    studios?: string[];
+    qualityProfileIds?: number[];
+    tmdbIds?: number[];
+    totalRecords?: number;
+  };
+  jumpBar: Record<string, { count: number; page: number }>;
 
   deleteOptions: {
     addImportExclusion: boolean;

@@ -5,7 +5,7 @@ import AppState from 'App/State/AppState';
 import { useInitializeLanguage } from 'Language/useLanguageName';
 import { fetchTranslations } from 'Store/Actions/appActions';
 import { fetchCustomFilters } from 'Store/Actions/customFilterActions';
-import { fetchMovies } from 'Store/Actions/movieActions';
+import { fetchMovieFacets } from 'Store/Actions/movieActions';
 import { fetchMovieCollections } from 'Store/Actions/movieCollectionActions';
 import {
   fetchImportLists,
@@ -19,7 +19,6 @@ import { fetchTags } from 'Store/Actions/tagActions';
 
 const createErrorsSelector = () =>
   createSelector(
-    (state: AppState) => state.movies.error,
     (state: AppState) => state.movieCollections.error,
     (state: AppState) => state.customFilters.error,
     (state: AppState) => state.tags.error,
@@ -31,7 +30,6 @@ const createErrorsSelector = () =>
     (state: AppState) => state.system.status.error,
     (state: AppState) => state.app.translations.error,
     (
-      moviesError,
       movieCollectionsError,
       customFiltersError,
       tagsError,
@@ -44,7 +42,6 @@ const createErrorsSelector = () =>
       translationsError
     ) => {
       const hasError = !!(
-        moviesError ||
         movieCollectionsError ||
         customFiltersError ||
         tagsError ||
@@ -60,7 +57,6 @@ const createErrorsSelector = () =>
       return {
         hasError,
         errors: {
-          moviesError,
           movieCollectionsError,
           customFiltersError,
           tagsError,
@@ -83,7 +79,6 @@ const useAppPage = () => {
 
   const isPopulated = useSelector(
     (state: AppState) =>
-      state.movies.isPopulated &&
       state.movieCollections.isPopulated &&
       state.customFilters.isPopulated &&
       state.tags.isPopulated &&
@@ -112,8 +107,8 @@ const useAppPage = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(fetchMovies());
     dispatch(fetchMovieCollections());
+    dispatch(fetchMovieFacets());
     dispatch(fetchCustomFilters());
     dispatch(fetchTags());
     dispatch(fetchQualityProfiles());

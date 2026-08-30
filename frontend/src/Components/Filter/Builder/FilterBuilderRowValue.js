@@ -109,7 +109,8 @@ class FilterBuilderRowValue extends Component {
     const {
       filterValue,
       selectedFilterBuilderProp,
-      tagList
+      tagList,
+      onQueryChange
     } = this.props;
 
     const hasItems = !!tagList.length;
@@ -141,6 +142,7 @@ class FilterBuilderRowValue extends Component {
         maxSuggestionsLength={100}
         minQueryLength={0}
         tagComponent={FilterBuilderRowValueTag}
+        onQueryChange={onQueryChange}
         onTagAdd={this.onTagAdd}
         onTagDelete={this.onTagDelete}
       />
@@ -152,6 +154,7 @@ FilterBuilderRowValue.propTypes = {
   filterValue: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number])).isRequired,
   selectedFilterBuilderProp: PropTypes.object.isRequired,
   tagList: PropTypes.arrayOf(PropTypes.shape(tagShape)).isRequired,
+  onQueryChange: PropTypes.func,
   onChange: PropTypes.func.isRequired
 };
 

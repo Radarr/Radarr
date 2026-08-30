@@ -7,10 +7,10 @@ import { createThunk, handleThunks } from 'Store/thunks';
 // import { batchActions } from 'redux-batched-actions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import dateFilterPredicate from 'Utilities/Date/dateFilterPredicate';
+import findSelectedFilters from 'Utilities/Filter/findSelectedFilters';
 import padNumber from 'Utilities/Number/padNumber';
 import translate from 'Utilities/String/translate';
-import { set, updateItem } from './baseActions';
-import createFetchHandler from './Creators/createFetchHandler';
+import { set, update, updateItem } from './baseActions';
 import createHandleActions from './Creators/createHandleActions';
 import createRemoveItemHandler from './Creators/createRemoveItemHandler';
 import createSaveProviderHandler from './Creators/createSaveProviderHandler';
@@ -352,6 +352,12 @@ export const defaultState = {
   isDeleting: false,
   deleteError: null,
   items: [],
+  page: 0,
+  pageSize: 100,
+  totalRecords: 0,
+  allIds: [],
+  facets: {},
+  jumpBar: {},
   sortKey: 'sortTitle',
   sortDirection: sortDirections.ASCENDING,
   pendingChanges: {},
@@ -368,6 +374,7 @@ export const persistState = [
 // Actions Types
 
 export const FETCH_MOVIES = 'movies/fetchMovies';
+export const FETCH_MOVIE_FACETS = 'movies/fetchMovieFacets';
 export const SET_MOVIE_VALUE = 'movies/setMovieValue';
 export const SAVE_MOVIE = 'movies/saveMovie';
 export const DELETE_MOVIE = 'movies/deleteMovie';
@@ -382,6 +389,7 @@ export const TOGGLE_MOVIE_MONITORED = 'movies/toggleMovieMonitored';
 // Action Creators
 
 export const fetchMovies = createThunk(FETCH_MOVIES);
+export const fetchMovieFacets = createThunk(FETCH_MOVIE_FACETS);
 export const saveMovie = createThunk(SAVE_MOVIE, (payload) => {
   const newPayload = {
     ...payload
@@ -437,7 +445,100 @@ function getSaveAjaxOptions({ ajaxOptions, payload }) {
 
 export const actionHandlers = handleThunks({
 
-  [FETCH_MOVIES]: createFetchHandler(section, '/movie'),
+  [FETCH_MOVIE_FACETS]: (getState, _payload, dispatch) => {
+    const { request, abortRequest } = createAjaxRequest({ url: '/movie/facets' });
+
+    request.done((facets) => {
+      dispatch(set({
+        section,
+        facets,
+        totalRecords: facets.totalRecords,
+        error: null
+      }));
+    });
+
+    request.fail((xhr) => {
+      dispatch(set({ section, error: xhr.aborted ? null : xhr }));
+    });
+
+    return abortRequest;
+  },
+
+  [FETCH_MOVIES]: (getState, payload = {}, dispatch) => {
+    const state = getState();
+    const movieIndex = state.movieIndex;
+    const page = payload.page || 1;
+    const pageSize = 100;
+    const customFilters = state.customFilters.items.filter((filter) =>
+      filter.type === 'movies' || filter.type === 'movieIndex'
+    );
+    const selectedFilters = findSelectedFilters(
+      movieIndex.selectedFilterKey,
+      movieIndex.filters,
+      customFilters
+    );
+    const query = {
+      page,
+      pageSize,
+      sortKey: movieIndex.sortKey,
+      sortDirection: movieIndex.sortDirection,
+      filters: JSON.stringify(selectedFilters)
+    };
+    const queryKey = JSON.stringify({
+      sortKey: query.sortKey,
+      sortDirection: query.sortDirection,
+      filters: query.filters
+    });
+
+    dispatch(set({ section, isFetching: true, queryKey }));
+
+    const { request, abortRequest } = createAjaxRequest({
+      url: '/movie/page',
+      data: query
+    });
+
+    request.done((data) => {
+      if (getState().movies.queryKey !== queryKey) {
+        return;
+      }
+
+      const existingItems = page === 1 ? [] : getState().movies.items;
+      const itemMap = new Map(existingItems.map((movie) => [movie.id, movie]));
+
+      data.records.forEach((movie) => itemMap.set(movie.id, movie));
+
+      dispatch(batchActions([
+        update({ section, data: Array.from(itemMap.values()) }),
+        set({
+          section,
+          page: data.page,
+          pageSize: data.pageSize,
+          totalRecords: data.totalRecords,
+          allIds: data.movieIds,
+          facets: data.facets,
+          jumpBar: data.jumpBar,
+          isFetching: false,
+          isPopulated: true,
+          error: null
+        })
+      ]));
+    });
+
+    request.fail((xhr) => {
+      if (getState().movies.queryKey !== queryKey) {
+        return;
+      }
+
+      dispatch(set({
+        section,
+        isFetching: false,
+        isPopulated: false,
+        error: xhr.aborted ? null : xhr
+      }));
+    });
+
+    return abortRequest;
+  },
   [SAVE_MOVIE]: createSaveProviderHandler(section, '/movie', { getAjaxOptions: getSaveAjaxOptions }),
   [DELETE_MOVIE]: (getState, payload, dispatch) => {
     createRemoveItemHandler(section, '/movie')(getState, payload, dispatch);
@@ -467,7 +568,7 @@ export const actionHandlers = handleThunks({
       monitored
     } = payload;
 
-    const movie = _.find(getState().movies.items, { id });
+    const cachedMovie = _.find(getState().movies.items, { id });
 
     dispatch(updateItem({
       id,
@@ -475,7 +576,7 @@ export const actionHandlers = handleThunks({
       isSaving: true
     }));
 
-    const promise = createAjaxRequest({
+    const save = (movie) => createAjaxRequest({
       url: `/movie/${id}`,
       method: 'PUT',
       data: JSON.stringify({
@@ -484,6 +585,10 @@ export const actionHandlers = handleThunks({
       }),
       dataType: 'json'
     }).request;
+
+    const promise = cachedMovie ?
+      save(cachedMovie) :
+      createAjaxRequest({ url: `/movie/${id}` }).request.then(save);
 
     promise.done((data) => {
       dispatch(updateItem({

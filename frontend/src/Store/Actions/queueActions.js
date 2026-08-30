@@ -231,6 +231,7 @@ export const persistState = [
 
 function fetchDataAugmenter(getState, payload, data) {
   data.includeUnknownMovieItems = getState().queue.options.includeUnknownMovieItems;
+  data.includeMovie = true;
 }
 
 //

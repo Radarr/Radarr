@@ -76,6 +76,7 @@ export interface TagInputProps<T extends TagBase> {
   hasWarning?: boolean;
   tagComponent?: React.ElementType;
   onChange?: (change: InputChanged<T['id'][]>) => void;
+  onQueryChange?: (value: string) => void;
   onTagAdd: (newTag: T) => void;
   onTagDelete: TagInputTagProps<T>['onDelete'];
   onTagReplace?: (
@@ -100,6 +101,7 @@ function TagInput<T extends TagBase>({
   hasError,
   hasWarning,
   onChange,
+  onQueryChange,
   onTagAdd,
   onTagDelete,
   onTagReplace,
@@ -161,6 +163,7 @@ function TagInput<T extends TagBase>({
 
   const handleSuggestionsFetchRequested = useCallback(
     ({ value: newValue }: SuggestionsFetchRequestedParams) => {
+      onQueryChange?.(newValue);
       const lowerCaseValue = newValue.toLowerCase();
 
       const suggestions = tagList.filter((tag) => {
@@ -172,8 +175,22 @@ function TagInput<T extends TagBase>({
 
       setSuggestions(suggestions);
     },
-    [tags, tagList, setSuggestions]
+    [onQueryChange, tags, tagList, setSuggestions]
   );
+
+  useEffect(() => {
+    if (isFocused) {
+      const lowerCaseValue = value.toLowerCase();
+
+      setSuggestions(
+        tagList.filter(
+          (tag) =>
+            String(tag.name).toLowerCase().includes(lowerCaseValue) &&
+            !tags.some((selectedTag) => selectedTag.id === tag.id)
+        )
+      );
+    }
+  }, [isFocused, tagList, tags, value]);
 
   const handleInputKeyDown = useCallback(
     (event: KeyboardEvent<HTMLElement>) => {

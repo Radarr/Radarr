@@ -6,7 +6,6 @@ import React, {
   useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
 import { SelectProvider } from 'App/SelectContext';
 import ClientSideCollectionAppState from 'App/State/ClientSideCollectionAppState';
 import MoviesAppState, { MovieIndexAppState } from 'App/State/MoviesAppState';
@@ -39,6 +38,10 @@ import scrollPositions from 'Store/scrollPositions';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createMovieClientSideCollectionItemsSelector from 'Store/Selectors/createMovieClientSideCollectionItemsSelector';
+import {
+  registerPagePopulator,
+  unregisterPagePopulator,
+} from 'Utilities/pagePopulator';
 import translate from 'Utilities/String/translate';
 import MovieIndexFilterMenu from './Menus/MovieIndexFilterMenu';
 import MovieIndexSortMenu from './Menus/MovieIndexSortMenu';
@@ -77,13 +80,15 @@ interface MovieIndexProps {
 }
 
 const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
-  const history = useHistory();
-
   const {
     isFetching,
     isPopulated,
     error,
     totalItems,
+    page,
+    totalRecords,
+    allIds,
+    jumpBar,
     items,
     columns,
     selectedFilterKey,
@@ -110,13 +115,19 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
   const [isSelectMode, setIsSelectMode] = useState(false);
 
   useEffect(() => {
-    if (history.action === 'PUSH') {
-      dispatch(fetchMovies());
-    }
-  }, [history, dispatch]);
+    dispatch(fetchMovies({ page: 1 }));
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchQueueDetails({ all: true }));
+  }, [dispatch]);
+
+  useEffect(() => {
+    const populate = () => dispatch(fetchMovies({ page: 1 }));
+
+    registerPagePopulator(populate, ['movieUpdated']);
+
+    return () => unregisterPagePopulator(populate);
   }, [dispatch]);
 
   const onRssSyncPress = useCallback(() => {
@@ -152,6 +163,7 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
   const onSortSelect = useCallback(
     (value: string) => {
       dispatch(setMovieSort({ sortKey: value }));
+      dispatch(fetchMovies({ page: 1 }));
     },
     [dispatch]
   );
@@ -159,6 +171,7 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
   const onFilterSelect = useCallback(
     (value: string | number) => {
       dispatch(setMovieFilter({ selectedFilterKey: value }));
+      dispatch(fetchMovies({ page: 1 }));
     },
     [dispatch]
   );
@@ -182,16 +195,47 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
   const onJumpBarItemPress = useCallback(
     (character: string) => {
       setJumpToCharacter(character);
+      const targetPage = jumpBar[character]?.page;
+
+      if (targetPage) {
+        dispatch(fetchMovies({ page: targetPage }));
+      }
     },
-    [setJumpToCharacter]
+    [dispatch, jumpBar]
   );
+
+  const loadNextPageIfNeeded = useCallback(
+    (scrollTop: number) => {
+      const scroller = scrollerRef.current;
+
+      if (
+        scroller &&
+        !isFetching &&
+        items.length < totalRecords &&
+        scrollTop >= (scroller.scrollHeight - scroller.clientHeight) / 2
+      ) {
+        dispatch(fetchMovies({ page: page + 1 }));
+      }
+    },
+    [dispatch, isFetching, items.length, page, totalRecords]
+  );
+
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+
+    if (scroller) {
+      loadNextPageIfNeeded(scroller.scrollTop);
+    }
+  }, [items.length, loadNextPageIfNeeded]);
 
   const onScroll = useCallback(
     ({ scrollTop }: { scrollTop: number }) => {
       setJumpToCharacter(undefined);
       scrollPositions.movieIndex = scrollTop;
+
+      loadNextPageIfNeeded(scrollTop);
     },
-    [setJumpToCharacter]
+    [loadNextPageIfNeeded]
   );
 
   const jumpBarItems: PageJumpBarItems = useMemo(() => {
@@ -203,21 +247,13 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
       };
     }
 
-    const characters = items.reduce((acc: Record<string, number>, item) => {
-      let char = item.sortTitle.charAt(0);
-
-      if (!isNaN(Number(char))) {
-        char = '#';
-      }
-
-      if (char in acc) {
-        acc[char] = acc[char] + 1;
-      } else {
-        acc[char] = 1;
-      }
-
-      return acc;
-    }, {});
+    const characters = Object.entries(jumpBar).reduce(
+      (acc: Record<string, number>, [character, value]) => {
+        acc[character] = value.count;
+        return acc;
+      },
+      {}
+    );
 
     const order = Object.keys(characters).sort();
 
@@ -230,14 +266,15 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
       characters,
       order,
     };
-  }, [items, sortKey, sortDirection]);
+  }, [jumpBar, sortKey, sortDirection]);
   const ViewComponent = useMemo(() => getViewComponent(view), [view]);
+  const selectionItems = useMemo(() => allIds.map((id) => ({ id })), [allIds]);
 
   const isLoaded = !!(!error && isPopulated && items.length);
   const hasNoMovie = !totalItems;
 
   return (
-    <SelectProvider items={items}>
+    <SelectProvider items={selectionItems}>
       <PageContent>
         <PageToolbar>
           <PageToolbarSection>

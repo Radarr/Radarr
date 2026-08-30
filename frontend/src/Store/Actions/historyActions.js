@@ -263,7 +263,11 @@ export const actionHandlers = handleThunks({
       [serverSideCollectionHandlers.EXACT_PAGE]: GOTO_HISTORY_PAGE,
       [serverSideCollectionHandlers.SORT]: SET_HISTORY_SORT,
       [serverSideCollectionHandlers.FILTER]: SET_HISTORY_FILTER
-    }),
+    },
+    (_getState, _payload, data) => {
+      data.includeMovie = true;
+    }
+  ),
 
   [MARK_AS_FAILED]: function(getState, payload, dispatch) {
     const id = payload.id;

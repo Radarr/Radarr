@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createExistingMovieSelector from 'Store/Selectors/createExistingMovieSelector';
 import ImportMovieSearchResult from './ImportMovieSearchResult';
 
 function createMapStateToProps() {
   return createSelector(
-    createExistingMovieSelector(),
+    (state, { id }) => !!id,
     (isExistingMovie) => {
       return {
         isExistingMovie

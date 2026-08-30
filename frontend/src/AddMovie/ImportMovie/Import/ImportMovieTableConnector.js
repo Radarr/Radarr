@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { queueLookupMovie, setImportMovieValue } from 'Store/Actions/importMovieActions';
-import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import ImportMovieTable from './ImportMovieTable';
 
 function createMapStateToProps() {
@@ -9,15 +8,13 @@ function createMapStateToProps() {
     (state) => state.addMovie,
     (state) => state.importMovie,
     (state) => state.app.dimensions,
-    createAllMoviesSelector(),
-    (addMovie, importMovie, dimensions, allMovies) => {
+    (addMovie, importMovie, dimensions) => {
       return {
         defaultMonitor: addMovie.defaults.monitor,
         defaultQualityProfileId: addMovie.defaults.qualityProfileId,
         defaultMinimumAvailability: addMovie.defaults.minimumAvailability,
         items: importMovie.items,
-        isSmallScreen: dimensions.isSmallScreen,
-        allMovies
+        isSmallScreen: dimensions.isSmallScreen
       };
     }
   );

@@ -9,14 +9,17 @@ function createProfileInUseSelector(profileProp: string) {
   return createSelector(
     (_: AppState, { id }: { id: number }) => id,
     createAllMoviesSelector(),
+    (state: AppState) => state.movies.facets.qualityProfileIds,
     (state: AppState) => state.settings.importLists.items,
     (state: AppState) => state.movieCollections.items,
-    (id, movies, lists, collections) => {
+    (id, movies, qualityProfileIds = [], lists, collections) => {
       if (!id) {
         return false;
       }
 
       return (
+        (profileProp === 'qualityProfileId' &&
+          qualityProfileIds.includes(id)) ||
         movies.some((m) => m[profileProp as keyof Movie] === id) ||
         lists.some((list) => list[profileProp as keyof ImportList] === id) ||
         collections.some(

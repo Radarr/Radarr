@@ -135,7 +135,7 @@ function createClientSideCollectionSelector(section, uiSection) {
         ...uiSectionState,
         customFilters,
         items: sorted,
-        totalItems: state.items.length
+        totalItems: sectionState.totalRecords ?? state.items.length
       };
     }
   );

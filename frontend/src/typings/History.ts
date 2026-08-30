@@ -1,4 +1,5 @@
 import Language from 'Language/Language';
+import Movie from 'Movie/Movie';
 import { QualityModel } from 'Quality/Quality';
 import CustomFormat from './CustomFormat';
 
@@ -73,6 +74,7 @@ export type HistoryData =
   | DownloadIgnoredHistory;
 
 export default interface History {
+  movie?: Movie;
   movieId: number;
   sourceTitle: string;
   languages: Language[];

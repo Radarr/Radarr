@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 import { FixedSizeList as List, ListChildComponentProps } from 'react-window';
+import { useDebouncedCallback } from 'use-debounce';
 import TextInput from 'Components/Form/TextInput';
 import Button from 'Components/Link/Button';
 import ModalBody from 'Components/Modal/ModalBody';
@@ -23,6 +24,7 @@ import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import dimensions from 'Styles/Variables/dimensions';
 import { InputChanged } from 'typings/inputs';
 import sortByProp from 'Utilities/Array/sortByProp';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import translate from 'Utilities/String/translate';
 import SelectMovieModalTableHeader from './SelectMovieModalTableHeader';
 import SelectMovieRow from './SelectMovieRow';
@@ -105,6 +107,8 @@ function SelectMovieModalContent(props: SelectMovieModalContentProps) {
   const listRef = useRef<List<RowItemData>>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const allMovies: Movie[] = useSelector(createAllMoviesSelector());
+  const [remoteMovies, setRemoteMovies] = useState<Movie[]>([]);
+  const abortRequest = useRef<(() => void) | null>(null);
   const [filter, setFilter] = useState('');
   const [size, setSize] = useState({ width: 0, height: 0 });
   const windowHeight = window.innerHeight;
@@ -146,25 +150,56 @@ function SelectMovieModalContent(props: SelectMovieModalContentProps) {
     };
   }, [listRef, scrollerRef]);
 
+  const searchMovies = useDebouncedCallback((term: string) => {
+    abortRequest.current?.();
+
+    const ajaxRequest = createAjaxRequest({
+      url: term.trim() ? '/movie/search' : '/movie/page',
+      data: term.trim()
+        ? { term, limit: 20 }
+        : { page: 1, pageSize: 100, sortKey: 'sortTitle' },
+    });
+
+    abortRequest.current = ajaxRequest.abortRequest;
+    ajaxRequest.request.done((response: Movie[] | { records: Movie[] }) => {
+      setRemoteMovies(Array.isArray(response) ? response : response.records);
+    });
+  }, 250);
+
+  useEffect(() => {
+    searchMovies('');
+
+    return () => {
+      abortRequest.current?.();
+      searchMovies.cancel();
+    };
+  }, [searchMovies]);
+
   const onFilterChange = useCallback(
     ({ value }: InputChanged<string>) => {
       setFilter(value);
+      searchMovies(value);
     },
-    [setFilter]
+    [searchMovies]
   );
+
+  const sortedMovies = useMemo(() => {
+    const movies = new Map<number, Movie>();
+
+    [...allMovies, ...remoteMovies].forEach((movie) => {
+      movies.set(movie.id, movie);
+    });
+
+    return Array.from(movies.values()).sort(sortByProp('sortTitle'));
+  }, [allMovies, remoteMovies]);
 
   const onMovieSelectWrapper = useCallback(
     (movieId: number) => {
-      const movie = allMovies.find((s) => s.id === movieId) as Movie;
+      const movie = sortedMovies.find((item) => item.id === movieId) as Movie;
 
       onMovieSelect(movie);
     },
-    [allMovies, onMovieSelect]
-  );
-
-  const sortedMovies = useMemo(
-    () => [...allMovies].sort(sortByProp('sortTitle')),
-    [allMovies]
+    [sortedMovies, onMovieSelect]
   );
 
   const items = useMemo(

@@ -11,7 +11,6 @@ import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguages from 'Movie/MovieLanguages';
 import MovieQuality from 'Movie/MovieQuality';
 import MovieTitleLink from 'Movie/MovieTitleLink';
-import useMovie from 'Movie/useMovie';
 import { removeBlocklistItem } from 'Store/Actions/blocklistActions';
 import Blocklist from 'typings/Blocklist';
 import { SelectStateInputProps } from 'typings/props';
@@ -28,7 +27,7 @@ interface BlocklistRowProps extends Blocklist {
 function BlocklistRow(props: BlocklistRowProps) {
   const {
     id,
-    movieId,
+    movie,
     sourceTitle,
     languages,
     quality,
@@ -42,7 +41,6 @@ function BlocklistRow(props: BlocklistRowProps) {
     onSelectedChange,
   } = props;
 
-  const movie = useMovie(movieId);
   const dispatch = useDispatch();
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
@@ -57,10 +55,6 @@ function BlocklistRow(props: BlocklistRowProps) {
   const handleRemovePress = useCallback(() => {
     dispatch(removeBlocklistItem({ id }));
   }, [id, dispatch]);
-
-  if (!movie) {
-    return null;
-  }
 
   return (
     <TableRow>

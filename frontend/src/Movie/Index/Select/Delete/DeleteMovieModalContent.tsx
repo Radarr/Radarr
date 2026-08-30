@@ -40,9 +40,9 @@ function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
   const [deleteFiles, setDeleteFiles] = useState(false);
 
   const movies = useMemo((): Movie[] => {
-    const movies = movieIds.map((id) => {
-      return allMovies.find((s) => s.id === id);
-    }) as Movie[];
+    const movies = movieIds
+      .map((id) => allMovies.find((movie) => movie.id === id))
+      .filter((movie): movie is Movie => movie != null);
 
     return orderBy(movies, ['sortTitle']);
   }, [movieIds, allMovies]);
@@ -106,7 +106,7 @@ function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {movies.length > 1
+        {movieIds.length > 1
           ? translate('DeleteSelectedMovies')
           : translate('DeleteSelectedMovie')}
       </ModalHeader>
@@ -127,7 +127,7 @@ function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
 
           <FormGroup>
             <FormLabel>
-              {movies.length > 1
+              {movieIds.length > 1
                 ? translate('DeleteMovieFolders')
                 : translate('DeleteMovieFolder')}
             </FormLabel>
@@ -137,7 +137,7 @@ function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
               name="deleteFiles"
               value={deleteFiles}
               helpText={
-                movies.length > 1
+                movieIds.length > 1
                   ? translate('DeleteMovieFoldersHelpText')
                   : translate('DeleteMovieFolderHelpText')
               }
@@ -150,10 +150,10 @@ function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
         <div className={styles.message}>
           {deleteFiles
             ? translate('DeleteMovieFolderCountWithFilesConfirmation', {
-                count: movies.length,
+                count: movieIds.length,
               })
             : translate('DeleteMovieFolderCountConfirmation', {
-                count: movies.length,
+                count: movieIds.length,
               })}
         </div>
 

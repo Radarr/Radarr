@@ -16,7 +16,6 @@ import TablePager from 'Components/Table/TablePager';
 import usePaging from 'Components/Table/usePaging';
 import useCurrentPage from 'Helpers/Hooks/useCurrentPage';
 import { align, icons, kinds } from 'Helpers/Props';
-import createMoviesFetchingSelector from 'Movie/createMoviesFetchingSelector';
 import {
   clearHistory,
   fetchHistory,
@@ -54,15 +53,12 @@ function History() {
     totalRecords,
   } = useSelector((state: AppState) => state.history);
 
-  const { isMoviesFetching, isMoviesPopulated, moviesError } = useSelector(
-    createMoviesFetchingSelector()
-  );
   const customFilters = useSelector(createCustomFiltersSelector('history'));
   const dispatch = useDispatch();
 
-  const isFetchingAny = isFetching || isMoviesFetching;
-  const isAllPopulated = isPopulated && (isMoviesPopulated || !items.length);
-  const hasError = error || moviesError;
+  const isFetchingAny = isFetching;
+  const isAllPopulated = isPopulated;
+  const hasError = error;
 
   const {
     handleFirstPagePress,

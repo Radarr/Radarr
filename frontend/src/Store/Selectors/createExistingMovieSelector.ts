@@ -6,9 +6,13 @@ import createAllMoviesSelector from './createAllMoviesSelector';
 function createExistingMovieSelector() {
   return createSelector(
     (_: AppState, { tmdbId }: { tmdbId: number }) => tmdbId,
+    (_: AppState, { internalId }: { internalId?: number }) => internalId,
+    (state: AppState) => state.movies.facets.tmdbIds,
     createAllMoviesSelector(),
-    (tmdbId, movies) => {
-      return some(movies, { tmdbId });
+    (tmdbId, internalId, tmdbIds = [], movies) => {
+      return (
+        !!internalId || tmdbIds.includes(tmdbId) || some(movies, { tmdbId })
+      );
     }
   );
 }

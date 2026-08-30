@@ -24,7 +24,7 @@ function MovieIndexRefreshMovieButton(
     createCommandExecutingSelector(REFRESH_MOVIE)
   );
   const {
-    items,
+    allIds,
     totalItems,
   }: MoviesAppState & MovieIndexAppState & ClientSideCollectionAppState =
     useSelector(createMovieClientSideCollectionItemsSelector('movieIndex'));
@@ -39,9 +39,7 @@ function MovieIndexRefreshMovieButton(
   }, [selectedState]);
 
   const moviesToRefresh =
-    isSelectMode && selectedMovieIds.length > 0
-      ? selectedMovieIds
-      : items.map((m) => m.id);
+    isSelectMode && selectedMovieIds.length > 0 ? selectedMovieIds : allIds;
 
   const refreshIndexLabel =
     selectedFilterKey === 'all'

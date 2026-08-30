@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -165,6 +166,108 @@ namespace Radarr.Api.V3.Movies
             }
 
             return moviesResources;
+        }
+
+        [HttpGet("page")]
+        [Produces("application/json")]
+        public MoviePagingResource GetMoviePage([FromQuery] PagingRequestResource paging, [FromQuery] string filters = null, int? languageId = null)
+        {
+            return MovieQueryService.Page(AllMovie(null, false, languageId), paging, filters);
+        }
+
+        [HttpGet("facets")]
+        [Produces("application/json")]
+        public MovieFacetResource GetMovieFacets(int? languageId = null)
+        {
+            return MovieQueryService.CreateFacets(AllMovie(null, true, languageId));
+        }
+
+        [HttpGet("slug/{titleSlug}")]
+        [Produces("application/json")]
+        public ActionResult<MovieDetailsResource> GetMovieBySlug(string titleSlug)
+        {
+            if (!int.TryParse(titleSlug, out var tmdbId))
+            {
+                return NotFound();
+            }
+
+            var movie = _moviesService.FindByTmdbId(tmdbId);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            var movies = AllMovie(null).OrderBy(item => item.SortTitle).ThenBy(item => item.Id).ToList();
+            var index = movies.FindIndex(item => item.Id == movie.Id);
+            var previous = movies[(index - 1 + movies.Count) % movies.Count];
+            var next = movies[(index + 1) % movies.Count];
+
+            return new MovieDetailsResource
+            {
+                Movie = movies[index],
+                PreviousMovie = new MovieLinkResource { Title = previous.Title, TitleSlug = previous.TitleSlug },
+                NextMovie = new MovieLinkResource { Title = next.Title, TitleSlug = next.TitleSlug }
+            };
+        }
+
+        [HttpGet("search")]
+        [Produces("application/json")]
+        public List<MovieResource> SearchMovies([FromQuery] string term, [FromQuery] int limit = 10)
+        {
+            if (term.IsNullOrWhiteSpace())
+            {
+                return new List<MovieResource>();
+            }
+
+            limit = Math.Clamp(limit, 1, 20);
+            var normalized = term.Trim();
+
+            return AllMovie(null, false)
+                .Select(movie => new
+                {
+                    Movie = movie,
+                    Score = GetSearchScore(movie, normalized)
+                })
+                .Where(result => result.Score > 0)
+                .OrderByDescending(result => result.Score)
+                .ThenBy(result => result.Movie.SortTitle)
+                .Take(limit)
+                .Select(result => result.Movie)
+                .ToList();
+        }
+
+        private static int GetSearchScore(MovieResource movie, string term)
+        {
+            var candidates = new[]
+                {
+                    movie.Title,
+                    movie.OriginalTitle,
+                    movie.Year.ToString(),
+                    movie.TmdbId.ToString(),
+                    movie.ImdbId
+                }
+                .Concat(movie.AlternateTitles?.Select(title => title.Title) ?? Enumerable.Empty<string>());
+
+            var score = 0;
+
+            foreach (var candidate in candidates.Where(candidate => candidate.IsNotNullOrWhiteSpace()))
+            {
+                if (candidate.Equals(term, StringComparison.OrdinalIgnoreCase))
+                {
+                    score = Math.Max(score, 100);
+                }
+                else if (candidate.StartsWith(term, StringComparison.OrdinalIgnoreCase))
+                {
+                    score = Math.Max(score, 75);
+                }
+                else if (candidate.Contains(term, StringComparison.OrdinalIgnoreCase))
+                {
+                    score = Math.Max(score, 50);
+                }
+            }
+
+            return score;
         }
 
         protected override MovieResource GetResourceById(int id)

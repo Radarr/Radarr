@@ -8,9 +8,10 @@ function createMovieCountSelector() {
     (state: AppState) => state.movies.error,
     (state: AppState) => state.movies.isFetching,
     (state: AppState) => state.movies.isPopulated,
-    (movies, error, isFetching, isPopulated) => {
+    (state: AppState) => state.movies.totalRecords,
+    (movies, error, isFetching, isPopulated, totalRecords) => {
       return {
-        count: movies.length,
+        count: totalRecords || movies.length,
         error,
         isFetching,
         isPopulated,

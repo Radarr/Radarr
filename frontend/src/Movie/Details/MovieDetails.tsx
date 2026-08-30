@@ -153,9 +153,21 @@ function createMovieCreditsSelector() {
 
 interface MovieDetailsProps {
   movieId: number;
+  previousMovie?: {
+    title: string;
+    titleSlug: string;
+  };
+  nextMovie?: {
+    title: string;
+    titleSlug: string;
+  };
 }
 
-function MovieDetails({ movieId }: MovieDetailsProps) {
+function MovieDetails({
+  movieId,
+  previousMovie: requestedPreviousMovie,
+  nextMovie: requestedNextMovie,
+}: MovieDetailsProps) {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -226,6 +238,13 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
   }, [movieId, commands]);
 
   const { nextMovie, previousMovie } = useMemo(() => {
+    if (requestedNextMovie && requestedPreviousMovie) {
+      return {
+        nextMovie: requestedNextMovie,
+        previousMovie: requestedPreviousMovie,
+      };
+    }
+
     const sortedMovies = [...allMovies].sort(sortByProp('sortTitle'));
     const movieIndex = sortedMovies.findIndex((movie) => movie.id === movieId);
 
@@ -250,7 +269,7 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
         titleSlug: previousMovie.titleSlug,
       },
     };
-  }, [movieId, allMovies]);
+  }, [movieId, allMovies, requestedNextMovie, requestedPreviousMovie]);
 
   const touchStart = useRef<number | null>(null);
   const [isOrganizeModalOpen, setIsOrganizeModalOpen] = useState(false);

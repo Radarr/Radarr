@@ -24,6 +24,7 @@ namespace Radarr.Api.V3.Movies
         private readonly IMapCoversToLocal _coverMapper;
         private readonly IConfigService _configService;
         private readonly IImportListExclusionService _importListExclusionService;
+        private readonly IMovieService _movieService;
 
         public MovieLookupController(ISearchForNewMovie searchProxy,
                                  IProvideMovieInfo movieInfo,
@@ -31,7 +32,8 @@ namespace Radarr.Api.V3.Movies
                                  INamingConfigService namingService,
                                  IMapCoversToLocal coverMapper,
                                  IConfigService configService,
-                                 IImportListExclusionService importListExclusionService)
+                                 IImportListExclusionService importListExclusionService,
+                                 IMovieService movieService)
         {
             _movieInfo = movieInfo;
             _searchProxy = searchProxy;
@@ -40,6 +42,7 @@ namespace Radarr.Api.V3.Movies
             _coverMapper = coverMapper;
             _configService = configService;
             _importListExclusionService = importListExclusionService;
+            _movieService = movieService;
         }
 
         [NonAction]
@@ -60,7 +63,7 @@ namespace Radarr.Api.V3.Movies
             var availDelay = _configService.AvailabilityDelay;
             var result = new Movie { MovieMetadata = _movieInfo.GetMovieInfo(tmdbId).Item1 };
             var translation = result.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
-            return result.ToResource(availDelay, translation);
+            return MapExistingMovie(result.ToResource(availDelay, translation));
         }
 
         [HttpGet("imdb")]
@@ -71,7 +74,7 @@ namespace Radarr.Api.V3.Movies
 
             var availDelay = _configService.AvailabilityDelay;
             var translation = result.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
-            return result.ToResource(availDelay, translation);
+            return MapExistingMovie(result.ToResource(availDelay, translation));
         }
 
         [HttpGet]
@@ -95,6 +98,7 @@ namespace Radarr.Api.V3.Movies
             {
                 var translation = currentMovie.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == movieInfoLanguage);
                 var resource = currentMovie.ToResource(availDelay, translation);
+                MapExistingMovie(resource);
 
                 _coverMapper.ConvertToLocalUrls(resource.Id, resource.Images);
 
@@ -110,6 +114,18 @@ namespace Radarr.Api.V3.Movies
 
                 yield return resource;
             }
+        }
+
+        private MovieResource MapExistingMovie(MovieResource resource)
+        {
+            var existingMovie = _movieService.FindByTmdbId(resource.TmdbId);
+
+            if (existingMovie != null)
+            {
+                resource.Id = existingMovie.Id;
+            }
+
+            return resource;
         }
     }
 }

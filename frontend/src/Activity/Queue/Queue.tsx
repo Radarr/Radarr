@@ -26,7 +26,6 @@ import usePaging from 'Components/Table/usePaging';
 import useCurrentPage from 'Helpers/Hooks/useCurrentPage';
 import useSelectState from 'Helpers/Hooks/useSelectState';
 import { align, icons, kinds } from 'Helpers/Props';
-import createMoviesFetchingSelector from 'Movie/createMoviesFetchingSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
 import {
   clearQueue,
@@ -78,9 +77,6 @@ function Queue() {
   } = useSelector((state: AppState) => state.queue.paged);
 
   const { count } = useSelector(createQueueStatusSelector());
-  const { isMoviesFetching, isMoviesPopulated, moviesError } = useSelector(
-    createMoviesFetchingSelector()
-  );
   const customFilters = useSelector(createCustomFiltersSelector('queue'));
 
   const isRefreshMonitoredDownloadsExecuting = useSelector(
@@ -106,12 +102,9 @@ function Queue() {
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] =
     useState(false);
 
-  const isRefreshing =
-    isFetching || isMoviesFetching || isRefreshMonitoredDownloadsExecuting;
-  const isAllPopulated =
-    isPopulated &&
-    (isMoviesPopulated || !items.length || items.every((m) => !m.movieId));
-  const hasError = error || moviesError;
+  const isRefreshing = isFetching || isRefreshMonitoredDownloadsExecuting;
+  const isAllPopulated = isPopulated;
+  const hasError = error;
   const selectedCount = selectedIds.length;
   const disableSelectedActions = selectedCount === 0;
 
@@ -268,7 +261,6 @@ function Queue() {
                   return (
                     <QueueRow
                       key={item.id}
-                      movieId={item.movieId}
                       isSelected={selectedState[item.id]}
                       columns={columns}
                       {...item}

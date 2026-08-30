@@ -4,9 +4,11 @@ import createAllMoviesSelector from './createAllMoviesSelector';
 function createCollectionExistingMovieSelector() {
   return createSelector(
     (state, { tmdbId }) => tmdbId,
+    (state, props) => props,
     createAllMoviesSelector(),
-    (tmdbId, allMovies) => {
-      return allMovies.find((movie) => movie.tmdbId === tmdbId);
+    (tmdbId, props, allMovies) => {
+      return allMovies.find((movie) => movie.tmdbId === tmdbId) ||
+        (props.id ? props : undefined);
     }
   );
 }

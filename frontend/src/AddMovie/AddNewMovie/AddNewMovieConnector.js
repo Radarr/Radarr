@@ -14,7 +14,7 @@ import AddNewMovie from './AddNewMovie';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.addMovie,
-    (state) => state.movies.items.length,
+    (state) => state.movies.totalRecords,
     (state) => state.router.location,
     (addMovie, existingMoviesCount, location) => {
       const { params } = parseUrl(location.search);

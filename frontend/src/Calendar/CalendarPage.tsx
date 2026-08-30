@@ -13,7 +13,6 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import useMeasure from 'Helpers/Hooks/useMeasure';
 import { align, icons } from 'Helpers/Props';
-import NoMovie from 'Movie/NoMovie';
 import {
   searchMissing,
   setCalendarDaysCount,
@@ -23,7 +22,6 @@ import { executeCommand } from 'Store/Actions/commandActions';
 import { createCustomFiltersSelector } from 'Store/Selectors/createClientSideCollectionSelector';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
-import createMovieCountSelector from 'Store/Selectors/createMovieCountSelector';
 import { isCommandExecuting } from 'Utilities/Command';
 import isBefore from 'Utilities/Date/isBefore';
 import translate from 'Utilities/String/translate';
@@ -95,15 +93,12 @@ function CalendarPage() {
     createCommandExecutingSelector(commandNames.RSS_SYNC)
   );
   const customFilters = useSelector(createCustomFiltersSelector('calendar'));
-  const hasMovies = !!useSelector(createMovieCountSelector());
 
   const [pageContentRef, { width }] = useMeasure();
   const [isCalendarLinkModalOpen, setIsCalendarLinkModalOpen] = useState(false);
   const [isOptionsModalOpen, setIsOptionsModalOpen] = useState(false);
 
   const isMeasured = width > 0;
-  const PageComponent = hasMovies ? Calendar : NoMovie;
-
   const handleGetCalendarLinkPress = useCallback(() => {
     setIsCalendarLinkModalOpen(true);
   }, []);
@@ -189,7 +184,7 @@ function CalendarPage() {
 
           <FilterMenu
             alignMenu={align.RIGHT}
-            isDisabled={!hasMovies}
+            isDisabled={false}
             selectedFilterKey={selectedFilterKey}
             filters={filters}
             customFilters={customFilters}
@@ -204,8 +199,8 @@ function CalendarPage() {
         className={styles.calendarPageBody}
         innerClassName={styles.calendarInnerPageBody}
       >
-        {isMeasured ? <PageComponent totalItems={0} /> : <div />}
-        {hasMovies && <Legend />}
+        {isMeasured ? <Calendar /> : <div />}
+        <Legend />
       </PageContentBody>
 
       <CalendarLinkModal

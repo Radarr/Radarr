@@ -140,6 +140,31 @@ namespace NzbDrone.Integration.Test.ApiTests
 
         [Test]
         [Order(2)]
+        public void get_paged_movies_without_changing_the_existing_contract()
+        {
+            EnsureMovie(680, "Pulp Fiction");
+            EnsureMovie(155, "The Dark Knight");
+
+            var page = Movies.Page(1, 1);
+
+            page.Records.Should().HaveCount(1);
+            page.PageSize.Should().Be(1);
+            page.TotalRecords.Should().BeGreaterThanOrEqualTo(2);
+            Movies.All().Should().Contain(v => v.TmdbId == 680).And.Contain(v => v.TmdbId == 155);
+        }
+
+        [Test]
+        [Order(2)]
+        public void search_and_slug_lookup_should_return_existing_movies()
+        {
+            var movie = EnsureMovie(680, "Pulp Fiction");
+
+            Movies.SearchExisting("Pulp").Should().ContainSingle(v => v.Id == movie.Id);
+            Movies.GetBySlug(movie.TitleSlug).Movie.Id.Should().Be(movie.Id);
+        }
+
+        [Test]
+        [Order(2)]
         public void get_movie_by_tmdbid()
         {
             EnsureMovie(680, "Pulp Fiction");

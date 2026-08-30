@@ -22,7 +22,7 @@ interface MovieIndexSearchButtonProps {
 function MovieIndexSearchButton(props: MovieIndexSearchButtonProps) {
   const isSearching = useSelector(createCommandExecutingSelector(MOVIE_SEARCH));
   const {
-    items,
+    allIds,
   }: MoviesAppState & MovieIndexAppState & ClientSideCollectionAppState =
     useSelector(createMovieClientSideCollectionItemsSelector('movieIndex'));
 
@@ -38,9 +38,7 @@ function MovieIndexSearchButton(props: MovieIndexSearchButtonProps) {
   }, [selectedState]);
 
   const moviesToSearch =
-    isSelectMode && selectedMovieIds.length > 0
-      ? selectedMovieIds
-      : items.map((m) => m.id);
+    isSelectMode && selectedMovieIds.length > 0 ? selectedMovieIds : allIds;
 
   const searchIndexLabel =
     selectedFilterKey === 'all'
@@ -76,7 +74,7 @@ function MovieIndexSearchButton(props: MovieIndexSearchButtonProps) {
       <PageToolbarButton
         label={isSelectMode ? searchSelectLabel : searchIndexLabel}
         isSpinning={isSearching}
-        isDisabled={!items.length}
+        isDisabled={!allIds.length}
         iconName={icons.SEARCH}
         onPress={moviesToSearch.length > 5 ? onConfirmPress : onPress}
       />
