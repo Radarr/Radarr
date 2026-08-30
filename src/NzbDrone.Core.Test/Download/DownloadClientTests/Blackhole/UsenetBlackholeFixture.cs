@@ -12,6 +12,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.Blackhole;
+using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Test.Common;
 
@@ -125,6 +126,21 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             Mocker.GetMock<IHttpClient>().Verify(c => c.GetAsync(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Once());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_filePath), Times.Once());
             Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
+        public void Download_should_wrap_invalid_nzb_as_invalid_download_file()
+        {
+            var remoteMovie = CreateRemoteMovie();
+
+            Mocker.GetMock<IValidateNzbs>()
+                .Setup(v => v.Validate(It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Throws(new InvalidNzbException("Invalid NZB"));
+
+            var exception = Assert.ThrowsAsync<InvalidDownloadFileException>(async () => await Subject.Download(remoteMovie, CreateIndexer()));
+
+            exception.InnerException.Should().BeOfType<InvalidNzbException>();
+            Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(It.IsAny<string>()), Times.Never());
         }
 
         [Test]

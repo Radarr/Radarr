@@ -84,7 +84,14 @@ namespace NzbDrone.Core.Download
                 throw new ReleaseDownloadException(remoteMovie.Release, "Downloading nzb failed", ex);
             }
 
-            _nzbValidationService.Validate(filename, nzbData);
+            try
+            {
+                _nzbValidationService.Validate(filename, nzbData);
+            }
+            catch (InvalidNzbException ex)
+            {
+                throw new InvalidDownloadFileException(remoteMovie.Release, "Indexer returned an invalid NZB file", ex);
+            }
 
             _logger.Info("Adding report [{0}] to the queue.", remoteMovie.Release.Title);
             return AddFromNzbFile(remoteMovie, filename, nzbData);

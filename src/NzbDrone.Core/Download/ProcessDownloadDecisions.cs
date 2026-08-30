@@ -47,10 +47,12 @@ namespace NzbDrone.Core.Download
 
             var usenetFailed = false;
             var torrentFailed = false;
+            var failedIndexers = new HashSet<int>();
 
             foreach (var report in prioritizedDecisions)
             {
                 var downloadProtocol = report.RemoteMovie.Release.DownloadProtocol;
+                var indexerId = report.RemoteMovie.Release.IndexerId;
 
                 // Skip if already grabbed
                 if (IsMovieProcessed(grabbed, report))
@@ -61,6 +63,12 @@ namespace NzbDrone.Core.Download
                 if (report.TemporarilyRejected)
                 {
                     PreparePending(pendingAddQueue, grabbed, pending, report, PendingReleaseReason.Delay);
+                    continue;
+                }
+
+                if (indexerId > 0 && failedIndexers.Contains(indexerId))
+                {
+                    rejected.Add(report);
                     continue;
                 }
 
@@ -104,6 +112,18 @@ namespace NzbDrone.Core.Download
                             else if (downloadProtocol == DownloadProtocol.Torrent)
                             {
                                 torrentFailed = true;
+                            }
+
+                            break;
+                        }
+
+                    case ProcessedDecisionResult.IndexerFailed:
+                        {
+                            rejected.Add(report);
+
+                            if (indexerId > 0)
+                            {
+                                failedIndexers.Add(indexerId);
                             }
 
                             break;
@@ -207,6 +227,11 @@ namespace NzbDrone.Core.Download
             {
                 _logger.Warn("Failed to download release '{0}' from Indexer {1}. Release not available", remoteMovie, remoteIndexer);
                 return ProcessedDecisionResult.Rejected;
+            }
+            catch (InvalidDownloadFileException ex)
+            {
+                _logger.Warn(ex, "Indexer {0} returned an invalid download file for release '{1}', skipping remaining releases from this indexer.", remoteIndexer, remoteMovie);
+                return ProcessedDecisionResult.IndexerFailed;
             }
             catch (Exception ex)
             {

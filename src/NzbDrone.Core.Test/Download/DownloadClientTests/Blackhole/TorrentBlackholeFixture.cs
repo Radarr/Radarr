@@ -157,6 +157,21 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         }
 
         [Test]
+        public void Download_should_wrap_invalid_torrent_as_invalid_download_file()
+        {
+            var remoteMovie = CreateRemoteMovie();
+
+            Mocker.GetMock<ITorrentFileInfoReader>()
+                .Setup(c => c.GetHashFromTorrentFile(It.IsAny<byte[]>()))
+                .Throws(new InvalidDataException("Invalid torrent"));
+
+            var exception = Assert.ThrowsAsync<InvalidDownloadFileException>(async () => await Subject.Download(remoteMovie, CreateIndexer()));
+
+            exception.InnerException.Should().BeOfType<InvalidDataException>();
+            Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
         public async Task Download_should_save_magnet_if_enabled()
         {
             GivenMagnetFilePath();

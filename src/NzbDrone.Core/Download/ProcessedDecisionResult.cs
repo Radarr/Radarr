@@ -6,6 +6,7 @@ namespace NzbDrone.Core.Download
         Pending,
         Rejected,
         Failed,
+        IndexerFailed,
         Skipped
     }
 }

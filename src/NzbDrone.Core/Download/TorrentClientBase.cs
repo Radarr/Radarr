@@ -197,7 +197,16 @@ namespace NzbDrone.Core.Download
             }
 
             var filename = string.Format("{0}.torrent", FileNameBuilder.CleanFileName(remoteMovie.Release.Title));
-            var hash = _torrentFileInfoReader.GetHashFromTorrentFile(torrentFile);
+            string hash;
+
+            try
+            {
+                hash = _torrentFileInfoReader.GetHashFromTorrentFile(torrentFile);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidDownloadFileException(remoteMovie.Release, "Indexer returned an invalid torrent file", ex);
+            }
 
             EnsureReleaseIsNotBlocklisted(remoteMovie, indexer, hash);
 

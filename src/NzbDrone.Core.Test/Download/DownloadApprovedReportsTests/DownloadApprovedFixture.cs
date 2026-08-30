@@ -286,5 +286,40 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
 
             ExceptionVerification.ExpectedWarns(1);
         }
+
+        [Test]
+        public async Task should_skip_remaining_releases_from_indexer_after_invalid_download_file()
+        {
+            var failedRelease = GetRemoteMovie(new QualityModel(Quality.HDTV720p), GetMovie(1));
+            var skippedRelease = GetRemoteMovie(new QualityModel(Quality.HDTV720p), GetMovie(2));
+            var otherIndexerRelease = GetRemoteMovie(new QualityModel(Quality.HDTV720p), GetMovie(3));
+
+            failedRelease.Release.IndexerId = 1;
+            skippedRelease.Release.IndexerId = 1;
+            otherIndexerRelease.Release.IndexerId = 2;
+
+            var decisions = new List<DownloadDecision>
+            {
+                new DownloadDecision(failedRelease),
+                new DownloadDecision(skippedRelease),
+                new DownloadDecision(otherIndexerRelease)
+            };
+
+            Mocker.GetMock<IDownloadService>()
+                  .Setup(s => s.DownloadReport(It.Is<RemoteMovie>(r => r.Release.IndexerId == 1), null))
+                  .Throws(new InvalidDownloadFileException(failedRelease.Release, "Invalid NZB", new InvalidNzbException("Invalid NZB")));
+
+            var result = await Subject.ProcessDecisions(decisions);
+
+            Mocker.GetMock<IDownloadService>()
+                  .Verify(v => v.DownloadReport(It.Is<RemoteMovie>(r => r.Release.IndexerId == 1), null), Times.Once());
+            Mocker.GetMock<IDownloadService>()
+                  .Verify(v => v.DownloadReport(It.Is<RemoteMovie>(r => r.Release.IndexerId == 2), null), Times.Once());
+
+            result.Grabbed.Should().ContainSingle();
+            result.Rejected.Should().HaveCount(2);
+
+            ExceptionVerification.ExpectedWarns(1);
+        }
     }
 }
