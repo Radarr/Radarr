@@ -5,13 +5,11 @@ using DryIoc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.HostFiltering;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using NLog.Extensions.Logging;
 using NzbDrone.Common.EnvironmentInfo;
@@ -53,6 +51,8 @@ namespace NzbDrone.Host
                 b.ClearProviders();
                 b.SetMinimumLevel(LogLevel.Trace);
                 b.AddFilter("Microsoft.AspNetCore", LogLevel.Warning);
+                b.AddFilter("Microsoft.AspNetCore.HostFiltering", LogLevel.Information);
+                b.AddFilter("Microsoft.AspNetCore.HttpOverrides", LogLevel.Debug);
                 b.AddFilter("Radarr.Http.Authentication.ApiKeyAuthenticationHandler", LogLevel.Information);
                 b.AddFilter("Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager", LogLevel.Error);
                 b.AddNLog();
@@ -64,8 +64,6 @@ namespace NzbDrone.Host
             services.AddRouting(options => options.LowercaseUrls = true);
 
             services.AddResponseCompression(options => options.EnableForHttps = true);
-
-            services.AddSingleton<IConfigureOptions<HostFilteringOptions>, ConfigureHostFilteringOptions>();
 
             services.AddCors(options =>
             {
