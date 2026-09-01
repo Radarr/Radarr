@@ -2054,5 +2054,10 @@
     "Saturday": "Samstag",
     "Thursday": "Donnerstag",
     "Tuesday": "Dienstag",
-    "Wednesday": "Mittwoch"
+    "Wednesday": "Mittwoch",
+    "AllowedHosts": "Erlaubte Hosts",
+    "AllowedHostsHelpText": "Kommagetrennte Liste von Hostnamen und IP Adressen, von denen {appName} Anfragen akzeptiert. Verwende \"*\" als Wildcard für Subdomänen. Leer lassen, um alle Hosts zu erlauben.",
+    "AllowedHostsNotConfiguredHealthCheckMessage": "Erlaubte Hosts sind nicht konfiguriert, {appName} wird Anfragen von jedem beliebigen Host akzeptieren. Setze Erlaubte Hosts unter allgemeine Einstellungen, um festzulegen, welche Hostnamen verwendet werden können, um {appName} zu erreichen.",
+    "TrustedNetworks": "Vertrauenswürdige Netzwerke",
+    "TrustedNetworksHelpText": "Kommagetrenne Liste von IP Adressen oder Netzwerken in CIDR Notation, auf denen vertrauenswürdige Reverse Proxys laufen, z.B. 172.17.0.1, 10.0.0.0/8 oder fc00::/7. Fügen Sie nur Proxys hinzu, die so konfiguriert sind, dass sie die korrekten Header senden."
 }
