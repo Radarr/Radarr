@@ -118,7 +118,7 @@ namespace Radarr.Api.V3.Movies
             var translations = _movieTranslationService.GetAllTranslationsForLanguage(configLanguage);
             var tdict = translations.ToDictionaryIgnoreDuplicates(x => x.MovieMetadataId);
 
-            var updatedMovies = _movieService.UpdateMovie(moviesToUpdate, !resource.MoveFiles);
+            var updatedMovies = _movieService.UpdateMovie(moviesToUpdate, !resource.MoveFiles, resource.MoveFiles);
 
             var moviesResources = new List<MovieResource>(updatedMovies.Count);
 
