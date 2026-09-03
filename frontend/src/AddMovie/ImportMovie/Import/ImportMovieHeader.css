@@ -26,6 +26,14 @@
   min-width: 300px;
 }
 
+.renameFolderOnImport {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 1 80px;
+  min-width: 80px;
+  text-align: center;
+}
+
 .detailsIcon {
   margin-left: 8px;
 }

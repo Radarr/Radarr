@@ -1151,6 +1151,7 @@
   "MovieFileRenamedTooltip": "Movie file renamed",
   "MovieFiles": "Movie Files",
   "MovieFilesTotaling": "Movie Files Totaling",
+  "MovieFolder": "Movie Folder",
   "MovieFolderFormat": "Movie Folder Format",
   "MovieFolderFormatHelpText": "Used when adding a new movie or moving movies via the movie editor",
   "MovieFolderFormatHelpTextDeprecatedWarning": "Tokens associated with movie file properties have been deprecated and will no longer be supported in future major versions.",
