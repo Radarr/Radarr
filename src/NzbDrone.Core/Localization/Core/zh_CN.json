@@ -2050,5 +2050,11 @@
     "ImportListsSimklSettingsUserListTypeWatching": "观看中",
     "ImportListsSimklSettingsMovieType": "电影类型",
     "ImportListsSimklSettingsMovieTypeHelpText": "选择你要从中导入的电影类型",
-    "Friday": "星期五"
+    "Friday": "星期五",
+    "TrustedNetworks": "可信网络",
+    "Tuesday": "周二",
+    "AllowedHosts": "允许的主机",
+    "Wednesday": "周三",
+    "Thursday": "周四",
+    "Saturday": "周六"
 }

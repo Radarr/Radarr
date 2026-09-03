@@ -2054,5 +2054,10 @@
     "Saturday": "Szombat",
     "Thursday": "Csütörtök",
     "Tuesday": "Kedd",
-    "Wednesday": "Szerda"
+    "Wednesday": "Szerda",
+    "AllowedHosts": "Engedélyezett hosztok",
+    "AllowedHostsHelpText": "A {appName} által elfogadott hosztnevek és IP-címek vesszővel elválasztott listája. Az aldomainek helyettesítésére használja a „*.” karaktert. Ha üresen hagyja, akkor minden hosztot engedélyez.",
+    "AllowedHostsNotConfiguredHealthCheckMessage": "A „Megengedett hosztok” beállítás nincs konfigurálva, ezért a {appName} bármely hosztnévhez érkező kérést elfogadja. Az „Általános” beállítások között állítsa be a „Megengedett hosztok” beállítást, hogy korlátozza, mely hosztnevekről érhető el a {appName}.",
+    "TrustedNetworks": "Megbízható hálózatok",
+    "TrustedNetworksHelpText": "A megbízható fordított proxy-k által használt IP-címek vagy hálózatok CIDR-jelölésben megadott, vesszővel elválasztott listája. Például: 172.17.0.1, 10.0.0.0/8 vagy fc00::/7. Csak olyan proxy-kat vegyen fel a listára, amelyek megfelelően vannak beállítva a helyes fejlécek küldésére."
 }
