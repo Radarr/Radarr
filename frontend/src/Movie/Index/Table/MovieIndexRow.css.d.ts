@@ -8,6 +8,7 @@ interface CssExports {
   'checkInput': string;
   'collection': string;
   'digitalRelease': string;
+  'downloadStatus': string;
   'externalLinks': string;
   'genres': string;
   'imdbRating': string;

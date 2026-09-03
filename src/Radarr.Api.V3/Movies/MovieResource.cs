@@ -9,6 +9,7 @@ using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Translations;
+using NzbDrone.Core.Queue;
 using Radarr.Api.V3.MovieFiles;
 using Radarr.Http.REST;
 using Swashbuckle.AspNetCore.Annotations;
@@ -85,6 +86,7 @@ namespace Radarr.Api.V3.Movies
         public float Popularity { get; set; }
         public DateTime? LastSearchTime { get; set; }
         public MovieStatisticsResource Statistics { get; set; }
+        public string DownloadStatus { get; set; }
 
         // Hiding this so people don't think its usable (only used to set the initial state)
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
@@ -99,7 +101,7 @@ namespace Radarr.Api.V3.Movies
 
     public static class MovieResourceMapper
     {
-        public static MovieResource ToResource(this Movie model, int availDelay, MovieTranslation movieTranslation = null, IUpgradableSpecification upgradableSpecification = null, ICustomFormatCalculationService formatCalculationService = null)
+        public static MovieResource ToResource(this Movie model, int availDelay, MovieTranslation movieTranslation = null, IUpgradableSpecification upgradableSpecification = null, ICustomFormatCalculationService formatCalculationService = null, IQueueService queueService = null)
         {
             if (model == null)
             {
@@ -112,6 +114,20 @@ namespace Radarr.Api.V3.Movies
             var translatedOverview = movieTranslation?.Overview ?? model.MovieMetadata.Value.Overview;
 
             var collection = model.MovieMetadata.Value.CollectionTmdbId > 0 ? new MovieCollectionResource { Title = model.MovieMetadata.Value.CollectionTitle, TmdbId = model.MovieMetadata.Value.CollectionTmdbId } : null;
+
+            var hasMovieFile = movieFile != null;
+            var isAvailable = model.IsAvailable(availDelay);
+
+            var isQueued = queueService?.GetQueue().Any(q => q.Movie?.Id == model.Id) == true;
+            var downloadStatus = (isQueued, hasMovieFile, isAvailable, model.Monitored) switch
+            {
+                (true, _, _, _) => "queue",
+                (_, true, _, true) => "downloaded",
+                (_, true, _, false) => "unmonitored",
+                (_, false, true, false) => "missingUnmonitored",
+                (_, false, true, true) => "missingMonitored",
+                _ => "continuing"
+            };
 
             return new MovieResource
             {
@@ -160,6 +176,7 @@ namespace Radarr.Api.V3.Movies
                 AlternateTitles = model.MovieMetadata.Value.AlternativeTitles.ToResource(),
                 Ratings = model.MovieMetadata.Value.Ratings,
                 MovieFile = movieFile,
+                DownloadStatus = downloadStatus,
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
                 Studio = model.MovieMetadata.Value.Studio,
                 Collection = collection,
@@ -225,9 +242,9 @@ namespace Radarr.Api.V3.Movies
             return movie;
         }
 
-        public static List<MovieResource> ToResource(this IEnumerable<Movie> movies, int availDelay, IUpgradableSpecification upgradableSpecification = null, ICustomFormatCalculationService formatCalculationService = null)
+        public static List<MovieResource> ToResource(this IEnumerable<Movie> movies, int availDelay, IUpgradableSpecification upgradableSpecification = null, ICustomFormatCalculationService formatCalculationService = null, IQueueService queueService = null)
         {
-            return movies.Select(x => ToResource(x, availDelay, null, upgradableSpecification, formatCalculationService)).ToList();
+            return movies.Select(x => ToResource(x, availDelay, null, upgradableSpecification, formatCalculationService, queueService)).ToList();
         }
 
         public static List<Movie> ToModel(this IEnumerable<MovieResource> resources)
