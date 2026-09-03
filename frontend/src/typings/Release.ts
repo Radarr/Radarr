@@ -24,12 +24,18 @@ interface Release {
   mappedMovieId?: number;
   indexerFlags: string[];
   rejections: string[];
+  history?: ReleaseHistory;
   movieRequested: boolean;
   downloadAllowed: boolean;
 
   isGrabbing?: boolean;
   isGrabbed?: boolean;
   grabError?: string;
+}
+
+export interface ReleaseHistory {
+  grabbed: string;
+  failed: string;
 }
 
 export default Release;

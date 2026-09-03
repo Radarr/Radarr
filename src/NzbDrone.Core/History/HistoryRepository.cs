@@ -12,12 +12,13 @@ namespace NzbDrone.Core.History
     public interface IHistoryRepository : IBasicRepository<MovieHistory>
     {
         List<QualityModel> GetBestQualityInHistory(int movieId);
+        MovieHistory MostRecentForMovie(int movieId);
+        List<MovieHistory> FindByMovieId(int movieId);
         MovieHistory MostRecentForDownloadId(string downloadId);
         List<MovieHistory> FindByDownloadId(string downloadId);
         List<MovieHistory> FindDownloadHistory(int movieId, QualityModel quality);
         List<MovieHistory> GetByMovieId(int movieId, MovieHistoryEventType? eventType);
         void DeleteForMovies(List<int> movieIds);
-        MovieHistory MostRecentForMovie(int movieId);
         List<MovieHistory> Since(DateTime date, MovieHistoryEventType? eventType);
         PagingSpec<MovieHistory> GetPaged(PagingSpec<MovieHistory> pagingSpec, int[] languages, int[] qualities);
     }
@@ -34,6 +35,18 @@ namespace NzbDrone.Core.History
             var history = Query(x => x.MovieId == movieId);
 
             return history.Select(h => h.Quality).ToList();
+        }
+
+        public MovieHistory MostRecentForMovie(int movieId)
+        {
+            return Query(x => x.MovieId == movieId).MaxBy(h => h.Date);
+        }
+
+        public List<MovieHistory> FindByMovieId(int movieId)
+        {
+            return Query(h => h.MovieId == movieId)
+                .OrderByDescending(h => h.Date)
+                .ToList();
         }
 
         public MovieHistory MostRecentForDownloadId(string downloadId)
@@ -73,11 +86,6 @@ namespace NzbDrone.Core.History
         public void DeleteForMovies(List<int> movieIds)
         {
             Delete(c => movieIds.Contains(c.MovieId));
-        }
-
-        public MovieHistory MostRecentForMovie(int movieId)
-        {
-            return Query(x => x.MovieId == movieId).MaxBy(h => h.Date);
         }
 
         public List<MovieHistory> Since(DateTime date, MovieHistoryEventType? eventType)
