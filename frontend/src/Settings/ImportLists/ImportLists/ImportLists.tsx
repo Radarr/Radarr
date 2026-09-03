@@ -84,7 +84,11 @@ function ImportLists() {
             );
           })}
 
-          <Card className={styles.addList} onPress={handleAddImportListPress}>
+          <Card
+            className={styles.addList}
+            ariaLabel={translate('AddImportList')}
+            onPress={handleAddImportListPress}
+          >
             <div className={styles.center}>
               <Icon name={icons.ADD} size={45} />
             </div>

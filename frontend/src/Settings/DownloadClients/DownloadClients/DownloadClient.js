@@ -66,6 +66,7 @@ class DownloadClient extends Component {
       <Card
         className={styles.downloadClient}
         overlayContent={true}
+        ariaLabel={translate('EditDownloadClientName', { name })}
         onPress={this.onEditDownloadClientPress}
       >
         <div className={styles.name}>

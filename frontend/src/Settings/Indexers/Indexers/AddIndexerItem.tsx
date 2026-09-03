@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import Card from 'Components/Card';
 import Button from 'Components/Link/Button';
-import Link from 'Components/Link/Link';
 import Menu from 'Components/Menu/Menu';
 import MenuContent from 'Components/Menu/MenuContent';
 import { sizes } from 'Helpers/Props';
@@ -39,49 +39,55 @@ function AddIndexerItem({
 
     onIndexerSelect();
   }, [implementation, implementationName, dispatch, onIndexerSelect]);
+  const addLabel = translate('AddIndexerImplementation', {
+    implementationName,
+  });
 
   return (
-    <div className={styles.indexer}>
-      <Link className={styles.underlay} onPress={handleIndexerSelect} />
+    <Card
+      className={styles.indexer}
+      overlayClassName={styles.overlay}
+      overlayContent={true}
+      ariaLabel={addLabel}
+      title={implementationName}
+      onPress={handleIndexerSelect}
+    >
+      <div className={styles.name}>{implementationName}</div>
 
-      <div className={styles.overlay}>
-        <div className={styles.name}>{implementationName}</div>
+      <div className={styles.actions}>
+        {hasPresets && (
+          <span>
+            <Button size={sizes.SMALL} onPress={handleIndexerSelect}>
+              {translate('Custom')}
+            </Button>
 
-        <div className={styles.actions}>
-          {hasPresets && (
-            <span>
-              <Button size={sizes.SMALL} onPress={handleIndexerSelect}>
-                {translate('Custom')}
+            <Menu className={styles.presetsMenu}>
+              <Button className={styles.presetsMenuButton} size={sizes.SMALL}>
+                {translate('Presets')}
               </Button>
 
-              <Menu className={styles.presetsMenu}>
-                <Button className={styles.presetsMenuButton} size={sizes.SMALL}>
-                  {translate('Presets')}
-                </Button>
+              <MenuContent>
+                {presets.map((preset) => {
+                  return (
+                    <AddIndexerPresetMenuItem
+                      key={preset.name}
+                      name={preset.name}
+                      implementation={implementation}
+                      implementationName={implementationName}
+                      onPress={onIndexerSelect}
+                    />
+                  );
+                })}
+              </MenuContent>
+            </Menu>
+          </span>
+        )}
 
-                <MenuContent>
-                  {presets.map((preset) => {
-                    return (
-                      <AddIndexerPresetMenuItem
-                        key={preset.name}
-                        name={preset.name}
-                        implementation={implementation}
-                        implementationName={implementationName}
-                        onPress={onIndexerSelect}
-                      />
-                    );
-                  })}
-                </MenuContent>
-              </Menu>
-            </span>
-          )}
-
-          <Button to={infoLink} size={sizes.SMALL}>
-            {translate('MoreInfo')}
-          </Button>
-        </div>
+        <Button to={infoLink} size={sizes.SMALL}>
+          {translate('MoreInfo')}
+        </Button>
       </div>
-    </div>
+    </Card>
   );
 }
 
