@@ -93,6 +93,18 @@ const fileDateOptions: EnhancedSelectInputValue<string>[] = [
       return translate('PhysicalReleaseDate');
     },
   },
+  {
+    key: 'first',
+    get value() {
+      return translate('FirstImportedDate');
+    },
+  },
+  {
+    key: 'tracked',
+    get value() {
+      return translate('TrackedDate');
+    },
+  },
 ];
 
 function MediaManagement() {

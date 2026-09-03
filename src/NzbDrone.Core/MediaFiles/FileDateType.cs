@@ -4,6 +4,8 @@
     {
         None = 0,
         Cinemas = 1,
-        Release = 2
+        Release = 2,
+        First = 3,
+        Tracked = 4
     }
 }

@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
@@ -23,16 +24,19 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IDiskProvider _diskProvider;
         private readonly IConfigService _configService;
         private readonly IMediaFileService _mediaFileService;
+        private readonly IHistoryService _historyService;
         private readonly Logger _logger;
 
         public UpdateMovieFileService(IDiskProvider diskProvider,
                                       IConfigService configService,
                                       IMediaFileService mediaFileService,
+                                      IHistoryService historyService,
                                       Logger logger)
         {
             _diskProvider = diskProvider;
             _configService = configService;
             _mediaFileService = mediaFileService;
+            _historyService = historyService;
             _logger = logger;
         }
 
@@ -69,6 +73,17 @@ namespace NzbDrone.Core.MediaFiles
                         }
 
                         return ChangeFileDate(movieFilePath, airDate.Value);
+                    }
+
+                case FileDateType.First:
+                    {
+                        var firstMovieHistory = _historyService.FirstForMovie(movie.Id);
+                        return ChangeFileDate(movieFilePath, firstMovieHistory.Date);
+                    }
+
+                case FileDateType.Tracked:
+                    {
+                        return ChangeFileDate(movieFilePath, movie.Added);
                     }
             }
 
