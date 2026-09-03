@@ -99,10 +99,11 @@ namespace Radarr.Api.V3.Queue
             var trackedDownloadIds = new List<string>();
             var pendingToRemove = new List<NzbDrone.Core.Queue.Queue>();
             var trackedToRemove = new List<TrackedDownload>();
+            var pendingById = _pendingReleaseService.GetPendingQueue().ToDictionary(p => p.Id);
 
             foreach (var id in resource.Ids)
             {
-                var pendingRelease = _pendingReleaseService.FindPendingQueueItem(id);
+                pendingById.TryGetValue(id, out var pendingRelease);
 
                 if (pendingRelease != null)
                 {
