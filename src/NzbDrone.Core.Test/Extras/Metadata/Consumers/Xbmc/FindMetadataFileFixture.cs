@@ -61,5 +61,18 @@ namespace NzbDrone.Core.Test.Extras.Metadata.Consumers.Xbmc
             Mocker.GetMock<IDetectXbmcNfo>()
                   .Verify(v => v.IsXbmcNfoFile(It.IsAny<string>()), Times.Once());
         }
+
+        [TestCase("theme.mp3", MetadataType.MovieTheme)]
+        [TestCase("theme.mpa", MetadataType.MovieTheme)]
+        [TestCase("Theme.x-flac", MetadataType.MovieTheme)]
+        public void should_return_expected_metadata_type(string fileName, MetadataType metadataType)
+        {
+            var path = Path.Combine(_movie.Path, fileName.AsOsAgnostic());
+
+            var metadataFile = Subject.FindMetadataFile(_movie, path);
+
+            metadataFile.Should().NotBeNull();
+            metadataFile.Type.Should().Be(metadataType);
+        }
     }
 }
