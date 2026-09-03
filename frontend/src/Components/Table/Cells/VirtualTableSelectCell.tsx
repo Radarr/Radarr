@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import CheckInput from 'Components/Form/CheckInput';
 import { CheckInputChanged } from 'typings/inputs';
 import { SelectStateInputProps } from 'typings/props';
+import translate from 'Utilities/String/translate';
 import VirtualTableRowCell, {
   VirtualTableRowCellProps,
 } from './VirtualTableRowCell';
@@ -35,6 +36,7 @@ function VirtualTableSelectCell({
       <CheckInput
         className={inputClassName}
         name={id.toString()}
+        ariaLabel={translate('SelectRow')}
         value={isSelected}
         isDisabled={isDisabled}
         onChange={handleChange}
