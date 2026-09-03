@@ -4,6 +4,7 @@
     {
         None = 0,
         Cinemas = 1,
-        Release = 2
+        Release = 2,
+        PreserveOriginal = 3
     }
 }

@@ -199,6 +199,8 @@
   "ChangeCategoryMultipleHint": "Changes downloads to the 'Post-Import Category' from Download Client",
   "ChangeFileDate": "Change File Date",
   "ChangeFileDateHelpText": "Change file date on import/rescan",
+  "PreserveOriginalFileDate": "Preserve Original File Date",
+  "PreserveOriginalFileDateHelpText": "Do not change file date during import/upgrade/rescan",
   "ChangeHasNotBeenSavedYet": "Change has not been saved yet",
   "CheckDownloadClientForDetails": "check download client for more details",
   "CheckForFinishedDownloadsInterval": "Check For Finished Downloads Interval",
