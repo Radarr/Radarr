@@ -1711,6 +1711,8 @@
   "Result": "Result",
   "Retention": "Retention",
   "RetentionHelpText": "Usenet only: Set to zero to set for unlimited retention",
+  "TagExistingHelpText": "Tag existing movies in {appName}",
+  "TagExisting": "Tag Existing",
   "RetryingDownloadOn": "Retrying download on {date} at {time}",
   "RootFolder": "Root Folder",
   "RootFolderCheckMultipleMessage": "Multiple root folders are missing: {rootFolderPaths}",
