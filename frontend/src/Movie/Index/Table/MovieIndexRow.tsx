@@ -28,6 +28,7 @@ import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import { SelectStateInputProps } from 'typings/props';
 import formatRuntime from 'Utilities/Date/formatRuntime';
 import formatBytes from 'Utilities/Number/formatBytes';
+import parseRuntimeToHours from 'Utilities/Number/parseRuntimeToHours';
 import firstCharToUpper from 'Utilities/String/firstCharToUpper';
 import translate from 'Utilities/String/translate';
 import MovieIndexProgressBar from '../ProgressBar/MovieIndexProgressBar';
@@ -326,6 +327,44 @@ function MovieIndexRow(props: MovieIndexRowProps) {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
               {formatBytes(sizeOnDisk)}
+            </VirtualTableRowCell>
+          );
+        }
+
+        if (name === 'gigabytesPerHour') {
+          const runtimeHours = parseRuntimeToHours(
+            movieFile?.mediaInfo?.runTime
+          );
+          const gigabytesPerHour =
+            runtimeHours > 0 ? sizeOnDisk / 1073741824 / runtimeHours : 0;
+
+          return (
+            <VirtualTableRowCell key={name} className={styles[name]}>
+              {gigabytesPerHour.toFixed(2)}
+            </VirtualTableRowCell>
+          );
+        }
+
+        if (name === 'audioCodec') {
+          return (
+            <VirtualTableRowCell key={name} className={styles[name]}>
+              {movieFile?.mediaInfo?.audioCodec ?? ''}
+            </VirtualTableRowCell>
+          );
+        }
+
+        if (name === 'videoCodec') {
+          return (
+            <VirtualTableRowCell key={name} className={styles[name]}>
+              {movieFile?.mediaInfo?.videoCodec ?? ''}
+            </VirtualTableRowCell>
+          );
+        }
+
+        if (name === 'resolution') {
+          return (
+            <VirtualTableRowCell key={name} className={styles[name]}>
+              {movieFile?.mediaInfo?.resolution ?? ''}
             </VirtualTableRowCell>
           );
         }

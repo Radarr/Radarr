@@ -78,7 +78,30 @@
 .sizeOnDisk {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
+  justify-content: flex-end;
+
   flex: 0 0 120px;
+}
+
+.gigabytesPerHour {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  justify-content: flex-end;
+
+  flex: 0 0 100px;
+}
+
+.audioCodec,
+.videoCodec {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 0 110px;
+}
+
+.resolution {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 0 100px;
 }
 
 .imdbRating,
