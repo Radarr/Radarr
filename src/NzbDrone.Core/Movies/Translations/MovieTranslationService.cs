@@ -10,6 +10,7 @@ namespace NzbDrone.Core.Movies.Translations
     public interface IMovieTranslationService
     {
         List<MovieTranslation> GetAllTranslationsForMovieMetadata(int movieMetadataId);
+        List<MovieTranslation> GetAllTranslationsForMovieMetadata(List<int> movieMetadataIds);
         List<MovieTranslation> GetAllTranslationsForLanguage(Language language);
         List<MovieTranslation> UpdateTranslations(List<MovieTranslation> titles, MovieMetadata movie);
     }
@@ -29,6 +30,11 @@ namespace NzbDrone.Core.Movies.Translations
         public List<MovieTranslation> GetAllTranslationsForMovieMetadata(int movieMetadataId)
         {
             return _translationRepo.FindByMovieMetadataId(movieMetadataId).ToList();
+        }
+
+        public List<MovieTranslation> GetAllTranslationsForMovieMetadata(List<int> movieMetadataIds)
+        {
+            return _translationRepo.FindByMovieMetadataId(movieMetadataIds).ToList();
         }
 
         public List<MovieTranslation> GetAllTranslationsForLanguage(Language language)
