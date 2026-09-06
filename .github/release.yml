@@ -1,0 +1,9 @@
+changelog:
+  exclude:
+    authors:
+      - Weblate
+      - RadarrBot
+  categories:
+    - title: Changes
+      labels:
+        - '*'

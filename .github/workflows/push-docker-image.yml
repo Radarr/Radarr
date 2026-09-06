@@ -14,6 +14,9 @@ on:
         required: true
         type: string
         default: master
+      fork_version:
+        type: string
+        required: false
   workflow_run:
     workflows: ["Build"]
     types: [completed]
@@ -92,11 +95,17 @@ jobs:
             echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
           fi
 
-          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0.0")
-          VERSION="${TAG#v}"
+          FORK_VERSION="${{ inputs.fork_version }}"
+          if [ -z "$FORK_VERSION" ]; then
+            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0.0")
+            FORK_VERSION="${TAG#v}"
+          fi
+          UPSTREAM_VERSION="${FORK_VERSION%%-*}"
+
           FRAMEWORK=$(git grep -h -m 1 "<TargetFrameworks>" src/NzbDrone.Core/ | sed -e 's/.*<TargetFrameworks>\(.*\)<\/TargetFrameworks>.*/\1/')
 
-          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "FORK_VERSION=$FORK_VERSION" >> "$GITHUB_OUTPUT"
+          echo "UPSTREAM_VERSION=$UPSTREAM_VERSION" >> "$GITHUB_OUTPUT"
           echo "FRAMEWORK=$FRAMEWORK" >> "$GITHUB_ENV"
 
       - name: Set up Node.js (Volta)
@@ -117,7 +126,7 @@ jobs:
             mkdir -p _artifacts/linux-musl-arm64/${{ env.FRAMEWORK }}/Radarr
           fi
         env:
-          RADARRVERSION: ${{ steps.meta_env.outputs.VERSION }}
+          RADARRVERSION: ${{ steps.meta_env.outputs.UPSTREAM_VERSION }}
           BRANCH: ${{ env.BRANCH }}
           BUILD_SOURCEBRANCHNAME: ${{ env.BRANCH }}
 
@@ -142,7 +151,7 @@ jobs:
           images: ${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=pr-${{ steps.meta_env.outputs.PR_NUM }},enable=${{ env.IS_PR == 'true' }}
-            type=raw,value=${{ steps.meta_env.outputs.VERSION }},enable=${{ env.IS_PR != 'true' }}
+            type=raw,value=${{ steps.meta_env.outputs.FORK_VERSION }},enable=${{ env.IS_PR != 'true' }}
             type=raw,value=latest,enable=${{ env.IS_PR != 'true' && env.BRANCH == 'master' }}
             type=raw,value=${{ env.BRANCH }},enable=${{ env.IS_PR != 'true' }}
 
@@ -157,7 +166,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
-            VERSION=${{ steps.meta_env.outputs.VERSION }}
+            VERSION=${{ steps.meta_env.outputs.UPSTREAM_VERSION }}
             RADARR_BRANCH=${{ env.BRANCH }}
             PACKAGE_AUTHOR=github.com/${{ github.repository }}
 

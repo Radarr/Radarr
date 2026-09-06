@@ -14,16 +14,57 @@ permissions:
   statuses: write
 
 jobs:
+  prepare-release:
+    name: Prepare Release
+    runs-on: ubuntu-latest
+    outputs:
+      fork_version: ${{ steps.version.outputs.fork_version }}
+      fork_tag: ${{ steps.version.outputs.fork_tag }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+          fetch-depth: 0
+
+      - name: Compute Versions & Tag
+        id: version
+        shell: bash
+        run: |
+          git fetch --tags origin
+
+          UPSTREAM_TAG=$(git describe --tags --abbrev=0 --exclude "*-*" 2>/dev/null || echo "v0.0.0.0")
+          UPSTREAM_VERSION="${UPSTREAM_TAG#v}"
+
+          LATEST_REV=$(git tag -l "v${UPSTREAM_VERSION}-*" | sed "s/^v${UPSTREAM_VERSION}-//" | sort -n | tail -n 1)
+          NEXT_REV=$(( ${LATEST_REV:-0} + 1 ))
+
+          FORK_VERSION="${UPSTREAM_VERSION}-${NEXT_REV}"
+          FORK_TAG="v${FORK_VERSION}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "$FORK_TAG"
+          git push origin "$FORK_TAG"
+
+          echo "upstream_version=$UPSTREAM_VERSION" >> "$GITHUB_OUTPUT"
+          echo "fork_version=$FORK_VERSION" >> "$GITHUB_OUTPUT"
+          echo "fork_tag=$FORK_TAG" >> "$GITHUB_OUTPUT"
+
   publish-binaries:
     name: Publish Binaries
+    needs: prepare-release
     uses: ./.github/workflows/publish-binaries.yml
     with:
       branch: ${{ inputs.branch }}
+      fork_tag: ${{ needs.prepare-release.outputs.fork_tag }}
     secrets: inherit
 
   push-docker-image:
     name: Push Docker Image
+    needs: prepare-release
     uses: ./.github/workflows/push-docker-image.yml
     with:
       branch: ${{ inputs.branch }}
+      fork_version: ${{ needs.prepare-release.outputs.fork_version }}
     secrets: inherit

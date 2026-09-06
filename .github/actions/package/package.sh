@@ -64,7 +64,11 @@ do
   fi
 done
 
-# Copy Inno Setup Windows installers if present
-if compgen -G "distribution/windows/setup/output/Radarr.*.exe" > /dev/null; then
-  cp distribution/windows/setup/output/Radarr.*.exe _artifacts/
-fi
+# Copy Inno Setup Windows installers if present and apply fork version
+upstream_ver="${RADARRVERSION%%-*}"
+for exe in distribution/windows/setup/output/Radarr.*.exe; do
+  if [ -f "$exe" ]; then
+    name="$(basename "$exe")"
+    cp "$exe" "_artifacts/${name/$upstream_ver/$RADARRVERSION}"
+  fi
+done

@@ -14,6 +14,9 @@ on:
         required: true
         type: string
         default: master
+      fork_tag:
+        type: string
+        required: false
 
 env:
   INNOVERSION: 6.7.2
@@ -34,12 +37,18 @@ jobs:
         id: get_version
         shell: bash
         run: |
-          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0.0")
-          VERSION="${TAG#v}"
-          echo "TAG_NAME=$TAG" >> "$GITHUB_OUTPUT"
-          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "MAJORVERSION=${VERSION%.*}" >> "$GITHUB_ENV"
-          echo "MINORVERSION=${VERSION##*.}" >> "$GITHUB_ENV"
+          TAG="${{ inputs.fork_tag }}"
+          if [ -z "$TAG" ]; then
+            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0.0")
+          fi
+          FORK_VERSION="${TAG#v}"
+          UPSTREAM_VERSION="${FORK_VERSION%%-*}"
+
+          echo "FORK_TAG=$TAG" >> "$GITHUB_OUTPUT"
+          echo "FORK_VERSION=$FORK_VERSION" >> "$GITHUB_OUTPUT"
+          echo "UPSTREAM_VERSION=$UPSTREAM_VERSION" >> "$GITHUB_OUTPUT"
+          echo "MAJORVERSION=${UPSTREAM_VERSION%.*}" >> "$GITHUB_ENV"
+          echo "MINORVERSION=${UPSTREAM_VERSION##*.}" >> "$GITHUB_ENV"
 
       - name: Extract Target Framework
         shell: bash
@@ -59,7 +68,7 @@ jobs:
         shell: bash
         run: ./build.sh --backend --frontend --packages --installer -f "${{ env.FRAMEWORK }}"
         env:
-          RADARRVERSION: ${{ steps.get_version.outputs.VERSION }}
+          RADARRVERSION: ${{ steps.get_version.outputs.UPSTREAM_VERSION }}
           BRANCH: ${{ inputs.branch }}
           BUILD_SOURCEBRANCHNAME: ${{ inputs.branch }}
 
@@ -73,13 +82,16 @@ jobs:
         env:
           FRAMEWORK: ${{ env.FRAMEWORK }}
           BRANCH: ${{ inputs.branch }}
-          RADARRVERSION: ${{ steps.get_version.outputs.VERSION }}
+          RADARRVERSION: ${{ steps.get_version.outputs.FORK_VERSION }}
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.get_version.outputs.TAG_NAME }}
-          name: Radarr v${{ steps.get_version.outputs.VERSION }}
+          tag_name: ${{ steps.get_version.outputs.FORK_TAG }}
+          name: Radarr v${{ steps.get_version.outputs.FORK_VERSION }}
+          body: |
+            Based on upstream Radarr [v${{ steps.get_version.outputs.UPSTREAM_VERSION }}](https://github.com/Radarr/Radarr/releases/tag/v${{ steps.get_version.outputs.UPSTREAM_VERSION }}).
+          generate_release_notes: true
           draft: false
           prerelease: false
           files: |

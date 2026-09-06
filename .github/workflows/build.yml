@@ -49,7 +49,7 @@ jobs:
         id: variables
         shell: bash
         run: |
-          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0.0")
+          TAG=$(git describe --tags --abbrev=0 --exclude "*-*" 2>/dev/null || echo "v0.0.0.0")
           RADARR_VERSION="${TAG#v}"
           FRAMEWORK=$(git grep -h -m 1 "<TargetFrameworks>" src/NzbDrone.Core/ | sed -e 's/.*<TargetFrameworks>\(.*\)<\/TargetFrameworks>.*/\1/')
           echo "RADARR_VERSION=$RADARR_VERSION" >> "$GITHUB_ENV"
