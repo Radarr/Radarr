@@ -20,7 +20,6 @@
     <PackageReference Include="System.Data.SQLite" Version="2.0.4" />
     <PackageReference Include="System.Text.Json" Version="8.0.6" />
     <PackageReference Include="System.ValueTuple" Version="4.6.2" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="8.0.1" />
