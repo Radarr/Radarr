@@ -9572,6 +9572,10 @@
           "authenticationRequired": {
             "$ref": "#/components/schemas/AuthenticationRequiredType"
           },
+          "allowedHosts": {
+            "type": "string",
+            "nullable": true
+          },
           "analyticsEnabled": {
             "type": "boolean"
           },
@@ -9616,6 +9620,10 @@
             "nullable": true
           },
           "urlBase": {
+            "type": "string",
+            "nullable": true
+          },
+          "trustedNetworks": {
             "type": "string",
             "nullable": true
           },
@@ -11984,6 +11992,22 @@
         ],
         "type": "string"
       },
+      "ReleaseHistoryResource": {
+        "type": "object",
+        "properties": {
+          "grabbed": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "failed": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ReleaseProfileResource": {
         "type": "object",
         "properties": {
@@ -12044,6 +12068,9 @@
           "customFormatScore": {
             "type": "integer",
             "format": "int32"
+          },
+          "history": {
+            "$ref": "#/components/schemas/ReleaseHistoryResource"
           },
           "qualityWeight": {
             "type": "integer",
@@ -12422,6 +12449,9 @@
             "type": "boolean"
           },
           "isDocker": {
+            "type": "boolean"
+          },
+          "isContainerized": {
             "type": "boolean"
           },
           "mode": {
