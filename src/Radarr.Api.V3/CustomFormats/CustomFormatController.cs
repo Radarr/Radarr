@@ -119,7 +119,7 @@ namespace Radarr.Api.V3.CustomFormats
         }
 
         [HttpGet("schema")]
-        public object GetTemplates()
+        public List<CustomFormatSpecificationSchema> GetTemplates()
         {
             var schema = _specifications.OrderBy(x => x.Order).Select(x => x.ToSchema()).ToList();
 

@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
@@ -26,37 +26,37 @@ namespace Radarr.Api.V3.FileSystem
         }
 
         [HttpGet]
-        public IActionResult GetContents(string path, bool includeFiles = false, bool allowFoldersWithoutTrailingSlashes = false)
+        public FileSystemResult GetContents(string path, bool includeFiles = false, bool allowFoldersWithoutTrailingSlashes = false)
         {
-            return Ok(_fileSystemLookupService.LookupContents(path, includeFiles, allowFoldersWithoutTrailingSlashes));
+            return _fileSystemLookupService.LookupContents(path, includeFiles, allowFoldersWithoutTrailingSlashes);
         }
 
         [HttpGet("type")]
-        public object GetEntityType(string path)
+        public FileSystemTypeResource GetEntityType(string path)
         {
             if (_diskProvider.FileExists(path))
             {
-                return new { type = "file" };
+                return new FileSystemTypeResource { Type = FileSystemEntityType.File };
             }
 
             // Return folder even if it doesn't exist on disk to avoid leaking anything from the UI about the underlying system
-            return new { type = "folder" };
+            return new FileSystemTypeResource { Type = FileSystemEntityType.Folder };
         }
 
         [HttpGet("mediafiles")]
-        public object GetMediaFiles(string path)
+        public List<FileSystemMediaFileResource> GetMediaFiles(string path)
         {
             if (!_diskProvider.FolderExists(path))
             {
-                return Array.Empty<string>();
+                return new List<FileSystemMediaFileResource>();
             }
 
-            return _diskScanService.GetVideoFiles(path).Select(f => new
+            return _diskScanService.GetVideoFiles(path).Select(f => new FileSystemMediaFileResource
             {
                 Path = f,
                 RelativePath = path.GetRelativePath(f),
                 Name = Path.GetFileName(f)
-            });
+            }).ToList();
         }
     }
 }

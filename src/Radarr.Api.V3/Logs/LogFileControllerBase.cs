@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -51,6 +52,8 @@ namespace Radarr.Api.V3.Logs
         }
 
         [HttpGet(@"{filename:regex([[-.a-zA-Z0-9]]+?\.txt)}")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK, "text/plain")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetLogFileResponse(string filename)
         {
             LogManager.Flush();

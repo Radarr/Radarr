@@ -83,7 +83,7 @@ namespace Radarr.Api.V3.ImportLists
         }
 
         [HttpPost("bulk")]
-        public object AddImportListExclusions([FromBody] List<ImportListExclusionResource> resources)
+        public List<ImportListExclusionResource> AddImportListExclusions([FromBody] List<ImportListExclusionResource> resources)
         {
             var importListExclusions = _importListExclusionService.Add(resources.ToModel());
 

@@ -58,7 +58,7 @@ namespace Radarr.Api.V3.Config
         }
 
         [HttpGet("examples")]
-        public object GetExamples([FromQuery]NamingConfigResource config)
+        public NamingExampleResource GetExamples([FromQuery]NamingConfigResource config)
         {
             if (config.Id == 0)
             {

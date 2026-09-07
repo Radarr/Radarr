@@ -224,7 +224,7 @@ namespace Radarr.Api.V3
         [SkipValidation(true, false)]
         [HttpPost("test")]
         [Consumes("application/json")]
-        public object Test([FromBody] TProviderResource providerResource, [FromQuery] bool forceTest = false)
+        public string Test([FromBody] TProviderResource providerResource, [FromQuery] bool forceTest = false)
         {
             var existingDefinition = providerResource.Id > 0 ? _providerFactory.Find(providerResource.Id) : null;
             var providerDefinition = GetDefinition(providerResource, existingDefinition, true, !forceTest, true);
@@ -234,6 +234,8 @@ namespace Radarr.Api.V3
             return "{}";
         }
 
+        [ProducesResponseType(typeof(List<ProviderTestAllResult>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<ProviderTestAllResult>), StatusCodes.Status400BadRequest)]
         [HttpPost("testall")]
         [Produces("application/json")]
         public IActionResult TestAll()
@@ -264,6 +266,7 @@ namespace Radarr.Api.V3
         [HttpPost("action/{name}")]
         [Consumes("application/json")]
         [Produces("application/json")]
+        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         public IActionResult RequestAction([FromRoute] string name, [FromBody] TProviderResource providerResource)
         {
             var existingDefinition = providerResource.Id > 0 ? _providerFactory.Find(providerResource.Id) : null;
