@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.CustomFilters;
 using Radarr.Http;
@@ -28,6 +29,7 @@ namespace Radarr.Api.V3.CustomFilters
             return _customFilterService.All().ToResource();
         }
 
+        [ProducesResponseType(typeof(CustomFilterResource), StatusCodes.Status201Created)]
         [RestPostById]
         [Consumes("application/json")]
         public ActionResult<CustomFilterResource> AddCustomFilter([FromBody] CustomFilterResource resource)
@@ -37,6 +39,7 @@ namespace Radarr.Api.V3.CustomFilters
             return Created(customFilter.Id);
         }
 
+        [ProducesResponseType(typeof(CustomFilterResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         [Consumes("application/json")]
         public ActionResult<CustomFilterResource> UpdateCustomFilter([FromBody] CustomFilterResource resource)

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
@@ -53,6 +54,7 @@ namespace Radarr.Api.V3.CustomFormats
             return _formatService.All().ToResource(true);
         }
 
+        [ProducesResponseType(typeof(CustomFormatResource), StatusCodes.Status201Created)]
         [RestPostById]
         [Consumes("application/json")]
         public ActionResult<CustomFormatResource> Create([FromBody] CustomFormatResource customFormatResource)
@@ -64,6 +66,7 @@ namespace Radarr.Api.V3.CustomFormats
             return Created(_formatService.Insert(model).Id);
         }
 
+        [ProducesResponseType(typeof(CustomFormatResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         [Consumes("application/json")]
         public ActionResult<CustomFormatResource> Update([FromBody] CustomFormatResource resource)
@@ -77,6 +80,7 @@ namespace Radarr.Api.V3.CustomFormats
             return Accepted(model.Id);
         }
 
+        [ProducesResponseType(typeof(List<CustomFormatResource>), StatusCodes.Status202Accepted)]
         [HttpPut("bulk")]
         [Consumes("application/json")]
         [Produces("application/json")]

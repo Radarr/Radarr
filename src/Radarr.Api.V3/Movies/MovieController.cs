@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -233,6 +234,7 @@ namespace Radarr.Api.V3.Movies
             return translation;
         }
 
+        [ProducesResponseType(typeof(MovieResource), StatusCodes.Status201Created)]
         [RestPostById]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -243,6 +245,7 @@ namespace Radarr.Api.V3.Movies
             return Created(movie.Id);
         }
 
+        [ProducesResponseType(typeof(MovieResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         [Consumes("application/json")]
         [Produces("application/json")]
