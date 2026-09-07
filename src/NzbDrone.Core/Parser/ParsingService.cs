@@ -128,25 +128,25 @@ namespace NzbDrone.Core.Parser
         {
             FindMovieResult result = null;
 
-            if (!string.IsNullOrWhiteSpace(imdbId) && imdbId != "0")
+            if (searchCriteria != null)
             {
-                result = TryGetMovieByImDbId(parsedMovieInfo, imdbId);
+                result = TryGetMovieBySearchCriteria(parsedMovieInfo, imdbId, tmdbId, searchCriteria);
             }
-
-            if (result == null && tmdbId > 0)
+            else
             {
-                result = TryGetMovieByTmdbId(parsedMovieInfo, tmdbId);
+                result = TryGetMovieByTitleAndOrYear(parsedMovieInfo);
             }
 
             if (result == null)
             {
-                if (searchCriteria != null)
+                if (!string.IsNullOrWhiteSpace(imdbId) && imdbId != "0")
                 {
-                    result = TryGetMovieBySearchCriteria(parsedMovieInfo, imdbId, tmdbId, searchCriteria);
+                    result = TryGetMovieByImDbId(parsedMovieInfo, imdbId);
                 }
-                else
+
+                if (result == null && tmdbId > 0)
                 {
-                    result = TryGetMovieByTitleAndOrYear(parsedMovieInfo);
+                    result = TryGetMovieByTmdbId(parsedMovieInfo, tmdbId);
                 }
             }
 
