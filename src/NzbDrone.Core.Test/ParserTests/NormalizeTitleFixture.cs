@@ -14,6 +14,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Law_and_Order_SVU", "lawordersvu")]
         [TestCase("Slap Shot 3: The Junior League", "slapshot3juniorleague")]
         [TestCase("Slap Shot 3 The Junior League", "slapshot3juniorleague")]
+        [TestCase("Boyz n the Hood", "boyznhood")]
+        [TestCase("An A to Z of Paddington", "antozpaddington")]
         public void should_normalize_series_title(string parsedSeriesName, string seriesName)
         {
             var result = parsedSeriesName.CleanMovieTitle();
