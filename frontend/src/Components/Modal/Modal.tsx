@@ -12,7 +12,7 @@ import FocusLock from 'react-focus-lock';
 import ErrorBoundary from 'Components/Error/ErrorBoundary';
 import usePrevious from 'Helpers/Hooks/usePrevious';
 import { Size } from 'Helpers/Props/sizes';
-import { isIOS } from 'Utilities/browser';
+import { isMobile } from 'Utilities/browser';
 import * as keyCodes from 'Utilities/Constants/keyCodes';
 import { setScrollLock } from 'Utilities/scrollLock';
 import ModalError from './ModalError';
@@ -27,6 +27,21 @@ function removeFromOpenModals(id: string) {
   if (index >= 0) {
     openModals.splice(index, 1);
   }
+}
+
+// Mobile scroll lock: block touchmove outside the modal portal. Avoids
+// mutating body position/overflow — doing so resets window.scrollY to 0,
+// which causes react-virtualized WindowScroller to unmount the row that
+// owns the just-opened modal (Discover page regression).
+function preventTouchScroll(event: TouchEvent) {
+  let target = event.target as HTMLElement | null;
+  while (target) {
+    if (target.id === 'portal-root') {
+      return;
+    }
+    target = target.parentElement;
+  }
+  event.preventDefault();
 }
 
 function findEventTarget(event: TouchEvent | MouseEvent) {
@@ -70,7 +85,6 @@ function Modal({
 }: ModalProps) {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const isBackdropPressed = useRef(false);
-  const bodyScrollTop = useRef(0);
   const wasOpen = usePrevious(isOpen);
   const modalId = useId();
 
@@ -125,10 +139,14 @@ function Modal({
       openModals.push(modalId);
 
       if (openModals.length === 1) {
-        if (isIOS()) {
+        if (isMobile()) {
+          // Don't mutate body position/overflow on mobile — it resets
+          // window.scrollY which makes WindowScroller unmount this row's
+          // modal. Use a touchmove listener to block scroll instead.
           setScrollLock(true);
-          bodyScrollTop.current = document.body.scrollTop;
-          elementClass(document.body).add(styles.modalOpenIOS);
+          document.addEventListener('touchmove', preventTouchScroll, {
+            passive: false,
+          });
         } else {
           elementClass(document.body).add(styles.modalOpen);
         }
@@ -139,9 +157,8 @@ function Modal({
       if (openModals.length === 0) {
         setScrollLock(false);
 
-        if (isIOS()) {
-          elementClass(document.body).remove(styles.modalOpenIOS);
-          document.body.scrollTop = bodyScrollTop.current;
+        if (isMobile()) {
+          document.removeEventListener('touchmove', preventTouchScroll);
         } else {
           elementClass(document.body).remove(styles.modalOpen);
         }
