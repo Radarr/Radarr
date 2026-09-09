@@ -39,13 +39,15 @@ namespace NzbDrone.Core.MovieStats
 
         private List<MovieStatistics> MapResults(List<MovieStatistics> moviesResult, List<MovieStatistics> filesResult)
         {
-            moviesResult.ForEach(e =>
-            {
-                var file = filesResult.SingleOrDefault(f => f.MovieId == e.MovieId);
+            var filesByMovieId = filesResult.ToDictionary(f => f.MovieId);
 
-                e.SizeOnDisk = file?.SizeOnDisk ?? 0;
-                e.ReleaseGroupsString = file?.ReleaseGroupsString;
-            });
+            foreach (var movie in moviesResult)
+            {
+                filesByMovieId.TryGetValue(movie.MovieId, out var file);
+
+                movie.SizeOnDisk = file?.SizeOnDisk ?? 0;
+                movie.ReleaseGroupsString = file?.ReleaseGroupsString;
+            }
 
             return moviesResult;
         }
