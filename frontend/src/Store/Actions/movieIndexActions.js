@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 import { filterBuilderTypes, filterBuilderValueTypes, sortDirections } from 'Helpers/Props';
 import sortByProp from 'Utilities/Array/sortByProp';
+import parseRuntimeToHours from 'Utilities/Number/parseRuntimeToHours';
 import translate from 'Utilities/String/translate';
 import createHandleActions from './Creators/createHandleActions';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
@@ -176,6 +177,30 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'gigabytesPerHour',
+      label: () => translate('GigabytesPerHour'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
+      name: 'audioCodec',
+      label: () => translate('AudioCodec'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
+      name: 'videoCodec',
+      label: () => translate('VideoCodec'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
+      name: 'resolution',
+      label: () => translate('Resolution'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'genres',
       label: () => translate('Genres'),
       isSortable: false,
@@ -295,6 +320,36 @@ export const defaultState = {
 
     traktRating: function({ ratings = {} }) {
       return ratings.trakt ? ratings.trakt.value : 0;
+    },
+
+    gigabytesPerHour: function(item) {
+      const { statistics = {}, movieFile } = item;
+      const { sizeOnDisk = 0 } = statistics;
+      const runtimeHours = parseRuntimeToHours(movieFile?.mediaInfo?.runTime);
+
+      if (runtimeHours === 0) {
+        return 0;
+      }
+
+      return sizeOnDisk / runtimeHours;
+    },
+
+    audioCodec: function(item) {
+      const { movieFile } = item;
+
+      return movieFile?.mediaInfo?.audioCodec ?? '';
+    },
+
+    videoCodec: function(item) {
+      const { movieFile } = item;
+
+      return movieFile?.mediaInfo?.videoCodec ?? '';
+    },
+
+    resolution: function(item) {
+      const { movieFile } = item;
+
+      return movieFile?.mediaInfo?.resolution ?? '';
     }
   },
 

@@ -3,6 +3,7 @@
 interface CssExports {
   'actions': string;
   'added': string;
+  'audioCodec': string;
   'cell': string;
   'certification': string;
   'checkInput': string;
@@ -10,6 +11,7 @@ interface CssExports {
   'digitalRelease': string;
   'externalLinks': string;
   'genres': string;
+  'gigabytesPerHour': string;
   'imdbRating': string;
   'inCinemas': string;
   'keywords': string;
@@ -23,6 +25,7 @@ interface CssExports {
   'qualityProfileId': string;
   'releaseDate': string;
   'releaseGroups': string;
+  'resolution': string;
   'rottenTomatoesRating': string;
   'runtime': string;
   'sizeOnDisk': string;
@@ -32,6 +35,7 @@ interface CssExports {
   'tags': string;
   'tmdbRating': string;
   'traktRating': string;
+  'videoCodec': string;
   'year': string;
 }
 export const cssExports: CssExports;
