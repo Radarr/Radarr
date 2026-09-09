@@ -196,7 +196,45 @@ namespace Radarr.Api.V3.Movies
             return resource;
         }
 
-        private MovieTranslation GetMovieTranslation(List<MovieTranslation> translations, MovieMetadata movie, Language configLanguage)
+        private List<MovieResource> MapToResources(IReadOnlyCollection<Movie> movies)
+        {
+            if (movies.Count == 0)
+            {
+                return new List<MovieResource>();
+            }
+
+            var translationLanguage = (Language)_configService.MovieInfoLanguage;
+            var availDelay = _configService.AvailabilityDelay;
+            var movieIds = movies.Select(m => m.Id).Distinct().ToList();
+            var movieMetadataIds = movies.Select(m => m.MovieMetadataId).Distinct().ToList();
+            var translations = _movieTranslationService
+                .GetAllTranslationsForMovieMetadata(movieMetadataIds)
+                .ToLookup(t => t.MovieMetadataId);
+            var movieStats = _movieStatisticsService.MovieStatistics(movieIds)
+                .ToDictionary(s => s.MovieId);
+            var rootFolders = _rootFolderService.All();
+            var resources = new List<MovieResource>(movies.Count);
+
+            foreach (var movie in movies)
+            {
+                var translation = GetMovieTranslation(
+                    translations[movie.MovieMetadataId],
+                    movie.MovieMetadata,
+                    translationLanguage);
+                var resource = movie.ToResource(availDelay, translation, _qualityUpgradableSpecification);
+
+                MapCoversToLocal(resource);
+                movieStats.TryGetValue(movie.Id, out var statistics);
+                LinkMovieStatistics(resource, statistics ?? new MovieStatistics());
+                resource.RootFolderPath = _rootFolderService.GetBestRootFolderPath(resource.Path, rootFolders);
+
+                resources.Add(resource);
+            }
+
+            return resources;
+        }
+
+        private MovieTranslation GetMovieTranslation(IEnumerable<MovieTranslation> translations, MovieMetadata movie, Language configLanguage)
         {
             if (configLanguage == Language.Original)
             {
@@ -340,9 +378,9 @@ namespace Radarr.Api.V3.Movies
         [NonAction]
         public void Handle(MoviesBulkEditedEvent message)
         {
-            foreach (var movie in message.Movies)
+            foreach (var resource in MapToResources(message.Movies))
             {
-                BroadcastResourceChange(ModelAction.Updated, MapToResource(movie));
+                BroadcastResourceChange(ModelAction.Updated, resource);
             }
         }
 
