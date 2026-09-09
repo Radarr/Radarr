@@ -143,6 +143,7 @@ const mediaInfoTokens = [
   { token: '{MediaInfo Full}', example: 'x264 DTS [EN+DE]', footNotes: '1' },
 
   { token: '{MediaInfo AudioCodec}', example: 'DTS' },
+  { token: '{MediaInfo BestAudioCodec}', example: 'DTS-HD MA' },
   { token: '{MediaInfo AudioChannels}', example: '5.1' },
   {
     token: '{MediaInfo AudioLanguages}',

@@ -35,6 +35,9 @@ namespace NzbDrone.Core.Organizer
                 AudioFormat = "DTS",
                 AudioChannels = 6,
                 AudioChannelPositions = "5.1",
+                BestAudioFormat = "dts",
+                BestAudioCodecID = string.Empty,
+                BestAudioProfile = "DTS-HD MA",
                 AudioLanguages = new List<string> { "ger" },
                 Subtitles = new List<string> { "eng", "ger" }
             };

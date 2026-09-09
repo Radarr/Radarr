@@ -775,6 +775,30 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             Mocker.GetMock<IUpdateMediaInfo>().Verify(v => v.Update(_movieFile, _movie), Times.Never());
         }
 
+        [Test]
+        public void should_format_best_audio_codec()
+        {
+            _movieFile.ReleaseGroup = null;
+
+            _movieFile.MediaInfo = new MediaInfoModel
+            {
+                VideoFormat = "h264",
+                AudioFormat = "ac3",
+                AudioChannels = 6,
+                AudioLanguages = new List<string> { "eng" },
+                Subtitles = new List<string> { "eng" },
+                BestAudioFormat = "dts",
+                BestAudioCodecID = string.Empty,
+                BestAudioProfile = "DTS-HD MA",
+                SchemaRevision = 15
+            };
+
+            _namingConfig.StandardMovieFormat = "{MediaInfo BestAudioCodec}";
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().Be("DTS-HD MA");
+        }
+
         private void GivenMediaInfoModel(string videoCodec = "h264",
             string audioCodec = "dts",
             int audioChannels = 6,
