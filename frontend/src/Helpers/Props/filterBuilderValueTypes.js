@@ -10,6 +10,7 @@ export const QUALITY = 'quality';
 export const QUALITY_PROFILE = 'qualityProfile';
 export const QUEUE_STATUS = 'queueStatus';
 export const MOVIE = 'movie';
+export const DOWNLOAD_STATUS = 'downloadStatus';
 export const RELEASE_STATUS = 'releaseStatus';
 export const MINIMUM_AVAILABILITY = 'minimumAvailability';
 export const TAG = 'tag';

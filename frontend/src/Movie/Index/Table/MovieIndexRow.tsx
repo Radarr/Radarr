@@ -70,6 +70,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     releaseDate,
     runtime,
     minimumAvailability,
+    downloadStatus,
     path,
     genres = [],
     keywords = [],
@@ -310,6 +311,14 @@ function MovieIndexRow(props: MovieIndexRowProps) {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
               {translate(firstCharToUpper(minimumAvailability))}
+            </VirtualTableRowCell>
+          );
+        }
+
+        if (name === 'downloadStatus') {
+          return (
+            <VirtualTableRowCell key={name} className={styles[name]}>
+              {translate(firstCharToUpper(downloadStatus))}
             </VirtualTableRowCell>
           );
         }

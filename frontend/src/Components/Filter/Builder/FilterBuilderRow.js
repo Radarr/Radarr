@@ -6,6 +6,7 @@ import { filterBuilderTypes, filterBuilderValueTypes, icons } from 'Helpers/Prop
 import sortByProp from 'Utilities/Array/sortByProp';
 import BoolFilterBuilderRowValue from './BoolFilterBuilderRowValue';
 import DateFilterBuilderRowValue from './DateFilterBuilderRowValue';
+import DownloadStatusFilterBuilderRowValue from './DownloadStatusFilterBuilderRowValue';
 import FilterBuilderRowValueConnector from './FilterBuilderRowValueConnector';
 import HistoryEventTypeFilterBuilderRowValue from './HistoryEventTypeFilterBuilderRowValue';
 import ImportListFilterBuilderRowValueConnector from './ImportListFilterBuilderRowValueConnector';
@@ -86,6 +87,9 @@ function getRowValueConnector(selectedFilterBuilderProp) {
 
     case filterBuilderValueTypes.MOVIE:
       return MovieFilterBuilderRowValue;
+
+    case filterBuilderValueTypes.DOWNLOAD_STATUS:
+      return DownloadStatusFilterBuilderRowValue;
 
     case filterBuilderValueTypes.RELEASE_STATUS:
       return ReleaseStatusFilterBuilderRowValue;

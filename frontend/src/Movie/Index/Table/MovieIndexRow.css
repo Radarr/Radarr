@@ -67,6 +67,15 @@
   flex-direction: column;
 }
 
+.downloadStatus {
+  composes: cell;
+
+  display: flex;
+  justify-content: center;
+  flex: 0 0 150px;
+  flex-direction: column;
+}
+
 .certification {
   composes: cell;
 
