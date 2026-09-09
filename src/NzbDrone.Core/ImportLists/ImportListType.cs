@@ -7,6 +7,7 @@ namespace NzbDrone.Core.ImportLists
         Trakt,
         Plex,
         Simkl,
+        Filmweb,
         Other,
         Advanced
     }
