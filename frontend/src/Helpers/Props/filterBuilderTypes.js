@@ -28,6 +28,14 @@ export const possibleFilterTypes = {
     {
       key: filterTypes.NOT_CONTAINS,
       value: () => translate('FilterDoesNotContain')
+    },
+    {
+      key: filterTypes.IS_EMPTY,
+      value: () => translate('FilterIsEmpty')
+    },
+    {
+      key: filterTypes.IS_NOT_EMPTY,
+      value: () => translate('FilterIsNotEmpty')
     }
   ],
 
