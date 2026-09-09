@@ -143,7 +143,14 @@ namespace NzbDrone.Core.MediaFiles
                 _diskTransferService.TransferFile(movieFilePath, destinationFilePath, mode);
             }
 
-            _updateMovieFileService.ChangeFileDateForFile(movieFile, movie);
+            if (localMovie?.PreservedFileDate.HasValue == true)
+            {
+                _updateMovieFileService.ChangeFileDateForFile(movieFile, movie, localMovie.PreservedFileDate);
+            }
+            else
+            {
+                _updateMovieFileService.ChangeFileDateForFile(movieFile, movie);
+            }
 
             try
             {

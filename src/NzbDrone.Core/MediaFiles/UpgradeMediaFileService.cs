@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -58,6 +59,18 @@ namespace NzbDrone.Core.MediaFiles
                 if (_diskProvider.FileExists(movieFilePath))
                 {
                     _logger.Debug("Removing existing movie file: {0}", existingFile);
+
+                    // Capture original file date before deletion for potential preservation
+                    try
+                    {
+                        localMovie.PreservedFileDate = _diskProvider.FileGetLastWrite(movieFilePath);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Debug(ex, "Failed to read file date for preservation: {0}", movieFilePath);
+                        localMovie.PreservedFileDate = null;
+                    }
+
                     recycleBinPath = _recycleBinProvider.DeleteFile(movieFilePath, subfolder);
                 }
                 else

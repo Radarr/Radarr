@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Download;
@@ -38,6 +39,7 @@ namespace NzbDrone.Core.Parser.Model
         public int CustomFormatScore { get; set; }
         public GrabbedReleaseInfo Release { get; set; }
         public bool ScriptImported { get; set; }
+        public DateTime? PreservedFileDate { get; set; }
         public string FileNameBeforeRename { get; set; }
         public bool ShouldImportExtras { get; set; }
         public List<string> PossibleExtraFiles { get; set; }
