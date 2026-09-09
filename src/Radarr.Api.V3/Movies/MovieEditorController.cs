@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -43,6 +44,7 @@ namespace Radarr.Api.V3.Movies
             _upgradableSpecification = upgradableSpecification;
         }
 
+        [ProducesResponseType(typeof(List<MovieResource>), StatusCodes.Status202Accepted)]
         [HttpPut]
         public IActionResult SaveAll([FromBody] MovieEditorResource resource)
         {

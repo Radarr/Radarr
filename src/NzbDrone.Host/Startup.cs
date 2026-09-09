@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DryIoc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HostFiltering;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -86,6 +88,11 @@ namespace NzbDrone.Host
             .AddControllers(options =>
             {
                 options.ReturnHttpNotAcceptable = true;
+
+                options.Conventions.Add(new ProducesResponseTypeConvention());
+
+                var stringFormatterIndex = options.OutputFormatters.ToList().FindIndex(f => f is StringOutputFormatter);
+                options.OutputFormatters[stringFormatterIndex] = new StringResultOutputFormatter();
             })
             .AddApplicationPart(typeof(SystemController).Assembly)
             .AddApplicationPart(typeof(StaticResourceController).Assembly)

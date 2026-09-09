@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
@@ -46,6 +47,7 @@ namespace Radarr.Api.V3.Profiles.Quality
             });
         }
 
+        [ProducesResponseType(typeof(QualityProfileResource), StatusCodes.Status201Created)]
         [RestPostById]
         [Consumes("application/json")]
         public ActionResult<QualityProfileResource> Create([FromBody] QualityProfileResource resource)
@@ -61,6 +63,7 @@ namespace Radarr.Api.V3.Profiles.Quality
             _qualityProfileService.Delete(id);
         }
 
+        [ProducesResponseType(typeof(QualityProfileResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         [Consumes("application/json")]
         public ActionResult<QualityProfileResource> Update([FromBody] QualityProfileResource resource)
