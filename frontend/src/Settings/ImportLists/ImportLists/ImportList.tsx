@@ -70,6 +70,7 @@ function ImportList({
     <Card
       className={styles.list}
       overlayContent={true}
+      ariaLabel={translate('EditImportListName', { name })}
       onPress={handleEditImportListPress}
     >
       <div className={styles.nameContainer}>

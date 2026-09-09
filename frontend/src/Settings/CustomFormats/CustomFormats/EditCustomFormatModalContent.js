@@ -172,6 +172,7 @@ class EditCustomFormatModalContent extends Component {
 
                       <Card
                         className={styles.addSpecification}
+                        ariaLabel={translate('AddCondition')}
                         onPress={this.onAddSpecificationPress}
                       >
                         <div className={styles.center}>
