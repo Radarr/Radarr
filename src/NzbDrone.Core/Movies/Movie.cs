@@ -76,70 +76,40 @@ namespace NzbDrone.Core.Movies
 
         public bool IsAvailable(int delay = 0)
         {
-            // the below line is what was used before delay was implemented, could still be used for cases when delay==0
-            // return (Status >= MinimumAvailability || (MinimumAvailability == MovieStatusType.PreDB && Status >= MovieStatusType.Released));
-
-            // This more complex sequence handles the delay
-            DateTime minimumAvailabilityDate;
-
-            if (MinimumAvailability is MovieStatusType.TBA or MovieStatusType.Announced)
-            {
-                minimumAvailabilityDate = DateTime.MinValue;
-            }
-            else if (MinimumAvailability == MovieStatusType.InCinemas && MovieMetadata.Value.InCinemas.HasValue)
-            {
-                minimumAvailabilityDate = MovieMetadata.Value.InCinemas.Value;
-            }
-            else
-            {
-                if (MovieMetadata.Value.PhysicalRelease.HasValue && MovieMetadata.Value.DigitalRelease.HasValue)
-                {
-                    minimumAvailabilityDate = new DateTime(Math.Min(MovieMetadata.Value.PhysicalRelease.Value.Ticks, MovieMetadata.Value.DigitalRelease.Value.Ticks));
-                }
-                else if (MovieMetadata.Value.PhysicalRelease.HasValue)
-                {
-                    minimumAvailabilityDate = MovieMetadata.Value.PhysicalRelease.Value;
-                }
-                else if (MovieMetadata.Value.DigitalRelease.HasValue)
-                {
-                    minimumAvailabilityDate = MovieMetadata.Value.DigitalRelease.Value;
-                }
-                else
-                {
-                    minimumAvailabilityDate = MovieMetadata.Value.InCinemas?.AddDays(90) ?? DateTime.MaxValue;
-                }
-            }
-
-            if (minimumAvailabilityDate == DateTime.MinValue || minimumAvailabilityDate == DateTime.MaxValue)
-            {
-                return DateTime.UtcNow >= minimumAvailabilityDate;
-            }
-
-            return DateTime.UtcNow >= minimumAvailabilityDate.AddDays(delay);
+            return DateTime.UtcNow >= GetReleaseDate(delay, true);
         }
 
-        public DateTime? GetReleaseDate()
+        public DateTime? GetReleaseDate(int delay = 0, bool isAvailabilityCheck = false)
         {
             if (MinimumAvailability is MovieStatusType.TBA or MovieStatusType.Announced)
             {
-                return new[] { MovieMetadata.Value.InCinemas, MovieMetadata.Value.DigitalRelease, MovieMetadata.Value.PhysicalRelease }
-                    .Where(x => x.HasValue)
-                    .Min();
+                if (isAvailabilityCheck)
+                {
+                    return DateTime.MinValue;
+                }
+                else if (MovieMetadata.Value.InCinemas.HasValue || MovieMetadata.Value.DigitalRelease.HasValue || MovieMetadata.Value.PhysicalRelease.HasValue)
+                {
+                    return new[] { MovieMetadata.Value.InCinemas, MovieMetadata.Value.DigitalRelease, MovieMetadata.Value.PhysicalRelease }
+                        .Where(x => x.HasValue)
+                        .Min()?.AddDays(delay);
+                }
             }
-
-            if (MinimumAvailability == MovieStatusType.InCinemas && MovieMetadata.Value.InCinemas.HasValue)
+            else if (MinimumAvailability == MovieStatusType.InCinemas && MovieMetadata.Value.InCinemas.HasValue)
             {
-                return MovieMetadata.Value.InCinemas.Value;
+                return MovieMetadata.Value.InCinemas.Value.AddDays(delay);
             }
-
-            if (MovieMetadata.Value.DigitalRelease.HasValue || MovieMetadata.Value.PhysicalRelease.HasValue)
+            else if (MovieMetadata.Value.DigitalRelease.HasValue || MovieMetadata.Value.PhysicalRelease.HasValue)
             {
                 return new[] { MovieMetadata.Value.DigitalRelease, MovieMetadata.Value.PhysicalRelease }
                     .Where(x => x.HasValue)
-                    .Min();
+                    .Min()?.AddDays(delay);
+            }
+            else if (!MovieMetadata.Value.InCinemas.HasValue && isAvailabilityCheck)
+            {
+                return DateTime.MaxValue;
             }
 
-            return MovieMetadata.Value.InCinemas?.AddDays(90);
+            return MovieMetadata.Value.InCinemas?.AddDays(90 + delay);
         }
 
         public override string ToString()
