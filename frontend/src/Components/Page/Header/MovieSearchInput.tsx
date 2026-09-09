@@ -219,8 +219,10 @@ function MovieSearchInput() {
     inputRef.current?.focus();
   }, []);
 
-  const getSectionSuggestions = useCallback((section: Section) => {
-    return section.suggestions;
+  // Section can be undefined on mobile tap due to race condition with input blur
+  // https://github.com/moroshko/react-autosuggest/issues/853
+  const getSectionSuggestions = useCallback((section: Section | undefined) => {
+    return section?.suggestions ?? [];
   }, []);
 
   const renderSectionTitle = useCallback((section: Section) => {
