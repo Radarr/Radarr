@@ -7,6 +7,7 @@ interface NewMoviePayload {
   minimumAvailability: MovieAvailability;
   tags: number[];
   searchForMovie?: boolean;
+  renameFolderOnImport?: boolean;
 }
 
 function getNewMovie(movie: Movie, payload: NewMoviePayload) {
@@ -17,11 +18,13 @@ function getNewMovie(movie: Movie, payload: NewMoviePayload) {
     minimumAvailability,
     tags,
     searchForMovie = false,
+    renameFolderOnImport = false,
   } = payload;
 
   const addOptions = {
     monitor,
     searchForMovie,
+    renameFolderOnImport,
   };
 
   movie.addOptions = addOptions;
