@@ -105,6 +105,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("96.Hours.Movie.3.EXTENDED.2014.German.DL.1080p.BluRay.x264-ENCOUNTERS", "96 Hours Movie 3", "EXTENDED", 2014)]
         [TestCase("Movie.War.Q.EXTENDED.CUT.2013.German.DL.1080p.BluRay.x264-HQX", "Movie War Q", "EXTENDED CUT", 2013)]
         [TestCase("Sin.Movie.2005.RECUT.EXTENDED.German.DL.1080p.BluRay.x264-DETAiLS", "Sin Movie", "RECUT EXTENDED", 2005)]
+        [TestCase("Der.Herr.der.Ringe.Die.zwei.Tuerme.2002.REMASTERED.EXTENDED.German.AC3.DL.1080p.BluRay.x265-FuN", "Der Herr der Ringe Die zwei Tuerme", "REMASTERED EXTENDED", 2002, Description = "multiple non-adjacent edition tags")]
         [TestCase("2.Movie.in.L.A.1996.GERMAN.DL.720p.WEB.H264-SOV", "2 Movie in L.A.", "", 1996)]
         [TestCase("8.2019.GERMAN.720p.BluRay.x264-UNiVERSUM", "8", "", 2019)]
         [TestCase("Life.Movie.2014.German.DL.PAL.DVDR-ETM", "Life Movie", "", 2014)]
