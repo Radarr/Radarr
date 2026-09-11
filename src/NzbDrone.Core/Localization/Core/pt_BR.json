@@ -2055,9 +2055,9 @@
     "Thursday": "Quinta-feira",
     "Tuesday": "Terça-feira",
     "Wednesday": "Quarta-feira",
-    "AllowedHosts": "Hosts Permitidos",
-    "AllowedHostsHelpText": "Lista separada por vírgulas de nomes de host e endereços IP para os quais {appName} aceitará solicitações. Usar '*.' como um curinga para subdomínios. Deixe em branco para permitir todos os hosts.",
-    "AllowedHostsNotConfiguredHealthCheckMessage": "Hosts permitidos não estão configurados, {appName} aceitará solicitações para qualquer nome de host. Defina Hosts permitidos nas configurações gerais para restringir quais nomes de host podem ser usados para acessar {appName}.",
+    "AllowedHosts": "Hosts permitidos",
+    "AllowedHostsHelpText": "Lista separada por vírgulas de nomes de host e endereços IP para os quais o {appName} aceitará solicitações. Use '*.' como um curinga para subdomínios. Deixe em branco para permitir todos os hosts.",
+    "AllowedHostsNotConfiguredHealthCheckMessage": "Hosts permitidos não estão configurados, o {appName} aceitará solicitações de qualquer nome de host. Defina Hosts permitidos em Configurações gerais para restringir quais nomes de host podem ser usados para acessar o {appName}.",
     "TrustedNetworks": "Redes Confiáveis",
     "TrustedNetworksHelpText": "Lista separada por vírgulas de endereços IP ou redes em notação CIDR em que os proxies reversos confiáveis estão ativados. por exemplo 172.17.0.1, 10.0.0.0/8 ou fc00::/7. Adicione apenas proxies configurados corretamente para enviar os cabeçalhos corretos."
 }
