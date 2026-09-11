@@ -85,7 +85,7 @@ namespace Radarr.Api.V3.Movies
             var resource = movie.ToResource(availDelay, translation, _upgradableSpecification, _formatCalculator);
             FetchAndLinkMovieStatistics(resource);
 
-            _coverMapper.ConvertToLocalUrls(resource.Id, resource.Images);
+            _coverMapper.ConvertToLocalUrls(resource.Id, resource.Images, resource.Added);
 
             return resource;
         }
