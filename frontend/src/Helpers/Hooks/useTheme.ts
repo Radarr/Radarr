@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
 import AppState from 'App/State/AppState';
 import themes from 'Styles/Themes';
 
-function createThemeSelector() {
-  return createSelector(
-    (state: AppState) => state.settings.ui.item.theme || window.Radarr.theme,
-    (theme) => theme
-  );
-}
+const useTheme = (): 'dark' | 'light' => {
+  const { theme } = useSelector((state: AppState) => state.settings.ui.item);
+  const selectedTheme = theme ?? window.Radarr.theme;
+  const [resolvedTheme, setResolvedTheme] = useState(() => {
+    if (selectedTheme === 'auto') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    }
 
-const useTheme = () => {
-  const selectedTheme = useSelector(createThemeSelector());
-  const [resolvedTheme, setResolvedTheme] = useState(selectedTheme);
+    return selectedTheme;
+  });
 
   useEffect(() => {
     if (selectedTheme !== 'auto') {
