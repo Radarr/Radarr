@@ -245,7 +245,7 @@ namespace NzbDrone.Core.Notifications.Webhook
                 return null;
             }
 
-            _mediaCoverService.ConvertToLocalUrls(movie.Id, movie.MovieMetadata.Value.Images);
+            _mediaCoverService.ConvertToLocalUrls(movie.Id, movie.MovieMetadata.Value.Images, movie.Added);
 
             return new WebhookMovie(movie, GetTagLabels(movie));
         }

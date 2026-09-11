@@ -96,7 +96,7 @@ namespace Radarr.Api.V3.Movies
                 var translation = currentMovie.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == movieInfoLanguage);
                 var resource = currentMovie.ToResource(availDelay, translation);
 
-                _coverMapper.ConvertToLocalUrls(resource.Id, resource.Images);
+                _coverMapper.ConvertToLocalUrls(resource.Id, resource.Images, resource.Added);
 
                 var poster = currentMovie.MovieMetadata.Value.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
