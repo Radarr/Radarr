@@ -87,6 +87,18 @@ namespace NzbDrone.Core.Test.MovieTests
         }
 
         [Test]
+        public void should_update_movie_path_only_after_successful_move()
+        {
+            Subject.Execute(_command);
+
+            Mocker.GetMock<IDiskTransferService>()
+                  .Verify(v => v.TransferFolder(_command.SourcePath, _command.DestinationPath, TransferMode.Move), Times.Once());
+
+            Mocker.GetMock<IMovieService>()
+                  .Verify(v => v.UpdateMovie(It.Is<Movie>(m => m.Path == _command.DestinationPath)), Times.Once());
+        }
+
+        [Test]
         public void should_use_destination_path()
         {
             Subject.Execute(_command);

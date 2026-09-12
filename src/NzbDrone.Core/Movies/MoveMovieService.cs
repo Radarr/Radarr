@@ -71,17 +71,19 @@ namespace NzbDrone.Core.Movies
 
                 _logger.ProgressInfo("{0} moved successfully to {1}", movie.Title, destinationPath);
 
+                UpdatePath(movie.Id, destinationPath);
+
                 _eventAggregator.PublishEvent(new MovieMovedEvent(movie, sourcePath, destinationPath));
             }
             catch (IOException ex)
             {
                 _logger.Error(ex, "Unable to move movie from '{0}' to '{1}'. Try moving files manually", sourcePath, destinationPath);
 
-                RevertPath(movie.Id, sourcePath);
+                UpdatePath(movie.Id, sourcePath);
             }
         }
 
-        private void RevertPath(int movieId, string path)
+        private void UpdatePath(int movieId, string path)
         {
             var movie = _movieService.GetMovie(movieId);
 
