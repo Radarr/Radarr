@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.ImportLists.ImportExclusions;
@@ -62,6 +63,7 @@ namespace Radarr.Api.V3.ImportLists
             return pageSpec.ApplyToPage(_importListExclusionService.Paged, ImportListExclusionResourceMapper.ToResource);
         }
 
+        [ProducesResponseType(typeof(ImportListExclusionResource), StatusCodes.Status201Created)]
         [RestPostById]
         [Consumes("application/json")]
         public ActionResult<ImportListExclusionResource> AddImportListExclusion([FromBody] ImportListExclusionResource resource)
@@ -71,6 +73,7 @@ namespace Radarr.Api.V3.ImportLists
             return Created(importListExclusion.Id);
         }
 
+        [ProducesResponseType(typeof(ImportListExclusionResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         [Consumes("application/json")]
         public ActionResult<ImportListExclusionResource> UpdateImportListExclusion([FromBody] ImportListExclusionResource resource)
@@ -80,7 +83,7 @@ namespace Radarr.Api.V3.ImportLists
         }
 
         [HttpPost("bulk")]
-        public object AddImportListExclusions([FromBody] List<ImportListExclusionResource> resources)
+        public List<ImportListExclusionResource> AddImportListExclusions([FromBody] List<ImportListExclusionResource> resources)
         {
             var importListExclusions = _importListExclusionService.Add(resources.ToModel());
 

@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Reflection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Configuration;
 using Radarr.Http.REST;
@@ -32,6 +33,7 @@ namespace Radarr.Api.V3.Config
             return resource;
         }
 
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
         [RestPutById]
         [Consumes("application/json")]
         public virtual ActionResult<TResource> SaveConfig([FromBody] TResource resource)
