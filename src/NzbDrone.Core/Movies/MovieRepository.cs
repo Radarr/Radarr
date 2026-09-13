@@ -220,7 +220,7 @@ namespace NzbDrone.Core.Movies
 
         public List<Movie> FindByTmdbId(List<int> tmdbids)
         {
-            return Query(x => tmdbids.Contains(x.TmdbId));
+            return Query(x => tmdbids.Contains(x.MovieMetadata.Value.TmdbId));
         }
 
         public List<Movie> GetMoviesByFileId(int fileId)
