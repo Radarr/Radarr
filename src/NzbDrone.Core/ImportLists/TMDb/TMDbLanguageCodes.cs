@@ -77,6 +77,8 @@ namespace NzbDrone.Core.ImportLists.TMDb
         [FieldOption(Hint = "Mongolian")]
         mn,
         [FieldOption(Hint = "Georgian")]
-        ka
+        ka,
+        [FieldOption(Hint = "Irish")]
+        ga
     }
 }

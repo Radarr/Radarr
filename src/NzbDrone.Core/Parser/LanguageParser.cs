@@ -41,6 +41,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<romansh>\b(?:romansh|rumantsch|romansch)\b)|
                                                                             (?<mongolian>\b(?:mongolian|khalkha)\b)|
                                                                             (?<georgian>\b(?:georgian|geo|ka|kat)\b)|
+                                                                            (?<irish>\b(?:irish|gaeilge)\b)|
                                                                             (?<original>\b(?:orig|original)\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
@@ -442,6 +443,11 @@ namespace NzbDrone.Core.Parser
                 if (match.Groups["georgian"].Success)
                 {
                     languages.Add(Language.Georgian);
+                }
+
+                if (match.Groups["irish"].Success)
+                {
+                    languages.Add(Language.Irish);
                 }
 
                 if (match.Groups["original"].Success)
