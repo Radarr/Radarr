@@ -116,6 +116,12 @@ stages:
             sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64/' "$BUNDLEDVERSIONS"
           fi
         displayName: Enable Extra Platform Support
+      - task: NuGetAuthenticate@1
+        displayName: Authenticate to Openur Feed
+        inputs:
+          nuGetServiceConnections: 'Openur NuGet Feed'
+      - bash: dotnet nuget add source https://nuget.pkg.github.com/openur/index.json --name gh-openur --configfile src/NuGet.config
+        displayName: Add Openur Feed
       - bash: ./build.sh --backend --enable-extra-platforms
         displayName: Build Radarr Backend
       - bash: |
