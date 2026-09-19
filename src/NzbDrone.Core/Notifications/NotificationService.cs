@@ -294,7 +294,7 @@ namespace NzbDrone.Core.Notifications
             {
                 try
                 {
-                    if (!ShouldHandleMovie(notification.Definition, movie))
+                    if (!ShouldHandleMovie(notification.Definition, message.RemoteMovie?.Movie))
                     {
                         continue;
                     }
