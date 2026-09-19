@@ -67,6 +67,12 @@ namespace NzbDrone.Core.Notifications
                 return true;
             }
 
+            if (movie == null)
+            {
+                _logger.Debug("{0} has tags but the movie is unknown. Notification will not be sent", definition.Name);
+                return false;
+            }
+
             if (definition.Tags.Intersect(movie.Tags).Any())
             {
                 _logger.Debug("Notification and movie have one or more intersecting tags.");
@@ -276,7 +282,7 @@ namespace NzbDrone.Core.Notifications
             {
                 Message = mess,
                 Movie = movie,
-                Quality = message.RemoteMovie?.ParsedMovieInfo.Quality,
+                Quality = message.RemoteMovie?.ParsedMovieInfo?.Quality,
                 RemoteMovie = message.RemoteMovie,
                 TrackedDownload = message.TrackedDownload,
                 DownloadClientInfo = message.TrackedDownload.DownloadItem?.DownloadClientInfo,
@@ -288,7 +294,7 @@ namespace NzbDrone.Core.Notifications
             {
                 try
                 {
-                    if (!ShouldHandleMovie(notification.Definition, message.RemoteMovie.Movie))
+                    if (!ShouldHandleMovie(notification.Definition, message.RemoteMovie?.Movie))
                     {
                         continue;
                     }

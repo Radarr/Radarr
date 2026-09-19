@@ -326,8 +326,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Download_Client", message.DownloadClientInfo?.Name ?? string.Empty);
             environmentVariables.Add("Radarr_Download_Client_Type", message.DownloadClientInfo?.Type ?? string.Empty);
             environmentVariables.Add("Radarr_Download_Id", message.DownloadId ?? string.Empty);
-            environmentVariables.Add("Radarr_Download_Size", message.TrackedDownload.DownloadItem.TotalSize.ToString());
-            environmentVariables.Add("Radarr_Download_Title", message.TrackedDownload.DownloadItem.Title);
+            environmentVariables.Add("Radarr_Download_Size", message.TrackedDownload.DownloadItem?.TotalSize.ToString() ?? string.Empty);
+            environmentVariables.Add("Radarr_Download_Title", message.TrackedDownload.DownloadItem?.Title ?? string.Empty);
 
             ExecuteScript(environmentVariables);
         }
