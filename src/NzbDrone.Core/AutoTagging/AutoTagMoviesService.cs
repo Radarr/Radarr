@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Movies;
@@ -17,24 +18,24 @@ namespace NzbDrone.Core.AutoTagging
 
         public void Execute(AutoTagMoviesCommand message)
         {
-            var updatedCount = 0;
+            var moviesToUpdate = new List<Movie>();
 
             foreach (var movie in _movieService.GetAllMovies())
             {
                 if (_movieService.UpdateTags(movie))
                 {
-                    _movieService.UpdateMovie(movie);
-                    updatedCount++;
+                    moviesToUpdate.Add(movie);
                 }
             }
 
-            if (updatedCount == 0)
+            if (moviesToUpdate.Count == 0)
             {
                 _logger.Debug("No movies had auto-tag changes");
                 return;
             }
 
-            _logger.Info("Updated auto-tags for {0} movies", updatedCount);
+            _logger.Info("Updated auto-tags for {0} movies", moviesToUpdate.Count);
+            _movieService.UpdateMovie(moviesToUpdate);
         }
     }
 }

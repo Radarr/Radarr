@@ -41,6 +41,7 @@ namespace NzbDrone.Core.Movies
         List<Movie> GetAllMovies();
         Dictionary<int, List<int>> AllMovieTags();
         Movie UpdateMovie(Movie movie);
+        List<Movie> UpdateMovie(List<Movie> movies);
         List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder);
         void UpdateLastSearchTime(Movie movie);
         List<int> GetRecommendedTmdbIds();
@@ -253,6 +254,16 @@ namespace NzbDrone.Core.Movies
             _eventAggregator.PublishEvent(new MovieEditedEvent(updatedMovie, storedMovie));
 
             return updatedMovie;
+        }
+
+        public List<Movie> UpdateMovie(List<Movie> movies)
+        {
+            _logger.Debug("Updating {0} movies", movies.Count);
+
+            _movieRepository.UpdateMany(movies);
+            _eventAggregator.PublishEvent(new MoviesBulkEditedEvent(movies));
+
+            return movies;
         }
 
         public List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder)

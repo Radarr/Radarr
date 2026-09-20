@@ -187,5 +187,41 @@ namespace NzbDrone.Core.Test.AutoTagging
             result.TagsToAdd.Should().BeEmpty();
             result.TagsToRemove.Should().Contain(1);
         }
+
+        [Test]
+        public void should_hydrate_movie_file_when_missing_for_custom_format_match()
+        {
+            var movieFile = Builder<MovieFile>.CreateNew().With(f => f.Id = 10).Build();
+            var customFormat = new CustomFormat { Id = 5, Name = "HDR" };
+
+            _movie.MovieFileId = movieFile.Id;
+            _movie.MovieFile = null;
+            _movie.Tags = new HashSet<int>();
+
+            _tag.Specifications = new List<IAutoTaggingSpecification>
+            {
+                new CustomFormatSpecification
+                {
+                    Name = "Custom Format",
+                    Value = customFormat.Id
+                }
+            };
+
+            Mocker.GetMock<IMediaFileService>()
+                  .Setup(s => s.GetMovie(movieFile.Id))
+                  .Returns(movieFile);
+
+            Mocker.GetMock<ICustomFormatCalculationService>()
+                  .Setup(s => s.ParseCustomFormat(movieFile, _movie))
+                  .Returns(new List<CustomFormat> { customFormat });
+
+            GivenAutoTags(new List<AutoTag> { _tag });
+
+            var result = Subject.GetTagChanges(_movie);
+
+            result.TagsToAdd.Should().Contain(1);
+            result.TagsToRemove.Should().BeEmpty();
+            _movie.MovieFile.Should().Be(movieFile);
+        }
     }
 }

@@ -114,7 +114,10 @@ namespace NzbDrone.Core.AutoTagging
 
             foreach (var specification in autoTags.SelectMany(t => t.Specifications).OfType<CustomFormatSpecification>())
             {
-                specification.CustomFormatCalculationService = _formatService;
+                if (specification.CustomFormatCalculationService == null)
+                {
+                    specification.CustomFormatCalculationService = _formatService;
+                }
             }
 
             foreach (var autoTag in autoTags)

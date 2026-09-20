@@ -31,7 +31,7 @@ namespace NzbDrone.Core.AutoTagging.Specifications
 
         protected override bool IsSatisfiedByWithoutNegate(Movie movie)
         {
-            if (!movie.HasFile || movie.MovieFile == null)
+            if (!movie.HasFile || movie.MovieFile == null || CustomFormatCalculationService == null)
             {
                 return false;
             }
