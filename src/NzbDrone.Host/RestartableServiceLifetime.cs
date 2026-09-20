@@ -14,7 +14,7 @@ namespace NzbDrone.Host
 {
     public class RestartableServiceLifetime : IHostLifetime, IDisposable
     {
-        private static readonly object StaticLock = new();
+        private static readonly Lock StaticLock = new();
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(RestartableServiceLifetime));
         private static WindowsServiceWrapper _singletonService;
         private static bool _serviceBaseRunCalled;

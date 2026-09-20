@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-FRAMEWORK="net8.0"
+FRAMEWORK="net10.0"
 PLATFORM=$1
 ARCHITECTURE="${2:-x64}"
 
@@ -38,7 +38,7 @@ dotnet clean $slnFile -c Release
 dotnet msbuild -restore $slnFile -p:Configuration=Debug -p:Platform=$platform -p:RuntimeIdentifiers=$RUNTIME -t:PublishAllRids
 
 dotnet new tool-manifest
-dotnet tool install --version 8.1.4 Swashbuckle.AspNetCore.Cli
+dotnet tool install --version 10.2.3 Swashbuckle.AspNetCore.Cli
 
 dotnet tool run swagger tofile --output ./src/Radarr.Api.V3/openapi.json "$outputFolder/$FRAMEWORK/$RUNTIME/$application" v3 &
 

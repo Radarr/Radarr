@@ -24,9 +24,9 @@ namespace NzbDrone.App.Test
             return options;
         }
 
-        private static string[] GetKnownNetworks(ForwardedHeadersOptions options)
+        private static string[] GetKnownIPNetworks(ForwardedHeadersOptions options)
         {
-            return options.KnownNetworks.Select(n => $"{n.Prefix}/{n.PrefixLength}").ToArray();
+            return options.KnownIPNetworks.Select(n => $"{n.BaseAddress}/{n.PrefixLength}").ToArray();
         }
 
         [Test]
@@ -42,31 +42,31 @@ namespace NzbDrone.App.Test
         [TestCase("   ")]
         public void should_only_trust_loopback_when_no_networks_are_configured(string trustedNetworks)
         {
-            GetKnownNetworks(GetOptions(trustedNetworks)).Should().BeEquivalentTo("127.0.0.1/8");
+            GetKnownIPNetworks(GetOptions(trustedNetworks)).Should().BeEquivalentTo("127.0.0.0/8");
         }
 
         [Test]
         public void should_trust_configured_networks_in_addition_to_loopback()
         {
-            GetKnownNetworks(GetOptions("10.0.0.0/8, 172.17.0.1,fc00::/7"))
+            GetKnownIPNetworks(GetOptions("10.0.0.0/8, 172.17.0.1,fc00::/7"))
                 .Should()
-                .BeEquivalentTo("127.0.0.1/8", "10.0.0.0/8", "172.17.0.1/32", "fc00::/7");
+                .BeEquivalentTo("127.0.0.0/8", "10.0.0.0/8", "172.17.0.1/32", "fc00::/7");
         }
 
         [Test]
         public void should_skip_invalid_networks()
         {
-            GetKnownNetworks(GetOptions("10.0.0.0/8,not-an-address,10.1.2.3/8,0.0.0.0/0,192.168.0.0/16"))
+            GetKnownIPNetworks(GetOptions("10.0.0.0/8,not-an-address,10.1.2.3/8,0.0.0.0/0,192.168.0.0/16"))
                 .Should()
-                .BeEquivalentTo("127.0.0.1/8", "10.0.0.0/8", "192.168.0.0/16");
+                .BeEquivalentTo("127.0.0.0/8", "10.0.0.0/8", "192.168.0.0/16");
         }
 
         [Test]
         public void should_skip_empty_entries()
         {
-            GetKnownNetworks(GetOptions("10.0.0.0/8,, ,192.168.0.0/16,"))
+            GetKnownIPNetworks(GetOptions("10.0.0.0/8,, ,192.168.0.0/16,"))
                 .Should()
-                .BeEquivalentTo("127.0.0.1/8", "10.0.0.0/8", "192.168.0.0/16");
+                .BeEquivalentTo("127.0.0.0/8", "10.0.0.0/8", "192.168.0.0/16");
         }
     }
 }

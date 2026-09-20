@@ -12,11 +12,10 @@ namespace NzbDrone.Core.Test.Datastore.Migration
     [TestFixture]
     public class fix_tmdb_duplicatesFixture : MigrationTest<fix_tmdb_duplicates>
     {
-        private void AddMovie(fix_tmdb_duplicates m, int id, string movieTitle, string titleSlug, int tmdbId, int movieFileId, DateTime? lastInfo, DateTime added)
+        private void AddMovie(fix_tmdb_duplicates m, string movieTitle, string titleSlug, int tmdbId, int movieFileId, DateTime? lastInfo, DateTime added)
         {
             var movie = new
             {
-                Id = id,
                 Monitored = true,
                 Title = movieTitle,
                 CleanTitle = movieTitle,
@@ -47,10 +46,10 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
             var db = WithMigrationTestDb(c =>
             {
-                AddMovie(c, 1, "movie", "slug", tmdbId, 0, dateAdded, dateAdded);
-                AddMovie(c, 2, "movie", "slug1", tmdbId, 0, dateAdded, dateAdded);
-                AddMovie(c, 3, "movie", "slug2", tmdbId, 0, dateAdded, dateAdded);
-                AddMovie(c, 4, "movie", "slug3", tmdbId, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug", tmdbId, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug1", tmdbId, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug2", tmdbId, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug3", tmdbId, 0, dateAdded, dateAdded);
             });
 
             var items = db.Query<Movie185>("SELECT \"Id\", \"TmdbId\", \"MovieFileId\" FROM \"Movies\"");
@@ -66,11 +65,11 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
             var db = WithMigrationTestDb(c =>
             {
-                AddMovie(c, 1, "movie", "slug", tmdbId, 0, dateAdded, dateAdded);
-                AddMovie(c, 2, "movie", "slug1", tmdbId, 0, dateAdded, dateAdded);
-                AddMovie(c, 3, "movie", "slug2", tmdbId, 0, dateAdded, dateAdded);
-                AddMovie(c, 4, "movie", "slug3", tmdbId, 0, dateAdded, dateAdded);
-                AddMovie(c, 5, "movie2", "slug4", 123457, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug", tmdbId, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug1", tmdbId, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug2", tmdbId, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug3", tmdbId, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie2", "slug4", 123457, 0, dateAdded, dateAdded);
             });
 
             var items = db.Query<Movie185>("SELECT \"Id\", \"TmdbId\", \"MovieFileId\" FROM \"Movies\"");
@@ -86,11 +85,11 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
             var db = WithMigrationTestDb(c =>
             {
-                AddMovie(c, 1, "movie1", "slug", 1, 0, dateAdded, dateAdded);
-                AddMovie(c, 2, "movie2", "slug1", 2, 0, dateAdded, dateAdded);
-                AddMovie(c, 3, "movie3", "slug2", 3, 0, dateAdded, dateAdded);
-                AddMovie(c, 4, "movie4", "slug3", 4, 0, dateAdded, dateAdded);
-                AddMovie(c, 5, "movie5", "slug4", 123457, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie1", "slug", 1, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie2", "slug1", 2, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie3", "slug2", 3, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie4", "slug3", 4, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie5", "slug4", 123457, 0, dateAdded, dateAdded);
             });
 
             var items = db.Query<Movie185>("SELECT \"Id\", \"TmdbId\", \"MovieFileId\" FROM \"Movies\"");
@@ -106,10 +105,10 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
             var db = WithMigrationTestDb(c =>
             {
-                AddMovie(c, 1, "movie", "slug", tmdbId, 0, dateAdded, dateAdded);
-                AddMovie(c, 2, "movie", "slug1", tmdbId, 1, dateAdded, dateAdded);
-                AddMovie(c, 3, "movie", "slug2", tmdbId, 0, dateAdded, dateAdded);
-                AddMovie(c, 4, "movie", "slug3", tmdbId, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug", tmdbId, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug1", tmdbId, 1, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug2", tmdbId, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug3", tmdbId, 0, dateAdded, dateAdded);
             });
 
             var items = db.Query<Movie185>("SELECT \"Id\", \"TmdbId\", \"MovieFileId\" FROM \"Movies\"");
@@ -126,10 +125,10 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
             var db = WithMigrationTestDb(c =>
             {
-                AddMovie(c, 1, "movie", "slug", tmdbId, 0, dateAdded, dateAdded);
-                AddMovie(c, 2, "movie", "slug1", tmdbId, 1, dateAdded, dateAdded.AddSeconds(200));
-                AddMovie(c, 3, "movie", "slug2", tmdbId, 0, dateAdded, dateAdded);
-                AddMovie(c, 4, "movie", "slug3", tmdbId, 2, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug", tmdbId, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug1", tmdbId, 1, dateAdded, dateAdded.AddSeconds(200));
+                AddMovie(c, "movie", "slug2", tmdbId, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug3", tmdbId, 2, dateAdded, dateAdded);
             });
 
             var items = db.Query<Movie185>("SELECT \"Id\", \"TmdbId\", \"MovieFileId\" FROM \"Movies\"");
@@ -147,10 +146,10 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
             var db = WithMigrationTestDb(c =>
             {
-                AddMovie(c, 1, "movie", "slug", tmdbId, 0, null, dateAdded);
-                AddMovie(c, 2, "movie", "slug1", tmdbId, 0, null, dateAdded);
-                AddMovie(c, 3, "movie", "slug2", tmdbId, 0, dateAdded, dateAdded);
-                AddMovie(c, 4, "movie", "slug3", tmdbId, 0, null, dateAdded);
+                AddMovie(c, "movie", "slug", tmdbId, 0, null, dateAdded);
+                AddMovie(c, "movie", "slug1", tmdbId, 0, null, dateAdded);
+                AddMovie(c, "movie", "slug2", tmdbId, 0, dateAdded, dateAdded);
+                AddMovie(c, "movie", "slug3", tmdbId, 0, null, dateAdded);
             });
 
             var items = db.Query<Movie185>("SELECT \"Id\", \"LastInfoSync\", \"TmdbId\", \"MovieFileId\" FROM \"Movies\"");

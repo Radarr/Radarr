@@ -11,12 +11,11 @@ namespace NzbDrone.Core.Test.Datastore.Migration
     [TestFixture]
     public class mediainfo_channel_propertiesFixture : MigrationTest<mediainfo_channels>
     {
-        private void AddMovieFile(mediainfo_channels m, int id)
+        private void AddMovieFile(mediainfo_channels m, int movieId)
         {
             var movie = new
             {
-                Id = id,
-                MovieId = id,
+                MovieId = movieId,
                 Quality = new { }.ToJson(),
                 Size = 0,
                 DateAdded = DateTime.UtcNow,
