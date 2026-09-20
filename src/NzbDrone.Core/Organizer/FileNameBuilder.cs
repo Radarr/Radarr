@@ -30,6 +30,7 @@ namespace NzbDrone.Core.Organizer
     {
         private const string MediaInfoVideoDynamicRangeToken = "{MediaInfo VideoDynamicRange}";
         private const string MediaInfoVideoDynamicRangeTypeToken = "{MediaInfo VideoDynamicRangeType}";
+        private const string MediaInfoBestAudioCodecToken = "{MediaInfo BestAudioCodec}";
 
         private readonly INamingConfigService _namingConfigService;
         private readonly IQualityDefinitionService _qualityDefinitionService;
@@ -366,7 +367,8 @@ namespace NzbDrone.Core.Organizer
             new Dictionary<string, int>(FileNameBuilderTokenEqualityComparer.Instance)
         {
             { MediaInfoVideoDynamicRangeToken, 5 },
-            { MediaInfoVideoDynamicRangeTypeToken, 13 }
+            { MediaInfoVideoDynamicRangeTypeToken, 13 },
+            { MediaInfoBestAudioCodecToken, 15 }
         };
 
         private void AddMediaInfoTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
@@ -415,6 +417,15 @@ namespace NzbDrone.Core.Organizer
                 m => MediaInfoFormatter.FormatVideoDynamicRange(movieFile.MediaInfo);
             tokenHandlers[MediaInfoVideoDynamicRangeTypeToken] =
                 m => MediaInfoFormatter.FormatVideoDynamicRangeType(movieFile.MediaInfo);
+
+            var bestAudioMediaInfo = new MediaInfoModel
+            {
+                AudioFormat = movieFile.MediaInfo.BestAudioFormat,
+                AudioCodecID = movieFile.MediaInfo.BestAudioCodecID,
+                AudioProfile = movieFile.MediaInfo.BestAudioProfile
+            };
+            var bestAudioCodec = MediaInfoFormatter.FormatAudioCodec(bestAudioMediaInfo, sceneName) ?? string.Empty;
+            tokenHandlers[MediaInfoBestAudioCodecToken] = m => bestAudioCodec;
         }
 
         private void AddCustomFormats(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie, MovieFile movieFile, List<CustomFormat> customFormats = null)

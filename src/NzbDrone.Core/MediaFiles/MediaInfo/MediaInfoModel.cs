@@ -43,6 +43,12 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
         public string AudioProfile { get; set; }
 
+        public string BestAudioFormat { get; set; }
+
+        public string BestAudioCodecID { get; set; }
+
+        public string BestAudioProfile { get; set; }
+
         public long AudioBitrate { get; set; }
 
         public TimeSpan RunTime { get; set; }
