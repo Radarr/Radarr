@@ -1,4 +1,5 @@
 export const APPLICATION_UPDATE = 'ApplicationUpdate';
+export const AUTO_TAG_MOVIES = 'AutoTagMovies';
 export const BACKUP = 'Backup';
 export const REFRESH_MONITORED_DOWNLOADS = 'RefreshMonitoredDownloads';
 export const CLEAR_BLOCKLIST = 'ClearBlocklist';

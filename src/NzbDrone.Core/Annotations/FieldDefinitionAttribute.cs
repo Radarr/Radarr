@@ -101,6 +101,7 @@ namespace NzbDrone.Core.Annotations
         RootFolder,
         QualityProfile,
         MovieTag,
+        CustomFormat,
         KeyValueList,
     }
 

@@ -86,6 +86,8 @@ function ProviderFieldFormGroup<T>({
         return 'rootFolderSelect';
       case 'qualityProfile':
         return 'qualityProfileSelect';
+      case 'customFormat':
+        return 'customFormatSelect';
       default:
         return 'text';
     }

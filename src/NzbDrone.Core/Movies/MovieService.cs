@@ -440,6 +440,8 @@ namespace NzbDrone.Core.Movies
         {
             var movie = message.MovieFile.Movie;
             movie.MovieFileId = message.MovieFile.Id;
+            movie.MovieFile = message.MovieFile;
+            UpdateTags(movie);
             _movieRepository.Update(movie);
 
             // _movieRepository.SetFileId(message.MovieFile.Id, message.MovieFile.Movie.Value.Id);

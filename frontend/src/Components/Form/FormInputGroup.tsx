@@ -41,6 +41,9 @@ import ProviderDataSelectInput, {
 import QualityProfileSelectInput, {
   QualityProfileSelectInputProps,
 } from './Select/QualityProfileSelectInput';
+import CustomFormatSelectInput, {
+  CustomFormatSelectInputProps,
+} from './Select/CustomFormatSelectInput';
 import RootFolderSelectInput, {
   RootFolderSelectInputProps,
 } from './Select/RootFolderSelectInput';
@@ -75,6 +78,7 @@ const componentMap: Record<InputType, ElementType> = {
   password: PasswordInput,
   path: PathInput,
   qualityProfileSelect: QualityProfileSelectInput,
+  customFormatSelect: CustomFormatSelectInput,
   rootFolderSelect: RootFolderSelectInput,
   select: EnhancedSelectInput,
   tag: MovieTagInput,
@@ -131,6 +135,8 @@ type PickProps<V, C extends InputType> = C extends 'text'
   ? PathInputProps
   : C extends 'qualityProfileSelect'
   ? QualityProfileSelectInputProps
+  : C extends 'customFormatSelect'
+  ? CustomFormatSelectInputProps
   : C extends 'rootFolderSelect'
   ? RootFolderSelectInputProps
   : C extends 'select'

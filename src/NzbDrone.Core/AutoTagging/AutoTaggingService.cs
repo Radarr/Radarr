@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.AutoTagging.Specifications;
+using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.RootFolders;
@@ -23,16 +26,22 @@ namespace NzbDrone.Core.AutoTagging
     {
         private readonly IAutoTaggingRepository _repository;
         private readonly RootFolderService _rootFolderService;
+        private readonly IMediaFileService _mediaFileService;
+        private readonly ICustomFormatCalculationService _formatService;
         private readonly IEventAggregator _eventAggregator;
         private readonly ICached<Dictionary<int, AutoTag>> _cache;
 
         public AutoTaggingService(IAutoTaggingRepository repository,
                                   RootFolderService rootFolderService,
+                                  IMediaFileService mediaFileService,
+                                  ICustomFormatCalculationService formatService,
                                   IEventAggregator eventAggregator,
                                   ICacheManager cacheManager)
         {
             _repository = repository;
             _rootFolderService = rootFolderService;
+            _mediaFileService = mediaFileService;
+            _formatService = formatService;
             _eventAggregator = eventAggregator;
 
             _cache = cacheManager.GetCache<Dictionary<int, AutoTag>>(typeof(AutoTag), "autoTags");
@@ -97,6 +106,16 @@ namespace NzbDrone.Core.AutoTagging
 
             // Set the root folder path on the series
             movie.RootFolderPath = _rootFolderService.GetBestRootFolderPath(movie.Path);
+
+            if (movie.HasFile && movie.MovieFile == null)
+            {
+                movie.MovieFile = _mediaFileService.GetMovie(movie.MovieFileId);
+            }
+
+            foreach (var specification in autoTags.SelectMany(t => t.Specifications).OfType<CustomFormatSpecification>())
+            {
+                specification.CustomFormatCalculationService = _formatService;
+            }
 
             foreach (var autoTag in autoTags)
             {

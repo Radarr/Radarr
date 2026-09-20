@@ -5,6 +5,8 @@ using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.AutoTagging;
 using NzbDrone.Core.AutoTagging.Specifications;
+using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Test.Framework;
 
@@ -24,6 +26,8 @@ namespace NzbDrone.Core.Test.AutoTagging
                 {
                     Genres = new List<string> { "Comedy" }
                 })
+                .With(m => m.MovieFileId = 0)
+                .With(m => m.MovieFile = null)
                 .Build();
 
             _tag = new AutoTag
@@ -120,6 +124,68 @@ namespace NzbDrone.Core.Test.AutoTagging
             result.TagsToAdd.Should().HaveCount(1);
             result.TagsToAdd.Should().Contain(1);
             result.TagsToRemove.Should().BeEmpty();
+        }
+
+        [Test]
+        public void should_add_tag_when_movie_file_matches_custom_format()
+        {
+            var movieFile = Builder<MovieFile>.CreateNew().With(f => f.Id = 10).Build();
+            var customFormat = new CustomFormat { Id = 5, Name = "HDR" };
+
+            _movie.MovieFileId = movieFile.Id;
+            _movie.MovieFile = movieFile;
+            _movie.Tags = new HashSet<int>();
+
+            _tag.Specifications = new List<IAutoTaggingSpecification>
+            {
+                new CustomFormatSpecification
+                {
+                    Name = "Custom Format",
+                    Value = customFormat.Id
+                }
+            };
+
+            Mocker.GetMock<ICustomFormatCalculationService>()
+                  .Setup(s => s.ParseCustomFormat(movieFile, _movie))
+                  .Returns(new List<CustomFormat> { customFormat });
+
+            GivenAutoTags(new List<AutoTag> { _tag });
+
+            var result = Subject.GetTagChanges(_movie);
+
+            result.TagsToAdd.Should().Contain(1);
+            result.TagsToRemove.Should().BeEmpty();
+        }
+
+        [Test]
+        public void should_remove_tag_when_movie_file_does_not_match_custom_format_and_remove_is_true()
+        {
+            var movieFile = Builder<MovieFile>.CreateNew().With(f => f.Id = 10).Build();
+
+            _movie.MovieFileId = movieFile.Id;
+            _movie.MovieFile = movieFile;
+            _movie.Tags = new HashSet<int> { 1 };
+
+            _tag.RemoveTagsAutomatically = true;
+            _tag.Specifications = new List<IAutoTaggingSpecification>
+            {
+                new CustomFormatSpecification
+                {
+                    Name = "Custom Format",
+                    Value = 5
+                }
+            };
+
+            Mocker.GetMock<ICustomFormatCalculationService>()
+                  .Setup(s => s.ParseCustomFormat(movieFile, _movie))
+                  .Returns(new List<CustomFormat>());
+
+            GivenAutoTags(new List<AutoTag> { _tag });
+
+            var result = Subject.GetTagChanges(_movie);
+
+            result.TagsToAdd.Should().BeEmpty();
+            result.TagsToRemove.Should().Contain(1);
         }
     }
 }
