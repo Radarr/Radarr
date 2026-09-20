@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Messaging.Events;
@@ -29,6 +30,7 @@ namespace Radarr.Api.V3.Qualities
                 .SetValidator(new QualityDefinitionResourceValidator());
         }
 
+        [ProducesResponseType(typeof(QualityDefinitionResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         public ActionResult<QualityDefinitionResource> Update([FromBody] QualityDefinitionResource resource)
         {
@@ -48,6 +50,7 @@ namespace Radarr.Api.V3.Qualities
             return _qualityDefinitionService.All().ToResource();
         }
 
+        [ProducesResponseType(typeof(List<QualityDefinitionResource>), StatusCodes.Status202Accepted)]
         [HttpPut("update")]
         public object UpdateMany([FromBody] List<QualityDefinitionResource> resource)
         {

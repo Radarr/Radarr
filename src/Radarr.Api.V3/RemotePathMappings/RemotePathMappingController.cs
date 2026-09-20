@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.RemotePathMappings;
@@ -51,6 +52,7 @@ namespace Radarr.Api.V3.RemotePathMappings
             return _remotePathMappingService.Get(id).ToResource();
         }
 
+        [ProducesResponseType(typeof(RemotePathMappingResource), StatusCodes.Status201Created)]
         [RestPostById]
         [Consumes("application/json")]
         public ActionResult<RemotePathMappingResource> CreateMapping([FromBody] RemotePathMappingResource resource)
@@ -72,6 +74,7 @@ namespace Radarr.Api.V3.RemotePathMappings
             _remotePathMappingService.Remove(id);
         }
 
+        [ProducesResponseType(typeof(RemotePathMappingResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         public ActionResult<RemotePathMappingResource> UpdateMapping([FromBody] RemotePathMappingResource resource)
         {

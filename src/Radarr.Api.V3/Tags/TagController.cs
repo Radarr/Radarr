@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.AutoTagging;
 using NzbDrone.Core.Datastore.Events;
@@ -43,6 +44,7 @@ namespace Radarr.Api.V3.Tags
             return _tagService.All().ToResource();
         }
 
+        [ProducesResponseType(typeof(TagResource), StatusCodes.Status201Created)]
         [RestPostById]
         [Consumes("application/json")]
         public ActionResult<TagResource> Create([FromBody] TagResource resource)
@@ -50,6 +52,7 @@ namespace Radarr.Api.V3.Tags
             return Created(_tagService.Add(resource.ToModel()).Id);
         }
 
+        [ProducesResponseType(typeof(TagResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         [Consumes("application/json")]
         public ActionResult<TagResource> Update([FromBody] TagResource resource)

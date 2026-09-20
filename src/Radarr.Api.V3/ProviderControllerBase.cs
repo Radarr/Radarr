@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
@@ -75,6 +76,7 @@ namespace Radarr.Api.V3
             return result.OrderBy(p => p.Name).ToList();
         }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [RestPostById]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -92,6 +94,7 @@ namespace Radarr.Api.V3
             return Created(providerDefinition.Id);
         }
 
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
         [RestPutById]
         [Consumes("application/json")]
         [Produces("application/json")]
@@ -124,10 +127,11 @@ namespace Radarr.Api.V3
             return Accepted(existingDefinition.Id);
         }
 
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
         [HttpPut("bulk")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public virtual ActionResult<TProviderResource> UpdateProvider([FromBody] TBulkProviderResource providerResource)
+        public virtual ActionResult<List<TProviderResource>> UpdateProvider([FromBody] TBulkProviderResource providerResource)
         {
             if (!providerResource.Ids.Any())
             {

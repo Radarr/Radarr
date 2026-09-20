@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -88,6 +89,7 @@ namespace Radarr.Api.V3.Collections
             return collectionResources;
         }
 
+        [ProducesResponseType(typeof(CollectionResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         [Consumes("application/json")]
         public ActionResult<CollectionResource> UpdateCollection([FromBody] CollectionResource collectionResource)
@@ -101,6 +103,7 @@ namespace Radarr.Api.V3.Collections
             return Accepted(updatedMovie.Id);
         }
 
+        [ProducesResponseType(typeof(List<CollectionResource>), StatusCodes.Status202Accepted)]
         [HttpPut]
         [Consumes("application/json")]
         public ActionResult UpdateCollections([FromBody] CollectionUpdateResource resource)

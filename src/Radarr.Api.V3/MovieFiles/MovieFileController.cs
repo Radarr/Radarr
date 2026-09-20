@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore.Events;
@@ -82,6 +83,7 @@ namespace Radarr.Api.V3.MovieFiles
                 .ToList();
         }
 
+        [ProducesResponseType(typeof(MovieFileResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         [Consumes("application/json")]
         public ActionResult<MovieFileResource> SetMovieFile([FromBody] MovieFileResource movieFileResource)
@@ -105,6 +107,7 @@ namespace Radarr.Api.V3.MovieFiles
             return Accepted(movieFile.Id);
         }
 
+        [ProducesResponseType(typeof(List<MovieFileResource>), StatusCodes.Status202Accepted)]
         [Obsolete("Use bulk endpoint instead")]
         [HttpPut("editor")]
         [Consumes("application/json")]
@@ -188,6 +191,7 @@ namespace Radarr.Api.V3.MovieFiles
             return new { };
         }
 
+        [ProducesResponseType(typeof(List<MovieFileResource>), StatusCodes.Status202Accepted)]
         [HttpPut("bulk")]
         [Consumes("application/json")]
         public object SetPropertiesBulk([FromBody] List<MovieFileResource> resources)

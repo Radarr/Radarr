@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Indexers;
@@ -46,6 +47,7 @@ namespace Radarr.Api.V3.Profiles.Release
             });
         }
 
+        [ProducesResponseType(typeof(ReleaseProfileResource), StatusCodes.Status201Created)]
         [RestPostById]
         public ActionResult<ReleaseProfileResource> Create([FromBody] ReleaseProfileResource resource)
         {
@@ -60,6 +62,7 @@ namespace Radarr.Api.V3.Profiles.Release
             _profileService.Delete(id);
         }
 
+        [ProducesResponseType(typeof(ReleaseProfileResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         public ActionResult<ReleaseProfileResource> Update([FromBody] ReleaseProfileResource resource)
         {
