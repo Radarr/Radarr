@@ -14,6 +14,7 @@ using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
+using NzbDrone.Core.MetadataSource.TMDb;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Collections;
@@ -33,6 +34,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IMovieService _movieService;
         private readonly IMovieMetadataService _movieMetadataService;
         private readonly IMovieTranslationService _movieTranslationService;
+        private readonly ITmdbImagesProxy _tmdbImagesProxy;
 
         public SkyHookProxy(IHttpClient httpClient,
             IRadarrCloudRequestBuilder requestBuilder,
@@ -40,6 +42,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             IMovieService movieService,
             IMovieMetadataService movieMetadataService,
             IMovieTranslationService movieTranslationService,
+            ITmdbImagesProxy tmdbImagesProxy,
             Logger logger)
         {
             _httpClient = httpClient;
@@ -48,6 +51,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _movieService = movieService;
             _movieMetadataService = movieMetadataService;
             _movieTranslationService = movieTranslationService;
+            _tmdbImagesProxy = tmdbImagesProxy;
 
             _logger = logger;
         }
@@ -275,6 +279,15 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.Genres = resource.Genres ?? new List<string>();
             movie.Keywords = resource.Keywords ?? new List<string>();
             movie.Images = resource.Images.Select(MapImage).ToList();
+
+            if (!movie.Images.Any(i => i.CoverType == MediaCoverTypes.Clearlogo))
+            {
+                var logo = _tmdbImagesProxy.GetMovieLogo(resource.TmdbId);
+                if (logo != null)
+                {
+                    movie.Images.Add(logo);
+                }
+            }
 
             movie.Recommendations = resource.Recommendations?.Select(r => r.TmdbId).ToList() ?? new List<int>();
 

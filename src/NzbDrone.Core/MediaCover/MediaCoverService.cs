@@ -166,7 +166,11 @@ namespace NzbDrone.Core.MediaCover
         {
             var fileName = GetCoverPath(movie.Id, cover.CoverType);
 
-            _logger.Info("Downloading {0} for {1} {2}", cover.CoverType, movie, cover.RemoteUrl);
+            if (cover.CoverType == MediaCoverTypes.Clearlogo)
+            {
+                _logger.Debug("Downloading Clearlogo for {0} {1}", movie, cover.RemoteUrl);
+            }
+
             _httpClient.DownloadFile(cover.RemoteUrl, fileName);
         }
 
