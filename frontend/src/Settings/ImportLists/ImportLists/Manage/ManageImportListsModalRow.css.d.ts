@@ -8,6 +8,7 @@ interface CssExports {
   'name': string;
   'qualityProfileId': string;
   'rootFolderPath': string;
+  'tagExisting': string;
   'tags': string;
 }
 export const cssExports: CssExports;

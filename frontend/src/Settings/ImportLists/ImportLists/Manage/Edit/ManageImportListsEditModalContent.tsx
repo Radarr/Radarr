@@ -18,6 +18,7 @@ interface SavePayload {
   qualityProfileId?: number;
   minimumAvailability?: string;
   rootFolderPath?: string;
+  tagExisting?: boolean;
 }
 
 interface ManageImportListsEditModalContentProps {
@@ -62,7 +63,7 @@ function ManageImportListsEditModalContent(
   );
   const [minimumAvailability, setMinimumAvailability] = useState(NO_CHANGE);
   const [rootFolderPath, setRootFolderPath] = useState(NO_CHANGE);
-
+  const [tagExisting, setTagExisting] = useState(NO_CHANGE);
   const save = useCallback(() => {
     let hasChanges = false;
     const payload: SavePayload = {};
@@ -91,6 +92,10 @@ function ManageImportListsEditModalContent(
       hasChanges = true;
       payload.rootFolderPath = rootFolderPath;
     }
+    if (tagExisting !== NO_CHANGE) {
+      hasChanges = true;
+      payload.tagExisting = tagExisting === 'enabled';
+    }
 
     if (hasChanges) {
       onSavePress(payload);
@@ -103,6 +108,7 @@ function ManageImportListsEditModalContent(
     qualityProfileId,
     minimumAvailability,
     rootFolderPath,
+    tagExisting,
     onSavePress,
     onModalClose,
   ]);
@@ -123,6 +129,9 @@ function ManageImportListsEditModalContent(
         break;
       case 'rootFolderPath':
         setRootFolderPath(value as string);
+        break;
+      case 'tagExisting':
+        setTagExisting(value as string);
         break;
       default:
         console.warn(`EditImportListModalContent Unknown Input: '${name}'`);
@@ -196,6 +205,18 @@ function ManageImportListsEditModalContent(
             includeNoChange={true}
             includeNoChangeDisabled={false}
             selectedValueOptions={{ includeFreeSpace: false }}
+            onChange={onInputChange}
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <FormLabel>{translate('TagExisting')}</FormLabel>
+
+          <FormInputGroup
+            type={inputTypes.SELECT}
+            name="tagExisting"
+            value={tagExisting}
+            values={enableOptions}
             onChange={onInputChange}
           />
         </FormGroup>
