@@ -67,6 +67,7 @@ function Indexer({
     <Card
       className={styles.indexer}
       overlayContent={true}
+      ariaLabel={translate('EditIndexerName', { name })}
       onPress={handleEditIndexerPress}
     >
       <div className={styles.nameContainer}>
