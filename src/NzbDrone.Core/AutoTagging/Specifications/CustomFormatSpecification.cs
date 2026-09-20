@@ -15,7 +15,7 @@ namespace NzbDrone.Core.AutoTagging.Specifications
 
     public class CustomFormatSpecification : AutoTaggingSpecificationBase
     {
-        private static readonly CustomFormatSpecificationValidator Validator = new ();
+        private static readonly CustomFormatSpecificationValidator Validator = new();
 
         public override int Order => 1;
         public override string ImplementationName => "Custom Format";

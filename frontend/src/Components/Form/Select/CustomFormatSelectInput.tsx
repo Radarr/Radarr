@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import { CustomFormatAppState } from 'App/State/SettingsAppState';
 import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
 import CustomFormat from 'typings/CustomFormat';
 import { EnhancedSelectInputChanged } from 'typings/inputs';
@@ -16,7 +15,7 @@ const selectCustomFormats = createSelector(
     'settings.customFormats',
     sortByProp<CustomFormat, 'name'>('name')
   ),
-  (customFormats: CustomFormatAppState) => {
+  (customFormats) => {
     return customFormats.items.map((customFormat) => {
       return {
         key: customFormat.id,

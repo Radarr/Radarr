@@ -6,6 +6,7 @@ import FieldSet from 'Components/FieldSet';
 import PageSectionContent from 'Components/Page/PageSectionContent';
 import { kinds } from 'Helpers/Props';
 import {
+  fetchCustomFormats,
   fetchDelayProfiles,
   fetchDownloadClients,
   fetchImportLists,
@@ -38,6 +39,7 @@ function Tags() {
   useEffect(() => {
     dispatch(fetchTags());
     dispatch(fetchTagDetails());
+    dispatch(fetchCustomFormats());
     dispatch(fetchDelayProfiles());
     dispatch(fetchImportLists());
     dispatch(fetchNotifications());
