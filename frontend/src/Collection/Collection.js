@@ -2,6 +2,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Alert from 'Components/Alert';
+import TextInput from 'Components/Form/TextInput';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
@@ -23,6 +24,7 @@ import MovieCollectionSortMenu from './Menus/MovieCollectionSortMenu';
 import NoMovieCollections from './NoMovieCollections';
 import CollectionOverviewsConnector from './Overview/CollectionOverviewsConnector';
 import CollectionOverviewOptionsModal from './Overview/Options/CollectionOverviewOptionsModal';
+import collectionStyles from './Collection.css';
 
 function getViewComponent(view) {
   return CollectionOverviewsConnector;
@@ -38,7 +40,13 @@ class Collection extends Component {
 
     this.scrollerRef = React.createRef();
 
+    this.setFilterText = _.debounce((filterText) => {
+      this.setState({ filterText });
+    }, 250);
+
     this.state = {
+      searchInput: '',
+      filterText: '',
       jumpBarItems: { order: [] },
       jumpToCharacter: null,
       isPosterOptionsModalOpen: false,
@@ -57,7 +65,7 @@ class Collection extends Component {
     this.setSelectedState();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const {
       items,
       sortKey,
@@ -66,6 +74,7 @@ class Collection extends Component {
 
     if (sortKey !== prevProps.sortKey ||
         sortDirection !== prevProps.sortDirection ||
+        this.state.filterText !== prevState.filterText ||
         hasDifferentItemsOrOrder(prevProps.items, items)
     ) {
       this.setJumpBarItems();
@@ -75,6 +84,10 @@ class Collection extends Component {
     if (this.state.jumpToCharacter != null) {
       this.setState({ jumpToCharacter: null });
     }
+  }
+
+  componentWillUnmount() {
+    this.setFilterText.cancel();
   }
 
   //
@@ -87,10 +100,21 @@ class Collection extends Component {
     return getSelectedIds(this.state.selectedState);
   };
 
+  getFilteredItems() {
+    const { items } = this.props;
+    const filterText = this.state.filterText.trim().toLowerCase();
+
+    if (!filterText) {
+      return items;
+    }
+
+    return items.filter((item) => {
+      return item.sortTitle && item.sortTitle.toLowerCase().includes(filterText);
+    });
+  }
+
   setSelectedState() {
-    const {
-      items
-    } = this.props;
+    const items = this.getFilteredItems();
 
     const {
       selectedState
@@ -124,10 +148,11 @@ class Collection extends Component {
 
   setJumpBarItems() {
     const {
-      items,
       sortKey,
       sortDirection
     } = this.props;
+
+    const items = this.getFilteredItems();
 
     // Reset if not sorting by sortTitle
     if (sortKey !== 'sortTitle') {
@@ -179,6 +204,11 @@ class Collection extends Component {
 
   onJumpBarItemPress = (jumpToCharacter) => {
     this.setState({ jumpToCharacter });
+  };
+
+  onSearchInputChange = ({ value }) => {
+    this.setState({ searchInput: value });
+    this.setFilterText(value);
   };
 
   onSelectAllChange = ({ value }) => {
@@ -233,6 +263,7 @@ class Collection extends Component {
     } = this.props;
 
     const {
+      searchInput,
       jumpBarItems,
       jumpToCharacter,
       isOverviewOptionsModalOpen,
@@ -243,8 +274,9 @@ class Collection extends Component {
 
     const selectedMovieIds = this.getSelectedIds();
 
+    const filteredItems = this.getFilteredItems();
     const ViewComponent = getViewComponent(view);
-    const isLoaded = !!(!error && isPopulated && items.length && this.scrollerRef.current);
+    const isLoaded = !!(!error && isPopulated && filteredItems.length && this.scrollerRef.current);
     const hasNoCollection = !totalItems;
 
     return (
@@ -270,6 +302,18 @@ class Collection extends Component {
             alignContent={align.RIGHT}
             collapseButtons={false}
           >
+            {
+              !hasNoCollection &&
+                <div className={collectionStyles.searchInput}>
+                  <TextInput
+                    name="collectionSearch"
+                    value={searchInput}
+                    placeholder={translate('Search')}
+                    onChange={this.onSearchInputChange}
+                  />
+                </div>
+            }
+
             {
               view === 'overview' ?
                 <PageToolbarButton
@@ -326,7 +370,7 @@ class Collection extends Component {
                 <div className={styles.contentBodyContainer}>
                   <ViewComponent
                     scroller={this.scrollerRef.current}
-                    items={items}
+                    items={filteredItems}
                     filters={filters}
                     sortKey={sortKey}
                     sortDirection={sortDirection}
@@ -343,7 +387,7 @@ class Collection extends Component {
             }
 
             {
-              !error && isPopulated && !items.length &&
+              !error && isPopulated && !filteredItems.length &&
                 <NoMovieCollections totalItems={totalItems} />
             }
           </PageContentBody>
