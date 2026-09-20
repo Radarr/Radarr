@@ -196,6 +196,7 @@ namespace NzbDrone.Core.CustomFormats
             {
                 MovieTitles = new List<string> { movie.Title },
                 SimpleReleaseTitle = releaseTitle.SimplifyReleaseTitle(),
+                ReleaseTitle = releaseTitle,
                 Year = movie.Year,
                 Quality = movieFile.Quality,
                 Languages = movieFile.Languages,
