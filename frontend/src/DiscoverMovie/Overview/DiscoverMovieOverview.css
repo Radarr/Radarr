@@ -103,4 +103,19 @@ $hoverScale: 1.05;
   .overview {
     display: none;
   }
+
+  .title {
+    white-space: normal;
+    word-wrap: break-word;
+    font-size: 18px;
+  }
+
+  .titleRow {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .actions {
+    margin-top: 5px;
+  }
 }
