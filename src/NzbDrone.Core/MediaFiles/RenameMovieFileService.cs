@@ -29,7 +29,9 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IMoveMovieFiles _movieFileMover;
         private readonly IEventAggregator _eventAggregator;
         private readonly IBuildFileNames _filenameBuilder;
+        private readonly IMovieFolderService _movieFolderService;
         private readonly IDiskProvider _diskProvider;
+        private readonly INamingConfigService _namingConfigService;
         private readonly Logger _logger;
 
         public RenameMovieFileService(IMovieService movieService,
@@ -37,7 +39,9 @@ namespace NzbDrone.Core.MediaFiles
                                       IMoveMovieFiles movieFileMover,
                                       IEventAggregator eventAggregator,
                                       IBuildFileNames filenameBuilder,
+                                      IMovieFolderService movieFolderService,
                                       IDiskProvider diskProvider,
+                                      INamingConfigService namingConfigService,
                                       Logger logger)
         {
             _movieService = movieService;
@@ -45,7 +49,9 @@ namespace NzbDrone.Core.MediaFiles
             _movieFileMover = movieFileMover;
             _eventAggregator = eventAggregator;
             _filenameBuilder = filenameBuilder;
+            _movieFolderService = movieFolderService;
             _diskProvider = diskProvider;
+            _namingConfigService = namingConfigService;
             _logger = logger;
         }
 
@@ -53,18 +59,33 @@ namespace NzbDrone.Core.MediaFiles
         {
             var movies = _movieService.GetMovies(movieIds);
             var movieFiles = _mediaFileService.GetFilesByMovies(movieIds).ToLookup(f => f.MovieId);
+            var namingConfig = _namingConfigService.GetConfig();
 
             return movies.SelectMany(movie =>
                 {
                     var files = movieFiles[movie.Id].ToList();
 
-                    return GetPreviews(movie, files);
+                    return GetPreviews(movie, files, namingConfig);
                 })
                 .ToList();
         }
 
-        private IEnumerable<RenameMovieFilePreview> GetPreviews(Movie movie, List<MovieFile> files)
+        private IEnumerable<RenameMovieFilePreview> GetPreviews(Movie movie, List<MovieFile> files, NamingConfig namingConfig)
         {
+            var expectedMovieFolder = _movieFolderService.GetExpectedMovieFolder(movie, namingConfig);
+
+            if (expectedMovieFolder != null && !movie.Path.PathEquals(expectedMovieFolder, StringComparison.Ordinal))
+            {
+                yield return new RenameMovieFilePreview
+                {
+                    MovieId = movie.Id,
+                    MovieFileId = 0,
+                    IsMovieFolder = true,
+                    ExistingPath = movie.Path,
+                    NewPath = expectedMovieFolder
+                };
+            }
+
             foreach (var file in files)
             {
                 var movieFilePath = Path.Combine(movie.Path, file.RelativePath);
@@ -140,6 +161,19 @@ namespace NzbDrone.Core.MediaFiles
         public void Execute(RenameFilesCommand message)
         {
             var movie = _movieService.GetMovie(message.MovieId);
+
+            if (message.RenameFolder)
+            {
+                var namingConfig = _namingConfigService.GetConfig();
+                var expectedMovieFolder = _movieFolderService.GetExpectedMovieFolder(movie, namingConfig);
+
+                if (expectedMovieFolder != null && !_movieFolderService.TryMoveMovieFolder(movie, movie.Path, expectedMovieFolder))
+                {
+                    _eventAggregator.PublishEvent(new RenameCompletedEvent());
+                    return;
+                }
+            }
+
             var movieFiles = _mediaFileService.GetMovies(message.Files);
 
             _logger.ProgressInfo("Renaming {0} files for {1}", movieFiles.Count, movie.Title);
@@ -153,9 +187,17 @@ namespace NzbDrone.Core.MediaFiles
         {
             _logger.Debug("Renaming movie files for selected movie");
             var moviesToRename = _movieService.GetMovies(message.MovieIds);
+            var namingConfig = _namingConfigService.GetConfig();
 
             foreach (var movie in moviesToRename)
             {
+                var expectedMovieFolder = _movieFolderService.GetExpectedMovieFolder(movie, namingConfig);
+
+                if (expectedMovieFolder != null && !_movieFolderService.TryMoveMovieFolder(movie, movie.Path, expectedMovieFolder))
+                {
+                    continue;
+                }
+
                 var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
                 _logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
                 var renamedFiles = RenameFiles(movieFiles, movie);

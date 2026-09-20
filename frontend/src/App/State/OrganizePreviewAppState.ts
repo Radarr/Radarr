@@ -4,6 +4,7 @@ import AppSectionState from 'App/State/AppSectionState';
 export interface OrganizePreviewModel extends ModelBase {
   movieId: number;
   movieFileId: number;
+  isMovieFolder: boolean;
   existingPath: string;
   newPath: string;
 }

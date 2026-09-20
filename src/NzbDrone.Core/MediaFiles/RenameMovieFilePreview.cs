@@ -4,6 +4,7 @@
     {
         public int MovieId { get; set; }
         public int MovieFileId { get; set; }
+        public bool IsMovieFolder { get; set; }
         public string ExistingPath { get; set; }
         public string NewPath { get; set; }
     }
