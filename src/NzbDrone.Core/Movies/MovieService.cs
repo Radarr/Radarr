@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Movies
         List<Movie> GetAllMovies();
         Dictionary<int, List<int>> AllMovieTags();
         Movie UpdateMovie(Movie movie);
-        List<Movie> UpdateMovie(List<Movie> movies);
+        List<Movie> UpdateMany(List<Movie> movies);
         List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder);
         void UpdateLastSearchTime(Movie movie);
         List<int> GetRecommendedTmdbIds();
@@ -256,7 +256,7 @@ namespace NzbDrone.Core.Movies
             return updatedMovie;
         }
 
-        public List<Movie> UpdateMovie(List<Movie> movies)
+        public List<Movie> UpdateMany(List<Movie> movies)
         {
             _logger.Debug("Updating {0} movies", movies.Count);
 
@@ -452,7 +452,8 @@ namespace NzbDrone.Core.Movies
             var movie = message.MovieFile.Movie;
             movie.MovieFileId = message.MovieFile.Id;
             movie.MovieFile = message.MovieFile;
-            UpdateMovie(movie);
+            UpdateTags(movie);
+            _movieRepository.Update(movie);
 
             // _movieRepository.SetFileId(message.MovieFile.Id, message.MovieFile.Movie.Value.Id);
             _logger.Info("Assigning file [{0}] to movie [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie);

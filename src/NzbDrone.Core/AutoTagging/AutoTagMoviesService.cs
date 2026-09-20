@@ -35,7 +35,7 @@ namespace NzbDrone.Core.AutoTagging
             }
 
             _logger.Info("Updated auto-tags for {0} movies", moviesToUpdate.Count);
-            _movieService.UpdateMovie(moviesToUpdate);
+            _movieService.UpdateMany(moviesToUpdate);
         }
     }
 }

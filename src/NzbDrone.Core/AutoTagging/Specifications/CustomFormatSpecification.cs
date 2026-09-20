@@ -1,8 +1,6 @@
-using System.Linq;
-using System.Text.Json.Serialization;
+using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Validation;
 
@@ -26,19 +24,14 @@ namespace NzbDrone.Core.AutoTagging.Specifications
         [FieldDefinition(1, Label = "AutoTaggingSpecificationCustomFormat", Type = FieldType.CustomFormat)]
         public int Value { get; set; }
 
-        [JsonIgnore]
-        public ICustomFormatCalculationService CustomFormatCalculationService { get; set; }
-
         protected override bool IsSatisfiedByWithoutNegate(Movie movie)
         {
-            if (!movie.HasFile || movie.MovieFile == null || CustomFormatCalculationService == null)
+            if (movie.MatchedCustomFormatIds == null)
             {
                 return false;
             }
 
-            var formats = CustomFormatCalculationService.ParseCustomFormat(movie.MovieFile, movie);
-
-            return formats.Any(f => f.Id == Value);
+            return movie.MatchedCustomFormatIds.Contains(Value);
         }
 
         public override NzbDroneValidationResult Validate()

@@ -27,6 +27,7 @@ namespace NzbDrone.Core.Movies
         public LazyLoaded<MovieMetadata> MovieMetadata { get; set; }
 
         public string RootFolderPath { get; set; }
+        public HashSet<int> MatchedCustomFormatIds { get; set; }
         public DateTime Added { get; set; }
         public QualityProfile QualityProfile { get; set; }
         public HashSet<int> Tags { get; set; }

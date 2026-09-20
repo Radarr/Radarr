@@ -107,55 +107,70 @@ namespace NzbDrone.Core.AutoTagging
             // Set the root folder path on the series
             movie.RootFolderPath = _rootFolderService.GetBestRootFolderPath(movie.Path);
 
-            if (movie.HasFile && movie.MovieFile == null)
-            {
-                movie.MovieFile = _mediaFileService.GetMovie(movie.MovieFileId);
-            }
+            var hasCustomFormatSpec = autoTags.SelectMany(t => t.Specifications).OfType<CustomFormatSpecification>().Any();
 
-            foreach (var specification in autoTags.SelectMany(t => t.Specifications).OfType<CustomFormatSpecification>())
+            try
             {
-                if (specification.CustomFormatCalculationService == null)
+                if (hasCustomFormatSpec)
                 {
-                    specification.CustomFormatCalculationService = _formatService;
+                    if (movie.HasFile && movie.MovieFile == null)
+                    {
+                        movie.MovieFile = _mediaFileService.GetMovie(movie.MovieFileId);
+                    }
+
+                    if (movie.HasFile && movie.MovieFile != null)
+                    {
+                        movie.MatchedCustomFormatIds = _formatService.ParseCustomFormat(movie.MovieFile, movie)
+                                                                     .Select(f => f.Id)
+                                                                     .ToHashSet();
+                    }
+                    else
+                    {
+                        movie.MatchedCustomFormatIds = new HashSet<int>();
+                    }
                 }
-            }
 
-            foreach (var autoTag in autoTags)
-            {
-                var specificationMatches = autoTag.Specifications
-                    .GroupBy(t => t.GetType())
-                    .Select(g => new SpecificationMatchesGroup
-                    {
-                        Matches = g.ToDictionary(t => t, t => t.IsSatisfiedBy(movie))
-                    })
-                    .ToList();
-
-                var allMatch = specificationMatches.All(x => x.DidMatch);
-                var tags = autoTag.Tags;
-
-                if (allMatch)
+                foreach (var autoTag in autoTags)
                 {
-                    foreach (var tag in tags)
-                    {
-                        if (!movie.Tags.Contains(tag))
+                    var specificationMatches = autoTag.Specifications
+                        .GroupBy(t => t.GetType())
+                        .Select(g => new SpecificationMatchesGroup
                         {
-                            changes.TagsToAdd.Add(tag);
+                            Matches = g.ToDictionary(t => t, t => t.IsSatisfiedBy(movie))
+                        })
+                        .ToList();
+
+                    var allMatch = specificationMatches.All(x => x.DidMatch);
+                    var tags = autoTag.Tags;
+
+                    if (allMatch)
+                    {
+                        foreach (var tag in tags)
+                        {
+                            if (!movie.Tags.Contains(tag))
+                            {
+                                changes.TagsToAdd.Add(tag);
+                            }
+                        }
+
+                        continue;
+                    }
+
+                    if (autoTag.RemoveTagsAutomatically)
+                    {
+                        foreach (var tag in tags)
+                        {
+                            changes.TagsToRemove.Add(tag);
                         }
                     }
-
-                    continue;
                 }
 
-                if (autoTag.RemoveTagsAutomatically)
-                {
-                    foreach (var tag in tags)
-                    {
-                        changes.TagsToRemove.Add(tag);
-                    }
-                }
+                return changes;
             }
-
-            return changes;
+            finally
+            {
+                movie.MatchedCustomFormatIds = null;
+            }
         }
     }
 }

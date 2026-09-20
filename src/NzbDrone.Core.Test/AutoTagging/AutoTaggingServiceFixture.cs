@@ -222,6 +222,7 @@ namespace NzbDrone.Core.Test.AutoTagging
             result.TagsToAdd.Should().Contain(1);
             result.TagsToRemove.Should().BeEmpty();
             _movie.MovieFile.Should().Be(movieFile);
+            _movie.MatchedCustomFormatIds.Should().BeNull();
         }
     }
 }

@@ -46,9 +46,9 @@ namespace NzbDrone.Core.Test.AutoTagging
             Subject.Execute(new AutoTagMoviesCommand());
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(m => m.Count == 2 &&
-                                                                     m.Contains(_movies[0]) &&
-                                                                     m.Contains(_movies[2]))),
+                  .Verify(v => v.UpdateMany(It.Is<List<Movie>>(m => m.Count == 2 &&
+                                                                    m.Contains(_movies[0]) &&
+                                                                    m.Contains(_movies[2]))),
                           Times.Once());
 
             Mocker.GetMock<IMovieService>()
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Test.AutoTagging
             Subject.Execute(new AutoTagMoviesCommand());
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(It.IsAny<List<Movie>>()), Times.Never());
+                  .Verify(v => v.UpdateMany(It.IsAny<List<Movie>>()), Times.Never());
 
             Mocker.GetMock<IMovieService>()
                   .Verify(v => v.UpdateMovie(It.IsAny<Movie>()), Times.Never());
