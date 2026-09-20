@@ -3,11 +3,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as commandNames from 'Commands/commandNames';
-import withScrollPosition from 'Components/withScrollPosition';
 import { executeCommand } from 'Store/Actions/commandActions';
 import { addImportListExclusions, addMovies, clearAddMovie, fetchDiscoverMovies, setListMovieFilter, setListMovieSort, setListMovieTableOption, setListMovieView } from 'Store/Actions/discoverMovieActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
-import scrollPositions from 'Store/scrollPositions';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createDiscoverMovieClientSideCollectionItemsSelector from 'Store/Selectors/createDiscoverMovieClientSideCollectionItemsSelector';
@@ -106,10 +104,6 @@ class DiscoverMovieConnector extends Component {
     this.props.dispatchSetListMovieView(view);
   };
 
-  onScroll = ({ scrollTop }) => {
-    scrollPositions.discoverMovie = scrollTop;
-  };
-
   onAddMoviesPress = ({ ids, addOptions }) => {
     this.props.dispatchAddMovies(ids, addOptions);
   };
@@ -126,7 +120,6 @@ class DiscoverMovieConnector extends Component {
       <DiscoverMovie
         {...this.props}
         onViewSelect={this.onViewSelect}
-        onScroll={this.onScroll}
         onAddMoviesPress={this.onAddMoviesPress}
         onExcludeMoviesPress={this.onExcludeMoviesPress}
         onSyncListsPress={this.onSyncListsPress}
@@ -146,7 +139,4 @@ DiscoverMovieConnector.propTypes = {
   dispatchAddImportListExclusions: PropTypes.func.isRequired
 };
 
-export default withScrollPosition(
-  connect(createMapStateToProps, createMapDispatchToProps)(DiscoverMovieConnector),
-  'discoverMovie'
-);
+export default connect(createMapStateToProps, createMapDispatchToProps)(DiscoverMovieConnector);

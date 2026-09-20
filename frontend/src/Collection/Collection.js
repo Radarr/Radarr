@@ -224,8 +224,6 @@ class Collection extends Component {
       view,
       onSortSelect,
       onFilterSelect,
-      initialScrollTop,
-      onScroll,
       isRefreshingCollections,
       isSaving,
       isAdding,
@@ -307,7 +305,7 @@ class Collection extends Component {
             ref={this.scrollerRef}
             className={styles.contentBody}
             innerClassName={styles[`${view}InnerContentBody`]}
-            onScroll={onScroll}
+            scrollPositionKey="movieCollections"
           >
             {
               isFetching && !isPopulated &&
@@ -336,7 +334,6 @@ class Collection extends Component {
                     onSelectedChange={this.onSelectedChange}
                     onSelectAllChange={this.onSelectAllChange}
                     selectedState={selectedState}
-                    scrollTop={initialScrollTop}
                     {...otherProps}
                   />
                 </div>
@@ -377,7 +374,6 @@ class Collection extends Component {
 }
 
 Collection.propTypes = {
-  initialScrollTop: PropTypes.number,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,
@@ -395,7 +391,6 @@ Collection.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   onSortSelect: PropTypes.func.isRequired,
   onFilterSelect: PropTypes.func.isRequired,
-  onScroll: PropTypes.func.isRequired,
   onUpdateSelectedPress: PropTypes.func.isRequired,
   onRefreshMovieCollectionsPress: PropTypes.func.isRequired
 };
