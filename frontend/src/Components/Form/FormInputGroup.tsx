@@ -17,6 +17,9 @@ import PathInput, { PathInputProps } from './PathInput';
 import AvailabilitySelectInput, {
   AvailabilitySelectInputProps,
 } from './Select/AvailabilitySelectInput';
+import CustomFormatSelectInput, {
+  CustomFormatSelectInputProps,
+} from './Select/CustomFormatSelectInput';
 import DownloadClientSelectInput, {
   DownloadClientSelectInputProps,
 } from './Select/DownloadClientSelectInput';
@@ -41,9 +44,6 @@ import ProviderDataSelectInput, {
 import QualityProfileSelectInput, {
   QualityProfileSelectInputProps,
 } from './Select/QualityProfileSelectInput';
-import CustomFormatSelectInput, {
-  CustomFormatSelectInputProps,
-} from './Select/CustomFormatSelectInput';
 import RootFolderSelectInput, {
   RootFolderSelectInputProps,
 } from './Select/RootFolderSelectInput';

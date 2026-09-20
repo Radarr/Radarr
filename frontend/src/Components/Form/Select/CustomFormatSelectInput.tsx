@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import { CustomFormatAppState } from 'App/State/SettingsAppState';
 import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
-import { EnhancedSelectInputChanged } from 'typings/inputs';
 import CustomFormat from 'typings/CustomFormat';
+import { EnhancedSelectInputChanged } from 'typings/inputs';
 import sortByProp from 'Utilities/Array/sortByProp';
 import EnhancedSelectInput, {
   EnhancedSelectInputProps,
