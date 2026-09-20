@@ -54,14 +54,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AlternativeTitleResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -103,11 +95,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AlternativeTitleResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AlternativeTitleResource"
@@ -231,14 +218,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AutoTaggingResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AutoTaggingResource"
@@ -299,14 +281,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AutoTaggingResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AutoTaggingResource"
@@ -361,11 +338,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AutoTaggingResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AutoTaggingResource"
@@ -388,7 +360,25 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AutoTaggingSpecificationSchema"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AutoTaggingSpecificationSchema"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -402,14 +392,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BackupResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -472,7 +454,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupRestoreResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupRestoreResource"
+                }
+              }
+            }
           }
         }
       }
@@ -484,7 +478,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupRestoreResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupRestoreResource"
+                }
+              }
+            }
           }
         }
       }
@@ -582,14 +588,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BlocklistResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -824,8 +822,26 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CollectionResource"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CollectionResource"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -855,14 +871,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionResource"
@@ -896,11 +907,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionResource"
@@ -931,8 +937,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -951,14 +957,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CommandResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -1021,11 +1019,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CommandResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CommandResource"
@@ -1066,7 +1059,25 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CreditResource"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CreditResource"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1091,11 +1102,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreditResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CreditResource"
@@ -1120,14 +1126,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CustomFilterResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -1162,14 +1160,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFilterResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CustomFilterResource"
@@ -1210,14 +1203,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFilterResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CustomFilterResource"
@@ -1272,11 +1260,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFilterResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CustomFilterResource"
@@ -1327,14 +1310,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFormatResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CustomFormatResource"
@@ -1375,14 +1353,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFormatResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CustomFormatResource"
@@ -1437,11 +1410,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFormatResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CustomFormatResource"
@@ -1472,12 +1440,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomFormatResource"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomFormatResource"
+                  }
                 }
               }
             }
@@ -1511,7 +1482,25 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomFormatSpecificationSchema"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomFormatSpecificationSchema"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1592,14 +1581,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DelayProfileResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DelayProfileResource"
@@ -1622,14 +1606,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DelayProfileResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -1697,14 +1673,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DelayProfileResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DelayProfileResource"
@@ -1738,11 +1709,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DelayProfileResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DelayProfileResource"
@@ -1786,14 +1752,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DelayProfileResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -1824,14 +1782,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DiskSpaceResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -1898,8 +1848,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -1945,8 +1895,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
@@ -1997,11 +1947,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DownloadClientResource"
@@ -2032,12 +1977,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DownloadClientResource"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DownloadClientResource"
+                  }
                 }
               }
             }
@@ -2112,7 +2060,24 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -2124,7 +2089,30 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2155,7 +2143,12 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       }
@@ -2204,14 +2197,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DownloadClientConfigResource"
@@ -2245,11 +2233,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DownloadClientConfigResource"
@@ -2284,14 +2267,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ExtraFileResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -2345,7 +2320,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileSystemResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileSystemResult"
+                }
+              }
+            }
           }
         }
       }
@@ -2366,7 +2353,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileSystemTypeResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileSystemTypeResource"
+                }
+              }
+            }
           }
         }
       }
@@ -2387,7 +2386,25 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FileSystemMediaFileResource"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FileSystemMediaFileResource"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2401,14 +2418,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/HealthResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -2667,11 +2676,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/HostConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HostConfigResource"
@@ -2722,14 +2726,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/HostConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HostConfigResource"
@@ -2763,11 +2762,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/HostConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HostConfigResource"
@@ -2828,8 +2822,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -2875,8 +2869,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
@@ -2927,11 +2921,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListResource"
@@ -2962,12 +2951,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ImportListResource"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportListResource"
+                  }
                 }
               }
             }
@@ -3042,7 +3034,24 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -3054,7 +3063,30 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -3085,7 +3117,12 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       }
@@ -3134,14 +3171,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListConfigResource"
@@ -3175,11 +3207,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListConfigResource"
@@ -3231,14 +3258,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListExclusionResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListExclusionResource"
@@ -3332,14 +3354,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListExclusionResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListExclusionResource"
@@ -3394,11 +3411,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListExclusionResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListExclusionResource"
@@ -3449,7 +3461,25 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportListExclusionResource"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportListExclusionResource"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -3516,7 +3546,25 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportListMoviesResource"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportListMoviesResource"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -3554,7 +3602,25 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieResource"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieResource"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -3604,8 +3670,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -3651,8 +3717,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
@@ -3703,11 +3769,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IndexerResource"
@@ -3738,12 +3799,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IndexerResource"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IndexerResource"
+                  }
                 }
               }
             }
@@ -3818,7 +3882,24 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -3830,7 +3911,30 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -3861,7 +3965,12 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       }
@@ -3910,14 +4019,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IndexerConfigResource"
@@ -3951,11 +4055,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IndexerConfigResource"
@@ -3980,14 +4079,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IndexerFlagResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -4018,14 +4109,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LanguageResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -4067,11 +4150,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/LanguageResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LanguageResource"
@@ -4204,14 +4282,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LogFileResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -4251,7 +4321,30 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -4327,7 +4420,25 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ManualImportReprocessResource"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ManualImportReprocessResource"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -4359,7 +4470,42 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/gif": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -4408,14 +4554,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MediaManagementConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MediaManagementConfigResource"
@@ -4449,11 +4590,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MediaManagementConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MediaManagementConfigResource"
@@ -4514,8 +4650,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -4561,8 +4697,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
@@ -4613,11 +4749,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MetadataResource"
@@ -4681,7 +4812,24 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -4693,7 +4841,30 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -4724,7 +4895,12 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       }
@@ -4773,14 +4949,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MetadataConfigResource"
@@ -4814,11 +4985,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MetadataConfigResource"
@@ -4930,14 +5096,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MovieResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -4972,8 +5130,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -5018,8 +5176,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
@@ -5086,11 +5244,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MovieResource"
@@ -5131,8 +5284,26 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieResource"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieResource"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -5237,14 +5408,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieFileResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MovieFileResource"
@@ -5299,11 +5465,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieFileResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MovieFileResource"
@@ -5334,8 +5495,26 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieFileResource"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieFileResource"
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": true
@@ -5378,8 +5557,26 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieFileResource"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieFileResource"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -5402,7 +5599,14 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieFolderResource"
+                }
+              }
+            }
           }
         }
       }
@@ -5538,11 +5742,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/NamingConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NamingConfigResource"
@@ -5593,14 +5792,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/NamingConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NamingConfigResource"
@@ -5634,11 +5828,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/NamingConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NamingConfigResource"
@@ -5713,7 +5902,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NamingExampleResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NamingExampleResource"
+                }
+              }
+            }
           }
         }
       }
@@ -5763,8 +5964,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -5810,8 +6011,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
@@ -5862,11 +6063,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotificationResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NotificationResource"
@@ -5930,7 +6126,24 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -5942,7 +6155,30 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -5973,7 +6209,12 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       }
@@ -5996,11 +6237,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ParseResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ParseResource"
@@ -6087,14 +6323,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityDefinitionResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QualityDefinitionResource"
@@ -6128,11 +6359,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityDefinitionResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QualityDefinitionResource"
@@ -6157,14 +6383,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/QualityDefinitionResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -6220,8 +6438,26 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityDefinitionResource"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityDefinitionResource"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -6235,11 +6471,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityDefinitionLimitsResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QualityDefinitionLimitsResource"
@@ -6270,14 +6501,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityProfileResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QualityProfileResource"
@@ -6300,14 +6526,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/QualityProfileResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -6375,14 +6593,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityProfileResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QualityProfileResource"
@@ -6416,11 +6629,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityProfileResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QualityProfileResource"
@@ -6445,11 +6653,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityProfileResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QualityProfileResource"
@@ -6775,14 +6978,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/QueueResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -6813,11 +7008,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueueStatusResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QueueStatusResource"
@@ -6849,7 +7039,19 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseResource"
+                }
+              }
+            }
           }
         }
       },
@@ -6909,14 +7111,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseProfileResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ReleaseProfileResource"
@@ -6939,14 +7136,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ReleaseProfileResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -7024,14 +7213,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseProfileResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ReleaseProfileResource"
@@ -7065,11 +7249,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseProfileResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ReleaseProfileResource"
@@ -7103,14 +7282,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ReleaseResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -7147,14 +7318,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RemotePathMappingResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RemotePathMappingResource"
@@ -7177,14 +7343,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RemotePathMappingResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -7262,14 +7420,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RemotePathMappingResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RemotePathMappingResource"
@@ -7303,11 +7456,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RemotePathMappingResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RemotePathMappingResource"
@@ -7345,14 +7493,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RenameMovieResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -7389,14 +7529,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RootFolderResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RootFolderResource"
@@ -7419,14 +7554,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RootFolderResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -7489,11 +7616,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RootFolderResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RootFolderResource"
@@ -7586,11 +7708,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/SystemResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SystemResource"
@@ -7613,7 +7730,14 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -7625,7 +7749,31 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -7637,7 +7785,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemShutdownResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemShutdownResource"
+                }
+              }
+            }
           }
         }
       }
@@ -7649,7 +7809,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemRestartResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemRestartResource"
+                }
+              }
+            }
           }
         }
       }
@@ -7663,14 +7835,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TagResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -7705,14 +7869,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TagResource"
@@ -7753,14 +7912,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TagResource"
@@ -7815,11 +7969,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TagResource"
@@ -7844,14 +7993,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TagDetailsResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -7893,11 +8034,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagDetailsResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TagDetailsResource"
@@ -7922,14 +8058,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TaskResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -7971,11 +8099,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TaskResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TaskResource"
@@ -8016,14 +8139,9 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UiConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UiConfigResource"
@@ -8057,11 +8175,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UiConfigResource"
-                }
-              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UiConfigResource"
@@ -8105,14 +8218,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UpdateResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -8143,14 +8248,6 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LogFileResource"
-                  }
-                }
-              },
               "application/json": {
                 "schema": {
                   "type": "array",
@@ -8190,7 +8287,30 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -8223,6 +8343,31 @@
           },
           "addMethod": {
             "$ref": "#/components/schemas/AddMovieMethod"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlternativeTitle": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "movieMetadataId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "cleanTitle": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8386,6 +8531,15 @@
           "time": {
             "type": "string",
             "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BackupRestoreResource": {
+        "type": "object",
+        "properties": {
+          "restartRequired": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -9411,6 +9565,96 @@
         ],
         "type": "string"
       },
+      "FileSystemEntityType": {
+        "enum": [
+          "parent",
+          "drive",
+          "folder",
+          "file"
+        ],
+        "type": "string"
+      },
+      "FileSystemMediaFileResource": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "nullable": true
+          },
+          "relativePath": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileSystemModel": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/FileSystemEntityType"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "path": {
+            "type": "string",
+            "nullable": true
+          },
+          "extension": {
+            "type": "string",
+            "nullable": true
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileSystemResult": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "type": "string",
+            "nullable": true
+          },
+          "directories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileSystemModel"
+            },
+            "nullable": true
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileSystemModel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileSystemTypeResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/FileSystemEntityType"
+          }
+        },
+        "additionalProperties": false
+      },
       "HealthCheckResult": {
         "enum": [
           "ok",
@@ -9572,6 +9816,10 @@
           "authenticationRequired": {
             "$ref": "#/components/schemas/AuthenticationRequiredType"
           },
+          "allowedHosts": {
+            "type": "string",
+            "nullable": true
+          },
           "analyticsEnabled": {
             "type": "boolean"
           },
@@ -9616,6 +9864,10 @@
             "nullable": true
           },
           "urlBase": {
+            "type": "string",
+            "nullable": true
+          },
+          "trustedNetworks": {
             "type": "string",
             "nullable": true
           },
@@ -9855,6 +10107,137 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ImportListExclusionResource"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImportListMoviesResource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "originalLanguage": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "status": {
+            "$ref": "#/components/schemas/MovieStatusType"
+          },
+          "overview": {
+            "type": "string",
+            "nullable": true
+          },
+          "inCinemas": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "physicalRelease": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "digitalRelease": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaCover"
+            },
+            "nullable": true
+          },
+          "website": {
+            "type": "string",
+            "nullable": true
+          },
+          "remotePoster": {
+            "type": "string",
+            "nullable": true
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "youTubeTrailerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "studio": {
+            "type": "string",
+            "nullable": true
+          },
+          "runtime": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "imdbId": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmdbId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "folder": {
+            "type": "string",
+            "nullable": true
+          },
+          "certification": {
+            "type": "string",
+            "nullable": true
+          },
+          "popularity": {
+            "type": "number",
+            "format": "float"
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "ratings": {
+            "$ref": "#/components/schemas/Ratings"
+          },
+          "collection": {
+            "$ref": "#/components/schemas/MovieCollection"
+          },
+          "isExcluded": {
+            "type": "boolean"
+          },
+          "isExisting": {
+            "type": "boolean"
+          },
+          "isTrending": {
+            "type": "boolean"
+          },
+          "isPopular": {
+            "type": "boolean"
+          },
+          "isRecommendation": {
+            "type": "boolean"
+          },
+          "lists": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
             },
             "nullable": true
           }
@@ -10711,6 +11094,85 @@
         ],
         "type": "string"
       },
+      "MovieCollection": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "cleanTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmdbId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "overview": {
+            "type": "string",
+            "nullable": true
+          },
+          "monitored": {
+            "type": "boolean"
+          },
+          "qualityProfileId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rootFolderPath": {
+            "type": "string",
+            "nullable": true
+          },
+          "searchOnAdd": {
+            "type": "boolean"
+          },
+          "minimumAvailability": {
+            "$ref": "#/components/schemas/MovieStatusType"
+          },
+          "lastInfoSync": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaCover"
+            },
+            "nullable": true
+          },
+          "added": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "movies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MovieMetadata"
+            },
+            "nullable": true
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MovieCollectionResource": {
         "type": "object",
         "properties": {
@@ -10895,6 +11357,16 @@
         },
         "additionalProperties": false
       },
+      "MovieFolderResource": {
+        "type": "object",
+        "properties": {
+          "folder": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MovieHistoryEventType": {
         "enum": [
           "unknown",
@@ -10907,6 +11379,165 @@
           "downloadIgnored"
         ],
         "type": "string"
+      },
+      "MovieMetadata": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tmdbId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaCover"
+            },
+            "nullable": true
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "inCinemas": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "physicalRelease": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "digitalRelease": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "certification": {
+            "type": "string",
+            "nullable": true
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ratings": {
+            "$ref": "#/components/schemas/Ratings"
+          },
+          "collectionTmdbId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "collectionTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastInfoSync": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "runtime": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "website": {
+            "type": "string",
+            "nullable": true
+          },
+          "imdbId": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "cleanTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/MovieStatusType"
+          },
+          "overview": {
+            "type": "string",
+            "nullable": true
+          },
+          "alternativeTitles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlternativeTitle"
+            },
+            "nullable": true
+          },
+          "translations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MovieTranslation"
+            },
+            "nullable": true
+          },
+          "secondaryYear": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "youTubeTrailerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "studio": {
+            "type": "string",
+            "nullable": true
+          },
+          "originalTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "cleanOriginalTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "originalLanguage": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "recommendations": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "popularity": {
+            "type": "number",
+            "format": "float"
+          },
+          "isRecentMovie": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
       },
       "MovieResource": {
         "type": "object",
@@ -11194,6 +11825,35 @@
         ],
         "type": "string"
       },
+      "MovieTranslation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "movieMetadataId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "cleanTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "overview": {
+            "type": "string",
+            "nullable": true
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          }
+        },
+        "additionalProperties": false
+      },
       "NamingConfigResource": {
         "type": "object",
         "properties": {
@@ -11215,6 +11875,20 @@
             "nullable": true
           },
           "movieFolderFormat": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NamingExampleResource": {
+        "type": "object",
+        "properties": {
+          "movieExample": {
+            "type": "string",
+            "nullable": true
+          },
+          "movieFolderExample": {
             "type": "string",
             "nullable": true
           }
@@ -11490,6 +12164,33 @@
         ],
         "type": "string"
       },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
       "ProfileFormatItemResource": {
         "type": "object",
         "properties": {
@@ -11540,6 +12241,27 @@
           "error"
         ],
         "type": "string"
+      },
+      "ProviderTestAllResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isValid": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "validationFailures": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationFailure"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "ProxyType": {
         "enum": [
@@ -11984,6 +12706,22 @@
         ],
         "type": "string"
       },
+      "ReleaseHistoryResource": {
+        "type": "object",
+        "properties": {
+          "grabbed": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "failed": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ReleaseProfileResource": {
         "type": "object",
         "properties": {
@@ -12044,6 +12782,9 @@
           "customFormatScore": {
             "type": "integer",
             "format": "int32"
+          },
+          "history": {
+            "$ref": "#/components/schemas/ReleaseHistoryResource"
           },
           "qualityWeight": {
             "type": "integer",
@@ -12345,6 +13086,14 @@
         },
         "additionalProperties": false
       },
+      "Severity": {
+        "enum": [
+          "error",
+          "warning",
+          "info"
+        ],
+        "type": "string"
+      },
       "SortDirection": {
         "enum": [
           "default",
@@ -12424,6 +13173,9 @@
           "isDocker": {
             "type": "boolean"
           },
+          "isContainerized": {
+            "type": "boolean"
+          },
           "mode": {
             "$ref": "#/components/schemas/RuntimeMode"
           },
@@ -12475,6 +13227,24 @@
           "packageUpdateMechanismMessage": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SystemRestartResource": {
+        "type": "object",
+        "properties": {
+          "restarting": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SystemShutdownResource": {
+        "type": "object",
+        "properties": {
+          "shuttingDown": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -12811,6 +13581,46 @@
           },
           "hash": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ValidationFailure": {
+        "type": "object",
+        "properties": {
+          "propertyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "errorMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "attemptedValue": {
+            "nullable": true
+          },
+          "customState": {
+            "nullable": true
+          },
+          "severity": {
+            "$ref": "#/components/schemas/Severity"
+          },
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "formattedMessageArguments": {
+            "type": "array",
+            "items": { },
+            "nullable": true,
+            "deprecated": true
+          },
+          "formattedMessagePlaceholderValues": {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            },
             "nullable": true
           }
         },
