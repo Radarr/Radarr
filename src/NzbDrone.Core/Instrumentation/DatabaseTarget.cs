@@ -15,6 +15,7 @@ namespace NzbDrone.Core.Instrumentation
 {
     public class DatabaseTarget : TargetWithLayout, IHandle<ApplicationShutdownRequested>
     {
+        private const string TARGET_NAME = "DbLogger";
         private const string INSERT_COMMAND = "INSERT INTO \"Logs\" (\"Message\",\"Time\",\"Logger\",\"Exception\",\"ExceptionType\",\"Level\") " +
                                       "VALUES(@Message,@Time,@Logger,@Exception,@ExceptionType,@Level)";
 
@@ -31,8 +32,9 @@ namespace NzbDrone.Core.Instrumentation
 
             Rule = new LoggingRule("*", LogLevel.Info, target);
 
-            LogManager.Configuration.AddTarget("DbLogger", target);
+            LogManager.Configuration.AddTarget(TARGET_NAME, target);
             LogManager.Configuration.LoggingRules.Add(Rule);
+            LogManager.ConfigurationChanged -= OnLogManagerOnConfigurationChanged;
             LogManager.ConfigurationChanged += OnLogManagerOnConfigurationChanged;
             LogManager.ReconfigExistingLoggers();
         }
@@ -40,7 +42,7 @@ namespace NzbDrone.Core.Instrumentation
         public void UnRegister()
         {
             LogManager.ConfigurationChanged -= OnLogManagerOnConfigurationChanged;
-            LogManager.Configuration.RemoveTarget("DbLogger");
+            LogManager.Configuration.RemoveTarget(TARGET_NAME);
             LogManager.Configuration.LoggingRules.Remove(Rule);
             LogManager.ReconfigExistingLoggers();
             Dispose();
@@ -158,9 +160,9 @@ namespace NzbDrone.Core.Instrumentation
 
         public void Handle(ApplicationShutdownRequested message)
         {
-            if (LogManager.Configuration?.LoggingRules?.Contains(Rule) == true)
+            if (LogManager.Configuration?.FindTargetByName(TARGET_NAME) is SlowRunningAsyncTargetWrapper { WrappedTarget: DatabaseTarget target })
             {
-                UnRegister();
+                target.UnRegister();
             }
         }
     }
