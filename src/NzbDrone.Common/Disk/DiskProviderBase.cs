@@ -353,14 +353,40 @@ namespace NzbDrone.Common.Disk
             Ensure.That(filename, () => filename).IsValidPath(PathValidationType.CurrentOs);
             RemoveReadOnly(filename);
 
-            // File.WriteAllText is broken on net core when writing to some CIFS mounts
-            // This workaround from https://github.com/dotnet/runtime/issues/42790#issuecomment-700362617
-            using (var fs = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None))
+            // Write to a temporary file first and replace atomically to prevent partial/empty files
+            // if writing fails (e.g. disk full ENOSPC) or process terminates unexpectedly.
+            // FileStream with FileMode.CreateNew on temp file also avoids net core CIFS issues (https://github.com/dotnet/runtime/issues/42790).
+            var tempFilename = $"{filename}.tmp.{Guid.NewGuid():N}";
+
+            try
             {
-                using (var writer = new StreamWriter(fs))
+                using (var fs = new FileStream(tempFilename, FileMode.CreateNew, FileAccess.Write, FileShare.None))
                 {
-                    writer.Write(contents);
+                    using (var writer = new StreamWriter(fs))
+                    {
+                        writer.Write(contents);
+                        writer.Flush();
+                        fs.Flush(true);
+                    }
                 }
+
+                File.Move(tempFilename, filename, true);
+            }
+            catch
+            {
+                try
+                {
+                    if (File.Exists(tempFilename))
+                    {
+                        File.Delete(tempFilename);
+                    }
+                }
+                catch
+                {
+                    // Suppress error during temporary file cleanup so the primary exception is thrown
+                }
+
+                throw;
             }
         }
 
