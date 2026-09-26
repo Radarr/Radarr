@@ -102,7 +102,7 @@
     "AddToDownloadQueue": "הוסף לתור ההורדות",
     "AfterManualRefresh": "לאחר רענון ידני",
     "AllFiles": "כל הקבצים",
-    "AllMoviesInPathHaveBeenImported": "כל הסרטים ב- {0} יובאו",
+    "AllMoviesInPathHaveBeenImported": "{path}כל הסרטים ב- {0} יובאו",
     "AllResultsHiddenFilter": "כל התוצאות מוסתרות על ידי המסנן שהוחל",
     "AlternativeTitle": "כותרת חלופית",
     "Always": "תמיד",
@@ -1894,5 +1894,6 @@
     "Saturday": "שבת",
     "Thursday": "חמישי",
     "Tuesday": "שלישי",
-    "Wednesday": "רביעי"
+    "Wednesday": "רביעי",
+    "AllowedHosts": "מארחים מורשים"
 }

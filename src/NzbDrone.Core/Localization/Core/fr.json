@@ -2055,5 +2055,7 @@
     "Thursday": "Jeudi",
     "Tuesday": "Mardi",
     "Wednesday": "Mercredi",
-    "AllowedHosts": "Hôtes autorisés"
+    "AllowedHosts": "Hôtes autorisés",
+    "TrustedNetworks": "Réseaux de confiance",
+    "TrustedNetworksHelpText": "Liste d’adresses IP ou de réseaux au format CIDR, séparés par des virgules, sur lesquels se trouvent les proxys inverses approuvés. Par exemple : 172.17.0.1, 10.0.0.0/8 ou fc00::/7. Ajouter uniquement les proxys correctement configurés pour envoyer les en-têtes appropriés."
 }
