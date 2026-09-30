@@ -216,6 +216,46 @@ namespace NzbDrone.Core.Test.ParserTests
                 "Sydney",
                 "Hard Eight"
             })]
+        [TestCase("[Anime Land] Shingeki no Kyojin／Attack on Titan Crimson Bow and Arrow (2014) Bluray 1080p",
+            new string[]
+            {
+                "Shingeki no Kyojin／Attack on Titan Crimson Bow and Arrow",
+                "Shingeki no Kyojin",
+                "Attack on Titan Crimson Bow and Arrow"
+            })]
+        [TestCase("[Maximus] Attack on Titan Movie 1: Crimson Bow and Arrow (2014) [BluRay 1080p x265 10bit AC3]",
+            new string[]
+            {
+                "Attack on Titan Movie 1: Crimson Bow and Arrow",
+                "Attack on Titan: Crimson Bow and Arrow"
+            })]
+        [TestCase("[Maximus] Attack on Titan Movie 2: Wings of Freedom (2015) [BluRay 1080p]",
+            new string[]
+            {
+                "Attack on Titan Movie 2: Wings of Freedom",
+                "Attack on Titan: Wings of Freedom"
+            })]
+        [TestCase("Some Series The Movie 2 - Second Chapter (2016) 1080p BluRay x264",
+            new string[]
+            {
+                "Some Series The Movie 2 - Second Chapter",
+                "Some Series - Second Chapter"
+            })]
+        [TestCase("The Lego Movie (2014) 1080p BluRay x264",
+            new string[]
+            {
+                "The Lego Movie"
+            })]
+        [TestCase("Scary Movie 3 (2003) 1080p BluRay x264",
+            new string[]
+            {
+                "Scary Movie 3"
+            })]
+        [TestCase("Scary.Movie.3.2003.1080p.BluRay.x264-GRP",
+            new string[]
+            {
+                "Scary Movie 3"
+            })]
         public void should_parse_movie_alternative_titles(string postTitle, string[] parsedTitles)
         {
             var movieInfo = Parser.Parser.ParseMovieTitle(postTitle, true);

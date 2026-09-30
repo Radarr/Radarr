@@ -102,8 +102,11 @@ namespace NzbDrone.Core.Parser
         // Regex to detect whether the title was reversed.
         private static readonly Regex ReversedTitleRegex = new Regex(@"(?:^|[-._ ])(p027|p0801)[-._ ]", RegexOptions.Compiled);
 
-        // Regex to split movie titles that contain `AKA`.
-        private static readonly Regex AlternativeTitleRegex = new Regex(@"[ ]+(?:AKA|\/)[ ]+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        // Regex to split movie titles that contain `AKA`, `/` or the fullwidth solidus (which is often written without spaces).
+        private static readonly Regex AlternativeTitleRegex = new Regex(@"[ ]+(?:AKA|\/)[ ]+|[ ]*／[ ]*", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        // Regex to strip franchise numbering like `Movie 1:` or `The Movie 2 -` from titles that continue with a subtitle.
+        private static readonly Regex MovieNumberSubtitleRegex = new Regex(@"[ ]+(?:The[ ]+)?Movie[ ]+\d{1,2}(?=[ ]*:[ ]*\S|[ ]+-[ ]+\S)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         // Regex to unbracket alternative titles.
         private static readonly Regex BracketedAlternativeTitleRegex = new Regex(@"(.*) \([ ]*AKA[ ]+(.*)\)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -577,6 +580,12 @@ namespace NzbDrone.Core.Parser
                 .AddRange(AlternativeTitleRegex
                         .Split(unbracketedName)
                         .Where(alternativeName => alternativeName.IsNotNullOrWhiteSpace() && alternativeName != movieName));
+
+            movieTitles.AddRange(movieTitles
+                .Select(t => MovieNumberSubtitleRegex.Replace(t, ""))
+                .Where(t => !movieTitles.Contains(t))
+                .Distinct()
+                .ToList());
 
             result.MovieTitles = movieTitles;
 
