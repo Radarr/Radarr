@@ -19,6 +19,7 @@ namespace NzbDrone.Core.Notifications
         List<INotification> OnMovieFileDeleteEnabled(bool filterBlockedNotifications = true);
         List<INotification> OnHealthIssueEnabled(bool filterBlockedNotifications = true);
         List<INotification> OnHealthRestoredEnabled(bool filterBlockedNotifications = true);
+        List<INotification> OnIndexerFailureEnabled(bool filterBlockedNotifications = true);
         List<INotification> OnApplicationUpdateEnabled(bool filterBlockedNotifications = true);
         List<INotification> OnManualInteractionEnabled(bool filterBlockedNotifications = true);
     }
@@ -138,6 +139,16 @@ namespace NzbDrone.Core.Notifications
             }
 
             return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnHealthRestored).ToList();
+        }
+
+        public List<INotification> OnIndexerFailureEnabled(bool filterBlockedNotifications = true)
+        {
+            if (filterBlockedNotifications)
+            {
+                return FilterBlockedNotifications(GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnIndexerFailure)).ToList();
+            }
+
+            return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnIndexerFailure).ToList();
         }
 
         public List<INotification> OnApplicationUpdateEnabled(bool filterBlockedNotifications = true)

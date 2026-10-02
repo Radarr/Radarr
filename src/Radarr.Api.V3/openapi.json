@@ -11311,6 +11311,9 @@
           "onHealthRestored": {
             "type": "boolean"
           },
+          "onIndexerFailure": {
+            "type": "boolean"
+          },
           "onApplicationUpdate": {
             "type": "boolean"
           },

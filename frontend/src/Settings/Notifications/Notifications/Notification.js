@@ -66,6 +66,7 @@ class Notification extends Component {
       onMovieFileDeleteForUpgrade,
       onHealthIssue,
       onHealthRestored,
+      onIndexerFailure,
       onApplicationUpdate,
       onManualInteractionRequired,
       supportsOnGrab,
@@ -151,6 +152,14 @@ class Notification extends Component {
         }
 
         {
+          supportsOnHealthIssue && onIndexerFailure ?
+            <Label kind={kinds.SUCCESS}>
+              {translate('OnIndexerFailure')}
+            </Label> :
+            null
+        }
+
+        {
           supportsOnApplicationUpdate && onApplicationUpdate ?
             <Label kind={kinds.SUCCESS}>
               {translate('OnApplicationUpdate')}
@@ -191,7 +200,7 @@ class Notification extends Component {
         }
 
         {
-          !onGrab && !onDownload && !onRename && !onHealthIssue && !onHealthRestored && !onApplicationUpdate && !onMovieAdded && !onMovieDelete && !onMovieFileDelete && !onManualInteractionRequired ?
+          !onGrab && !onDownload && !onRename && !onHealthIssue && !onHealthRestored && !onIndexerFailure && !onApplicationUpdate && !onMovieAdded && !onMovieDelete && !onMovieFileDelete && !onManualInteractionRequired ?
             <Label
               kind={kinds.DISABLED}
               outline={true}
@@ -240,6 +249,7 @@ Notification.propTypes = {
   onMovieFileDeleteForUpgrade: PropTypes.bool.isRequired,
   onHealthIssue: PropTypes.bool.isRequired,
   onHealthRestored: PropTypes.bool.isRequired,
+  onIndexerFailure: PropTypes.bool.isRequired,
   onApplicationUpdate: PropTypes.bool.isRequired,
   onManualInteractionRequired: PropTypes.bool.isRequired,
   supportsOnGrab: PropTypes.bool.isRequired,
