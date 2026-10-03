@@ -529,11 +529,11 @@ namespace NzbDrone.Core.Organizer
             }
         }
 
-        private string GetEditionToken(MovieFile movieFile)
+        private static string GetEditionToken(MovieFile movieFile)
         {
             var edition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(movieFile.Edition.ToLowerInvariant());
 
-            edition = Regex.Replace(edition, @"((?:\b|_)\d{1,3}(?:st|th|rd|nd)(?:\b|_))", match => match.Groups[1].Value.ToLowerInvariant(), RegexOptions.IgnoreCase);
+            edition = Regex.Replace(edition, @"((?:\b|_)\d{1,3}(?:st|th|rd|nd|mm)(?:\b|_))", match => match.Groups[1].Value.ToLowerInvariant(), RegexOptions.IgnoreCase);
             edition = Regex.Replace(edition, @"((?:\b|_)(?:IMAX|3D|SDR|HDR|DV)(?:\b|_))", match => match.Groups[1].Value.ToUpperInvariant(), RegexOptions.IgnoreCase);
 
             return edition;
@@ -546,7 +546,7 @@ namespace NzbDrone.Core.Organizer
                 return;
             }
 
-            var schemaRevision = movieFile.MediaInfo != null ? movieFile.MediaInfo.SchemaRevision : 0;
+            var schemaRevision = movieFile.MediaInfo?.SchemaRevision ?? 0;
             var matches = TitleRegex.Matches(pattern);
 
             var shouldUpdateMediaInfo = matches.Cast<Match>()

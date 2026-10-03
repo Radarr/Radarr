@@ -102,6 +102,12 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [TestCase("10th anniversary edition", "{Movie Title} [{EDITION TAGS}]", "Movie Title [10TH ANNIVERSARY EDITION]")]
         [TestCase("10TH anniversary edition", "{Movie Title} [{EDITION TAGS}]", "Movie Title [10TH ANNIVERSARY EDITION]")]
         [TestCase("10Th anniversary edition", "{Movie Title} [{EDITION TAGS}]", "Movie Title [10TH ANNIVERSARY EDITION]")]
+        [TestCase("35mm edition", "{Movie Title} [{edition tags}]", "Movie Title [35mm edition]")]
+        [TestCase("35MM EDITION", "{Movie Title} [{edition tags}]", "Movie Title [35mm edition]")]
+        [TestCase("35mm edition", "{Movie Title} [{Edition Tags}]", "Movie Title [35mm Edition]")]
+        [TestCase("35MM EDITION", "{Movie Title} [{Edition Tags}]", "Movie Title [35mm Edition]")]
+        [TestCase("35mm edition", "{Movie Title} [{EDITION TAGS}]", "Movie Title [35MM EDITION]")]
+        [TestCase("35MM EDITION", "{Movie Title} [{EDITION TAGS}]", "Movie Title [35MM EDITION]")]
         public void should_always_lowercase_ordinals(string edition, string movieFormat, string expected)
         {
             _movieFile.Edition = edition;
