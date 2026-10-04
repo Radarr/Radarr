@@ -237,7 +237,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
         }
 
         [Test]
-        public void should_exclude_items_not_in_TvDirectory()
+        public void should_exclude_items_not_in_MovieDirectory()
         {
             GivenMovieDirectory();
 
@@ -304,6 +304,15 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
             Mocker.GetMock<ITransmissionProxy>()
                   .Setup(s => s.GetProtocolVersion(It.IsAny<TransmissionSettings>()))
                   .Returns(version);
+
+            Subject.Test().IsValid.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_not_allow_category_and_directory()
+        {
+            GivenMovieCategory();
+            GivenMovieDirectory();
 
             Subject.Test().IsValid.Should().BeFalse();
         }
