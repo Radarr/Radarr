@@ -141,5 +141,37 @@ namespace NzbDrone.Core.Test.MovieTests
             Mocker.GetMock<IBuildFileNames>()
                   .Verify(v => v.GetMovieFolder(It.IsAny<Movie>(), null), Times.Never());
         }
+
+        [Test]
+        public void should_update_movie_path_when_source_folder_does_not_exist()
+        {
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(s => s.FolderExists(It.IsAny<string>()))
+                  .Returns(false);
+
+            Subject.Execute(_command);
+
+            Mocker.GetMock<IDiskTransferService>()
+                  .Verify(v => v.TransferFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TransferMode>()), Times.Never());
+
+            Mocker.GetMock<IMovieService>()
+                  .Verify(v => v.UpdateMovie(It.Is<Movie>(m => m.Path == _command.DestinationPath)), Times.Once());
+        }
+
+        [Test]
+        public void should_update_movie_path_when_source_path_is_invalid()
+        {
+            _command.SourcePath = string.Empty;
+
+            Subject.Execute(_command);
+
+            ExceptionVerification.ExpectedWarns(1);
+
+            Mocker.GetMock<IDiskTransferService>()
+                  .Verify(v => v.TransferFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TransferMode>()), Times.Never());
+
+            Mocker.GetMock<IMovieService>()
+                  .Verify(v => v.UpdateMovie(It.Is<Movie>(m => m.Path == _command.DestinationPath)), Times.Once());
+        }
     }
 }

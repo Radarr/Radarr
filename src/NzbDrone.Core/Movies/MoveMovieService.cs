@@ -40,12 +40,14 @@ namespace NzbDrone.Core.Movies
             if (!sourcePath.IsPathValid(PathValidationType.CurrentOs))
             {
                 _logger.Warn("Folder '{0}' for '{1}' is invalid, unable to move movie. Try moving files manually", sourcePath, movie.Title);
+                UpdatePath(movie.Id, destinationPath);
                 return;
             }
 
             if (!_diskProvider.FolderExists(sourcePath))
             {
                 _logger.Debug("Folder '{0}' for '{1}' does not exist, not moving.", sourcePath, movie.Title);
+                UpdatePath(movie.Id, destinationPath);
                 return;
             }
 
