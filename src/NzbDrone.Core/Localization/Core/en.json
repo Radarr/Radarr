@@ -849,6 +849,8 @@
   "ImportListsTraktSettingsPopularListTypeTrendingMovies": "Trending Movies",
   "ImportListsTraktSettingsRating": "Rating",
   "ImportListsTraktSettingsRatingMovieHelpText": "Filter movies by rating range (0-100)",
+  "ImportListsTraktSettingsSmartList": "Smart List Slug",
+  "ImportListsTraktSettingsSmartListHelpText": "Smart list slug, e.g. my-list-1a2b3c4d5e6f7a8b from https://app.trakt.tv/lists/smart/view/my-list-1a2b3c4d5e6f7a8b. The list must be public or yours",
   "ImportListsTraktSettingsUserListTypeCollection": "User Collection List",
   "ImportListsTraktSettingsUserListTypeWatch": "User Watch List",
   "ImportListsTraktSettingsUserListTypeWatched": "User Watched List",
