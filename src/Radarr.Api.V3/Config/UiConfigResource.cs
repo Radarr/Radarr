@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using NzbDrone.Core.Configuration;
 using Radarr.Http.REST;
 
@@ -22,6 +24,13 @@ namespace Radarr.Api.V3.Config
         public int MovieInfoLanguage { get; set; }
         public int UILanguage { get; set; }
         public string Theme { get; set; }
+
+        // Poster Replacement
+        public bool PosterReplacementEnabled { get; set; }
+        public List<string> PosterReplacementGenres { get; set; }
+        public List<int> PosterReplacementTags { get; set; }
+        public string PosterReplacementBackgroundColor { get; set; }
+        public string PosterReplacementTextColor { get; set; }
     }
 
     public static class UiConfigResourceMapper
@@ -43,7 +52,13 @@ namespace Radarr.Api.V3.Config
                 EnableColorImpairedMode = model.EnableColorImpairedMode,
                 MovieInfoLanguage = model.MovieInfoLanguage,
                 UILanguage = model.UILanguage,
-                Theme = config.Theme
+                Theme = config.Theme,
+
+                PosterReplacementEnabled = model.PosterReplacementEnabled,
+                PosterReplacementGenres = model.PosterReplacementGenres.ToList(),
+                PosterReplacementTags = model.PosterReplacementTags.ToList(),
+                PosterReplacementBackgroundColor = model.PosterReplacementBackgroundColor,
+                PosterReplacementTextColor = model.PosterReplacementTextColor
             };
         }
     }

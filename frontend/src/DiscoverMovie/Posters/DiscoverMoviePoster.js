@@ -87,6 +87,7 @@ class DiscoverMoviePoster extends Component {
       overview,
       folder,
       images,
+      genres,
       posterWidth,
       posterHeight,
       showTitle,
@@ -185,6 +186,8 @@ class DiscoverMoviePoster extends Component {
               className={styles.poster}
               style={elementStyle}
               images={images}
+              title={title}
+              genres={genres}
               size={250}
               lazy={false}
               overflow={true}
@@ -252,6 +255,7 @@ class DiscoverMoviePoster extends Component {
           overview={overview}
           folder={folder}
           images={images}
+          genres={genres}
           onModalClose={this.onAddMovieModalClose}
         />
 
@@ -277,6 +281,7 @@ DiscoverMoviePoster.propTypes = {
   folder: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
+  genres: PropTypes.arrayOf(PropTypes.string),
   posterWidth: PropTypes.number.isRequired,
   posterHeight: PropTypes.number.isRequired,
   showTitle: PropTypes.bool.isRequired,

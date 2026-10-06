@@ -21,6 +21,7 @@
     <PackageReference Include="FluentMigrator.Runner.Postgres" Version="6.2.0" />
     <PackageReference Include="FluentValidation" Version="9.5.4" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="NLog" Version="5.5.1" />
     <PackageReference Include="MonoTorrent" Version="3.0.2" />
@@ -33,6 +34,10 @@
   <ItemGroup>
     <EmbeddedResource Include="..\..\Logo\64.png">
       <Link>Resources\Logo\64.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\frontend\src\Content\Fonts\Roboto-Regular.ttf">
+      <Link>Resources\Fonts\Roboto-Regular.ttf</Link>
+      <LogicalName>NzbDrone.Core.Resources.Fonts.Roboto-Regular.ttf</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

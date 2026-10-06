@@ -353,7 +353,7 @@ namespace NzbDrone.Mono.Disk
                 }
                 else
                 {
-                    base.CopyFileInternal(source, destination);
+                    base.CopyFileInternal(source, destination, overwrite);
                 }
             }
             catch (UnauthorizedAccessException)
