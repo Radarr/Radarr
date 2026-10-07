@@ -284,13 +284,13 @@ namespace NzbDrone.Core.Movies
                             _logger.Error(e, "Couldn't refresh info for {0}", movieLocal);
                         }
 
-                        UpdateTags(movie, false);
+                        UpdateTags(movieLocal, false);
                         RescanMovie(movieLocal, false, trigger);
                     }
                     else
                     {
                         _logger.Debug("Skipping refresh of movie: {0}", movieLocal.Title);
-                        UpdateTags(movie, false);
+                        UpdateTags(movieLocal, false);
                         RescanMovie(movieLocal, false, trigger);
                     }
                 }
