@@ -18,7 +18,10 @@ const fuseOptions = {
   ],
 };
 
-function getSuggestions(movies: SuggestedMovie[], value: string) {
+let movies: SuggestedMovie[] = [];
+let fuse: Fuse<SuggestedMovie> | null = null;
+
+function getSuggestions(value: string) {
   const limit = 10;
   let suggestions = [];
 
@@ -43,7 +46,8 @@ function getSuggestions(movies: SuggestedMovie[], value: string) {
       }
     }
   } else {
-    const fuse = new Fuse(movies, fuseOptions);
+    fuse ??= new Fuse(movies, fuseOptions);
+
     suggestions = fuse.search(value, { limit });
   }
 
@@ -55,9 +59,15 @@ onmessage = function (e) {
     return;
   }
 
-  const { movies, value } = e.data;
+  if (e.data.movies) {
+    movies = e.data.movies;
+    fuse = null;
+    return;
+  }
 
-  const suggestions = getSuggestions(movies, value);
+  const { value } = e.data;
+
+  const suggestions = getSuggestions(value);
 
   const results = {
     value,

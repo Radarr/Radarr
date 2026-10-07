@@ -123,7 +123,7 @@ function createMoviesSelector() {
 }
 
 function MovieSearchInput() {
-  const movies = useSelector(createMoviesSelector());
+  const movies = useSelector(useMemo(() => createMoviesSelector(), []));
   const dispatch = useDispatch();
   const { bindShortcut, unbindShortcut } = useKeyboardShortcuts();
 
@@ -178,15 +178,10 @@ function MovieSearchInput() {
         setSuggestions(suggestions);
         setRequestLoading(true);
 
-        const payload = {
-          value: requestValue,
-          movies,
-        };
-
-        worker.current?.postMessage(payload);
+        worker.current?.postMessage({ value: requestValue.current });
       }
     },
-    [movies]
+    []
   );
 
   const requestSuggestions = useDebouncedCallback((value: string) => {
@@ -198,12 +193,7 @@ function MovieSearchInput() {
     setRequestLoading(true);
 
     if (!requestLoading) {
-      const payload = {
-        value,
-        movies,
-      };
-
-      worker.current?.postMessage(payload);
+      worker.current?.postMessage({ value });
     }
   }, 250);
 
@@ -407,6 +397,10 @@ function MovieSearchInput() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    worker.current?.postMessage({ movies });
+  }, [movies]);
 
   useEffect(() => {
     worker.current?.addEventListener(
