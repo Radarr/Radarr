@@ -2055,5 +2055,10 @@
     "Thursday": "Jeudi",
     "Tuesday": "Mardi",
     "Wednesday": "Mercredi",
-    "AllowedHosts": "Hôtes autorisés"
+    "AllowedHosts": "Hôtes autorisés",
+    "TrustedNetworks": "Réseaux de confiance",
+    "TrustedNetworksHelpText": "Liste d’adresses IP ou de réseaux au format CIDR, séparés par des virgules, sur lesquels se trouvent les proxys inverses approuvés. Par exemple : 172.17.0.1, 10.0.0.0/8 ou fc00::/7. Ajouter uniquement les proxys correctement configurés pour envoyer les en-têtes appropriés.",
+    "AllowedHostsHelpText": "Liste d’hôtes et d’adresses IP séparés par des virgules que {appName} acceptera pour les requêtes. Utiliser '*.' comme caractère générique pour les sous-domaines. Laisser vide pour autoriser tous les hôtes.",
+    "AllowedHostsNotConfiguredHealthCheckMessage": "Les hôtes autorisés ne sont pas configurés. {appName} acceptera les requêtes provenant de n’importe quel nom d’hôte. Définir les hôtes autorisés dans les paramètres généraux pour restreindre les noms d’hôte pouvant être utilisés pour accéder à {appName}.",
+    "MovieFileQualities": "Qualités des fichiers vidéo"
 }
