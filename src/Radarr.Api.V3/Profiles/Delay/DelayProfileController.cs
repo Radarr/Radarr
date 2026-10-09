@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Profiles.Delay;
 using Radarr.Http;
@@ -33,6 +34,7 @@ namespace Radarr.Api.V3.Profiles.Delay
             });
         }
 
+        [ProducesResponseType(typeof(DelayProfileResource), StatusCodes.Status201Created)]
         [RestPostById]
         [Consumes("application/json")]
         public ActionResult<DelayProfileResource> Create([FromBody] DelayProfileResource resource)
@@ -54,6 +56,7 @@ namespace Radarr.Api.V3.Profiles.Delay
             _delayProfileService.Delete(id);
         }
 
+        [ProducesResponseType(typeof(DelayProfileResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         [Consumes("application/json")]
         public ActionResult<DelayProfileResource> Update([FromBody] DelayProfileResource resource)

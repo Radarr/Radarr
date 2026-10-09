@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Network;
@@ -123,6 +124,7 @@ namespace Radarr.Api.V3.Config
             return resource;
         }
 
+        [ProducesResponseType(typeof(HostConfigResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         public ActionResult<HostConfigResource> SaveHostConfig([FromBody] HostConfigResource resource)
         {

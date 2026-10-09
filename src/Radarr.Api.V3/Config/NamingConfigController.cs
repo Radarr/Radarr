@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Organizer;
@@ -44,6 +45,7 @@ namespace Radarr.Api.V3.Config
             return resource;
         }
 
+        [ProducesResponseType(typeof(NamingConfigResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         public ActionResult<NamingConfigResource> UpdateNamingConfig([FromBody] NamingConfigResource resource)
         {

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Validation.Paths;
@@ -48,6 +49,7 @@ namespace Radarr.Api.V3.RootFolders
             return _rootFolderService.Get(id, timeout).ToResource();
         }
 
+        [ProducesResponseType(typeof(RootFolderResource), StatusCodes.Status201Created)]
         [RestPostById]
         [Consumes("application/json")]
         public ActionResult<RootFolderResource> CreateRootFolder([FromBody] RootFolderResource rootFolderResource)

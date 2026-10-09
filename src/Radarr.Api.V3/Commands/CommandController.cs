@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.Serializer;
@@ -48,6 +49,7 @@ namespace Radarr.Api.V3.Commands
             return _commandQueueManager.Get(id).ToResource();
         }
 
+        [ProducesResponseType(typeof(CommandResource), StatusCodes.Status201Created)]
         [RestPostById]
         [Consumes("application/json")]
         [Produces("application/json")]
