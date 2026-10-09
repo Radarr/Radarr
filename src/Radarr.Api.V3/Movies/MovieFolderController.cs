@@ -19,14 +19,14 @@ public class MovieFolderController : Controller
 
     [HttpGet("{id}/folder")]
     [Produces("application/json")]
-    public object GetFolder([FromRoute] int id)
+    public MovieFolderResource GetFolder([FromRoute] int id)
     {
         var series = _movieService.GetMovie(id);
         var folder = _fileNameBuilder.GetMovieFolder(series);
 
-        return new
+        return new MovieFolderResource
         {
-            folder
+            Folder = folder
         };
     }
 }

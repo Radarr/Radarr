@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Internal;
@@ -94,6 +96,7 @@ namespace Radarr.Api.V3.System
         }
 
         [HttpGet("routes")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK, "text/plain")]
         public IActionResult GetRoutes()
         {
             using (var sw = new StringWriter())
@@ -105,23 +108,23 @@ namespace Radarr.Api.V3.System
         }
 
         [HttpGet("routes/duplicate")]
-        public object DuplicateRoutes()
+        public Dictionary<string, List<string>> DuplicateRoutes()
         {
             return _detector.GetDuplicateEndpoints(_endpointData);
         }
 
         [HttpPost("shutdown")]
-        public object Shutdown()
+        public SystemShutdownResource Shutdown()
         {
             Task.Factory.StartNew(() => _lifecycleService.Shutdown());
-            return new { ShuttingDown = true };
+            return new SystemShutdownResource { ShuttingDown = true };
         }
 
         [HttpPost("restart")]
-        public object Restart()
+        public SystemRestartResource Restart()
         {
             Task.Factory.StartNew(() => _lifecycleService.Restart());
-            return new { Restarting = true };
+            return new SystemRestartResource { Restarting = true };
         }
     }
 }

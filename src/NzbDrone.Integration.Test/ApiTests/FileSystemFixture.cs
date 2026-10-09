@@ -120,5 +120,17 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             result.First()["name"].Should().Be("somevideo.mkv");
         }
+
+        [Test]
+        public void get_all_mediafiles_for_folder_that_does_not_exist()
+        {
+            var request = FileSystem.BuildRequest("mediafiles");
+            request.Method = Method.GET;
+            request.AddQueryParameter("path", Path.Combine(_folder, "does_not_exist"));
+
+            var result = FileSystem.Execute<List<Dictionary<string, string>>>(request, HttpStatusCode.OK);
+
+            result.Should().BeEmpty();
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Reflection;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Languages;
@@ -36,6 +37,7 @@ namespace Radarr.Api.V3.Config
                 .WithMessage("Invalid UI Language ID");
         }
 
+        [ProducesResponseType(typeof(UiConfigResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         public override ActionResult<UiConfigResource> SaveConfig([FromBody] UiConfigResource resource)
         {

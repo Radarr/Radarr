@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Extras.Metadata;
 using NzbDrone.SignalR;
@@ -18,7 +19,7 @@ namespace Radarr.Api.V3.Metadata
         }
 
         [NonAction]
-        public override ActionResult<MetadataResource> UpdateProvider([FromBody] MetadataBulkResource providerResource)
+        public override ActionResult<List<MetadataResource>> UpdateProvider([FromBody] MetadataBulkResource providerResource)
         {
             throw new NotImplementedException();
         }

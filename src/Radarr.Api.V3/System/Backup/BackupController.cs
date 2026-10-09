@@ -72,7 +72,7 @@ namespace Radarr.Api.V3.System.Backup
         }
 
         [HttpPost("restore/{id:int}")]
-        public object Restore([FromRoute] int id)
+        public BackupRestoreResource Restore([FromRoute] int id)
         {
             var backup = GetBackup(id);
 
@@ -85,7 +85,7 @@ namespace Radarr.Api.V3.System.Backup
 
             _backupService.Restore(path);
 
-            return new
+            return new BackupRestoreResource
             {
                 RestartRequired = true
             };
@@ -93,7 +93,7 @@ namespace Radarr.Api.V3.System.Backup
 
         [HttpPost("restore/upload")]
         [RequestFormLimits(MultipartBodyLengthLimit = 5000000000)]
-        public object UploadAndRestore()
+        public BackupRestoreResource UploadAndRestore()
         {
             var files = Request.Form.Files;
 
@@ -118,7 +118,7 @@ namespace Radarr.Api.V3.System.Backup
             // Cleanup restored file
             _diskProvider.DeleteFile(path);
 
-            return new
+            return new BackupRestoreResource
             {
                 RestartRequired = true
             };

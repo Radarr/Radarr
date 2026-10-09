@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.AutoTagging;
@@ -49,6 +50,7 @@ namespace Radarr.Api.V3.AutoTagging
             return _autoTaggingService.GetById(id).ToResource();
         }
 
+        [ProducesResponseType(typeof(AutoTaggingResource), StatusCodes.Status201Created)]
         [RestPostById]
         [Consumes("application/json")]
         public ActionResult<AutoTaggingResource> Create([FromBody] AutoTaggingResource autoTagResource)
@@ -60,6 +62,7 @@ namespace Radarr.Api.V3.AutoTagging
             return Created(_autoTaggingService.Insert(model).Id);
         }
 
+        [ProducesResponseType(typeof(AutoTaggingResource), StatusCodes.Status202Accepted)]
         [RestPutById]
         [Consumes("application/json")]
         public ActionResult<AutoTaggingResource> Update([FromBody] AutoTaggingResource resource)
@@ -87,7 +90,7 @@ namespace Radarr.Api.V3.AutoTagging
         }
 
         [HttpGet("schema")]
-        public object GetTemplates()
+        public List<AutoTaggingSpecificationSchema> GetTemplates()
         {
             var schema = _specifications.OrderBy(x => x.Order).Select(x => x.ToSchema()).ToList();
 

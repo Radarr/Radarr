@@ -54,7 +54,7 @@ namespace Radarr.Api.V3.ImportLists
         }
 
         [HttpGet]
-        public object GetDiscoverMovies(bool includeRecommendations = false, bool includeTrending = false, bool includePopular = false)
+        public List<ImportListMoviesResource> GetDiscoverMovies(bool includeRecommendations = false, bool includeTrending = false, bool includePopular = false)
         {
             var movieLanguage = (Language)_configService.MovieInfoLanguage;
 
@@ -116,7 +116,7 @@ namespace Radarr.Api.V3.ImportLists
         }
 
         [HttpPost]
-        public object AddMovies([FromBody] List<MovieResource> resource)
+        public List<MovieResource> AddMovies([FromBody] List<MovieResource> resource)
         {
             var newMovies = resource.ToModel();
 

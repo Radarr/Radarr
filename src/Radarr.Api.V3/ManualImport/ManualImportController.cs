@@ -36,7 +36,7 @@ namespace Radarr.Api.V3.ManualImport
 
         [HttpPost]
         [Consumes("application/json")]
-        public object ReprocessItems([FromBody] List<ManualImportReprocessResource> items)
+        public List<ManualImportReprocessResource> ReprocessItems([FromBody] List<ManualImportReprocessResource> items)
         {
             if (items is { Count: 0 })
             {

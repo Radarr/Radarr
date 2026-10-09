@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using NzbDrone.Common.Disk;
@@ -26,6 +27,8 @@ namespace Radarr.Api.V3.MediaCovers
         }
 
         [HttpGet(@"{movieId:int}/{filename:regex((.+)\.(jpg|png|gif))}")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK, "image/jpeg", "image/png", "image/gif")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetMediaCover(int movieId, string filename)
         {
             var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", movieId.ToString(), filename);
