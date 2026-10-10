@@ -1,21 +1,26 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import Icon, { IconName } from 'Components/Icon';
 import styles from './DiscoverMovieOverviewInfoRow.css';
 
 interface DiscoverMovieOverviewInfoRowProps {
   title?: string;
-  iconName: IconName;
+  iconName?: IconName;
+  icon?: ReactNode;
   label: string | null;
 }
 
 function DiscoverMovieOverviewInfoRow(
   props: DiscoverMovieOverviewInfoRowProps
 ) {
-  const { title, iconName, label } = props;
+  const { title, iconName, icon, label } = props;
 
   return (
     <div className={styles.infoRow} title={title}>
-      <Icon className={styles.icon} name={iconName} size={14} />
+      {iconName ? (
+        <Icon className={styles.icon} name={iconName} size={14} />
+      ) : (
+        <span className={styles.icon}>{icon}</span>
+      )}
 
       {label}
     </div>
