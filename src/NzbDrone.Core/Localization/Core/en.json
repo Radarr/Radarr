@@ -1444,6 +1444,7 @@
   "OnGrab": "On Grab",
   "OnHealthIssue": "On Health Issue",
   "OnHealthRestored": "On Health Restored",
+  "OnIndexerFailure": "On Indexer Failure",
   "OnLatestVersion": "The latest version of {appName} is already installed",
   "OnManualInteractionRequired": "On Manual Interaction Required",
   "OnManualInteractionRequiredHelpText": "On Manual Interaction Required",
