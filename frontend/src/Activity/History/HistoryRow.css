@@ -8,6 +8,7 @@
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 
   width: 80px;
+  white-space: nowrap;
 }
 
 .customFormatScore {
