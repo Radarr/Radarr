@@ -93,6 +93,14 @@ namespace NzbDrone.Core.Test.Configuration
                 {
                     value = 0;
                 }
+                else if (propertyInfo.PropertyType == typeof(IReadOnlyList<string>))
+                {
+                    value = new List<string> { Guid.NewGuid().ToString(), Guid.NewGuid().ToString() };
+                }
+                else if (propertyInfo.PropertyType == typeof(IReadOnlyList<int>))
+                {
+                    value = new List<int> { DateTime.Now.Millisecond, 1 };
+                }
 
                 propertyInfo.GetSetMethod().Invoke(configProvider, new[] { value });
                 var returnValue = propertyInfo.GetGetMethod().Invoke(configProvider, null);
@@ -100,6 +108,12 @@ namespace NzbDrone.Core.Test.Configuration
                 if (propertyInfo.PropertyType.BaseType == typeof(Enum))
                 {
                     returnValue = (int)returnValue;
+                }
+
+                if (value is System.Collections.IEnumerable and not string)
+                {
+                    returnValue.Should().BeEquivalentTo(value, propertyInfo.Name);
+                    continue;
                 }
 
                 returnValue.Should().Be(value, propertyInfo.Name);

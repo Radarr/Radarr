@@ -113,6 +113,40 @@ namespace NzbDrone.Mono.Test.DiskProviderTests
         }
 
         [Test]
+        public void should_overwrite_existing_file_when_copying_with_overwrite()
+        {
+            var tempFolder = GetTempFilePath();
+            Directory.CreateDirectory(tempFolder);
+
+            var source = Path.Combine(tempFolder, "source.txt");
+            var destination = Path.Combine(tempFolder, "destination.txt");
+
+            File.WriteAllText(source, "New content");
+            File.WriteAllText(destination, "Old content");
+
+            Subject.CopyFile(source, destination, true);
+
+            File.ReadAllText(destination).Should().Be("New content");
+        }
+
+        [Test]
+        public void should_not_overwrite_existing_file_when_copying_without_overwrite()
+        {
+            var tempFolder = GetTempFilePath();
+            Directory.CreateDirectory(tempFolder);
+
+            var source = Path.Combine(tempFolder, "source.txt");
+            var destination = Path.Combine(tempFolder, "destination.txt");
+
+            File.WriteAllText(source, "New content");
+            File.WriteAllText(destination, "Old content");
+
+            Assert.Throws<IOException>(() => Subject.CopyFile(source, destination));
+
+            File.ReadAllText(destination).Should().Be("Old content");
+        }
+
+        [Test]
         public void should_copy_symlink()
         {
             var tempFolder = GetTempFilePath();

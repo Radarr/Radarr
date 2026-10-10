@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Extras.Others
 
         public override int Order => 2;
 
-        public override IEnumerable<ExtraFile> CreateAfterMediaCoverUpdate(Movie movie)
+        public override IEnumerable<ExtraFile> CreateAfterMediaCoverUpdate(Movie movie, bool posterReplacementChanged)
         {
             return Enumerable.Empty<ExtraFile>();
         }

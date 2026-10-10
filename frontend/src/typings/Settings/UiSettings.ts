@@ -10,4 +10,9 @@ export default interface UiSettings {
   movieRuntimeFormat: string;
   movieInfoLanguage: number;
   uiLanguage: number;
+  posterReplacementEnabled: boolean;
+  posterReplacementGenres: string[];
+  posterReplacementTags: number[];
+  posterReplacementBackgroundColor: string;
+  posterReplacementTextColor: string;
 }

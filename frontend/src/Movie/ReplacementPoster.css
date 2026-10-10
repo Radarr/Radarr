@@ -1,0 +1,24 @@
+.poster {
+  position: relative;
+  overflow: hidden;
+  container-type: inline-size;
+  aspect-ratio: 2 / 3;
+}
+
+.content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 22.5cqi 10cqi;
+}
+
+.title {
+  overflow-wrap: break-word;
+
+  text-align: center;
+  font-weight: 400;
+  line-height: 1.15;
+}

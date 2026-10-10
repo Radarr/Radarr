@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using NLog;
@@ -9,7 +10,11 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Configuration.Events;
+using NzbDrone.Core.Lifecycle;
+using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
@@ -25,19 +30,35 @@ namespace NzbDrone.Core.MediaCover
     public class MediaCoverService :
         IHandleAsync<MovieUpdatedEvent>,
         IHandleAsync<MoviesDeletedEvent>,
+        IHandleAsync<MovieEditedEvent>,
+        IHandleAsync<MoviesBulkEditedEvent>,
+        IHandle<ApplicationStartedEvent>,
+        IHandleAsync<ConfigSavedEvent>,
+        IExecute<ApplyPosterReplacementCommand>,
         IMapCoversToLocal
     {
+        private const string PosterReplacementMarker = "poster.replacement";
+
         private readonly IMediaCoverProxy _mediaCoverProxy;
         private readonly IImageResizer _resizer;
         private readonly IHttpClient _httpClient;
         private readonly IDiskProvider _diskProvider;
         private readonly ICoverExistsSpecification _coverExistsSpecification;
         private readonly IConfigFileProvider _configFileProvider;
+        private readonly IConfigService _configService;
+        private readonly IPosterReplacementService _posterReplacementService;
+        private readonly IPosterRenderer _posterRenderer;
+        private readonly IMovieService _movieService;
+        private readonly IManageCommandQueue _commandQueueManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
         private readonly ICached<bool> _coverExistsCache;
+        private readonly ICached<string> _posterReplacementCache;
         private readonly string _coverRootFolder;
+
+        private readonly object _posterReplacementLock = new();
+        private string _posterReplacementSettings;
 
         // ImageSharp is slow on ARM (no hardware acceleration on mono yet)
         // So limit the number of concurrent resizing tasks
@@ -52,6 +73,11 @@ namespace NzbDrone.Core.MediaCover
                                  IAppFolderInfo appFolderInfo,
                                  ICoverExistsSpecification coverExistsSpecification,
                                  IConfigFileProvider configFileProvider,
+                                 IConfigService configService,
+                                 IPosterReplacementService posterReplacementService,
+                                 IPosterRenderer posterRenderer,
+                                 IMovieService movieService,
+                                 IManageCommandQueue commandQueueManager,
                                  IEventAggregator eventAggregator,
                                  ICacheManager cacheManager,
                                  Logger logger)
@@ -62,10 +88,16 @@ namespace NzbDrone.Core.MediaCover
             _diskProvider = diskProvider;
             _coverExistsSpecification = coverExistsSpecification;
             _configFileProvider = configFileProvider;
+            _configService = configService;
+            _posterReplacementService = posterReplacementService;
+            _posterRenderer = posterRenderer;
+            _movieService = movieService;
+            _commandQueueManager = commandQueueManager;
             _eventAggregator = eventAggregator;
             _logger = logger;
 
             _coverExistsCache = cacheManager.GetCache<bool>(GetType(), "coverExists");
+            _posterReplacementCache = cacheManager.GetCache<string>(GetType(), "posterReplacement");
             _coverRootFolder = appFolderInfo.GetMediaCoverPath();
         }
 
@@ -99,7 +131,20 @@ namespace NzbDrone.Core.MediaCover
 
                     if (mediaCover.RemoteUrl.IsNotNullOrWhiteSpace() && CoverExists(movieId, mediaCover.CoverType, added))
                     {
-                        mediaCover.Url += "?h=" + mediaCover.RemoteUrl.SHA256Hash()[..20];
+                        var hashSource = mediaCover.RemoteUrl;
+
+                        if (mediaCover.CoverType == MediaCoverTypes.Poster)
+                        {
+                            // A replaced poster must not be served from a browser cache holding the original (or vice versa)
+                            var replacementSignature = GetCurrentReplacementSignature(movieId);
+
+                            if (replacementSignature.IsNotNullOrWhiteSpace())
+                            {
+                                hashSource += replacementSignature;
+                            }
+                        }
+
+                        mediaCover.Url += "?h=" + hashSource.SHA256Hash()[..20];
                     }
                 }
             }
@@ -135,20 +180,48 @@ namespace NzbDrone.Core.MediaCover
             return Path.Combine(_coverRootFolder, movieId.ToString());
         }
 
-        private bool EnsureCovers(Movie movie)
+        private EnsureCoversResult EnsureCovers(Movie movie, Func<MediaCover, bool> filter = null)
         {
-            var updated = false;
+            var result = new EnsureCoversResult();
             var toResize = new List<Tuple<MediaCover, bool>>();
 
             foreach (var cover in movie.MovieMetadata.Value.Images)
             {
-                if (cover.CoverType == MediaCoverTypes.Unknown)
+                if (cover.CoverType == MediaCoverTypes.Unknown || (filter != null && !filter(cover)))
                 {
                     continue;
                 }
 
                 var fileName = GetCoverPath(movie.Id, cover.CoverType);
                 var alreadyExists = false;
+
+                if (cover.CoverType == MediaCoverTypes.Poster)
+                {
+                    var replacement = _posterReplacementService.GetReplacement(movie);
+
+                    try
+                    {
+                        if (replacement != null)
+                        {
+                            var rendered = EnsureReplacementPoster(movie, replacement);
+
+                            result.Updated |= rendered;
+                            result.PosterReplacementChanged |= rendered;
+                            toResize.Add(Tuple.Create(cover, !rendered));
+
+                            continue;
+                        }
+
+                        // No longer replaced, remove the generated poster so the original is downloaded again below
+                        result.PosterReplacementChanged |= RemoveReplacementPoster(movie);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error(e, "Couldn't replace poster for {0}", movie);
+
+                        continue;
+                    }
+                }
 
                 try
                 {
@@ -157,7 +230,7 @@ namespace NzbDrone.Core.MediaCover
                     if (!alreadyExists)
                     {
                         DownloadCover(movie, cover);
-                        updated = true;
+                        result.Updated = true;
                     }
 
                     if (IsRecentlyAdded(movie.Added))
@@ -195,7 +268,106 @@ namespace NzbDrone.Core.MediaCover
                 Semaphore.Release();
             }
 
-            return updated;
+            return result;
+        }
+
+        private bool EnsureReplacementPoster(Movie movie, PosterReplacement replacement)
+        {
+            lock (_posterReplacementLock)
+            {
+                var posterPath = GetCoverPath(movie.Id, MediaCoverTypes.Poster);
+                var signature = replacement.Signature;
+
+                if (GetCurrentReplacementSignature(movie.Id) == signature && _diskProvider.FileExists(posterPath))
+                {
+                    return false;
+                }
+
+                _logger.Info("Replacing poster for {0}", movie);
+
+                _diskProvider.EnsureFolder(GetMovieCoverPath(movie.Id));
+                _posterRenderer.Render(replacement, posterPath);
+                _diskProvider.WriteAllText(GetPosterReplacementMarkerPath(movie.Id), signature);
+                _posterReplacementCache.Set(movie.Id.ToString(), signature);
+
+                if (IsRecentlyAdded(movie.Added))
+                {
+                    _coverExistsCache.Set(posterPath, true);
+                }
+
+                return true;
+            }
+        }
+
+        private bool RemoveReplacementPoster(Movie movie)
+        {
+            lock (_posterReplacementLock)
+            {
+                if (GetCurrentReplacementSignature(movie.Id).IsNullOrWhiteSpace())
+                {
+                    return false;
+                }
+
+                _logger.Info("Restoring original poster for {0}", movie);
+
+                var posterPath = GetCoverPath(movie.Id, MediaCoverTypes.Poster);
+
+                if (_diskProvider.FileExists(posterPath))
+                {
+                    _diskProvider.DeleteFile(posterPath);
+                }
+
+                _diskProvider.DeleteFile(GetPosterReplacementMarkerPath(movie.Id));
+                _posterReplacementCache.Set(movie.Id.ToString(), string.Empty);
+                _coverExistsCache.Remove(posterPath);
+
+                return true;
+            }
+        }
+
+        // Signature of the replacement poster currently on disk, empty if the poster is the original
+        private string GetCurrentReplacementSignature(int movieId)
+        {
+            return _posterReplacementCache.Get(movieId.ToString(), () =>
+            {
+                var markerPath = GetPosterReplacementMarkerPath(movieId);
+
+                return _diskProvider.FileExists(markerPath) ? _diskProvider.ReadAllText(markerPath)?.Trim() ?? string.Empty : string.Empty;
+            });
+        }
+
+        private bool PosterReplacementOutdated(Movie movie)
+        {
+            var replacement = _posterReplacementService.GetReplacement(movie);
+
+            return (replacement?.Signature ?? string.Empty) != GetCurrentReplacementSignature(movie.Id);
+        }
+
+        private string GetPosterReplacementMarkerPath(int movieId)
+        {
+            return Path.Combine(GetMovieCoverPath(movieId), PosterReplacementMarker);
+        }
+
+        private void ApplyPosterReplacement(Movie movie)
+        {
+            if (!movie.MovieMetadata.Value.Images.Any(c => c.CoverType == MediaCoverTypes.Poster) || !PosterReplacementOutdated(movie))
+            {
+                return;
+            }
+
+            var result = EnsureCovers(movie, c => c.CoverType == MediaCoverTypes.Poster);
+
+            _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(movie, result.Updated || result.PosterReplacementChanged, result.PosterReplacementChanged));
+        }
+
+        private string GetPosterReplacementSettings()
+        {
+            return string.Join("|",
+                _configService.PosterReplacementEnabled,
+                string.Join(",", _configService.PosterReplacementGenres),
+                string.Join(",", _configService.PosterReplacementTags),
+                _configService.PosterReplacementBackgroundColor,
+                _configService.PosterReplacementTextColor);
         }
 
         private void DownloadCover(Movie movie, MediaCover cover)
@@ -262,9 +434,62 @@ namespace NzbDrone.Core.MediaCover
 
         public void HandleAsync(MovieUpdatedEvent message)
         {
-            var updated = EnsureCovers(message.Movie);
+            var result = EnsureCovers(message.Movie);
 
-            _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie, updated));
+            _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie, result.Updated || result.PosterReplacementChanged, result.PosterReplacementChanged));
+        }
+
+        public void HandleAsync(MovieEditedEvent message)
+        {
+            // Tags may have changed
+            ApplyPosterReplacement(message.Movie);
+        }
+
+        public void HandleAsync(MoviesBulkEditedEvent message)
+        {
+            foreach (var movie in message.Movies)
+            {
+                ApplyPosterReplacement(movie);
+            }
+        }
+
+        public void Handle(ApplicationStartedEvent message)
+        {
+            _posterReplacementSettings = GetPosterReplacementSettings();
+        }
+
+        public void HandleAsync(ConfigSavedEvent message)
+        {
+            var settings = GetPosterReplacementSettings();
+
+            if (settings == _posterReplacementSettings)
+            {
+                return;
+            }
+
+            _posterReplacementSettings = settings;
+            _commandQueueManager.Push(new ApplyPosterReplacementCommand());
+        }
+
+        public void Execute(ApplyPosterReplacementCommand message)
+        {
+            var movies = _movieService.GetAllMovies().Where(PosterReplacementOutdated).ToList();
+
+            _logger.ProgressInfo("Updating poster replacement for {0} movies", movies.Count);
+
+            foreach (var movie in movies)
+            {
+                try
+                {
+                    ApplyPosterReplacement(movie);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e, "Couldn't update poster replacement for {0}", movie);
+                }
+            }
+
+            _logger.ProgressInfo("Updated poster replacement for {0} movies", movies.Count);
         }
 
         public void HandleAsync(MoviesDeletedEvent message)
@@ -272,6 +497,7 @@ namespace NzbDrone.Core.MediaCover
             foreach (var movie in message.Movies)
             {
                 RemoveCoverExistsCache(movie);
+                _posterReplacementCache.Remove(movie.Id.ToString());
 
                 var path = GetMovieCoverPath(movie.Id);
                 if (_diskProvider.FolderExists(path))
@@ -280,5 +506,11 @@ namespace NzbDrone.Core.MediaCover
                 }
             }
         }
+    }
+
+    internal class EnsureCoversResult
+    {
+        public bool Updated { get; set; }
+        public bool PosterReplacementChanged { get; set; }
     }
 }
