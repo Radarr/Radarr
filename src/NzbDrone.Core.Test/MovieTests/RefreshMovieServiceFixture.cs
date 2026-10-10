@@ -134,5 +134,41 @@ namespace NzbDrone.Core.Test.MovieTests
 
             ExceptionVerification.ExpectedErrors(1);
         }
+
+        [Test]
+        public void should_update_tags_on_refreshed_movie_when_refreshing_all_movies()
+        {
+            var staleMovie = Builder<Movie>.CreateNew()
+                .With(s => s.Id = _existingMovie.Id)
+                .Build();
+
+            GivenNewMovieInfo(_movie.JsonClone());
+
+            Mocker.GetMock<IMovieService>()
+                  .Setup(s => s.GetAllMovies())
+                  .Returns(new List<Movie> { staleMovie });
+
+            Mocker.GetMock<ICheckIfMovieShouldBeRefreshed>()
+                  .Setup(s => s.ShouldRefresh(It.IsAny<MovieMetadata>()))
+                  .Returns(true);
+
+            Mocker.GetMock<IMovieService>()
+                  .Setup(s => s.UpdateTags(It.IsAny<Movie>()))
+                  .Returns(true);
+
+            Subject.Execute(new RefreshMovieCommand());
+
+            Mocker.GetMock<IMovieService>()
+                  .Verify(v => v.UpdateTags(_existingMovie), Times.Once());
+
+            Mocker.GetMock<IMovieService>()
+                  .Verify(v => v.UpdateTags(staleMovie), Times.Never());
+
+            Mocker.GetMock<IMovieService>()
+                  .Verify(v => v.UpdateMovie(_existingMovie), Times.Once());
+
+            Mocker.GetMock<IMovieService>()
+                  .Verify(v => v.UpdateMovie(staleMovie), Times.Never());
+        }
     }
 }
