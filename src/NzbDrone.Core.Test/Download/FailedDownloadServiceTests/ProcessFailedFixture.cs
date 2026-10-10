@@ -69,6 +69,19 @@ namespace NzbDrone.Core.Test.Download.FailedDownloadServiceTests
         }
 
         [Test]
+        public void should_mark_failed_with_stalled_message_if_stalled()
+        {
+            _trackedDownload.IsStalled = true;
+
+            Subject.ProcessFailed(_trackedDownload);
+
+            Mocker.GetMock<IEventAggregator>()
+                  .Verify(v => v.PublishEvent(It.Is<DownloadFailedEvent>(c => c.Message == "Download stalled with no progress")), Times.Once());
+
+            _trackedDownload.State.Should().Be(TrackedDownloadState.Failed);
+        }
+
+        [Test]
         public void should_include_tracked_download_in_message()
         {
             _trackedDownload.DownloadItem.Status = DownloadItemStatus.Failed;
