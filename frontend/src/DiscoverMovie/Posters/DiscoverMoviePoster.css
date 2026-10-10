@@ -110,7 +110,10 @@ $hoverScale: 1.05;
 }
 
 @media only screen and (max-width: $breakpointSmall) {
-  .container {
-    padding: 5px;
+  .title {
+    padding: 0 5px;
+    text-align: left;
+    white-space: normal !important;
+    word-wrap: break-word;
   }
 }
