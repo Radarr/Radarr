@@ -12,6 +12,7 @@ import {
 } from 'react-autosuggest';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import { useDebouncedCallback } from 'use-debounce';
 import AppState from 'App/State/AppState';
 import { Path } from 'App/State/PathsAppState';
 import FileBrowserModal from 'Components/FileBrowser/FileBrowserModal';
@@ -46,6 +47,40 @@ function handleSuggestionsClearRequested() {
   // because we don't want to reset the paths after a path is selected.
 }
 
+function splitPathSegments(path: string) {
+  return path
+    .split(/[\\/]/)
+    .filter((segment) => segment.length)
+    .map((segment) => segment.toLowerCase());
+}
+
+function comparePathMatches(left: Path, right: Path, searchSegments: string[]) {
+  const getRank = (candidate: Path) => {
+    const candidateSegments = splitPathSegments(candidate.path);
+    const segmentIndex = Math.max(candidateSegments.length - 1, 0);
+    const searchValue = searchSegments[segmentIndex] ?? '';
+    const candidateValue = candidate.name.toLowerCase();
+
+    return [
+      candidateValue === searchValue ? 0 : 1,
+      candidateValue.startsWith(searchValue) ? 0 : 1,
+      Math.max(candidateValue.length - searchValue.length, 0),
+      candidate.type === 'file' ? 1 : 0,
+    ];
+  };
+
+  const leftRank = getRank(left);
+  const rightRank = getRank(right);
+
+  for (let i = 0; i < leftRank.length; i++) {
+    if (leftRank[i] !== rightRank[i]) {
+      return leftRank[i] - rightRank[i];
+    }
+  }
+
+  return left.path.toLowerCase().localeCompare(right.path.toLowerCase());
+}
+
 function createPathsSelector() {
   return createSelector(
     (state: AppState) => state.paths,
@@ -76,7 +111,7 @@ function PathInput(props: PathInputProps) {
   );
 
   const handleClearPaths = useCallback(() => {
-    dispatch(clearPaths);
+    dispatch(clearPaths());
   }, [dispatch]);
 
   return (
@@ -109,13 +144,14 @@ export function PathInputInternal(props: PathInputInternalProps) {
   const [value, setValue] = useState(inputValue);
   const [isFileBrowserModalOpen, setIsFileBrowserModalOpen] = useState(false);
   const previousInputValue = usePrevious(inputValue);
-  const dispatch = useDispatch();
 
-  const handleFetchPaths = useCallback(
-    (path: string) => {
-      dispatch(fetchPaths({ path, includeFiles }));
+  // Typing resolves every keystroke server-side; debounce so a pause
+  // fetches once instead of once per character.
+  const handleSuggestionsFetchRequested = useDebouncedCallback(
+    ({ value: newValue }: SuggestionsFetchRequestedParams) => {
+      onFetchPaths(newValue);
     },
-    [includeFiles, dispatch]
+    150
   );
 
   const handleInputChange = useCallback(
@@ -125,47 +161,82 @@ export function PathInputInternal(props: PathInputInternalProps) {
     [setValue]
   );
 
-  const handleInputKeyDown = useCallback(
-    (event: KeyboardEvent<HTMLElement>) => {
-      if (event.key === 'Tab') {
-        event.preventDefault();
-        const path = paths[0];
+  // Match each typed segment against the candidate's segment at the same
+  // depth, so any contiguous part of any directory name matches its level
+  // (`/down/dbd` matches `/downloads/[DBD-Raws].../`).
+  const searchSegments = splitPathSegments(value);
 
-        if (path) {
-          onChange({
-            name,
-            value: path.path,
+  const filteredPaths = (
+    searchSegments.length
+      ? paths.filter(({ path: candidatePath }) => {
+          const candidateSegments = splitPathSegments(candidatePath);
+
+          return searchSegments.every((segment, index) => {
+            const candidateSegment = candidateSegments[index];
+
+            // Exact-prefix resolution can stop before later typed segments and
+            // return the unresolved parent candidate for explicit selection.
+            return (
+              candidateSegment === undefined ||
+              candidateSegment.includes(segment)
+            );
           });
+        })
+      : paths
+  )
+    .slice()
+    .sort((left, right) => comparePathMatches(left, right, searchSegments));
 
-          if (path.type !== 'file') {
-            handleFetchPaths(path.path);
-          }
-        }
+  const selectPath = useCallback(
+    (path: Path) => {
+      handleSuggestionsFetchRequested.cancel();
+      setValue(path.path);
+
+      onChange({
+        name,
+        value: path.path,
+      });
+
+      if (path.type !== 'file') {
+        onFetchPaths(path.path);
       }
     },
-    [name, paths, handleFetchPaths, onChange]
+    [name, handleSuggestionsFetchRequested, onFetchPaths, onChange]
+  );
+
+  const handleInputKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLElement>) => {
+      if (event.key !== 'Tab') {
+        return;
+      }
+
+      const path = filteredPaths[0];
+
+      // Only capture Tab when it would complete a different path;
+      // otherwise let it move focus to the next field.
+      if (path && path.path !== value) {
+        event.preventDefault();
+        selectPath(path);
+      }
+    },
+    [value, filteredPaths, selectPath]
   );
   const handleInputBlur = useCallback(() => {
+    handleSuggestionsFetchRequested.cancel();
+
     onChange({
       name,
       value,
     });
 
     onClearPaths();
-  }, [name, value, onClearPaths, onChange]);
+  }, [name, value, handleSuggestionsFetchRequested, onClearPaths, onChange]);
 
   const handleSuggestionSelected = useCallback(
     (_event: SyntheticEvent, { suggestion }: { suggestion: Path }) => {
-      handleFetchPaths(suggestion.path);
+      selectPath(suggestion);
     },
-    [handleFetchPaths]
-  );
-
-  const handleSuggestionsFetchRequested = useCallback(
-    ({ value: newValue }: SuggestionsFetchRequestedParams) => {
-      handleFetchPaths(newValue);
-    },
-    [handleFetchPaths]
+    [selectPath]
   );
 
   const handleFileBrowserOpenPress = useCallback(() => {
@@ -176,32 +247,66 @@ export function PathInputInternal(props: PathInputInternalProps) {
     setIsFileBrowserModalOpen(false);
   }, [setIsFileBrowserModalOpen]);
 
-  const handleChange = useCallback(
-    (change: InputChanged<Path>) => {
-      onChange({ name, value: change.value.path });
-    },
-    [name, onChange]
-  );
-
   const getSuggestionValue = useCallback(({ path }: Path) => path, []);
 
   const renderSuggestion = useCallback(
     ({ path }: Path, { query }: { query: string }) => {
-      const lastSeparatorIndex =
-        query.lastIndexOf('\\') || query.lastIndexOf('/');
+      // Same segment rules as filteredPaths: each typed segment matches
+      // the candidate's segment at the same depth.
+      const searchSegments = query
+        .split(/[\\/]/)
+        .filter((segment) => segment.length)
+        .map((segment) => segment.toLowerCase());
 
-      if (lastSeparatorIndex === -1) {
-        return <span>{path}</span>;
-      }
+      // Capture separator runs so every token is re-emitted unchanged
+      // and only candidate segments are matched against.
+      const tokens = path.split(/([\\/]+)/);
+      const rendered: React.ReactNode[] = [];
+      let segmentIndex = -1;
 
-      return (
-        <span>
-          <span className={styles.pathMatch}>
-            {path.substring(0, lastSeparatorIndex)}
-          </span>
-          {path.substring(lastSeparatorIndex)}
-        </span>
-      );
+      tokens.forEach((token, tokenIndex) => {
+        // Odd indexes are separator runs; render them untouched.
+        // Empty edge tokens consume no search segment.
+        if (tokenIndex % 2 === 1 || token.length === 0) {
+          rendered.push(token);
+          return;
+        }
+
+        segmentIndex += 1;
+
+        const searchValue = searchSegments[segmentIndex];
+
+        if (!searchValue) {
+          rendered.push(token);
+          return;
+        }
+
+        const lowerToken = token.toLowerCase();
+        let offset = 0;
+        let matchIndex = lowerToken.indexOf(searchValue);
+
+        while (matchIndex !== -1) {
+          if (matchIndex > offset) {
+            rendered.push(token.substring(offset, matchIndex));
+          }
+
+          rendered.push(
+            <span
+              key={`${tokenIndex}-${matchIndex}`}
+              className={styles.pathMatch}
+            >
+              {token.substring(matchIndex, matchIndex + searchValue.length)}
+            </span>
+          );
+
+          offset = matchIndex + searchValue.length;
+          matchIndex = lowerToken.indexOf(searchValue, offset);
+        }
+
+        rendered.push(token.substring(offset));
+      });
+
+      return <span>{rendered}</span>;
     },
     []
   );
@@ -219,7 +324,7 @@ export function PathInputInternal(props: PathInputInternalProps) {
         className={hasFileBrowser ? styles.hasFileBrowser : undefined}
         name={name}
         value={value}
-        suggestions={paths}
+        suggestions={filteredPaths}
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
         onInputKeyDown={handleInputKeyDown}
@@ -228,7 +333,6 @@ export function PathInputInternal(props: PathInputInternalProps) {
         onSuggestionSelected={handleSuggestionSelected}
         onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
         onSuggestionsClearRequested={handleSuggestionsClearRequested}
-        onChange={handleChange}
       />
 
       {hasFileBrowser ? (
