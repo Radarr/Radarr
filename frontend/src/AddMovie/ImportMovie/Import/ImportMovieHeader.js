@@ -71,6 +71,13 @@ function ImportMovieHeader(props) {
       >
         {translate('QualityProfile')}
       </VirtualTableHeaderCell>
+
+      <VirtualTableHeaderCell
+        className={styles.renameFolderOnImport}
+        name="renameFolderOnImport"
+      >
+        {translate('RenameFolder')}
+      </VirtualTableHeaderCell>
     </VirtualTableHeader>
   );
 }

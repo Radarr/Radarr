@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-// import CheckInput from 'Components/Form/CheckInput';
+import CheckInput from 'Components/Form/CheckInput';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import Icon from 'Components/Icon';
 import Button from 'Components/Link/Button';
@@ -26,13 +26,15 @@ class ImportMovieFooter extends Component {
     const {
       defaultMonitor,
       defaultQualityProfileId,
-      defaultMinimumAvailability
+      defaultMinimumAvailability,
+      defaultRenameFolderOnImport
     } = props;
 
     this.state = {
       monitor: defaultMonitor,
       qualityProfileId: defaultQualityProfileId,
-      minimumAvailability: defaultMinimumAvailability
+      minimumAvailability: defaultMinimumAvailability,
+      renameFolderOnImport: defaultRenameFolderOnImport
     };
   }
 
@@ -41,15 +43,18 @@ class ImportMovieFooter extends Component {
       defaultMonitor,
       defaultQualityProfileId,
       defaultMinimumAvailability,
+      defaultRenameFolderOnImport,
       isMonitorMixed,
       isQualityProfileIdMixed,
-      isMinimumAvailabilityMixed
+      isMinimumAvailabilityMixed,
+      isRenameFolderOnImportMixed
     } = this.props;
 
     const {
       monitor,
       qualityProfileId,
-      minimumAvailability
+      minimumAvailability,
+      renameFolderOnImport
     } = this.state;
 
     const newState = {};
@@ -70,6 +75,12 @@ class ImportMovieFooter extends Component {
       newState.minimumAvailability = MIXED;
     } else if (!isMinimumAvailabilityMixed && minimumAvailability !== defaultMinimumAvailability) {
       newState.minimumAvailability = defaultMinimumAvailability;
+    }
+
+    if (isRenameFolderOnImportMixed && renameFolderOnImport !== MIXED) {
+      newState.renameFolderOnImport = MIXED;
+    } else if (!isRenameFolderOnImportMixed && renameFolderOnImport !== defaultRenameFolderOnImport) {
+      newState.renameFolderOnImport = defaultRenameFolderOnImport;
     }
 
     if (!_.isEmpty(newState)) {
@@ -106,7 +117,8 @@ class ImportMovieFooter extends Component {
     const {
       monitor,
       qualityProfileId,
-      minimumAvailability
+      minimumAvailability,
+      renameFolderOnImport
     } = this.state;
 
     return (
@@ -152,6 +164,19 @@ class ImportMovieFooter extends Component {
             value={qualityProfileId}
             isDisabled={!selectedCount}
             includeMixed={isQualityProfileIdMixed}
+            onChange={this.onInputChange}
+          />
+        </div>
+
+        <div className={styles.inputContainer}>
+          <div className={styles.label}>
+            {translate('RenameFolder')}
+          </div>
+
+          <CheckInput
+            name="renameFolderOnImport"
+            value={renameFolderOnImport}
+            isDisabled={!selectedCount}
             onChange={this.onInputChange}
           />
         </div>
@@ -259,9 +284,11 @@ ImportMovieFooter.propTypes = {
   defaultMonitor: PropTypes.string.isRequired,
   defaultQualityProfileId: PropTypes.number,
   defaultMinimumAvailability: PropTypes.string,
+  defaultRenameFolderOnImport: PropTypes.bool.isRequired,
   isMonitorMixed: PropTypes.bool.isRequired,
   isQualityProfileIdMixed: PropTypes.bool.isRequired,
   isMinimumAvailabilityMixed: PropTypes.bool.isRequired,
+  isRenameFolderOnImportMixed: PropTypes.bool.isRequired,
   hasUnsearchedItems: PropTypes.bool.isRequired,
   importError: PropTypes.object,
   onInputChange: PropTypes.func.isRequired,
