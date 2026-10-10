@@ -4,6 +4,7 @@
 }
 
 .icon {
+  display: inline-block;
   margin-right: 5px;
   width: 25px !important;
   text-align: center;

@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
+import RottenTomatoRating from 'Components/RottenTomatoRating';
 import { icons } from 'Helpers/Props';
 import dimensions from 'Styles/Variables/dimensions';
 import translate from 'Utilities/String/translate';
@@ -34,6 +35,11 @@ const rows = [
     name: 'imdbRating',
     showProp: 'showImdbRating',
     valueProp: 'ratings.imdb.value'
+  },
+  {
+    name: 'rottenTomatoesRating',
+    showProp: 'showRottenTomatoesRating',
+    valueProp: 'ratings.rottenTomatoes.value'
   },
   {
     name: 'certification',
@@ -95,6 +101,20 @@ function getInfoRowProps(row, props) {
     };
   }
 
+  if (name === 'rottenTomatoesRating' && !!props.ratings.rottenTomatoes) {
+    return {
+      title: translate('RottenTomatoesRating'),
+      icon: (
+        <RottenTomatoRating
+          ratings={props.ratings}
+          iconSize={14}
+          hideValue={true}
+        />
+      ),
+      label: `${props.ratings.rottenTomatoes.value}%`
+    };
+  }
+
   if (name === 'certification') {
     return {
       title: translate('Certification'),
@@ -147,6 +167,7 @@ DiscoverMovieOverviewInfo.propTypes = {
   showGenres: PropTypes.bool.isRequired,
   showTmdbRating: PropTypes.bool.isRequired,
   showImdbRating: PropTypes.bool.isRequired,
+  showRottenTomatoesRating: PropTypes.bool.isRequired,
   showCertification: PropTypes.bool.isRequired,
   studio: PropTypes.string,
   year: PropTypes.number,

@@ -49,6 +49,7 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
       showGenres: props.showGenres,
       showTmdbRating: props.showTmdbRating,
       showImdbRating: props.showImdbRating,
+      showRottenTomatoesRating: props.showRottenTomatoesRating,
       showCertification: props.showCertification,
       includeRecommendations: props.includeRecommendations,
       includeTrending: props.includeTrending,
@@ -64,6 +65,7 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
       showGenres,
       showTmdbRating,
       showImdbRating,
+      showRottenTomatoesRating,
       showCertification,
       includeRecommendations,
       includeTrending,
@@ -94,6 +96,10 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
 
     if (showImdbRating !== prevProps.showImdbRating) {
       state.showImdbRating = showImdbRating;
+    }
+
+    if (showRottenTomatoesRating !== prevProps.showRottenTomatoesRating) {
+      state.showRottenTomatoesRating = showRottenTomatoesRating;
     }
 
     if (showCertification !== prevProps.showCertification) {
@@ -153,6 +159,7 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
       showGenres,
       showTmdbRating,
       showImdbRating,
+      showRottenTomatoesRating,
       showCertification,
       includeRecommendations,
       includeTrending,
@@ -271,6 +278,17 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
+              <FormLabel>{translate('ShowRottenTomatoesRating')}</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="showRottenTomatoesRating"
+                value={showRottenTomatoesRating}
+                onChange={this.onChangeOverviewOption}
+              />
+            </FormGroup>
+
+            <FormGroup>
               <FormLabel>{translate('ShowCertification')}</FormLabel>
 
               <FormInputGroup
@@ -302,6 +320,7 @@ DiscoverMovieOverviewOptionsModalContent.propTypes = {
   showGenres: PropTypes.bool.isRequired,
   showTmdbRating: PropTypes.bool.isRequired,
   showImdbRating: PropTypes.bool.isRequired,
+  showRottenTomatoesRating: PropTypes.bool.isRequired,
   showCertification: PropTypes.bool.isRequired,
   includeRecommendations: PropTypes.bool.isRequired,
   includeTrending: PropTypes.bool.isRequired,

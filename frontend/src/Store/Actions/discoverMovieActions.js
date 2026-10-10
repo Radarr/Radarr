@@ -72,6 +72,7 @@ export const defaultState = {
     showGenres: true,
     showTmdbRating: false,
     showImdbRating: false,
+    showRottenTomatoesRating: false,
     showCertification: true
   },
 
