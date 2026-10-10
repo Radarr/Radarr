@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
+using FluentMigrator;
+using FluentMigrator.Postgres;
 using NUnit.Framework;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration;
@@ -36,14 +38,14 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 CutoffFormatScore = 0
             };
 
-            m.Insert.IntoTable("Profiles").Row(profile);
+            m.IfDatabase(ProcessorIdConstants.PostgreSQL).Insert.IntoTable("Profiles").WithOverridingSystemValue().Row(profile);
+            m.IfDatabase(ProcessorIdConstants.SQLite).Insert.IntoTable("Profiles").Row(profile);
         }
 
         private void AddMovie(fix_invalid_profile_references m, string movieTitle, int tmdbId, int profileId)
         {
             var movie = new
             {
-                Id = tmdbId,
                 Monitored = true,
                 Title = movieTitle,
                 CleanTitle = movieTitle,
@@ -64,11 +66,10 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             m.Insert.IntoTable("Movies").Row(movie);
         }
 
-        private void AddCustomFormat(fix_invalid_profile_references c, int id, string name)
+        private void AddCustomFormat(fix_invalid_profile_references c, string name)
         {
             var customFormat = new
             {
-                Id = id,
                 Name = name,
                 Specifications = "[]"
             };
@@ -117,21 +118,21 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         public void should_add_custom_formats_to_default_profiles_if_some_exist()
         {
             var profileId = 18;
-            var formatId = 3;
 
             var db = WithMigrationTestDb(c =>
             {
-                AddCustomFormat(c, formatId, "SomeFormat");
+                AddCustomFormat(c, "SomeFormat");
                 AddMovie(c, "movie", 123456, profileId);
             });
 
             var items = db.Query<Movie179>("SELECT \"Id\", \"ProfileId\" FROM \"Movies\"");
             var profiles = db.Query<Profile179>("SELECT \"Id\", \"FormatItems\" FROM \"Profiles\"");
+            var formats = db.Query<CustomFormat179>("SELECT \"Id\" FROM \"CustomFormats\"");
 
             items.Should().HaveCount(1);
             profiles.Should().HaveCount(6);
             profiles.First().FormatItems.Should().HaveCount(1);
-            profiles.First().FormatItems.First().Format.Should().Be(formatId);
+            profiles.First().FormatItems.First().Format.Should().BeOneOf(formats.Select(c => c.Id));
             items.First().ProfileId.Should().BeOneOf(profiles.Select(p => p.Id));
         }
 
@@ -214,5 +215,10 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         public int Id { get; set; }
         public int Format { get; set; }
         public int Score { get; set; }
+    }
+
+    public class CustomFormat179
+    {
+        public int Id { get; set; }
     }
 }

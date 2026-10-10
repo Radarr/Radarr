@@ -3,7 +3,6 @@ using System.IO;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using NzbDrone.Core.Parser.RomanNumerals;
-using Assert = NUnit.Framework.Legacy.ClassicAssert;
 
 namespace NzbDrone.Core.Test.ParserTests.RomanNumeralTests
 {

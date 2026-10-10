@@ -74,7 +74,6 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 {
                     c.Insert.IntoTable("CustomFormats").Row(new
                     {
-                        Id = 1,
                         Name = "Test",
                         FormatTags = new List<string> { @"C_(hello)" }.ToJson()
                     });
@@ -93,7 +92,6 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 {
                     c.Insert.IntoTable("CustomFormats").Row(new
                     {
-                        Id = 1,
                         Name = "Test",
                         FormatTags = new List<string> { @"C_(hello)", "E_Director" }.ToJson()
                     });

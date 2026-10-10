@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using FluentAssertions;
+using FluentMigrator;
+using FluentMigrator.Postgres;
 using NUnit.Framework;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration;
@@ -55,7 +57,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         {
             var db = WithMigrationTestDb(c =>
             {
-                c.Insert.IntoTable("Movies").Row(new
+                var movie = new
                 {
                     Id = 5,
                     Monitored = true,
@@ -75,7 +77,10 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     Added = DateTime.UtcNow,
                     Collection = new { Name = "Some Collection", TmdbId = 11 }.ToJson(),
                     LastInfoSync = DateTime.UtcNow,
-                });
+                };
+
+                c.IfDatabase(ProcessorIdConstants.PostgreSQL).Insert.IntoTable("Movies").WithOverridingSystemValue().Row(movie);
+                c.IfDatabase(ProcessorIdConstants.SQLite).Insert.IntoTable("Movies").Row(movie);
 
                 c.Insert.IntoTable("Credits").Row(new
                 {
@@ -106,7 +111,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         {
             var db = WithMigrationTestDb(c =>
             {
-                c.Insert.IntoTable("Movies").Row(new
+                var movie = new
                 {
                     Id = 5,
                     Monitored = true,
@@ -126,7 +131,10 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     Added = DateTime.UtcNow,
                     Collection = new { Name = "Some Collection", TmdbId = 11 }.ToJson(),
                     LastInfoSync = DateTime.UtcNow,
-                });
+                };
+
+                c.IfDatabase(ProcessorIdConstants.PostgreSQL).Insert.IntoTable("Movies").WithOverridingSystemValue().Row(movie);
+                c.IfDatabase(ProcessorIdConstants.SQLite).Insert.IntoTable("Movies").Row(movie);
 
                 c.Insert.IntoTable("AlternativeTitles").Row(new
                 {
@@ -158,7 +166,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         {
             var db = WithMigrationTestDb(c =>
             {
-                c.Insert.IntoTable("Movies").Row(new
+                var movie = new
                 {
                     Id = 5,
                     Monitored = true,
@@ -178,7 +186,10 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     Added = DateTime.UtcNow,
                     Collection = new { Name = "Some Collection", TmdbId = 11 }.ToJson(),
                     LastInfoSync = DateTime.UtcNow,
-                });
+                };
+
+                c.IfDatabase(ProcessorIdConstants.PostgreSQL).Insert.IntoTable("Movies").WithOverridingSystemValue().Row(movie);
+                c.IfDatabase(ProcessorIdConstants.SQLite).Insert.IntoTable("Movies").Row(movie);
 
                 c.Insert.IntoTable("MovieTranslations").Row(new
                 {
