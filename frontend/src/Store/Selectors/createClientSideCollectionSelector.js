@@ -43,7 +43,7 @@ function filter(items, state) {
       if (filterPredicates && filterPredicates.hasOwnProperty(key)) {
         const predicate = filterPredicates[key];
 
-        if (Array.isArray(value)) {
+        if (Array.isArray(value) && value.length > 0) {
           if (
             type === filterTypes.NOT_CONTAINS ||
             type === filterTypes.NOT_EQUAL
