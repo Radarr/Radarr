@@ -24,6 +24,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.2018.2160p.WEBRip.x265.10bit.HDR.DD5.1-GASMASK")]
         [TestCase("Movie.Title.2010.720p.BluRay.x264.-[YTS.LT]")]
         [TestCase("Movie.Title.2010.SUBFRENCH.1080p.WEB.x264-GROUP")]
+        [TestCase("Movie.Title.2010.VOSTFR.1080p.WEB.x264-GROUP")]
         [TestCase("Movie.Title.2010.En.1080p.WEB.x264-GROUP")]
         public void should_parse_language_unknown(string postTitle)
         {
@@ -55,6 +56,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Title  : Other Title 2010 x264.720p.Blu-ray Rip HD.VOSTFR.VFF. ONLY")]
         [TestCase("Movie Title  2019 HEVC.2160p.Blu-ray 4K.VOSTFR.VFF. JATO")]
         [TestCase("Movie.Title.1956.MULTi.VF.Bluray.1080p.REMUX.AC3.x264")]
+        [TestCase("Movie.Title.2010.VFQ.1080p.WEB.x264-GROUP")]
         [TestCase("Movie.Title.2016.ENG-ITA-FRA.AAC.1080p.WebDL.x264")]
         [TestCase("Movie Title 2016 (BDrip 1080p ENG-ITA-FRA) Multisub x264")]
         [TestCase("Movie.Title.2016.ENG-ITA-FRE.AAC.1080p.WebDL.x264")]
@@ -570,12 +572,26 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("Movie.Title.2025.Original.1080P.WEB.H264-RlsGrp")]
         [TestCase("Movie.Title.2025.Orig.1080P.WEB.H264-RlsGrp")]
+        [TestCase("Violet Evergarden The Movie (2020).WEBDL-1080p.x264.VO-SONJE03.mkv")]
+        [TestCase("Movie.Title.2025.vo.1080p.WEB.H264-RlsGrp")]
         [TestCase("Movie Title 2025 [HEVC, HDR10, Dolby Vision, WEB-DL 2160p] [Hybrid] 3 XX + Original")]
         public void should_parse_original_title_from_release_name(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle);
+
+            result.Should().NotBeNull();
             result.Languages.Count.Should().Be(1);
             result.Languages.Should().Contain(Language.Original);
+        }
+
+        [TestCase("Movie.Title.2025.VFF.VO.1080p.WEB.H264-RlsGrp")]
+        [TestCase("Movie.Title.2025.VO.VFQ.1080p.WEB.H264-RlsGrp")]
+        public void should_parse_french_and_original_languages(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle);
+
+            result.Should().NotBeNull();
+            result.Languages.Should().BeEquivalentTo(new[] { Language.French, Language.Original });
         }
 
         [TestCase("The.Movie.Name.2023.German.ML.EAC3.720p.NF.WEB.H264-RlsGrp")]
