@@ -41,6 +41,28 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
                 });
         }
 
+        private void GivenTrackedDownload(int downloadClientId, string downloadId)
+        {
+            var client = new DownloadClientDefinition
+            {
+                Id = downloadClientId,
+                Protocol = DownloadProtocol.Torrent
+            };
+
+            var item = new DownloadClientItem
+            {
+                Title = "Unparsable",
+                DownloadId = downloadId,
+                DownloadClientInfo = new DownloadClientItemClientInfo
+                {
+                    Protocol = client.Protocol,
+                    Id = client.Id
+                }
+            };
+
+            Subject.TrackDownload(client, item);
+        }
+
         [Test]
         public void should_track_downloads_using_the_source_title_if_it_cannot_be_found_using_the_download_title()
         {
@@ -390,6 +412,20 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
             trackedDownload.RemoteMovie.Movie.Should().NotBeNull();
             trackedDownload.RemoteMovie.Movie.Id.Should().Be(5);
             trackedDownload.RemoteMovie.ParsedMovieInfo.Year.Should().Be(1998);
+        }
+
+        [Test]
+        public void should_stop_tracking_downloads_missing_from_their_download_client()
+        {
+            GivenTrackedDownload(1, "present");
+            GivenTrackedDownload(1, "missing");
+            GivenTrackedDownload(2, "other");
+
+            Subject.StopTrackingMissing(1, new List<string> { "present" });
+
+            Subject.Find("present").Should().NotBeNull();
+            Subject.Find("missing").Should().BeNull();
+            Subject.Find("other").Should().NotBeNull();
         }
     }
 }
