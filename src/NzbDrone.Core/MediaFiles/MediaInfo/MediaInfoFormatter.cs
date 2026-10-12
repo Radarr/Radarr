@@ -45,111 +45,11 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             // see definitions here https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/codec_desc.c
-            if (audioCodecID == "thd+")
+            var codec = AudioCodecHelper.Resolve(audioFormat, audioCodecID, audioProfile);
+
+            if (codec != AudioCodec.Unknown)
             {
-                return "TrueHD Atmos";
-            }
-
-            if (audioFormat == "truehd")
-            {
-                return "TrueHD";
-            }
-
-            if (audioFormat == "flac")
-            {
-                return "FLAC";
-            }
-
-            if (audioFormat == "dts")
-            {
-                if (audioProfile == "DTS:X")
-                {
-                    return "DTS-X";
-                }
-
-                if (audioProfile == "DTS-HD MA")
-                {
-                    return "DTS-HD MA";
-                }
-
-                if (audioProfile == "DTS-ES")
-                {
-                    return "DTS-ES";
-                }
-
-                if (audioProfile == "DTS-HD HRA")
-                {
-                    return "DTS-HD HRA";
-                }
-
-                if (audioProfile == "DTS Express")
-                {
-                    return "DTS Express";
-                }
-
-                if (audioProfile == "DTS 96/24")
-                {
-                    return "DTS 96/24";
-                }
-
-                return "DTS";
-            }
-
-            if (audioCodecID == "ec+3")
-            {
-                return "EAC3 Atmos";
-            }
-
-            if (audioFormat == "eac3")
-            {
-                return "EAC3";
-            }
-
-            if (audioFormat == "ac3")
-            {
-                return "AC3";
-            }
-
-            if (audioFormat == "aac")
-            {
-                if (audioCodecID == "A_AAC/MPEG4/LC/SBR")
-                {
-                    return "HE-AAC";
-                }
-
-                return "AAC";
-            }
-
-            if (audioFormat == "mp3")
-            {
-                return "MP3";
-            }
-
-            if (audioFormat == "mp2")
-            {
-                return "MP2";
-            }
-
-            if (audioFormat == "opus")
-            {
-                return "Opus";
-            }
-
-            if (audioFormat.StartsWith("pcm_") || audioFormat.StartsWith("adpcm_"))
-            {
-                return "PCM";
-            }
-
-            if (audioFormat == "vorbis")
-            {
-                return "Vorbis";
-            }
-
-            if (audioFormat == "wmav1" ||
-                audioFormat == "wmav2" ||
-                audioFormat == "wmapro")
-            {
-                return "WMA";
+                return AudioCodecHelper.GetDisplayName(codec);
             }
 
             Logger.ForDebugEvent()
