@@ -6,6 +6,7 @@
 }
 
 .label {
+  position: relative;
   display: flex;
   margin-bottom: 0;
   min-height: 21px;
