@@ -128,6 +128,7 @@ namespace NzbDrone.Core.Languages
         public static Language Romansh => new Language(55, "Romansh");
         public static Language Mongolian => new Language(56, "Mongolian");
         public static Language Georgian => new Language(57, "Georgian");
+        public static Language Irish => new Language(58, "Irish");
         public static Language Any => new Language(-1, "Any");
         public static Language Original => new Language(-2, "Original");
 
@@ -195,6 +196,7 @@ namespace NzbDrone.Core.Languages
                     Romansh,
                     Mongolian,
                     Georgian,
+                    Irish,
                     Any,
                     Original
                 };
