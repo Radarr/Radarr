@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<romanian>rodubbed)|
                                                                             (?<brazilian>\b(dublado|pt-BR)\b)|
                                                                             (?<greek>greek)|
-                                                                            (?<french>\b(?:FR|VO|VF|VFF|VFQ|VFI|VF2|TRUEFRENCH|FRENCH|FRE|FRA)\b)|
+                                                                            (?<french>\b(?:FR|VF|VFF|VFQ|VFI|VF2|TRUEFRENCH|FRENCH|FRE|FRA)\b)|
                                                                             (?<russian>\b(?:rus|ru)\b)|
                                                                             (?<hungarian>\b(?:HUNDUB|HUN)\b)|
                                                                             (?<hebrew>\b(?:HebDub|HebDubbed)\b)|
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<romansh>\b(?:romansh|rumantsch|romansch)\b)|
                                                                             (?<mongolian>\b(?:mongolian|khalkha)\b)|
                                                                             (?<georgian>\b(?:georgian|geo|ka|kat)\b)|
-                                                                            (?<original>\b(?:orig|original)\b)",
+                                                                            (?<original>\b(?:orig|original|VO)\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?:(?i)(?<!SUB[\W|_|^]))(?:(?<english>\bEN\b)|
