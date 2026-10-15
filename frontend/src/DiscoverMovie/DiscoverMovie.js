@@ -259,8 +259,6 @@ class DiscoverMovie extends Component {
       onSortSelect,
       onFilterSelect,
       onViewSelect,
-      initialScrollTop,
-      onScroll,
       onAddMoviesPress,
       isSyncingLists,
       ...otherProps
@@ -370,7 +368,7 @@ class DiscoverMovie extends Component {
             ref={this.scrollerRef}
             className={styles.contentBody}
             innerClassName={styles[`${view}InnerContentBody`]}
-            onScroll={onScroll}
+            scrollPositionKey="discoverMovie"
           >
             {
               isFetching && !isPopulated &&
@@ -399,7 +397,6 @@ class DiscoverMovie extends Component {
                     onSelectedChange={this.onSelectedChange}
                     onSelectAllChange={this.onSelectAllChange}
                     selectedState={selectedState}
-                    scrollTop={initialScrollTop}
                     {...otherProps}
                   />
                 </div>
@@ -444,7 +441,6 @@ class DiscoverMovie extends Component {
 }
 
 DiscoverMovie.propTypes = {
-  initialScrollTop: PropTypes.number,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
@@ -465,7 +461,6 @@ DiscoverMovie.propTypes = {
   onSortSelect: PropTypes.func.isRequired,
   onFilterSelect: PropTypes.func.isRequired,
   onViewSelect: PropTypes.func.isRequired,
-  onScroll: PropTypes.func.isRequired,
   onAddMoviesPress: PropTypes.func.isRequired,
   onExcludeMoviesPress: PropTypes.func.isRequired,
   onImportListSyncPress: PropTypes.func.isRequired,

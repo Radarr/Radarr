@@ -21,7 +21,6 @@ import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
-import withScrollPosition from 'Components/withScrollPosition';
 import { align, icons, kinds } from 'Helpers/Props';
 import { DESCENDING } from 'Helpers/Props/sortDirections';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
@@ -35,7 +34,6 @@ import {
   setMovieView,
 } from 'Store/Actions/movieIndexActions';
 import { fetchQueueDetails } from 'Store/Actions/queueActions';
-import scrollPositions from 'Store/scrollPositions';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createMovieClientSideCollectionItemsSelector from 'Store/Selectors/createMovieClientSideCollectionItemsSelector';
@@ -72,11 +70,7 @@ function getViewComponent(view: string) {
   return MovieIndexTable;
 }
 
-interface MovieIndexProps {
-  initialScrollTop?: number;
-}
-
-const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
+function MovieIndex() {
   const history = useHistory();
 
   const {
@@ -186,13 +180,9 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
     [setJumpToCharacter]
   );
 
-  const onScroll = useCallback(
-    ({ scrollTop }: { scrollTop: number }) => {
-      setJumpToCharacter(undefined);
-      scrollPositions.movieIndex = scrollTop;
-    },
-    [setJumpToCharacter]
-  );
+  const onScroll = useCallback(() => {
+    setJumpToCharacter(undefined);
+  }, [setJumpToCharacter]);
 
   const jumpBarItems: PageJumpBarItems = useMemo(() => {
     // Reset if not sorting by sortTitle
@@ -345,7 +335,7 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             innerClassName={styles[`${view}InnerContentBody`]}
-            initialScrollTop={props.initialScrollTop}
+            scrollPositionKey="movieIndex"
             onScroll={onScroll}
           >
             {isFetching && !isPopulated ? <LoadingIndicator /> : null}
@@ -407,6 +397,6 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
       </PageContent>
     </SelectProvider>
   );
-}, 'movieIndex');
+}
 
 export default MovieIndex;
