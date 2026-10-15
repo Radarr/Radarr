@@ -54,23 +54,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AlternativeTitleResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AlternativeTitleResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -103,22 +87,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AlternativeTitleResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AlternativeTitleResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AlternativeTitleResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -188,8 +165,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "302": {
+            "description": "Found"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -210,8 +197,8 @@
           "Authentication"
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "302": {
+            "description": "Found"
           }
         }
       }
@@ -231,25 +218,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AutoTaggingResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AutoTaggingResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AutoTaggingResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -299,25 +279,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AutoTaggingResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AutoTaggingResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AutoTaggingResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -361,22 +334,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AutoTaggingResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AutoTaggingResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AutoTaggingResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -388,7 +354,17 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AutoTaggingSpecificationSchema"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -402,23 +378,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BackupResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BackupResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -449,7 +409,15 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -472,7 +440,17 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupRestoreResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -484,7 +462,24 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupRestoreResource"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupRestoreErrorResource"
+                }
+              }
+            }
           }
         }
       }
@@ -582,23 +577,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BlocklistResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BlocklistResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -645,22 +624,17 @@
               "schema": {
                 "$ref": "#/components/schemas/BlocklistBulkResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BlocklistBulkResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/BlocklistBulkResource"
-              }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       }
@@ -773,8 +747,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -825,7 +799,17 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CollectionResource"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -855,25 +839,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -896,22 +873,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -931,8 +901,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -940,6 +910,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -951,23 +924,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CommandResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CommandResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -1021,22 +978,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CommandResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CommandResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CommandResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -1066,7 +1016,17 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CreditResource"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1091,22 +1051,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreditResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreditResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CreditResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -1120,23 +1073,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CustomFilterResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CustomFilterResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -1162,25 +1099,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFilterResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFilterResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CustomFilterResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -1210,25 +1140,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFilterResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFilterResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CustomFilterResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -1272,22 +1195,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFilterResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFilterResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CustomFilterResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -1327,25 +1243,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFormatResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFormatResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CustomFormatResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -1375,25 +1284,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFormatResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFormatResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CustomFormatResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -1437,22 +1339,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFormatResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomFormatResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CustomFormatResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -1477,10 +1372,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomFormatResource"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomFormatResource"
+                  }
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       },
@@ -1499,7 +1400,12 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       }
@@ -1511,7 +1417,17 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomFormatSpecificationSchema"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1592,25 +1508,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DelayProfileResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DelayProfileResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DelayProfileResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -1622,23 +1531,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DelayProfileResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DelayProfileResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -1697,25 +1590,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DelayProfileResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DelayProfileResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DelayProfileResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -1738,22 +1624,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DelayProfileResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DelayProfileResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DelayProfileResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -1786,23 +1665,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DelayProfileResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DelayProfileResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -1824,23 +1687,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DiskSpaceResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DiskSpaceResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -1898,8 +1745,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -1907,6 +1754,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -1945,8 +1795,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
@@ -1954,6 +1804,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -1974,7 +1827,12 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       },
@@ -1997,22 +1855,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DownloadClientResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -2037,10 +1888,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DownloadClientResource"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DownloadClientResource"
+                  }
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       },
@@ -2059,7 +1916,12 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       }
@@ -2111,8 +1973,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -2124,7 +1986,30 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2154,8 +2039,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -2204,25 +2089,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DownloadClientConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -2245,22 +2123,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DownloadClientConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -2284,23 +2155,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ExtraFileResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ExtraFileResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -2345,7 +2200,14 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileSystemResult"
+                }
+              }
+            }
           }
         }
       }
@@ -2366,7 +2228,14 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileSystemTypeResource"
+                }
+              }
+            }
           }
         }
       }
@@ -2387,7 +2256,17 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FileSystemMediaFileResource"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2401,23 +2280,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/HealthResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/HealthResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -2653,7 +2516,12 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       }
@@ -2667,17 +2535,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/HostConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HostConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HostConfigResource"
                 }
@@ -2708,39 +2566,22 @@
               "schema": {
                 "$ref": "#/components/schemas/HostConfigResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/HostConfigResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/HostConfigResource"
-              }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/HostConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HostConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HostConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -2763,22 +2604,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/HostConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HostConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HostConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -2828,8 +2662,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -2837,6 +2671,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -2875,8 +2712,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
@@ -2884,6 +2721,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -2904,7 +2744,12 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       },
@@ -2927,22 +2772,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -2967,10 +2805,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ImportListResource"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportListResource"
+                  }
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       },
@@ -2989,7 +2833,12 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       }
@@ -3041,8 +2890,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -3054,7 +2903,30 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -3084,8 +2956,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -3134,25 +3006,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -3175,22 +3040,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -3231,25 +3089,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListExclusionResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListExclusionResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListExclusionResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -3332,25 +3183,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListExclusionResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListExclusionResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListExclusionResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -3394,22 +3238,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListExclusionResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListExclusionResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListExclusionResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -3428,28 +3265,22 @@
                   "$ref": "#/components/schemas/ImportListExclusionResource"
                 }
               }
-            },
-            "text/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ImportListExclusionResource"
-                }
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ImportListExclusionResource"
-                }
-              }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportListExclusionResource"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -3463,22 +3294,17 @@
               "schema": {
                 "$ref": "#/components/schemas/ImportListExclusionBulkResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportListExclusionBulkResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportListExclusionBulkResource"
-              }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       }
@@ -3516,7 +3342,17 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportListMoviesResource"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -3533,28 +3369,22 @@
                   "$ref": "#/components/schemas/MovieResource"
                 }
               }
-            },
-            "text/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/MovieResource"
-                }
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/MovieResource"
-                }
-              }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieResource"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -3604,8 +3434,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -3613,6 +3443,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -3651,8 +3484,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
@@ -3660,6 +3493,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -3680,7 +3516,12 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       },
@@ -3703,22 +3544,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IndexerResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -3743,10 +3577,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IndexerResource"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IndexerResource"
+                  }
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       },
@@ -3765,7 +3605,12 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       }
@@ -3817,8 +3662,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -3830,7 +3675,30 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -3860,8 +3728,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -3910,25 +3778,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IndexerConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -3951,22 +3812,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IndexerConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -3980,23 +3834,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IndexerFlagResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IndexerFlagResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -4018,23 +3856,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LanguageResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LanguageResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -4067,22 +3889,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/LanguageResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LanguageResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LanguageResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -4094,24 +3909,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -4204,23 +4002,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LogFileResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LogFileResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -4250,8 +4032,18 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Not Found"
+          },
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -4327,7 +4119,20 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ManualImportReprocessResource"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -4358,8 +4163,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -4408,25 +4213,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MediaManagementConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MediaManagementConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MediaManagementConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -4449,22 +4247,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MediaManagementConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MediaManagementConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MediaManagementConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -4514,8 +4305,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -4523,6 +4314,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -4561,8 +4355,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
@@ -4570,6 +4364,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -4590,7 +4387,12 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       },
@@ -4613,22 +4415,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MetadataResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -4680,8 +4475,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -4693,7 +4488,30 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -4723,8 +4541,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -4773,25 +4591,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MetadataConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -4814,22 +4625,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MetadataConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -4930,23 +4734,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MovieResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MovieResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -4972,8 +4760,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -4981,6 +4769,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -5018,8 +4809,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
@@ -5027,6 +4818,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -5086,22 +4880,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MovieResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -5117,22 +4904,25 @@
               "schema": {
                 "$ref": "#/components/schemas/MovieEditorResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MovieEditorResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/MovieEditorResource"
-              }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieResource"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       },
@@ -5146,22 +4936,17 @@
               "schema": {
                 "$ref": "#/components/schemas/MovieEditorResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MovieEditorResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/MovieEditorResource"
-              }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       }
@@ -5208,6 +4993,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -5237,25 +5025,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieFileResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieFileResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MovieFileResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -5277,6 +5058,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -5299,22 +5083,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieFileResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MovieFileResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MovieFileResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -5335,7 +5112,17 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieFileResource"
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": true
@@ -5357,7 +5144,15 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       },
@@ -5379,7 +5174,17 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieFileResource"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -5402,7 +5207,14 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieFolderResource"
+                }
+              }
+            }
           }
         }
       }
@@ -5538,17 +5350,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/NamingConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NamingConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NamingConfigResource"
                 }
@@ -5579,39 +5381,22 @@
               "schema": {
                 "$ref": "#/components/schemas/NamingConfigResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NamingConfigResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/NamingConfigResource"
-              }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/NamingConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NamingConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NamingConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -5634,22 +5419,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/NamingConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NamingConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NamingConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -5713,7 +5491,14 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NamingExampleResource"
+                }
+              }
+            }
           }
         }
       }
@@ -5763,8 +5548,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -5772,6 +5557,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -5810,8 +5598,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
               "application/json": {
                 "schema": {
@@ -5819,6 +5607,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -5839,7 +5630,12 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       },
@@ -5862,22 +5658,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotificationResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotificationResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NotificationResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -5929,8 +5718,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -5942,7 +5731,30 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderTestAllResult"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -5972,8 +5784,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -5996,17 +5808,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ParseResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ParseResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ParseResource"
                 }
@@ -6031,6 +5833,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PingResource"
+                }
+              }
+            }
           }
         }
       },
@@ -6041,6 +5853,16 @@
         "responses": {
           "200": {
             "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PingResource"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -6073,39 +5895,22 @@
               "schema": {
                 "$ref": "#/components/schemas/QualityDefinitionResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/QualityDefinitionResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/QualityDefinitionResource"
-              }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityDefinitionResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityDefinitionResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QualityDefinitionResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -6128,22 +5933,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityDefinitionResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityDefinitionResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QualityDefinitionResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -6157,23 +5955,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/QualityDefinitionResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/QualityDefinitionResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -6200,28 +5982,22 @@
                   "$ref": "#/components/schemas/QualityDefinitionResource"
                 }
               }
-            },
-            "text/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/QualityDefinitionResource"
-                }
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/QualityDefinitionResource"
-                }
-              }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualityDefinitionResource"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -6235,17 +6011,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityDefinitionLimitsResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityDefinitionLimitsResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QualityDefinitionLimitsResource"
                 }
@@ -6270,25 +6036,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityProfileResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityProfileResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QualityProfileResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -6300,23 +6059,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/QualityProfileResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/QualityProfileResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -6375,25 +6118,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityProfileResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityProfileResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QualityProfileResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -6416,22 +6152,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityProfileResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityProfileResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QualityProfileResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -6445,17 +6174,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityProfileResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QualityProfileResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QualityProfileResource"
                 }
@@ -6516,6 +6235,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -6565,22 +6287,17 @@
               "schema": {
                 "$ref": "#/components/schemas/QueueBulkResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/QueueBulkResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/QueueBulkResource"
-              }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
           }
         }
       }
@@ -6722,7 +6439,15 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -6743,7 +6468,15 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -6775,23 +6508,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/QueueResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/QueueResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -6813,17 +6530,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueueStatusResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueueStatusResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QueueStatusResource"
                 }
@@ -6849,7 +6556,17 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -6880,6 +6597,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -6895,39 +6615,22 @@
               "schema": {
                 "$ref": "#/components/schemas/ReleaseProfileResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReleaseProfileResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReleaseProfileResource"
-              }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseProfileResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseProfileResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ReleaseProfileResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -6939,23 +6642,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ReleaseProfileResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ReleaseProfileResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -7010,39 +6697,22 @@
               "schema": {
                 "$ref": "#/components/schemas/ReleaseProfileResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReleaseProfileResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReleaseProfileResource"
-              }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseProfileResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseProfileResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ReleaseProfileResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -7065,22 +6735,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseProfileResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReleaseProfileResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ReleaseProfileResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -7103,23 +6766,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ReleaseResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ReleaseResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -7128,6 +6775,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -7147,25 +6797,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RemotePathMappingResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RemotePathMappingResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RemotePathMappingResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -7177,23 +6820,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RemotePathMappingResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RemotePathMappingResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -7248,16 +6875,6 @@
               "schema": {
                 "$ref": "#/components/schemas/RemotePathMappingResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RemotePathMappingResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RemotePathMappingResource"
-              }
             }
           }
         },
@@ -7265,22 +6882,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RemotePathMappingResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RemotePathMappingResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RemotePathMappingResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -7303,22 +6913,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RemotePathMappingResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RemotePathMappingResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RemotePathMappingResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -7345,23 +6948,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RenameMovieResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RenameMovieResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -7370,6 +6957,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -7389,25 +6979,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RootFolderResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RootFolderResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RootFolderResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -7419,23 +7002,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RootFolderResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RootFolderResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -7489,22 +7056,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RootFolderResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RootFolderResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RootFolderResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -7586,17 +7146,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/SystemResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SystemResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SystemResource"
                 }
@@ -7613,7 +7163,14 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -7625,7 +7182,20 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -7637,7 +7207,14 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemShutdownResource"
+                }
+              }
+            }
           }
         }
       }
@@ -7649,7 +7226,14 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemRestartResource"
+                }
+              }
+            }
           }
         }
       }
@@ -7663,23 +7247,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TagResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TagResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -7705,25 +7273,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TagResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -7753,25 +7314,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TagResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -7815,22 +7369,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TagResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -7844,23 +7391,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TagDetailsResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TagDetailsResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -7893,22 +7424,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagDetailsResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagDetailsResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TagDetailsResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -7922,23 +7446,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TaskResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TaskResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -7971,22 +7479,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TaskResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TaskResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TaskResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -8016,25 +7517,18 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Accepted",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UiConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UiConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UiConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -8057,22 +7551,15 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UiConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UiConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UiConfigResource"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -8105,23 +7592,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UpdateResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UpdateResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -8143,23 +7614,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LogFileResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LogFileResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -8189,8 +7644,18 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Not Found"
+          },
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -8223,6 +7688,31 @@
           },
           "addMethod": {
             "$ref": "#/components/schemas/AddMovieMethod"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlternativeTitle": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sourceType": {
+            "$ref": "#/components/schemas/SourceType"
+          },
+          "movieMetadataId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "cleanTitle": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8386,6 +7876,25 @@
           "time": {
             "type": "string",
             "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BackupRestoreErrorResource": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BackupRestoreResource": {
+        "type": "object",
+        "properties": {
+          "restartRequired": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -9361,9 +8870,7 @@
             "type": "string",
             "nullable": true
           },
-          "value": {
-            "nullable": true
-          },
+          "value": { },
           "type": {
             "type": "string",
             "nullable": true
@@ -9410,6 +8917,96 @@
           "release"
         ],
         "type": "string"
+      },
+      "FileSystemEntityType": {
+        "enum": [
+          "parent",
+          "drive",
+          "folder",
+          "file"
+        ],
+        "type": "string"
+      },
+      "FileSystemMediaFileResource": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "nullable": true
+          },
+          "relativePath": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileSystemModel": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/FileSystemEntityType"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "path": {
+            "type": "string",
+            "nullable": true
+          },
+          "extension": {
+            "type": "string",
+            "nullable": true
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileSystemResult": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "type": "string",
+            "nullable": true
+          },
+          "directories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileSystemModel"
+            },
+            "nullable": true
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileSystemModel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileSystemTypeResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/FileSystemEntityType"
+          }
+        },
+        "additionalProperties": false
       },
       "HealthCheckResult": {
         "enum": [
@@ -9572,6 +9169,10 @@
           "authenticationRequired": {
             "$ref": "#/components/schemas/AuthenticationRequiredType"
           },
+          "allowedHosts": {
+            "type": "string",
+            "nullable": true
+          },
           "analyticsEnabled": {
             "type": "boolean"
           },
@@ -9616,6 +9217,10 @@
             "nullable": true
           },
           "urlBase": {
+            "type": "string",
+            "nullable": true
+          },
+          "trustedNetworks": {
             "type": "string",
             "nullable": true
           },
@@ -9855,6 +9460,137 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ImportListExclusionResource"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImportListMoviesResource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "originalLanguage": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "status": {
+            "$ref": "#/components/schemas/MovieStatusType"
+          },
+          "overview": {
+            "type": "string",
+            "nullable": true
+          },
+          "inCinemas": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "physicalRelease": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "digitalRelease": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaCover"
+            },
+            "nullable": true
+          },
+          "website": {
+            "type": "string",
+            "nullable": true
+          },
+          "remotePoster": {
+            "type": "string",
+            "nullable": true
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "youTubeTrailerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "studio": {
+            "type": "string",
+            "nullable": true
+          },
+          "runtime": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "imdbId": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmdbId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "folder": {
+            "type": "string",
+            "nullable": true
+          },
+          "certification": {
+            "type": "string",
+            "nullable": true
+          },
+          "popularity": {
+            "type": "number",
+            "format": "float"
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "ratings": {
+            "$ref": "#/components/schemas/Ratings"
+          },
+          "collection": {
+            "$ref": "#/components/schemas/MovieCollection"
+          },
+          "isExcluded": {
+            "type": "boolean"
+          },
+          "isExisting": {
+            "type": "boolean"
+          },
+          "isTrending": {
+            "type": "boolean"
+          },
+          "isPopular": {
+            "type": "boolean"
+          },
+          "isRecommendation": {
+            "type": "boolean"
+          },
+          "lists": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
             },
             "nullable": true
           }
@@ -10711,6 +10447,85 @@
         ],
         "type": "string"
       },
+      "MovieCollection": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "cleanTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmdbId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "overview": {
+            "type": "string",
+            "nullable": true
+          },
+          "monitored": {
+            "type": "boolean"
+          },
+          "qualityProfileId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rootFolderPath": {
+            "type": "string",
+            "nullable": true
+          },
+          "searchOnAdd": {
+            "type": "boolean"
+          },
+          "minimumAvailability": {
+            "$ref": "#/components/schemas/MovieStatusType"
+          },
+          "lastInfoSync": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaCover"
+            },
+            "nullable": true
+          },
+          "added": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "movies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MovieMetadata"
+            },
+            "nullable": true
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MovieCollectionResource": {
         "type": "object",
         "properties": {
@@ -10895,6 +10710,16 @@
         },
         "additionalProperties": false
       },
+      "MovieFolderResource": {
+        "type": "object",
+        "properties": {
+          "folder": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MovieHistoryEventType": {
         "enum": [
           "unknown",
@@ -10907,6 +10732,165 @@
           "downloadIgnored"
         ],
         "type": "string"
+      },
+      "MovieMetadata": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tmdbId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaCover"
+            },
+            "nullable": true
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "inCinemas": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "physicalRelease": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "digitalRelease": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "certification": {
+            "type": "string",
+            "nullable": true
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ratings": {
+            "$ref": "#/components/schemas/Ratings"
+          },
+          "collectionTmdbId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "collectionTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastInfoSync": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "runtime": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "website": {
+            "type": "string",
+            "nullable": true
+          },
+          "imdbId": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "cleanTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/MovieStatusType"
+          },
+          "overview": {
+            "type": "string",
+            "nullable": true
+          },
+          "alternativeTitles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlternativeTitle"
+            },
+            "nullable": true
+          },
+          "translations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MovieTranslation"
+            },
+            "nullable": true
+          },
+          "secondaryYear": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "youTubeTrailerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "studio": {
+            "type": "string",
+            "nullable": true
+          },
+          "originalTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "cleanOriginalTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "originalLanguage": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "recommendations": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "popularity": {
+            "type": "number",
+            "format": "float"
+          },
+          "isRecentMovie": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
       },
       "MovieResource": {
         "type": "object",
@@ -11180,6 +11164,13 @@
               "type": "string"
             },
             "nullable": true
+          },
+          "movieFileQualities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Quality"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11193,6 +11184,35 @@
           "deleted"
         ],
         "type": "string"
+      },
+      "MovieTranslation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "movieMetadataId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "cleanTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "overview": {
+            "type": "string",
+            "nullable": true
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          }
+        },
+        "additionalProperties": false
       },
       "NamingConfigResource": {
         "type": "object",
@@ -11215,6 +11235,20 @@
             "nullable": true
           },
           "movieFolderFormat": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NamingExampleResource": {
+        "type": "object",
+        "properties": {
+          "movieExample": {
+            "type": "string",
+            "nullable": true
+          },
+          "movieFolderExample": {
             "type": "string",
             "nullable": true
           }
@@ -11490,6 +11524,33 @@
         ],
         "type": "string"
       },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
       "ProfileFormatItemResource": {
         "type": "object",
         "properties": {
@@ -11540,6 +11601,27 @@
           "error"
         ],
         "type": "string"
+      },
+      "ProviderTestAllResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isValid": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "validationFailures": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationFailure"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "ProxyType": {
         "enum": [
@@ -11984,6 +12066,22 @@
         ],
         "type": "string"
       },
+      "ReleaseHistoryResource": {
+        "type": "object",
+        "properties": {
+          "grabbed": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "failed": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ReleaseProfileResource": {
         "type": "object",
         "properties": {
@@ -11998,12 +12096,8 @@
           "enabled": {
             "type": "boolean"
           },
-          "required": {
-            "nullable": true
-          },
-          "ignored": {
-            "nullable": true
-          },
+          "required": { },
+          "ignored": { },
           "indexerId": {
             "type": "integer",
             "format": "int32"
@@ -12044,6 +12138,9 @@
           "customFormatScore": {
             "type": "integer",
             "format": "int32"
+          },
+          "history": {
+            "$ref": "#/components/schemas/ReleaseHistoryResource"
           },
           "qualityWeight": {
             "type": "integer",
@@ -12186,9 +12283,7 @@
           "protocol": {
             "$ref": "#/components/schemas/DownloadProtocol"
           },
-          "indexerFlags": {
-            "nullable": true
-          },
+          "indexerFlags": { },
           "movieId": {
             "type": "integer",
             "format": "int32",
@@ -12345,6 +12440,14 @@
         },
         "additionalProperties": false
       },
+      "Severity": {
+        "enum": [
+          "error",
+          "warning",
+          "info"
+        ],
+        "type": "string"
+      },
       "SortDirection": {
         "enum": [
           "default",
@@ -12424,6 +12527,9 @@
           "isDocker": {
             "type": "boolean"
           },
+          "isContainerized": {
+            "type": "boolean"
+          },
           "mode": {
             "$ref": "#/components/schemas/RuntimeMode"
           },
@@ -12475,6 +12581,24 @@
           "packageUpdateMechanismMessage": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SystemRestartResource": {
+        "type": "object",
+        "properties": {
+          "restarting": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SystemShutdownResource": {
+        "type": "object",
+        "properties": {
+          "shuttingDown": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -12815,6 +12939,40 @@
           }
         },
         "additionalProperties": false
+      },
+      "ValidationFailure": {
+        "type": "object",
+        "properties": {
+          "propertyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "errorMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "attemptedValue": { },
+          "customState": { },
+          "severity": {
+            "$ref": "#/components/schemas/Severity"
+          },
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "formattedMessageArguments": {
+            "type": "array",
+            "items": { },
+            "nullable": true,
+            "deprecated": true
+          },
+          "formattedMessagePlaceholderValues": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       }
     },
     "securitySchemes": {
@@ -12838,6 +12996,221 @@
     },
     {
       "apikey": [ ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "AlternativeTitle"
+    },
+    {
+      "name": "ApiInfo"
+    },
+    {
+      "name": "Authentication"
+    },
+    {
+      "name": "StaticResource"
+    },
+    {
+      "name": "AutoTagging"
+    },
+    {
+      "name": "Backup"
+    },
+    {
+      "name": "Blocklist"
+    },
+    {
+      "name": "Calendar"
+    },
+    {
+      "name": "CalendarFeed"
+    },
+    {
+      "name": "Collection"
+    },
+    {
+      "name": "Command"
+    },
+    {
+      "name": "Credit"
+    },
+    {
+      "name": "CustomFilter"
+    },
+    {
+      "name": "CustomFormat"
+    },
+    {
+      "name": "Cutoff"
+    },
+    {
+      "name": "DelayProfile"
+    },
+    {
+      "name": "DiskSpace"
+    },
+    {
+      "name": "DownloadClient"
+    },
+    {
+      "name": "DownloadClientConfig"
+    },
+    {
+      "name": "ExtraFile"
+    },
+    {
+      "name": "FileSystem"
+    },
+    {
+      "name": "Health"
+    },
+    {
+      "name": "History"
+    },
+    {
+      "name": "HostConfig"
+    },
+    {
+      "name": "ImportList"
+    },
+    {
+      "name": "ImportListConfig"
+    },
+    {
+      "name": "ImportListExclusion"
+    },
+    {
+      "name": "ImportListMovies"
+    },
+    {
+      "name": "Indexer"
+    },
+    {
+      "name": "IndexerConfig"
+    },
+    {
+      "name": "IndexerFlag"
+    },
+    {
+      "name": "Language"
+    },
+    {
+      "name": "Localization"
+    },
+    {
+      "name": "Log"
+    },
+    {
+      "name": "LogFile"
+    },
+    {
+      "name": "ManualImport"
+    },
+    {
+      "name": "MediaCover"
+    },
+    {
+      "name": "MediaManagementConfig"
+    },
+    {
+      "name": "Metadata"
+    },
+    {
+      "name": "MetadataConfig"
+    },
+    {
+      "name": "Missing"
+    },
+    {
+      "name": "Movie"
+    },
+    {
+      "name": "MovieEditor"
+    },
+    {
+      "name": "MovieFile"
+    },
+    {
+      "name": "MovieFolder"
+    },
+    {
+      "name": "MovieImport"
+    },
+    {
+      "name": "MovieLookup"
+    },
+    {
+      "name": "NamingConfig"
+    },
+    {
+      "name": "Notification"
+    },
+    {
+      "name": "Parse"
+    },
+    {
+      "name": "Ping"
+    },
+    {
+      "name": "QualityDefinition"
+    },
+    {
+      "name": "QualityProfile"
+    },
+    {
+      "name": "QualityProfileSchema"
+    },
+    {
+      "name": "Queue"
+    },
+    {
+      "name": "QueueAction"
+    },
+    {
+      "name": "QueueDetails"
+    },
+    {
+      "name": "QueueStatus"
+    },
+    {
+      "name": "Release"
+    },
+    {
+      "name": "ReleaseProfile"
+    },
+    {
+      "name": "ReleasePush"
+    },
+    {
+      "name": "RemotePathMapping"
+    },
+    {
+      "name": "RenameMovie"
+    },
+    {
+      "name": "RootFolder"
+    },
+    {
+      "name": "System"
+    },
+    {
+      "name": "Tag"
+    },
+    {
+      "name": "TagDetails"
+    },
+    {
+      "name": "Task"
+    },
+    {
+      "name": "UiConfig"
+    },
+    {
+      "name": "Update"
+    },
+    {
+      "name": "UpdateLogFile"
     }
   ]
 }
