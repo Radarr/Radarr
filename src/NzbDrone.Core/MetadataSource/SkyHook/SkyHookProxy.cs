@@ -412,6 +412,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 {
                     title = "imdb:" + match.Groups[1].Value;
                 }
+                else if ((match = new Regex(@"^(tt\d{7,})$", RegexOptions.IgnoreCase).Match(title.Trim())).Success)
+                {
+                    title = "imdb:" + match.Groups[1].Value;
+                }
                 else
                 {
                     match = new Regex(@"\bthemoviedb\.org/movie/(\d+)\b", RegexOptions.IgnoreCase).Match(title);
