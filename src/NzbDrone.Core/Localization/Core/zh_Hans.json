@@ -31,5 +31,6 @@
     "AddRemotePathMappingError": "添加",
     "Backups": "备份",
     "AddCondition": "001",
-    "AddConnection": "Add Connection"
+    "AddConnection": "Add Connection",
+    "AddAutoTag": "添加"
 }

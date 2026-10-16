@@ -2003,7 +2003,7 @@
     "MetadataMediaBrowserDeprecated": "Medya Tarayıcısı meta verileri kullanım dışı bırakıldı, destek {version} sürümünde tamamen kaldırılacak.",
     "DownloadClientItemErrorMessage": "{clientName} bir hata bildirdi: {message}",
     "MyComputer": "Bilgisayarım",
-    "UpdatePath": "Güncelleme Yolu",
+    "UpdatePath": "Yolu Güncelle",
     "ImportListsRadarrSettingsFullUrl": "Tam URL",
     "ImportListsRadarrSettingsQualityProfilesHelpText": "Kaynak örneğinden içe aktarılacak Kalite Profilleri",
     "ImportListsRadarrSettingsRootFoldersHelpText": "Kaynak örneğinden içe aktarılacak Kök Klasörler",
@@ -2054,5 +2054,11 @@
     "Saturday": "Cumartesi",
     "Thursday": "Perşembe",
     "Tuesday": "Salı",
-    "Wednesday": "Çarşamba"
+    "Wednesday": "Çarşamba",
+    "AllowedHosts": "İzin Verilen Sunucular",
+    "AllowedHostsHelpText": "{appName} uygulamasının istek kabul edeceği ana bilgisayar adları (hostname) ve IP adreslerinin virgülle ayrılmış listesi. Alt alan adları için joker karakter olarak '*.' kullanın. Tüm ana bilgisayarlara izin vermek için boş bırakın.",
+    "AllowedHostsNotConfiguredHealthCheckMessage": "İzin Verilen Ana Bilgisayarlar (Allowed Hosts) yapılandırılmadı, {appName} her türlü ana bilgisayar adından gelen istekleri kabul edecektir. {appName} uygulamasına ulaşmak için hangi ana bilgisayar adlarının kullanılabileceğini sınırlandırmak için Genel ayarlardan İzin Verilen Ana Bilgisayarlar seçeneğini ayarlayın.",
+    "MovieFileQualities": "Film Dosyası Kaliteleri",
+    "TrustedNetworks": "Güvenilen Ağlar",
+    "TrustedNetworksHelpText": "Güvenilen ters vekillerin (reverse proxy) üzerinde bulunduğu, CIDR gösterimindeki IP adreslerinin veya ağların virgülle ayrılmış listesi. Örneğin: 172.17.0.1, 10.0.0.0/8 veya fc00::/7. Yalnızca doğru üstbilgileri (header) gönderecek şekilde düzgün yapılandırılmış vekilleri ekleyin."
 }

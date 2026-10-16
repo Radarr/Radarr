@@ -298,7 +298,7 @@
     "AddImportListExclusionError": "No es pot afegir una nova llista d'importació, torna-ho a provar.",
     "AddListError": "No es pot afegir una llista nova, torna-ho a provar.",
     "AddDownloadClientError": "No es pot afegir un nou client de baixada, torna-ho a provar.",
-    "AddNotificationError": "No es pot afegir una notificació nova, torna-ho a provar.",
+    "AddNotificationError": "No es pot afegir una notificació nova, torneu-ho a provar.",
     "AlternativeTitlesLoadError": "No es poden carregar títols alternatius.",
     "UnableToLoadCollections": "No es poden carregar les col·leccions",
     "CustomFormatsLoadError": "No es poden carregar els formats personalitzats",
@@ -503,7 +503,7 @@
     "MoveMovieFoldersRenameFolderWarning": "Això també reanomenarà la carpeta de pel·lícules segons el format de la carpeta de pel·lícules a la configuració.",
     "Forecast": "Previsió",
     "Formats": "Formats",
-    "SupportedDownloadClientsMoreInfo": "Per a obtenir més informació sobre els clients de baixada individuals, feu clic als botons de més informació.",
+    "SupportedDownloadClientsMoreInfo": "Per obtenir més informació sobre els clients de baixada individuals, feu clic als botons de més informació.",
     "SupportedListsMoreInfo": "Per a obtenir més informació sobre les llistes d'importació individuals, feu clic als botons d'informació.",
     "FreeSpace": "Espai lliure",
     "From": "des de",
@@ -857,7 +857,7 @@
     "TestAllClients": "Prova tots els clients",
     "TestAllIndexers": "Prova tots els indexadors",
     "TestAllLists": "Prova totes les llistes",
-    "TheLogLevelDefault": "El nivell de registre per defecte és \"Info\" i es pot canviar a [Configuració general](/configuració/general)",
+    "TheLogLevelDefault": "El nivell de registre per defecte és \"Debug\" i es pot canviar a [Configuració general](/settings/general)",
     "ThisCannotBeCancelled": "No es pot cancel·lar un cop iniciat sense desactivar tots els vostres indexadors.",
     "Time": "Temps",
     "Timeleft": "Temps restant",
@@ -1831,7 +1831,7 @@
     "DownloadClientValidationApiKeyRequired": "Clau API requerida",
     "DownloadClientValidationAuthenticationFailure": "Error d'autenticació",
     "DownloadClientValidationSslConnectFailure": "No s'ha pogut connectar a través de SSL",
-    "DownloadClientValidationAuthenticationFailureDetail": "Verifiqueu les vostre credencials. Verifiqueu també si el servidor que executa {appName} no està bloquejat per accedir a {clientName} per les limitacions de WhiteList a la configuració {clientName}.",
+    "DownloadClientValidationAuthenticationFailureDetail": "Verifiqueu les vostres credencials. Verifiqueu també si el servidor que executa {appName} no està bloquejat per accedir a {clientName} per les limitacions de WhiteList a la configuració de {clientName}.",
     "DownloadClientValidationCategoryMissingDetail": "La categoria que heu introduït no existeix a {clientName}. Primer creeu-lo a {clientName}.",
     "DownloadClientVuzeValidationErrorVersion": "La versió del protocol no és compatible, utilitzeu Vuze 5.0.0.0 o superior amb el connector Vuze Web Remote.",
     "ErrorLoadingItem": "S'ha produït un error en carregar aquest element",
@@ -2059,5 +2059,6 @@
     "AllowedHostsHelpText": "Llista de noms d'hostes i adreces IP separades per comes que {appName} n'acceptarà sol·licituds. Utilitza '*.' com a comodí per subdominis. Deixa-ho buit per permetre tots els hostes.",
     "AllowedHostsNotConfiguredHealthCheckMessage": "Hostes permesos no configurats, {appName} acceptarà sol·licituds de qualsevol nom d'hoste. Configura els hostes permesos a les configuracions Generals per restringir els hostes que poden contactar {appName}.",
     "TrustedNetworks": "Xarxes de confiança",
-    "TrustedNetworksHelpText": "Llista separada per comes d'adreces IP o de xarxes en notació CIDR on hi ha els proxies inversos de confiança. Per exemple: 172.17.0.1, 10.0.0.0/8 o fc00::/7. Afegeix-hi només proxies configurats correctament per enviar les capçaleres adequades."
+    "TrustedNetworksHelpText": "Llista separada per comes d'adreces IP o de xarxes en notació CIDR on hi ha els proxies inversos de confiança. Per exemple: 172.17.0.1, 10.0.0.0/8 o fc00::/7. Afegeix-hi només proxies configurats correctament per enviar les capçaleres adequades.",
+    "MovieFileQualities": "Qualitats del fitxer de pel·lícula"
 }
