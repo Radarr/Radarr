@@ -761,7 +761,7 @@
     "None": "Ninguno",
     "QualitiesHelpText": "Las calidades situadas más arriba en la lista son las preferidas aunque no estén marcadas. Las calidades del mismo grupo son iguales. Sólo se buscarán las calidades marcadas",
     "DeleteMovieFiles": "Eliminar {movieFileCount} archivos de película",
-    "MappedNetworkDrivesWindowsService": "Las unidades de red asignadas no están disponibles cuando se ejecutan como un servicio de Windows. Consulta las [FAQ]({url}) para obtener más información.",
+    "MappedNetworkDrivesWindowsService": "Los unidades de red mapeadas no están disponibles cuando se ejecutan como un servicio de Windows, consulta el [FAQ]({url}) para más información.",
     "RequiredRestrictionHelpText": "El lanzamiento debe contener al menos uno de estos términos (no distingue entre mayúsculas y minúsculas)",
     "Announced": "Anunciado",
     "BuiltIn": "Construido en",
@@ -2059,5 +2059,6 @@
     "AllowedHostsHelpText": "Lista separada por comas de nombres de host y direcciones IP para la que {appName} aceptará peticiones. Usa '*.' como un wildcard para subdominios. Dejar vacío para permitir todos los hosts.",
     "AllowedHostsNotConfiguredHealthCheckMessage": "Hosts permitidos no está configurado, {appName} aceptará peticiones para cualquier nombre de host. Establece Hosts permitidos en Ajustes generales para restringir qué nombres de host pueden ser usados para alcanzar {appName}.",
     "TrustedNetworks": "Redes de confianza",
-    "TrustedNetworksHelpText": "Lista separada por comas de direcciones IP o redes en notación CIDR en las que están los proxies inversos de confianza. P. ej. 172.17.0.1, 10.0.0.0/8 o fc00::/7. Añadir solo proxies que están configurados adecuadamente para enviar las cabeceras correctas."
+    "TrustedNetworksHelpText": "Lista separada por comas de direcciones IP o redes en notación CIDR en las que están los proxies inversos de confianza. P. ej. 172.17.0.1, 10.0.0.0/8 o fc00::/7. Añadir solo proxies que están configurados adecuadamente para enviar las cabeceras correctas.",
+    "MovieFileQualities": "Calidades de archivos de películas"
 }

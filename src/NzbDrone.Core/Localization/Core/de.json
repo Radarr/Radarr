@@ -312,7 +312,7 @@
     "AvailabilityDelayHelpText": "Zeit vor oder nach dem Verfügbarkeitsdatum, um nach einem Film zu suchen",
     "BackupIntervalHelpText": "Dauer zwischen automatischen Backups",
     "BackupRetentionHelpText": "Automatische Backups, die älter als die Aufbewahrungsfrist sind, werden automatisch bereinigt",
-    "Backups": "Backups",
+    "Backups": "Datensicherungen",
     "BindAddress": "Adresse binden",
     "BindAddressHelpText": "Gültige IP-Adresse, localhost oder \"*“ für alle Schnittstellen",
     "Branch": "Branch",
@@ -631,7 +631,7 @@
     "CancelPendingTask": "Möchten Sie diese ausstehende Aufgabe wirklich abbrechen?",
     "BranchUpdateMechanism": "Git-Branch für den externen Update-Mechanismus",
     "BranchUpdate": "Zu verwendender Branch, um {appName} zu updaten",
-    "BeforeUpdate": "Vor Update",
+    "BeforeUpdate": "Vor Aktualisierung",
     "AddingTag": "Tag hinzufügen",
     "YouCanAlsoSearch": "Es kann auch nach der TMDb oder IMDb ID eines Filmes gesucht werden. Z.B.: 'tmdb:71663'",
     "VisitTheWikiForMoreDetails": "Besuche das Wiki für mehr Details: ",
@@ -646,7 +646,7 @@
     "IndexerOptionsLoadError": "Indexer-Optionen können nicht geladen werden",
     "GeneralSettingsLoadError": "Allgemeine Einstellungen können nicht geladen werden",
     "DownloadClientOptionsLoadError": "Download-Client-Optionen können nicht geladen werden",
-    "BackupsLoadError": "Backups können nicht geladen werden",
+    "BackupsLoadError": "Datensicherungen können nicht geladen werden",
     "AddRemotePathMappingError": "Es kann keine neue Remote-Pfadzuordnung hinzugefügt werden, bitte erneut versuchen.",
     "AddQualityProfileError": "Qualitätsprofil kann nicht hinzugefügt werden, bitte erneut versuchen.",
     "AddNotificationError": "Neue Benachrichtigung kann nicht hinzugefügt werden, bitte erneut versuchen.",
@@ -2059,5 +2059,6 @@
     "AllowedHostsHelpText": "Kommagetrennte Liste von Hostnamen und IP Adressen, von denen {appName} Anfragen akzeptiert. Verwende \"*\" als Wildcard für Subdomänen. Leer lassen, um alle Hosts zu erlauben.",
     "AllowedHostsNotConfiguredHealthCheckMessage": "Erlaubte Hosts sind nicht konfiguriert, {appName} wird Anfragen von jedem beliebigen Host akzeptieren. Setze Erlaubte Hosts unter allgemeine Einstellungen, um festzulegen, welche Hostnamen verwendet werden können, um {appName} zu erreichen.",
     "TrustedNetworks": "Vertrauenswürdige Netzwerke",
-    "TrustedNetworksHelpText": "Kommagetrenne Liste von IP Adressen oder Netzwerken in CIDR Notation, auf denen vertrauenswürdige Reverse Proxys laufen, z.B. 172.17.0.1, 10.0.0.0/8 oder fc00::/7. Fügen Sie nur Proxys hinzu, die so konfiguriert sind, dass sie die korrekten Header senden."
+    "TrustedNetworksHelpText": "Kommagetrenne Liste von IP Adressen oder Netzwerken in CIDR Notation, auf denen vertrauenswürdige Reverse Proxys laufen, z.B. 172.17.0.1, 10.0.0.0/8 oder fc00::/7. Fügen Sie nur Proxys hinzu, die so konfiguriert sind, dass sie die korrekten Header senden.",
+    "MovieFileQualities": "Filmdatei Qualitäten"
 }
