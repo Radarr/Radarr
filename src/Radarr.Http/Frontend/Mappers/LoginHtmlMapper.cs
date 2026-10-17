@@ -3,6 +3,7 @@ using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration;
 
 namespace Radarr.Http.Frontend.Mappers
@@ -40,8 +41,16 @@ namespace Radarr.Http.Frontend.Mappers
         {
             var html = base.GetHtmlText();
             var theme = _configFileProvider.Theme;
+            var authMethod = _configFileProvider.AuthenticationMethod.ToString().ToLowerInvariant();
+
+            if (_configFileProvider.AuthenticationMethod == AuthenticationType.Oidc &&
+                !_configFileProvider.IsOidcConfigured())
+            {
+                authMethod += " oidc-misconfigured";
+            }
 
             html = html.Replace("_THEME_", theme);
+            html = html.Replace("_AUTH_METHOD_", authMethod);
 
             return html;
         }

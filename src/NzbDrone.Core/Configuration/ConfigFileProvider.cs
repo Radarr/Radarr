@@ -49,6 +49,7 @@ namespace NzbDrone.Core.Configuration
         string Branch { get; }
         string ApiKey { get; }
         string SslCertPath { get; }
+        string SslKeyPath { get; }
         string SslCertPassword { get; }
         string UrlBase { get; }
         string TrustedNetworks { get; }
@@ -71,6 +72,11 @@ namespace NzbDrone.Core.Configuration
         string PostgresMainDbConnectionString { get; }
         string PostgresLogDbConnectionString { get; }
         bool TrustCgnatIpAddresses { get; }
+        string OidcAuthority { get; }
+        string OidcClientId { get; }
+        string OidcClientSecret { get; }
+        string OidcUserIdentifier { get; }
+        string OidcScopes { get; }
     }
 
     public class ConfigFileProvider : IConfigFileProvider
@@ -240,6 +246,12 @@ namespace NzbDrone.Core.Configuration
 
         public string AllowedHosts => _serverOptions.AllowedHosts ?? GetValue("AllowedHosts", string.Empty);
 
+        public string OidcAuthority => _authOptions.OidcAuthority ?? GetValue("OidcAuthority", string.Empty, persist: false);
+        public string OidcClientId => _authOptions.OidcClientId ?? GetValue("OidcClientId", string.Empty, persist: false);
+        public string OidcClientSecret => _authOptions.OidcClientSecret ?? GetValue("OidcClientSecret", string.Empty, persist: false);
+        public string OidcUserIdentifier => _authOptions.OidcUserIdentifier ?? GetValue("OidcUserIdentifier", string.Empty, persist: false);
+        public string OidcScopes => _authOptions.OidcScopes ?? GetValue("OidcScopes", "openid profile email", persist: false);
+
         public bool AnalyticsEnabled => _logOptions.AnalyticsEnabled ?? GetValueBoolean("AnalyticsEnabled", true, persist: false);
 
         public string Branch => _updateOptions.Branch ?? GetValue("Branch", "master").ToLowerInvariant();
@@ -267,6 +279,7 @@ namespace NzbDrone.Core.Configuration
         public int LogSizeLimit => Math.Min(Math.Max(_logOptions.SizeLimit ?? GetValueInt("LogSizeLimit", 1, persist: false), 0), 10);
         public bool FilterSentryEvents => _logOptions.FilterSentryEvents ?? GetValueBoolean("FilterSentryEvents", true, persist: false);
         public string SslCertPath => _serverOptions.SslCertPath ?? GetValue("SslCertPath", "");
+        public string SslKeyPath => _serverOptions.SslKeyPath ?? GetValue("SslKeyPath", "");
         public string SslCertPassword => _serverOptions.SslCertPassword ?? GetValue("SslCertPassword", "");
 
         public string UrlBase

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
+using System.Net.Security;
 using System.Reflection;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using DryIoc;
@@ -20,6 +20,7 @@ using NzbDrone.Common.Composition.Extensions;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.Options;
@@ -150,6 +151,7 @@ namespace NzbDrone.Host
             var sslPort = config.GetValue<int?>($"Radarr:Server:{nameof(ServerOptions.SslPort)}") ?? config.GetValue(nameof(ConfigFileProvider.SslPort), 8787);
             var enableSsl = config.GetValue<bool?>($"Radarr:Server:{nameof(ServerOptions.EnableSsl)}") ?? config.GetValue(nameof(ConfigFileProvider.EnableSsl), false);
             var sslCertPath = config.GetValue<string>($"Radarr:Server:{nameof(ServerOptions.SslCertPath)}") ?? config.GetValue<string>(nameof(ConfigFileProvider.SslCertPath));
+            var sslKeyPath = config.GetValue<string>($"Radarr:Server:{nameof(ServerOptions.SslKeyPath)}") ?? config.GetValue<string>(nameof(ConfigFileProvider.SslKeyPath));
             var sslCertPassword = config.GetValue<string>($"Radarr:Server:{nameof(ServerOptions.SslCertPassword)}") ?? config.GetValue<string>(nameof(ConfigFileProvider.SslCertPassword));
             var logDbEnabled = config.GetValue<bool?>($"Radarr:Log:{nameof(LogOptions.DbEnabled)}") ?? config.GetValue(nameof(ConfigFileProvider.LogDbEnabled), true);
 
@@ -198,7 +200,13 @@ namespace NzbDrone.Host
                         {
                             options.ConfigureHttpsDefaults(configureOptions =>
                             {
-                                configureOptions.ServerCertificate = ValidateSslCertificate(sslCertPath, sslCertPassword);
+                                var sslContext = ValidateSslCertificate(sslCertPath, sslKeyPath, sslCertPassword);
+
+                                configureOptions.ServerCertificate = sslContext.TargetCertificate;
+                                configureOptions.OnAuthenticate = (_, authOptions) =>
+                                {
+                                    authOptions.ServerCertificateContext = sslContext;
+                                };
                             });
                         }
                     });
@@ -278,13 +286,11 @@ namespace NzbDrone.Host
             return $"{scheme}://{bindAddress}:{port}";
         }
 
-        private static X509Certificate2 ValidateSslCertificate(string cert, string password)
+        private static SslStreamCertificateContext ValidateSslCertificate(string cert, string key, string password)
         {
-            X509Certificate2 certificate;
-
             try
             {
-                certificate = X509CertificateLoader.LoadPkcs12FromFile(cert, password, X509KeyStorageFlags.DefaultKeySet);
+                return SslCertificateLoader.LoadCertificateContext(cert, key, password);
             }
             catch (CryptographicException ex)
             {
@@ -296,8 +302,10 @@ namespace NzbDrone.Host
 
                 throw new RadarrStartupException(ex);
             }
-
-            return certificate;
+            catch (Exception ex)
+            {
+                throw new RadarrStartupException(ex);
+            }
         }
 
         private static bool RunWithRestartCheck(IHost host)

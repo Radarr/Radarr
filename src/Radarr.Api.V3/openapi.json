@@ -119,6 +119,27 @@
         }
       }
     },
+    "/login/sso": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "parameters": [
+          {
+            "name": "returnUrl",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Found"
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "tags": [
@@ -7069,6 +7090,18 @@
         }
       }
     },
+    "/loggedout": {
+      "get": {
+        "tags": [
+          "StaticResource"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/content/{path}": {
       "get": {
         "tags": [
@@ -7770,7 +7803,8 @@
       "AuthenticationRequiredType": {
         "enum": [
           "enabled",
-          "disabledForLocalAddresses"
+          "disabledForLocalAddresses",
+          "disabledForLocalhost"
         ],
         "type": "string"
       },
@@ -7779,7 +7813,8 @@
           "none",
           "basic",
           "forms",
-          "external"
+          "external",
+          "oidc"
         ],
         "type": "string"
       },
@@ -9188,6 +9223,26 @@
             "type": "string",
             "nullable": true
           },
+          "oidcAuthority": {
+            "type": "string",
+            "nullable": true
+          },
+          "oidcClientId": {
+            "type": "string",
+            "nullable": true
+          },
+          "oidcClientSecret": {
+            "type": "string",
+            "nullable": true
+          },
+          "oidcUserIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "oidcScopes": {
+            "type": "string",
+            "nullable": true
+          },
           "logLevel": {
             "type": "string",
             "nullable": true
@@ -9209,6 +9264,10 @@
             "nullable": true
           },
           "sslCertPath": {
+            "type": "string",
+            "nullable": true
+          },
+          "sslKeyPath": {
             "type": "string",
             "nullable": true
           },

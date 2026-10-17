@@ -1,41 +1,53 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import FieldSet from 'Components/FieldSet';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
+import useShowAdvancedSettings from 'Helpers/Hooks/useShowAdvancedSettings';
 import { inputTypes, sizes } from 'Helpers/Props';
+import useSystemStatus from 'System/useSystemStatus';
+import { InputChanged } from 'typings/inputs';
+import { PendingSection } from 'typings/pending';
+import General from 'typings/Settings/General';
 import translate from 'Utilities/String/translate';
 
-function HostSettings(props) {
-  const {
-    advancedSettings,
-    settings,
-    isWindows,
-    mode,
-    onInputChange
-  } = props;
+interface HostSettingsProps {
+  bindAddress: PendingSection<General>['bindAddress'];
+  port: PendingSection<General>['port'];
+  urlBase: PendingSection<General>['urlBase'];
+  instanceName: PendingSection<General>['instanceName'];
+  applicationUrl: PendingSection<General>['applicationUrl'];
+  allowedHosts: PendingSection<General>['allowedHosts'];
+  enableSsl: PendingSection<General>['enableSsl'];
+  sslPort: PendingSection<General>['sslPort'];
+  sslKeyPath: PendingSection<General>['sslKeyPath'];
+  sslCertPath: PendingSection<General>['sslCertPath'];
+  sslCertPassword: PendingSection<General>['sslCertPassword'];
+  launchBrowser: PendingSection<General>['launchBrowser'];
+  onInputChange: (change: InputChanged) => void;
+}
 
-  const {
-    bindAddress,
-    port,
-    urlBase,
-    instanceName,
-    applicationUrl,
-    allowedHosts,
-    enableSsl,
-    sslPort,
-    sslCertPath,
-    sslCertPassword,
-    launchBrowser
-  } = settings;
+function HostSettings({
+  bindAddress,
+  port,
+  urlBase,
+  instanceName,
+  applicationUrl,
+  allowedHosts,
+  enableSsl,
+  sslPort,
+  sslCertPath,
+  sslKeyPath,
+  sslCertPassword,
+  launchBrowser,
+  onInputChange,
+}: HostSettingsProps) {
+  const showAdvancedSettings = useShowAdvancedSettings();
+  const { isWindows, mode } = useSystemStatus();
 
   return (
     <FieldSet legend={translate('Host')}>
-      <FormGroup
-        advancedSettings={advancedSettings}
-        isAdvanced={true}
-      >
+      <FormGroup advancedSettings={showAdvancedSettings} isAdvanced={true}>
         <FormLabel>{translate('BindAddress')}</FormLabel>
 
         <FormInputGroup
@@ -89,10 +101,7 @@ function HostSettings(props) {
         />
       </FormGroup>
 
-      <FormGroup
-        advancedSettings={advancedSettings}
-        isAdvanced={true}
-      >
+      <FormGroup advancedSettings={showAdvancedSettings} isAdvanced={true}>
         <FormLabel>{translate('InstanceName')}</FormLabel>
 
         <FormInputGroup
@@ -105,10 +114,7 @@ function HostSettings(props) {
         />
       </FormGroup>
 
-      <FormGroup
-        advancedSettings={advancedSettings}
-        isAdvanced={true}
-      >
+      <FormGroup advancedSettings={showAdvancedSettings} isAdvanced={true}>
         <FormLabel>{translate('ApplicationURL')}</FormLabel>
 
         <FormInputGroup
@@ -121,7 +127,7 @@ function HostSettings(props) {
       </FormGroup>
 
       <FormGroup
-        advancedSettings={advancedSettings}
+        advancedSettings={showAdvancedSettings}
         isAdvanced={true}
         size={sizes.MEDIUM}
       >
@@ -136,33 +142,25 @@ function HostSettings(props) {
         />
       </FormGroup>
 
-      {
-        enableSsl.value ?
-          <FormGroup
-            advancedSettings={advancedSettings}
-            isAdvanced={true}
-          >
-            <FormLabel>{translate('SslPort')}</FormLabel>
+      {enableSsl.value ? (
+        <FormGroup advancedSettings={showAdvancedSettings} isAdvanced={true}>
+          <FormLabel>{translate('SslPort')}</FormLabel>
 
-            <FormInputGroup
-              type={inputTypes.NUMBER}
-              name="sslPort"
-              min={1}
-              max={65535}
-              helpTextWarning={translate('RestartRequiredHelpTextWarning')}
-              onChange={onInputChange}
-              {...sslPort}
-            />
-          </FormGroup> :
-          null
-      }
+          <FormInputGroup
+            type={inputTypes.NUMBER}
+            name="sslPort"
+            min={1}
+            max={65535}
+            helpTextWarning={translate('RestartRequiredHelpTextWarning')}
+            onChange={onInputChange}
+            {...sslPort}
+          />
+        </FormGroup>
+      ) : null}
 
-      {
-        enableSsl.value ?
-          <FormGroup
-            advancedSettings={advancedSettings}
-            isAdvanced={true}
-          >
+      {enableSsl.value ? (
+        <>
+          <FormGroup advancedSettings={showAdvancedSettings} isAdvanced={true}>
             <FormLabel>{translate('SslCertPath')}</FormLabel>
 
             <FormInputGroup
@@ -173,16 +171,22 @@ function HostSettings(props) {
               onChange={onInputChange}
               {...sslCertPath}
             />
-          </FormGroup> :
-          null
-      }
+          </FormGroup>
 
-      {
-        enableSsl.value ?
-          <FormGroup
-            advancedSettings={advancedSettings}
-            isAdvanced={true}
-          >
+          <FormGroup advancedSettings={showAdvancedSettings} isAdvanced={true}>
+            <FormLabel>{translate('SslKeyPath')}</FormLabel>
+
+            <FormInputGroup
+              type={inputTypes.TEXT}
+              name="sslKeyPath"
+              helpText={translate('SslKeyPathHelpText')}
+              helpTextWarning={translate('RestartRequiredHelpTextWarning')}
+              onChange={onInputChange}
+              {...sslKeyPath}
+            />
+          </FormGroup>
+
+          <FormGroup advancedSettings={showAdvancedSettings} isAdvanced={true}>
             <FormLabel>{translate('SslCertPassword')}</FormLabel>
 
             <FormInputGroup
@@ -193,36 +197,25 @@ function HostSettings(props) {
               onChange={onInputChange}
               {...sslCertPassword}
             />
-          </FormGroup> :
-          null
-      }
+          </FormGroup>
+        </>
+      ) : null}
 
-      {
-        isWindows && mode !== 'service' ?
-          <FormGroup size={sizes.MEDIUM}>
-            <FormLabel>{translate('OpenBrowserOnStart')}</FormLabel>
+      {isWindows && mode !== 'service' ? (
+        <FormGroup size={sizes.MEDIUM}>
+          <FormLabel>{translate('OpenBrowserOnStart')}</FormLabel>
 
-            <FormInputGroup
-              type={inputTypes.CHECK}
-              name="launchBrowser"
-              helpText={translate('OpenBrowserOnStartHelpText')}
-              onChange={onInputChange}
-              {...launchBrowser}
-            />
-          </FormGroup> :
-          null
-      }
-
+          <FormInputGroup
+            type={inputTypes.CHECK}
+            name="launchBrowser"
+            helpText={translate('OpenBrowserOnStartHelpText')}
+            onChange={onInputChange}
+            {...launchBrowser}
+          />
+        </FormGroup>
+      ) : null}
     </FieldSet>
   );
 }
-
-HostSettings.propTypes = {
-  advancedSettings: PropTypes.bool.isRequired,
-  settings: PropTypes.object.isRequired,
-  isWindows: PropTypes.bool.isRequired,
-  mode: PropTypes.string.isRequired,
-  onInputChange: PropTypes.func.isRequired
-};
 
 export default HostSettings;

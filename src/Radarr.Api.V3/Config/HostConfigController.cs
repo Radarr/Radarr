@@ -1,9 +1,11 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Network;
 using NzbDrone.Core.Authentication;
@@ -14,12 +16,15 @@ using NzbDrone.Core.Validation.Paths;
 using Radarr.Http;
 using Radarr.Http.REST;
 using Radarr.Http.REST.Attributes;
+using Radarr.Http.Validation;
 
 namespace Radarr.Api.V3.Config
 {
     [V3ApiController("config/host")]
     public class HostConfigController : RestController<HostConfigResource>
     {
+        private const string PrivateValue = "********";
+
         private readonly IConfigFileProvider _configFileProvider;
         private readonly IConfigService _configService;
         private readonly IUserService _userService;
@@ -27,7 +32,8 @@ namespace Radarr.Api.V3.Config
         public HostConfigController(IConfigFileProvider configFileProvider,
                                     IConfigService configService,
                                     IUserService userService,
-                                    FileExistsValidator fileExistsValidator)
+                                    IDiskProvider diskProvider,
+                                    OidcAuthorityValidator oidcAuthorityValidator)
         {
             _configFileProvider = configFileProvider;
             _configService = configService;
@@ -66,6 +72,40 @@ namespace Radarr.Api.V3.Config
             SharedValidator.RuleFor(c => c.PasswordConfirmation)
                 .Must((resource, p) => IsMatchingPassword(resource)).WithMessage("Must match Password");
 
+            SharedValidator.RuleFor(c => c.OidcAuthority)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .Must(c => c is not null && c.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                .WithMessage("OIDC Authority must start with 'https://'")
+                .When(c => c.AuthenticationMethod == AuthenticationType.Oidc)
+                .WithName("OIDC Authority");
+
+            SharedValidator.RuleFor(c => c.OidcAuthority)
+                .SetValidator(oidcAuthorityValidator)
+                .When(c => c.AuthenticationMethod == AuthenticationType.Oidc &&
+                           c.OidcAuthority != _configFileProvider.OidcAuthority)
+                .WithName("OIDC Authority");
+
+            SharedValidator.RuleFor(c => c.OidcClientId).NotEmpty()
+                .When(c => c.AuthenticationMethod == AuthenticationType.Oidc)
+                .WithName("OIDC Client ID");
+
+            SharedValidator.RuleFor(c => c.OidcClientSecret).NotEmpty()
+                .When(c => c.AuthenticationMethod == AuthenticationType.Oidc)
+                .WithName("OIDC Client Secret");
+
+            SharedValidator.RuleFor(c => c.OidcUserIdentifier).NotEmpty()
+                .When(c => c.AuthenticationMethod == AuthenticationType.Oidc)
+                .WithName("OIDC User");
+
+            SharedValidator.RuleFor(c => c.OidcScopes)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .Must(c => AuthenticationConfigurationExtensions.GetOidcScopes(c).Contains("openid"))
+                .WithMessage("OIDC Scopes must include 'openid'")
+                .When(c => c.AuthenticationMethod == AuthenticationType.Oidc)
+                .WithName("OIDC Scopes");
+
             SharedValidator.RuleFor(c => c.SslPort).ValidPort().When(c => c.EnableSsl);
             SharedValidator.RuleFor(c => c.SslPort).NotEqual(c => c.Port).When(c => c.EnableSsl);
 
@@ -73,9 +113,15 @@ namespace Radarr.Api.V3.Config
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .IsValidPath()
-                .SetValidator(fileExistsValidator)
+                .SetValidator(new FileExistsValidator(diskProvider))
                 .IsValidCertificate()
                 .When(c => c.EnableSsl);
+
+            SharedValidator.RuleFor(c => c.SslKeyPath)
+                .NotEmpty()
+                .IsValidPath()
+                .SetValidator(new FileExistsValidator(diskProvider))
+                .When(c => c.SslKeyPath.IsNotNullOrWhiteSpace());
 
             SharedValidator.RuleFor(c => c.LogSizeLimit).InclusiveBetween(1, 10);
 
@@ -113,14 +159,17 @@ namespace Radarr.Api.V3.Config
         [Produces("application/json")]
         public HostConfigResource GetHostConfig()
         {
+            var oidcClientSecret = _configFileProvider.OidcClientSecret;
             var resource = _configFileProvider.ToResource(_configService);
-            resource.Id = 1;
-
             var user = _userService.FindUser();
 
+            resource.Id = 1;
             resource.Username = user?.Username ?? string.Empty;
             resource.Password = user?.Password ?? string.Empty;
             resource.PasswordConfirmation = string.Empty;
+
+            // Prevent the OIDC client secret from being exposed
+            resource.OidcClientSecret = oidcClientSecret.IsNullOrWhiteSpace() ? string.Empty : PrivateValue;
 
             return resource;
         }
@@ -135,6 +184,14 @@ namespace Radarr.Api.V3.Config
             var dictionary = resource.GetType()
                                      .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                                      .ToDictionary(prop => prop.Name, prop => prop.GetValue(resource, null));
+
+            // Don't persist the secret OIDC client secret placeholder
+            var oidcClientSecret = _configFileProvider.OidcClientSecret;
+
+            if (resource.OidcClientSecret == PrivateValue)
+            {
+                dictionary["OidcClientSecret"] = oidcClientSecret;
+            }
 
             _configFileProvider.SaveConfigDictionary(dictionary);
             _configService.SaveConfigDictionary(dictionary);
