@@ -9,7 +9,8 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
 {
     public abstract class SearchCriteriaBase
     {
-        private static readonly Regex SpecialCharacter = new Regex(@"['.\u0060\u00B4\u2018\u2019]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex ApostropheCharacter = new Regex(@"['\u0060\u00B4\u2018\u2019]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex PeriodCharacter = new Regex(@"[.]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex NonWord = new Regex(@"[\W]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex BeginningThe = new Regex(@"^the\s", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -28,7 +29,8 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
             var cleanTitle = BeginningThe.Replace(title, string.Empty);
 
             cleanTitle = cleanTitle.Replace("&", "and");
-            cleanTitle = SpecialCharacter.Replace(cleanTitle, "");
+            cleanTitle = ApostropheCharacter.Replace(cleanTitle, " ");
+            cleanTitle = PeriodCharacter.Replace(cleanTitle, "");
             cleanTitle = NonWord.Replace(cleanTitle, "+");
 
             // remove any repeating +s
