@@ -39,7 +39,7 @@ export const defaultState = {
   pendingChanges: {},
 
   overviewOptions: {
-    detailedProgressBar: false,
+    detailedProgressBar: true,
     size: 'medium',
     showDetails: true,
     showOverview: true,
