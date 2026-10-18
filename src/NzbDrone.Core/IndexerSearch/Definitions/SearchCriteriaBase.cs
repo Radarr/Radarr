@@ -30,6 +30,7 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
             cleanTitle = cleanTitle.Replace("&", "and");
             cleanTitle = SpecialCharacter.Replace(cleanTitle, "");
             cleanTitle = NonWord.Replace(cleanTitle, "+");
+            cleanTitle = Parser.Parser.ReplaceGermanUmlauts(cleanTitle);
 
             // remove any repeating +s
             cleanTitle = Regex.Replace(cleanTitle, @"\+{2,}", "+");
