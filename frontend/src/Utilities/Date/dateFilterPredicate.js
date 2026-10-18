@@ -37,6 +37,9 @@ export default function(itemValue, filterValue, type) {
         isAfter(itemValue, { [filterValue.time]: filterValue.value })
       );
 
+    case filterTypes.IN_PAST:
+      return moment(itemValue).isBefore(new Date());
+
     default:
       return false;
   }
