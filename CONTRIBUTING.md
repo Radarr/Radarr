@@ -9,26 +9,26 @@ Setup guides, [FAQ](/radarr/faq), the more information we have on the [wiki](htt
 
 # Development
 
-Radarr is written in C# (backend) and JS (frontend). The backend is built on the .NET6 (and _soon_ .NET8) framework, while the frontend utilizes Reactjs.
+Radarr is written in C# (backend) and JS (frontend). The backend is built on the .NET10 framework, while the frontend utilizes Reactjs.
 
 ## Tools required
 
 - Visual Studio 2022 or higher is recommended (<https://www.visualstudio.com/vs/>). The community version is free and works (<https://www.visualstudio.com/downloads/>).
 
-> VS 2022 V17.0 or higher is recommended as it includes the .NET6 SDK
+> VS 2022 V17.0 or higher is recommended as it includes the .NET10 SDK
 {.is-info}
 
 - HTML/Javascript editor of choice (VS Code/Sublime Text/Webstorm/Atom/etc)
 - [Git](https://git-scm.com/downloads)
 - The [Node.js](https://nodejs.org/) runtime is required. The following versions are supported:
-  - **20** (any minor or patch version within this)
+  - **24** (any minor or patch version within this)
 {.grid-list}
 
-> The Application will **NOT** run on older versions such as `18.x`, `16.x` or any version below 20.0! Due to a dependency issue, it will also not run on `21.x` and is untested on other verisons.
+> The Application will **NOT** run on older versions such as `22.x`, `20.x` or any version below 24.0!
 {.is-warning}
 
 - [Yarn](https://yarnpkg.com/getting-started/install) is required to build the frontend
-  - Yarn is included with **Node 20**+ by default. Enable it with `corepack enable`
+  - Yarn is included with **Node 24**+ by default. Enable it with `corepack enable`
   - For other Node versions, install it with `npm i -g corepack`
 
 ## Getting started
@@ -48,7 +48,7 @@ For css changes `yarn stylelint-windows --fix` {.is-info}
      yarn install
      ```
 
-- Start webpack to monitor your development environment for any changes that need post processing using:
+- Start webpack to monitor your development environment for any changes that need post-processing using:
 
      ```bash
      yarn start
@@ -60,7 +60,7 @@ The backend solution is most easily built and ran in Visual Studio or Rider, how
 
 #### Visual Studio
 
-> Ensure startup project is set to `Radarr.Console` and framework to `net6.0`
+> Ensure startup project is set to `Radarr.Console` and framework to `net10.0`
 {.is-info}
 
 1. First `Build` the solution in Visual Studio, this will ensure all projects are correctly built and dependencies restored
