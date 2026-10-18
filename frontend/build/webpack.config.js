@@ -72,7 +72,10 @@ module.exports = (env) => {
 
     optimization: {
       moduleIds: 'deterministic',
-      chunkIds: isProduction ? 'deterministic' : 'named'
+      chunkIds: isProduction ? 'deterministic' : 'named',
+      minimize: {
+        html: false
+      }
     },
 
     performance: {
