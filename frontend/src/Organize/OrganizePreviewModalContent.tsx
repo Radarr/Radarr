@@ -90,18 +90,25 @@ function OrganizePreviewModalContent({
   );
 
   const handleOrganizePress = useCallback(() => {
-    const files = getSelectedIds(selectedState);
+    const folderItem = items.find((item) => item.isMovieFolder);
+    const renameFolder = folderItem
+      ? !!selectedState[folderItem.movieFileId]
+      : false;
+    const files = getSelectedIds(selectedState).filter(
+      (id) => !folderItem || id !== folderItem.movieFileId
+    );
 
     dispatch(
       executeCommand({
         name: commandNames.RENAME_FILES,
         files,
         movieId,
+        renameFolder,
       })
     );
 
     onModalClose();
-  }, [movieId, selectedState, dispatch, onModalClose]);
+  }, [movieId, items, selectedState, dispatch, onModalClose]);
 
   useEffect(() => {
     dispatch(fetchOrganizePreview({ movieId }));
@@ -157,6 +164,7 @@ function OrganizePreviewModalContent({
                   <OrganizePreviewRow
                     key={item.movieFileId}
                     id={item.movieFileId}
+                    isMovieFolder={item.isMovieFolder}
                     existingPath={item.existingPath}
                     newPath={item.newPath}
                     isSelected={selectedState[item.movieFileId]}
