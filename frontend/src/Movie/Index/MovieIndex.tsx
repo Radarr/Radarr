@@ -53,6 +53,7 @@ import MovieIndexPosters from './Posters/MovieIndexPosters';
 import MovieIndexPosterOptionsModal from './Posters/Options/MovieIndexPosterOptionsModal';
 import MovieIndexSelectAllButton from './Select/MovieIndexSelectAllButton';
 import MovieIndexSelectAllMenuItem from './Select/MovieIndexSelectAllMenuItem';
+import MovieIndexSelectCountButton from './Select/MovieIndexSelectCountButton';
 import MovieIndexSelectFooter from './Select/MovieIndexSelectFooter';
 import MovieIndexSelectModeButton from './Select/MovieIndexSelectModeButton';
 import MovieIndexSelectModeMenuItem from './Select/MovieIndexSelectModeMenuItem';
@@ -288,6 +289,8 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
               isSelectMode={isSelectMode}
               overflowComponent={MovieIndexSelectAllMenuItem}
             />
+
+            <MovieIndexSelectCountButton isSelectMode={isSelectMode} />
           </PageToolbarSection>
 
           <PageToolbarSection

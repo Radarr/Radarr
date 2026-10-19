@@ -1,0 +1,57 @@
+.selectCount {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+  gap: 5px;
+}
+
+.input {
+  composes: input from '~Components/Form/Input.css';
+
+  padding: 2px 4px;
+  width: 80px;
+  height: 25px;
+  text-align: center;
+}
+
+.goButton {
+  height: 25px;
+}
+
+.presetsButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  height: 25px;
+  border: 1px solid var(--inputBorderColor);
+  border-radius: 4px;
+  background-color: var(--inputBackgroundColor);
+  color: var(--textColor);
+
+  &:hover {
+    color: var(--toobarButtonHoverColor);
+  }
+
+  &:global(.isDisabled) {
+    color: var(--disabledColor);
+
+    pointer-events: none;
+  }
+}
+
+.hint {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  margin-top: 4px;
+  padding: 4px 8px;
+  border: 1px solid var(--warningBorderColor);
+  border-radius: 4px;
+  background-color: var(--warningBackgroundColor);
+  color: var(--white);
+  white-space: nowrap;
+  font-size: $smallFontSize;
+}

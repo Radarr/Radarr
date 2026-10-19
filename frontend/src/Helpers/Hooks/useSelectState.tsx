@@ -17,6 +17,7 @@ export interface SelectState {
 export type SelectAction =
   | { type: 'reset' }
   | { type: 'selectAll'; items: ModelBase[] }
+  | { type: 'selectFirstN'; n: number; items: ModelBase[] }
   | { type: 'unselectAll'; items: ModelBase[] }
   | {
       type: 'toggleSelected';
@@ -64,6 +65,23 @@ function selectReducer(state: SelectState, action: SelectAction): SelectState {
     case 'selectAll': {
       return {
         ...selectAll(selectedState, true),
+      };
+    }
+    case 'selectFirstN': {
+      const nextSelectedState = action.items.reduce(
+        (acc: SelectedState, item, index) => {
+          acc[item.id] = index < action.n;
+
+          return acc;
+        },
+        {}
+      );
+
+      return {
+        ...state,
+        ...areAllSelected(nextSelectedState),
+        lastToggled: null,
+        selectedState: nextSelectedState,
       };
     }
     case 'unselectAll': {

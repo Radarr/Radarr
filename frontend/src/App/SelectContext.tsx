@@ -6,6 +6,7 @@ import ModelBase from './ModelBase';
 export type SelectContextAction =
   | { type: 'reset' }
   | { type: 'selectAll' }
+  | { type: 'selectFirstN'; n: number }
   | { type: 'unselectAll' }
   | {
       type: 'toggleSelected';

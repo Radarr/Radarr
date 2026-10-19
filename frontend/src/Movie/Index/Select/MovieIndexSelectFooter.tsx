@@ -26,21 +26,58 @@ interface SavePayload {
   moveFiles?: boolean;
 }
 
+interface RememberedTags {
+  tags: number[];
+}
+
+const LAST_TAGS_KEY = 'radarrMovieSelectFooterLastTags';
+
+function getRememberedTags(): RememberedTags | null {
+  try {
+    const stored = window.localStorage.getItem(LAST_TAGS_KEY);
+
+    if (!stored) {
+      return null;
+    }
+
+    const parsed = JSON.parse(stored);
+
+    if (!Array.isArray(parsed.tags) || !parsed.tags.length) {
+      return null;
+    }
+
+    return {
+      tags: parsed.tags,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function rememberTags(tags: number[]) {
+  try {
+    window.localStorage.setItem(LAST_TAGS_KEY, JSON.stringify({ tags }));
+  } catch {
+    // Ignore storage failures, the next apply will simply open the modal again.
+  }
+}
+
 const movieEditorSelector = createSelector(
   (state: AppState) => state.movies,
   (movies) => {
-    const { isSaving, isDeleting, deleteError } = movies;
+    const { isSaving, isDeleting, saveError, deleteError } = movies;
 
     return {
       isSaving,
       isDeleting,
+      saveError,
       deleteError,
     };
   }
 );
 
 function MovieIndexSelectFooter() {
-  const { isSaving, isDeleting, deleteError } =
+  const { isSaving, isDeleting, saveError, deleteError } =
     useSelector(movieEditorSelector);
 
   const isOrganizingMovies = useSelector(
@@ -55,6 +92,11 @@ function MovieIndexSelectFooter() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isSavingMovies, setIsSavingMovies] = useState(false);
   const [isSavingTags, setIsSavingTags] = useState(false);
+  const [rememberedTags, setRememberedTags] = useState<RememberedTags | null>(
+    getRememberedTags
+  );
+  const [isApplyingRememberedTags, setIsApplyingRememberedTags] =
+    useState(false);
   const previousIsDeleting = usePrevious(isDeleting);
 
   const [selectState, selectDispatch] = useSelect();
@@ -110,6 +152,11 @@ function MovieIndexSelectFooter() {
       setIsSavingTags(true);
       setIsTagsModalOpen(false);
 
+      if (tags.length) {
+        rememberTags(tags);
+        setRememberedTags({ tags });
+      }
+
       dispatch(
         saveMovieEditor({
           movieIds,
@@ -120,6 +167,24 @@ function MovieIndexSelectFooter() {
     },
     [movieIds, dispatch]
   );
+
+  const onMarkSelectedPress = useCallback(() => {
+    if (!rememberedTags) {
+      setIsTagsModalOpen(true);
+
+      return;
+    }
+
+    setIsApplyingRememberedTags(true);
+
+    dispatch(
+      saveMovieEditor({
+        movieIds,
+        tags: rememberedTags.tags,
+        applyTags: 'add',
+      })
+    );
+  }, [rememberedTags, movieIds, dispatch]);
 
   const onDeletePress = useCallback(() => {
     setIsDeleteModalOpen(true);
@@ -141,6 +206,16 @@ function MovieIndexSelectFooter() {
       selectDispatch({ type: 'unselectAll' });
     }
   }, [previousIsDeleting, isDeleting, deleteError, selectDispatch]);
+
+  useEffect(() => {
+    if (!isSaving && isApplyingRememberedTags) {
+      setIsApplyingRememberedTags(false);
+
+      if (!saveError) {
+        selectDispatch({ type: 'unselectAll' });
+      }
+    }
+  }, [isSaving, isApplyingRememberedTags, saveError, selectDispatch]);
 
   useEffect(() => {
     dispatch(fetchRootFolders());
@@ -175,6 +250,14 @@ function MovieIndexSelectFooter() {
             onPress={onTagsPress}
           >
             {translate('SetTags')}
+          </SpinnerButton>
+
+          <SpinnerButton
+            isSpinning={isSaving && isApplyingRememberedTags}
+            isDisabled={!anySelected || isOrganizingMovies}
+            onPress={onMarkSelectedPress}
+          >
+            {translate('MarkSelected')}
           </SpinnerButton>
         </div>
 
