@@ -71,6 +71,13 @@ namespace NzbDrone.Core.Test.Download.FailedDownloadServiceTests
             _trackedDownload.IsStalled = false;
             _trackedDownload.LastProgressDate = DateTime.UtcNow.AddMinutes(-minutesSinceProgress);
             _trackedDownload.DownloadItem.Status = DownloadItemStatus.Warning;
+            GivenProgress(1000, 1000);
+        }
+
+        private void GivenProgress(long totalSize, long remainingSize)
+        {
+            _trackedDownload.DownloadItem.TotalSize = totalSize;
+            _trackedDownload.DownloadItem.RemainingSize = remainingSize;
         }
 
         [Test]
@@ -177,6 +184,45 @@ namespace NzbDrone.Core.Test.Download.FailedDownloadServiceTests
 
             _trackedDownload.State.Should().Be(TrackedDownloadState.Downloading);
             _trackedDownload.IsStalled.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_not_mark_stalled_download_as_failed_pending_if_more_than_5_percent_downloaded()
+        {
+            GivenStalledTorrentTimeout(60);
+            GivenStalledDownload(120);
+            GivenProgress(1000, 940);
+
+            Subject.Check(_trackedDownload);
+
+            _trackedDownload.State.Should().Be(TrackedDownloadState.Downloading);
+            _trackedDownload.IsStalled.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_mark_stalled_download_as_failed_pending_if_at_most_5_percent_downloaded()
+        {
+            GivenStalledTorrentTimeout(60);
+            GivenStalledDownload(120);
+            GivenProgress(1000, 950);
+
+            Subject.Check(_trackedDownload);
+
+            _trackedDownload.State.Should().Be(TrackedDownloadState.FailedPending);
+            _trackedDownload.IsStalled.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_mark_stalled_download_as_failed_pending_if_size_is_still_unknown()
+        {
+            GivenStalledTorrentTimeout(60);
+            GivenStalledDownload(120);
+            GivenProgress(0, 0);
+
+            Subject.Check(_trackedDownload);
+
+            _trackedDownload.State.Should().Be(TrackedDownloadState.FailedPending);
+            _trackedDownload.IsStalled.Should().BeTrue();
         }
 
         [Test]

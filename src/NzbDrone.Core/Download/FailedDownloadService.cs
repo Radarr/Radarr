@@ -21,6 +21,10 @@ namespace NzbDrone.Core.Download
 
     public class FailedDownloadService : IFailedDownloadService
     {
+        // Past this share of its data a torrent is slow rather than dead: failing it would
+        // throw away real progress, so the stalled timeout leaves it alone.
+        private const double StalledTorrentMaxProgress = 0.05;
+
         private readonly IHistoryService _historyService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IConfigService _configService;
@@ -136,6 +140,11 @@ namespace NzbDrone.Core.Download
                 return;
             }
 
+            if (GetProgress(trackedDownload.DownloadItem) > StalledTorrentMaxProgress)
+            {
+                return;
+            }
+
             if (!trackedDownload.LastProgressDate.HasValue ||
                 trackedDownload.LastProgressDate.Value.AddMinutes(stalledTorrentTimeout) > DateTime.UtcNow)
             {
@@ -152,6 +161,17 @@ namespace NzbDrone.Core.Download
 
             trackedDownload.IsStalled = true;
             trackedDownload.State = TrackedDownloadState.FailedPending;
+        }
+
+        private static double GetProgress(DownloadClientItem downloadItem)
+        {
+            // An unknown size means the client has not even fetched the torrent's metadata yet.
+            if (downloadItem.TotalSize <= 0)
+            {
+                return 0;
+            }
+
+            return (double)(downloadItem.TotalSize - downloadItem.RemainingSize) / downloadItem.TotalSize;
         }
 
         private void PublishDownloadFailedEvent(MovieHistory historyItem, string message, TrackedDownload trackedDownload = null, bool skipRedownload = false)
