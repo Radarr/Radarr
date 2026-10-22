@@ -1,0 +1,33 @@
+using FluentMigrator;
+using NzbDrone.Core.Datastore.Migration.Framework;
+
+namespace NzbDrone.Core.Datastore.Migration
+{
+    [Migration(243)]
+    public class add_movie_versions : NzbDroneMigrationBase
+    {
+        protected override void MainDbUpgrade()
+        {
+            Create.TableForModel("MovieVersions")
+                .WithColumn("MovieId").AsInt32().Indexed()
+                .WithColumn("QualityProfileId").AsInt32()
+                .WithColumn("Path").AsString().Nullable()
+                .WithColumn("MovieFileId").AsInt32().WithDefaultValue(0);
+
+            Alter.Table("MovieFiles").AddColumn("MovieVersionId").AsInt32().WithDefaultValue(0);
+            Alter.Table("RootFolders").AddColumn("QualityProfileId").AsInt32().WithDefaultValue(0);
+
+            // Every existing movie becomes a movie with a single version.
+            Execute.Sql(@"INSERT INTO ""MovieVersions"" (""MovieId"", ""QualityProfileId"", ""Path"", ""MovieFileId"")
+                          SELECT ""Id"", ""QualityProfileId"", ""Path"", ""MovieFileId"" FROM ""Movies""");
+
+            Execute.Sql(@"UPDATE ""MovieFiles"" SET ""MovieVersionId"" = (
+                              SELECT ""MovieVersions"".""Id"" FROM ""MovieVersions""
+                              WHERE ""MovieVersions"".""MovieId"" = ""MovieFiles"".""MovieId""
+                              LIMIT 1)
+                          WHERE EXISTS (
+                              SELECT 1 FROM ""MovieVersions""
+                              WHERE ""MovieVersions"".""MovieId"" = ""MovieFiles"".""MovieId"")");
+        }
+    }
+}
