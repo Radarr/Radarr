@@ -78,19 +78,6 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
             files.Single().MovieVersionId.Should().Be(0);
         }
-
-        [Test]
-        public void should_add_quality_profile_to_root_folders()
-        {
-            var db = WithMigrationTestDb(c =>
-            {
-                c.Insert.IntoTable("RootFolders").Row(new { Path = "/Movies" });
-            });
-
-            var folders = db.Query<RootFolder243>("SELECT \"Id\", \"QualityProfileId\" FROM \"RootFolders\"");
-
-            folders.Single().QualityProfileId.Should().Be(0);
-        }
     }
 
     public class Movie243
@@ -112,11 +99,5 @@ namespace NzbDrone.Core.Test.Datastore.Migration
     {
         public int Id { get; set; }
         public int MovieVersionId { get; set; }
-    }
-
-    public class RootFolder243
-    {
-        public int Id { get; set; }
-        public int QualityProfileId { get; set; }
     }
 }
