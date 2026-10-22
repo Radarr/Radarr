@@ -14,6 +14,7 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Versions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
@@ -345,6 +346,24 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             Mocker.GetMock<IUpgradeMediaFiles>()
                   .Verify(v => v.UpgradeMovieFile(It.Is<MovieFile>(e => e.SceneName == firstDecision.LocalMovie.SceneName), _approvedDecisions.First().LocalMovie, false),
                       Times.Once());
+        }
+
+        [Test]
+        public void should_attach_imported_file_to_the_version_being_imported()
+        {
+            GivenExistingFileOnDisk();
+
+            var localMovie = _approvedDecisions.First().LocalMovie;
+            var qualityProfile = localMovie.Movie.QualityProfile;
+
+            localMovie.Movie = localMovie.Movie.ForVersion(new MovieVersion { Id = 7, MovieId = localMovie.Movie.Id, Path = @"D:\Movies 4K\30 Rock".AsOsAgnostic() });
+            localMovie.Movie.QualityProfile = qualityProfile;
+            localMovie.Path = Path.Combine(localMovie.Movie.Path, "30 Rock - S01E01 - Pilot.avi");
+
+            Subject.Import(_approvedDecisions, false);
+
+            Mocker.GetMock<IMediaFileService>()
+                  .Verify(v => v.Add(It.Is<MovieFile>(f => f.MovieVersionId == 7)), Times.Once());
         }
     }
 }

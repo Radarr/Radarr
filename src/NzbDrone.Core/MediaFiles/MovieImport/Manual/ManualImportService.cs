@@ -14,6 +14,7 @@ using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Versions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
@@ -40,6 +41,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
         private readonly IDownloadedMovieImportService _downloadedMovieImportService;
         private readonly IMediaFileService _mediaFileService;
         private readonly ILocalMovieCustomFormatCalculationService _localMovieFormatCalculator;
+        private readonly IMovieVersionService _movieVersionService;
         private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
@@ -55,6 +57,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                                    IDownloadedMovieImportService downloadedMovieImportService,
                                    IMediaFileService mediaFileService,
                                    ILocalMovieCustomFormatCalculationService localMovieFormatCalculator,
+                                   IMovieVersionService movieVersionService,
                                    ICustomFormatCalculationService formatCalculator,
                                    IEventAggregator eventAggregator,
                                    Logger logger)
@@ -70,6 +73,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             _downloadedMovieImportService = downloadedMovieImportService;
             _mediaFileService = mediaFileService;
             _localMovieFormatCalculator = localMovieFormatCalculator;
+            _movieVersionService = movieVersionService;
             _formatCalculator = formatCalculator;
             _eventAggregator = eventAggregator;
             _logger = logger;
@@ -79,7 +83,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
         {
             var movie = _movieService.GetMovie(movieId);
             var directoryInfo = new DirectoryInfo(movie.Path);
-            var movieFiles = _mediaFileService.GetFilesByMovie(movieId);
+            var movieFiles = _mediaFileService.GetFilesByMovie(movieId).ForVersionOf(movie, _movieVersionService.GetAdditionalVersionIds(movie.Id));
 
             var items = movieFiles.Select(movieFile => MapItem(movieFile, movie, directoryInfo.Name)).ToList();
 

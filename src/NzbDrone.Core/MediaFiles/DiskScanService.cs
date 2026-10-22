@@ -16,6 +16,7 @@ using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Versions;
 using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.MediaFiles
@@ -37,6 +38,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IImportApprovedMovie _importApprovedMovies;
         private readonly IConfigService _configService;
         private readonly IMovieService _movieService;
+        private readonly IMovieVersionService _movieVersionService;
         private readonly IMediaFileService _mediaFileService;
         private readonly IMediaFileTableCleanupService _mediaFileTableCleanupService;
         private readonly IRootFolderService _rootFolderService;
@@ -49,6 +51,7 @@ namespace NzbDrone.Core.MediaFiles
                                IImportApprovedMovie importApprovedMovies,
                                IConfigService configService,
                                IMovieService movieService,
+                               IMovieVersionService movieVersionService,
                                IMediaFileService mediaFileService,
                                IMediaFileTableCleanupService mediaFileTableCleanupService,
                                IRootFolderService rootFolderService,
@@ -61,6 +64,7 @@ namespace NzbDrone.Core.MediaFiles
             _importApprovedMovies = importApprovedMovies;
             _configService = configService;
             _movieService = movieService;
+            _movieVersionService = movieVersionService;
             _mediaFileService = mediaFileService;
             _mediaFileTableCleanupService = mediaFileTableCleanupService;
             _rootFolderService = rootFolderService;
@@ -76,6 +80,17 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Scan(Movie movie)
         {
+            ScanVersion(movie);
+
+            // Additional versions can live in other root folders, each one is scanned on its own
+            foreach (var versionView in _movieVersionService.GetAdditionalVersionViews(movie))
+            {
+                ScanVersion(versionView);
+            }
+        }
+
+        private void ScanVersion(Movie movie)
+        {
             var rootFolder = _rootFolderService.GetBestRootFolderPath(movie.Path);
 
             var movieFolderExists = _diskProvider.FolderExists(movie.Path);
@@ -85,14 +100,14 @@ namespace NzbDrone.Core.MediaFiles
                 if (!_diskProvider.FolderExists(rootFolder))
                 {
                     _logger.Warn("Movie's root folder ({0}) doesn't exist.", rootFolder);
-                    _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderDoesNotExist));
+                    PublishScanSkipped(movie, MovieScanSkippedReason.RootFolderDoesNotExist);
                     return;
                 }
 
                 if (_diskProvider.FolderEmpty(rootFolder))
                 {
                     _logger.Warn("Movie's root folder ({0}) is empty. Rescan will not update movies as a failsafe.", rootFolder);
-                    _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderIsEmpty));
+                    PublishScanSkipped(movie, MovieScanSkippedReason.RootFolderIsEmpty);
                     return;
                 }
             }
@@ -133,7 +148,7 @@ namespace NzbDrone.Core.MediaFiles
 
             CleanMediaFiles(movie, mediaFileList);
 
-            var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+            var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id).ForVersionOf(movie, _movieVersionService.GetAdditionalVersionIds(movie.Id));
             var unmappedFiles = MediaFileService.FilterExistingFiles(mediaFileList, movieFiles, movie);
 
             var decisionsStopwatch = Stopwatch.StartNew();
@@ -189,7 +204,24 @@ namespace NzbDrone.Core.MediaFiles
         private void CompletedScanning(Movie movie, List<string> possibleExtraFiles)
         {
             _logger.Info("Completed scanning disk for {0}", movie.Title);
+
+            // Scan event consumers (extras, post-add actions) only handle the primary version for now
+            if (movie.IsVersionView)
+            {
+                return;
+            }
+
             _eventAggregator.PublishEvent(new MovieScannedEvent(movie, possibleExtraFiles));
+        }
+
+        private void PublishScanSkipped(Movie movie, MovieScanSkippedReason reason)
+        {
+            if (movie.IsVersionView)
+            {
+                return;
+            }
+
+            _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, reason));
         }
 
         public string[] GetVideoFiles(string path, bool allDirectories = true)

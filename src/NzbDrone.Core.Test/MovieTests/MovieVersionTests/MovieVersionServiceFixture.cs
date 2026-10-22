@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using FizzWare.NBuilder;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Movies.Versions;
@@ -59,6 +62,99 @@ namespace NzbDrone.Core.Test.MovieTests.MovieVersionTests
 
             Mocker.GetMock<IMovieVersionRepository>()
                   .Verify(v => v.DeleteForMovies(It.Is<List<int>>(l => l.Count == 1 && l[0] == 5)), Times.Once());
+        }
+
+        [Test]
+        public void should_attach_file_to_its_additional_version()
+        {
+            var version = new MovieVersion { Id = 7, MovieId = _movie.Id, MovieFileId = 0 };
+            var movieFile = new MovieFile { Id = 42, MovieId = _movie.Id, MovieVersionId = 7 };
+
+            Mocker.GetMock<IMovieVersionRepository>()
+                  .Setup(s => s.Get(7))
+                  .Returns(version);
+
+            Subject.Handle(new MovieFileAddedEvent(movieFile));
+
+            Mocker.GetMock<IMovieVersionRepository>()
+                  .Verify(v => v.Update(It.Is<MovieVersion>(m => m.Id == 7 && m.MovieFileId == 42)), Times.Once());
+        }
+
+        [Test]
+        public void should_attach_file_of_the_movie_to_its_primary_version()
+        {
+            var primary = new MovieVersion { Id = 1, MovieId = _movie.Id };
+            var additional = new MovieVersion { Id = 7, MovieId = _movie.Id };
+            var movieFile = new MovieFile { Id = 42, MovieId = _movie.Id, MovieVersionId = 0 };
+
+            Mocker.GetMock<IMovieVersionRepository>()
+                  .Setup(s => s.FindByMovieId(_movie.Id))
+                  .Returns(new List<MovieVersion> { additional, primary });
+
+            Subject.Handle(new MovieFileAddedEvent(movieFile));
+
+            Mocker.GetMock<IMovieVersionRepository>()
+                  .Verify(v => v.Update(It.Is<MovieVersion>(m => m.Id == 1 && m.MovieFileId == 42)), Times.Once());
+        }
+
+        [Test]
+        public void should_detach_deleted_file_from_its_version()
+        {
+            var version = new MovieVersion { Id = 7, MovieId = _movie.Id, MovieFileId = 42 };
+            var movieFile = new MovieFile { Id = 42, MovieId = _movie.Id, MovieVersionId = 7 };
+
+            Mocker.GetMock<IMovieVersionRepository>()
+                  .Setup(s => s.FindByMovieId(_movie.Id))
+                  .Returns(new List<MovieVersion> { new MovieVersion { Id = 1, MovieId = _movie.Id, MovieFileId = 10 }, version });
+
+            Subject.Handle(new MovieFileDeletedEvent(movieFile, DeleteMediaFileReason.Manual));
+
+            Mocker.GetMock<IMovieVersionRepository>()
+                  .Verify(v => v.UpdateMany(It.Is<List<MovieVersion>>(l => l.Count == 1 && l[0].Id == 7 && l[0].MovieFileId == 0)), Times.Once());
+        }
+
+        [Test]
+        public void should_keep_primary_version_in_sync_when_movie_is_edited()
+        {
+            var primary = new MovieVersion { Id = 1, MovieId = _movie.Id, Path = "/Old/Movie (2020)", QualityProfileId = 1 };
+
+            Mocker.GetMock<IMovieVersionRepository>()
+                  .Setup(s => s.FindByMovieId(_movie.Id))
+                  .Returns(new List<MovieVersion> { primary });
+
+            Subject.Handle(new MovieEditedEvent(_movie, _movie));
+
+            Mocker.GetMock<IMovieVersionRepository>()
+                  .Verify(v => v.Update(It.Is<MovieVersion>(m => m.Id == 1 && m.Path == _movie.Path && m.QualityProfileId == _movie.QualityProfileId)), Times.Once());
+        }
+
+        [Test]
+        public void should_return_the_movie_for_a_file_of_an_unknown_version()
+        {
+            Mocker.GetMock<IMovieVersionRepository>()
+                  .Setup(s => s.FindByMovieId(_movie.Id))
+                  .Returns(new List<MovieVersion> { new MovieVersion { Id = 1, MovieId = _movie.Id } });
+
+            Subject.GetMovieForFile(_movie, new MovieFile { MovieId = _movie.Id, MovieVersionId = 99 }).Should().BeSameAs(_movie);
+        }
+
+        [Test]
+        public void should_return_a_view_for_a_file_of_an_additional_version()
+        {
+            var additional = new MovieVersion { Id = 7, MovieId = _movie.Id, Path = "/Movies 4K/Movie (2020)", QualityProfileId = 2 };
+
+            Mocker.GetMock<IMovieVersionRepository>()
+                  .Setup(s => s.FindByMovieId(_movie.Id))
+                  .Returns(new List<MovieVersion> { new MovieVersion { Id = 1, MovieId = _movie.Id }, additional });
+
+            Mocker.GetMock<IMovieVersionRepository>()
+                  .Setup(s => s.Get(7))
+                  .Returns(additional);
+
+            var view = Subject.GetMovieForFile(_movie, new MovieFile { MovieId = _movie.Id, MovieVersionId = 7 });
+
+            view.MovieVersionId.Should().Be(7);
+            view.Path.Should().Be("/Movies 4K/Movie (2020)");
         }
     }
 }
