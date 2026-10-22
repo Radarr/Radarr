@@ -16,7 +16,6 @@ namespace NzbDrone.Core.Datastore.Migration
 
             // 0 = file of the movie's primary version, so existing files need no update.
             Alter.Table("MovieFiles").AddColumn("MovieVersionId").AsInt32().WithDefaultValue(0);
-            Alter.Table("RootFolders").AddColumn("QualityProfileId").AsInt32().WithDefaultValue(0);
 
             // Every existing movie becomes a movie with a single version.
             Execute.Sql(@"INSERT INTO ""MovieVersions"" (""MovieId"", ""QualityProfileId"", ""Path"", ""MovieFileId"")
