@@ -13,6 +13,7 @@ namespace NzbDrone.Core.MediaFiles
     public class MovieFile : ModelBase
     {
         public int MovieId { get; set; }
+        public int MovieVersionId { get; set; }
         public string RelativePath { get; set; }
         public string Path { get; set; }
         public long Size { get; set; }
