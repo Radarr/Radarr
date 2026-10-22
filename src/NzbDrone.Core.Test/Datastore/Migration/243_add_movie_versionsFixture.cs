@@ -12,27 +12,25 @@ namespace NzbDrone.Core.Test.Datastore.Migration
     [TestFixture]
     public class add_movie_versionsFixture : MigrationTest<add_movie_versions>
     {
-        private void InsertMovie(add_movie_versions c, int id, int qualityProfileId, string path, int movieFileId)
+        private void InsertMovie(add_movie_versions c, int metadataId, int qualityProfileId, string path, int movieFileId)
         {
             c.Insert.IntoTable("Movies").Row(new
             {
-                Id = id,
                 Monitored = true,
                 MinimumAvailability = 4,
                 QualityProfileId = qualityProfileId,
                 MovieFileId = movieFileId,
-                MovieMetadataId = id,
+                MovieMetadataId = metadataId,
                 Path = path,
                 Added = DateTime.UtcNow,
                 Tags = "[]"
             });
         }
 
-        private void InsertMovieFile(add_movie_versions c, int id, int movieId)
+        private void InsertMovieFile(add_movie_versions c, int movieId)
         {
             c.Insert.IntoTable("MovieFiles").Row(new
             {
-                Id = id,
                 MovieId = movieId,
                 RelativePath = "Movie.mkv",
                 Quality = new { }.ToJson(),
@@ -50,38 +48,35 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             {
                 InsertMovie(c, 1, 2, "/Movies/Movie One (2020)", 10);
                 InsertMovie(c, 2, 3, "/Movies/Movie Two (2021)", 0);
-                InsertMovieFile(c, 10, 1);
             });
 
-            var versions = db.Query<MovieVersion243>("SELECT * FROM \"MovieVersions\" ORDER BY \"MovieId\"");
+            var movies = db.Query<Movie243>("SELECT \"Id\", \"Path\" FROM \"Movies\"");
+            var versions = db.Query<MovieVersion243>("SELECT * FROM \"MovieVersions\"");
 
             versions.Should().HaveCount(2);
 
-            versions[0].MovieId.Should().Be(1);
-            versions[0].QualityProfileId.Should().Be(2);
-            versions[0].Path.Should().Be("/Movies/Movie One (2020)");
-            versions[0].MovieFileId.Should().Be(10);
+            var first = versions.Single(v => v.MovieId == movies.Single(m => m.Path == "/Movies/Movie One (2020)").Id);
+            first.QualityProfileId.Should().Be(2);
+            first.Path.Should().Be("/Movies/Movie One (2020)");
+            first.MovieFileId.Should().Be(10);
 
-            versions[1].MovieId.Should().Be(2);
-            versions[1].QualityProfileId.Should().Be(3);
-            versions[1].MovieFileId.Should().Be(0);
+            var second = versions.Single(v => v.MovieId == movies.Single(m => m.Path == "/Movies/Movie Two (2021)").Id);
+            second.QualityProfileId.Should().Be(3);
+            second.MovieFileId.Should().Be(0);
         }
 
         [Test]
-        public void should_link_existing_movie_files_to_their_version()
+        public void should_leave_existing_movie_files_on_the_primary_version()
         {
             var db = WithMigrationTestDb(c =>
             {
-                InsertMovie(c, 1, 2, "/Movies/Movie One (2020)", 10);
-                InsertMovieFile(c, 10, 1);
-                InsertMovieFile(c, 11, 99);
+                InsertMovie(c, 1, 2, "/Movies/Movie One (2020)", 1);
+                InsertMovieFile(c, 1);
             });
 
-            var version = db.Query<MovieVersion243>("SELECT * FROM \"MovieVersions\"").Single();
-            var files = db.Query<MovieFile243>("SELECT \"Id\", \"MovieVersionId\" FROM \"MovieFiles\" ORDER BY \"Id\"");
+            var files = db.Query<MovieFile243>("SELECT \"Id\", \"MovieVersionId\" FROM \"MovieFiles\"");
 
-            files.Single(f => f.Id == 10).MovieVersionId.Should().Be(version.Id);
-            files.Single(f => f.Id == 11).MovieVersionId.Should().Be(0);
+            files.Single().MovieVersionId.Should().Be(0);
         }
 
         [Test]
@@ -96,6 +91,12 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
             folders.Single().QualityProfileId.Should().Be(0);
         }
+    }
+
+    public class Movie243
+    {
+        public int Id { get; set; }
+        public string Path { get; set; }
     }
 
     public class MovieVersion243
