@@ -100,7 +100,8 @@ import MovieReleaseDates from './MovieReleaseDates';
 import MovieStatusLabel from './MovieStatusLabel';
 import MovieTags from './MovieTags';
 import MovieTitlesTable from './Titles/MovieTitlesTable';
-import MovieVersionsSection from './Versions/MovieVersionsSection';
+import AddMovieVersionModal from './Versions/AddMovieVersionModal';
+import useMovieVersions from './Versions/useMovieVersions';
 import styles from './MovieDetails.css';
 
 const defaultFontSize = parseInt(fonts.defaultFontSize);
@@ -122,6 +123,7 @@ function createMovieFilesSelector() {
         isMovieFilesPopulated: isPopulated,
         movieFilesError: error,
         hasMovieFiles,
+        movieFileIds: items.map((item) => item.id).join(','),
       };
     }
   );
@@ -164,9 +166,8 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
   const movie = useMovie(movieId);
   const allMovies = useSelector(createAllMoviesSelector());
 
-  const { isMovieFilesFetching, movieFilesError, hasMovieFiles } = useSelector(
-    createMovieFilesSelector()
-  );
+  const { isMovieFilesFetching, movieFilesError, hasMovieFiles, movieFileIds } =
+    useSelector(createMovieFilesSelector());
   const { isExtraFilesFetching, extraFilesError } = useSelector(
     createExtraFilesSelector()
   );
@@ -264,6 +265,8 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
   const [isMovieHistoryModalOpen, setIsMovieHistoryModalOpen] = useState(false);
   const [isAddVersionModalOpen, setIsAddVersionModalOpen] = useState(false);
   const showAdvancedSettings = useShowAdvancedSettings();
+  const { versions, refetchVersions, removeVersion } =
+    useMovieVersions(movieId);
   const [titleRef, { width: titleWidth }] = useMeasure();
   const [overviewRef, { height: overviewHeight }] = useMeasure();
   const wasRefreshing = usePrevious(isRefreshing);
@@ -280,6 +283,16 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
   const handleAddVersionModalClose = useCallback(() => {
     setIsAddVersionModalOpen(false);
   }, []);
+
+  const handleVersionAdded = useCallback(() => {
+    setIsAddVersionModalOpen(false);
+    refetchVersions();
+  }, [refetchVersions]);
+
+  useEffect(() => {
+    // Files are attached to their version on import, keep the grouping up to date
+    refetchVersions();
+  }, [movieFileIds, refetchVersions]);
 
   const handleOrganizeModalClose = useCallback(() => {
     setIsOrganizeModalOpen(false);
@@ -927,16 +940,14 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
           ) : null}
 
           <FieldSet legend={translate('Files')}>
-            <MovieFileEditorTable movieId={id} />
+            <MovieFileEditorTable
+              movieId={id}
+              versions={versions}
+              onRemoveVersionPress={removeVersion}
+            />
 
             <ExtraFileTable movieId={id} />
           </FieldSet>
-
-          <MovieVersionsSection
-            movieId={id}
-            isAddVersionModalOpen={isAddVersionModalOpen}
-            onAddVersionModalClose={handleAddVersionModalClose}
-          />
 
           <FieldSet legend={translate('Cast')}>
             <MovieCastPosters isSmallScreen={isSmallScreen} />
@@ -955,6 +966,13 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
           isOpen={isOrganizeModalOpen}
           movieId={id}
           onModalClose={handleOrganizeModalClose}
+        />
+
+        <AddMovieVersionModal
+          isOpen={isAddVersionModalOpen}
+          movieId={id}
+          onVersionAdded={handleVersionAdded}
+          onModalClose={handleAddVersionModalClose}
         />
 
         <EditMovieModal

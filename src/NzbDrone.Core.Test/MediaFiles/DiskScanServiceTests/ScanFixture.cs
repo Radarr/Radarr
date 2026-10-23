@@ -533,5 +533,25 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
             Mocker.GetMock<IMediaFileTableCleanupService>()
                   .Verify(v => v.Clean(It.Is<Movie>(m => m.IsVersionView), It.IsAny<List<string>>()), Times.Never());
         }
+
+        [Test]
+        public void should_not_import_file_of_another_version_sharing_the_movie_folder()
+        {
+            GivenMovieFolder();
+
+            var movieFile = new MovieFile { Id = 1, MovieId = _movie.Id, MovieVersionId = 0, RelativePath = "Movie.mkv" };
+
+            Mocker.GetMock<IMediaFileService>()
+                  .Setup(s => s.GetFilesByMovie(It.IsAny<int>()))
+                  .Returns(new List<MovieFile> { movieFile });
+
+            GivenFiles(new List<string> { Path.Combine(_movie.Path, "Movie.mkv") });
+            GivenAdditionalVersion(_movie.Path);
+
+            Subject.Scan(_movie);
+
+            Mocker.GetMock<IMakeImportDecision>()
+                  .Verify(v => v.GetImportDecisions(It.Is<List<string>>(l => l.Count == 0), It.Is<Movie>(m => m.MovieVersionId == 7), false), Times.Once());
+        }
     }
 }

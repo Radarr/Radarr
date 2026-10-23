@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
+using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
@@ -80,16 +81,17 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Scan(Movie movie)
         {
-            ScanVersion(movie);
-
             // Additional versions can live in other root folders, each one is scanned on its own
-            foreach (var versionView in _movieVersionService.GetAdditionalVersionViews(movie))
+            var versions = new List<Movie> { movie };
+            versions.AddRange(_movieVersionService.GetAdditionalVersionViews(movie));
+
+            foreach (var version in versions)
             {
-                ScanVersion(versionView);
+                ScanVersion(version, versions);
             }
         }
 
-        private void ScanVersion(Movie movie)
+        private void ScanVersion(Movie movie, List<Movie> allVersions)
         {
             var rootFolder = _rootFolderService.GetBestRootFolderPath(movie.Path);
 
@@ -148,8 +150,16 @@ namespace NzbDrone.Core.MediaFiles
 
             CleanMediaFiles(movie, mediaFileList);
 
-            var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id).ForVersionOf(movie, _movieVersionService.GetAdditionalVersionIds(movie.Id));
+            var allMovieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+            var additionalVersionIds = allVersions.Where(v => v.IsVersionView).Select(v => v.MovieVersionId).ToList();
+            var movieFiles = allMovieFiles.ForVersionOf(movie, additionalVersionIds);
             var unmappedFiles = MediaFileService.FilterExistingFiles(mediaFileList, movieFiles, movie);
+
+            // Versions can share a folder: a file already tracked by another version is never imported twice
+            var otherVersionsFiles = allVersions.Where(v => v.MovieVersionId != movie.MovieVersionId)
+                                                .SelectMany(v => allMovieFiles.ForVersionOf(v, additionalVersionIds).Select(f => Path.Combine(v.Path, f.RelativePath)));
+
+            unmappedFiles = unmappedFiles.Except(otherVersionsFiles, PathEqualityComparer.Instance).ToList();
 
             var decisionsStopwatch = Stopwatch.StartNew();
             var decisions = _importDecisionMaker.GetImportDecisions(unmappedFiles, movie, false);
