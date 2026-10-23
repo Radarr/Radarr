@@ -17,8 +17,6 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex EditionRegex = new Regex(@"\(?\b(?<edition>(((Recut.|Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Extended|Despecialized|(Special|Rouge|Final|Assembly|Imperial|Diamond|Signature|Hunter|Rekall)(?=(.(Cut|Edition|Version)))|\d{2,3}(th)?.Anniversary)(?:.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|Open.?Matte|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|Open?.Matte|IMAX|Fan.?Edit|Restored|((2|3|4)in1))))))\b\)?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex ReportEditionRegex = new Regex(@"^.+?" + EditionRegex, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
         private static readonly Regex HardcodedSubsRegex = new Regex(@"\b((?<hcsub>(\w+(?<!SOFT|MULTI|HORRIBLE)SUBS?))|(?<hc>(HC|SUBBED)))\b",
                                                         RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
@@ -357,15 +355,13 @@ namespace NzbDrone.Core.Parser
 
         public static string ParseEdition(string languageTitle)
         {
-            var editionMatch = ReportEditionRegex.Match(languageTitle);
+            var editionMatches = EditionRegex.Matches(languageTitle);
 
-            if (editionMatch.Success && editionMatch.Groups["edition"].Value != null &&
-                editionMatch.Groups["edition"].Value.IsNotNullOrWhiteSpace())
-            {
-                return editionMatch.Groups["edition"].Value.Replace(".", " ");
-            }
+            var editions = editionMatches
+                .Select(m => m.Groups["edition"].Value)
+                .Where(e => e.IsNotNullOrWhiteSpace());
 
-            return "";
+            return string.Join(" ", editions).Replace(".", " ");
         }
 
         public static string ReplaceGermanUmlauts(string s)
