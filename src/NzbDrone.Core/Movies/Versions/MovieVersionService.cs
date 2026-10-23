@@ -1,6 +1,10 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using NLog;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
@@ -19,7 +23,10 @@ namespace NzbDrone.Core.Movies.Versions
         IEnumerable<Movie> GetAdditionalVersionViews(Movie movie);
         IEnumerable<int> GetAdditionalVersionIds(int movieId);
         Movie GetMovieForFile(Movie movie, MovieFile movieFile);
+        Movie GetVersionView(Movie movie, int movieVersionId);
         MovieVersion Add(MovieVersion version);
+        MovieVersion AddVersion(Movie movie, int qualityProfileId, string rootFolderPath);
+        void RemoveVersion(int id);
         MovieVersion Update(MovieVersion version);
         void Delete(int id);
     }
@@ -107,9 +114,62 @@ namespace NzbDrone.Core.Movies.Versions
             return BuildView(movie, version);
         }
 
+        public Movie GetVersionView(Movie movie, int movieVersionId)
+        {
+            return BuildView(movie, _repository.Get(movieVersionId));
+        }
+
         public MovieVersion Add(MovieVersion version)
         {
             return _repository.Insert(version);
+        }
+
+        // Without a root folder the version shares the movie's folder, otherwise it uses the movie's folder name in that root folder
+        public MovieVersion AddVersion(Movie movie, int qualityProfileId, string rootFolderPath)
+        {
+            if (_qualityProfileRepository.Get(qualityProfileId) == null)
+            {
+                throw new NzbDroneClientException(HttpStatusCode.BadRequest, "Quality profile {0} does not exist", qualityProfileId);
+            }
+
+            var path = rootFolderPath.IsNullOrWhiteSpace()
+                ? movie.Path
+                : Path.Combine(rootFolderPath, new DirectoryInfo(movie.Path).Name);
+
+            var existing = _repository.FindByMovieId(movie.Id);
+
+            if (existing.Any(v => v.QualityProfileId == qualityProfileId && v.Path.PathEquals(path)))
+            {
+                throw new NzbDroneClientException(HttpStatusCode.Conflict, "{0} already has a version with this quality profile in {1}", movie.Title, path);
+            }
+
+            _logger.Info("Adding version of {0} with quality profile {1} in {2}", movie, qualityProfileId, path);
+
+            return _repository.Insert(new MovieVersion
+            {
+                MovieId = movie.Id,
+                QualityProfileId = qualityProfileId,
+                Path = path
+            });
+        }
+
+        // The primary version can't be removed, and a version keeps its file on disk so it must be deleted first
+        public void RemoveVersion(int id)
+        {
+            var version = _repository.Get(id);
+            var primary = GetPrimary(version.MovieId);
+
+            if (primary.Id == version.Id)
+            {
+                throw new NzbDroneClientException(HttpStatusCode.BadRequest, "The primary version of a movie can't be removed");
+            }
+
+            if (version.HasFile)
+            {
+                throw new NzbDroneClientException(HttpStatusCode.Conflict, "Delete the file of this version before removing it");
+            }
+
+            _repository.Delete(version);
         }
 
         public MovieVersion Update(MovieVersion version)

@@ -32,6 +32,7 @@ import Tooltip from 'Components/Tooltip/Tooltip';
 import TraktRating from 'Components/TraktRating';
 import useMeasure from 'Helpers/Hooks/useMeasure';
 import usePrevious from 'Helpers/Hooks/usePrevious';
+import useShowAdvancedSettings from 'Helpers/Hooks/useShowAdvancedSettings';
 import {
   icons,
   kinds,
@@ -99,6 +100,7 @@ import MovieReleaseDates from './MovieReleaseDates';
 import MovieStatusLabel from './MovieStatusLabel';
 import MovieTags from './MovieTags';
 import MovieTitlesTable from './Titles/MovieTitlesTable';
+import MovieVersionsSection from './Versions/MovieVersionsSection';
 import styles from './MovieDetails.css';
 
 const defaultFontSize = parseInt(fonts.defaultFontSize);
@@ -260,6 +262,8 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
   const [isEditMovieModalOpen, setIsEditMovieModalOpen] = useState(false);
   const [isDeleteMovieModalOpen, setIsDeleteMovieModalOpen] = useState(false);
   const [isMovieHistoryModalOpen, setIsMovieHistoryModalOpen] = useState(false);
+  const [isAddVersionModalOpen, setIsAddVersionModalOpen] = useState(false);
+  const showAdvancedSettings = useShowAdvancedSettings();
   const [titleRef, { width: titleWidth }] = useMeasure();
   const [overviewRef, { height: overviewHeight }] = useMeasure();
   const wasRefreshing = usePrevious(isRefreshing);
@@ -267,6 +271,14 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
 
   const handleOrganizePress = useCallback(() => {
     setIsOrganizeModalOpen(true);
+  }, []);
+
+  const handleAddVersionPress = useCallback(() => {
+    setIsAddVersionModalOpen(true);
+  }, []);
+
+  const handleAddVersionModalClose = useCallback(() => {
+    setIsAddVersionModalOpen(false);
   }, []);
 
   const handleOrganizeModalClose = useCallback(() => {
@@ -609,6 +621,14 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
             onPress={handleMovieHistoryPress}
           />
 
+          {showAdvancedSettings ? (
+            <PageToolbarButton
+              label={translate('AddVersion')}
+              iconName={icons.ADD}
+              onPress={handleAddVersionPress}
+            />
+          ) : null}
+
           <PageToolbarSeparator />
 
           <PageToolbarButton
@@ -911,6 +931,12 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
 
             <ExtraFileTable movieId={id} />
           </FieldSet>
+
+          <MovieVersionsSection
+            movieId={id}
+            isAddVersionModalOpen={isAddVersionModalOpen}
+            onAddVersionModalClose={handleAddVersionModalClose}
+          />
 
           <FieldSet legend={translate('Cast')}>
             <MovieCastPosters isSmallScreen={isSmallScreen} />
