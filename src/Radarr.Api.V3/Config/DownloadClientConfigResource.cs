@@ -12,6 +12,7 @@ namespace Radarr.Api.V3.Config
 
         public bool AutoRedownloadFailed { get; set; }
         public bool AutoRedownloadFailedFromInteractiveSearch { get; set; }
+        public int StalledTorrentTimeout { get; set; }
     }
 
     public static class DownloadClientConfigResourceMapper
@@ -26,7 +27,8 @@ namespace Radarr.Api.V3.Config
                 CheckForFinishedDownloadInterval = model.CheckForFinishedDownloadInterval,
 
                 AutoRedownloadFailed = model.AutoRedownloadFailed,
-                AutoRedownloadFailedFromInteractiveSearch = model.AutoRedownloadFailedFromInteractiveSearch
+                AutoRedownloadFailedFromInteractiveSearch = model.AutoRedownloadFailedFromInteractiveSearch,
+                StalledTorrentTimeout = model.StalledTorrentTimeout
             };
         }
     }
