@@ -2054,5 +2054,8 @@
     "Saturday": "Lauantai",
     "Thursday": "Torstai",
     "Tuesday": "Tiistai",
-    "Wednesday": "Keskiviikko"
+    "Wednesday": "Keskiviikko",
+    "DisabledForLocalhost": "Ei käytössä localhostissa",
+    "SslKeyPath": "SSL-avaimen sijainti",
+    "SslKeyPathHelpText": "Pem-tiedoston kanssa käytettävän avaintiedoston sijainti."
 }

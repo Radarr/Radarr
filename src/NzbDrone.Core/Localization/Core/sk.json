@@ -1563,5 +1563,6 @@
     "Saturday": "Sobota",
     "Thursday": "Štvrtok",
     "Tuesday": "Utorok",
-    "Wednesday": "Streda"
+    "Wednesday": "Streda",
+    "DisabledForLocalhost": "Zakázané pre localhost"
 }
