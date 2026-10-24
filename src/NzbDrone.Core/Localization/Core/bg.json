@@ -1896,5 +1896,7 @@
     "Saturday": "Събота",
     "Thursday": "Четвъртък",
     "Tuesday": "Вторник",
-    "Wednesday": "Сряда"
+    "Wednesday": "Сряда",
+    "SslKeyPath": "Път до SSL ключа",
+    "SslKeyPathHelpText": "Път до файла с ключ, използван с pem файл"
 }

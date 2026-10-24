@@ -2047,5 +2047,7 @@
     "ImportListsSimklSettingsUserListTypeDropped": "Втрачено",
     "ImportListsSimklSettingsUserListTypeHold": "Утримано",
     "ImportListsSimklSettingsUserListTypePlanToWatch": "Планую подивитися",
-    "ImportListsSimklSettingsUserListTypeWatching": "Дивлюся"
+    "ImportListsSimklSettingsUserListTypeWatching": "Дивлюся",
+    "SslKeyPath": "Шлях до SSL-ключа",
+    "SslKeyPathHelpText": "Шлях до файлу ключа, що використовується з pem-файлом"
 }
