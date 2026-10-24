@@ -22,6 +22,7 @@ namespace NzbDrone.Core.Movies.Versions
         MovieVersion GetPrimary(int movieId);
         IEnumerable<Movie> GetAdditionalVersionViews(Movie movie);
         IEnumerable<int> GetAdditionalVersionIds(int movieId);
+        IEnumerable<int> GetVersionIdsWithPath(int movieId, string path);
         Movie GetMovieForFile(Movie movie, MovieFile movieFile);
         Movie GetVersionView(Movie movie, int movieVersionId);
         MovieVersion Add(MovieVersion version);
@@ -93,6 +94,16 @@ namespace NzbDrone.Core.Movies.Versions
         public IEnumerable<int> GetAdditionalVersionIds(int movieId)
         {
             return GetAdditionalVersions(movieId).Select(v => v.Id).ToList();
+        }
+
+        // Versions stored in the given folder, 0 standing for the primary version
+        public IEnumerable<int> GetVersionIdsWithPath(int movieId, string path)
+        {
+            var versions = _repository.FindByMovieId(movieId).OrderBy(v => v.Id).ToList();
+
+            return versions.Where(v => v.Path.PathEquals(path))
+                           .Select(v => v.Id == versions[0].Id ? 0 : v.Id)
+                           .ToList();
         }
 
         public Movie GetMovieForFile(Movie movie, MovieFile movieFile)

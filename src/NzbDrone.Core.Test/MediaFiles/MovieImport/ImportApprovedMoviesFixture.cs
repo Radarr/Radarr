@@ -365,5 +365,38 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             Mocker.GetMock<IMediaFileService>()
                   .Verify(v => v.Add(It.Is<MovieFile>(f => f.MovieVersionId == 7)), Times.Once());
         }
+
+        [Test]
+        public void should_replace_record_of_another_version_sharing_the_folder_when_reimporting_existing_file()
+        {
+            var localMovie = _approvedDecisions.First().LocalMovie;
+            var movie = localMovie.Movie;
+            var qualityProfile = movie.QualityProfile;
+
+            var existingRecord = new MovieFile { Id = 10, MovieId = movie.Id, MovieVersionId = 0, RelativePath = "30 Rock - S01E01 - Pilot.avi" };
+
+            Mocker.GetMock<IMediaFileService>()
+                  .Setup(s => s.GetFilesWithRelativePath(movie.Id, existingRecord.RelativePath))
+                  .Returns(new List<MovieFile> { existingRecord });
+
+            Mocker.GetMock<IMovieVersionService>()
+                  .Setup(s => s.GetAdditionalVersionIds(movie.Id))
+                  .Returns(new List<int> { 7 });
+
+            Mocker.GetMock<IMovieVersionService>()
+                  .Setup(s => s.GetVersionIdsWithPath(movie.Id, movie.Path))
+                  .Returns(new List<int> { 0, 7 });
+
+            localMovie.Movie = movie.ForVersion(new MovieVersion { Id = 7, MovieId = movie.Id, Path = movie.Path });
+            localMovie.Movie.QualityProfile = qualityProfile;
+
+            Subject.Import(_approvedDecisions, false);
+
+            Mocker.GetMock<IMediaFileService>()
+                  .Verify(v => v.Delete(existingRecord, DeleteMediaFileReason.ManualOverride), Times.Once());
+
+            Mocker.GetMock<IMediaFileService>()
+                  .Verify(v => v.Add(It.Is<MovieFile>(f => f.MovieVersionId == 7)), Times.Once());
+        }
     }
 }
