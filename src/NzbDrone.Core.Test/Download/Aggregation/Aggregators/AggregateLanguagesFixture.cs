@@ -65,6 +65,28 @@ namespace NzbDrone.Core.Test.Download.Aggregation.Aggregators
         }
 
         [Test]
+        public void should_use_movie_original_language_for_vo_release()
+        {
+            _movie.Title = "Violet Evergarden The Movie";
+            _movie.MovieMetadata.Value.OriginalLanguage = Language.Japanese;
+            _remoteMovie.ParsedMovieInfo = Parser.Parser.ParseMovieTitle("Violet Evergarden The Movie (2020).WEBDL-1080p.x264.VO-SONJE03.mkv");
+
+            _remoteMovie.ParsedMovieInfo.Should().NotBeNull();
+            Subject.Aggregate(_remoteMovie).Languages.Should().Equal(Language.Japanese);
+        }
+
+        [Test]
+        public void should_keep_french_and_movie_original_language_for_vff_vo_release()
+        {
+            _movie.Title = "Violet Evergarden The Movie";
+            _movie.MovieMetadata.Value.OriginalLanguage = Language.Japanese;
+            _remoteMovie.ParsedMovieInfo = Parser.Parser.ParseMovieTitle("Violet Evergarden The Movie (2020).WEBDL-1080p.x264.VFF.VO-SONJE03.mkv");
+
+            _remoteMovie.ParsedMovieInfo.Should().NotBeNull();
+            Subject.Aggregate(_remoteMovie).Languages.Should().BeEquivalentTo(new[] { Language.French, Language.Japanese });
+        }
+
+        [Test]
         public void should_return_multi_languages_when_indexer_id_has_multi_languages_configuration()
         {
             var releaseTitle = "Series.Title.S01E01.MULTi.1080p.WEB.H265-RlsGroup";
