@@ -11,6 +11,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
+using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
@@ -28,6 +29,7 @@ namespace NzbDrone.Core.Extras.Metadata
         private readonly IHttpClient _httpClient;
         private readonly IMediaFileAttributeService _mediaFileAttributeService;
         private readonly IMetadataFileService _metadataFileService;
+        private readonly IMapCoversToLocal _mediaCoverService;
         private readonly Logger _logger;
 
         public MetadataService(IConfigService configService,
@@ -40,6 +42,7 @@ namespace NzbDrone.Core.Extras.Metadata
                                IHttpClient httpClient,
                                IMediaFileAttributeService mediaFileAttributeService,
                                IMetadataFileService metadataFileService,
+                               IMapCoversToLocal mediaCoverService,
                                Logger logger)
             : base(configService, diskProvider, diskTransferService, logger)
         {
@@ -52,12 +55,13 @@ namespace NzbDrone.Core.Extras.Metadata
             _httpClient = httpClient;
             _mediaFileAttributeService = mediaFileAttributeService;
             _metadataFileService = metadataFileService;
+            _mediaCoverService = mediaCoverService;
             _logger = logger;
         }
 
         public override int Order => 0;
 
-        public override IEnumerable<ExtraFile> CreateAfterMediaCoverUpdate(Movie movie)
+        public override IEnumerable<ExtraFile> CreateAfterMediaCoverUpdate(Movie movie, bool posterReplacementChanged)
         {
             var metadataFiles = _metadataFileService.GetFilesByMovie(movie.Id);
             _cleanMetadataService.Clean(movie);
@@ -74,7 +78,7 @@ namespace NzbDrone.Core.Extras.Metadata
             {
                 var consumerFiles = GetMetadataFilesForConsumer(consumer, metadataFiles);
 
-                files.AddRange(ProcessMovieImages(consumer, movie, consumerFiles));
+                files.AddRange(ProcessMovieImages(consumer, movie, consumerFiles, posterReplacementChanged));
             }
 
             _metadataFileService.Upsert(files);
@@ -259,21 +263,34 @@ namespace NzbDrone.Core.Extras.Metadata
             return metadata;
         }
 
-        private List<MetadataFile> ProcessMovieImages(IMetadata consumer, Movie movie, List<MetadataFile> existingMetadataFiles)
+        private List<MetadataFile> ProcessMovieImages(IMetadata consumer, Movie movie, List<MetadataFile> existingMetadataFiles, bool overwritePoster = false)
         {
             var result = new List<MetadataFile>();
+            var posterPath = _mediaCoverService.GetCoverPath(movie.Id, MediaCoverTypes.Poster);
 
             foreach (var image in consumer.MovieImages(movie))
             {
                 var fullPath = Path.Combine(movie.Path, image.RelativePath);
+                var overwrite = false;
 
                 if (_diskProvider.FileExists(fullPath))
                 {
-                    _logger.Debug("Movie image already exists: {0}", fullPath);
-                    continue;
-                }
+                    // Only overwrite posters Radarr is tracking, never an image it doesn't know about
+                    if (!overwritePoster ||
+                        !posterPath.PathEquals(image.Url) ||
+                        !existingMetadataFiles.Any(c => c.Type == MetadataType.MovieImage && c.RelativePath == image.RelativePath))
+                    {
+                        _logger.Debug("Movie image already exists: {0}", fullPath);
+                        continue;
+                    }
 
-                _otherExtraFileRenamer.RenameOtherExtraFile(movie, fullPath);
+                    _logger.Debug("Updating movie poster after poster replacement change: {0}", fullPath);
+                    overwrite = true;
+                }
+                else
+                {
+                    _otherExtraFileRenamer.RenameOtherExtraFile(movie, fullPath);
+                }
 
                 var metadata = GetMetadataFile(movie, existingMetadataFiles, c => c.Type == MetadataType.MovieImage &&
                                                                                    c.RelativePath == image.RelativePath) ??
@@ -286,7 +303,7 @@ namespace NzbDrone.Core.Extras.Metadata
                                    Extension = Path.GetExtension(fullPath)
                                };
 
-                DownloadImage(movie, image);
+                DownloadImage(movie, image, overwrite);
 
                 result.Add(metadata);
             }
@@ -294,7 +311,7 @@ namespace NzbDrone.Core.Extras.Metadata
             return result;
         }
 
-        private void DownloadImage(Movie movie, ImageFileResult image)
+        private void DownloadImage(Movie movie, ImageFileResult image, bool overwrite = false)
         {
             var fullPath = Path.Combine(movie.Path, image.RelativePath);
             var downloaded = true;
@@ -307,7 +324,7 @@ namespace NzbDrone.Core.Extras.Metadata
                 }
                 else if (_diskProvider.FileExists(image.Url))
                 {
-                    _diskProvider.CopyFile(image.Url, fullPath);
+                    _diskProvider.CopyFile(image.Url, fullPath, overwrite);
                 }
                 else
                 {
