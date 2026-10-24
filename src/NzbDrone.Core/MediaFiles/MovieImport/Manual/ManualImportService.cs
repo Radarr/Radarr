@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
+using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
@@ -25,7 +26,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
     {
         List<ManualImportItem> GetMediaFiles(int movieId);
         List<ManualImportItem> GetMediaFiles(string path, string downloadId, int? movieId, bool filterExistingFiles);
-        ManualImportItem ReprocessItem(string path, string downloadId, int movieId, string releaseGroup, QualityModel quality, List<Language> languages, int indexerFlags);
+        ManualImportItem ReprocessItem(string path, string downloadId, int movieId, int movieVersionId, string releaseGroup, QualityModel quality, List<Language> languages, int indexerFlags);
     }
 
     public class ManualImportService : IExecute<ManualImportCommand>, IManualImportService
@@ -82,28 +83,54 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
         public List<ManualImportItem> GetMediaFiles(int movieId)
         {
             var movie = _movieService.GetMovie(movieId);
-            var directoryInfo = new DirectoryInfo(movie.Path);
-            var movieFiles = _mediaFileService.GetFilesByMovie(movieId).ForVersionOf(movie, _movieVersionService.GetAdditionalVersionIds(movie.Id));
 
-            var items = movieFiles.Select(movieFile => MapItem(movieFile, movie, directoryInfo.Name)).ToList();
+            // Every version of the movie, each one with its own folder
+            var versions = new List<Movie> { movie };
+            versions.AddRange(_movieVersionService.GetAdditionalVersionViews(movie));
 
-            var mediaFiles = _diskScanService.FilterPaths(movie.Path, _diskScanService.GetVideoFiles(movie.Path)).ToList();
-            var unmappedFiles = MediaFileService.FilterExistingFiles(mediaFiles, movieFiles, movie);
+            var additionalVersionIds = versions.Where(v => v.IsVersionView).Select(v => v.MovieVersionId).ToList();
+            var allMovieFiles = _mediaFileService.GetFilesByMovie(movieId);
+            var items = new List<ManualImportItem>();
 
-            items.AddRange(unmappedFiles.Select(file =>
-                new ManualImportItem
+            foreach (var version in versions)
+            {
+                var directoryInfo = new DirectoryInfo(version.Path);
+                var movieFiles = allMovieFiles.ForVersionOf(version, additionalVersionIds);
+
+                items.AddRange(movieFiles.Select(movieFile => MapItem(movieFile, version, directoryInfo.Name)));
+            }
+
+            // Files on disk that aren't tracked yet, listed once even when several versions share a folder
+            var listedPaths = new HashSet<string>(items.Select(i => i.Path), PathEqualityComparer.Instance);
+
+            foreach (var version in versions)
+            {
+                if (version.IsVersionView && !_diskProvider.FolderExists(version.Path))
                 {
-                    Path = Path.Combine(movie.Path, file),
-                    FolderName = directoryInfo.Name,
-                    RelativePath = movie.Path.GetRelativePath(file),
-                    Name = Path.GetFileNameWithoutExtension(file),
-                    Movie = movie,
-                    ReleaseGroup = string.Empty,
-                    Quality = new QualityModel(Quality.Unknown),
-                    Languages = new List<Language> { Language.Unknown },
-                    Size = _diskProvider.GetFileSize(file),
-                    Rejections = Enumerable.Empty<ImportRejection>()
-                }));
+                    continue;
+                }
+
+                var directoryInfo = new DirectoryInfo(version.Path);
+                var mediaFiles = _diskScanService.FilterPaths(version.Path, _diskScanService.GetVideoFiles(version.Path)).ToList();
+
+                foreach (var file in mediaFiles.Where(f => listedPaths.Add(f)))
+                {
+                    items.Add(new ManualImportItem
+                    {
+                        Path = Path.Combine(version.Path, file),
+                        FolderName = directoryInfo.Name,
+                        RelativePath = version.Path.GetRelativePath(file),
+                        Name = Path.GetFileNameWithoutExtension(file),
+                        Movie = movie,
+                        MovieVersionId = version.MovieVersionId,
+                        ReleaseGroup = string.Empty,
+                        Quality = new QualityModel(Quality.Unknown),
+                        Languages = new List<Language> { Language.Unknown },
+                        Size = _diskProvider.GetFileSize(file),
+                        Rejections = Enumerable.Empty<ImportRejection>()
+                    });
+                }
+            }
 
             return items;
         }
@@ -136,10 +163,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             return ProcessFolder(path, path, downloadId, movieId, filterExistingFiles);
         }
 
-        public ManualImportItem ReprocessItem(string path, string downloadId, int movieId, string releaseGroup, QualityModel quality, List<Language> languages, int indexerFlags)
+        public ManualImportItem ReprocessItem(string path, string downloadId, int movieId, int movieVersionId, string releaseGroup, QualityModel quality, List<Language> languages, int indexerFlags)
         {
             var rootFolder = Path.GetDirectoryName(path);
-            var movie = _movieService.GetMovie(movieId);
+            var movie = GetMovieForVersion(_movieService.GetMovie(movieId), movieVersionId);
 
             var languageParse = LanguageParser.ParseLanguages(path);
 
@@ -185,7 +212,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             localMovie.Languages = finalLanguages;
             localMovie.IndexerFlags = (IndexerFlags)indexerFlags;
 
-            return MapItem(_importDecisionMaker.GetDecision(localMovie, downloadClientItem), rootFolder, downloadId, null);
+            var item = MapItem(_importDecisionMaker.GetDecision(localMovie, downloadClientItem), rootFolder, downloadId, null);
+            item.MovieVersionId = movie?.MovieVersionId ?? 0;
+
+            return item;
         }
 
         private List<ManualImportItem> ProcessFolder(string rootFolder, string baseFolder, string downloadId, int? movieId, bool filterExistingFiles)
@@ -379,6 +409,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             if (decision.LocalMovie.Movie != null)
             {
                 item.Movie = decision.LocalMovie.Movie;
+                item.MovieVersionId = GetVersionIdForPath(item.Movie, item.Path);
 
                 item.CustomFormats = _localMovieFormatCalculator.ParseMovieCustomFormats(decision.LocalMovie);
                 item.CustomFormatScore = item.Movie.QualityProfile?.CalculateCustomFormatScore(item.CustomFormats) ?? 0;
@@ -403,9 +434,35 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             item.Size = _diskProvider.GetFileSize(item.Path);
             item.Rejections = Enumerable.Empty<ImportRejection>();
             item.MovieFileId = movieFile.Id;
+            item.MovieVersionId = movie.MovieVersionId;
             item.CustomFormats = _formatCalculator.ParseCustomFormat(movieFile, movie);
 
             return item;
+        }
+
+        // The movie itself, or the view of one of its additional versions
+        private Movie GetMovieForVersion(Movie movie, int movieVersionId)
+        {
+            if (movie == null || movieVersionId <= 0 || !_movieVersionService.GetAdditionalVersionIds(movie.Id).Contains(movieVersionId))
+            {
+                return movie;
+            }
+
+            return _movieVersionService.GetVersionView(movie, movieVersionId);
+        }
+
+        // An additional version whose own folder holds the file, the primary version otherwise
+        private int GetVersionIdForPath(Movie movie, string path)
+        {
+            if (movie.IsVersionView)
+            {
+                return movie.MovieVersionId;
+            }
+
+            var versionView = _movieVersionService.GetAdditionalVersionViews(movie)
+                                                  .FirstOrDefault(v => !v.Path.PathEquals(movie.Path) && v.Path.IsParentPath(path));
+
+            return versionView?.MovieVersionId ?? 0;
         }
 
         public void Execute(ManualImportCommand message)
@@ -420,7 +477,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 _logger.ProgressTrace("Processing file {0} of {1}", i + 1, message.Files.Count);
 
                 var file = message.Files[i];
-                var movie = _movieService.GetMovie(file.MovieId);
+                var movie = GetMovieForVersion(_movieService.GetMovie(file.MovieId), file.MovieVersionId);
                 var fileMovieInfo = Parser.Parser.ParseMoviePath(file.Path) ?? new ParsedMovieInfo();
                 var existingFile = movie.Path.IsParentPath(file.Path);
                 TrackedDownload trackedDownload = null;

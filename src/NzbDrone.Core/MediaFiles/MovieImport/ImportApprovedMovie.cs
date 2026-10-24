@@ -138,8 +138,15 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     }
                     else
                     {
-                        // Delete existing files from the DB mapped to this path
-                        var previousFiles = _mediaFileService.GetFilesWithRelativePath(localMovie.Movie.Id, movieFile.RelativePath).ForVersionOf(localMovie.Movie, _movieVersionService.GetAdditionalVersionIds(localMovie.Movie.Id));
+                        // Delete existing files from the DB mapped to this path, including files of another version sharing this folder
+                        var additionalVersionIds = _movieVersionService.GetAdditionalVersionIds(localMovie.Movie.Id).ToList();
+                        var versionIdsInFolder = _movieVersionService.GetVersionIdsWithPath(localMovie.Movie.Id, localMovie.Movie.Path)
+                                                                     .Append(localMovie.Movie.MovieVersionId)
+                                                                     .ToHashSet();
+
+                        var previousFiles = _mediaFileService.GetFilesWithRelativePath(localMovie.Movie.Id, movieFile.RelativePath)
+                                                             .Where(f => versionIdsInFolder.Contains(f.GetVersionId(additionalVersionIds)))
+                                                             .ToList();
 
                         foreach (var previousFile in previousFiles)
                         {
