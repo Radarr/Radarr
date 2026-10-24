@@ -6,6 +6,7 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
+using NzbDrone.Core.Movies.Versions;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -28,14 +29,17 @@ namespace NzbDrone.Core.MediaFiles
     {
         private readonly IMediaFileRepository _mediaFileRepository;
         private readonly IMovieRepository _movieRepository;
+        private readonly IMovieVersionService _movieVersionService;
         private readonly IEventAggregator _eventAggregator;
 
         public MediaFileService(IMediaFileRepository mediaFileRepository,
                                 IMovieRepository movieRepository,
+                                IMovieVersionService movieVersionService,
                                 IEventAggregator eventAggregator)
         {
             _mediaFileRepository = mediaFileRepository;
             _movieRepository = movieRepository;
+            _movieVersionService = movieVersionService;
             _eventAggregator = eventAggregator;
         }
 
@@ -70,7 +74,7 @@ namespace NzbDrone.Core.MediaFiles
                 movieFile.Movie = _movieRepository.Get(movieFile.MovieId);
             }
 
-            movieFile.Path = Path.Combine(movieFile.Movie.Path, movieFile.RelativePath);
+            movieFile.Path = Path.Combine(GetVersionPath(movieFile), movieFile.RelativePath);
 
             _mediaFileRepository.Delete(movieFile);
             _eventAggregator.PublishEvent(new MovieFileDeletedEvent(movieFile, reason));
@@ -93,7 +97,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<string> FilterExistingFiles(List<string> files, Movie movie)
         {
-            var movieFiles = GetFilesByMovie(movie.Id).Select(f => Path.Combine(movie.Path, f.RelativePath)).ToList();
+            var movieFiles = GetFilesByMovie(movie.Id).ForVersionOf(movie, _movieVersionService.GetAdditionalVersionIds(movie.Id)).Select(f => Path.Combine(movie.Path, f.RelativePath)).ToList();
 
             if (!movieFiles.Any())
             {
@@ -121,6 +125,24 @@ namespace NzbDrone.Core.MediaFiles
         public void HandleAsync(MoviesDeletedEvent message)
         {
             _mediaFileRepository.DeleteForMovies(message.Movies.Select(m => m.Id).ToList());
+        }
+
+        private string GetVersionPath(MovieFile movieFile)
+        {
+            var movie = movieFile.Movie;
+            var versionId = movieFile.GetVersionId(_movieVersionService.GetAdditionalVersionIds(movieFile.MovieId));
+
+            if (versionId == movie.MovieVersionId)
+            {
+                return movie.Path;
+            }
+
+            if (versionId == 0)
+            {
+                return _movieRepository.Get(movieFile.MovieId).Path;
+            }
+
+            return _movieVersionService.Get(versionId).Path;
         }
 
         public static List<string> FilterExistingFiles(List<string> files, List<MovieFile> movieFiles, Movie movie)

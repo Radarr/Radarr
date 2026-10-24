@@ -12,6 +12,7 @@ using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Movies.Versions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
@@ -26,6 +27,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
     {
         private readonly IUpgradeMediaFiles _movieFileUpgrader;
         private readonly IMediaFileService _mediaFileService;
+        private readonly IMovieVersionService _movieVersionService;
         private readonly IExtraService _extraService;
         private readonly IExistingExtraFiles _existingExtraFiles;
         private readonly IDiskProvider _diskProvider;
@@ -36,6 +38,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
         public ImportApprovedMovie(IUpgradeMediaFiles movieFileUpgrader,
                                    IMediaFileService mediaFileService,
+                                   IMovieVersionService movieVersionService,
                                    IExtraService extraService,
                                    IExistingExtraFiles existingExtraFiles,
                                    IDiskProvider diskProvider,
@@ -46,6 +49,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         {
             _movieFileUpgrader = movieFileUpgrader;
             _mediaFileService = mediaFileService;
+            _movieVersionService = movieVersionService;
             _extraService = extraService;
             _existingExtraFiles = existingExtraFiles;
             _diskProvider = diskProvider;
@@ -86,6 +90,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     }
 
                     var movieFile = new MovieFile();
+                    movieFile.MovieVersionId = localMovie.Movie.MovieVersionId;
                     movieFile.DateAdded = DateTime.UtcNow;
                     movieFile.MovieId = localMovie.Movie.Id;
                     movieFile.Path = localMovie.Path.CleanFilePath();
@@ -139,8 +144,15 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     {
                         movieFile.RelativePath = localMovie.Movie.Path.GetRelativePath(movieFile.Path);
 
-                        // Delete existing files from the DB mapped to this path
-                        var previousFiles = _mediaFileService.GetFilesWithRelativePath(localMovie.Movie.Id, movieFile.RelativePath);
+                        // Delete existing files from the DB mapped to this path, including files of another version sharing this folder
+                        var additionalVersionIds = _movieVersionService.GetAdditionalVersionIds(localMovie.Movie.Id).ToList();
+                        var versionIdsInFolder = _movieVersionService.GetVersionIdsWithPath(localMovie.Movie.Id, localMovie.Movie.Path)
+                                                                     .Append(localMovie.Movie.MovieVersionId)
+                                                                     .ToHashSet();
+
+                        var previousFiles = _mediaFileService.GetFilesWithRelativePath(localMovie.Movie.Id, movieFile.RelativePath)
+                                                             .Where(f => versionIdsInFolder.Contains(f.GetVersionId(additionalVersionIds)))
+                                                             .ToList();
 
                         foreach (var previousFile in previousFiles)
                         {

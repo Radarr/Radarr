@@ -16,6 +16,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
         public int IndexerFlags { get; set; }
         public string DownloadId { get; set; }
         public int MovieId { get; set; }
+        public int MovieVersionId { get; set; }
 
         public bool Equals(ManualImportFile other)
         {
