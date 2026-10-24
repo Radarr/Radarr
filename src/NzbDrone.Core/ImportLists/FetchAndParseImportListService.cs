@@ -101,11 +101,8 @@ namespace NzbDrone.Core.ImportLists
 
                             if (!importListReports.AnyFailure)
                             {
-                                var alreadyMapped = result.Movies.Where(x => importListReports.Movies.Any(r => r.TmdbId == x.TmdbId));
-                                var listMovies = MapMovieReports(importListReports.Movies.Where(x => result.Movies.All(r => r.TmdbId != x.TmdbId))).Where(x => x.TmdbId > 0).ToList();
+                                var listMovies = MapMovieReports(importListReports.Movies).Where(x => x.TmdbId > 0).ToList();
 
-                                listMovies.AddRange(alreadyMapped);
-                                listMovies = listMovies.DistinctBy(x => x.TmdbId).ToList();
                                 listMovies.ForEach(m => m.ListId = importList.Definition.Id);
 
                                 result.Movies.AddRange(listMovies);
@@ -128,8 +125,6 @@ namespace NzbDrone.Core.ImportLists
             }
 
             Task.WaitAll(taskList.ToArray());
-
-            result.Movies = result.Movies.DistinctBy(r => new { r.TmdbId, r.ImdbId, r.Title }).ToList();
 
             _logger.Debug("Found {0} total reports from {1} lists", result.Movies.Count, result.SyncedLists);
 
