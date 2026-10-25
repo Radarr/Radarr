@@ -65,7 +65,7 @@
   "AllowHardcodedSubs": "Allow Hardcoded Subs",
   "AllowHardcodedSubsHelpText": "Detected hardcoded subs will be automatically downloaded",
   "AllowedHosts": "Allowed Hosts",
-  "AllowedHostsHelpText": "Comma separated list of hostnames and IP addresses that {appName} will accept requests for. Use '*.' as a wildcard for subdomains. Leave empty to allow all hosts.",
+  "AllowedHostsHelpText": "Comma separated list of hostnames, IP addresses and subnets in CIDR notation, such as 192.168.0.0/16, that {appName} will accept requests for. Use '*.' as a wildcard for subdomains. Leave empty to allow all hosts.",
   "AllowedHostsNotConfiguredHealthCheckMessage": "Allowed Hosts is not configured, {appName} will accept requests for any hostname. Set Allowed Hosts in General settings to restrict which hostnames can be used to reach {appName}.",
   "AlreadyInYourLibrary": "Already in your library",
   "AlternativeTitle": "Alternative Title",

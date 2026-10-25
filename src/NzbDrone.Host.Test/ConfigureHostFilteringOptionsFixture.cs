@@ -43,5 +43,13 @@ namespace NzbDrone.App.Test
             hosts.Should().NotContain("[::]");
             hosts.Should().NotContain("*");
         }
+
+        [TestCase("192.168.0.0/16")]
+        [TestCase("10.0.0.0/8,172.16.0.0/12,192.168.0.0/16")]
+        [TestCase("sonarr.local, 192.168.0.0/16")]
+        public void should_hand_filtering_over_to_allowed_hosts_middleware_when_subnets_are_configured(string allowedHosts)
+        {
+            GetOptions(allowedHosts).AllowedHosts.Should().BeEquivalentTo("*");
+        }
     }
 }
