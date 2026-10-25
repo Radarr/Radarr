@@ -15,7 +15,7 @@ variables:
   buildName: '$(Build.SourceBranchName).$(radarrVersion)'
   sentryOrg: 'servarr'
   sentryUrl: 'https://sentry.servarr.com'
-  dotnetVersion: '10.0.402'
+  dotnetVersion: '10.0.403'
   nodeVersion: '24.X'
   innoVersion: '6.7.1'
   windowsImage: 'windows-2025'
