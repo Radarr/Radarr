@@ -1,8 +1,13 @@
 interface MediaInfo {
+  /** @deprecated */
   audioBitrate: number;
+  /** @deprecated */
   audioChannels: number;
+  /** @deprecated */
   audioCodec: string;
+  /** @deprecated */
   audioLanguages: string;
+  /** @deprecated */
   audioStreamCount: number;
   videoBitDepth: number;
   videoBitrate: number;
@@ -13,6 +18,7 @@ interface MediaInfo {
   resolution: string;
   runTime: string;
   scanType: string;
+  /** @deprecated */
   subtitles: string;
   audioStreams: MediaAudioStream[];
   subtitleStreams: MediaSubtitleStream[];

@@ -7,7 +7,15 @@ import formatBitrate from 'Utilities/Number/formatBitrate';
 import getEntries from 'Utilities/Object/getEntries';
 import translate from 'Utilities/String/translate';
 
-function MediaInfo(props: MediaInfoProps) {
+function MediaInfo({
+  audioBitrate,
+  audioChannels,
+  audioCodec,
+  audioLanguages,
+  audioStreamCount,
+  subtitles,
+  ...props
+}: MediaInfoProps) {
   const getLanguageName = useLanguageName();
 
   return (
