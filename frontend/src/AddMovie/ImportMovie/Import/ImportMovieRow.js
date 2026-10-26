@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import CheckInput from 'Components/Form/CheckInput';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
@@ -14,6 +15,7 @@ function ImportMovieRow(props) {
     monitor,
     qualityProfileId,
     minimumAvailability,
+    renameFolderOnImport,
     selectedMovie,
     isExistingMovie,
     isSelected,
@@ -68,6 +70,14 @@ function ImportMovieRow(props) {
           onChange={onInputChange}
         />
       </VirtualTableRowCell>
+
+      <VirtualTableRowCell className={styles.renameFolderOnImport}>
+        <CheckInput
+          name="renameFolderOnImport"
+          value={renameFolderOnImport}
+          onChange={onInputChange}
+        />
+      </VirtualTableRowCell>
     </>
   );
 }
@@ -78,6 +88,7 @@ ImportMovieRow.propTypes = {
   monitor: PropTypes.string.isRequired,
   qualityProfileId: PropTypes.number.isRequired,
   minimumAvailability: PropTypes.string.isRequired,
+  renameFolderOnImport: PropTypes.bool,
   selectedMovie: PropTypes.object,
   isExistingMovie: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
