@@ -1,5 +1,7 @@
 using System;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
@@ -75,9 +77,14 @@ namespace NzbDrone.Core.Test.NotificationTests
                   .Verify(v => v.AddToCollection(It.IsAny<TraktCollectMoviesResource>(), It.IsAny<string>()), Times.Once());
         }
 
-        [Test]
-        public void should_add_collection_movie_if_valid_mediainfo()
+        [TestCase("en-US")]
+        [TestCase("fr-FR")]
+        [TestCase("nb-NO")]
+        [TestCase("nn-NO")]
+        public void should_add_collection_movie_if_valid_mediainfo(string culture)
         {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(culture);
+
             GiventValidMediaInfo(Quality.Bluray2160p, "5.1", "DTS", "Progressive", HdrFormat.DolbyVisionHdr10);
 
             Subject.OnDownload(_downloadMessage);
@@ -93,9 +100,14 @@ namespace NzbDrone.Core.Test.NotificationTests
                       Times.Once());
         }
 
-        [Test]
-        public void should_format_audio_channels_to_one_decimal_when_adding_collection_movie()
+        [TestCase("en-US")]
+        [TestCase("fr-FR")]
+        [TestCase("nb-NO")]
+        [TestCase("nn-NO")]
+        public void should_format_audio_channels_to_one_decimal_when_adding_collection_movie(string culture)
         {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(culture);
+
             GiventValidMediaInfo(Quality.Bluray2160p, "2.0", "DTS", "Progressive", HdrFormat.DolbyVisionHdr10);
 
             Subject.OnDownload(_downloadMessage);
@@ -107,6 +119,25 @@ namespace NzbDrone.Core.Test.NotificationTests
                     t.Movies.First().Resolution == "uhd_4k" &&
                     t.Movies.First().MediaType == "bluray" &&
                     t.Movies.First().Hdr == "hdr10"),
+                  It.IsAny<string>()),
+                      Times.Once());
+        }
+
+        [TestCase("en-US")]
+        [TestCase("fr-FR")]
+        [TestCase("nb-NO")]
+        [TestCase("nn-NO")]
+        public void should_send_empty_audio_channels_if_unknown(string culture)
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(culture);
+
+            GiventValidMediaInfo(Quality.Bluray2160p, null, "DTS", "Progressive", HdrFormat.DolbyVisionHdr10);
+
+            Subject.OnDownload(_downloadMessage);
+
+            Mocker.GetMock<ITraktProxy>()
+                  .Verify(v => v.AddToCollection(It.Is<TraktCollectMoviesResource>(t =>
+                    t.Movies.First().AudioChannels == string.Empty),
                   It.IsAny<string>()),
                       Times.Once());
         }
