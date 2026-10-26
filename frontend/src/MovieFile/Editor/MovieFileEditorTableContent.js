@@ -48,7 +48,7 @@ class MovieFileEditorTableContent extends Component {
                         key={item.id}
                         columns={columns}
                         {...item}
-                        onDeletePress={this.props.onDeletePress}
+                        onDeleteMovieFile={this.props.onDeletePress}
                       />
                     );
                   })
