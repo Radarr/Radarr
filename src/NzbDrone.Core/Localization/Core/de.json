@@ -2081,5 +2081,9 @@
     "OidcUserIdentifier": "OIDC User",
     "OidcUserIdentifierHelpText": "Die verifizierte E-Mail Adresse oder Identifizierungsschlüssel (sub) beim OIDC Provider, der zum Einloggen in {appName} verwendet wird",
     "SslKeyPath": "SSL-Schlüssel Pfad",
-    "SslKeyPathHelpText": "Dateipfad zur Schlüsseldatei in Verwendung mit pem-Datei"
+    "SslKeyPathHelpText": "Dateipfad zur Schlüsseldatei in Verwendung mit pem-Datei",
+    "MediaInfoAudioStreamHeader": "Audiostream #{number}",
+    "MediaInfoForced": "Erzwungen",
+    "MediaInfoHearingImpaired": "Hörgeschädigt",
+    "MediaInfoSubtitlesHeader": "Untertitel"
 }

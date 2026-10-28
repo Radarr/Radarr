@@ -2081,5 +2081,9 @@
     "OidcUserIdentifier": "Пользователь OIDC",
     "OidcUserIdentifierHelpText": "Подтверждённый адрес электронной почты или идентификатор субъекта (sub) у провайдера OIDC, который будет использоваться для входа в {appName}",
     "SslKeyPath": "Путь к SSL ключу",
-    "SslKeyPathHelpText": "Путь к файлу ключа, используемому с pem файлом"
+    "SslKeyPathHelpText": "Путь к файлу ключа, используемому с pem файлом",
+    "MediaInfoAudioStreamHeader": "Аудиодорожка №{number}",
+    "MediaInfoForced": "Принудительно",
+    "MediaInfoHearingImpaired": "Для слабослышащих",
+    "MediaInfoSubtitlesHeader": "Субтитры"
 }

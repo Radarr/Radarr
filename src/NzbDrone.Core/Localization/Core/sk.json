@@ -1564,5 +1564,8 @@
     "Thursday": "Štvrtok",
     "Tuesday": "Utorok",
     "Wednesday": "Streda",
-    "DisabledForLocalhost": "Zakázané pre localhost"
+    "DisabledForLocalhost": "Zakázané pre localhost",
+    "MediaInfoAudioStreamHeader": "Audio Stream #{number}",
+    "MediaInfoForced": "Nútené",
+    "MediaInfoSubtitlesHeader": "Titulky"
 }

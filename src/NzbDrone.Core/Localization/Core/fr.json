@@ -2081,5 +2081,11 @@
     "OidcUserIdentifier": "Utilisateur OIDC",
     "OidcUserIdentifierHelpText": "L'adresse e-mail vérifiée ou l'identifiant de sujet (sub) sur le fournisseur OIDC qui sera utilisé pour se connecter à {appName}",
     "SslKeyPath": "Chemin de la clé SSL",
-    "SslKeyPathHelpText": "Chemin du fichier clé utilisé avec le fichier pem"
+    "SslKeyPathHelpText": "Chemin du fichier clé utilisé avec le fichier pem",
+    "ImportListsTraktSettingsSmartList": "Liste intelligente Slug",
+    "ImportListsTraktSettingsSmartListHelpText": "Identifiant de la liste intelligente, par exemple my-list-1a2b3c4d5e6f7a8b (https://app.trakt.tv/lists/smart/view/my-list-1a2b3c4d5e6f7a8b). La liste doit être publique ou vous appartenir",
+    "MediaInfoAudioStreamHeader": "Flux audio #{number}",
+    "MediaInfoForced": "Forcé",
+    "MediaInfoHearingImpaired": "Malentendant",
+    "MediaInfoSubtitlesHeader": "Sous-titres"
 }

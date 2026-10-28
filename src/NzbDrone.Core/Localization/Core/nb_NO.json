@@ -203,7 +203,7 @@
     "DelayProfile": "Utsetningsprofil",
     "DelayProfiles": "Utsetningsprofil",
     "Enable": "Aktiver",
-    "Enabled": "Aktiver",
+    "Enabled": "Aktivert",
     "Events": "Hendelse",
     "Files": "Fil",
     "Filter": "Filter",
@@ -407,5 +407,12 @@
     "AuthenticationRequiredPasswordHelpTextWarning": "Oppgi nytt passord",
     "AuthenticationRequiredUsernameHelpTextWarning": "Oppgi nytt bruernavn",
     "AuthenticationRequiredWarning": "For å forhindre ekstern tilgang uten pålogging, krever {appName} nå at autentisering er aktivert. Du kan velge å deaktivere autentisering for lokale adresser.",
-    "QualityDefinitions": "Kvalitetsdefinisjoner"
+    "QualityDefinitions": "Kvalitetsdefinisjoner",
+    "EnableInteractiveSearch": "Aktiver Interaktive Søk",
+    "Ended": "Avsluttet",
+    "HiddenClickToShow": "Skjult, trykk for å vise",
+    "HideAdvanced": "Skjul avanserte",
+    "ImportListMissingRoot": "Manglende rotmappe for importliste(r): {rootFolderInfo}",
+    "ImportListStatusCheckAllClientMessage": "Alle lister er utilgjengelige grunnet svikt",
+    "ImportListStatusCheckSingleClientMessage": "Lister utilgjengelige grunnet svikter: {importListNames}"
 }

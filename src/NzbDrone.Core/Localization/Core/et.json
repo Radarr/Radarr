@@ -2069,5 +2069,9 @@
     "OidcClientSecretHelpText": "OIDC teenusepakkuja juures registreeritud salavõti",
     "OidcDiscoveryFailedHealthCheckMessage": "OIDC seadistuse laadimine aadressilt {authority} nurjus. Sisselogimine ei toimi, kuni teenusepakkuja on kättesaadav",
     "SslKeyPath": "SSL-võtme asukoht",
-    "SslKeyPathHelpText": "PEM-failiga kasutatava võtmefaili failitee"
+    "SslKeyPathHelpText": "PEM-failiga kasutatava võtmefaili failitee",
+    "MediaInfoAudioStreamHeader": "Helivoog #{number}",
+    "MediaInfoForced": "Sunnitud",
+    "MediaInfoHearingImpaired": "Vaegkuuljad",
+    "MediaInfoSubtitlesHeader": "Subtiitrid"
 }
