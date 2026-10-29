@@ -171,6 +171,7 @@ node_modules.nosync
 
 # API doc generation
 .config/
+dotnet-tools.json
 
 # Ignore Jetbrains IntelliJ Workspace Directories
 .idea/
