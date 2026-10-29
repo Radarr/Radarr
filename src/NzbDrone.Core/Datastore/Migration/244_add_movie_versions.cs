@@ -3,7 +3,7 @@ using NzbDrone.Core.Datastore.Migration.Framework;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
-    [Migration(243)]
+    [Migration(244)]
     public class add_movie_versions : NzbDroneMigrationBase
     {
         protected override void MainDbUpgrade()

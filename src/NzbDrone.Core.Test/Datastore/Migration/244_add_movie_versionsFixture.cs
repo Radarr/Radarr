@@ -50,8 +50,8 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 InsertMovie(c, 2, 3, "/Movies/Movie Two (2021)", 0);
             });
 
-            var movies = db.Query<Movie243>("SELECT \"Id\", \"Path\" FROM \"Movies\"");
-            var versions = db.Query<MovieVersion243>("SELECT * FROM \"MovieVersions\"");
+            var movies = db.Query<Movie244>("SELECT \"Id\", \"Path\" FROM \"Movies\"");
+            var versions = db.Query<MovieVersion244>("SELECT * FROM \"MovieVersions\"");
 
             versions.Should().HaveCount(2);
 
@@ -74,19 +74,19 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 InsertMovieFile(c, 1);
             });
 
-            var files = db.Query<MovieFile243>("SELECT \"Id\", \"MovieVersionId\" FROM \"MovieFiles\"");
+            var files = db.Query<MovieFile244>("SELECT \"Id\", \"MovieVersionId\" FROM \"MovieFiles\"");
 
             files.Single().MovieVersionId.Should().Be(0);
         }
     }
 
-    public class Movie243
+    public class Movie244
     {
         public int Id { get; set; }
         public string Path { get; set; }
     }
 
-    public class MovieVersion243
+    public class MovieVersion244
     {
         public int Id { get; set; }
         public int MovieId { get; set; }
@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         public int MovieFileId { get; set; }
     }
 
-    public class MovieFile243
+    public class MovieFile244
     {
         public int Id { get; set; }
         public int MovieVersionId { get; set; }
