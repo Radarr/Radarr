@@ -12,6 +12,7 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Versions;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
@@ -447,6 +448,110 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
 
             Mocker.GetMock<IEventAggregator>()
                 .Verify(v => v.PublishEvent(It.Is<MovieScannedEvent>(c => c.Movie != null && c.PossibleExtraFiles.Count == 0)), Times.Once());
+        }
+
+        private Movie GivenAdditionalVersion(string path)
+        {
+            var versionView = _movie.ForVersion(new MovieVersion { Id = 7, MovieId = _movie.Id, Path = path });
+
+            Mocker.GetMock<IMovieVersionService>()
+                  .Setup(s => s.GetAdditionalVersionViews(_movie))
+                  .Returns(new List<Movie> { versionView });
+
+            Mocker.GetMock<IMovieVersionService>()
+                  .Setup(s => s.GetAdditionalVersionIds(_movie.Id))
+                  .Returns(new List<int> { 7 });
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(s => s.FolderExists(path))
+                  .Returns(true);
+
+            return versionView;
+        }
+
+        [Test]
+        public void should_scan_additional_version_in_its_own_folder()
+        {
+            GivenMovieFolder();
+            GivenFiles(new List<string>());
+
+            var versionPath = @"D:\Movies 4K\Movie".AsOsAgnostic();
+            GivenAdditionalVersion(versionPath);
+
+            Subject.Scan(_movie);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.GetFiles(_movie.Path, true), Times.AtLeastOnce());
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.GetFiles(versionPath, true), Times.AtLeastOnce());
+
+            Mocker.GetMock<IMediaFileTableCleanupService>()
+                  .Verify(v => v.Clean(It.Is<Movie>(m => m.MovieVersionId == 7 && m.Path == versionPath), It.IsAny<List<string>>()), Times.Once());
+        }
+
+        [Test]
+        public void should_only_publish_scanned_event_for_the_movie_itself()
+        {
+            GivenMovieFolder();
+            GivenFiles(new List<string>());
+            GivenAdditionalVersion(@"D:\Movies 4K\Movie".AsOsAgnostic());
+
+            Subject.Scan(_movie);
+
+            Mocker.GetMock<IEventAggregator>()
+                  .Verify(v => v.PublishEvent(It.IsAny<MovieScannedEvent>()), Times.Once());
+
+            Mocker.GetMock<IEventAggregator>()
+                  .Verify(v => v.PublishEvent(It.Is<MovieScannedEvent>(c => c.Movie.IsVersionView)), Times.Never());
+        }
+
+        [Test]
+        public void should_scan_movie_even_when_additional_version_root_folder_is_missing()
+        {
+            GivenMovieFolder();
+            GivenFiles(new List<string>());
+
+            var versionPath = @"D:\Movies 4K\Movie".AsOsAgnostic();
+            GivenAdditionalVersion(versionPath);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(s => s.FolderExists(versionPath))
+                  .Returns(false);
+
+            Mocker.GetMock<IRootFolderService>()
+                  .Setup(s => s.GetBestRootFolderPath(versionPath, null))
+                  .Returns(@"D:\Movies 4K".AsOsAgnostic());
+
+            Subject.Scan(_movie);
+
+            ExceptionVerification.ExpectedWarns(1);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.GetFiles(_movie.Path, true), Times.AtLeastOnce());
+
+            Mocker.GetMock<IMediaFileTableCleanupService>()
+                  .Verify(v => v.Clean(It.Is<Movie>(m => m.IsVersionView), It.IsAny<List<string>>()), Times.Never());
+        }
+
+        [Test]
+        public void should_not_import_file_of_another_version_sharing_the_movie_folder()
+        {
+            GivenMovieFolder();
+
+            var movieFile = new MovieFile { Id = 1, MovieId = _movie.Id, MovieVersionId = 0, RelativePath = "Movie.mkv" };
+
+            Mocker.GetMock<IMediaFileService>()
+                  .Setup(s => s.GetFilesByMovie(It.IsAny<int>()))
+                  .Returns(new List<MovieFile> { movieFile });
+
+            GivenFiles(new List<string> { Path.Combine(_movie.Path, "Movie.mkv") });
+            GivenAdditionalVersion(_movie.Path);
+
+            Subject.Scan(_movie);
+
+            Mocker.GetMock<IMakeImportDecision>()
+                  .Verify(v => v.GetImportDecisions(It.Is<List<string>>(l => l.Count == 0), It.Is<Movie>(m => m.MovieVersionId == 7), false), Times.Once());
         }
     }
 }

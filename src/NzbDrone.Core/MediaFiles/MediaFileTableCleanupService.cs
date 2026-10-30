@@ -4,6 +4,7 @@ using System.IO;
 using NLog;
 using NzbDrone.Common;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Versions;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -15,21 +16,24 @@ namespace NzbDrone.Core.MediaFiles
     public class MediaFileTableCleanupService : IMediaFileTableCleanupService
     {
         private readonly IMediaFileService _mediaFileService;
+        private readonly IMovieVersionService _movieVersionService;
         private readonly IMovieService _movieService;
         private readonly Logger _logger;
 
         public MediaFileTableCleanupService(IMediaFileService mediaFileService,
+                                            IMovieVersionService movieVersionService,
                                             IMovieService movieService,
                                             Logger logger)
         {
             _mediaFileService = mediaFileService;
+            _movieVersionService = movieVersionService;
             _movieService = movieService;
             _logger = logger;
         }
 
         public void Clean(Movie movie, List<string> filesOnDisk)
         {
-            var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+            var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id).ForVersionOf(movie, _movieVersionService.GetAdditionalVersionIds(movie.Id));
 
             var filesOnDiskKeys = new HashSet<string>(filesOnDisk, PathEqualityComparer.Instance);
 
