@@ -254,6 +254,7 @@ namespace NzbDrone.Host
 
             app.UseForwardedHeaders();
             app.UseHostFiltering();
+            app.UseMiddleware<AllowedHostsMiddleware>();
             app.UseMiddleware<LoggingMiddleware>();
             app.UsePathBase(new PathString(configFileProvider.UrlBase));
             app.UseExceptionHandler(new ExceptionHandlerOptions
