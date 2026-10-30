@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using FluentValidation.Results;
 using MailKit.Net.Smtp;
 using MailKit.Security;
@@ -44,12 +45,18 @@ namespace NzbDrone.Core.Notifications.Email
             SendEmail(Settings, MOVIE_DOWNLOADED_TITLE_BRANDED, body);
         }
 
-        public override void OnMovieAdded(Movie movie)
-        {
-            var body = $"{movie.Title} added to library.";
+public override void OnMovieAdded(Movie movie)
+{
+    var encodedTitle = WebUtility.HtmlEncode(movie.Title);
 
-            SendEmail(Settings, MOVIE_ADDED_TITLE_BRANDED, body);
-        }
+    var movieTitle = !string.IsNullOrWhiteSpace(movie.ImdbId)
+        ? $"<a href=\"https://www.imdb.com/title/{movie.ImdbId}/\">{encodedTitle}</a>"
+        : encodedTitle;
+
+    var body = $"<p>{movieTitle} added to library.</p>";
+
+    SendEmail(Settings, MOVIE_ADDED_TITLE_BRANDED, body, htmlBody: true);
+}
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
         {
