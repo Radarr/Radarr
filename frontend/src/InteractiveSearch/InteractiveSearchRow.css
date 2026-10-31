@@ -1,14 +1,15 @@
 .protocol {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 
-  width: 80px;
+  width: 98px;
 }
 
 .titleContent {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   word-break: break-all;
+  gap: 8px;
 }
 
 .indexer {
@@ -60,6 +61,10 @@
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 
   white-space: nowrap;
+}
+
+.age {
+  width: 90px;
 }
 
 .peers {
