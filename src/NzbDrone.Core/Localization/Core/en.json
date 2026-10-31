@@ -1889,6 +1889,8 @@
   "SslKeyPath": "SSL Key Path",
   "SslKeyPathHelpText": "Path to key file used with pem file",
   "SslPort": "SSL Port",
+  "StalledTorrentTimeout": "Stalled Torrent Timeout",
+  "StalledTorrentTimeoutHelpText": "How long a torrent can make no progress before it is treated as failed and blocklisted, in minutes. 0 to disable",
   "StandardMovieFormat": "Standard Movie Format",
   "StartImport": "Start Import",
   "StartProcessing": "Start Processing",
