@@ -75,6 +75,8 @@ class BackupRow extends Component {
       isConfirmDeleteModalOpen
     } = this.state;
 
+    const restoreLabel = translate('RestoreBackupWithName', { name });
+    const deleteLabel = translate('DeleteBackupWithName', { name });
     let iconClassName = icons.SCHEDULED;
     let iconTooltip = translate('Scheduled');
 
@@ -116,13 +118,15 @@ class BackupRow extends Component {
 
         <TableRowCell className={styles.actions}>
           <IconButton
-            title={translate('RestoreBackup')}
+            title={restoreLabel}
+            aria-label={restoreLabel}
             name={icons.RESTORE}
             onPress={this.onRestorePress}
           />
 
           <IconButton
-            title={translate('DeleteBackup')}
+            title={deleteLabel}
+            aria-label={deleteLabel}
             name={icons.DELETE}
             onPress={this.onDeletePress}
           />

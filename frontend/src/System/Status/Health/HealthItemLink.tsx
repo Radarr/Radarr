@@ -19,7 +19,8 @@ function HealthItemLink(props: HealthItemLinkProps) {
       return (
         <IconButton
           name={icons.SETTINGS}
-          title={translate('Settings')}
+          title={translate('IndexerSettings')}
+          aria-label={translate('IndexerSettings')}
           to="/settings/indexers"
         />
       );
@@ -29,7 +30,8 @@ function HealthItemLink(props: HealthItemLinkProps) {
       return (
         <IconButton
           name={icons.SETTINGS}
-          title={translate('Settings')}
+          title={translate('DownloadClientSettings')}
+          aria-label={translate('DownloadClientSettings')}
           to="/settings/downloadclients"
         />
       );
@@ -37,7 +39,8 @@ function HealthItemLink(props: HealthItemLinkProps) {
       return (
         <IconButton
           name={icons.SETTINGS}
-          title={translate('Settings')}
+          title={translate('ConnectSettings')}
+          aria-label={translate('ConnectSettings')}
           to="/settings/connect"
         />
       );
