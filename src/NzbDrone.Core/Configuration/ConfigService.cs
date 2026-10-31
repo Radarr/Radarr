@@ -386,6 +386,41 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("EnableColorImpairedMode", value); }
         }
 
+        public bool PosterReplacementEnabled
+        {
+            get { return GetValueBoolean("PosterReplacementEnabled", false); }
+
+            set { SetValue("PosterReplacementEnabled", value); }
+        }
+
+        public IReadOnlyList<string> PosterReplacementGenres
+        {
+            get { return GetValue("PosterReplacementGenres").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries); }
+
+            set { SetValue("PosterReplacementGenres", string.Join(",", value ?? Array.Empty<string>())); }
+        }
+
+        public IReadOnlyList<int> PosterReplacementTags
+        {
+            get { return GetValue("PosterReplacementTags").Split(',', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList(); }
+
+            set { SetValue("PosterReplacementTags", string.Join(",", value ?? Array.Empty<int>())); }
+        }
+
+        public string PosterReplacementBackgroundColor
+        {
+            get { return GetValue("PosterReplacementBackgroundColor", "#1c1c1c"); }
+
+            set { SetValue("PosterReplacementBackgroundColor", value); }
+        }
+
+        public string PosterReplacementTextColor
+        {
+            get { return GetValue("PosterReplacementTextColor", "#ffffff"); }
+
+            set { SetValue("PosterReplacementTextColor", value); }
+        }
+
         public int MovieInfoLanguage
         {
             get { return GetValueInt("MovieInfoLanguage", (int)Language.English); }

@@ -450,6 +450,7 @@ class DiscoverMovieRow extends Component {
           overview={overview}
           folder={folder}
           images={images}
+          genres={genres}
           onModalClose={this.onAddMovieModalClose}
         />
 
