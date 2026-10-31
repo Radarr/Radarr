@@ -29,13 +29,18 @@ function FavoriteFolderRow({ folder, onPress }: FavoriteFolderRowProps) {
     [folder, dispatch]
   );
 
+  const removeFavoriteLabel = translate('RemoveFavoriteFolderWithPath', {
+    path: folder,
+  });
+
   return (
     <TableRowButton onPress={handlePress}>
       <TableRowCell>{folder}</TableRowCell>
 
       <TableRowCell className={styles.actions}>
         <IconButton
-          title={translate('FavoriteFolderRemove')}
+          title={removeFavoriteLabel}
+          aria-label={removeFavoriteLabel}
           kind="danger"
           name={icons.HEART}
           onPress={handleRemoveFavoritePress}
