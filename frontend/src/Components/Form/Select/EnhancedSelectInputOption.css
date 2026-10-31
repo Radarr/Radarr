@@ -52,7 +52,7 @@
 }
 
 .isMobile {
-  height: 50px;
+  min-height: 50px;
   border-bottom: 1px solid var(--borderColor);
 
   &:last-child {
