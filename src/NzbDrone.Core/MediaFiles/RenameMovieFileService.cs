@@ -11,6 +11,7 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Versions;
 using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Core.MediaFiles
@@ -26,6 +27,7 @@ namespace NzbDrone.Core.MediaFiles
     {
         private readonly IMovieService _movieService;
         private readonly IMediaFileService _mediaFileService;
+        private readonly IMovieVersionService _movieVersionService;
         private readonly IMoveMovieFiles _movieFileMover;
         private readonly IEventAggregator _eventAggregator;
         private readonly IBuildFileNames _filenameBuilder;
@@ -34,6 +36,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public RenameMovieFileService(IMovieService movieService,
                                       IMediaFileService mediaFileService,
+                                      IMovieVersionService movieVersionService,
                                       IMoveMovieFiles movieFileMover,
                                       IEventAggregator eventAggregator,
                                       IBuildFileNames filenameBuilder,
@@ -42,6 +45,7 @@ namespace NzbDrone.Core.MediaFiles
         {
             _movieService = movieService;
             _mediaFileService = mediaFileService;
+            _movieVersionService = movieVersionService;
             _movieFileMover = movieFileMover;
             _eventAggregator = eventAggregator;
             _filenameBuilder = filenameBuilder;
@@ -56,7 +60,7 @@ namespace NzbDrone.Core.MediaFiles
 
             return movies.SelectMany(movie =>
                 {
-                    var files = movieFiles[movie.Id].ToList();
+                    var files = movieFiles[movie.Id].ForVersionOf(movie, _movieVersionService.GetAdditionalVersionIds(movie.Id));
 
                     return GetPreviews(movie, files);
                 })
@@ -140,7 +144,7 @@ namespace NzbDrone.Core.MediaFiles
         public void Execute(RenameFilesCommand message)
         {
             var movie = _movieService.GetMovie(message.MovieId);
-            var movieFiles = _mediaFileService.GetMovies(message.Files);
+            var movieFiles = _mediaFileService.GetMovies(message.Files).ForVersionOf(movie, _movieVersionService.GetAdditionalVersionIds(movie.Id));
 
             _logger.ProgressInfo("Renaming {0} files for {1}", movieFiles.Count, movie.Title);
             var renamedFiles = RenameFiles(movieFiles, movie);
@@ -156,7 +160,7 @@ namespace NzbDrone.Core.MediaFiles
 
             foreach (var movie in moviesToRename)
             {
-                var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+                var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id).ForVersionOf(movie, _movieVersionService.GetAdditionalVersionIds(movie.Id));
                 _logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
                 var renamedFiles = RenameFiles(movieFiles, movie);
                 _logger.ProgressInfo("{0} movie files renamed for {1}", renamedFiles.Count, movie.Title);

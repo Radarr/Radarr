@@ -7,6 +7,7 @@ using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Versions;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
@@ -115,6 +116,58 @@ namespace NzbDrone.Core.Test.MediaFiles
             Subject.Clean(_movie, FilesOnDisk(movieFiles));
 
             Mocker.GetMock<IMovieService>().Verify(c => c.UpdateMovie(It.IsAny<Movie>()), Times.Never());
+        }
+
+        private void GivenAdditionalVersion(int versionId)
+        {
+            Mocker.GetMock<IMovieVersionService>()
+                  .Setup(s => s.GetAdditionalVersionIds(_movie.Id))
+                  .Returns(new List<int> { versionId });
+        }
+
+        [Test]
+        public void should_not_delete_files_of_additional_versions_when_cleaning_the_movie()
+        {
+            var movieFile = Builder<MovieFile>.CreateNew()
+                                              .With(f => f.RelativePath = "Movie.mkv")
+                                              .With(f => f.MovieVersionId = 0)
+                                              .Build();
+
+            var versionFile = Builder<MovieFile>.CreateNew()
+                                                .With(f => f.RelativePath = "Movie 2160p.mkv")
+                                                .With(f => f.MovieVersionId = 7)
+                                                .Build();
+
+            GivenMovieFiles(new[] { movieFile, versionFile });
+            GivenAdditionalVersion(7);
+
+            Subject.Clean(_movie, FilesOnDisk(new[] { movieFile }));
+
+            Mocker.GetMock<IMediaFileService>().Verify(c => c.Delete(It.IsAny<MovieFile>(), It.IsAny<DeleteMediaFileReason>()), Times.Never());
+        }
+
+        [Test]
+        public void should_only_clean_files_of_the_version_being_scanned()
+        {
+            var movieFile = Builder<MovieFile>.CreateNew()
+                                              .With(f => f.RelativePath = "Movie.mkv")
+                                              .With(f => f.MovieVersionId = 0)
+                                              .Build();
+
+            var versionFile = Builder<MovieFile>.CreateNew()
+                                                .With(f => f.RelativePath = "Movie 2160p.mkv")
+                                                .With(f => f.MovieVersionId = 7)
+                                                .Build();
+
+            GivenMovieFiles(new[] { movieFile, versionFile });
+            GivenAdditionalVersion(7);
+
+            var versionView = _movie.ForVersion(new MovieVersion { Id = 7, MovieId = _movie.Id, Path = @"D:\Movies 4K\Series".AsOsAgnostic() });
+
+            Subject.Clean(versionView, new List<string>());
+
+            Mocker.GetMock<IMediaFileService>().Verify(c => c.Delete(versionFile, DeleteMediaFileReason.MissingFromDisk), Times.Once());
+            Mocker.GetMock<IMediaFileService>().Verify(c => c.Delete(movieFile, It.IsAny<DeleteMediaFileReason>()), Times.Never());
         }
     }
 }

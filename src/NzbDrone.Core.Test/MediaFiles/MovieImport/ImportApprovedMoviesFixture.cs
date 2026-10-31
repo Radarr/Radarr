@@ -14,6 +14,7 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Versions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
@@ -345,6 +346,57 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             Mocker.GetMock<IUpgradeMediaFiles>()
                   .Verify(v => v.UpgradeMovieFile(It.Is<MovieFile>(e => e.SceneName == firstDecision.LocalMovie.SceneName), _approvedDecisions.First().LocalMovie, false),
                       Times.Once());
+        }
+
+        [Test]
+        public void should_attach_imported_file_to_the_version_being_imported()
+        {
+            GivenExistingFileOnDisk();
+
+            var localMovie = _approvedDecisions.First().LocalMovie;
+            var qualityProfile = localMovie.Movie.QualityProfile;
+
+            localMovie.Movie = localMovie.Movie.ForVersion(new MovieVersion { Id = 7, MovieId = localMovie.Movie.Id, Path = @"D:\Movies 4K\30 Rock".AsOsAgnostic() });
+            localMovie.Movie.QualityProfile = qualityProfile;
+            localMovie.Path = Path.Combine(localMovie.Movie.Path, "30 Rock - S01E01 - Pilot.avi");
+
+            Subject.Import(_approvedDecisions, false);
+
+            Mocker.GetMock<IMediaFileService>()
+                  .Verify(v => v.Add(It.Is<MovieFile>(f => f.MovieVersionId == 7)), Times.Once());
+        }
+
+        [Test]
+        public void should_replace_record_of_another_version_sharing_the_folder_when_reimporting_existing_file()
+        {
+            var localMovie = _approvedDecisions.First().LocalMovie;
+            var movie = localMovie.Movie;
+            var qualityProfile = movie.QualityProfile;
+
+            var existingRecord = new MovieFile { Id = 10, MovieId = movie.Id, MovieVersionId = 0, RelativePath = "30 Rock - S01E01 - Pilot.avi" };
+
+            Mocker.GetMock<IMediaFileService>()
+                  .Setup(s => s.GetFilesWithRelativePath(movie.Id, existingRecord.RelativePath))
+                  .Returns(new List<MovieFile> { existingRecord });
+
+            Mocker.GetMock<IMovieVersionService>()
+                  .Setup(s => s.GetAdditionalVersionIds(movie.Id))
+                  .Returns(new List<int> { 7 });
+
+            Mocker.GetMock<IMovieVersionService>()
+                  .Setup(s => s.GetVersionIdsWithPath(movie.Id, movie.Path))
+                  .Returns(new List<int> { 0, 7 });
+
+            localMovie.Movie = movie.ForVersion(new MovieVersion { Id = 7, MovieId = movie.Id, Path = movie.Path });
+            localMovie.Movie.QualityProfile = qualityProfile;
+
+            Subject.Import(_approvedDecisions, false);
+
+            Mocker.GetMock<IMediaFileService>()
+                  .Verify(v => v.Delete(existingRecord, DeleteMediaFileReason.ManualOverride), Times.Once());
+
+            Mocker.GetMock<IMediaFileService>()
+                  .Verify(v => v.Add(It.Is<MovieFile>(f => f.MovieVersionId == 7)), Times.Once());
         }
     }
 }
