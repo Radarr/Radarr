@@ -86,7 +86,7 @@
     "RestoreBackup": "Back-up herstellen",
     "RenameFiles": "Hernoem bestanden",
     "RemoveSelected": "Geselecteerde verwijderen",
-    "RefreshAndScan": "Vernieuw & Scan",
+    "RefreshAndScan": "Vernieuw & scan",
     "Refresh": "Vernieuw",
     "Queue": "Wachtrij",
     "QualityProfiles": "Kwaliteitsprofielen",
@@ -2083,5 +2083,9 @@
     "AuthenticationRequiredOidcUserIdentifierHelpTextWarning": "Voer de OIDC-gebruiker in",
     "DisabledForLocalhost": "Uitgeschakeld voor localhost",
     "ImportListsTraktSettingsSmartList": "Slimme lijst Slug",
-    "ImportListsTraktSettingsSmartListHelpText": "Slug van een slimme lijst, bijv. my-list-1a2b3c4d5e6f7a8b van https://app.trakt.tv/lists/smart/view/my-list-1a2b3c4d5e6f7a8b. De lijst moet openbaar of van jezelf zijn"
+    "ImportListsTraktSettingsSmartListHelpText": "Slug van een slimme lijst, bijv. my-list-1a2b3c4d5e6f7a8b van https://app.trakt.tv/lists/smart/view/my-list-1a2b3c4d5e6f7a8b. De lijst moet openbaar of van jezelf zijn",
+    "MediaInfoAudioStreamHeader": "Audiostream #{number}",
+    "MediaInfoForced": "Geforceerd",
+    "MediaInfoHearingImpaired": "Voor slechthorenden",
+    "MediaInfoSubtitlesHeader": "Ondertiteling"
 }

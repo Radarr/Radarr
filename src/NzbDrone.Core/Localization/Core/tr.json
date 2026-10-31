@@ -2063,5 +2063,9 @@
     "TrustedNetworksHelpText": "Güvenilen ters vekillerin (reverse proxy) üzerinde bulunduğu, CIDR gösterimindeki IP adreslerinin veya ağların virgülle ayrılmış listesi. Örneğin: 172.17.0.1, 10.0.0.0/8 veya fc00::/7. Yalnızca doğru üstbilgileri (header) gönderecek şekilde düzgün yapılandırılmış vekilleri ekleyin.",
     "DisabledForLocalhost": "Localhost için devre dışı",
     "SslKeyPath": "SSL Anahtar Yolu",
-    "SslKeyPathHelpText": "Pem dosyasıyla kullanılan anahtar dosyasının yolu"
+    "SslKeyPathHelpText": "Pem dosyasıyla kullanılan anahtar dosyasının yolu",
+    "MediaInfoAudioStreamHeader": "Ses Akışı #{number}",
+    "MediaInfoForced": "Zorunlu",
+    "MediaInfoHearingImpaired": "İşitme engelliler için",
+    "MediaInfoSubtitlesHeader": "Altyazılar"
 }

@@ -1898,5 +1898,9 @@
     "AllowedHosts": "מארחים מורשים",
     "DisabledForLocalhost": "מושבת עבור Localhost",
     "SslKeyPath": "נתיב מפתח SSL",
-    "SslKeyPathHelpText": "נתיב לקובץ מפתח בשימוש עם קובץ pem"
+    "SslKeyPathHelpText": "נתיב לקובץ מפתח בשימוש עם קובץ pem",
+    "MediaInfoAudioStreamHeader": "זרם שמע #{number}",
+    "MediaInfoForced": "מאולץ (Forced)",
+    "MediaInfoHearingImpaired": "לקויי שמיעה",
+    "MediaInfoSubtitlesHeader": "כתוביות"
 }
