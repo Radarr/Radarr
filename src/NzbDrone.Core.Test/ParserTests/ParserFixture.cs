@@ -216,6 +216,13 @@ namespace NzbDrone.Core.Test.ParserTests
                 "Sydney",
                 "Hard Eight"
             })]
+        [TestCase("[Anime Land] Shingeki no Kyojin／Attack on Titan Crimson Bow and Arrow (2014) Bluray 1080p",
+            new string[]
+            {
+                "Shingeki no Kyojin／Attack on Titan Crimson Bow and Arrow",
+                "Shingeki no Kyojin",
+                "Attack on Titan Crimson Bow and Arrow"
+            })]
         public void should_parse_movie_alternative_titles(string postTitle, string[] parsedTitles)
         {
             var movieInfo = Parser.Parser.ParseMovieTitle(postTitle, true);
