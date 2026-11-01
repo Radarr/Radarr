@@ -37,6 +37,7 @@ namespace NzbDrone.Core.Parser.Model
         public int OriginalFileNameCustomFormatScore { get; set; }
         public GrabbedReleaseInfo Release { get; set; }
         public bool ScriptImported { get; set; }
+        public DateTime? PreservedFileDate { get; set; }
         public string FileNameBeforeRename { get; set; }
         public string FileNameUsedForCustomFormatCalculation { get; set; }
         public bool ShouldImportExtras { get; set; }
