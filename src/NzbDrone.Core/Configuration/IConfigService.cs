@@ -79,6 +79,13 @@ namespace NzbDrone.Core.Configuration
         int MovieInfoLanguage { get; set; }
         int UILanguage { get; set; }
 
+        // Poster Replacement
+        bool PosterReplacementEnabled { get; set; }
+        IReadOnlyList<string> PosterReplacementGenres { get; set; }
+        IReadOnlyList<int> PosterReplacementTags { get; set; }
+        string PosterReplacementBackgroundColor { get; set; }
+        string PosterReplacementTextColor { get; set; }
+
         // Internal
         bool CleanupMetadataImages { get; set; }
         string PlexClientIdentifier { get; }

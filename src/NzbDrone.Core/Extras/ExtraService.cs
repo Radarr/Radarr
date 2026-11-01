@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Extras
 
                 foreach (var extraFileManager in _extraFileManagers)
                 {
-                    extraFileManager.CreateAfterMediaCoverUpdate(movie);
+                    extraFileManager.CreateAfterMediaCoverUpdate(movie, message.PosterReplacementChanged);
                 }
             }
         }

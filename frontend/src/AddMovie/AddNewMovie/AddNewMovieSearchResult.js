@@ -114,6 +114,8 @@ class AddNewMovieSearchResult extends Component {
                     className={styles.poster}
                     style={elementStyle}
                     images={images}
+                    title={title}
+                    genres={genres}
                     size={250}
                     overflow={true}
                     lazy={false}
@@ -306,6 +308,7 @@ class AddNewMovieSearchResult extends Component {
           overview={overview}
           folder={folder}
           images={images}
+          genres={genres}
           onModalClose={this.onAddMovieModalClose}
         />
       </div>
