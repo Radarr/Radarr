@@ -14,6 +14,7 @@ import { isCommandExecuting } from 'Utilities/Command';
 import formatDate from 'Utilities/Date/formatDate';
 import formatDateTime from 'Utilities/Date/formatDateTime';
 import formatTimeSpan from 'Utilities/Date/formatTimeSpan';
+import translate from 'Utilities/String/translate';
 import styles from './ScheduledTaskRow.css';
 
 interface ScheduledTaskRowProps {
@@ -47,6 +48,7 @@ function ScheduledTaskRow(props: ScheduledTaskRowProps) {
 
   const [time, setTime] = useState(Date.now());
 
+  const runLabel = translate('RunTaskWithName', { name });
   const isQueued = !!(command && command.status === 'queued');
   const isExecuting = isCommandExecuting(command);
   const wasExecuting = usePrevious(isExecuting);
@@ -159,6 +161,8 @@ function ScheduledTaskRow(props: ScheduledTaskRowProps) {
         <SpinnerIconButton
           name={icons.REFRESH}
           spinningName={icons.REFRESH}
+          title={runLabel}
+          aria-label={runLabel}
           isSpinning={isExecuting}
           onPress={handleExecutePress}
         />
