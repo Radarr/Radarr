@@ -83,6 +83,12 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 RelativePath = movie.Path.GetRelativePath(path)
             };
 
+            if (Path.GetFileNameWithoutExtension(filename).Equals("theme", StringComparison.OrdinalIgnoreCase))
+            {
+                metadata.Type = MetadataType.MovieTheme;
+                return metadata;
+            }
+
             if (MovieImagesRegex.IsMatch(filename))
             {
                 metadata.Type = MetadataType.MovieImage;
