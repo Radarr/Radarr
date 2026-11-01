@@ -23,7 +23,7 @@ namespace NzbDrone.Core.ImportLists.Trakt
                 return movies;
             }
 
-            var jsonResponse = STJson.Deserialize<List<TraktListResource>>(_importResponse.Content);
+            var jsonResponse = STJson.Deserialize<List<TraktListResource>>(_importResponse.HttpResponse.ResponseData);
 
             // no movies were return
             if (jsonResponse == null)

@@ -31,11 +31,11 @@ namespace NzbDrone.Core.ImportLists.Trakt.Popular
 
             if (_settings.TraktListType == (int)TraktPopularListType.Popular)
             {
-                jsonResponse = STJson.Deserialize<List<TraktMovieResource>>(_importResponse.Content);
+                jsonResponse = STJson.Deserialize<List<TraktMovieResource>>(_importResponse.HttpResponse.ResponseData);
             }
             else
             {
-                jsonResponse = STJson.Deserialize<List<TraktListResource>>(_importResponse.Content).SelectList(c => c.Movie);
+                jsonResponse = STJson.Deserialize<List<TraktListResource>>(_importResponse.HttpResponse.ResponseData).SelectList(c => c.Movie);
             }
 
             // no movies were return
