@@ -2057,5 +2057,9 @@
     "Wednesday": "Keskiviikko",
     "DisabledForLocalhost": "Ei käytössä localhostissa",
     "SslKeyPath": "SSL-avaimen sijainti",
-    "SslKeyPathHelpText": "Pem-tiedoston kanssa käytettävän avaintiedoston sijainti."
+    "SslKeyPathHelpText": "Pem-tiedoston kanssa käytettävän avaintiedoston sijainti.",
+    "MediaInfoAudioStreamHeader": "Ääniraita #{number}",
+    "MediaInfoForced": "Pakotettu",
+    "MediaInfoHearingImpaired": "Kuulorajoitteiset",
+    "MediaInfoSubtitlesHeader": "Tekstitykset"
 }

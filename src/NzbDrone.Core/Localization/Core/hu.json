@@ -2081,5 +2081,9 @@
     "OidcUserIdentifier": "OIDC felhasználó",
     "OidcUserIdentifierHelpText": "Az OIDC szolgáltatónál ellenőrzött e-mail-cím vagy a „sub” azonosító, amely a {appName}ba való bejelentkezéshez szolgál",
     "SslKeyPath": "SSL‑kulcs elérési útja",
-    "SslKeyPathHelpText": "A pem fájlhoz használt kulcsfájl elérési útja"
+    "SslKeyPathHelpText": "A pem fájlhoz használt kulcsfájl elérési útja",
+    "MediaInfoAudioStreamHeader": "Hangfolyam #{number}",
+    "MediaInfoForced": "Kényszerített",
+    "MediaInfoHearingImpaired": "Hallássérült",
+    "MediaInfoSubtitlesHeader": "Feliratok"
 }
