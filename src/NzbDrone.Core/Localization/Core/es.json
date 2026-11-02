@@ -2083,5 +2083,9 @@
     "SslKeyPath": "Ruta de la clave SSL",
     "SslKeyPathHelpText": "Ruta al archivo clave usado con el archivo pem",
     "ImportListsTraktSettingsSmartList": "Identificador de la lista inteligente",
-    "ImportListsTraktSettingsSmartListHelpText": "Identificador de la lista inteligente, p. ej. mi-lista-1a2b3c4d5e6f7a8b desde https://app.trakt.tv/lists/smart/view/mi-lista-1a2b3c4d5e6f7a8b. La lista debe ser pública o de tu propiedad"
+    "ImportListsTraktSettingsSmartListHelpText": "Identificador de la lista inteligente, p. ej. mi-lista-1a2b3c4d5e6f7a8b desde https://app.trakt.tv/lists/smart/view/mi-lista-1a2b3c4d5e6f7a8b. La lista debe ser pública o de tu propiedad",
+    "MediaInfoAudioStreamHeader": "Flujo de audio #{number}",
+    "MediaInfoForced": "Forzado",
+    "MediaInfoHearingImpaired": "Discapacidad auditiva",
+    "MediaInfoSubtitlesHeader": "Subtítulos"
 }

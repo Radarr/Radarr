@@ -2083,5 +2083,9 @@
     "SslKeyPath": "Ruta de la clau SSL",
     "SslKeyPathHelpText": "Camí al fitxer de claus utilitzat amb el fitxer pem",
     "ImportListsTraktSettingsSmartList": "Identificador de la llista intel·ligent",
-    "ImportListsTraktSettingsSmartListHelpText": "Identificador de la llista intel·ligent, per exemple, my-list-1a2b3c4d5e6f7a8b de https://app.trakt.tv/lists/smart/view/my-list-1a2b3c4d5e6f7a8b. La llista ha de ser pública o vostra"
+    "ImportListsTraktSettingsSmartListHelpText": "Identificador de la llista intel·ligent, per exemple, my-list-1a2b3c4d5e6f7a8b de https://app.trakt.tv/lists/smart/view/my-list-1a2b3c4d5e6f7a8b. La llista ha de ser pública o vostra",
+    "MediaInfoAudioStreamHeader": "Transmissió d'àudio #{number}",
+    "MediaInfoForced": "Forçat",
+    "MediaInfoHearingImpaired": "Dificultats auditives",
+    "MediaInfoSubtitlesHeader": "Subtítols"
 }

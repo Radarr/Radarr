@@ -362,7 +362,7 @@
     "EnableSsl": "Abilita SSL",
     "EnableColorImpairedModeHelpText": "Stile alterato per permettere agli utenti daltonici di distinguere meglio le informazioni codificate a colori",
     "YouCanAlsoSearch": "Puoi cercare anche usando l'ID del film di TMDB o di IMDB. Per es. tmdb:71663",
-    "CustomFormatUnknownCondition": "Condizione del Formato Personalizzato sconosciuta '{0}'",
+    "CustomFormatUnknownCondition": "Condizione del Formato Personalizzato sconosciuta '{implementation}'",
     "LongDateFormat": "Formato Data Esteso",
     "FirstDayOfWeek": "Primo Giorno della Settimana",
     "EnableColorImpairedMode": "Abilita la modalità a colori alternati",

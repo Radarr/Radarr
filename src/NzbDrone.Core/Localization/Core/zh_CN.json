@@ -2060,5 +2060,17 @@
     "MovieFileQualities": "电影文件品质",
     "AllowedHostsHelpText": "{appName} 将接受请求的主机名和 IP 地址的逗号分隔列表。使用“*.”作为子域名的通配符。留空则允许所有主机。",
     "AllowedHostsNotConfiguredHealthCheckMessage": "未配置允许的主机，{appName} 将接受任何主机名的请求。请在常规设置中设置允许的主机，以限制可用于访问 {appName} 的主机名。",
-    "TrustedNetworksHelpText": "受信任的反向代理所在的 IP 地址或 CIDR 表示法的网络的逗号分隔列表。例如：172.17.0.1、10.0.0.0/8 或 fc00::/7。仅添加已正确配置以发送正确标头的代理。"
+    "TrustedNetworksHelpText": "受信任的反向代理所在的 IP 地址或 CIDR 表示法的网络的逗号分隔列表。例如：172.17.0.1、10.0.0.0/8 或 fc00::/7。仅添加已正确配置以发送正确标头的代理。",
+    "AuthenticationRequiredOidcAuthorityHelpTextWarning": "请输入 OIDC 授权机构地址",
+    "AuthenticationRequiredOidcClientIdHelpTextWarning": "请输入 OIDC 客户端 ID",
+    "AuthenticationRequiredOidcClientSecretHelpTextWarning": "请输入 OIDC 客户端密钥",
+    "AuthenticationRequiredOidcUserIdentifierHelpTextWarning": "请输入 OIDC 用户名",
+    "DisabledForLocalhost": "本地主机已禁用",
+    "ImportListsTraktSettingsSmartList": "智能列表标识符",
+    "ImportListsTraktSettingsSmartListHelpText": "Smart list slug，例如 https://app.trakt.tv/lists/smart/view/my-list-1a2b3c4d5e6f7a8b 中的 my-list-1a2b3c4d5e6f7a8b。列表必须为公开或属于您",
+    "Oidc": "OIDC",
+    "OidcAuthority": "OIDC 颁发机构",
+    "OidcAuthorityHelpText": "OIDC 提供者的 URL",
+    "OidcAuthorityNotSecureHealthCheckMessage": "OIDC 颁发机构的 URL 必须以 \"https://\" 开头",
+    "OidcClientId": "OIDC 客户端 ID"
 }
