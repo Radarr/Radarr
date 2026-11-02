@@ -31,8 +31,6 @@
     "DiskSpace": "Speicherplatz",
     "DownloadClientCheckNoneAvailableMessage": "Kein Download-Client verfügbar",
     "DownloadClientCheckUnableToCommunicateMessage": "Kommunikation mit {downloadClientName} nicht möglich. {errorMessage}",
-    "DownloadClientStatusCheckAllClientMessage": "Alle Download Clients sind aufgrund von Fehlern nicht verfügbar",
-    "DownloadClientStatusCheckSingleClientMessage": "Download Clients aufgrund von Fehlern nicht verfügbar: {downloadClientNames}",
     "DownloadClients": "Download-Clients",
     "Downloaded": "Heruntergeladen",
     "Edit": "Bearbeiten",
@@ -1045,7 +1043,6 @@
     "ResetTitles": "Titel zurücksetzen",
     "Theme": "Design",
     "EnableRssHelpText": "Wird verwendet, wenn {appName} regelmäßig nach Releases über RSS-Sync sucht",
-    "DownloadClientSortingCheckMessage": "Downloader {downloadClientName} hat die {sortingMode} Sortierung für {appName}s Kategorie aktiviert. Dies sollte deaktiviert werden, um Import-Probleme zu vermeiden.",
     "File": "Datei",
     "MovieMatchType": "Filmübereinstimmungstyp",
     "EditSelectedMovies": "Bearbeite ausgewählte Filme",
@@ -2081,5 +2078,10 @@
     "OidcUserIdentifier": "OIDC User",
     "OidcUserIdentifierHelpText": "Die verifizierte E-Mail Adresse oder Identifizierungsschlüssel (sub) beim OIDC Provider, der zum Einloggen in {appName} verwendet wird",
     "SslKeyPath": "SSL-Schlüssel Pfad",
-    "SslKeyPathHelpText": "Dateipfad zur Schlüsseldatei in Verwendung mit pem-Datei"
+    "SslKeyPathHelpText": "Dateipfad zur Schlüsseldatei in Verwendung mit pem-Datei",
+    "MediaInfoAudioStreamHeader": "Audiostream #{number}",
+    "MediaInfoForced": "Erzwungen",
+    "MediaInfoHearingImpaired": "Hörgeschädigt",
+    "MediaInfoSubtitlesHeader": "Untertitel",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Eine Kategorie gezielt für {appName} zu setzen, verhindert Konflikte mit unrelevanten nicht-{appName} Downloads. Eine Kategorie zu verwenden, ist optional, aber strengstens empfohlen. Transmission 4.0 und höher wendet die Kategorie als Label an; frühere Versionen erzeugen ein [Kategorie] Unterverzeichnis im Ausgabeverzeichnis."
 }

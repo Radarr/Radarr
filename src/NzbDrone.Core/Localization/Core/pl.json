@@ -215,7 +215,6 @@
     "DeleteBackup": "Usuń kopię zapasową",
     "DeletedMovieDescription": "Film został usunięty z TMDb",
     "DockerUpdater": "zaktualizuj kontener Dockera, aby otrzymać aktualizację",
-    "DownloadClientStatusCheckAllClientMessage": "Wszyscy klienci pobierania są niedostępni z powodu błędów",
     "Enabled": "Włączone",
     "ExcludeTitle": "Wykluczyć {0}? Zapobiegnie to automatycznemu dodawaniu przez {appName} poprzez synchronizację listy.",
     "FailedDownloadHandling": "Obsługa nieudanych pobrań",
@@ -511,7 +510,6 @@
     "DownloadClients": "Klienci pobierania",
     "DownloadClientSettings": "Ustawienia klienta pobierania",
     "DownloadClientsSettingsSummary": "Klienci pobierania, obsługa pobierania i mapowania ścieżek zdalnych",
-    "DownloadClientStatusCheckSingleClientMessage": "Klienci pobierania niedostępni z powodu błędów: {downloadClientNames}",
     "Downloaded": "Pobrano",
     "DownloadedAndMonitored": "Pobrane (monitorowane)",
     "DownloadedButNotMonitored": "Pobrane (niemonitorowane)",
@@ -1545,7 +1543,6 @@
     "TorrentBlackhole": "Czarna dziura torrentów",
     "DownloadClientSabnzbdValidationDevelopVersionDetail": "{appName} może nie być w stanie obsłużyć nowych funkcji dodanych do SABnzbd podczas używania wersji deweloperskich.",
     "DownloadClientSabnzbdValidationEnableDisableMovieSorting": "Wyłącz sortowanie filmów",
-    "DownloadClientSortingCheckMessage": "Klient pobierania {downloadClientName} ma włączone sortowanie {sortingMode} dla kategorii {appName}. Powinieneś wyłączyć sortowanie w kliencie pobierania, aby uniknąć problemów z importem.",
     "DownloadClientValidationAuthenticationFailureDetail": "Zweryfikuj swoje dane logowania. Sprawdź też, czy host uruchamiający {appName} nie jest zablokowany przed dostępem do {clientName} przez ograniczenia WhiteList w konfiguracji {clientName}.",
     "DownloadClientValidationCategoryMissing": "Kategoria nie istnieje",
     "DownloadClientValidationCategoryMissingDetail": "Wprowadzona kategoria nie istnieje w {clientName}. Najpierw utwórz ją w {clientName}.",
@@ -2083,5 +2080,10 @@
     "SslKeyPath": "Ścieżka klucza SSL",
     "SslKeyPathHelpText": "Ścieżka do pliku klucza używanego z plikiem pem",
     "ImportListsTraktSettingsSmartList": "Identyfikator listy inteligentnej",
-    "ImportListsTraktSettingsSmartListHelpText": "Identyfikator listy inteligentnej, np. moja-lista-1a2b3c4d5e6f7a8b z https://app.trakt.tv/lists/smart/view/moja-lista-1a2b3c4d5e6f7a8b. Lista musi być publiczna lub należeć do ciebie"
+    "ImportListsTraktSettingsSmartListHelpText": "Identyfikator listy inteligentnej, np. moja-lista-1a2b3c4d5e6f7a8b z https://app.trakt.tv/lists/smart/view/moja-lista-1a2b3c4d5e6f7a8b. Lista musi być publiczna lub należeć do ciebie",
+    "MediaInfoAudioStreamHeader": "Strumień audio #{number}",
+    "MediaInfoForced": "Wymuszone",
+    "MediaInfoHearingImpaired": "Dla niesłyszących",
+    "MediaInfoSubtitlesHeader": "Napisy",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Dodanie kategorii specyficznej dla {appName} pozwala uniknąć konfliktów z niepowiązanymi pobraniami spoza {appName}. Użycie kategorii jest opcjonalne, ale zdecydowanie zalecane. Transmission 4.0 i nowsze używają etykiet z nazwą kategorii; starsze wersje tworzą podkatalog [kategoria] w katalogu wyjściowym."
 }

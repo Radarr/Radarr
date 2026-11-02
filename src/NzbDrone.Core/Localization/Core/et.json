@@ -1098,7 +1098,6 @@
     "AllowedHosts": "Lubatud hostid",
     "AllowedHostsHelpText": "Komaga eraldatud loend hostinimedest ja IP-aadressidest, mille päringuid {appName} aktsepteerib. Alamdomeenide asendussümbolina kasuta kuju '*.'. Kõikide hostide lubamiseks jäta tühjaks.",
     "AllowedHostsNotConfiguredHealthCheckMessage": "Lubatud hostid pole seadistatud, {appName} võtab vastu päringuid mis tahes hostinimelt. Määra üldseadetes „Lubatud hostid“, et piirata, milliste hostinimede kaudu saab rakendusele {appName} ligi.",
-    "DownloadClientStatusCheckSingleClientMessage": "Tõrgete tõttu kättesaamatud allalaadimiskliendid: {downloadClientNames}",
     "DownloadFailed": "Allalaadimine nurjus",
     "FailedAt": "Nurjus: {date}",
     "ImportListStatusCheckSingleClientMessage": "Tõrgete tõttu kättesaamatud loendid: {importListNames}",
@@ -1134,8 +1133,6 @@
     "Hours": "tundi",
     "ImportListsRadarrSettingsFullUrl": "Täielik URL",
     "IndexerNyaaSettingsAdditionalParametersHelpText": "Arvesta, et kategooria muutmisel tuleb võõrkeelsete versioonide vältimiseks määrata alamrühmadele nõutavad/piiravad reeglid.",
-    "DownloadClientSortingCheckMessage": "Allalaadimiskliendil {downloadClientName} on rakenduse {appName} kategooria jaoks sisse lülitatud sortimine ({sortingMode}). Impordiprobleemide vältimiseks peaksid allalaadimiskliendis sortimise välja lülitama.",
-    "DownloadClientStatusCheckAllClientMessage": "Kõik allalaadimiskliendid on tõrgete tõttu kättesaamatud",
     "DownloadClientFloodSettingsAddPaused": "Lisa peatatult",
     "IMDbId": "IMDb ID",
     "ImportFailed": "Importimine nurjus: {sourceTitle}",
@@ -2069,5 +2066,9 @@
     "OidcClientSecretHelpText": "OIDC teenusepakkuja juures registreeritud salavõti",
     "OidcDiscoveryFailedHealthCheckMessage": "OIDC seadistuse laadimine aadressilt {authority} nurjus. Sisselogimine ei toimi, kuni teenusepakkuja on kättesaadav",
     "SslKeyPath": "SSL-võtme asukoht",
-    "SslKeyPathHelpText": "PEM-failiga kasutatava võtmefaili failitee"
+    "SslKeyPathHelpText": "PEM-failiga kasutatava võtmefaili failitee",
+    "MediaInfoAudioStreamHeader": "Helivoog #{number}",
+    "MediaInfoForced": "Sunnitud",
+    "MediaInfoHearingImpaired": "Vaegkuuljad",
+    "MediaInfoSubtitlesHeader": "Subtiitrid"
 }

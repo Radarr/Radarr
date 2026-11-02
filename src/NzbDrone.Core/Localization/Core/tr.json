@@ -497,7 +497,6 @@
     "MovieInfoLanguageHelpText": "{appName}'in Kullanıcı Arayüzünde Film Bilgileri için kullanacağı dil",
     "MovieIsMonitored": "Film takip ediliyor",
     "SuggestTranslationChange": "Çeviri değişikliği önerin",
-    "DownloadClientStatusCheckAllClientMessage": "Hatalar nedeniyle tüm indirme istemcileri kullanılamıyor",
     "MoveFiles": "Dosyaları Taşı",
     "AddListExclusionMovieHelpText": "Listelerle filmin {appName}'a eklenmesini önleyin",
     "MustContain": "İçermeli",
@@ -693,7 +692,6 @@
     "DownloadClients": "İndirme İstemcileri",
     "DownloadClientSettings": "İndirme İstemcisi Ayarlarını",
     "DownloadClientsSettingsSummary": "İndirme İstemcileri, indirme işlemleri ve uzaktan yol eşlemeleri",
-    "DownloadClientStatusCheckSingleClientMessage": "Hatalar nedeniyle indirilemeyen istemciler: {downloadClientNames}",
     "DownloadedAndMonitored": "İndirildi (Takip Ediliyor)",
     "DownloadedButNotMonitored": "İndirildi (Takip Edilmiyor)",
     "DownloadFailed": "Yükleme başarısız",
@@ -1219,7 +1217,6 @@
     "DownloadClientValidationUnknownException": "Bilinmeyen istisna: {exception}",
     "DownloadClientVuzeValidationErrorVersion": "Protokol sürümü desteklenmiyor; Vuze Web Remote eklentisi ile Vuze 5.0.0.0 veya üstünü kullanın.",
     "DownloadStationStatusExtracting": "Çıkarılıyor: %{progress}",
-    "DownloadClientSortingCheckMessage": "{downloadClientName} indirme istemcisinde, {appName} kategorisi için {sortingMode} sıralama etkinleştirildi. İçe aktarma sorunlarını önlemek için indirme istemcinizde sıralamayı devre dışı bırakmalısınız.",
     "EditAutoTag": "Otomatik Etiket Düzenle",
     "DownloadIgnored": "Yoksayılanları İndir",
     "DownloadClientValidationTestNzbs": "NZB'lerin listesi alınamadı: {exceptionMessage}",
@@ -2063,5 +2060,9 @@
     "TrustedNetworksHelpText": "Güvenilen ters vekillerin (reverse proxy) üzerinde bulunduğu, CIDR gösterimindeki IP adreslerinin veya ağların virgülle ayrılmış listesi. Örneğin: 172.17.0.1, 10.0.0.0/8 veya fc00::/7. Yalnızca doğru üstbilgileri (header) gönderecek şekilde düzgün yapılandırılmış vekilleri ekleyin.",
     "DisabledForLocalhost": "Localhost için devre dışı",
     "SslKeyPath": "SSL Anahtar Yolu",
-    "SslKeyPathHelpText": "Pem dosyasıyla kullanılan anahtar dosyasının yolu"
+    "SslKeyPathHelpText": "Pem dosyasıyla kullanılan anahtar dosyasının yolu",
+    "MediaInfoAudioStreamHeader": "Ses Akışı #{number}",
+    "MediaInfoForced": "Zorunlu",
+    "MediaInfoHearingImpaired": "İşitme engelliler için",
+    "MediaInfoSubtitlesHeader": "Altyazılar"
 }

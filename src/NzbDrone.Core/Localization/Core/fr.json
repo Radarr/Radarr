@@ -25,7 +25,6 @@
     "Events": "Événements",
     "Edit": "Modifier",
     "Downloaded": "Téléchargé",
-    "DownloadClientStatusCheckAllClientMessage": "Aucun client de téléchargement n'est disponible en raison d'échecs",
     "DownloadClients": "Téléchargement",
     "DownloadClientCheckNoneAvailableMessage": "Aucun client de téléchargement n'est disponible",
     "Dates": "Dates",
@@ -60,7 +59,6 @@
     "About": "À propos",
     "CustomFormatsSettingsSummary": "Formats et paramètres personnalisés",
     "IndexerStatusCheckSingleClientMessage": "Indexeurs indisponibles en raison d'échecs : {indexerNames}",
-    "DownloadClientStatusCheckSingleClientMessage": "Clients de Téléchargement indisponibles en raison d'échecs : {downloadClientNames}",
     "SetTags": "Définir les étiquettes",
     "ReleaseTitle": "Titre de la version",
     "ReleaseStatus": "Statut de la version",
@@ -1051,7 +1049,6 @@
     "ScrollMovies": "Parcourir les films",
     "Theme": "Thème",
     "EnableRssHelpText": "Sera utilisé lorsque {appName} recherche périodiquement des sorties via la synchronisation RSS",
-    "DownloadClientSortingCheckMessage": "Le client de téléchargement {downloadClientName} a activé le tri {sortingMode} pour la catégorie de {appName}. Vous devez désactiver le tri dans votre client de téléchargement pour éviter les problèmes d'importation.",
     "ResetDefinitions": "Réinitialiser les définitions",
     "ResetQualityDefinitions": "Réinitialiser les définitions de qualité",
     "ResetTitles": "Réinitialiser les titres",
@@ -2081,5 +2078,12 @@
     "OidcUserIdentifier": "Utilisateur OIDC",
     "OidcUserIdentifierHelpText": "L'adresse e-mail vérifiée ou l'identifiant de sujet (sub) sur le fournisseur OIDC qui sera utilisé pour se connecter à {appName}",
     "SslKeyPath": "Chemin de la clé SSL",
-    "SslKeyPathHelpText": "Chemin du fichier clé utilisé avec le fichier pem"
+    "SslKeyPathHelpText": "Chemin du fichier clé utilisé avec le fichier pem",
+    "ImportListsTraktSettingsSmartList": "Liste intelligente Slug",
+    "ImportListsTraktSettingsSmartListHelpText": "Identifiant de la liste intelligente, par exemple my-list-1a2b3c4d5e6f7a8b (https://app.trakt.tv/lists/smart/view/my-list-1a2b3c4d5e6f7a8b). La liste doit être publique ou vous appartenir",
+    "MediaInfoAudioStreamHeader": "Flux audio #{number}",
+    "MediaInfoForced": "Forcé",
+    "MediaInfoHearingImpaired": "Malentendant",
+    "MediaInfoSubtitlesHeader": "Sous-titres",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "L'ajout d'une catégorie spécifique à {appName} permet d'éviter les conflits avec des téléchargements sans rapport avec {appName}. L'utilisation d'une catégorie est facultative, mais vivement recommandée. À partir de la version 4.0, Transmission utilise la catégorie comme étiquette ; les versions antérieures créent un sous-répertoire [catégorie] dans le répertoire de sortie."
 }

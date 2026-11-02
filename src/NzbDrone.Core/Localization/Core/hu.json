@@ -42,8 +42,6 @@
     "DownloadedButNotMonitored": "Letöltve, (nincs Figyelve)",
     "DownloadedAndMonitored": "Letöltve (Figyelve)",
     "Downloaded": "Letöltve",
-    "DownloadClientStatusCheckSingleClientMessage": "Letöltőkliens hiba miatt nem elérhető: {downloadClientNames}",
-    "DownloadClientStatusCheckAllClientMessage": "Az összes letöltőkliens elérhetetlen, hiba miatt",
     "DownloadClientsSettingsSummary": "Letöltőkliensek, letöltéskezelés és távoli útvonalleképezések",
     "DownloadClientSettings": "Letöltőkliens beállítások",
     "DownloadClients": "Letöltő kliensek",
@@ -1055,7 +1053,6 @@
     "ResetQualityDefinitions": "Minőségi meghatározások Visszaállítása",
     "ResetTitles": "Címek Visszaállítása",
     "EnableRssHelpText": "Akkor használatos, amikor a {appName} az RSS Sync segítségével rendszeresen keres kiadásokat",
-    "DownloadClientSortingCheckMessage": "A(z) {downloadClientName} letöltő kliensben engedélyezve van a(z) {sortingMode} rendezés a {appName} kategóriájához. Az importálási problémák elkerülése érdekében le kell tiltania a rendezést a letöltő kliensben.",
     "File": "Fájl",
     "EditMovies": "Film Szerkesztése",
     "ShowCinemaReleaseDatePosterHelpText": "Mutasd a megjelenés dátumát a poszter alatt",
@@ -2081,5 +2078,10 @@
     "OidcUserIdentifier": "OIDC felhasználó",
     "OidcUserIdentifierHelpText": "Az OIDC szolgáltatónál ellenőrzött e-mail-cím vagy a „sub” azonosító, amely a {appName}ba való bejelentkezéshez szolgál",
     "SslKeyPath": "SSL‑kulcs elérési útja",
-    "SslKeyPathHelpText": "A pem fájlhoz használt kulcsfájl elérési útja"
+    "SslKeyPathHelpText": "A pem fájlhoz használt kulcsfájl elérési útja",
+    "MediaInfoAudioStreamHeader": "Hangfolyam #{number}",
+    "MediaInfoForced": "Kényszerített",
+    "MediaInfoHearingImpaired": "Hallássérült",
+    "MediaInfoSubtitlesHeader": "Feliratok",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "A {appName}-hoz tartozó külön kategória megelőzi az ütközést más letöltésekkel. Opcionális, de ajánlott. A Transmission 4.0+ címkét használ, a régebbi verziók pedig [kategória] almappát hoznak létre."
 }

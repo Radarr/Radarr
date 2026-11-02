@@ -271,8 +271,6 @@
     "DownloadClientCheckNoneAvailableMessage": "No hi ha cap client de baixada disponible",
     "DownloadClients": "Clients de baixada",
     "DownloadClientSettings": "Baixeu la configuració del client",
-    "DownloadClientStatusCheckAllClientMessage": "No hi ha clients de baixada disponibles a causa d'errors",
-    "DownloadClientStatusCheckSingleClientMessage": "Clients de baixada no disponibles a causa d'errors: {downloadClientNames}",
     "DownloadPropersAndRepacksHelpTextCustomFormat": "Utilitzeu 'No prefereixo' per a ordenar per puntuació de format personalitzat sobre Propers/Repacks",
     "EditCustomFormat": "Edita el format personalitzat",
     "EnableInteractiveSearch": "Activa la cerca interactiva",
@@ -1050,7 +1048,6 @@
     "ApplicationUrlHelpText": "URL extern de l'aplicació, inclòs http(s)://, port i URL base",
     "PreferredProtocol": "Protocol preferit",
     "File": "Fitxer",
-    "DownloadClientSortingCheckMessage": "El client de baixada {downloadClientName} té l'ordenació {sortingMode} activada per a la categoria de {appName}. Hauríeu de desactivar l'ordenació al vostre client de baixada per evitar problemes d'importació.",
     "ThemeHelpText": "Canvieu el tema de la interfície d'usuari de l'aplicació, el tema \"Automàtic\" utilitzarà el tema del vostre sistema operatiu per a configurar el mode clar o fosc. Inspirat en Theme.Park",
     "ResetDefinitions": "Restableix definicions",
     "ResetQualityDefinitions": "Restableix les definicions de qualitat",
@@ -2083,5 +2080,10 @@
     "SslKeyPath": "Ruta de la clau SSL",
     "SslKeyPathHelpText": "Camí al fitxer de claus utilitzat amb el fitxer pem",
     "ImportListsTraktSettingsSmartList": "Identificador de la llista intel·ligent",
-    "ImportListsTraktSettingsSmartListHelpText": "Identificador de la llista intel·ligent, per exemple, my-list-1a2b3c4d5e6f7a8b de https://app.trakt.tv/lists/smart/view/my-list-1a2b3c4d5e6f7a8b. La llista ha de ser pública o vostra"
+    "ImportListsTraktSettingsSmartListHelpText": "Identificador de la llista intel·ligent, per exemple, my-list-1a2b3c4d5e6f7a8b de https://app.trakt.tv/lists/smart/view/my-list-1a2b3c4d5e6f7a8b. La llista ha de ser pública o vostra",
+    "MediaInfoAudioStreamHeader": "Transmissió d'àudio #{number}",
+    "MediaInfoForced": "Forçat",
+    "MediaInfoHearingImpaired": "Dificultats auditives",
+    "MediaInfoSubtitlesHeader": "Subtítols",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Afegir una categoria específica a {appName} evita conflictes amb baixades no relacionades amb {appName}. L'ús d'una categoria és opcional, però molt recomanable. Transmission 4.0 i versions posteriors apliquen la categoria com a etiqueta; les versions anteriors creen un subdirectori [categoria] al directori de sortida."
 }

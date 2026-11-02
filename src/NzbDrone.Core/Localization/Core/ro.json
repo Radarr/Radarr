@@ -86,8 +86,6 @@
     "Events": "Evenimente",
     "Edit": "Editează",
     "Downloaded": "Descărcat",
-    "DownloadClientStatusCheckSingleClientMessage": "Clienții de descărcare sunt indisponibili datorită erorilor: {downloadClientNames}",
-    "DownloadClientStatusCheckAllClientMessage": "Toți clienții de descărcare sunt indisponibili datorită erorilor",
     "ProfilesSettingsSummary": "Calitate, Limbă și Profile de Întârziere",
     "Profiles": "Profile",
     "PreviewRename": "Previzualizare Redenumire",

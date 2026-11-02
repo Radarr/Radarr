@@ -787,7 +787,6 @@
     "Date": "Дата",
     "DatabaseMigration": "DB миграция",
     "DockerUpdater": "актуализирайте контейнера на докера, за да получите актуализацията",
-    "DownloadClientStatusCheckAllClientMessage": "Всички клиенти за изтегляне са недостъпни поради неуспехи",
     "InvalidFormat": "Невалиден формат",
     "EditGroups": "Редактиране на групи",
     "Enabled": "Активирано",
@@ -940,7 +939,6 @@
     "Deleted": "Изтрито",
     "DeleteSelectedMovie": "Изтриване на избрани филми",
     "DestinationRelativePath": "Относителен път на дестинацията",
-    "DownloadClientStatusCheckSingleClientMessage": "Клиентите за изтегляне са недостъпни поради грешки: {downloadClientNames}",
     "Images": "Изображения",
     "IMDb": "IMDb",
     "SqliteVersionCheckUpgradeRequiredMessage": "Понастоящем инсталираната версия на SQLite {0} вече не се поддържа. Моля, надстройте SQLite поне до версия {1}.",
@@ -1320,7 +1318,6 @@
     "DownloadClientRTorrentSettingsUrlPathHelpText": "Път до XMLRPC крайната точка, вижте {url}. Обикновено това е RPC2 или [път до ruTorrent]{url2}, когато използвате ruTorrent.",
     "DownloadClientSabnzbdValidationEnableDisableDateSorting": "Изключете сортирането по дата",
     "DownloadClientSabnzbdValidationEnableDisableMovieSortingDetail": "Трябва да деактивирате сортирането на филми за категорията, която {appName} използва, за да предотвратите проблеми с импортирането. Отидете в Sabnzbd, за да го поправите.",
-    "DownloadClientSortingCheckMessage": "Клиентът за изтегляне {downloadClientName} има активирано сортиране {sortingMode} за категорията на {appName}. Трябва да деактивирате сортирането във вашия клиент за изтегляне, за да избегнете проблеми с импортирането.",
     "ChownGroup": "chown Група",
     "DownloadClientValidationSslConnectFailure": "Неуспешно свързване чрез SSL",
     "EditMovieModalHeader": "Редактиране - {title}",
@@ -1898,5 +1895,9 @@
     "Tuesday": "Вторник",
     "Wednesday": "Сряда",
     "SslKeyPath": "Път до SSL ключа",
-    "SslKeyPathHelpText": "Път до файла с ключ, използван с pem файл"
+    "SslKeyPathHelpText": "Път до файла с ключ, използван с pem файл",
+    "MediaInfoAudioStreamHeader": "Аудио поток #{number}",
+    "MediaInfoForced": "Форсирани (Forced)",
+    "MediaInfoHearingImpaired": "За хора с увреден слух",
+    "MediaInfoSubtitlesHeader": "Субтитри"
 }
