@@ -25,8 +25,6 @@
     "Events": "Eventos",
     "Edit": "Editar",
     "Downloaded": "Descargado",
-    "DownloadClientStatusCheckSingleClientMessage": "Clientes de descargas no disponibles debido a errores: {downloadClientNames}",
-    "DownloadClientStatusCheckAllClientMessage": "Los clientes de descargas no están disponibles debido a errores",
     "DownloadClients": "Clientes de descarga",
     "DownloadClientCheckUnableToCommunicateMessage": "Incapaz de comunicarse con {downloadClientName}. {errorMessage}",
     "DownloadClientCheckNoneAvailableMessage": "Ningún cliente de descarga disponible",
@@ -1043,7 +1041,6 @@
     "ResetQualityDefinitions": "Restablecer definiciones de calidad",
     "ResetTitles": "Restablecer títulos",
     "ThemeHelpText": "Cambia el tema de la interfaz de la aplicación, el tema 'Auto' usará el tema de tu sistema para establecer el modo luminoso u oscuro. Inspirado por Theme.Park",
-    "DownloadClientSortingCheckMessage": "El cliente de descarga {downloadClientName} tiene activada la clasificación {sortingMode} para la categoría de {appName}. Deberías desactivar la clasificación en tu cliente de descarga para evitar problemas de importación.",
     "EnableRssHelpText": "Se utilizará cuando {appName} busque periódicamente publicaciones a través de la sincronización por RSS",
     "ShowOverview": "Presentación",
     "Theme": "Tema",
@@ -2083,5 +2080,10 @@
     "SslKeyPath": "Ruta de la clave SSL",
     "SslKeyPathHelpText": "Ruta al archivo clave usado con el archivo pem",
     "ImportListsTraktSettingsSmartList": "Identificador de la lista inteligente",
-    "ImportListsTraktSettingsSmartListHelpText": "Identificador de la lista inteligente, p. ej. mi-lista-1a2b3c4d5e6f7a8b desde https://app.trakt.tv/lists/smart/view/mi-lista-1a2b3c4d5e6f7a8b. La lista debe ser pública o de tu propiedad"
+    "ImportListsTraktSettingsSmartListHelpText": "Identificador de la lista inteligente, p. ej. mi-lista-1a2b3c4d5e6f7a8b desde https://app.trakt.tv/lists/smart/view/mi-lista-1a2b3c4d5e6f7a8b. La lista debe ser pública o de tu propiedad",
+    "MediaInfoAudioStreamHeader": "Flujo de audio #{number}",
+    "MediaInfoForced": "Forzado",
+    "MediaInfoHearingImpaired": "Discapacidad auditiva",
+    "MediaInfoSubtitlesHeader": "Subtítulos",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Añadir una categoría específica a {appName} evita conflictos con descargas no relacionadas con {appName}. Usar una categoría es opcional, pero altamente recomendado. Transmission 4.0 o superior aplica la categoría como una etiqueta; versiones inferiores crean un subdirectorio [categoría] en el directorio de salida."
 }

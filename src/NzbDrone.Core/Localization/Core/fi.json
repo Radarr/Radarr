@@ -177,7 +177,6 @@
     "Connection": "Yhteys",
     "CopyToClipboard": "Kopioi leikepöydälle",
     "CopyUsingHardlinksHelpTextWarning": "Tiedostojen käsittelystä johtuvat lukitukset saattavat joskus estää jaettavien tiedostojen uudelleennimeämisen. Voit keskeyttää jakamisen väliaikaisesti ja käyttää {appName}in nimeämistoimintoa.",
-    "DownloadClientStatusCheckAllClientMessage": "Latauspalveluita ei ole ongelmien vuoksi käytettävissä",
     "EditGroups": "Muokkaa ryhmiä",
     "ListTagsHelpText": "Tunnisteet, joilla tältä tuontilistalta lisätyt kohteet merkitään.",
     "Max": "Suurin",
@@ -501,7 +500,6 @@
     "DownloadClientSettings": "Latauspalveluasetukset",
     "EditCustomFormat": "Muokkaa mukautettua muotoa",
     "DownloadClientsSettingsSummary": "Latauspalvelut, latausten käsittely ja etäsijaintien kohdistukset.",
-    "DownloadClientStatusCheckSingleClientMessage": "Latauspalveluita ei ole ongelmien vuoksi käytettävissä: {downloadClientNames}",
     "Downloaded": "Ladattu",
     "DownloadedAndMonitored": "Ladattu (valvottu)",
     "DownloadedButNotMonitored": "Ladattu (valvomaton)",
@@ -1167,7 +1165,6 @@
     "OrganizeModalHeader": "Järjestele ja uudelleennimeä",
     "RemoveQueueItemConfirmation": "Haluatko varmasti poistaa kohteen \"{sourceTitle}\" jonosta?",
     "EditSelectedDownloadClients": "Muokkaa valittuja latauspalveluita",
-    "DownloadClientSortingCheckMessage": "Latauspalvelun \"{downloadClientName}\" {sortingMode} on kytketty käyttöön {appName}in kategorialle ja tuontiongelmien välttämiseksi se tulisi poistaa käytöstä.",
     "OrganizeRenamingDisabled": "Uudelleennimeäminen ei ole käytössä, eikä uudelleennimettävää ole",
     "QueueLoadError": "Jonon lataus epäonnistui",
     "StopSelecting": "Lopeta valitseminen",
@@ -2057,5 +2054,9 @@
     "Wednesday": "Keskiviikko",
     "DisabledForLocalhost": "Ei käytössä localhostissa",
     "SslKeyPath": "SSL-avaimen sijainti",
-    "SslKeyPathHelpText": "Pem-tiedoston kanssa käytettävän avaintiedoston sijainti."
+    "SslKeyPathHelpText": "Pem-tiedoston kanssa käytettävän avaintiedoston sijainti.",
+    "MediaInfoAudioStreamHeader": "Ääniraita #{number}",
+    "MediaInfoForced": "Pakotettu",
+    "MediaInfoHearingImpaired": "Kuulorajoitteiset",
+    "MediaInfoSubtitlesHeader": "Tekstitykset"
 }

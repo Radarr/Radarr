@@ -646,8 +646,6 @@
     "DownloadPropersAndRepacksHelpTextCustomFormat": "Используйте 'Не предпочитать' для сортировки по рейтингу пользовательского формата по сравнению с Проперами / Репаками",
     "DownloadPropersAndRepacksHelpText": "Следует ли автоматически обновляться до Проперов / Репаков",
     "DownloadPropersAndRepacks": "Проперы и репаки",
-    "DownloadClientStatusCheckSingleClientMessage": "Загрузчики недоступны из-за ошибок: {downloadClientNames}",
-    "DownloadClientStatusCheckAllClientMessage": "Все загрузчики недоступны из-за ошибок",
     "DownloadClients": "Загрузчики",
     "DownloadClientSettings": "Настройки загрузчика",
     "DownloadClientCheckUnableToCommunicateMessage": "Невозможно связаться с {downloadClientName}. {errorMessage}",
@@ -1055,7 +1053,6 @@
     "ApplicationURL": "URL-адрес приложения",
     "ApplicationUrlHelpText": "Внешний URL-адрес этого приложения, включая http(s)://, порт и базовый URL-адрес",
     "ScrollMovies": "Прокрутить фильмы",
-    "DownloadClientSortingCheckMessage": "В загрузчике {downloadClientName} включена {sortingMode} сортировка для категории в {appName}. Вам следует отключить сортировку в вашем загрузчике, чтобы избежать проблем с импортом.",
     "File": "Файл",
     "ShowCinemaReleaseDatePosterHelpText": "Показывать дату выхода фильма под изображением",
     "EditMovies": "Редактировать фильмы",
@@ -2081,5 +2078,10 @@
     "OidcUserIdentifier": "Пользователь OIDC",
     "OidcUserIdentifierHelpText": "Подтверждённый адрес электронной почты или идентификатор субъекта (sub) у провайдера OIDC, который будет использоваться для входа в {appName}",
     "SslKeyPath": "Путь к SSL ключу",
-    "SslKeyPathHelpText": "Путь к файлу ключа, используемому с pem файлом"
+    "SslKeyPathHelpText": "Путь к файлу ключа, используемому с pem файлом",
+    "MediaInfoAudioStreamHeader": "Аудиодорожка №{number}",
+    "MediaInfoForced": "Принудительно",
+    "MediaInfoHearingImpaired": "Для слабослышащих",
+    "MediaInfoSubtitlesHeader": "Субтитры",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Добавление отдельной категории для {appName} позволяет избежать конфликтов с загрузками, не связанными с {appName}. Использование категории необязательно, но рекомендуется. В Transmission 4.0 и новее категория применяется как метка; в более ранних версиях в каталоге вывода создаётся подкаталог [category]."
 }

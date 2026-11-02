@@ -37,8 +37,6 @@
     "Events": "Händelser",
     "Edit": "Redigera",
     "Downloaded": "Nedladdad",
-    "DownloadClientStatusCheckSingleClientMessage": "Nedladdningsklienter är otillgängliga på grund av fel: {downloadClientNames}",
-    "DownloadClientStatusCheckAllClientMessage": "Samtliga nedladdningsklienter är otillgängliga på grund av fel",
     "DownloadClients": "Nedladdningsklienter",
     "DownloadClientCheckUnableToCommunicateMessage": "Det går inte att kommunicera med {downloadClientName}.",
     "DownloadClientCheckNoneAvailableMessage": "Ingen nedladdningsklient tillgänglig",

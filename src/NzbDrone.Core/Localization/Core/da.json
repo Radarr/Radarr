@@ -45,8 +45,6 @@
     "Error": "Fejl",
     "Edit": "Rediger",
     "Downloaded": "Downloadet",
-    "DownloadClientStatusCheckSingleClientMessage": "Download klienter er ikke tilgængelige på grund af fejl: {downloadClientNames}",
-    "DownloadClientStatusCheckAllClientMessage": "Alle download klienter er utilgængelige på grund af fejl",
     "DownloadClientsSettingsSummary": "Download klienter, download håndtering og remote path mappings",
     "DownloadClients": "Download Klienter",
     "DownloadClientCheckUnableToCommunicateMessage": "Ude af stand til at kommunikere med {downloadClientName}. »{errorMessage}«",
