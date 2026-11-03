@@ -80,7 +80,6 @@ namespace NzbDrone.Core.HealthCheck
         IndexerSearchNoInteractive,
         IndexerStatusAllUnavailable,
         IndexerStatusUnavailable,
-        MetadataKometaDeprecated,
         MinimumApiKeyLength,
         MountMovies,
         NamingConfigDeprecatedToken,
