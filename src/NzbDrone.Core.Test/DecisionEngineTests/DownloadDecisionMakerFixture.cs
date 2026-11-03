@@ -225,6 +225,23 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
+        public void should_keep_parsed_info_on_the_decision_when_exception_is_caught()
+        {
+            GivenSpecifications(_pass1);
+
+            Mocker.GetMock<IParsingService>().Setup(c => c.Map(It.IsAny<ParsedMovieInfo>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<SearchCriteriaBase>()))
+                     .Throws<TestException>();
+
+            var decision = Subject.GetSearchDecision(_reports, new MovieSearchCriteria()).Single();
+
+            decision.RemoteMovie.ParsedMovieInfo.Should().NotBeNull();
+            decision.RemoteMovie.ParsedMovieInfo.Quality.Should().NotBeNull();
+            decision.RemoteMovie.Languages.Should().NotBeNull();
+
+            ExceptionVerification.ExpectedErrors(1);
+        }
+
+        [Test]
         public void should_return_a_decision_when_exception_is_caught()
         {
             GivenSpecifications(_pass1);
