@@ -74,7 +74,7 @@ namespace NzbDrone.Core.ImportLists
             ProcessListItems(listItemsResult);
         }
 
-        private void ProcessMovieReport(ImportListDefinition importList, ImportListMovie report, List<ImportListExclusion> listExclusions, List<int> dbMovies, List<Movie> moviesToAdd)
+        private void ProcessMovieReport(ImportListDefinition importList, ImportListMovie report, HashSet<int> excludedTmdbIds, HashSet<int> dbMovies, HashSet<int> tmdbIdsToAdd, List<Movie> moviesToAdd)
         {
             if (report.TmdbId == 0 || !importList.EnableAuto)
             {
@@ -89,16 +89,14 @@ namespace NzbDrone.Core.ImportLists
             }
 
             // Check to see if movie excluded
-            var excludedMovie = listExclusions.SingleOrDefault(s => s.TmdbId == report.TmdbId);
-
-            if (excludedMovie != null)
+            if (excludedTmdbIds.Contains(report.TmdbId))
             {
                 _logger.Debug("{0} [{1}] Rejected due to list exclusion", report.TmdbId, report.Title);
                 return;
             }
 
             // Append Artist if not already in DB or already on add list
-            if (moviesToAdd.All(s => s.TmdbId != report.TmdbId))
+            if (tmdbIdsToAdd.Add(report.TmdbId))
             {
                 var monitorType = importList.Monitor;
 
@@ -142,8 +140,9 @@ namespace NzbDrone.Core.ImportLists
 
             var listedMovies = listFetchResult.Movies.ToList();
 
-            var importExclusions = _listExclusionService.All();
-            var dbMovies = _movieService.AllMovieTmdbIds();
+            var excludedTmdbIds = _listExclusionService.All().Select(e => e.TmdbId).ToHashSet();
+            var dbMovies = _movieService.AllMovieTmdbIds().ToHashSet();
+            var tmdbIdsToAdd = new HashSet<int>();
             var moviesToAdd = new List<Movie>();
 
             var groupedMovies = listedMovies.GroupBy(x => x.ListId);
@@ -156,7 +155,7 @@ namespace NzbDrone.Core.ImportLists
                 {
                     if (movie.TmdbId != 0)
                     {
-                        ProcessMovieReport(importList, movie, importExclusions, dbMovies, moviesToAdd);
+                        ProcessMovieReport(importList, movie, excludedTmdbIds, dbMovies, tmdbIdsToAdd, moviesToAdd);
                     }
                 }
             }
@@ -188,6 +187,8 @@ namespace NzbDrone.Core.ImportLists
             }
 
             var listMovies = _listMovieService.GetAllListMovies();
+            var listTmdbIds = listMovies.Select(m => m.TmdbId).ToHashSet();
+            var listImdbIds = listMovies.Where(m => m.ImdbId.IsNotNullOrWhiteSpace()).Select(m => m.ImdbId).ToHashSet();
 
             // TODO use AllMovieTmdbIds here?
             var moviesInLibrary = _movieService.GetAllMovies();
@@ -196,9 +197,8 @@ namespace NzbDrone.Core.ImportLists
 
             foreach (var movie in moviesInLibrary)
             {
-                var movieExists = listMovies.Any(c =>
-                    c.TmdbId == movie.TmdbId ||
-                    (c.ImdbId.IsNotNullOrWhiteSpace() && movie.ImdbId.IsNotNullOrWhiteSpace() && c.ImdbId == movie.ImdbId));
+                var movieExists = listTmdbIds.Contains(movie.TmdbId) ||
+                    (movie.ImdbId.IsNotNullOrWhiteSpace() && listImdbIds.Contains(movie.ImdbId));
 
                 if (!movieExists)
                 {
