@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -123,6 +124,36 @@ namespace NzbDrone.Core.Test.MediaFiles
             Assert.Throws<RootFolderNotFoundException>(() => Subject.UpgradeMovieFile(_movieFile, _localMovie));
 
             Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(_localMovie.Movie.MovieFile, DeleteMediaFileReason.Upgrade), Times.Never());
+        }
+
+        [Test]
+        public void should_capture_existing_file_date_for_preservation()
+        {
+            GivenSingleMovieWithSingleMovieFile();
+            var originalDate = new DateTime(2025, 11, 25);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(c => c.FileGetLastWrite(It.IsAny<string>()))
+                  .Returns(originalDate);
+
+            Subject.UpgradeMovieFile(_movieFile, _localMovie);
+
+            _localMovie.PreservedFileDate.Should().Be(originalDate);
+        }
+
+        [Test]
+        public void should_not_fail_if_cannot_read_existing_file_date()
+        {
+            GivenSingleMovieWithSingleMovieFile();
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(c => c.FileGetLastWrite(It.IsAny<string>()))
+                  .Throws<Exception>();
+
+            Subject.UpgradeMovieFile(_movieFile, _localMovie);
+
+            _localMovie.PreservedFileDate.Should().BeNull();
+            Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
     }
 }

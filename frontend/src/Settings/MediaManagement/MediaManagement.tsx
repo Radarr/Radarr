@@ -93,6 +93,12 @@ const fileDateOptions: EnhancedSelectInputValue<string>[] = [
       return translate('PhysicalReleaseDate');
     },
   },
+  {
+    key: 'preserveOriginal',
+    get value() {
+      return translate('PreserveOriginalFileDate');
+    },
+  },
 ];
 
 function MediaManagement() {
