@@ -6,6 +6,7 @@ interface CssExports {
   'monitor': string;
   'movie': string;
   'qualityProfile': string;
+  'renameFolderOnImport': string;
   'selectInput': string;
 }
 export const cssExports: CssExports;

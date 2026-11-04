@@ -11,6 +11,19 @@
   }
 }
 
+.movieFolderRow {
+  composes: row;
+
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--borderColor);
+}
+
+.movieFolderLabel {
+  margin-bottom: 3px;
+  font-weight: bold;
+}
+
 .selectedContainer {
   margin-right: 30px;
 }

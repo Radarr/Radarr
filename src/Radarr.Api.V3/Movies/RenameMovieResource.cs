@@ -9,6 +9,7 @@ namespace Radarr.Api.V3.Movies
     {
         public int MovieId { get; set; }
         public int MovieFileId { get; set; }
+        public bool IsMovieFolder { get; set; }
         public string ExistingPath { get; set; }
         public string NewPath { get; set; }
     }
@@ -26,6 +27,7 @@ namespace Radarr.Api.V3.Movies
             {
                 MovieId = model.MovieId,
                 MovieFileId = model.MovieFileId,
+                IsMovieFolder = model.IsMovieFolder,
                 ExistingPath = model.ExistingPath,
                 NewPath = model.NewPath
             };
