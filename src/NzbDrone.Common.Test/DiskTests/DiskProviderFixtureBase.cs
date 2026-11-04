@@ -21,6 +21,44 @@ namespace NzbDrone.Common.Test.DiskTests
         }
 
         [Test]
+        public void writealltext_should_not_leave_temporary_files_on_success()
+        {
+            var folder = GetTempFilePath();
+            Directory.CreateDirectory(folder);
+            var file = Path.Combine(folder, "test.txt");
+
+            Subject.WriteAllText(file, "Hello World");
+            Subject.ReadAllText(file).Should().Be("Hello World");
+
+            Directory.GetFiles(folder, "*.tmp.*").Should().BeEmpty();
+        }
+
+        [Test]
+        public void writealltext_should_overwrite_atomically_without_leaving_temporary_files()
+        {
+            var folder = GetTempFilePath();
+            Directory.CreateDirectory(folder);
+            var file = Path.Combine(folder, "test.txt");
+
+            Subject.WriteAllText(file, "Initial Content");
+            Subject.WriteAllText(file, "Updated Content");
+            Subject.ReadAllText(file).Should().Be("Updated Content");
+
+            Directory.GetFiles(folder, "*.tmp.*").Should().BeEmpty();
+        }
+
+        [Test]
+        public void writealltext_should_throw_and_not_leave_temporary_files_when_directory_does_not_exist()
+        {
+            var folder = Path.Combine(GetTempFilePath(), "nonexistent");
+            var file = Path.Combine(folder, "test.txt");
+
+            Assert.Throws<DirectoryNotFoundException>(() => Subject.WriteAllText(file, "Some content"));
+
+            Directory.Exists(folder).Should().BeFalse();
+        }
+
+        [Test]
         [Retry(5)]
         public void directory_exist_should_be_able_to_find_existing_folder()
         {
