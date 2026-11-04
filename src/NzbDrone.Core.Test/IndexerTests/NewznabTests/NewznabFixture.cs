@@ -65,6 +65,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             releaseInfo.Size.Should().Be(1183105773);
         }
 
+        [Test]
         public void should_use_best_pagesize_reported_by_caps()
         {
             _caps.MaxPageSize = 30;

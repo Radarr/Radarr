@@ -399,6 +399,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             result.OutputPath.FullPath.Should().Be(Path.Combine(torrent.SavePath, "Droned.S01.12"));
         }
 
+        [Test]
         public void missingFiles_item_should_have_required_properties()
         {
             var torrent = new QBittorrentTorrent

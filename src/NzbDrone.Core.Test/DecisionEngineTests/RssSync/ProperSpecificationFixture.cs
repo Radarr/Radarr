@@ -102,6 +102,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             Subject.IsSatisfiedBy(_parseResultSingle, new()).Accepted.Should().BeTrue();
         }
 
+        [Test]
         public void should_return_true_when_propers_are_not_preferred()
         {
             Mocker.GetMock<IConfigService>()
