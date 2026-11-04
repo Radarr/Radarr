@@ -10,10 +10,13 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import { inputTypes, kinds } from 'Helpers/Props';
+import ReplacementPoster from 'Movie/ReplacementPoster';
 import SettingsToolbar from 'Settings/SettingsToolbar';
 import themes from 'Styles/Themes';
 import titleCase from 'Utilities/String/titleCase';
 import translate from 'Utilities/String/translate';
+import ColorPickerButton from './ColorPickerButton';
+import styles from './UISettings.css';
 
 export const firstDayOfWeekOptions = [
   {
@@ -55,6 +58,35 @@ export const timeFormatOptions = [
   { key: 'h(:mm)a', value: '5pm/5:30pm' },
   { key: 'HH:mm', value: '17:00/17:30' }
 ];
+
+// Genres used by TMDb, which Radarr's metadata comes from
+const posterReplacementGenres = [
+  'Action',
+  'Adventure',
+  'Animation',
+  'Comedy',
+  'Crime',
+  'Documentary',
+  'Drama',
+  'Family',
+  'Fantasy',
+  'History',
+  'Horror',
+  'Music',
+  'Mystery',
+  'Romance',
+  'Science Fiction',
+  'Thriller',
+  'TV Movie',
+  'War',
+  'Western'
+];
+
+function getPosterReplacementGenreOptions(selectedGenres) {
+  const genres = new Set([...posterReplacementGenres, ...selectedGenres]);
+
+  return [...genres].sort().map((genre) => ({ key: genre, value: genre }));
+}
 
 export const movieRuntimeFormatOptions = [
   { key: 'hoursMinutes', value: '1h 15m' },
@@ -150,6 +182,93 @@ class UISettings extends Component {
                       {...settings.movieRuntimeFormat}
                     />
                   </FormGroup>
+                </FieldSet>
+
+                <FieldSet legend={translate('PosterReplacement')}>
+                  <FormGroup>
+                    <FormLabel>{translate('PosterReplacementEnabled')}</FormLabel>
+                    <FormInputGroup
+                      type={inputTypes.CHECK}
+                      name="posterReplacementEnabled"
+                      helpText={translate('PosterReplacementEnabledHelpText')}
+                      onChange={onInputChange}
+                      {...settings.posterReplacementEnabled}
+                    />
+                  </FormGroup>
+
+                  {
+                    settings.posterReplacementEnabled.value ?
+                      <div>
+                        <FormGroup>
+                          <FormLabel>{translate('Genres')}</FormLabel>
+                          <FormInputGroup
+                            type={inputTypes.SELECT}
+                            name="posterReplacementGenres"
+                            values={getPosterReplacementGenreOptions(settings.posterReplacementGenres.value)}
+                            helpText={translate('PosterReplacementGenresHelpText')}
+                            onChange={onInputChange}
+                            {...settings.posterReplacementGenres}
+                          />
+                        </FormGroup>
+
+                        <FormGroup>
+                          <FormLabel>{translate('Tags')}</FormLabel>
+                          <FormInputGroup
+                            type={inputTypes.TAG}
+                            name="posterReplacementTags"
+                            helpText={translate('PosterReplacementTagsHelpText')}
+                            onChange={onInputChange}
+                            {...settings.posterReplacementTags}
+                          />
+                        </FormGroup>
+
+                        <FormGroup>
+                          <FormLabel>{translate('PosterReplacementBackgroundColor')}</FormLabel>
+                          <FormInputGroup
+                            type={inputTypes.TEXT}
+                            name="posterReplacementBackgroundColor"
+                            buttons={
+                              <ColorPickerButton
+                                name="posterReplacementBackgroundColor"
+                                value={settings.posterReplacementBackgroundColor.value}
+                                onChange={onInputChange}
+                              />
+                            }
+                            onChange={onInputChange}
+                            {...settings.posterReplacementBackgroundColor}
+                          />
+                        </FormGroup>
+
+                        <FormGroup>
+                          <FormLabel>{translate('PosterReplacementTextColor')}</FormLabel>
+                          <FormInputGroup
+                            type={inputTypes.TEXT}
+                            name="posterReplacementTextColor"
+                            buttons={
+                              <ColorPickerButton
+                                name="posterReplacementTextColor"
+                                value={settings.posterReplacementTextColor.value}
+                                onChange={onInputChange}
+                              />
+                            }
+                            helpText={translate('PosterReplacementColorHelpText')}
+                            onChange={onInputChange}
+                            {...settings.posterReplacementTextColor}
+                          />
+                        </FormGroup>
+
+                        <FormGroup>
+                          <FormLabel>{translate('Preview')}</FormLabel>
+                          <ReplacementPoster
+                            className={styles.posterReplacementPreview}
+                            title="The Texas Chain Saw Massacre"
+                            backgroundColor={settings.posterReplacementBackgroundColor.value}
+                            textColor={settings.posterReplacementTextColor.value}
+                          />
+                        </FormGroup>
+                      </div> :
+                      null
+                  }
                 </FieldSet>
 
                 <FieldSet
