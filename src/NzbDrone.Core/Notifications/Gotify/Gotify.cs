@@ -5,6 +5,7 @@ using System.Text;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
@@ -17,12 +18,14 @@ namespace NzbDrone.Core.Notifications.Gotify
 
         private readonly IGotifyProxy _proxy;
         private readonly ILocalizationService _localizationService;
+        private readonly IConfigFileProvider _configFileProvider;
         private readonly Logger _logger;
 
-        public Gotify(IGotifyProxy proxy, ILocalizationService localizationService, Logger logger)
+        public Gotify(IGotifyProxy proxy, ILocalizationService localizationService, IConfigFileProvider configFileProvider, Logger logger)
         {
             _proxy = proxy;
             _localizationService = localizationService;
+            _configFileProvider = configFileProvider;
             _logger = logger;
         }
 
@@ -81,10 +84,15 @@ namespace NzbDrone.Core.Notifications.Gotify
             try
             {
                 var isMarkdown = false;
-                const string title = "Test Notification";
+                var title = "Test Notification";
 
                 var sb = new StringBuilder();
                 sb.AppendLine("This is a test message from Radarr");
+
+                if (Settings.IncludeInstanceNameInTitle && _configFileProvider.InstanceName.IsNotNullOrWhiteSpace())
+                {
+                    title += $" - {_configFileProvider.InstanceName}";
+                }
 
                 var payload = new GotifyMessage
                 {
@@ -129,6 +137,11 @@ namespace NzbDrone.Core.Notifications.Gotify
             var sb = new StringBuilder();
 
             sb.AppendLine(message);
+
+            if (Settings.IncludeInstanceNameInTitle && _configFileProvider.InstanceName.IsNotNullOrWhiteSpace())
+            {
+                title += $" - {_configFileProvider.InstanceName}";
+            }
 
             var payload = new GotifyMessage
             {

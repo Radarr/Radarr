@@ -64,10 +64,13 @@ namespace NzbDrone.Core.Notifications.Gotify
         [FieldDefinition(3, Label = "NotificationsGotifySettingIncludeMoviePoster", Type = FieldType.Checkbox, HelpText = "NotificationsGotifySettingIncludeMoviePosterHelpText")]
         public bool IncludeMoviePoster { get; set; }
 
-        [FieldDefinition(4, Label = "NotificationsGotifySettingsMetadataLinks", Type = FieldType.Select, SelectOptions = typeof(MetadataLinkType), HelpText = "NotificationsGotifySettingsMetadataLinksMovieHelpText")]
+        [FieldDefinition(4, Label = "NotificationsTelegramSettingsIncludeAppName", Type = FieldType.Checkbox, HelpText = "NotificationsTelegramSettingsIncludeAppNameHelpText")]
+        public bool IncludeInstanceNameInTitle { get; set; }
+
+        [FieldDefinition(5, Label = "NotificationsGotifySettingsMetadataLinks", Type = FieldType.Select, SelectOptions = typeof(MetadataLinkType), HelpText = "NotificationsGotifySettingsMetadataLinksMovieHelpText")]
         public IEnumerable<int> MetadataLinks { get; set; }
 
-        [FieldDefinition(5, Label = "NotificationsGotifySettingsPreferredMetadataLink", Type = FieldType.Select, SelectOptions = typeof(MetadataLinkType), HelpText = "NotificationsGotifySettingsPreferredMetadataLinkHelpText")]
+        [FieldDefinition(6, Label = "NotificationsGotifySettingsPreferredMetadataLink", Type = FieldType.Select, SelectOptions = typeof(MetadataLinkType), HelpText = "NotificationsGotifySettingsPreferredMetadataLinkHelpText")]
         public int PreferredMetadataLink { get; set; }
 
         public override NzbDroneValidationResult Validate()
