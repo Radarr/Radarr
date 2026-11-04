@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Download.Clients.FreeboxDownload
         {
             var request = BuildRequest(settings).Resource("/downloads/").Build();
 
-            return ProcessRequest<List<FreeboxDownloadTask>>(request, settings).Result;
+            return ProcessRequest<List<FreeboxDownloadTask>>(request, settings).Result ?? new ();
         }
 
         private static string BuildCachedHeaderKey(FreeboxDownloadSettings settings)
