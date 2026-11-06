@@ -58,7 +58,6 @@
       };
     </script>
 
-    <% for (key in htmlWebpackPlugin.files.js) { %><script type="text/javascript" src="<%= htmlWebpackPlugin.files.js[key] %>" data-no-hash></script><% } %>
     <% for (key in htmlWebpackPlugin.files.css) { %><link href="<%= htmlWebpackPlugin.files.css[key] %>" rel="stylesheet"></link><% } %>
 
     <title>Radarr</title>
@@ -87,5 +86,6 @@
   <body>
     <div id="portal-root"></div>
     <div id="root" class="root"></div>
+    <% for (key in htmlWebpackPlugin.files.js) { %><script type="text/javascript" src="<%= htmlWebpackPlugin.files.js[key] %>" data-no-hash></script><% } %>
   </body>
 </html>
