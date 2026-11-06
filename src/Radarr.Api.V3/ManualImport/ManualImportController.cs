@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles.MovieImport.Manual;
+using NzbDrone.Core.Movies.Versions;
 using NzbDrone.Core.Qualities;
 using Radarr.Api.V3.CustomFormats;
 using Radarr.Api.V3.Movies;
+using Radarr.Api.V3.MovieVersions;
 using Radarr.Http;
 using Radarr.Http.REST;
 
@@ -18,22 +20,28 @@ namespace Radarr.Api.V3.ManualImport
     public class ManualImportController : Controller
     {
         private readonly IManualImportService _manualImportService;
+        private readonly IMovieVersionService _movieVersionService;
 
-        public ManualImportController(IManualImportService manualImportService)
+        public ManualImportController(IManualImportService manualImportService, IMovieVersionService movieVersionService)
         {
             _manualImportService = manualImportService;
+            _movieVersionService = movieVersionService;
         }
 
         [HttpGet]
         [Produces("application/json")]
         public Ok<List<ManualImportResource>> GetMediaFiles(string folder, string downloadId, int? movieId, bool filterExistingFiles = true)
         {
-            if (movieId.HasValue && downloadId.IsNullOrWhiteSpace())
-            {
-                return TypedResults.Ok(_manualImportService.GetMediaFiles(movieId.Value).ToResource().Select(AddQualityWeight).ToList());
-            }
+            var items = movieId.HasValue && downloadId.IsNullOrWhiteSpace()
+                ? _manualImportService.GetMediaFiles(movieId.Value)
+                : _manualImportService.GetMediaFiles(folder, downloadId, movieId, filterExistingFiles);
 
-            return TypedResults.Ok(_manualImportService.GetMediaFiles(folder, downloadId, movieId, filterExistingFiles).ToResource().Select(AddQualityWeight).ToList());
+            var versions = new Dictionary<int, List<MovieVersionResource>>();
+
+            return TypedResults.Ok(items.ToResource()
+                                        .Select(AddQualityWeight)
+                                        .Select(i => AddMovieVersions(i, i.Movie?.Id, versions))
+                                        .ToList());
         }
 
         [HttpPost]
@@ -45,11 +53,15 @@ namespace Radarr.Api.V3.ManualImport
                 throw new BadRequestException("items must be provided");
             }
 
+            var versions = new Dictionary<int, List<MovieVersionResource>>();
+
             foreach (var item in items)
             {
-                var processedItem = _manualImportService.ReprocessItem(item.Path, item.DownloadId, item.MovieId, item.ReleaseGroup, item.Quality, item.Languages, item.IndexerFlags);
+                var processedItem = _manualImportService.ReprocessItem(item.Path, item.DownloadId, item.MovieId, item.MovieVersionId, item.ReleaseGroup, item.Quality, item.Languages, item.IndexerFlags);
 
                 item.Movie = processedItem.Movie.ToResource(0);
+                item.MovieVersionId = processedItem.MovieVersionId;
+                item.MovieVersions = GetMovieVersions(processedItem.Movie?.Id, versions);
                 item.IndexerFlags = processedItem.IndexerFlags;
                 item.Rejections = processedItem.Rejections.Select(r => r.ToResource());
                 item.CustomFormats = processedItem.CustomFormats.ToResource(false);
@@ -73,6 +85,30 @@ namespace Radarr.Api.V3.ManualImport
             }
 
             return TypedResults.Ok(items);
+        }
+
+        // The versions of the item's movie, so the UI can offer to pick one without another request
+        private ManualImportResource AddMovieVersions(ManualImportResource item, int? movieId, Dictionary<int, List<MovieVersionResource>> cache)
+        {
+            item.MovieVersions = GetMovieVersions(movieId, cache);
+
+            return item;
+        }
+
+        private List<MovieVersionResource> GetMovieVersions(int? movieId, Dictionary<int, List<MovieVersionResource>> cache)
+        {
+            if (!movieId.HasValue || movieId.Value == 0)
+            {
+                return new List<MovieVersionResource>();
+            }
+
+            if (!cache.TryGetValue(movieId.Value, out var versions))
+            {
+                versions = _movieVersionService.GetByMovieId(movieId.Value).ToResource();
+                cache[movieId.Value] = versions;
+            }
+
+            return versions;
         }
 
         private ManualImportResource AddQualityWeight(ManualImportResource item)

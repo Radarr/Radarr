@@ -87,6 +87,11 @@ const COLUMNS = [
     isVisible: true,
   },
   {
+    name: 'movieVersion',
+    label: () => translate('Version'),
+    isVisible: true,
+  },
+  {
     name: 'releaseGroup',
     label: () => translate('ReleaseGroup'),
     isVisible: true,
@@ -166,6 +171,10 @@ function isSameMovieFile(
   }
 
   if (!originalFile.movie || movie?.id !== originalFile.movie.id) {
+    return false;
+  }
+
+  if ((file.movieVersionId ?? 0) !== (originalFile.movieVersionId ?? 0)) {
     return false;
   }
 
@@ -266,6 +275,19 @@ function InteractiveImportModalContent(
 
       if (movieColumn) {
         movieColumn.isVisible = false;
+      }
+    }
+
+    // Only movies with more than one version need a version to be picked
+    const showMovieVersion = items.some(
+      (item) => (item.movieVersions?.length ?? 0) > 1
+    );
+
+    if (!showMovieVersion) {
+      const movieVersionColumn = result.find((c) => c.name === 'movieVersion');
+
+      if (movieVersionColumn) {
+        movieVersionColumn.isVisible = false;
       }
     }
 
@@ -493,6 +515,7 @@ function InteractiveImportModalContent(
           path: item.path,
           folderName: item.folderName,
           movieId: movie.id,
+          movieVersionId: item.movieVersionId ?? 0,
           releaseGroup,
           quality,
           languages,
