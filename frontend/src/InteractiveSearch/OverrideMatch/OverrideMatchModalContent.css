@@ -26,6 +26,7 @@
 
 .buttons {
   display: flex;
+  gap: 10px;
 }
 
 @media only screen and (max-width: $breakpointSmall) {
