@@ -78,6 +78,7 @@ function EditImportListModalContent({
     qualityProfileId,
     searchOnAdd,
     tags,
+    tagExisting,
     fields,
   } = item;
 
@@ -252,6 +253,18 @@ function EditImportListModalContent({
                 name="tags"
                 helpText={translate('ListTagsHelpText')}
                 {...tags}
+                onChange={handleInputChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>{translate('TagExisting')}</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="tagExisting"
+                helpText={translate('TagExistingHelpText')}
+                {...tagExisting}
                 onChange={handleInputChange}
               />
             </FormGroup>
