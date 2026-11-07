@@ -42,6 +42,7 @@ namespace NzbDrone.Core.Movies
         Dictionary<int, List<int>> AllMovieTags();
         Movie UpdateMovie(Movie movie);
         List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder);
+        List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder, bool deferPathUpdate);
         void UpdateLastSearchTime(Movie movie);
         List<int> GetRecommendedTmdbIds();
         bool MoviePathExists(string folder);
@@ -257,13 +258,22 @@ namespace NzbDrone.Core.Movies
 
         public List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder)
         {
+            return UpdateMovie(movies, useExistingRelativeFolder, false);
+        }
+
+        public List<Movie> UpdateMovie(List<Movie> movies, bool useExistingRelativeFolder, bool deferPathUpdate)
+        {
             _logger.Debug("Updating {0} movies", movies.Count);
 
             foreach (var m in movies)
             {
                 _logger.Trace("Updating: {0}", m.Title);
 
-                if (!m.RootFolderPath.IsNullOrWhiteSpace())
+                if (deferPathUpdate)
+                {
+                    _logger.Trace("Path update for {0} deferred until file move completes", m.Title);
+                }
+                else if (!m.RootFolderPath.IsNullOrWhiteSpace())
                 {
                     m.Path = _moviePathBuilder.BuildPath(m, useExistingRelativeFolder);
 
