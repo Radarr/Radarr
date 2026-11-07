@@ -59,6 +59,12 @@ namespace NzbDrone.Core.Test.Configuration
         [TestCase("*.example.co.uk")]
         [TestCase("*.subdomain.example.com")]
         [TestCase("*.subdomain.example.co.uk")]
+        [TestCase("192.168.0.0/16")]
+        [TestCase("10.0.0.0/8")]
+        [TestCase("172.16.0.0/12")]
+        [TestCase("fd00::/8")]
+        [TestCase("2001:db8::/32")]
+        [TestCase("[::1]/128")]
         public void should_be_valid_host(string host)
         {
             AllowedHostsParser.IsValidHost(host).Should().BeTrue();
@@ -79,6 +85,11 @@ namespace NzbDrone.Core.Test.Configuration
         [TestCase("[not-an-address]")]
         [TestCase(".example.com")]
         [TestCase(".example.co.uk")]
+        [TestCase("192.168.1.5/16")]
+        [TestCase("10.0.0.0/33")]
+        [TestCase("10.0.0.0/")]
+        [TestCase("10.0.0.0/abc")]
+        [TestCase("192.168.0.0/16/8")]
         public void should_not_be_valid_host(string host)
         {
             AllowedHostsParser.IsValidHost(host).Should().BeFalse();
@@ -100,6 +111,19 @@ namespace NzbDrone.Core.Test.Configuration
         public void should_not_be_bind_address(string host)
         {
             AllowedHostsParser.IsBindAddress(host).Should().BeFalse();
+        }
+
+        [TestCase("192.168.0.0/16", true)]
+        [TestCase("10.0.0.0/8", true)]
+        [TestCase("172.16.0.0/12", true)]
+        [TestCase("fd00::/8", true)]
+        [TestCase("192.168.1.5", false)]
+        [TestCase("192.168.1.5/16", false)]
+        [TestCase("sonarr.local", false)]
+        [TestCase(null, false)]
+        public void should_detect_subnet_entries(string host, bool expected)
+        {
+            AllowedHostsParser.IsSubnet(host).Should().Be(expected);
         }
     }
 }
