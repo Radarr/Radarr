@@ -1384,7 +1384,6 @@
     "UsenetBlackholeNzbFolder": "Nzb папка",
     "RemoveFromDownloadClientHint": "Премахва изтеглянето и файла(овете) от клиента за изтегляне",
     "MediaInfoFootNote": "MediaInfo Full/AudioLanguages/SubtitleLanguages поддържат суфикс `:EN+DE`, който ви позволява да филтрирате езиците, включени в името на файла. Използвайте `-DE`, за да изключите определени езици. Добавянето на `+` (напр. `:EN+`) ще изведе `[EN]`/`[EN+--]`/`[--]` в зависимост от изключените езици. Например `{MediaInfo Full:EN+DE}`.",
-    "MetadataKometaDeprecatedSetting": "Остаряло (Deprecated)",
     "FormatDateTimeRelative": "{relativeDay}, {formattedDate} {formattedTime}",
     "NoCustomFormatsFound": "Не са намерени персонализирани формати",
     "NoDelay": "Без забавяне",
@@ -1899,5 +1898,6 @@
     "MediaInfoAudioStreamHeader": "Аудио поток #{number}",
     "MediaInfoForced": "Форсирани (Forced)",
     "MediaInfoHearingImpaired": "За хора с увреден слух",
-    "MediaInfoSubtitlesHeader": "Субтитри"
+    "MediaInfoSubtitlesHeader": "Субтитри",
+    "NotificationsNtfySettingsHeaders": "Заглавки (Headers)"
 }

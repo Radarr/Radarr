@@ -1859,7 +1859,6 @@
     "ManageFormats": "管理格式",
     "NotificationsSettingsWebhookHeaders": "标头",
     "Warning": "警告",
-    "MetadataKometaDeprecatedSetting": "弃用",
     "NotificationsTelegramSettingsMetadataLinks": "元数据链接",
     "NotificationsTelegramSettingsMetadataLinksMovieHelpText": "添加一个在发送通知时指向电影元数据的链接",
     "AutoTaggingSpecificationMinimumYear": "最早年份",
@@ -1906,7 +1905,6 @@
     "ImportListsTraktSettingsUserListTypeWatched": "用户已观看列表",
     "ImportListsTraktSettingsWatchListSorting": "观看列表排序",
     "ImportListsTraktSettingsWatchListSortingHelpText": "如果列表类型为“观看”，请选择排序顺序",
-    "MetadataKometaDeprecated": "Kometa 文件将不再被创建，支持将在 v6 版本中完全移除",
     "MovieRequested": "请求的电影",
     "NotificationsTelegramSettingsIncludeInstanceNameHelpText": "可选择在通知中包含实例名称",
     "ReleasePush": "发布推送",
@@ -2069,5 +2067,7 @@
     "OidcAuthority": "OIDC 颁发机构",
     "OidcAuthorityHelpText": "OIDC 提供者的 URL",
     "OidcAuthorityNotSecureHealthCheckMessage": "OIDC 颁发机构的 URL 必须以 \"https://\" 开头",
-    "OidcClientId": "OIDC 客户端 ID"
+    "OidcClientId": "OIDC 客户端 ID",
+    "NotificationsNtfySettingsHeaders": "标头",
+    "AddFavoriteFolderWithPath": "Add {path} to favorite folders"
 }

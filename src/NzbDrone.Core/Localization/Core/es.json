@@ -1858,8 +1858,6 @@
     "FavoriteFolderRemove": "Eliminar carpeta favorita",
     "DownloadClientUnavailable": "Cliente de descarga no disponible",
     "NotificationsSettingsWebhookHeaders": "Cabeceras",
-    "MetadataKometaDeprecated": "Los archivos de Kometa no seguirán siendo creados, el soporte se eliminará completamente en la v6",
-    "MetadataKometaDeprecatedSetting": "Obsoleto",
     "Fallback": "Retirada",
     "NotificationsTelegramSettingsMetadataLinks": "Enlaces de metadatos",
     "NotificationsTelegramSettingsIncludeInstanceName": "Incluir el nombre de la instancia en el título",
@@ -2085,5 +2083,14 @@
     "MediaInfoForced": "Forzado",
     "MediaInfoHearingImpaired": "Discapacidad auditiva",
     "MediaInfoSubtitlesHeader": "Subtítulos",
-    "DownloadClientTransmissionSettingsCategoryHelpText": "Añadir una categoría específica a {appName} evita conflictos con descargas no relacionadas con {appName}. Usar una categoría es opcional, pero altamente recomendado. Transmission 4.0 o superior aplica la categoría como una etiqueta; versiones inferiores crean un subdirectorio [categoría] en el directorio de salida."
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Añadir una categoría específica a {appName} evita conflictos con descargas no relacionadas con {appName}. Usar una categoría es opcional, pero altamente recomendado. Transmission 4.0 o superior aplica la categoría como una etiqueta; versiones inferiores crean un subdirectorio [categoría] en el directorio de salida.",
+    "AddFavoriteFolderWithPath": "Añadir {path} a las carpetas de favoritos",
+    "CancelTaskWithName": "Cancelar {name}",
+    "DeleteBackupWithName": "Eliminar copia de seguridad {name}",
+    "ReadTheWikiForHealthIssue": "Revisa la Wiki para {message}",
+    "RemoveFavoriteFolderWithPath": "Eliminar {path} de las carpetas de favoritos",
+    "RemoveRecentFolderWithPath": "Eliminar {path} de las carpetas de recientes",
+    "RestoreBackupWithName": "Restaurar copia de seguridad {name}",
+    "RunTaskWithName": "Ejecutar {name}",
+    "NotificationsNtfySettingsHeaders": "Cabeceras"
 }

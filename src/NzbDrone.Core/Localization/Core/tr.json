@@ -1858,8 +1858,6 @@
     "FavoriteFolders": "Favori Klasörler",
     "Warning": "Uyarı",
     "ManageFormats": "Formatları Yönet",
-    "MetadataKometaDeprecatedSetting": "Kullanım Dışı",
-    "MetadataKometaDeprecated": "Kometa dosyaları artık oluşturulmayacak, destek v6'da tamamen kaldırılacak",
     "NotificationsSettingsWebhookHeaders": "Başlıklar",
     "NotificationsTelegramSettingsIncludeInstanceName": "Başlığa Örnek Adını Dahil Et",
     "NotificationsTelegramSettingsIncludeInstanceNameHelpText": "İsteğe bağlı olarak bildirime Örnek adını ekleyin",
@@ -2064,5 +2062,6 @@
     "MediaInfoAudioStreamHeader": "Ses Akışı #{number}",
     "MediaInfoForced": "Zorunlu",
     "MediaInfoHearingImpaired": "İşitme engelliler için",
-    "MediaInfoSubtitlesHeader": "Altyazılar"
+    "MediaInfoSubtitlesHeader": "Altyazılar",
+    "NotificationsNtfySettingsHeaders": "Başlıklar"
 }

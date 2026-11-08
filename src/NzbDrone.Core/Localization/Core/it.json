@@ -1730,5 +1730,6 @@
     "EnableProfileHelpText": "Seleziona per abilitare il profilo di release",
     "ListRootFolderHelpText": "Le voci della lista Cartella Radice verranno aggiunte a",
     "ReleaseProfileIndexerHelpText": "Specifica a quale indice si applica il profilo",
-    "SmartReplaceHint": "Trattino o Spazio-Trattino in base al nome"
+    "SmartReplaceHint": "Trattino o Spazio-Trattino in base al nome",
+    "NotificationsNtfySettingsHeaders": "Intestazioni"
 }

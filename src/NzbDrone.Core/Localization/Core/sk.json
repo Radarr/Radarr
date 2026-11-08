@@ -638,7 +638,6 @@
     "MediaManagement": "Správa médií",
     "MediaManagementSettingsLoadError": "Nepodarilo sa načítať nastavenia správy médií",
     "Medium": "Médium",
-    "MetadataKometaDeprecatedSetting": "Zastaralé",
     "MinimumLimits": "Minimálne limity",
     "Monitored": "Sledované",
     "MoreInfo": "Viac info",
@@ -1790,7 +1789,6 @@
     "MediaInfoFootNote": "MediaInfo Full/AudioLanguages/SubtitleLanguages podporujú príponu `:EN+DE`, ktorá umožňuje filtrovať jazyky zahrnuté v názve súboru. Pomocou `-DE` vylúčite konkrétne jazyky. Pripojením `+` (napr. `:EN+`) sa v závislosti od vylúčených jazykov vypíše `[EN]`/`[EN+--]`/`[--]`. Napríklad `{MediaInfo Full:EN+DE}`.",
     "MediaInfoFootNote2": "MediaInfo AudioLanguages vynecháva angličtinu, ak je jediným jazykom. Ak chcete zahrnúť aj samotnú angličtinu, použite MediaInfo AudioLanguagesAll",
     "MediaManagementSettingsSummary": "Nastavenia pomenovania a správy súborov",
-    "MetadataKometaDeprecated": "Súbory Kometa sa už nebudú vytvárať, podpora bude úplne odstránená vo v6",
     "MetadataMediaBrowserDeprecated": "Metadáta Media Browser sú zastarané, podpora bude úplne odstránená vo verzii {version}.",
     "MetadataSettingsMovieMetadataCollectionName": "Názov kolekcie filmu",
     "MetadataSettingsMovieMetadataLanguage": "Jazyk metadát filmu",
@@ -2085,5 +2083,6 @@
     "ImportListsSimklSettingsMovieTypeHelpText": "Typ filmu, z ktorého chcete importovať",
     "AllowedHostsHelpText": "Zoznam názvov hostiteľov a IP adries oddelených čiarkami, pre ktoré bude {appName} prijímať požiadavky. Ako zástupný znak pre subdomény použite '*.'. Ak chcete povoliť všetkých hostiteľov, ponechajte prázdne.",
     "AllowedHostsNotConfiguredHealthCheckMessage": "Povolení hostitelia nie sú nakonfigurovaní, {appName} bude prijímať požiadavky pre akýkoľvek názov hostiteľa. Nastavte povolených hostiteľov vo všeobecných nastaveniach, aby ste obmedzili, cez ktoré názvy hostiteľov je {appName} dostupný.",
-    "DownloadClientTransmissionSettingsCategoryHelpText": "Pridanie kategórie špecifickej pre {appName} zabráni konfliktom s nesúvisiacimi sťahovaniami, ktoré nepatria do {appName}. Použitie kategórie je voliteľné, ale dôrazne sa odporúča. Transmission 4.0 a novší použije kategóriu ako štítok; staršie verzie vytvoria podpriečinok [category] vo výstupnom priečinku."
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Pridanie kategórie špecifickej pre {appName} zabráni konfliktom s nesúvisiacimi sťahovaniami, ktoré nepatria do {appName}. Použitie kategórie je voliteľné, ale dôrazne sa odporúča. Transmission 4.0 a novší použije kategóriu ako štítok; staršie verzie vytvoria podpriečinok [category] vo výstupnom priečinku.",
+    "NotificationsNtfySettingsHeaders": "Hlavičky"
 }

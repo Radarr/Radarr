@@ -1837,7 +1837,6 @@
     "MetadataSettingsMovieMetadataNfo": "Использовать movie.nfo",
     "NotificationsGotifySettingsMetadataLinksMovieHelpText": "Добавляет ссылки на метаданные фильма при отправке уведомлений",
     "NotificationsGotifySettingsPreferredMetadataLink": "Предпочтительная ссылка на метаданные",
-    "MetadataKometaDeprecated": "Файлы Kometa больше не будут создаваться, их поддержка будет полностью прекращена в v6",
     "NoMovieReleaseDatesAvailable": "Даты релиза для фильма не найдены на [TMDb]({url}).",
     "QualityCutoffNotMet": "Целевое качество не достигнуто",
     "UserInvokedSearch": "Вызванный пользователем поиск",
@@ -1910,7 +1909,6 @@
     "ManageFiles": "Управлять файлами",
     "ManageFormats": "Управлять форматами",
     "ManageCustomFormats": "Управлять пользовательскими форматами",
-    "MetadataKometaDeprecatedSetting": "Устаревшее",
     "MetadataSettingsMovieImages": "Изображения фильма",
     "MetadataSettingsMovieMetadata": "Метаданные фильма",
     "MetadataSettingsMovieMetadataCollectionName": "Имя коллекции фильма",
@@ -2083,5 +2081,6 @@
     "MediaInfoForced": "Принудительно",
     "MediaInfoHearingImpaired": "Для слабослышащих",
     "MediaInfoSubtitlesHeader": "Субтитры",
-    "DownloadClientTransmissionSettingsCategoryHelpText": "Добавление отдельной категории для {appName} позволяет избежать конфликтов с загрузками, не связанными с {appName}. Использование категории необязательно, но рекомендуется. В Transmission 4.0 и новее категория применяется как метка; в более ранних версиях в каталоге вывода создаётся подкаталог [category]."
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Добавление отдельной категории для {appName} позволяет избежать конфликтов с загрузками, не связанными с {appName}. Использование категории необязательно, но рекомендуется. В Transmission 4.0 и новее категория применяется как метка; в более ранних версиях в каталоге вывода создаётся подкаталог [category].",
+    "NotificationsNtfySettingsHeaders": "Заголовки"
 }

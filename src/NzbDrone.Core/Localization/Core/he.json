@@ -1559,7 +1559,6 @@
     "MediaInfoFootNote": "התכונות Full/AudioLanguages/SubtitleLanguages של MediaInfo תומכות בסיומת `:EN+DE` המאפשרת לך לסנן את השפות הכלולות בשם הקובץ. השתמש ב-`-DE` כדי להחריג שפות מסוימות. הוספת `+` (לדוגמה `:EN+`) תוציא `[EN]`/`[EN+--]`/`[--]` בהתאם לשפות המוחרגות. לדוגמה `{MediaInfo Full:EN+DE}`.",
     "MediaInfoFootNote2": "AudioLanguages של MediaInfo מחריג אנגלית אם זו השפה היחידה. השתמש ב-MediaInfo AudioLanguagesAll כדי לכלול אנגלית בלבד",
     "Menu": "תפריט",
-    "MetadataKometaDeprecatedSetting": "הוצא משימוש (Deprecated)",
     "MinimumCustomFormatScoreIncrementHelpText": "שיפור מינימלי נדרש בציון הפורמט המותאם אישית בין גרסאות הפצה קיימות וחדשות לפני ש-{appName} מחשיב זאת כשדרוג",
     "MissingLoadError": "שגיאה בטעינת פריטים חסרים",
     "MissingNoItems": "אין פריטים חסרים",
@@ -1899,5 +1898,6 @@
     "MediaInfoAudioStreamHeader": "זרם שמע #{number}",
     "MediaInfoForced": "מאולץ (Forced)",
     "MediaInfoHearingImpaired": "לקויי שמיעה",
-    "MediaInfoSubtitlesHeader": "כתוביות"
+    "MediaInfoSubtitlesHeader": "כתוביות",
+    "NotificationsNtfySettingsHeaders": "כותרות (Headers)"
 }

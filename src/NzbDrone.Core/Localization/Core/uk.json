@@ -1346,7 +1346,6 @@
     "InvalidMovieInfoLanguageLanguage": "Мова інформації про фільм встановлена на недійсне значення, виправте її та збережіть налаштування",
     "ListRefreshInterval": "Інтервал оновлення списку",
     "Loading": "Завантаження",
-    "MetadataKometaDeprecated": "Kometa файли більше не будуть створюватися, підтримка буде повністю вимкнена у 6-й версії",
     "MetadataSettingsMovieImages": "Зображення фільму",
     "MetadataSettingsMovieMetadataLanguage": "Мова метаданих фільму",
     "MetadataSettingsMovieMetadataNfo": "Використовувати movie.nfo",
@@ -1582,7 +1581,6 @@
     "LanguagesLoadError": "Не вдається завантажити мови",
     "ListWillRefreshEveryInterval": "Список буде оновлюватися кожні {refreshInterval}",
     "Menu": "Меню",
-    "MetadataKometaDeprecatedSetting": "Застарілі",
     "MissingLoadError": "Помилка завантаження відсутніх елементів",
     "NotificationsCustomScriptSettingsArguments": "Аргументи",
     "NotificationsCustomScriptSettingsName": "Власний скрипт",
@@ -2046,5 +2044,6 @@
     "ImportListsSimklSettingsUserListTypePlanToWatch": "Планую подивитися",
     "ImportListsSimklSettingsUserListTypeWatching": "Дивлюся",
     "SslKeyPath": "Шлях до SSL-ключа",
-    "SslKeyPathHelpText": "Шлях до файлу ключа, що використовується з pem-файлом"
+    "SslKeyPathHelpText": "Шлях до файлу ключа, що використовується з pem-файлом",
+    "NotificationsNtfySettingsHeaders": "Заголовки"
 }

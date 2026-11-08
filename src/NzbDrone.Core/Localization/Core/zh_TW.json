@@ -726,7 +726,6 @@
     "MediaInfoFootNote2": "語言代碼應為 ISO 639-2 (3 字元) 格式，但 ISO 639-1 (2 字元) 也受支援",
     "MegabytesPerMinute": "MB/分鐘",
     "Menu": "選單",
-    "MetadataKometaDeprecated": "Kometa 檔案將不再被建立，支援將在 v6 版本中完全移除",
     "MetadataSettingsMovieMetadataLanguage": "電影元資料語言",
     "MetadataSettingsMovieMetadataNfo": "使用 movie.nfo",
     "MinimumAvailability": "最低可用性",
@@ -1236,7 +1235,6 @@
     "MediaManagementSettingsLoadError": "無法載入媒體管理設定",
     "MediaManagementSettingsSummary": "命名與檔案管理設定",
     "Medium": "中",
-    "MetadataKometaDeprecatedSetting": "已棄用",
     "MetadataSettings": "元資料設定",
     "MetadataSettingsMovieImages": "電影圖片",
     "MetadataSettingsMovieMetadata": "電影元資料",
@@ -2039,5 +2037,6 @@
     "NotificationsPushoverSettingsTtlHelpText": "訊息過期前的秒數。設置為 0 表示無期限",
     "ImportListsSimklSettingsListType": "清單類型",
     "ImportListsSimklSettingsListTypeHelpText": "要匯入的清單類型",
-    "ImportListsSimklSettingsUserListTypeCompleted": "已完成"
+    "ImportListsSimklSettingsUserListTypeCompleted": "已完成",
+    "NotificationsNtfySettingsHeaders": "標頭"
 }
