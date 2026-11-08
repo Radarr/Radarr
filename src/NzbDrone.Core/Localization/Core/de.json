@@ -1806,7 +1806,6 @@
     "DeleteMovieFolderMovieCount": "{movieFileCount} Filmdateien, insgesamt {size}",
     "DownloadFailedMovieTooltip": "Der Film Download ist fehlgeschlagen",
     "DownloadIgnoredMovieTooltip": "Film Download wurde ignoriert",
-    "MetadataKometaDeprecatedSetting": "Veraltet",
     "NotificationsTelegramSettingsIncludeInstanceName": "Instanzname im Titel einschließen",
     "NotificationsTelegramSettingsIncludeInstanceNameHelpText": "Optional Instanznamen in der Benachrichtigung einschließen",
     "Mixed": "Gemischt",
@@ -1824,7 +1823,6 @@
     "IncludePopular": "Beliebte einbeziehen",
     "IncludePopularMoviesHelpText": "Beliebte Filme auf TMDb einbeziehen",
     "IncludeTrending": "Trendige Filme einbeziehen",
-    "MetadataKometaDeprecated": "Kometa-Dateien werden nicht mehr erstellt, die Unterstützung wird in v6 vollständig entfernt",
     "MetadataXmbcSettingsMovieMetadataLanguageHelpText": "Die ausgewählte Sprache, falls verfügbar, in .nfo einbeziehen",
     "MetadataXmbcSettingsMovieMetadataNfoHelpText": "Metadaten in movie.nfo statt der standardmäßigen <movie-filename>.nfo schreiben",
     "MetadataXmbcSettingsMovieMetadataUrlHelpText": "TMDb- und IMDb-Film-URLs in .nfo einbeziehen",
@@ -2083,5 +2081,8 @@
     "MediaInfoForced": "Erzwungen",
     "MediaInfoHearingImpaired": "Hörgeschädigt",
     "MediaInfoSubtitlesHeader": "Untertitel",
-    "DownloadClientTransmissionSettingsCategoryHelpText": "Eine Kategorie gezielt für {appName} zu setzen, verhindert Konflikte mit unrelevanten nicht-{appName} Downloads. Eine Kategorie zu verwenden, ist optional, aber strengstens empfohlen. Transmission 4.0 und höher wendet die Kategorie als Label an; frühere Versionen erzeugen ein [Kategorie] Unterverzeichnis im Ausgabeverzeichnis."
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Eine Kategorie gezielt für {appName} zu setzen, verhindert Konflikte mit unrelevanten nicht-{appName} Downloads. Eine Kategorie zu verwenden, ist optional, aber strengstens empfohlen. Transmission 4.0 und höher wendet die Kategorie als Label an; frühere Versionen erzeugen ein [Kategorie] Unterverzeichnis im Ausgabeverzeichnis.",
+    "AddFavoriteFolderWithPath": "Füge {path} zu deinen Lieblingsordnern hinzu",
+    "CancelTaskWithName": "{name} abbrechen",
+    "NotificationsNtfySettingsHeaders": "Header"
 }

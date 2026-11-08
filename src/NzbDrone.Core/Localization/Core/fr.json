@@ -1860,7 +1860,6 @@
     "AutoTaggingSpecificationMinimumYear": "Année minimum",
     "CustomFormatsSpecificationLanguage": "Langue",
     "Fallback": "Alternative",
-    "MetadataKometaDeprecated": "Les fichiers Kometa ne seront plus créés, le support sera complètement supprimé dans la v6",
     "NotificationsSettingsWebhookHeaders": "En-têtes",
     "MinimumCustomFormatScoreIncrementHelpText": "Amélioration minimale requise du score de format personnalisé entre les versions existantes et nouvelles avant que {appName} ne le considère comme une mise à niveau",
     "MetadataXmbcSettingsMovieMetadataNfoHelpText": "Écrire les métadonnées dans movie.nfo au lieu du fichier par défaut <movie-filename>.nfo",
@@ -1873,7 +1872,6 @@
     "FavoriteFolderAdd": "Ajouter un dossier favori",
     "FavoriteFolderRemove": "Supprimer le dossier favori",
     "FavoriteFolders": "Dossiers favoris",
-    "MetadataKometaDeprecatedSetting": "Obsolète",
     "MetadataSettingsMovieImages": "Images de films",
     "MetadataSettingsMovieMetadataLanguage": "Langue des métadonnées du film",
     "MetadataSettingsMovieMetadataNfo": "Utiliser movie.nfo",
@@ -2085,5 +2083,6 @@
     "MediaInfoForced": "Forcé",
     "MediaInfoHearingImpaired": "Malentendant",
     "MediaInfoSubtitlesHeader": "Sous-titres",
-    "DownloadClientTransmissionSettingsCategoryHelpText": "L'ajout d'une catégorie spécifique à {appName} permet d'éviter les conflits avec des téléchargements sans rapport avec {appName}. L'utilisation d'une catégorie est facultative, mais vivement recommandée. À partir de la version 4.0, Transmission utilise la catégorie comme étiquette ; les versions antérieures créent un sous-répertoire [catégorie] dans le répertoire de sortie."
+    "DownloadClientTransmissionSettingsCategoryHelpText": "L'ajout d'une catégorie spécifique à {appName} permet d'éviter les conflits avec des téléchargements sans rapport avec {appName}. L'utilisation d'une catégorie est facultative, mais vivement recommandée. À partir de la version 4.0, Transmission utilise la catégorie comme étiquette ; les versions antérieures créent un sous-répertoire [catégorie] dans le répertoire de sortie.",
+    "NotificationsNtfySettingsHeaders": "En-têtes"
 }

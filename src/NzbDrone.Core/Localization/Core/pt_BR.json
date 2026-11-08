@@ -1859,8 +1859,6 @@
     "Warning": "Aviso",
     "DownloadClientUnavailable": "Cliente de download indisponível",
     "NotificationsSettingsWebhookHeaders": "Cabeçalhos",
-    "MetadataKometaDeprecatedSetting": "Obsoleto",
-    "MetadataKometaDeprecated": "Não criaremos mais arquivos Kometa, o suporte será completamente removido na v6",
     "NotificationsTelegramSettingsIncludeInstanceName": "Incluir nome da instância no título",
     "NotificationsTelegramSettingsIncludeInstanceNameHelpText": "Opcionalmente, inclua o nome da instância na notificação",
     "NotificationsTelegramSettingsMetadataLinks": "Links de metadados",
@@ -2085,5 +2083,14 @@
     "MediaInfoForced": "Forçada",
     "MediaInfoHearingImpaired": "Deficiente auditivo",
     "MediaInfoSubtitlesHeader": "Legendas",
-    "DownloadClientTransmissionSettingsCategoryHelpText": "Adicionar uma categoria específica para o {appName} evita conflitos com downloads não relacionados ao {appName}. O uso de uma categoria é opcional, mas altamente recomendado. O Transmission 4.0 e versões mais recentes aplicam a categoria como uma etiqueta; versões anteriores criam um subdiretório [categoria] no diretório de saída."
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Adicionar uma categoria específica para o {appName} evita conflitos com downloads não relacionados ao {appName}. O uso de uma categoria é opcional, mas altamente recomendado. O Transmission 4.0 e versões mais recentes aplicam a categoria como uma etiqueta; versões anteriores criam um subdiretório [categoria] no diretório de saída.",
+    "CancelTaskWithName": "Cancelar {name}",
+    "DeleteBackupWithName": "Excluir backup {name}",
+    "ReadTheWikiForHealthIssue": "Leia a Wiki para {message}",
+    "RestoreBackupWithName": "Restaurar backup {name}",
+    "RunTaskWithName": "Executar {name}",
+    "AddFavoriteFolderWithPath": "Adicionar {path} às pastas favoritas",
+    "RemoveFavoriteFolderWithPath": "Remover {path} das pastas favoritas",
+    "RemoveRecentFolderWithPath": "Remover {path} das pastas recentes",
+    "NotificationsNtfySettingsHeaders": "Cabeçalhos"
 }

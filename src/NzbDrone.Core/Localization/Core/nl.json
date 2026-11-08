@@ -1617,7 +1617,6 @@
     "MediaInfoFootNote": "MediaInfo Full/AudioLanguages/SubtitleLanguages ondersteunen een `:EN+DE` suffix waarmee je de talen in de bestandsnaam kunt filteren. Gebruik -`DE` om specifieke talen uit te sluiten. Een `+` toevoegen (bijv. :`EN+`) geeft `[EN]`/`[EN+--]`/`[--]` als output, afhankelijk van de uitgesloten talen. Bijvoorbeeld `{MediaInfo Full:EN+DE}`.",
     "MediaInfoFootNote2": "MediaInfo AudioLanguages sluit Engels uit als het de enige taal is. Gebruik MediaInfo AudioLanguagesAll om alleen-Engels in te sluiten",
     "Menu": "Menu",
-    "MetadataKometaDeprecatedSetting": "Verouderd",
     "MinimumCustomFormatScoreIncrementHelpText": "Minimale vereiste verbetering van de custom format-score tussen bestaande en nieuwe releases voordat {appName} dit als upgrade beschouwt",
     "MissingLoadError": "Fout bij het laden van ontbrekende items",
     "MissingNoItems": "Geen ontbrekende items",
@@ -1975,7 +1974,6 @@
     "ListRefreshInterval": "Vernieuwingsinterval van lijsten",
     "ManageFiles": "Bestanden beheren",
     "MatchedToMovie": "Gekoppeld aan film",
-    "MetadataKometaDeprecated": "Kometa-bestanden worden niet langer aangemaakt. Ondersteuning wordt volledig verwijderd in v6",
     "MetadataMediaBrowserDeprecated": "Metadata van Media Browser is verouderd. Ondersteuning wordt volledig verwijderd in {version}.",
     "MetadataSettingsMovieImages": "Filmafbeeldingen",
     "MetadataSettingsMovieMetadata": "Filmmetadata",
@@ -2085,5 +2083,14 @@
     "MediaInfoForced": "Geforceerd",
     "MediaInfoHearingImpaired": "Voor slechthorenden",
     "MediaInfoSubtitlesHeader": "Ondertiteling",
-    "DownloadClientTransmissionSettingsCategoryHelpText": "Het toevoegen van een categorie die specifiek voor {appName} is, voorkomt conflicten met ongerelateerde downloads die niet van {appName} zijn. Een categorie gebruiken is optioneel, maar wordt sterk aanbevolen. Transmission 4.0 en nieuwer past de categorie toe als label; eerdere versies maken een [categorie]-submap in de uitvoermapp."
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Het toevoegen van een categorie die specifiek voor {appName} is, voorkomt conflicten met ongerelateerde downloads die niet van {appName} zijn. Een categorie gebruiken is optioneel, maar wordt sterk aanbevolen. Transmission 4.0 en nieuwer past de categorie toe als label; eerdere versies maken een [categorie]-submap in de uitvoermapp.",
+    "CancelTaskWithName": "Annuleer {name}",
+    "DeleteBackupWithName": "Verwijder back-up {name}",
+    "ReadTheWikiForHealthIssue": "Lees de Wiki voor {message}",
+    "RestoreBackupWithName": "Herstel back-up {name}",
+    "RunTaskWithName": "{name} uitvoeren",
+    "AddFavoriteFolderWithPath": "Voeg {path} toe aan favoriete mappen",
+    "RemoveFavoriteFolderWithPath": "Verwijder {path} uit favoriete mappen",
+    "RemoveRecentFolderWithPath": "Verwijder {path} uit de recente mappen",
+    "NotificationsNtfySettingsHeaders": "Headers"
 }

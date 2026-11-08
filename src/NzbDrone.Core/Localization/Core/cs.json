@@ -1585,5 +1585,8 @@
     "DownloadClientQbittorrentValidationCategoryRecommendedDetail": "{appName} se nepokusí importovat dokončená stahování bez kategorie.",
     "DownloadClientQbittorrentValidationCategoryUnsupportedDetail": "qBittorrent do verze 3.3.0 nepodporoval kategorie. Prosím aktualizujte ho, nebo to zkuste znova s prázdnou kategorií.",
     "DownloadClientQbittorrentValidationQueueingNotEnabled": "Fronta není povolená",
-    "UnknownDownloadState": "Neznámý stav stahování: {state}"
+    "UnknownDownloadState": "Neznámý stav stahování: {state}",
+    "NotificationsNtfySettingsHeaders": "Hlavičky",
+    "AddFavoriteFolderWithPath": "Přidat {path} do oblíbených adresářů",
+    "AllowedHostsHelpText": "Čárkou oddělený seznam názvů hostitelů a IP adres, ze kterých bude {appName} přijímat požadavky. Použijte '*.' jako zástupný znak pro subdomény. Nechte prázdné pro všechny hostitele."
 }

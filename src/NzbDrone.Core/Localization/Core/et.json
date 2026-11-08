@@ -945,7 +945,6 @@
     "Menu": "Menüü",
     "Message": "Sõnum",
     "Metadata": "Metaandmed",
-    "MetadataKometaDeprecatedSetting": "Aegunud",
     "MetadataLoadError": "Metaandmete laadimine nurjus",
     "MetadataSettings": "Metaandmete seaded",
     "MinimumAge": "Väikseim vanus",
@@ -1817,7 +1816,6 @@
     "MatchedToMovie": "Vastab filmile",
     "MediaManagementSettingsSummary": "Nimetamise ja failide haldamise seaded",
     "MegabytesPerMinute": "Megabaiti minutis",
-    "MetadataKometaDeprecated": "Kometa failide loomine lõpetatakse ning tugi eemaldatakse täielikult versioonis v6",
     "MetadataMediaBrowserDeprecated": "Media Browseri metaandmete tugi on aegunud ja eemaldatakse täielikult versioonis {version}.",
     "MetadataSettingsMovieImages": "Filmi pildid",
     "MetadataSettingsMovieMetadata": "Filmi metaandmed",
@@ -2070,5 +2068,6 @@
     "MediaInfoAudioStreamHeader": "Helivoog #{number}",
     "MediaInfoForced": "Sunnitud",
     "MediaInfoHearingImpaired": "Vaegkuuljad",
-    "MediaInfoSubtitlesHeader": "Subtiitrid"
+    "MediaInfoSubtitlesHeader": "Subtiitrid",
+    "NotificationsNtfySettingsHeaders": "Päised"
 }

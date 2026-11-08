@@ -471,5 +471,18 @@
     "UpdateCheckStartupTranslocationMessage": "unne ikke installere oppdateringen fordi oppstartsmappen \"{startupFolder}\" er i en App Translocation mappe.",
     "UpdateCheckUINotWritableMessage": "Oppdateringen kunne ikke installeres fordi UI mappa \"{uiFolder}\" ikke er skrivbar av brukeren \"{userName}\".",
     "WhatsNew": "Hva er nytt?",
-    "DownloadClientPneumaticSettingsNzbFolder": "Nzb-mappe"
+    "DownloadClientPneumaticSettingsNzbFolder": "Nzb-mappe",
+    "RemoveRecentFolderWithPath": "Fjern {path} fra nylige mapper",
+    "RemoveFavoriteFolderWithPath": "Fjern {path} fra favorittmapper",
+    "AddFavoriteFolderWithPath": "Legg {path} til favorittmapper",
+    "RunTaskWithName": "Kjør {name}",
+    "RestoreBackupWithName": "Gjenopprett sikkerhetskopi {name}",
+    "ReadTheWikiForHealthIssue": "Les Wikien for {message}",
+    "DeleteBackupWithName": "Slett sikkerhetskopi {name}",
+    "CancelTaskWithName": "Avbryt {name}",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Å sette en kategory spesifikk til {appName} unngår konflikter med urelaterte ikke-{appName} nedlastinger. En kategori er valgfri, men sterkt anbefalt. Transmission 4.0 og nyere bruker kategorien som en merkelapp; eldre versjoner lager en [kategori]-undermappe i nedlastningsmappen.",
+    "MediaInfoSubtitlesHeader": "Undertekst",
+    "MediaInfoHearingImpaired": "Hørselshemmede",
+    "MediaInfoForced": "Tvunget",
+    "MediaInfoAudioStreamHeader": "Lydstrøm {number}"
 }

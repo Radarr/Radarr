@@ -1401,8 +1401,6 @@
     "MassSearchCancelWarning": "시작하면 {appName}를 다시 시작하거나 모든 인덱서를 끄지 않는 한 취소할 수 없습니다.",
     "Menu": "메뉴",
     "MediaInfoFootNote": "MediaInfo Full/AudioLanguages/SubtitleLanguages는 `:EN+DE` 접미사를 지원하므로 파일 이름에 포함할 언어를 필터링할 수 있습니다. 특정 언어를 제외하려면 `-DE`를 사용하세요. `+`를 붙이면(예: `:EN+`) 제외한 언어에 따라 `[EN]`/`[EN+--]`/`[--]`가 출력됩니다. 예: `{MediaInfo Full:EN+DE}`.",
-    "MetadataKometaDeprecated": "Kometa 파일은 더 이상 만들지 않으며, v6에서 지원이 완전히 제거됩니다",
-    "MetadataKometaDeprecatedSetting": "지원 중단됨",
     "MetadataSettingsMovieImages": "영화 이미지",
     "MetadataSettingsMovieMetadata": "영화 메타데이터",
     "MetadataSettingsMovieMetadataCollectionName": "영화 컬렉션 이름",
@@ -2085,5 +2083,6 @@
     "MediaInfoForced": "강제",
     "MediaInfoHearingImpaired": "청각 장애인용",
     "MediaInfoSubtitlesHeader": "자막",
-    "DownloadClientTransmissionSettingsCategoryHelpText": "{appName} 전용 카테고리를 추가하면 {appName}와 관련 없는 다운로드와 충돌하지 않습니다. 카테고리 사용은 선택 사항이지만 강력히 권장합니다. Transmission 4.0 이상은 카테고리를 레이블로 적용하고, 이전 버전은 출력 디렉터리에 [category] 하위 디렉터리를 만듭니다."
+    "DownloadClientTransmissionSettingsCategoryHelpText": "{appName} 전용 카테고리를 추가하면 {appName}와 관련 없는 다운로드와 충돌하지 않습니다. 카테고리 사용은 선택 사항이지만 강력히 권장합니다. Transmission 4.0 이상은 카테고리를 레이블로 적용하고, 이전 버전은 출력 디렉터리에 [category] 하위 디렉터리를 만듭니다.",
+    "NotificationsNtfySettingsHeaders": "헤더"
 }

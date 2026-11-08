@@ -1759,7 +1759,6 @@
     "LogSizeLimitHelpText": "Archiválás előtti maximális log fájl méret MB-ben. Alapértelmezetten 1MB.",
     "ManageFiles": "Fájlok kezelése",
     "Menu": "Menü",
-    "MetadataKometaDeprecatedSetting": "Kivezetve",
     "MovieFileRenamed": "A filmfájl átnevezve",
     "MovieFileRenamedTooltip": "A filmfájl átnevezve",
     "MovieImported": "Film importálva",
@@ -1795,7 +1794,6 @@
     "InteractiveSearchResultsFailedErrorMessage": "A keresés sikertelen volt, mert: {message}. Próbálja meg frissíteni a film adatait, és ellenőrizze, hogy minden szükséges információ rendelkezésre áll‑e, mielőtt újra keres.",
     "LabelIsRequired": "Címke kötelező",
     "MatchedToMovie": "Filmhez társítva",
-    "MetadataKometaDeprecated": "A Kometa‑fájlok többé nem jönnek majd létre, a támogatásuk teljesen megszűnik a 6-os verzióban",
     "MetadataMediaBrowserDeprecated": "A Media Browser metaadatok elavultnak minősülnek, a támogatásuk teljesen megszűnik a(z) {version} verzióban.",
     "MetadataSettingsMovieImages": "Film képei",
     "MetadataSettingsMovieMetadataLanguage": "Film metaadat nyelve",
@@ -2083,5 +2081,6 @@
     "MediaInfoForced": "Kényszerített",
     "MediaInfoHearingImpaired": "Hallássérült",
     "MediaInfoSubtitlesHeader": "Feliratok",
-    "DownloadClientTransmissionSettingsCategoryHelpText": "A {appName}-hoz tartozó külön kategória megelőzi az ütközést más letöltésekkel. Opcionális, de ajánlott. A Transmission 4.0+ címkét használ, a régebbi verziók pedig [kategória] almappát hoznak létre."
+    "DownloadClientTransmissionSettingsCategoryHelpText": "A {appName}-hoz tartozó külön kategória megelőzi az ütközést más letöltésekkel. Opcionális, de ajánlott. A Transmission 4.0+ címkét használ, a régebbi verziók pedig [kategória] almappát hoznak létre.",
+    "NotificationsNtfySettingsHeaders": "Fejlécek"
 }

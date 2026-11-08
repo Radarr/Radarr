@@ -1823,8 +1823,6 @@
     "DownloadClientSabnzbdValidationCheckBeforeDownload": "Poista SABnbzd:n \"Tarkista ennen lataamista\" -asetus käytöstä",
     "DownloadClientValidationSslConnectFailureDetail": "{appName} ei voi muodostaa salattua SSL-yhteyttä latauspalveluun {clientName}. Tämä voi olla laitekohtainen ongelma. Kokeile muodostaa yhteys määrittämällä {appName} ja latauspalvelu {clientName} käyttämään suojaamatonta yhteyttä.",
     "IncludeTrending": "Sisällytä trendaavat",
-    "MetadataKometaDeprecated": "Kometa-tiedostoja ei enää luoda ja tuki poistuu täysin versiossa 6.",
-    "MetadataKometaDeprecatedSetting": "Poistunut",
     "MetadataXmbcSettingsMovieMetadataUrlHelpText": "Tallenna elokuvan TMDB- ja IMDb-osoitteet .nfo-tiedostoon.",
     "MinimumCustomFormatScoreIncrement": "Pienin mahdollinen mukautetun muodon pisteytyksen korotus",
     "MinimumCustomFormatScoreIncrementHelpText": "Pienin vaadittu olemassa olevien ja uusien julkaisujen välinen mukautetun muodon pisteytyksen korotus ennen kuin {appName} tulkitsee julkaisun päivitykseksi.",
@@ -2058,5 +2056,6 @@
     "MediaInfoAudioStreamHeader": "Ääniraita #{number}",
     "MediaInfoForced": "Pakotettu",
     "MediaInfoHearingImpaired": "Kuulorajoitteiset",
-    "MediaInfoSubtitlesHeader": "Tekstitykset"
+    "MediaInfoSubtitlesHeader": "Tekstitykset",
+    "NotificationsNtfySettingsHeaders": "Otsakkeet"
 }
