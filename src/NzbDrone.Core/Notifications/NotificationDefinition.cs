@@ -19,6 +19,7 @@ namespace NzbDrone.Core.Notifications
         public bool OnHealthIssue { get; set; }
         public bool IncludeHealthWarnings { get; set; }
         public bool OnHealthRestored { get; set; }
+        public bool OnIndexerFailure { get; set; }
         public bool OnApplicationUpdate { get; set; }
         public bool OnManualInteractionRequired { get; set; }
 
@@ -59,7 +60,7 @@ namespace NzbDrone.Core.Notifications
         public bool SupportsOnManualInteractionRequired { get; set; }
 
         [MemberwiseEqualityIgnore]
-        public override bool Enable => OnGrab || OnDownload || (OnDownload && OnUpgrade) || OnRename || OnMovieAdded || OnMovieDelete || OnMovieFileDelete || (OnMovieFileDelete && OnMovieFileDeleteForUpgrade) || OnHealthIssue || OnHealthRestored || OnApplicationUpdate || OnManualInteractionRequired;
+        public override bool Enable => OnGrab || OnDownload || (OnDownload && OnUpgrade) || OnRename || OnMovieAdded || OnMovieDelete || OnMovieFileDelete || (OnMovieFileDelete && OnMovieFileDeleteForUpgrade) || OnHealthIssue || OnHealthRestored || OnIndexerFailure || OnApplicationUpdate || OnManualInteractionRequired;
 
         public bool Equals(NotificationDefinition other)
         {

@@ -25,6 +25,7 @@ function NotificationEventItems(props) {
     onMovieFileDeleteForUpgrade,
     onHealthIssue,
     onHealthRestored,
+    onIndexerFailure,
     onApplicationUpdate,
     onManualInteractionRequired,
     supportsOnGrab,
@@ -180,6 +181,17 @@ function NotificationEventItems(props) {
                 />
               </div>
           }
+
+          <div>
+            <FormInputGroup
+              type={inputTypes.CHECK}
+              name="onIndexerFailure"
+              helpText={translate('OnIndexerFailure')}
+              isDisabled={!supportsOnHealthIssue.value}
+              {...onIndexerFailure}
+              onChange={onInputChange}
+            />
+          </div>
 
           <div>
             <FormInputGroup
