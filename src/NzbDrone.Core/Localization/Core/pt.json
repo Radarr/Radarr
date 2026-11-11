@@ -1344,7 +1344,7 @@
     "RootFolderPath": "Caminho da pasta de raiz",
     "Trending": "Pendente",
     "MovieMissingFromDisk": "Episódio em falta em disco",
-    "FormatRuntimeMinutes": "minutos",
+    "FormatRuntimeMinutes": "{minutes}m",
     "ImportListsTraktSettingsListType": "Tipo de artista",
     "ImportListsTraktSettingsYears": "Ano",
     "LanguagesLoadError": "Não foi possível carregar as etiquetas",
