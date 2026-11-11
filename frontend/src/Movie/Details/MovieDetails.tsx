@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import TextTruncate from 'react-text-truncate';
@@ -31,6 +25,7 @@ import Popover from 'Components/Tooltip/Popover';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import TraktRating from 'Components/TraktRating';
 import useMeasure from 'Helpers/Hooks/useMeasure';
+import useModalOpenState from 'Helpers/Hooks/useModalOpenState';
 import usePrevious from 'Helpers/Hooks/usePrevious';
 import {
   icons,
@@ -253,66 +248,42 @@ function MovieDetails({ movieId }: MovieDetailsProps) {
   }, [movieId, allMovies]);
 
   const touchStart = useRef<number | null>(null);
-  const [isOrganizeModalOpen, setIsOrganizeModalOpen] = useState(false);
-  const [isManageMoviesModalOpen, setIsManageMoviesModalOpen] = useState(false);
-  const [isInteractiveSearchModalOpen, setIsInteractiveSearchModalOpen] =
-    useState(false);
-  const [isEditMovieModalOpen, setIsEditMovieModalOpen] = useState(false);
-  const [isDeleteMovieModalOpen, setIsDeleteMovieModalOpen] = useState(false);
-  const [isMovieHistoryModalOpen, setIsMovieHistoryModalOpen] = useState(false);
+  const [isOrganizeModalOpen, handleOrganizePress, handleOrganizeModalClose] =
+    useModalOpenState(false);
+  const [
+    isManageMoviesModalOpen,
+    handleManageMoviesPress,
+    handleManageMoviesModalClose,
+  ] = useModalOpenState(false);
+  const [
+    isInteractiveSearchModalOpen,
+    handleInteractiveSearchPress,
+    handleInteractiveSearchModalClose,
+  ] = useModalOpenState(false);
+  const [
+    isEditMovieModalOpen,
+    handleEditMoviePress,
+    handleEditMovieModalClose,
+  ] = useModalOpenState(false);
+  const [
+    isDeleteMovieModalOpen,
+    openDeleteMovieModal,
+    handleDeleteMovieModalClose,
+  ] = useModalOpenState(false);
+  const [
+    isMovieHistoryModalOpen,
+    handleMovieHistoryPress,
+    handleMovieHistoryModalClose,
+  ] = useModalOpenState(false);
   const [titleRef, { width: titleWidth }] = useMeasure();
   const [overviewRef, { height: overviewHeight }] = useMeasure();
   const wasRefreshing = usePrevious(isRefreshing);
   const wasRenaming = usePrevious(isRenaming);
 
-  const handleOrganizePress = useCallback(() => {
-    setIsOrganizeModalOpen(true);
-  }, []);
-
-  const handleOrganizeModalClose = useCallback(() => {
-    setIsOrganizeModalOpen(false);
-  }, []);
-
-  const handleManageMoviesPress = useCallback(() => {
-    setIsManageMoviesModalOpen(true);
-  }, []);
-
-  const handleManageMoviesModalClose = useCallback(() => {
-    setIsManageMoviesModalOpen(false);
-  }, []);
-
-  const handleInteractiveSearchPress = useCallback(() => {
-    setIsInteractiveSearchModalOpen(true);
-  }, []);
-
-  const handleInteractiveSearchModalClose = useCallback(() => {
-    setIsInteractiveSearchModalOpen(false);
-  }, []);
-
-  const handleEditMoviePress = useCallback(() => {
-    setIsEditMovieModalOpen(true);
-  }, []);
-
-  const handleEditMovieModalClose = useCallback(() => {
-    setIsEditMovieModalOpen(false);
-  }, []);
-
   const handleDeleteMoviePress = useCallback(() => {
-    setIsEditMovieModalOpen(false);
-    setIsDeleteMovieModalOpen(true);
-  }, []);
-
-  const handleDeleteMovieModalClose = useCallback(() => {
-    setIsDeleteMovieModalOpen(false);
-  }, []);
-
-  const handleMovieHistoryPress = useCallback(() => {
-    setIsMovieHistoryModalOpen(true);
-  }, []);
-
-  const handleMovieHistoryModalClose = useCallback(() => {
-    setIsMovieHistoryModalOpen(false);
-  }, []);
+    handleEditMovieModalClose();
+    openDeleteMovieModal();
+  }, [handleEditMovieModalClose, openDeleteMovieModal]);
 
   const handleMonitorTogglePress = useCallback(
     (value: boolean) => {
