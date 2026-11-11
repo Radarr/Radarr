@@ -24,7 +24,8 @@ class ImportMovieTable extends Component {
     const values = {
       monitor: defaultMonitor,
       qualityProfileId: defaultQualityProfileId,
-      minimumAvailability: defaultMinimumAvailability
+      minimumAvailability: defaultMinimumAvailability,
+      renameFolderOnImport: false
     };
 
     unmappedFolders.forEach((unmappedFolder) => {

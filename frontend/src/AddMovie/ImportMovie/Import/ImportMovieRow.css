@@ -30,3 +30,11 @@
   flex: 0 1 400px;
   min-width: 300px;
 }
+
+.renameFolderOnImport {
+  composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
+
+  flex: 0 1 80px;
+  min-width: 80px;
+  text-align: center;
+}
