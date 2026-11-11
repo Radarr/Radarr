@@ -36,6 +36,7 @@ export interface AddNewMovieCollectionMovieModalContentProps {
   year: number;
   overview?: string;
   images: Image[];
+  genres?: string[];
   collectionId: number;
   folder: string;
   onModalClose: () => void;
@@ -47,6 +48,7 @@ function AddNewMovieCollectionMovieModalContent({
   year,
   overview,
   images,
+  genres,
   collectionId,
   folder,
   onModalClose,
@@ -142,6 +144,8 @@ function AddNewMovieCollectionMovieModalContent({
               <MoviePoster
                 className={styles.poster}
                 images={images}
+                title={title}
+                genres={genres}
                 size={250}
               />
             </div>

@@ -1,0 +1,12 @@
+.colorPicker {
+  box-sizing: border-box;
+  padding: 2px;
+  width: 40px;
+  height: 35px;
+  border: 1px solid var(--inputBorderColor);
+  border-left: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  background-color: var(--inputBackgroundColor);
+  cursor: pointer;
+}

@@ -8,10 +8,14 @@ namespace NzbDrone.Core.MediaCover
         public Movie Movie { get; set; }
         public bool Updated { get; set; }
 
-        public MediaCoversUpdatedEvent(Movie movie, bool updated)
+        // The poster was replaced or restored to the original
+        public bool PosterReplacementChanged { get; set; }
+
+        public MediaCoversUpdatedEvent(Movie movie, bool updated, bool posterReplacementChanged = false)
         {
             Movie = movie;
             Updated = updated;
+            PosterReplacementChanged = posterReplacementChanged;
         }
     }
 }
