@@ -139,10 +139,24 @@ namespace NzbDrone.Core.Download
             trackedDownload.State = TrackedDownloadState.Importing;
 
             var outputPath = trackedDownload.ImportItem.OutputPath.FullPath;
-            var importResults = _downloadedMovieImportService.ProcessPath(outputPath,
-                ImportMode.Auto,
-                trackedDownload.RemoteMovie.Movie,
-                trackedDownload.ImportItem);
+            List<ImportResult> importResults;
+
+            try
+            {
+                importResults = _downloadedMovieImportService.ProcessPath(outputPath,
+                    ImportMode.Auto,
+                    trackedDownload.RemoteMovie.Movie,
+                    trackedDownload.ImportItem);
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Failed to import download: {0}", trackedDownload.DownloadItem.Title);
+
+                trackedDownload.Warn("Import failed: {0}", ex.Message);
+                SetStateToImportBlocked(trackedDownload);
+
+                return;
+            }
 
             if (VerifyImport(trackedDownload, importResults))
             {
