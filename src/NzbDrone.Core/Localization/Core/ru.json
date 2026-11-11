@@ -2082,5 +2082,6 @@
     "MediaInfoHearingImpaired": "Для слабослышащих",
     "MediaInfoSubtitlesHeader": "Субтитры",
     "DownloadClientTransmissionSettingsCategoryHelpText": "Добавление отдельной категории для {appName} позволяет избежать конфликтов с загрузками, не связанными с {appName}. Использование категории необязательно, но рекомендуется. В Transmission 4.0 и новее категория применяется как метка; в более ранних версиях в каталоге вывода создаётся подкаталог [category].",
-    "NotificationsNtfySettingsHeaders": "Заголовки"
+    "NotificationsNtfySettingsHeaders": "Заголовки",
+    "AddFavoriteFolderWithPath": "Добавить"
 }
