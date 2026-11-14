@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -383,6 +384,11 @@ namespace NzbDrone.Core.Parser
 
         public static string NormalizeImdbId(string imdbId)
         {
+            if (imdbId.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
             var imdbRegex = new Regex(@"^(\d{1,10}|(tt)\d{1,10})$");
 
             if (!imdbRegex.IsMatch(imdbId))
@@ -392,11 +398,17 @@ namespace NzbDrone.Core.Parser
 
             if (imdbId.Length > 2)
             {
-                imdbId = imdbId.Replace("tt", "").PadLeft(7, '0');
-                return $"tt{imdbId}";
+                return $"tt{imdbId.Replace("tt", "").PadLeft(7, '0')}";
             }
 
             return null;
+        }
+
+        public static bool TryNormalizeImdbId([NotNullWhen(true)] string value, out string result)
+        {
+            result = NormalizeImdbId(value);
+
+            return result is not null;
         }
 
         public static string ToUrlSlug(string value, bool invalidDashReplacement = false, string trimEndChars = "-_", string deduplicateChars = "-_")
