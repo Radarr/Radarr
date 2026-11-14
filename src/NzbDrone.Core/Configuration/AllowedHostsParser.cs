@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Network;
 
 namespace NzbDrone.Core.Configuration
 {
@@ -31,12 +32,24 @@ namespace NzbDrone.Core.Configuration
                 return false;
             }
 
+            if (IPNetworkParser.TryParse(host, out _, out _))
+            {
+                return true;
+            }
+
             if (host.StartsWith("*."))
             {
                 return Uri.CheckHostName(host.Substring(2)) == UriHostNameType.Dns;
             }
 
             return Uri.CheckHostName(host) != UriHostNameType.Unknown;
+        }
+
+        public static bool IsSubnet(string host)
+        {
+            return host.IsNotNullOrWhiteSpace() &&
+                   host.Contains('/') &&
+                   IPNetworkParser.TryParse(host, out _, out _);
         }
 
         public static bool IsBindAddress(string host)
