@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
         void CleanLibrary(XbmcSettings settings);
         List<ActivePlayer> GetActivePlayers(XbmcSettings settings);
         List<XbmcMovie> GetMovies(XbmcSettings settings, bool includeUniqueIds);
+        bool IsScanningVideoLibrary(XbmcSettings settings);
     }
 
     public class XbmcJsonApiProxy : IXbmcJsonApiProxy
@@ -82,6 +83,14 @@ namespace NzbDrone.Core.Notifications.Xbmc
             var response = ProcessRequest(settings, "VideoLibrary.GetMovies", properties);
 
             return Json.Deserialize<MovieResponse>(response).Result.Movies;
+        }
+
+        public bool IsScanningVideoLibrary(XbmcSettings settings)
+        {
+            var response = ProcessRequest(settings, "XBMC.GetInfoBooleans", new List<string> { "Library.IsScanningVideo" });
+            var result = Json.Deserialize<XbmcJsonResult<Dictionary<string, bool>>>(response).Result;
+
+            return result != null && result.TryGetValue("Library.IsScanningVideo", out var isScanning) && isScanning;
         }
 
         private string ProcessRequest(XbmcSettings settings, string method, params object[] parameters)

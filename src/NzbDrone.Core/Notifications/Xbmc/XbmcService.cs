@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Cache;
@@ -38,6 +39,9 @@ namespace NzbDrone.Core.Notifications.Xbmc
             _versionCache = cacheManager.GetCache<Version>(GetType(), "versionCache");
         }
 
+        internal int ScanWaitAttempts { get; set; } = 30;
+        internal TimeSpan ScanWaitInterval { get; set; } = TimeSpan.FromMilliseconds(500);
+
         public void Notify(XbmcSettings settings, string title, string message)
         {
             _proxy.Notify(settings, title, message);
@@ -61,6 +65,11 @@ namespace NzbDrone.Core.Notifications.Xbmc
             {
                 _logger.Debug("Video is currently playing, skipping library clean");
 
+                return;
+            }
+
+            if (!WaitUntilIdle(settings, "clean"))
+            {
                 return;
             }
 
@@ -187,6 +196,11 @@ namespace NzbDrone.Core.Notifications.Xbmc
             {
                 var movieFolder = GetMovieFolder(settings, movie);
 
+                if (!WaitUntilIdle(settings, "update"))
+                {
+                    return;
+                }
+
                 var response = _proxy.UpdateLibrary(settings, movieFolder);
 
                 if (!response.Equals("OK", StringComparison.InvariantCultureIgnoreCase))
@@ -198,6 +212,55 @@ namespace NzbDrone.Core.Notifications.Xbmc
             {
                 _logger.Debug(ex, ex.Message);
             }
+        }
+
+        // Kodi stops a running scan instead of starting a new one, and refuses to clean while a scan or clean is running
+        private bool WaitUntilIdle(XbmcSettings settings, string libraryTask)
+        {
+            if (!WaitForScanToFinish(settings, out var waited))
+            {
+                _logger.Debug("Kodi is still scanning, skipping library {0} on Kodi host: {1}", libraryTask, settings.Address);
+
+                return false;
+            }
+
+            // A video can start playing while waiting
+            if (waited && CheckIfVideoPlayerOpen(settings))
+            {
+                _logger.Debug("Video is currently playing, skipping library {0}", libraryTask);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool WaitForScanToFinish(XbmcSettings settings, out bool waited)
+        {
+            waited = false;
+
+            for (var attempt = 0; attempt < ScanWaitAttempts; attempt++)
+            {
+                try
+                {
+                    if (!_proxy.IsScanningVideoLibrary(settings))
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // The check only prevents a request that Kodi would ignore, so carry on as if Kodi were idle
+                    _logger.Debug(ex, "Unable to check whether Kodi is scanning on Kodi host: {0}", settings.Address);
+
+                    return true;
+                }
+
+                waited = true;
+                Thread.Sleep(ScanWaitInterval);
+            }
+
+            return false;
         }
 
         private bool CheckIfVideoPlayerOpen(XbmcSettings settings)

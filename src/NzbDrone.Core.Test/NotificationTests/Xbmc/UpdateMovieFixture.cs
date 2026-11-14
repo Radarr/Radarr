@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Movies;
@@ -42,6 +43,9 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
             Mocker.GetMock<IXbmcJsonApiProxy>()
                   .Setup(s => s.GetActivePlayers(_settings))
                   .Returns(new List<ActivePlayer>());
+
+            Subject.ScanWaitAttempts = 3;
+            Subject.ScanWaitInterval = TimeSpan.Zero;
         }
 
         [Test]
@@ -135,6 +139,103 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 
             Mocker.GetMock<IXbmcJsonApiProxy>()
                   .Verify(v => v.UpdateLibrary(_settings, null), Times.Once());
+        }
+
+        [Test]
+        public void should_wait_for_running_scan_before_updating()
+        {
+            var calls = new List<string>();
+            var scanning = new Queue<bool>(new[] { true, false });
+
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .Setup(s => s.IsScanningVideoLibrary(_settings))
+                  .Returns(() =>
+                  {
+                      calls.Add("check");
+                      return scanning.Dequeue();
+                  });
+
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .Setup(s => s.UpdateLibrary(_settings, It.IsAny<string>()))
+                  .Callback(() => calls.Add("scan"))
+                  .Returns("OK");
+
+            Subject.Update(_settings, GivenMovie("/data/movies/Movie (2025)"));
+
+            calls.Should().Equal("check", "check", "scan");
+        }
+
+        [Test]
+        public void should_not_update_when_video_starts_playing_while_waiting()
+        {
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .SetupSequence(s => s.IsScanningVideoLibrary(_settings))
+                  .Returns(true)
+                  .Returns(false);
+
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .SetupSequence(s => s.GetActivePlayers(_settings))
+                  .Returns(new List<ActivePlayer>())
+                  .Returns(new List<ActivePlayer> { new ActivePlayer(1, "video") });
+
+            Subject.Update(_settings, GivenMovie("/data/movies/Movie (2025)"));
+
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .Verify(v => v.UpdateLibrary(_settings, It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
+        public void should_check_players_once_when_kodi_is_not_scanning()
+        {
+            Subject.Update(_settings, GivenMovie("/data/movies/Movie (2025)"));
+
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .Verify(v => v.GetActivePlayers(_settings), Times.Once());
+        }
+
+        [Test]
+        public void should_not_update_while_kodi_keeps_scanning()
+        {
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .Setup(s => s.IsScanningVideoLibrary(_settings))
+                  .Returns(true);
+
+            Subject.Update(_settings, GivenMovie("/data/movies/Movie (2025)"));
+
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .Verify(v => v.IsScanningVideoLibrary(_settings), Times.Exactly(3));
+
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .Verify(v => v.UpdateLibrary(_settings, It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
+        public void should_not_check_whether_kodi_is_scanning_when_video_is_playing()
+        {
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .Setup(s => s.GetActivePlayers(_settings))
+                  .Returns(new List<ActivePlayer> { new ActivePlayer(1, "video") });
+
+            Subject.Update(_settings, GivenMovie("/data/movies/Movie (2025)"));
+
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .Verify(v => v.IsScanningVideoLibrary(_settings), Times.Never());
+
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .Verify(v => v.UpdateLibrary(_settings, It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
+        public void should_update_when_scan_check_fails()
+        {
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .Setup(s => s.IsScanningVideoLibrary(_settings))
+                  .Throws(new XbmcJsonException("Invalid params."));
+
+            Subject.Update(_settings, GivenMovie("/data/movies/Movie (2025)"));
+
+            Mocker.GetMock<IXbmcJsonApiProxy>()
+                  .Verify(v => v.UpdateLibrary(_settings, "/movies/Movie (2025)/"), Times.Once());
         }
 
         private static Movie GivenMovie(string path)
