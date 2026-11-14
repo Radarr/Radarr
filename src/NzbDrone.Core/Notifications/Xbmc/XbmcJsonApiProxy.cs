@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -9,12 +10,12 @@ namespace NzbDrone.Core.Notifications.Xbmc
 {
     public interface IXbmcJsonApiProxy
     {
-        string GetJsonVersion(XbmcSettings settings);
+        Version GetJsonVersion(XbmcSettings settings);
         void Notify(XbmcSettings settings, string title, string message);
         string UpdateLibrary(XbmcSettings settings, string path);
         void CleanLibrary(XbmcSettings settings);
         List<ActivePlayer> GetActivePlayers(XbmcSettings settings);
-        List<XbmcMovie> GetMovies(XbmcSettings settings);
+        List<XbmcMovie> GetMovies(XbmcSettings settings, bool includeUniqueIds);
     }
 
     public class XbmcJsonApiProxy : IXbmcJsonApiProxy
@@ -28,9 +29,12 @@ namespace NzbDrone.Core.Notifications.Xbmc
             _logger = logger;
         }
 
-        public string GetJsonVersion(XbmcSettings settings)
+        public Version GetJsonVersion(XbmcSettings settings)
         {
-            return ProcessRequest(settings, "JSONRPC.Version");
+            var response = ProcessRequest(settings, "JSONRPC.Version");
+            var version = Json.Deserialize<XbmcJsonResult<VersionResult>>(response).Result.Version;
+
+            return new Version(version["major"], version["minor"], version["patch"]);
         }
 
         public void Notify(XbmcSettings settings, string title, string message)
@@ -66,9 +70,16 @@ namespace NzbDrone.Core.Notifications.Xbmc
             return Json.Deserialize<ActivePlayersResult>(response).Result;
         }
 
-        public List<XbmcMovie> GetMovies(XbmcSettings settings)
+        public List<XbmcMovie> GetMovies(XbmcSettings settings, bool includeUniqueIds)
         {
-            var response = ProcessRequest(settings, "VideoLibrary.GetMovies", new List<string> { "file", "imdbnumber" });
+            var properties = new List<string> { "file", "imdbnumber" };
+
+            if (includeUniqueIds)
+            {
+                properties.Add("uniqueid");
+            }
+
+            var response = ProcessRequest(settings, "VideoLibrary.GetMovies", properties);
 
             return Json.Deserialize<MovieResponse>(response).Result.Movies;
         }
