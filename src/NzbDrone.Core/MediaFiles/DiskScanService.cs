@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
+using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
@@ -16,6 +17,7 @@ using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Versions;
 using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.MediaFiles
@@ -37,6 +39,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IImportApprovedMovie _importApprovedMovies;
         private readonly IConfigService _configService;
         private readonly IMovieService _movieService;
+        private readonly IMovieVersionService _movieVersionService;
         private readonly IMediaFileService _mediaFileService;
         private readonly IMediaFileTableCleanupService _mediaFileTableCleanupService;
         private readonly IRootFolderService _rootFolderService;
@@ -49,6 +52,7 @@ namespace NzbDrone.Core.MediaFiles
                                IImportApprovedMovie importApprovedMovies,
                                IConfigService configService,
                                IMovieService movieService,
+                               IMovieVersionService movieVersionService,
                                IMediaFileService mediaFileService,
                                IMediaFileTableCleanupService mediaFileTableCleanupService,
                                IRootFolderService rootFolderService,
@@ -61,6 +65,7 @@ namespace NzbDrone.Core.MediaFiles
             _importApprovedMovies = importApprovedMovies;
             _configService = configService;
             _movieService = movieService;
+            _movieVersionService = movieVersionService;
             _mediaFileService = mediaFileService;
             _mediaFileTableCleanupService = mediaFileTableCleanupService;
             _rootFolderService = rootFolderService;
@@ -76,6 +81,18 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Scan(Movie movie)
         {
+            // Additional versions can live in other root folders, each one is scanned on its own
+            var versions = new List<Movie> { movie };
+            versions.AddRange(_movieVersionService.GetAdditionalVersionViews(movie));
+
+            foreach (var version in versions)
+            {
+                ScanVersion(version, versions);
+            }
+        }
+
+        private void ScanVersion(Movie movie, List<Movie> allVersions)
+        {
             var rootFolder = _rootFolderService.GetBestRootFolderPath(movie.Path);
 
             var movieFolderExists = _diskProvider.FolderExists(movie.Path);
@@ -85,14 +102,14 @@ namespace NzbDrone.Core.MediaFiles
                 if (!_diskProvider.FolderExists(rootFolder))
                 {
                     _logger.Warn("Movie's root folder ({0}) doesn't exist.", rootFolder);
-                    _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderDoesNotExist));
+                    PublishScanSkipped(movie, MovieScanSkippedReason.RootFolderDoesNotExist);
                     return;
                 }
 
                 if (_diskProvider.FolderEmpty(rootFolder))
                 {
                     _logger.Warn("Movie's root folder ({0}) is empty. Rescan will not update movies as a failsafe.", rootFolder);
-                    _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderIsEmpty));
+                    PublishScanSkipped(movie, MovieScanSkippedReason.RootFolderIsEmpty);
                     return;
                 }
             }
@@ -133,8 +150,16 @@ namespace NzbDrone.Core.MediaFiles
 
             CleanMediaFiles(movie, mediaFileList);
 
-            var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+            var allMovieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+            var additionalVersionIds = allVersions.Where(v => v.IsVersionView).Select(v => v.MovieVersionId).ToList();
+            var movieFiles = allMovieFiles.ForVersionOf(movie, additionalVersionIds);
             var unmappedFiles = MediaFileService.FilterExistingFiles(mediaFileList, movieFiles, movie);
+
+            // Versions can share a folder: a file already tracked by another version is never imported twice
+            var otherVersionsFiles = allVersions.Where(v => v.MovieVersionId != movie.MovieVersionId)
+                                                .SelectMany(v => allMovieFiles.ForVersionOf(v, additionalVersionIds).Select(f => Path.Combine(v.Path, f.RelativePath)));
+
+            unmappedFiles = unmappedFiles.Except(otherVersionsFiles, PathEqualityComparer.Instance).ToList();
 
             var decisionsStopwatch = Stopwatch.StartNew();
             var decisions = _importDecisionMaker.GetImportDecisions(unmappedFiles, movie, false);
@@ -189,7 +214,24 @@ namespace NzbDrone.Core.MediaFiles
         private void CompletedScanning(Movie movie, List<string> possibleExtraFiles)
         {
             _logger.Info("Completed scanning disk for {0}", movie.Title);
+
+            // Scan event consumers (extras, post-add actions) only handle the primary version for now
+            if (movie.IsVersionView)
+            {
+                return;
+            }
+
             _eventAggregator.PublishEvent(new MovieScannedEvent(movie, possibleExtraFiles));
+        }
+
+        private void PublishScanSkipped(Movie movie, MovieScanSkippedReason reason)
+        {
+            if (movie.IsVersionView)
+            {
+                return;
+            }
+
+            _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, reason));
         }
 
         public string[] GetVideoFiles(string path, bool allDirectories = true)

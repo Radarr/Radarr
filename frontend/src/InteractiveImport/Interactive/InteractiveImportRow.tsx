@@ -11,15 +11,19 @@ import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import SelectIndexerFlagsModal from 'InteractiveImport/IndexerFlags/SelectIndexerFlagsModal';
 import SelectLanguageModal from 'InteractiveImport/Language/SelectLanguageModal';
 import SelectMovieModal from 'InteractiveImport/Movie/SelectMovieModal';
+import SelectMovieVersionModal from 'InteractiveImport/MovieVersion/SelectMovieVersionModal';
+import { getMovieVersionKey } from 'InteractiveImport/MovieVersion/SelectMovieVersionModalContent';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
 import SelectReleaseGroupModal from 'InteractiveImport/ReleaseGroup/SelectReleaseGroupModal';
 import Language from 'Language/Language';
+import MovieVersion from 'Movie/Details/Versions/MovieVersion';
 import IndexerFlags from 'Movie/IndexerFlags';
 import Movie from 'Movie/Movie';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguages from 'Movie/MovieLanguages';
 import MovieQuality from 'Movie/MovieQuality';
 import { QualityModel } from 'Quality/Quality';
+import QualityProfileName from 'Settings/Profiles/Quality/QualityProfileName';
 import {
   reprocessInteractiveImportItems,
   updateInteractiveImportItem,
@@ -35,6 +39,7 @@ import styles from './InteractiveImportRow.css';
 
 type SelectType =
   | 'movie'
+  | 'movieVersion'
   | 'releaseGroup'
   | 'quality'
   | 'language'
@@ -49,6 +54,8 @@ interface InteractiveImportRowProps {
   allowMovieChange: boolean;
   relativePath: string;
   movie?: Movie;
+  movieVersionId?: number;
+  movieVersions?: MovieVersion[];
   releaseGroup?: string;
   quality?: QualityModel;
   languages?: Language[];
@@ -72,6 +79,8 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
     allowMovieChange,
     relativePath,
     movie,
+    movieVersionId = 0,
+    movieVersions = [],
     quality,
     languages,
     releaseGroup,
@@ -92,6 +101,10 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
 
   const isMovieColumnVisible = useMemo(
     () => columns.find((c) => c.name === 'movie')?.isVisible ?? false,
+    [columns]
+  );
+  const isMovieVersionColumnVisible = useMemo(
+    () => columns.find((c) => c.name === 'movieVersion')?.isVisible ?? false,
     [columns]
   );
   const isIndexerFlagsColumnVisible = useMemo(
@@ -163,6 +176,28 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
         updateInteractiveImportItem({
           id,
           movie,
+          movieVersionId: 0,
+        })
+      );
+
+      dispatch(reprocessInteractiveImportItems({ ids: [id] }));
+
+      setSelectModalOpen(null);
+      selectRowAfterChange();
+    },
+    [id, dispatch, setSelectModalOpen, selectRowAfterChange]
+  );
+
+  const onSelectMovieVersionPress = useCallback(() => {
+    setSelectModalOpen('movieVersion');
+  }, [setSelectModalOpen]);
+
+  const onMovieVersionSelect = useCallback(
+    (movieVersionId: number) => {
+      dispatch(
+        updateInteractiveImportItem({
+          id,
+          movieVersionId,
         })
       );
 
@@ -260,6 +295,11 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
 
   const movieTitle = movie ? movie.title : '';
 
+  const movieVersion = movieVersions.find(
+    (version) => getMovieVersionKey(version) === movieVersionId
+  );
+  const canChangeMovieVersion = movieVersions.length > 1;
+
   const showMoviePlaceholder = isSelected && !movie;
   const showReleaseGroupPlaceholder = isSelected && !releaseGroup;
   const showQualityPlaceholder = isSelected && !quality;
@@ -289,6 +329,24 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
           ) : (
             movieTitle
           )}
+        </TableRowCellButton>
+      ) : null}
+
+      {isMovieVersionColumnVisible ? (
+        <TableRowCellButton
+          isDisabled={!canChangeMovieVersion}
+          title={
+            canChangeMovieVersion
+              ? translate('ClickToChangeMovieVersion')
+              : undefined
+          }
+          onPress={onSelectMovieVersionPress}
+        >
+          {movieVersion ? (
+            <QualityProfileName
+              qualityProfileId={movieVersion.qualityProfileId}
+            />
+          ) : null}
         </TableRowCellButton>
       ) : null}
 
@@ -386,6 +444,15 @@ function InteractiveImportRow(props: InteractiveImportRowProps) {
           />
         ) : null}
       </TableRowCell>
+
+      <SelectMovieVersionModal
+        isOpen={selectModalOpen === 'movieVersion'}
+        movieVersionId={movieVersionId}
+        movieVersions={movieVersions}
+        modalTitle={modalTitle}
+        onMovieVersionSelect={onMovieVersionSelect}
+        onModalClose={onSelectModalClose}
+      />
 
       <SelectMovieModal
         isOpen={selectModalOpen === 'movie'}

@@ -9,6 +9,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Versions;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -23,16 +24,19 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IDiskProvider _diskProvider;
         private readonly IConfigService _configService;
         private readonly IMediaFileService _mediaFileService;
+        private readonly IMovieVersionService _movieVersionService;
         private readonly Logger _logger;
 
         public UpdateMovieFileService(IDiskProvider diskProvider,
                                       IConfigService configService,
                                       IMediaFileService mediaFileService,
+                                      IMovieVersionService movieVersionService,
                                       Logger logger)
         {
             _diskProvider = diskProvider;
             _configService = configService;
             _mediaFileService = mediaFileService;
+            _movieVersionService = movieVersionService;
             _logger = logger;
         }
 
@@ -105,7 +109,7 @@ namespace NzbDrone.Core.MediaFiles
                 return;
             }
 
-            var movieFiles = _mediaFileService.GetFilesByMovie(message.Movie.Id);
+            var movieFiles = _mediaFileService.GetFilesByMovie(message.Movie.Id).ForVersionOf(message.Movie, _movieVersionService.GetAdditionalVersionIds(message.Movie.Id));
             var updated = new List<MovieFile>();
 
             foreach (var movieFile in movieFiles)

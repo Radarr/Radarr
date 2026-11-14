@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using FizzWare.NBuilder;
 using Moq;
@@ -6,6 +7,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Versions;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
@@ -138,6 +140,36 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileDeletionService
             ExceptionVerification.ExpectedErrors(1);
             Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(_movieFile.Path, "Movie Title"), Times.Once());
             Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(_movieFile, DeleteMediaFileReason.Manual), Times.Never());
+        }
+
+        [Test]
+        public void should_delete_file_of_additional_version_from_its_own_folder()
+        {
+            const string versionRootFolder = @"D:\Movies 4K";
+            var versionView = _movie.ForVersion(new MovieVersion { Id = 7, MovieId = _movie.Id, Path = Path.Combine(versionRootFolder, "Movie Title") });
+            var versionFilePath = Path.Combine(versionView.Path, _movieFile.RelativePath);
+
+            _movieFile.MovieVersionId = 7;
+
+            Mocker.GetMock<IMovieVersionService>()
+                  .Setup(s => s.GetAdditionalVersionIds(_movie.Id))
+                  .Returns(new List<int> { 7 });
+
+            Mocker.GetMock<IMovieVersionService>()
+                  .Setup(s => s.GetMovieForFile(_movie, _movieFile))
+                  .Returns(versionView);
+
+            Mocker.GetMock<IDiskProvider>().Setup(s => s.GetParentFolder(versionView.Path)).Returns(versionRootFolder);
+            Mocker.GetMock<IDiskProvider>().Setup(s => s.GetParentFolder(versionFilePath)).Returns(versionView.Path);
+            Mocker.GetMock<IDiskProvider>().Setup(s => s.FolderExists(versionRootFolder)).Returns(true);
+            Mocker.GetMock<IDiskProvider>().Setup(s => s.GetDirectories(versionRootFolder)).Returns(new[] { versionView.Path });
+            Mocker.GetMock<IDiskProvider>().Setup(s => s.FolderExists(versionView.Path)).Returns(true);
+            Mocker.GetMock<IDiskProvider>().Setup(s => s.FileExists(versionFilePath)).Returns(true);
+
+            Subject.DeleteMovieFile(_movie, _movieFile);
+
+            Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(versionFilePath, It.IsAny<string>()), Times.Once());
+            Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(Path.Combine(_movie.Path, _movieFile.RelativePath), It.IsAny<string>()), Times.Never());
         }
     }
 }

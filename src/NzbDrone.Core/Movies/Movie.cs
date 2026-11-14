@@ -4,6 +4,7 @@ using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Movies.Versions;
 using NzbDrone.Core.Profiles.Qualities;
 
 namespace NzbDrone.Core.Movies
@@ -37,6 +38,11 @@ namespace NzbDrone.Core.Movies
 
         public bool HasFile => MovieFileId > 0;
 
+        // Not persisted: set on a copy of the movie that stands for one of its additional versions
+        private int _movieVersionId;
+        public int MovieVersionId => _movieVersionId;
+        public bool IsVersionView => _movieVersionId > 0;
+
         // compatibility properties
         public string Title
         {
@@ -60,6 +66,20 @@ namespace NzbDrone.Core.Movies
         {
             get { return MovieMetadata.Value.Year; }
             set { MovieMetadata.Value.Year = value; }
+        }
+
+        public Movie ForVersion(MovieVersion version)
+        {
+            var view = (Movie)MemberwiseClone();
+
+            view._movieVersionId = version.Id;
+            view.Path = version.Path;
+            view.QualityProfileId = version.QualityProfileId;
+            view.QualityProfile = null;
+            view.MovieFileId = version.MovieFileId;
+            view.MovieFile = null;
+
+            return view;
         }
 
         public string FolderName()

@@ -438,6 +438,12 @@ namespace NzbDrone.Core.Movies
 
         public void Handle(MovieFileAddedEvent message)
         {
+            // Files of additional versions are tracked on the version, not on the movie
+            if (message.MovieFile.MovieVersionId > 0)
+            {
+                return;
+            }
+
             var movie = message.MovieFile.Movie;
             movie.MovieFileId = message.MovieFile.Id;
             _movieRepository.Update(movie);

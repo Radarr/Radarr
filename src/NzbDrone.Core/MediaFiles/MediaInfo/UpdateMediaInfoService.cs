@@ -7,6 +7,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Versions;
 
 namespace NzbDrone.Core.MediaFiles.MediaInfo
 {
@@ -20,18 +21,21 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IMediaFileService _mediaFileService;
+        private readonly IMovieVersionService _movieVersionService;
         private readonly IVideoFileInfoReader _videoFileInfoReader;
         private readonly IConfigService _configService;
         private readonly Logger _logger;
 
         public UpdateMediaInfoService(IDiskProvider diskProvider,
                                 IMediaFileService mediaFileService,
+                                IMovieVersionService movieVersionService,
                                 IVideoFileInfoReader videoFileInfoReader,
                                 IConfigService configService,
                                 Logger logger)
         {
             _diskProvider = diskProvider;
             _mediaFileService = mediaFileService;
+            _movieVersionService = movieVersionService;
             _videoFileInfoReader = videoFileInfoReader;
             _configService = configService;
             _logger = logger;
@@ -45,7 +49,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return;
             }
 
-            var allMediaFiles = _mediaFileService.GetFilesByMovie(message.Movie.Id);
+            var allMediaFiles = _mediaFileService.GetFilesByMovie(message.Movie.Id).ForVersionOf(message.Movie, _movieVersionService.GetAdditionalVersionIds(message.Movie.Id));
             var filteredMediaFiles = allMediaFiles.Where(c =>
                 c.MediaInfo == null ||
                 c.MediaInfo.SchemaRevision < VideoFileInfoReader.MINIMUM_MEDIA_INFO_SCHEMA_REVISION).ToList();
