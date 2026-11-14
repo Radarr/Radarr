@@ -170,5 +170,21 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             Subject.Map(_umlautInfo, "", 0, _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
             Subject.Map(_umlautAltInfo, "", 0, _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
         }
+
+        [Test]
+        public void should_match_search_criteria_movie_by_imdb_id_without_prefix()
+        {
+            _movie.ImdbId = "tt6478412";
+
+            Subject.Map(_wrongYearInfo, "6478412", 0, _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
+        }
+
+        [Test]
+        public void should_not_match_search_criteria_movie_without_imdb_id_when_release_has_none()
+        {
+            _movie.ImdbId = null;
+
+            Subject.Map(_wrongYearInfo, "0", 0, _movieSearchCriteria).Movie.Should().BeNull();
+        }
     }
 }

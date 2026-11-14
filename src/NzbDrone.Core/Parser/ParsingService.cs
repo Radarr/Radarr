@@ -245,7 +245,7 @@ namespace NzbDrone.Core.Parser
                 return new FindMovieResult(searchCriteria.Movie, MovieMatchType.Id);
             }
 
-            if (imdbId.IsNotNullOrWhiteSpace() && imdbId == searchCriteria.Movie.ImdbId)
+            if (Parser.TryNormalizeImdbId(imdbId, out var normalizedImdbId) && normalizedImdbId == searchCriteria.Movie.ImdbId)
             {
                 return new FindMovieResult(searchCriteria.Movie, MovieMatchType.Id);
             }
