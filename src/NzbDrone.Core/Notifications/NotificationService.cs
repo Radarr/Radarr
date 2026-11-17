@@ -4,6 +4,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.HealthCheck;
+using NzbDrone.Core.HealthCheck.Checks;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
@@ -97,6 +98,12 @@ namespace NzbDrone.Core.Notifications
             }
 
             return false;
+        }
+
+        private bool IsIndexerFailure(HealthCheck.HealthCheck healthCheck)
+        {
+            return healthCheck.Source == typeof(IndexerStatusCheck) ||
+                   healthCheck.Source == typeof(IndexerLongTermStatusCheck);
         }
 
         public void Handle(MovieGrabbedEvent message)
@@ -373,11 +380,17 @@ namespace NzbDrone.Core.Notifications
                 return;
             }
 
-            foreach (var notification in _notificationFactory.OnHealthIssueEnabled())
+            // Indexer failures have their own trigger and are sent regardless of the health issue settings
+            var isIndexerFailure = IsIndexerFailure(message.HealthCheck);
+            var notifications = isIndexerFailure
+                ? _notificationFactory.OnIndexerFailureEnabled()
+                : _notificationFactory.OnHealthIssueEnabled();
+
+            foreach (var notification in notifications)
             {
                 try
                 {
-                    if (ShouldHandleHealthFailure(message.HealthCheck, ((NotificationDefinition)notification.Definition).IncludeHealthWarnings))
+                    if (isIndexerFailure || ShouldHandleHealthFailure(message.HealthCheck, ((NotificationDefinition)notification.Definition).IncludeHealthWarnings))
                     {
                         notification.OnHealthIssue(message.HealthCheck);
                         _notificationStatusService.RecordSuccess(notification.Definition.Id);
@@ -398,11 +411,18 @@ namespace NzbDrone.Core.Notifications
                 return;
             }
 
+            var isIndexerFailure = IsIndexerFailure(message.PreviousCheck);
+
             foreach (var notification in _notificationFactory.OnHealthRestoredEnabled())
             {
                 try
                 {
-                    if (ShouldHandleHealthFailure(message.PreviousCheck, ((NotificationDefinition)notification.Definition).IncludeHealthWarnings))
+                    var definition = (NotificationDefinition)notification.Definition;
+                    var shouldHandle = isIndexerFailure
+                        ? definition.OnIndexerFailure
+                        : ShouldHandleHealthFailure(message.PreviousCheck, definition.IncludeHealthWarnings);
+
+                    if (shouldHandle)
                     {
                         notification.OnHealthRestored(message.PreviousCheck);
                         _notificationStatusService.RecordSuccess(notification.Definition.Id);
