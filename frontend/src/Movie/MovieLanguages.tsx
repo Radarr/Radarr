@@ -32,7 +32,6 @@ function MovieLanguages(props: MovieLanguagesProps) {
 
   return (
     <Popover
-      className={className}
       anchor={
         <Label
           className={className}
