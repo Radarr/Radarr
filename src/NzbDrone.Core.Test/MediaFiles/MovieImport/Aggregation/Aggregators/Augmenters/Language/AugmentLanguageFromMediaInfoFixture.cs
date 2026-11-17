@@ -119,5 +119,28 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
             result.Languages.Should().Contain(Core.Languages.Language.English);
             result.Languages.Should().Contain(Core.Languages.Language.German);
         }
+
+        [Test]
+        public void should_return_known_languages_without_commentary()
+        {
+            var mediaInfo = Builder<MediaInfoModel>.CreateNew()
+                .With(m => m.AudioStreams = [
+                    new MediaInfoAudioStreamModel { Language = "eng", Title = "Main Feature" },
+                    new MediaInfoAudioStreamModel { Language = "ger", Title = "German Dub" },
+                    new MediaInfoAudioStreamModel { Language = "rum", Title = "Commentary with Director" },
+                    new MediaInfoAudioStreamModel { Language = "fra", Title = "Commentary by Film Critic" },
+                ])
+                .Build();
+
+            var localMovie = Builder<LocalMovie>.CreateNew()
+                .With(l => l.MediaInfo = mediaInfo)
+                .Build();
+
+            var result = Subject.AugmentLanguage(localMovie, null);
+
+            result.Languages.Count.Should().Be(2);
+            result.Languages.Should().Contain(Core.Languages.Language.English);
+            result.Languages.Should().Contain(Core.Languages.Language.German);
+        }
     }
 }
