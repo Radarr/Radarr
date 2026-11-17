@@ -209,6 +209,25 @@ namespace NzbDrone.Core.Test.Download
             AssertImported();
         }
 
+        [Test]
+        public void should_block_import_and_warn_if_import_throws()
+        {
+            Mocker.GetMock<IDownloadedMovieImportService>()
+                .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>()))
+                .Throws(new System.IO.IOException("Disk is unavailable"));
+
+            Subject.Import(_trackedDownload);
+
+            _trackedDownload.State.Should().NotBe(TrackedDownloadState.Importing);
+            _trackedDownload.State.Should().Be(TrackedDownloadState.ImportBlocked);
+            _trackedDownload.Status.Should().Be(TrackedDownloadStatus.Warning);
+            _trackedDownload.StatusMessages.Should().ContainSingle()
+                .Which.Messages.Should().Contain(m => m.Contains("Disk is unavailable"));
+
+            Mocker.GetMock<IEventAggregator>()
+                .Verify(v => v.PublishEvent(It.IsAny<DownloadCompletedEvent>()), Times.Never());
+        }
+
         private void AssertNotImported()
         {
             Mocker.GetMock<IEventAggregator>()
