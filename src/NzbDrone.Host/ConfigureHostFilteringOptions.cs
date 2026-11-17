@@ -14,7 +14,7 @@ namespace NzbDrone.Host
     {
         // Always allow localhost, loopback addresses and the hostname of the server, even if
         // they aren't configured in the allowed hosts list so users can access the UI using them.
-        private static readonly string[] LoopbackHosts = { "localhost", "127.0.0.1", "[::1]" };
+        internal static readonly string[] LoopbackHosts = { "localhost", "127.0.0.1", "[::1]" };
 
         private readonly IConfigFileProvider _configFileProvider;
         private readonly Logger _logger;
@@ -48,12 +48,24 @@ namespace NzbDrone.Host
                 return;
             }
 
-            options.AllowedHosts = allowedHosts.Concat(LoopbackHosts).Concat(GetServerHostNames()).Distinct().ToList();
+            // Built-in host filtering matches hosts as strings only, so it can't handle subnet
+            // entries. If any are configured, let the built-in filtering accept all hosts and
+            // enforce the full list, subnets included, in AllowedHostsMiddleware instead.
+            if (allowedHosts.Any(AllowedHostsParser.IsSubnet))
+            {
+                options.AllowedHosts = new List<string> { "*" };
+
+                _logger.Info("Allowed Hosts includes subnets, accepting requests for hosts: {0} and any IP address within those subnets", string.Join(", ", allowedHosts));
+
+                return;
+            }
+
+            options.AllowedHosts = allowedHosts.Concat(LoopbackHosts).Concat(GetServerHostNames(_logger)).Distinct().ToList();
 
             _logger.Info("Accepting requests for hosts: {0}", string.Join(", ", options.AllowedHosts));
         }
 
-        private List<string> GetServerHostNames()
+        internal static List<string> GetServerHostNames(Logger logger)
         {
             var hostNames = new List<string>();
 
@@ -73,7 +85,7 @@ namespace NzbDrone.Host
             }
             catch (Exception ex)
             {
-                _logger.Debug(ex, "Unable to get the hostname of the server");
+                logger.Debug(ex, "Unable to get the hostname of the server");
             }
 
             return hostNames;
