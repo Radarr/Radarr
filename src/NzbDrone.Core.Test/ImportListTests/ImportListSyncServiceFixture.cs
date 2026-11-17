@@ -458,5 +458,55 @@ namespace NzbDrone.Core.Test.ImportList
             Mocker.GetMock<IAddMovieService>()
                   .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7 && s.All(m => m.TmdbId != _existingMovies[0].TmdbId)), true), Times.Once());
         }
+
+        [Test]
+        public void should_not_add_movie_with_duplicate_exclusions()
+        {
+            _list2Movies.ForEach(m => m.ListId = 2);
+            _importListFetch.Movies.ForEach(m => m.ListId = 1);
+            _importListFetch.Movies.AddRange(_list2Movies);
+
+            GivenList(1, true);
+            GivenList(2, true);
+
+            GivenCleanLevel("disabled");
+
+            Mocker.GetMock<IImportListExclusionService>()
+                  .Setup(v => v.All())
+                  .Returns(new List<ImportListExclusion>
+                  {
+                      new ImportListExclusion { TmdbId = _existingMovies[0].TmdbId },
+                      new ImportListExclusion { TmdbId = _existingMovies[0].TmdbId }
+                  });
+
+            Subject.Execute(_commandAll);
+
+            Mocker.GetMock<IAddMovieService>()
+                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7 && s.All(m => m.TmdbId != _existingMovies[0].TmdbId)), true), Times.Once());
+        }
+
+        [Test]
+        public void should_not_match_on_empty_imdbid_on_clean_library()
+        {
+            _importListFetch.Movies.ForEach(m => m.ListId = 1);
+            _importListFetch.Movies.ForEach(m => m.ImdbId = null);
+            _existingMovies.ForEach(m => m.ImdbId = null);
+
+            GivenList(1, true);
+            GivenCleanLevel("keepAndUnmonitor");
+
+            Mocker.GetMock<IMovieService>()
+                  .Setup(v => v.GetAllMovies())
+                  .Returns(_existingMovies);
+
+            Mocker.GetMock<IImportListMovieService>()
+                .Setup(v => v.GetAllListMovies())
+                .Returns(_list1Movies);
+
+            Subject.Execute(_commandAll);
+
+            Mocker.GetMock<IMovieService>()
+                  .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.Count == 3 && s.All(m => !m.Monitored)), true), Times.Once());
+        }
     }
 }
