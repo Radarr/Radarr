@@ -8,6 +8,7 @@ namespace NzbDrone.Core.Movies.Translations
     public interface IMovieTranslationRepository : IBasicRepository<MovieTranslation>
     {
         List<MovieTranslation> FindByMovieMetadataId(int movieMetadataId);
+        List<MovieTranslation> FindByMovieMetadataId(List<int> movieMetadataIds);
         List<MovieTranslation> FindByLanguage(Language language);
         void DeleteForMovies(List<int> movieIds);
     }
@@ -22,6 +23,11 @@ namespace NzbDrone.Core.Movies.Translations
         public List<MovieTranslation> FindByMovieMetadataId(int movieMetadataId)
         {
             return Query(x => x.MovieMetadataId == movieMetadataId);
+        }
+
+        public List<MovieTranslation> FindByMovieMetadataId(List<int> movieMetadataIds)
+        {
+            return Query(x => movieMetadataIds.Contains(x.MovieMetadataId));
         }
 
         public List<MovieTranslation> FindByLanguage(Language language)
