@@ -100,11 +100,6 @@ namespace NzbDrone.Core.Notifications.Xbmc
                         {
                             _xbmcService.Update(Settings, item.Movie);
                         }
-
-                        if (item.Info.Contains(true) && Settings.CleanLibrary)
-                        {
-                            _xbmcService.Clean(Settings);
-                        }
                     }
                     catch (SocketException ex)
                     {
@@ -112,6 +107,20 @@ namespace NzbDrone.Core.Notifications.Xbmc
                         _logger.Debug(ex, logMessage);
                     }
                 });
+
+                // Kodi cleans the whole library, so clean once after all the movies are updated
+                if (Settings.CleanLibrary && items.Any(i => i.Info.Contains(true)))
+                {
+                    try
+                    {
+                        _xbmcService.Clean(Settings);
+                    }
+                    catch (SocketException ex)
+                    {
+                        var logMessage = string.Format("Unable to connect to Kodi Host: {0}:{1}", Settings.Host, Settings.Port);
+                        _logger.Debug(ex, logMessage);
+                    }
+                }
             });
         }
 
