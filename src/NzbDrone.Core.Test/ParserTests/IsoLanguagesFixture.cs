@@ -1,3 +1,4 @@
+using System.Globalization;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Languages;
@@ -137,6 +138,28 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             var result = IsoLanguages.Find(isoCode);
             result.Language.Should().Be(Language.Irish);
+        }
+
+        [TestCase("IT", "Italian")]
+        [TestCase("ID", "Indonesian")]
+        [TestCase("ISL", "Icelandic")]
+        public void should_find_uppercase_iso_code_with_turkish_culture(string isoCode, string expectedLanguage)
+        {
+            var currentCulture = CultureInfo.CurrentCulture;
+
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo("tr-TR");
+
+                var result = IsoLanguages.Find(isoCode);
+
+                result.Should().NotBeNull();
+                result.Language.Should().Be((Language)expectedLanguage);
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = currentCulture;
+            }
         }
     }
 }

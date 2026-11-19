@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
@@ -634,6 +635,28 @@ namespace NzbDrone.Core.Test.ParserTests
             subtitleTitleInfo.Language.Should().Be(Language.Unknown);
             subtitleTitleInfo.LanguageTags.Should().BeEmpty();
             subtitleTitleInfo.RawTitle.Should().BeNull();
+        }
+
+        [TestCase("Movie.Title.1994.ICELANDIC.1080p.XviD-LOL", "Icelandic")]
+        [TestCase("Movie.Title.1994.ITALIAN.1080p.XviD-LOL", "Italian")]
+        [TestCase("Movie.Title.1994.IRISH.1080p.XviD-LOL", "Irish")]
+        [TestCase("Movie.Title.1994.HINDI.1080p.XviD-LOL", "Hindi")]
+        public void should_parse_uppercase_language_with_turkish_culture(string postTitle, string expectedLanguage)
+        {
+            var currentCulture = CultureInfo.CurrentCulture;
+
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo("tr-TR");
+
+                var result = LanguageParser.ParseLanguages(postTitle);
+
+                result.Should().Contain((Language)expectedLanguage);
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = currentCulture;
+            }
         }
     }
 }
