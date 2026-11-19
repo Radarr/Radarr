@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -213,21 +214,7 @@ namespace NzbDrone.Core.Parser
         {
             Movie possibleMovie = null;
 
-            var possibleTitles = new List<string>
-            {
-                searchCriteria.Movie.MovieMetadata.Value.CleanTitle
-            };
-            possibleTitles.AddIfNotNull(searchCriteria.Movie.MovieMetadata.Value.CleanOriginalTitle);
-            possibleTitles.AddRange(searchCriteria.Movie.MovieMetadata.Value.AlternativeTitles.Select(t => t.CleanTitle));
-            possibleTitles.AddRange(searchCriteria.Movie.MovieMetadata.Value.Translations.Select(t => t.CleanTitle));
-
-            var cleanTitles = parsedMovieInfo.MovieTitles.Select(t => t.CleanMovieTitle()).ToArray();
-
-            if (possibleTitles.Any(pt =>
-                cleanTitles.Contains(pt)
-                || _arabicRomanNumeralMappings.Any(mn =>
-                    cleanTitles.Contains(pt.Replace(mn.ArabicNumeralAsString, mn.RomanNumeralLowerCase))
-                    || cleanTitles.Any(t => t.Replace(mn.ArabicNumeralAsString, mn.RomanNumeralLowerCase) == pt))))
+            if (IsTitleMatch(parsedMovieInfo.MovieTitles, searchCriteria.Movie))
             {
                 possibleMovie = searchCriteria.Movie;
             }
@@ -240,17 +227,63 @@ namespace NzbDrone.Core.Parser
                 }
             }
 
-            if (tmdbId > 0 && tmdbId == searchCriteria.Movie.TmdbId)
+            var matchesById = (tmdbId > 0 && tmdbId == searchCriteria.Movie.TmdbId) ||
+                              (Parser.TryNormalizeImdbId(imdbId, out var normalizedImdbId) && normalizedImdbId == searchCriteria.Movie.ImdbId);
+
+            if (!matchesById)
             {
-                return new FindMovieResult(searchCriteria.Movie, MovieMatchType.Id);
+                return null;
             }
 
-            if (Parser.TryNormalizeImdbId(imdbId, out var normalizedImdbId) && normalizedImdbId == searchCriteria.Movie.ImdbId)
+            // Indexers sometimes attach the searched movie's ID to a different movie (a remake, the original or an unrelated title),
+            // so only trust the ID when the release year is close to the movie's year
+            if (!IsWithinOneYear(parsedMovieInfo.Year, searchCriteria.Movie) && !IsYearPartOfTitle(parsedMovieInfo, searchCriteria.Movie))
             {
-                return new FindMovieResult(searchCriteria.Movie, MovieMatchType.Id);
+                _logger.Debug("Release matches {0} by ID, but its year {1} is more than one year off, not matching by ID", searchCriteria.Movie, parsedMovieInfo.Year);
+
+                return null;
             }
 
-            return null;
+            return new FindMovieResult(searchCriteria.Movie, MovieMatchType.Id);
+        }
+
+        private static bool IsTitleMatch(IEnumerable<string> titles, Movie movie)
+        {
+            var possibleTitles = new List<string>
+            {
+                movie.MovieMetadata.Value.CleanTitle
+            };
+            possibleTitles.AddIfNotNull(movie.MovieMetadata.Value.CleanOriginalTitle);
+            possibleTitles.AddRange(movie.MovieMetadata.Value.AlternativeTitles.Select(t => t.CleanTitle));
+            possibleTitles.AddRange(movie.MovieMetadata.Value.Translations.Select(t => t.CleanTitle));
+
+            var cleanTitles = titles.Select(t => t.CleanMovieTitle()).ToArray();
+
+            return possibleTitles.Any(pt =>
+                cleanTitles.Contains(pt)
+                || _arabicRomanNumeralMappings.Any(mn =>
+                    cleanTitles.Contains(pt.Replace(mn.ArabicNumeralAsString, mn.RomanNumeralLowerCase))
+                    || cleanTitles.Any(t => t.Replace(mn.ArabicNumeralAsString, mn.RomanNumeralLowerCase) == pt)));
+        }
+
+        // The parser takes a number at the end of a title for the year when the release leaves out the real year:
+        // Blade.Runner.2049.1080p parses as "Blade Runner" (2049)
+        private static bool IsYearPartOfTitle(ParsedMovieInfo parsedMovieInfo, Movie movie)
+        {
+            return parsedMovieInfo.Year > 1800 && IsTitleMatch(parsedMovieInfo.MovieTitles.Select(t => $"{t} {parsedMovieInfo.Year}"), movie);
+        }
+
+        private static bool IsWithinOneYear(int year, Movie movie)
+        {
+            var movieMetadata = movie.MovieMetadata.Value;
+
+            if (movieMetadata.Year < 1800)
+            {
+                return true;
+            }
+
+            return Math.Abs(movieMetadata.Year - year) <= 1 ||
+                   (movieMetadata.SecondaryYear.HasValue && Math.Abs(movieMetadata.SecondaryYear.Value - year) <= 1);
         }
     }
 }
