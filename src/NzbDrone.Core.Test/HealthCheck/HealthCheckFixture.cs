@@ -1,3 +1,4 @@
+using System.Globalization;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.HealthCheck;
@@ -18,6 +19,25 @@ namespace NzbDrone.Core.Test.HealthCheck
             var subject = new NzbDrone.Core.HealthCheck.HealthCheck(typeof(HealthCheckBase), HealthCheckResult.Warning, HealthCheckReason.ServerNotification, message, wikiFragment);
 
             subject.WikiUrl.Should().Be(expectedUrl);
+        }
+
+        [Test]
+        public void should_format_wiki_url_with_turkish_culture()
+        {
+            var currentCulture = CultureInfo.CurrentCulture;
+
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo("tr-TR");
+
+                var subject = new NzbDrone.Core.HealthCheck.HealthCheck(typeof(HealthCheckBase), HealthCheckResult.Warning, HealthCheckReason.ServerNotification, "Indexers unavailable due to failures", null);
+
+                subject.WikiUrl.Should().Be(WikiRoot + "radarr/system#indexers-unavailable-due-to-failures");
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = currentCulture;
+            }
         }
     }
 }
