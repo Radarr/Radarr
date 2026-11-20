@@ -237,7 +237,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.CleanOriginalTitle = resource.OriginalTitle.CleanMovieTitle();
             movie.Overview = resource.Overview;
 
-            movie.AlternativeTitles.AddRange(resource.AlternativeTitles.Select(MapAlternativeTitle));
+            movie.AlternativeTitles.AddRange(resource.AlternativeTitles.Where(t => !IsWorkingTitle(t.Type)).Select(MapAlternativeTitle));
 
             movie.Translations.AddRange(resource.Translations.Select(MapTranslation));
 
@@ -606,6 +606,12 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             };
 
             return newActor;
+        }
+
+        // TMDB "working title" entries (e.g. production codenames) are not release titles and cause false matches in feeds.
+        private static bool IsWorkingTitle(string type)
+        {
+            return type != null && type.Contains("working title", StringComparison.OrdinalIgnoreCase);
         }
 
         private static AlternativeTitle MapAlternativeTitle(AlternativeTitleResource arg)
