@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Parser.RomanNumerals
                 return false;
             }
 
-            text = text.ToUpper();
+            text = text.ToUpperInvariant();
             var len = 0;
 
             for (var i = 0; i < 3; i++)

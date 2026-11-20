@@ -1,3 +1,4 @@
+using System.Globalization;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Test.Framework;
@@ -59,6 +60,24 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_parse_release_group(string title, string expected)
         {
             Parser.ReleaseGroupParser.ParseReleaseGroup(title).Should().Be(expected);
+        }
+
+        [TestCase("Movie.Name.2018.720p.HDTV.X264-DIMENSION", "DIMENSION")]
+        [TestCase("Movie 2018 720p WEB-DL DD5 1 H 264-ECI", "ECI")]
+        public void should_parse_release_group_with_turkish_culture(string title, string expected)
+        {
+            var currentCulture = CultureInfo.CurrentCulture;
+
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo("tr-TR");
+
+                Parser.ReleaseGroupParser.ParseReleaseGroup(title).Should().Be(expected);
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = currentCulture;
+            }
         }
 
         [TestCase("Movie Name (2020) [2160p x265 10bit S82 Joy]", "Joy")]
