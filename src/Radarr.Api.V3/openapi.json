@@ -131,6 +131,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "rememberMe",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -167,7 +175,7 @@
                     "type": "string"
                   },
                   "rememberMe": {
-                    "type": "string"
+                    "type": "boolean"
                   }
                 }
               },
@@ -10265,6 +10273,40 @@
         ],
         "type": "string"
       },
+      "MediaInfoAudioStreamResource": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "type": "string",
+            "nullable": true
+          },
+          "codec": {
+            "type": "string",
+            "nullable": true
+          },
+          "profile": {
+            "type": "string",
+            "nullable": true
+          },
+          "bitrate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "channels": {
+            "type": "number",
+            "format": "double"
+          },
+          "channelPositions": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MediaInfoResource": {
         "type": "object",
         "properties": {
@@ -10274,23 +10316,28 @@
           },
           "audioBitrate": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "deprecated": true
           },
           "audioChannels": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "deprecated": true
           },
           "audioCodec": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "deprecated": true
           },
           "audioLanguages": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "deprecated": true
           },
           "audioStreamCount": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "deprecated": true
           },
           "videoBitDepth": {
             "type": "integer",
@@ -10330,6 +10377,47 @@
           },
           "subtitles": {
             "type": "string",
+            "nullable": true,
+            "deprecated": true
+          },
+          "audioStreams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaInfoAudioStreamResource"
+            },
+            "nullable": true
+          },
+          "subtitleStreams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaInfoSubtitleStreamResource"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MediaInfoSubtitleStreamResource": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "type": "string",
+            "nullable": true
+          },
+          "format": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "forced": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "hearingImpaired": {
+            "type": "boolean",
             "nullable": true
           }
         },
