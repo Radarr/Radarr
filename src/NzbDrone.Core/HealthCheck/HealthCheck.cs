@@ -36,7 +36,7 @@ namespace NzbDrone.Core.HealthCheck
 
         private static string MakeWikiFragment(string message)
         {
-            return "#" + CleanFragmentRegex.Replace(message.ToLower(), string.Empty).Replace(' ', '-');
+            return "#" + CleanFragmentRegex.Replace(message.ToLowerInvariant(), string.Empty).Replace(' ', '-');
         }
 
         private static HttpUri MakeWikiUrl(string fragment)
