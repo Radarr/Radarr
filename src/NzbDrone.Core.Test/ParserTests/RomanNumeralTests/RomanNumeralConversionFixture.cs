@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -41,6 +42,25 @@ namespace NzbDrone.Core.Test.ParserTests.RomanNumeralTests
             var expectecdValue = arabicNumeral;
 
             Assert.AreEqual(romanNumeral.ToInt(), expectecdValue);
+        }
+
+        [Test]
+        public void should_convert_roman_numerals_with_turkish_culture()
+        {
+            var currentCulture = CultureInfo.CurrentCulture;
+
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo("tr-TR");
+
+                Assert.IsTrue(RomanNumeral.TryParse("ii", out var value));
+                Assert.AreEqual(2, value);
+                Assert.AreEqual("ii", new ArabicRomanNumeral(2, "2", "II").RomanNumeralLowerCase);
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = currentCulture;
+            }
         }
     }
 }
