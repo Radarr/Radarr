@@ -76,15 +76,22 @@ namespace NzbDrone.Core.ImportLists
 
         private void ProcessMovieReport(ImportListDefinition importList, ImportListMovie report, List<ImportListExclusion> listExclusions, List<int> dbMovies, List<Movie> moviesToAdd)
         {
-            if (report.TmdbId == 0 || !importList.EnableAuto)
+            if (report.TmdbId == 0)
             {
                 return;
             }
 
-            // Check to see if movie in DB
+            // Check to see if movie in DB and maybe apply tags
             if (dbMovies.Contains(report.TmdbId))
             {
+                TagExisting(importList, report);
                 _logger.Debug("{0} [{1}] Rejected, Movie Exists in DB", report.TmdbId, report.Title);
+                return;
+            }
+
+            // Now that retro-tags are applied, end if auto import is disabled
+            if (!importList.EnableAuto)
+            {
                 return;
             }
 
@@ -120,6 +127,26 @@ namespace NzbDrone.Core.ImportLists
                         AddMethod = AddMovieMethod.List
                     }
                 });
+            }
+        }
+
+        private void TagExisting(ImportListDefinition importList, ImportListMovie report)
+        {
+            if (importList.TagExisting)
+            {
+                var movie = _movieService.FindByTmdbId(report.TmdbId);
+
+                var preCount = movie.Tags.Count;
+                foreach (var tag in importList.Tags)
+                {
+                    movie.Tags.Add(tag);
+                }
+
+                if (preCount != movie.Tags.Count)
+                {
+                    _movieService.UpdateMovie(movie);
+                    _logger.Debug("{0} [{1}] Tagged existing movie", report.TmdbId, report.Title);
+                }
             }
         }
 

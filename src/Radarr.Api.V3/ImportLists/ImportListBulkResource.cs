@@ -11,6 +11,7 @@ namespace Radarr.Api.V3.ImportLists
         public string RootFolderPath { get; set; }
         public int? QualityProfileId { get; set; }
         public MovieStatusType? MinimumAvailability { get; set; }
+        public bool? TagExisting { get; set; }
     }
 
     public class ImportListBulkResourceMapper : ProviderBulkResourceMapper<ImportListBulkResource, ImportListDefinition>
@@ -29,6 +30,7 @@ namespace Radarr.Api.V3.ImportLists
                 existing.RootFolderPath = resource.RootFolderPath ?? existing.RootFolderPath;
                 existing.QualityProfileId = resource.QualityProfileId ?? existing.QualityProfileId;
                 existing.MinimumAvailability = resource.MinimumAvailability ?? existing.MinimumAvailability;
+                existing.TagExisting = resource.TagExisting ?? existing.TagExisting;
             });
 
             return existingDefinitions;
