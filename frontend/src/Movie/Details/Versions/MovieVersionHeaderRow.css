@@ -1,0 +1,28 @@
+.row {
+  composes: row from '~Components/Table/TableRow.css';
+
+  background-color: var(--tableRowHoverBackgroundColor);
+}
+
+.cell {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile {
+  font-weight: bold;
+}
+
+.path {
+  color: var(--helpTextColor);
+  word-break: break-all;
+}
+
+.remove {
+  margin-left: auto;
+}

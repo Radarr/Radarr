@@ -11,6 +11,7 @@ using NzbDrone.Core.Messaging;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
+using NzbDrone.Core.Movies.Versions;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -27,6 +28,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IMediaFileService _mediaFileService;
         private readonly IMovieService _movieService;
+        private readonly IMovieVersionService _movieVersionService;
         private readonly IConfigService _configService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
@@ -35,6 +37,7 @@ namespace NzbDrone.Core.MediaFiles
                                         IRecycleBinProvider recycleBinProvider,
                                         IMediaFileService mediaFileService,
                                         IMovieService movieService,
+                                        IMovieVersionService movieVersionService,
                                         IConfigService configService,
                                         IEventAggregator eventAggregator,
                                         Logger logger)
@@ -43,6 +46,7 @@ namespace NzbDrone.Core.MediaFiles
             _recycleBinProvider = recycleBinProvider;
             _mediaFileService = mediaFileService;
             _movieService = movieService;
+            _movieVersionService = movieVersionService;
             _configService = configService;
             _eventAggregator = eventAggregator;
             _logger = logger;
@@ -50,6 +54,14 @@ namespace NzbDrone.Core.MediaFiles
 
         public void DeleteMovieFile(Movie movie, MovieFile movieFile)
         {
+            // The file may belong to another version of the movie, stored under a different root folder
+            var versionId = movieFile.GetVersionId(_movieVersionService.GetAdditionalVersionIds(movie.Id));
+
+            if (versionId != movie.MovieVersionId)
+            {
+                movie = _movieVersionService.GetMovieForFile(movie, movieFile);
+            }
+
             var fullPath = Path.Combine(movie.Path, movieFile.RelativePath);
             var rootFolder = _diskProvider.GetParentFolder(movie.Path);
 

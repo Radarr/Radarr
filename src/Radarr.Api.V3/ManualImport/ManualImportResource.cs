@@ -8,6 +8,7 @@ using NzbDrone.Core.MediaFiles.MovieImport.Manual;
 using NzbDrone.Core.Qualities;
 using Radarr.Api.V3.CustomFormats;
 using Radarr.Api.V3.Movies;
+using Radarr.Api.V3.MovieVersions;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.ManualImport
@@ -20,6 +21,8 @@ namespace Radarr.Api.V3.ManualImport
         public string Name { get; set; }
         public long Size { get; set; }
         public MovieResource Movie { get; set; }
+        public int MovieVersionId { get; set; }
+        public List<MovieVersionResource> MovieVersions { get; set; }
         public int? MovieFileId { get; set; }
         public string ReleaseGroup { get; set; }
         public QualityModel Quality { get; set; }
@@ -53,6 +56,7 @@ namespace Radarr.Api.V3.ManualImport
                 Name = model.Name,
                 Size = model.Size,
                 Movie = model.Movie.ToResource(0),
+                MovieVersionId = model.MovieVersionId,
                 MovieFileId = model.MovieFileId,
                 ReleaseGroup = model.ReleaseGroup,
                 Quality = model.Quality,

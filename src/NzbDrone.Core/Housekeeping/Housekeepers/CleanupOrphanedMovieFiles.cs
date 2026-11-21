@@ -15,12 +15,17 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         public void Clean()
         {
             using var mapper = _database.OpenConnection();
+
+            // Files of additional versions are referenced by their version, not by the movie
             mapper.Execute(@"DELETE FROM ""MovieFiles""
                              WHERE ""Id"" IN (
                              SELECT ""MovieFiles"".""Id"" FROM ""MovieFiles""
                              LEFT OUTER JOIN ""Movies""
                              ON ""MovieFiles"".""Id"" = ""Movies"".""MovieFileId""
-                             WHERE ""Movies"".""Id"" IS NULL)");
+                             LEFT OUTER JOIN ""MovieVersions""
+                             ON ""MovieFiles"".""Id"" = ""MovieVersions"".""MovieFileId""
+                             WHERE ""Movies"".""Id"" IS NULL
+                             AND ""MovieVersions"".""Id"" IS NULL)");
         }
     }
 }
