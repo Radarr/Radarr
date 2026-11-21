@@ -17,6 +17,12 @@
   width: 85px;
 }
 
+@media only screen and (min-width: calc($breakpointExtraLarge + 150px)) {
+  .indexer {
+    white-space: nowrap;
+  }
+}
+
 .quality,
 .languages {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
