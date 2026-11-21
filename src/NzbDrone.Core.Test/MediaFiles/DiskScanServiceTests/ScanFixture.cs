@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -447,6 +448,70 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
 
             Mocker.GetMock<IEventAggregator>()
                 .Verify(v => v.PublishEvent(It.Is<MovieScannedEvent>(c => c.Movie != null && c.PossibleExtraFiles.Count == 0)), Times.Once());
+        }
+
+        [Test]
+        public void should_complete_scan_if_movie_folder_is_removed_while_cleaning_media_files()
+        {
+            GivenMovieFolder();
+
+            var movieFolderDeleted = false;
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(s => s.FolderExists(_movie.Path))
+                  .Returns(() => !movieFolderDeleted);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(s => s.GetFiles(_movie.Path, true))
+                  .Returns(() => movieFolderDeleted ? throw new DirectoryNotFoundException() : Array.Empty<string>());
+
+            Mocker.GetMock<IMediaFileTableCleanupService>()
+                  .Setup(s => s.Clean(_movie, It.IsAny<List<string>>()))
+                  .Callback(() => movieFolderDeleted = true);
+
+            Subject.Scan(_movie);
+
+            Mocker.GetMock<IEventAggregator>()
+                  .Verify(v => v.PublishEvent(It.Is<MovieScannedEvent>(c => c.Movie == _movie && c.PossibleExtraFiles.Count == 0)), Times.Once());
+        }
+
+        [Test]
+        public void should_not_scan_for_extra_files_after_deleting_empty_movie_folder()
+        {
+            GivenMovieFolder();
+
+            var movieFolderDeleted = false;
+
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DeleteEmptyFolders)
+                  .Returns(true);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(s => s.FolderExists(_movie.Path))
+                  .Returns(() => !movieFolderDeleted);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(s => s.FolderEmpty(_movie.Path))
+                  .Returns(true);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(s => s.DeleteFolder(_movie.Path, true))
+                  .Callback(() => movieFolderDeleted = true);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(s => s.GetFiles(_movie.Path, true))
+                  .Returns(() => movieFolderDeleted ? throw new DirectoryNotFoundException() : Array.Empty<string>());
+
+            Subject.Scan(_movie);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.DeleteFolder(_movie.Path, true), Times.Once());
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.GetFiles(_movie.Path, true), Times.Once());
+
+            Mocker.GetMock<IEventAggregator>()
+                  .Verify(v => v.PublishEvent(It.Is<MovieScannedEvent>(c => c.Movie == _movie && c.PossibleExtraFiles.Count == 0)), Times.Once());
         }
     }
 }
