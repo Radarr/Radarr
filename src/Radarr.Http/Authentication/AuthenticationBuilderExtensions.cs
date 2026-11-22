@@ -78,7 +78,7 @@ namespace Radarr.Http.Authentication
         private static AuthenticationBuilder AddOidc(this AuthenticationBuilder authenticationBuilder, string name)
         {
             authenticationBuilder.Services.AddOptions<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme)
-                .Configure<IConfigFileProvider>((options, configFileProvider) =>
+                .Configure<IConfigFileProvider, IOidcBackchannelLogoutService>((options, configFileProvider, backchannelLogoutService) =>
                 {
                     var instanceName = GetCleanInstanceName(configFileProvider.InstanceName);
 
@@ -86,7 +86,7 @@ namespace Radarr.Http.Authentication
                     options.AccessDeniedPath = "/login?loginFailed=true";
                     options.LoginPath = "/login";
                     options.ReturnUrlParameter = "returnUrl";
-                    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                    options.ExpireTimeSpan = AuthenticationConfigurationExtensions.OidcSessionLifetime;
                     options.SlidingExpiration = true;
                     options.Cookie.IsEssential = true;
                     options.Events.OnValidatePrincipal = context =>
@@ -95,7 +95,8 @@ namespace Radarr.Http.Authentication
 
                         if (configFileProvider.EffectiveAuthenticationMethod() == AuthenticationType.Oidc &&
                             configuredUser.IsNotNullOrWhiteSpace() &&
-                            string.Equals(context.Principal?.FindFirst("user")?.Value, configuredUser, StringComparison.OrdinalIgnoreCase))
+                            string.Equals(context.Principal?.FindFirst("user")?.Value, configuredUser, StringComparison.OrdinalIgnoreCase) &&
+                            !backchannelLogoutService.IsLoggedOut(context.Principal, context.Properties.IssuedUtc))
                         {
                             return Task.CompletedTask;
                         }
