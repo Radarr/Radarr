@@ -1156,5 +1156,11 @@
     "SelectReleaseGroup": "مجموعة الإصدار",
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "عدة مجلدات جذر مفقودة: {0}",
     "ReleasePush": "تواريخ الإصدار",
-    "CinemaRelease": "عرض تاريخ الإصدار السينمائي"
+    "CinemaRelease": "عرض تاريخ الإصدار السينمائي",
+    "MovieMatchType": "البحث الشامل عن الأفلام",
+    "CountIndexersSelected": "تم تحديد {0} فيلم (أفلام)",
+    "EditSelectedImportLists": "حذف ملفات الأفلام المحددة",
+    "AutoTaggingRequiredHelpText": "يجب أن يتطابق شرط {0} هذا مع التنسيق المخصص المراد تطبيقه. وبخلاف ذلك ، تكون مطابقة {1} واحدة كافية.",
+    "MovieCollectionRootFolderMissingRootHealthCheckMessage": "عدة مجلدات جذر مفقودة: {0}",
+    "SslKeyPath": "مسار شهادة SSL"
 }

@@ -1416,5 +1416,18 @@
     "SelectLanguageModalTitle": "{modalTitle} - Selecionar Linguagem",
     "RecycleBinUnableToWriteHealthCheck": "Incapaz de escrever para a pasta de reciclagem configurada: {path}. Garanta que o caminho existe e que tem permissão de escrita pelo utilizador a correr {appName}",
     "RemotePathMappingsInfo": "O mapeamento de caminhos remotos é raramente necessário. Se o {appName} e o seu cliente de download estiverem no mesmo sistema, é melhor que os caminhos correspondam. Para mais informações, consulte o [wiki]({wikiLink})",
-    "ICalReleaseTypes": "Tipos de Lançamento"
+    "ICalReleaseTypes": "Tipos de Lançamento",
+    "EditionFootNote": "Truncagem opcional de controlo para um número máximo de bytes, incluindo reticências (`...`). A truncagem a partir do fim (por exemplo, `{Series Title:30}`) ou do início (por exemplo, `{Series Title:-30}`) é suportado.",
+    "ImportListsSimklSettingsUserListTypeWatching": "À espera",
+    "TestParsing": "Alerta de teste",
+    "MovieMatchType": "Pesquisar filmes em massa",
+    "MovieFootNote": "Truncagem opcional de controlo para um número máximo de bytes, incluindo reticências (`...`). A truncagem a partir do fim (por exemplo, `{Series Title:30}`) ou do início (por exemplo, `{Series Title:-30}`) é suportado.",
+    "SslKeyPath": "Caminho do certificado SSL",
+    "RemoveRootFolderMoviesMessageText": "Tem a certeza de que pretende remover a pasta raiz '{path}'? Os ficheiros e pastas não serão eliminados do disco e as séries nesta pasta raiz não serão removidas do {appName}.",
+    "ReleaseProfileTagMovieHelpText": "Os perfis de lançamento serão aplicados às séries com pelo menos uma etiqueta correspondente. Deixe em branco para aplicar a todas as séries",
+    "MovieFolderFormatHelpText": "Usado quando uma série é adicionada ou movida através do editor",
+    "SearchForAllMissingMoviesConfirmationCount": "Tem a certeza que pretende pesquisar por todos os {totalRecords} episódios em falta?",
+    "SearchForCutoffUnmetMoviesConfirmationCount": "Tem a certeza que pretende pesquisar por todos os {totalRecords} episódios sem correspondência?",
+    "SelectMovieModalTitle": "{modalTitle} - Selecionar Pasta",
+    "DownloadFailedMovieTooltip": "Transferência Ignorada"
 }

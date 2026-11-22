@@ -1155,5 +1155,11 @@
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "複数のルートフォルダがありません：{0}",
     "ReleasePush": "リリース日",
     "CinemaRelease": "シネマのリリース日を表示",
-    "UseSsl": "SSLを使用する"
+    "UseSsl": "SSLを使用する",
+    "MovieMatchType": "マスムービー検索",
+    "CountIndexersSelected": "{0}選択された映画",
+    "EditSelectedImportLists": "選択したムービーファイルを削除する",
+    "AutoTaggingRequiredHelpText": "カスタム形式を適用するには、この{0}条件が一致する必要があります。それ以外の場合は、単一の{1}一致で十分です。",
+    "MovieCollectionRootFolderMissingRootHealthCheckMessage": "複数のルートフォルダがありません：{0}",
+    "SslKeyPath": "SSL証明書パス"
 }

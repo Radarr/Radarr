@@ -1589,5 +1589,12 @@
     "NotificationsNtfySettingsHeaders": "Hlavičky",
     "AddFavoriteFolderWithPath": "Přidat {path} do oblíbených adresářů",
     "AllowedHostsHelpText": "Čárkou oddělený seznam názvů hostitelů a IP adres, ze kterých bude {appName} přijímat požadavky. Použijte '*.' jako zástupný znak pro subdomény. Nechte prázdné pro všechny hostitele.",
-    "GrabbedAt": "Zachzceno {date}"
+    "GrabbedAt": "Zachzceno {date}",
+    "NotificationsTraktSettingsAuthUser": "Uživatelské jméno ověření",
+    "TorrentBlackholeSaveMagnetFilesReadOnly": "Pouze přetočit",
+    "DownloadFailedMovieTooltip": "Stahování ignorováno",
+    "Keywords": "Klíčová slova",
+    "SslKeyPath": "Cesta certifikátu SSL",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Výchozí záložní kategorie, pokud pro vydání neexistuje žádná namapovaná kategorie. Přidáním kategorie specifické pro {appName} se zabrání konfliktům s nesouvisejícími stahováními, která nejsou {appName}. Použití kategorie je nepovinné, ale důrazně se doporučuje. Vytvoří podadresář [kategorie] ve výstupním adresáři.",
+    "RemoveFavoriteFolderWithPath": "Přidat {path} do oblíbených adresářů"
 }

@@ -60,5 +60,6 @@
     "MinutesNinety": "۶۰ دقیقه: {0}",
     "EditCollection": "افزودن پیوند",
     "DeleteReleaseProfile": "افزودن نمایه تاخیر",
-    "DeleteDelayProfile": "افزودن نمایه تاخیر"
+    "DeleteDelayProfile": "افزودن نمایه تاخیر",
+    "DeleteQualityProfile": "افزودن نمایه تاخیر"
 }

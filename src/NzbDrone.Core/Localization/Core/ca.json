@@ -1631,7 +1631,7 @@
     "MassSearchCancelWarning": "Això no es pot cancel·lar un cop iniciat sense reiniciar {appName} o desactivar tots els vostres indexadors.",
     "RootFolderPath": "Camí al directori arrel",
     "DownloadClientDelugeValidationLabelPluginFailure": "Ha fallat la configuració de l'etiqueta",
-    "DownloadClientFloodSettingsPostImportTagsHelpText": "Afegeix etiquetes després d'importar una baixada.",
+    "DownloadClientFloodSettingsPostImportTagsHelpText": "Afegeix etiquetes després d'importar una baixada. Els torrents amb totes aquestes etiquetes es filtraran de la cua i no s'eliminaran automàticament.",
     "DownloadClientFloodSettingsRemovalInfo": "{appName} gestionarà l'eliminació automàtica dels torrents en funció dels criteris actuals de sembra a Configuració -> Indexadors",
     "DownloadClientQbittorrentTorrentStateUnknown": "Estat de baixada desconegut: {state}",
     "DownloadClientSettingsUseSslHelpText": "Usa una connexió segura quan es connecti a {clientName}",

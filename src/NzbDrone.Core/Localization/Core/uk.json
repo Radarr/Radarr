@@ -2045,5 +2045,7 @@
     "ImportListsSimklSettingsUserListTypeWatching": "Дивлюся",
     "SslKeyPath": "Шлях до SSL-ключа",
     "SslKeyPathHelpText": "Шлях до файлу ключа, що використовується з pem-файлом",
-    "NotificationsNtfySettingsHeaders": "Заголовки"
+    "NotificationsNtfySettingsHeaders": "Заголовки",
+    "ImportListsSimklSettingsMovieTypeHelpText": "Тип списку, з якого ви хочете імпортувати",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Додавання спеціальної категорії для {appName} дозволяє уникнути конфліктів із непов’язаними завантаженнями, не пов’язаними з {appName}. Використання категорії необов’язкове, але настійно рекомендується. Створює підтеку [category] у вихідній теці."
 }
