@@ -35,16 +35,19 @@ namespace NzbDrone.Core.ImportLists.TMDb.User
             switch (Settings.ListType)
             {
                 case (int)TMDbUserListType.Watchlist:
-                    requestBuilder.SetSegment("secondaryRoute", "/movie/watchlist");
+                    requestBuilder.SetSegment("secondaryRoute", "/movie/watchlist")
+                        .AddQueryParam("sort_by", "created_at.desc");
                     break;
                 case (int)TMDbUserListType.Recommendations:
                     requestBuilder.SetSegment("secondaryRoute", "/movie/recommendations");
                     break;
                 case (int)TMDbUserListType.Rated:
-                    requestBuilder.SetSegment("secondaryRoute", "/movie/rated");
+                    requestBuilder.SetSegment("secondaryRoute", "/movie/rated")
+                        .AddQueryParam("sort_by", "created_at.desc");
                     break;
                 case (int)TMDbUserListType.Favorite:
-                    requestBuilder.SetSegment("secondaryRoute", "/movie/favorites");
+                    requestBuilder.SetSegment("secondaryRoute", "/movie/favorites")
+                        .AddQueryParam("sort_by", "created_at.desc");
                     break;
             }
 
