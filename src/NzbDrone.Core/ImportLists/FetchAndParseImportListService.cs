@@ -142,9 +142,21 @@ namespace NzbDrone.Core.ImportLists
 
             var importList = _importListFactory.GetInstance(definition);
 
-            if (importList == null || !definition.Enable)
+            if (importList == null)
+            {
+                _logger.Debug("Import List {0} ({1}) was not found, skipping.", definition.Id, definition.Name);
+                return result;
+            }
+
+            if (!definition.Enable)
             {
                 _logger.Debug("Import List {0} ({1}) is not enabled, skipping.", importList.Name, importList.Definition.Name);
+                return result;
+            }
+
+            if (!definition.Settings.Validate().IsValid)
+            {
+                _logger.Warn("Import List {0} ({1}) has invalid settings, skipping.", importList.Name, importList.Definition.Name);
                 return result;
             }
 
