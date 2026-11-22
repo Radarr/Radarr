@@ -3,12 +3,11 @@
     <TargetFrameworks>net10.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.89" />
+    <PackageReference Include="Dapper" Version="2.1.100" />
     <PackageReference Include="Diacritical.Net" Version="1.0.5" />
     <PackageReference Include="Equ" Version="2.3.0" />
     <PackageReference Include="MailKit" Version="4.18.2" />
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="10.0.15" />
-    <PackageReference Include="Npgsql" Version="10.0.3" />
     <PackageReference Include="Openur.FFMpegCore" Version="6.0.0.60" />
     <PackageReference Include="Openur.FFprobeStatic" Version="9.0.2.508" />
     <PackageReference Include="Polly" Version="8.9.1" />
