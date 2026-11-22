@@ -2063,5 +2063,6 @@
     "MediaInfoForced": "Zorunlu",
     "MediaInfoHearingImpaired": "İşitme engelliler için",
     "MediaInfoSubtitlesHeader": "Altyazılar",
-    "NotificationsNtfySettingsHeaders": "Başlıklar"
+    "NotificationsNtfySettingsHeaders": "Başlıklar",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "{appName}'e özel bir kategori eklemek, {appName} dışındaki ilgisiz indirmelerle çakışmaları önler. Kategori kullanmak isteğe bağlıdır ancak önemle tavsiye edilir. Çıkış dizininde bir [kategori] alt dizini oluşturur."
 }

@@ -2038,5 +2038,10 @@
     "ImportListsSimklSettingsListType": "清單類型",
     "ImportListsSimklSettingsListTypeHelpText": "要匯入的清單類型",
     "ImportListsSimklSettingsUserListTypeCompleted": "已完成",
-    "NotificationsNtfySettingsHeaders": "標頭"
+    "NotificationsNtfySettingsHeaders": "標頭",
+    "ImportListsSimklSettingsAuthenticatewithSimkl": "透過 Trakt 進行驗證",
+    "ImportListsSimklSettingsMovieTypeHelpText": "要匯入的清單類型",
+    "ImportListsSimklSettingsUserListTypeWatching": "等待中",
+    "SslKeyPath": "SSL 憑證路徑",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "為 {appName} 新增專用分類可以避免與不相關的下載衝突。使用分類是可選的，但強烈建議使用。在輸出目錄中建立 [分類] 子目錄。"
 }

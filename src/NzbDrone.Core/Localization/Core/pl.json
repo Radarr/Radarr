@@ -1499,7 +1499,7 @@
     "DownloadClientDownloadStationValidationNoDefaultDestinationDetail": "Zaloguj się do Diskstation jako {username} i ustaw to ręcznie w ustawieniach DownloadStation: BT/HTTP/FTP/NZB -> Lokalizacja.",
     "DownloadClientDownloadStationValidationSharedFolderMissingDetail": "Diskstation nie ma folderu współdzielonego o nazwie '{sharedFolder}'. Czy na pewno podano poprawną nazwę?",
     "DownloadClientFloodSettingsPostImportTags": "Tagi po imporcie",
-    "DownloadClientFloodSettingsPostImportTagsHelpText": "Dodaje tagi po zaimportowaniu pobrania.",
+    "DownloadClientFloodSettingsPostImportTagsHelpText": "Dodaje tagi po zaimportowaniu pobrania. Torrenty ze wszystkimi tymi tagami będą filtrowane z kolejki i nie będą usuwane automatycznie.",
     "DownloadClientFreeboxAuthenticationError": "Uwierzytelnianie w API Freebox nie powiodło się. Powód: {errorDescription}",
     "DownloadClientFreeboxNotLoggedIn": "Nie zalogowano",
     "DownloadClientNzbgetValidationKeepHistoryOverMax": "Ustawienie KeepHistory w NzbGet powinno być mniejsze niż 25000",

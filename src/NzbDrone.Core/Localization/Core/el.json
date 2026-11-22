@@ -1316,5 +1316,10 @@
     "ReleasePush": "Ημερομηνίες κυκλοφορίας",
     "CinemaRelease": "Εμφάνιση ημερομηνίας κυκλοφορίας κινηματογράφου",
     "ImportListsSimklSettingsListType": "Τύπος καλλιτέχνη",
-    "ImportListsSimklSettingsUserListTypeCompleted": "Ολοκληρώθηκαν"
+    "ImportListsSimklSettingsUserListTypeCompleted": "Ολοκληρώθηκαν",
+    "AutoTaggingRequiredHelpText": "Αυτή η συνθήκη {0} πρέπει να αντιστοιχεί στην εφαρμογή της προσαρμοσμένης μορφής. Διαφορετικά, αρκεί ένας μόνο αγώνας {1}.",
+    "NotificationsDiscordSettingsOnManualInteractionFields": "Απαιτείται χειροκίνητη ενέργεια",
+    "DownloadFailedMovieTooltip": "Λήψη Εισήχθη",
+    "ImportListsSimklSettingsUserListTypeWatching": "Αναμονή",
+    "SslKeyPath": "Διαδρομή πιστοποίησης SSL"
 }

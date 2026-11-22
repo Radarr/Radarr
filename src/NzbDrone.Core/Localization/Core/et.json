@@ -2069,5 +2069,7 @@
     "MediaInfoForced": "Sunnitud",
     "MediaInfoHearingImpaired": "Vaegkuuljad",
     "MediaInfoSubtitlesHeader": "Subtiitrid",
-    "NotificationsNtfySettingsHeaders": "Päised"
+    "NotificationsNtfySettingsHeaders": "Päised",
+    "MovieFileQualities": "Episoodifaili kvaliteedid",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "{appName} jaoks oma kategooria loomine aitab vältida konflikte muude mitte-{appName} allalaadimisega. Kategooria kasutamine on valikuline, kuid väga soovitatav. Loob väljundkataloogi alamkataloogi [category]."
 }

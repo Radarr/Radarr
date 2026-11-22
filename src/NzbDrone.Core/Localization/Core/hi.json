@@ -1151,5 +1151,12 @@
     "SelectReleaseGroup": "रिलीज समूह",
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "एकाधिक रूट फ़ोल्डर गायब हैं: {0}",
     "ReleasePush": "रिलीज़ करने की तिथि",
-    "CinemaRelease": "सिनेमा रिलीज की तारीख दिखाएँ"
+    "CinemaRelease": "सिनेमा रिलीज की तारीख दिखाएँ",
+    "MovieMatchType": "मास मूवी सर्च",
+    "CountIndexersSelected": "{0} मूवी (s) चयनित",
+    "EditSelectedImportLists": "चयनित मूवी फ़ाइलें हटाएं",
+    "AutoTaggingRequiredHelpText": "लागू करने के लिए कस्टम प्रारूप के लिए इस {0} की स्थिति का मिलान होना चाहिए। अन्यथा एक {१} मैच पर्याप्त है।",
+    "MassSearchCancelWarning": "यह एक बार रद्द नहीं किया जा सकता है जब तक कि रेडर को फिर से शुरू किए बिना।",
+    "MovieCollectionRootFolderMissingRootHealthCheckMessage": "एकाधिक रूट फ़ोल्डर गायब हैं: {0}",
+    "SslKeyPath": "एसएसएल सर्टिफिकेट पाथ"
 }

@@ -1154,5 +1154,11 @@
     "SelectReleaseGroup": "กลุ่มเผยแพร่",
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "ไม่มีโฟลเดอร์รากหลายโฟลเดอร์: {0}",
     "ReleasePush": "วันที่วางจำหน่าย",
-    "CinemaRelease": "วันฉายภาพยนตร์"
+    "CinemaRelease": "วันฉายภาพยนตร์",
+    "MovieMatchType": "ค้นหาภาพยนตร์จำนวนมาก",
+    "CountIndexersSelected": "{0} ภาพยนตร์ที่เลือก",
+    "EditSelectedImportLists": "ลบไฟล์ภาพยนตร์ที่เลือก",
+    "AutoTaggingRequiredHelpText": "เงื่อนไข {0} นี้ต้องตรงกับรูปแบบที่กำหนดเองจึงจะใช้ได้ มิฉะนั้นการจับคู่ {1} รายการเดียวก็เพียงพอแล้ว",
+    "MovieCollectionRootFolderMissingRootHealthCheckMessage": "ไม่มีโฟลเดอร์รากหลายโฟลเดอร์: {0}",
+    "SslKeyPath": "เส้นทางใบรับรอง SSL"
 }

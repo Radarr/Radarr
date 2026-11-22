@@ -2085,5 +2085,7 @@
     "AddFavoriteFolderWithPath": "Füge {path} zu deinen Lieblingsordnern hinzu",
     "CancelTaskWithName": "{name} abbrechen",
     "NotificationsNtfySettingsHeaders": "Header",
-    "DeleteBackupWithName": "Sicherung {name} löschen"
+    "DeleteBackupWithName": "Sicherung {name} löschen",
+    "RestoreBackupWithName": "Sicherung {name} löschen",
+    "RemoveFavoriteFolderWithPath": "Füge {path} zu deinen Lieblingsordnern hinzu"
 }

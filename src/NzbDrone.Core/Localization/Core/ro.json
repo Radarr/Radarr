@@ -1245,5 +1245,11 @@
     "Thursday": "Joi",
     "Tuesday": "Marți",
     "Wednesday": "Miercuri",
-    "FormatRuntimeHours": "{hours}h"
+    "FormatRuntimeHours": "{hours}h",
+    "MovieMatchType": "Caută filme în masa",
+    "EditSelectedImportLists": "Ștergeți fișierele film selectate",
+    "AutoTaggingRequiredHelpText": "Această condiție {0} trebuie să se potrivească pentru aplicarea formatului personalizat. În caz contrar, o singură potrivire {1} este suficientă.",
+    "NotificationsTraktSettingsAuthUser": "Nume utilizator autentificare",
+    "MovieCollectionRootFolderMissingRootHealthCheckMessage": "Lipsesc multiple foldere rădăcină: {0}",
+    "SslKeyPath": "Calea SSL Cert"
 }

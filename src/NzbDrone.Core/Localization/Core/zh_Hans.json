@@ -33,5 +33,14 @@
     "AddCondition": "001",
     "AddConnection": "Add Connection",
     "AddAutoTag": "添加",
-    "AddConditionImplementation": "china"
+    "AddConditionImplementation": "china",
+    "AddConnectionImplementation": "china",
+    "AddDownloadClientImplementation": "china",
+    "AddImportListImplementation": "china",
+    "AddIndexerImplementation": "china",
+    "Connection": "Add Connection",
+    "Connections": "Add Connection",
+    "EditAutoTag": "添加",
+    "EditConditionImplementation": "china",
+    "EditConnectionImplementation": "china"
 }

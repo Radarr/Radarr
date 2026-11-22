@@ -2069,5 +2069,7 @@
     "OidcAuthorityNotSecureHealthCheckMessage": "OIDC 颁发机构的 URL 必须以 \"https://\" 开头",
     "OidcClientId": "OIDC 客户端 ID",
     "NotificationsNtfySettingsHeaders": "标头",
-    "AddFavoriteFolderWithPath": "Add {path} to favorite folders"
+    "AddFavoriteFolderWithPath": "Add {path} to favorite folders",
+    "SslKeyPath": "SSL证书路径",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "添加专用于 {appName} 的分类可以避免与不相关的非 {appName} 的下载发生冲突。 使用分类是可选的，但强烈建议使用。在输出目录中创建 [分类] 子目录。"
 }

@@ -1183,5 +1183,10 @@
     "SelectReleaseGroup": "Slip gruppe",
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "Der mangler flere rodmapper: {0}",
     "ReleasePush": "Slip datoer",
-    "CinemaRelease": "Vis biografens udgivelsesdato"
+    "CinemaRelease": "Vis biografens udgivelsesdato",
+    "MovieMatchType": "Massefilmsøgning",
+    "CountImportListsSelected": "{count} film er valgt",
+    "EditSelectedImportLists": "Slet valgte filmfiler",
+    "MovieCollectionRootFolderMissingRootHealthCheckMessage": "Der mangler flere rodmapper: {0}",
+    "SslKeyPath": "SSL-certificeret sti"
 }

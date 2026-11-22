@@ -1153,5 +1153,11 @@
     "SelectReleaseGroup": "Sleppihópur",
     "MovieCollectionFolderMultipleMissingRootsHealthCheckMessage": "Margar rótarmöppur vantar: {0}",
     "ReleasePush": "Slepptu dagsetningum",
-    "CinemaRelease": "Sýna útgáfudag kvikmyndahússins"
+    "CinemaRelease": "Sýna útgáfudag kvikmyndahússins",
+    "MovieMatchType": "Fjöldamyndaleit",
+    "CountIndexersSelected": "{0} Kvikmynd (ir) valdar",
+    "EditSelectedImportLists": "Eyða völdum kvikmyndaskrám",
+    "AutoTaggingRequiredHelpText": "Þetta {0} skilyrði verður að passa til að sérsniðna sniðið gildi. Annars nægir einn {1} samsvörun.",
+    "MovieCollectionRootFolderMissingRootHealthCheckMessage": "Margar rótarmöppur vantar: {0}",
+    "SslKeyPath": "SSL vottunarleið"
 }

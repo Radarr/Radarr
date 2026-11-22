@@ -267,5 +267,6 @@
     "DeleteReleaseProfile": "Profil Kualitas",
     "DeleteSelectedCustomFormats": "Format Khusus",
     "TodayAt": "{days}h {time}",
-    "MinimumCustomFormatScoreIncrement": "Format Khusus"
+    "MinimumCustomFormatScoreIncrement": "Format Khusus",
+    "CountCollectionsSelected": "{count} serial dipilih"
 }

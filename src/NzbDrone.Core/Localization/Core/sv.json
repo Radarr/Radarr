@@ -1192,5 +1192,12 @@
     "AuthenticationMethodHelpTextWarning": "Var vänlig välj en godkänd autentiseringsmetod",
     "AuthenticationRequired": "Autentisering krävs",
     "AuthenticationRequiredHelpText": "Ändra vilka förfrågningar autentisering krävs för. Ändra inte utan att förstå riskerna.",
-    "AuthenticationRequiredOidcAuthorityHelpTextWarning": "Ange OIDC Authority"
+    "AuthenticationRequiredOidcAuthorityHelpTextWarning": "Ange OIDC Authority",
+    "MovieMatchType": "Söktyper för filmer",
+    "EditSelectedImportLists": "Redigera markerade artister",
+    "AutoTaggingRequiredHelpText": "Villkoret {0} måste matcha för att det anpassade formatet ska gälla. Annars räcker det med en enda matchning av {1}.",
+    "DownloadClientValidationAuthenticationFailure": "Autentisering krävs",
+    "MovieCollectionRootFolderMissingRootHealthCheckMessage": "Flera rotmappar saknas för filmsamlingar: {0}",
+    "IndexerHDBitsSettingsCodecs": "Kodek",
+    "SslKeyPath": "Sökväg till SSL-certifikat"
 }

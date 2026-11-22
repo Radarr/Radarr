@@ -1731,5 +1731,22 @@
     "ListRootFolderHelpText": "Le voci della lista Cartella Radice verranno aggiunte a",
     "ReleaseProfileIndexerHelpText": "Specifica a quale indice si applica il profilo",
     "SmartReplaceHint": "Trattino o Spazio-Trattino in base al nome",
-    "NotificationsNtfySettingsHeaders": "Intestazioni"
+    "NotificationsNtfySettingsHeaders": "Intestazioni",
+    "RemoveRootFolderMoviesMessageText": "Vuoi rimuovere la cartella radice '{name}'? I file e le cartelle non verranno eliminati dal disco, e gli artisti in questa cartella radice non verranno rimossi da {appName}.",
+    "Keywords": "Parole Chiave",
+    "IndexerSettingsPasskey": "Passkey",
+    "ListQualityProfileHelpText": "Le voci della lista Profilo Qualità verranno aggiunte con",
+    "NotificationsTraktSettingsAuthUser": "Nome utente",
+    "DownloadClientSettingsCategorySubFolderHelpText": "Categoria di riserva predefinita se non esiste una categoria mappata per una release. Aggiungere una categoria specifica per {appName} evita conflitti con download non correlati a {appName}. Usare una categoria è opzionale ma fortemente consigliato. Crea una sottocartella [categoria] nella cartella di output.",
+    "NotificationsTagsMovieHelpText": "Invia notifiche solo per artisti con almeno un'etichetta corrispondente",
+    "SearchForCutoffUnmetMovies": "Cerca tutti gli album con soglia non raggiunta",
+    "DownloadClientSettingsCategoryHelpText": "Categoria di riserva predefinita se non esiste una categoria mappata per una release. Aggiungere una categoria specifica per {appName} evita conflitti con download non correlati a {appName}. Usare una categoria è opzionale ma fortemente consigliato.",
+    "ReleaseProfileTagMovieHelpText": "I profili di release si applicheranno agli artisti con almeno un'etichetta corrispondente. Lascia vuoto per applicare a tutti gli artisti",
+    "FailedToUpdateSettings": "Impossibile recuperare le impostazioni",
+    "ImportListsSimklSettingsAuthenticatewithSimkl": "Autentica con Trakt",
+    "NotificationsSettingsUpdateMapPathsFromMovieHelpText": "Percorso {appName}, usato per modificare i percorsi delle serie quando {serviceName} vede il percorso della libreria diversamente da {appName} (richiede 'Aggiorna Libreria')",
+    "DownloadClientRemovesCompletedDownloadsHealthCheckMessage": "Il client di download {0} è impostato per rimuovere i download completati. Questo può causare la rimozione dei download dal client prima che {1} possa importarli.",
+    "ImportListsSimklSettingsUserListTypeWatching": "In attesa",
+    "NotificationsSettingsUpdateMapPathsToMovieHelpText": "Percorso {serviceName}, usato per modificare i percorsi delle serie quando {serviceName} vede il percorso della libreria diversamente da {appName} (richiede 'Aggiorna Libreria')",
+    "SslKeyPath": "Percorso Certificato SSL"
 }

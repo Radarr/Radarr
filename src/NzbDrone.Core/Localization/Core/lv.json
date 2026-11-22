@@ -70,5 +70,9 @@
     "EditQualityProfile": "Pievienot Aizkaves Profilu",
     "QualityProfile": "Pievienot Aizkaves Profilu",
     "DeleteSelectedCustomFormats": "Pievienot Pielāgotu Formātu",
-    "AutoTaggingSpecificationQualityProfile": "Pievienot Aizkaves Profilu"
+    "AutoTaggingSpecificationQualityProfile": "Pievienot Aizkaves Profilu",
+    "AddQualityProfile": "Pievienot Aizkaves Profilu",
+    "QualityProfiles": "Pievienot Aizkaves Profilu",
+    "ShowQualityProfile": "Pievienot Aizkaves Profilu",
+    "MinimumCustomFormatScoreIncrement": "Pievienot Pielāgotu Formātu"
 }

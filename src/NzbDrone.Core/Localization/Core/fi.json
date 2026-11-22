@@ -2057,5 +2057,7 @@
     "MediaInfoForced": "Pakotettu",
     "MediaInfoHearingImpaired": "Kuulorajoitteiset",
     "MediaInfoSubtitlesHeader": "Tekstitykset",
-    "NotificationsNtfySettingsHeaders": "Otsakkeet"
+    "NotificationsNtfySettingsHeaders": "Otsakkeet",
+    "MovieFileQualities": "Jaksotiedostojen laadut",
+    "DownloadClientTransmissionSettingsCategoryHelpText": "Luomalla {appName}ille oman kategorian, erottuvat sen lataukset muiden lähteiden latauksista. Kategorian määritys on valinnaista, mutta erittäin suositeltavaa. Tämä luo latauskansioon [kategoria]-alikansion."
 }
