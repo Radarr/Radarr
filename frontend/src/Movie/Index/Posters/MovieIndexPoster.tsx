@@ -23,6 +23,7 @@ import MoviePoster from 'Movie/MoviePoster';
 import { executeCommand } from 'Store/Actions/commandActions';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import formatDate from 'Utilities/Date/formatDate';
+import getLocalCalendarDate from 'Utilities/Date/getLocalCalendarDate';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import translate from 'Utilities/String/translate';
 import createMovieIndexItemSelector from '../createMovieIndexItemSelector';
@@ -251,13 +252,13 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         <div
           className={styles.title}
           title={`${translate('InCinemas')}: ${formatDate(
-            inCinemas,
+            getLocalCalendarDate(inCinemas),
             longDateFormat
           )}`}
         >
           <Icon name={icons.IN_CINEMAS} />{' '}
           {getRelativeDate({
-            date: inCinemas,
+            date: getLocalCalendarDate(inCinemas),
             shortDateFormat,
             showRelativeDates,
             timeFormat,
@@ -270,13 +271,13 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         <div
           className={styles.title}
           title={`${translate('DigitalRelease')}: ${formatDate(
-            digitalRelease,
+            getLocalCalendarDate(digitalRelease),
             longDateFormat
           )}`}
         >
           <Icon name={icons.MOVIE_FILE} />{' '}
           {getRelativeDate({
-            date: digitalRelease,
+            date: getLocalCalendarDate(digitalRelease),
             shortDateFormat,
             showRelativeDates,
             timeFormat,
@@ -289,13 +290,13 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         <div
           className={styles.title}
           title={`${translate('PhysicalRelease')}: ${formatDate(
-            physicalRelease,
+            getLocalCalendarDate(physicalRelease),
             longDateFormat
           )}`}
         >
           <Icon name={icons.DISC} />{' '}
           {getRelativeDate({
-            date: physicalRelease,
+            date: getLocalCalendarDate(physicalRelease),
             shortDateFormat,
             showRelativeDates,
             timeFormat,
@@ -308,13 +309,13 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         <div
           className={styles.title}
           title={`${translate('ReleaseDate')}: ${formatDate(
-            releaseDate,
+            getLocalCalendarDate(releaseDate),
             longDateFormat
           )}`}
         >
           <Icon name={icons.CALENDAR} />{' '}
           {getRelativeDate({
-            date: releaseDate,
+            date: getLocalCalendarDate(releaseDate),
             shortDateFormat,
             showRelativeDates,
             timeFormat,

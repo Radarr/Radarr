@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import AppState from 'App/State/AppState';
 import Movie from 'Movie/Movie';
+import getLocalCalendarDate from 'Utilities/Date/getLocalCalendarDate';
 import AgendaEvent from './AgendaEvent';
 import styles from './Agenda.css';
 
@@ -22,18 +23,23 @@ function Agenda() {
       const dates = [];
 
       if (inCinemas) {
-        const inCinemasMoment = moment(inCinemas);
+        const inCinemasMoment = moment(getLocalCalendarDate(inCinemas));
 
-        if (inCinemasMoment.isAfter(start) && inCinemasMoment.isBefore(end)) {
+        if (
+          inCinemasMoment.isSameOrAfter(start) &&
+          inCinemasMoment.isBefore(end)
+        ) {
           dates.push(inCinemasMoment);
         }
       }
 
       if (digitalRelease) {
-        const digitalReleaseMoment = moment(digitalRelease);
+        const digitalReleaseMoment = moment(
+          getLocalCalendarDate(digitalRelease)
+        );
 
         if (
-          digitalReleaseMoment.isAfter(start) &&
+          digitalReleaseMoment.isSameOrAfter(start) &&
           digitalReleaseMoment.isBefore(end)
         ) {
           dates.push(digitalReleaseMoment);
@@ -41,10 +47,12 @@ function Agenda() {
       }
 
       if (physicalRelease) {
-        const physicalReleaseMoment = moment(physicalRelease);
+        const physicalReleaseMoment = moment(
+          getLocalCalendarDate(physicalRelease)
+        );
 
         if (
-          physicalReleaseMoment.isAfter(start) &&
+          physicalReleaseMoment.isSameOrAfter(start) &&
           physicalReleaseMoment.isBefore(end)
         ) {
           dates.push(physicalReleaseMoment);

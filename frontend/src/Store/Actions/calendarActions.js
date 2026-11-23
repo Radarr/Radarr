@@ -262,9 +262,11 @@ export const actionHandlers = handleThunks({
 
     dispatch(set(attrs));
 
+    // Release dates are midnight UTC, so request whole UTC days. Otherwise
+    // releases on the first day are not returned in time zones behind UTC.
     const requestParams = {
-      start,
-      end
+      start: moment.utc(moment(start).format('YYYY-MM-DD')).toISOString(),
+      end: moment.utc(moment(end).format('YYYY-MM-DD')).endOf('day').toISOString()
     };
 
     selectedFilters.forEach((selectedFilter) => {

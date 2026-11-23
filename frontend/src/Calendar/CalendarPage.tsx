@@ -25,6 +25,7 @@ import createCommandExecutingSelector from 'Store/Selectors/createCommandExecuti
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createMovieCountSelector from 'Store/Selectors/createMovieCountSelector';
 import { isCommandExecuting } from 'Utilities/Command';
+import getLocalCalendarDate from 'Utilities/Date/getLocalCalendarDate';
 import isBefore from 'Utilities/Date/isBefore';
 import translate from 'Utilities/String/translate';
 import Calendar from './Calendar';
@@ -44,12 +45,12 @@ function createMissingMovieIdsSelector() {
     (state: AppState) => state.queue.details.items,
     (start, end, movies, queueDetails) => {
       return movies.reduce<number[]>((acc, movie) => {
-        const { inCinemas } = movie;
+        const inCinemas = getLocalCalendarDate(movie.inCinemas);
 
         if (
           !movie.movieFileId &&
           inCinemas &&
-          moment(inCinemas).isAfter(start) &&
+          moment(inCinemas).isSameOrAfter(start) &&
           moment(inCinemas).isBefore(end) &&
           isBefore(inCinemas) &&
           !queueDetails.some(

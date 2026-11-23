@@ -9,6 +9,7 @@ import MovieStatus from 'Movie/MovieStatus';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import MovieFileLanguages from 'MovieFile/MovieFileLanguages';
 import { SelectStateInputProps } from 'typings/props';
+import getLocalCalendarDate from 'Utilities/Date/getLocalCalendarDate';
 import styles from './CutoffUnmetRow.css';
 
 interface CutoffUnmetRowProps {
@@ -75,7 +76,7 @@ function CutoffUnmetRow({
           return (
             <RelativeDateCell
               key={name}
-              date={inCinemas}
+              date={getLocalCalendarDate(inCinemas)}
               timeForToday={false}
             />
           );
@@ -85,7 +86,7 @@ function CutoffUnmetRow({
           return (
             <RelativeDateCell
               key={name}
-              date={digitalRelease}
+              date={getLocalCalendarDate(digitalRelease)}
               timeForToday={false}
             />
           );
@@ -95,7 +96,7 @@ function CutoffUnmetRow({
           return (
             <RelativeDateCell
               key={name}
-              date={physicalRelease}
+              date={getLocalCalendarDate(physicalRelease)}
               timeForToday={false}
             />
           );

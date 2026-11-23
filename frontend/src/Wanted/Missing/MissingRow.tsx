@@ -8,6 +8,7 @@ import MovieSearchCell from 'Movie/MovieSearchCell';
 import MovieStatus from 'Movie/MovieStatus';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import { SelectStateInputProps } from 'typings/props';
+import getLocalCalendarDate from 'Utilities/Date/getLocalCalendarDate';
 import styles from './MissingRow.css';
 
 interface MissingRowProps {
@@ -74,7 +75,7 @@ function MissingRow({
           return (
             <RelativeDateCell
               key={name}
-              date={inCinemas}
+              date={getLocalCalendarDate(inCinemas)}
               timeForToday={false}
             />
           );
@@ -84,7 +85,7 @@ function MissingRow({
           return (
             <RelativeDateCell
               key={name}
-              date={digitalRelease}
+              date={getLocalCalendarDate(digitalRelease)}
               timeForToday={false}
             />
           );
@@ -94,7 +95,7 @@ function MissingRow({
           return (
             <RelativeDateCell
               key={name}
-              date={physicalRelease}
+              date={getLocalCalendarDate(physicalRelease)}
               timeForToday={false}
             />
           );

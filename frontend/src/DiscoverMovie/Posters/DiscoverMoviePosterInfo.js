@@ -9,6 +9,7 @@ import { icons } from 'Helpers/Props';
 import getMovieStatusDetails from 'Movie/getMovieStatusDetails';
 import MoviePopularityIndex from 'Movie/MoviePopularityIndex';
 import formatRuntime from 'Utilities/Date/formatRuntime';
+import getLocalCalendarDate from 'Utilities/Date/getLocalCalendarDate';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import translate from 'Utilities/String/translate';
 import styles from './DiscoverMoviePosterInfo.css';
@@ -53,7 +54,7 @@ function DiscoverMoviePosterInfo(props) {
 
   if (sortKey === 'inCinemas' && inCinemas) {
     const inCinemasDate = getRelativeDate({
-      date: inCinemas,
+      date: getLocalCalendarDate(inCinemas),
       shortDateFormat,
       showRelativeDates,
       timeFormat,
@@ -69,7 +70,7 @@ function DiscoverMoviePosterInfo(props) {
 
   if (sortKey === 'digitalRelease' && digitalRelease) {
     const digitalReleaseDate = getRelativeDate({
-      date: digitalRelease,
+      date: getLocalCalendarDate(digitalRelease),
       shortDateFormat,
       showRelativeDates,
       timeFormat,
@@ -85,7 +86,7 @@ function DiscoverMoviePosterInfo(props) {
 
   if (sortKey === 'physicalRelease' && physicalRelease) {
     const physicalReleaseDate = getRelativeDate({
-      date: physicalRelease,
+      date: getLocalCalendarDate(physicalRelease),
       shortDateFormat,
       showRelativeDates,
       timeFormat,

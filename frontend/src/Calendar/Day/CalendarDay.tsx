@@ -7,6 +7,7 @@ import AppState from 'App/State/AppState';
 import * as calendarViews from 'Calendar/calendarViews';
 import CalendarEvent from 'Calendar/Events/CalendarEvent';
 import { CalendarEvent as CalendarEventModel } from 'typings/Calendar';
+import getLocalCalendarDate from 'Utilities/Date/getLocalCalendarDate';
 import styles from './CalendarDay.css';
 
 function sort(items: CalendarEventModel[]) {
@@ -32,13 +33,13 @@ function createCalendarEventsConnector(date: string) {
           return (
             (showCinemaRelease &&
               inCinemas &&
-              momentDate.isSame(moment(inCinemas), 'day')) ||
+              momentDate.isSame(getLocalCalendarDate(inCinemas), 'day')) ||
             (showDigitalRelease &&
               digitalRelease &&
-              momentDate.isSame(moment(digitalRelease), 'day')) ||
+              momentDate.isSame(getLocalCalendarDate(digitalRelease), 'day')) ||
             (showPhysicalRelease &&
               physicalRelease &&
-              momentDate.isSame(moment(physicalRelease), 'day'))
+              momentDate.isSame(getLocalCalendarDate(physicalRelease), 'day'))
           );
         }
       );

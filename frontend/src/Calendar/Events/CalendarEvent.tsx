@@ -10,6 +10,7 @@ import { icons, kinds } from 'Helpers/Props';
 import useMovieFile from 'MovieFile/useMovieFile';
 import { createQueueItemSelectorForHook } from 'Store/Selectors/createQueueItemSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
+import getLocalCalendarDate from 'Utilities/Date/getLocalCalendarDate';
 import translate from 'Utilities/String/translate';
 import CalendarEventQueueDetails from './CalendarEventQueueDetails';
 import styles from './CalendarEvent.css';
@@ -79,7 +80,7 @@ function CalendarEvent({
     if (
       showCinemaRelease &&
       inCinemas &&
-      momentDate.isSame(moment(inCinemas), 'day')
+      momentDate.isSame(getLocalCalendarDate(inCinemas), 'day')
     ) {
       types.push('Cinemas');
     }
@@ -87,7 +88,7 @@ function CalendarEvent({
     if (
       showDigitalRelease &&
       digitalRelease &&
-      momentDate.isSame(moment(digitalRelease), 'day')
+      momentDate.isSame(getLocalCalendarDate(digitalRelease), 'day')
     ) {
       types.push('Digital');
     }
@@ -95,7 +96,7 @@ function CalendarEvent({
     if (
       showPhysicalRelease &&
       physicalRelease &&
-      momentDate.isSame(moment(physicalRelease), 'day')
+      momentDate.isSame(getLocalCalendarDate(physicalRelease), 'day')
     ) {
       types.push('Physical');
     }

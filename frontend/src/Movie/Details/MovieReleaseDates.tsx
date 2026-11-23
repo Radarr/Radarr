@@ -6,6 +6,7 @@ import { icons } from 'Helpers/Props';
 import Movie from 'Movie/Movie';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import formatDate from 'Utilities/Date/formatDate';
+import getLocalCalendarDate from 'Utilities/Date/getLocalCalendarDate';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import translate from 'Utilities/String/translate';
 import styles from './MovieReleaseDates.css';
@@ -45,7 +46,7 @@ function MovieReleaseDates({
       {inCinemas ? (
         <div
           title={`${translate('InCinemas')}: ${formatDate(
-            inCinemas,
+            getLocalCalendarDate(inCinemas),
             longDateFormat
           )}`}
         >
@@ -54,7 +55,7 @@ function MovieReleaseDates({
           </div>
 
           {getRelativeDate({
-            date: inCinemas,
+            date: getLocalCalendarDate(inCinemas),
             shortDateFormat,
             showRelativeDates,
             timeFormat,
@@ -66,7 +67,7 @@ function MovieReleaseDates({
       {digitalRelease ? (
         <div
           title={`${translate('DigitalRelease')}: ${formatDate(
-            digitalRelease,
+            getLocalCalendarDate(digitalRelease),
             longDateFormat
           )}`}
         >
@@ -75,7 +76,7 @@ function MovieReleaseDates({
           </div>
 
           {getRelativeDate({
-            date: digitalRelease,
+            date: getLocalCalendarDate(digitalRelease),
             shortDateFormat,
             showRelativeDates,
             timeFormat,
@@ -87,7 +88,7 @@ function MovieReleaseDates({
       {physicalRelease ? (
         <div
           title={`${translate('PhysicalRelease')}: ${formatDate(
-            physicalRelease,
+            getLocalCalendarDate(physicalRelease),
             longDateFormat
           )}`}
         >
@@ -96,7 +97,7 @@ function MovieReleaseDates({
           </div>
 
           {getRelativeDate({
-            date: physicalRelease,
+            date: getLocalCalendarDate(physicalRelease),
             shortDateFormat,
             showRelativeDates,
             timeFormat,

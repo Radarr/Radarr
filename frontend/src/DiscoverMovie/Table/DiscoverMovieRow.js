@@ -18,6 +18,7 @@ import { icons } from 'Helpers/Props';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import MoviePopularityIndex from 'Movie/MoviePopularityIndex';
 import formatRuntime from 'Utilities/Date/formatRuntime';
+import getLocalCalendarDate from 'Utilities/Date/getLocalCalendarDate';
 import translate from 'Utilities/String/translate';
 import ListMovieStatusCell from './ListMovieStatusCell';
 import styles from './DiscoverMovieRow.css';
@@ -210,7 +211,7 @@ class DiscoverMovieRow extends Component {
                 <RelativeDateCell
                   key={name}
                   className={styles[name]}
-                  date={inCinemas}
+                  date={getLocalCalendarDate(inCinemas)}
                   timeForToday={false}
                   component={VirtualTableRowCell}
                 />
@@ -222,7 +223,7 @@ class DiscoverMovieRow extends Component {
                 <RelativeDateCell
                   key={name}
                   className={styles[name]}
-                  date={physicalRelease}
+                  date={getLocalCalendarDate(physicalRelease)}
                   timeForToday={false}
                   component={VirtualTableRowCell}
                 />
@@ -234,7 +235,7 @@ class DiscoverMovieRow extends Component {
                 <RelativeDateCell
                   key={name}
                   className={styles[name]}
-                  date={digitalRelease}
+                  date={getLocalCalendarDate(digitalRelease)}
                   timeForToday={false}
                   component={VirtualTableRowCell}
                 />

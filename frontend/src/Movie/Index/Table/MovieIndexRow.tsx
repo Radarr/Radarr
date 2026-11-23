@@ -27,6 +27,7 @@ import { executeCommand } from 'Store/Actions/commandActions';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import { SelectStateInputProps } from 'typings/props';
 import formatRuntime from 'Utilities/Date/formatRuntime';
+import getLocalCalendarDate from 'Utilities/Date/getLocalCalendarDate';
 import formatBytes from 'Utilities/Number/formatBytes';
 import firstCharToUpper from 'Utilities/String/firstCharToUpper';
 import translate from 'Utilities/String/translate';
@@ -253,7 +254,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
             <RelativeDateCell
               key={name}
               className={styles[name]}
-              date={inCinemas}
+              date={getLocalCalendarDate(inCinemas)}
               timeForToday={false}
               component={VirtualTableRowCell}
             />
@@ -267,7 +268,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
             <RelativeDateCell
               key={name}
               className={styles[name]}
-              date={digitalRelease}
+              date={getLocalCalendarDate(digitalRelease)}
               timeForToday={false}
               component={VirtualTableRowCell}
             />
@@ -281,7 +282,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
             <RelativeDateCell
               key={name}
               className={styles[name]}
-              date={physicalRelease}
+              date={getLocalCalendarDate(physicalRelease)}
               timeForToday={false}
               component={VirtualTableRowCell}
             />
@@ -295,7 +296,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
             <RelativeDateCell
               key={name}
               className={styles[name]}
-              date={releaseDate}
+              date={getLocalCalendarDate(releaseDate)}
               timeForToday={false}
               component={VirtualTableRowCell}
             />

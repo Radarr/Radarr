@@ -11,6 +11,7 @@ import { icons, kinds } from 'Helpers/Props';
 import useMovieFile from 'MovieFile/useMovieFile';
 import { createQueueItemSelectorForHook } from 'Store/Selectors/createQueueItemSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
+import getLocalCalendarDate from 'Utilities/Date/getLocalCalendarDate';
 import translate from 'Utilities/String/translate';
 import styles from './AgendaEvent.css';
 
@@ -58,25 +59,29 @@ function AgendaEvent({
   );
 
   const { eventDate, eventTitle, releaseIcon } = useMemo(() => {
-    if (physicalRelease && sortDate.isSame(moment(physicalRelease), 'day')) {
+    const localPhysicalRelease = getLocalCalendarDate(physicalRelease);
+    const localDigitalRelease = getLocalCalendarDate(digitalRelease);
+    const localInCinemas = getLocalCalendarDate(inCinemas);
+
+    if (localPhysicalRelease && sortDate.isSame(localPhysicalRelease, 'day')) {
       return {
-        eventDate: physicalRelease,
+        eventDate: localPhysicalRelease,
         eventTitle: translate('PhysicalRelease'),
         releaseIcon: icons.DISC,
       };
     }
 
-    if (digitalRelease && sortDate.isSame(moment(digitalRelease), 'day')) {
+    if (localDigitalRelease && sortDate.isSame(localDigitalRelease, 'day')) {
       return {
-        eventDate: digitalRelease,
+        eventDate: localDigitalRelease,
         eventTitle: translate('DigitalRelease'),
         releaseIcon: icons.MOVIE_FILE,
       };
     }
 
-    if (inCinemas && sortDate.isSame(moment(inCinemas), 'day')) {
+    if (localInCinemas && sortDate.isSame(localInCinemas, 'day')) {
       return {
-        eventDate: inCinemas,
+        eventDate: localInCinemas,
         eventTitle: translate('InCinemas'),
         releaseIcon: icons.IN_CINEMAS,
       };
