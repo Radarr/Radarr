@@ -199,7 +199,7 @@ namespace NzbDrone.Host
                     var loggerFactory = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
                     var logger = loggerFactory.CreateLogger(context.ActionDescriptor.DisplayName);
 
-                    logger.LogError(STJson.ToJson(context.ModelState));
+                    logger.LogError("{Model}", CleanseLogMessage.Cleanse(STJson.ToJson(context.ModelState)));
 
                     return builtInFactory(context);
                 };
