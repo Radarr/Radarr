@@ -67,5 +67,14 @@ namespace NzbDrone.Core.Test.ParserTests
             var parsed = Parser.Parser.ParseMovieTitle(postTitle);
             parsed.Edition.Should().Be("");
         }
+
+        [TestCase("The.Final.Cut.2004.1080p.WEB.H264-Example", "")]
+        [TestCase("The.Final.Cut.2004.Final.Cut.1080p.WEB.H264-Example", "Final Cut")]
+        public void should_distinguish_edition_from_movie_title(string postTitle, string edition)
+        {
+            var parsed = Parser.Parser.ParseMovieTitle(postTitle);
+            parsed.Edition.Should().Be(edition);
+            parsed.PrimaryMovieTitle.Should().Be("The Final Cut");
+        }
     }
 }
