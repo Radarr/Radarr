@@ -16,6 +16,7 @@ namespace Radarr.Api.V3.Notifications
         public bool OnHealthIssue { get; set; }
         public bool IncludeHealthWarnings { get; set; }
         public bool OnHealthRestored { get; set; }
+        public bool OnIndexerFailure { get; set; }
         public bool OnApplicationUpdate { get; set; }
         public bool OnManualInteractionRequired { get; set; }
         public bool SupportsOnGrab { get; set; }
@@ -55,6 +56,7 @@ namespace Radarr.Api.V3.Notifications
             resource.OnHealthIssue = definition.OnHealthIssue;
             resource.IncludeHealthWarnings = definition.IncludeHealthWarnings;
             resource.OnHealthRestored = definition.OnHealthRestored;
+            resource.OnIndexerFailure = definition.OnIndexerFailure;
             resource.OnApplicationUpdate = definition.OnApplicationUpdate;
             resource.OnManualInteractionRequired = definition.OnManualInteractionRequired;
             resource.SupportsOnGrab = definition.SupportsOnGrab;
@@ -93,6 +95,7 @@ namespace Radarr.Api.V3.Notifications
             definition.OnHealthIssue = resource.OnHealthIssue;
             definition.IncludeHealthWarnings = resource.IncludeHealthWarnings;
             definition.OnHealthRestored = resource.OnHealthRestored;
+            definition.OnIndexerFailure = resource.OnIndexerFailure;
             definition.OnApplicationUpdate = resource.OnApplicationUpdate;
             definition.OnManualInteractionRequired = resource.OnManualInteractionRequired;
             definition.SupportsOnGrab = resource.SupportsOnGrab;
