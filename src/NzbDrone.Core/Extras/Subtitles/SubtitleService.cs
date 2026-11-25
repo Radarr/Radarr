@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Extras.Subtitles
 
         public override int Order => 1;
 
-        public override IEnumerable<ExtraFile> CreateAfterMediaCoverUpdate(Movie movie)
+        public override IEnumerable<ExtraFile> CreateAfterMediaCoverUpdate(Movie movie, bool posterReplacementChanged)
         {
             return Enumerable.Empty<SubtitleFile>();
         }

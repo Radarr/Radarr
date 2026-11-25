@@ -40,6 +40,7 @@ class AddNewMovieModalContent extends Component {
       year,
       overview,
       images,
+      genres,
       isAdding,
       rootFolderPath,
       monitor,
@@ -73,6 +74,8 @@ class AddNewMovieModalContent extends Component {
                   <MoviePoster
                     className={styles.poster}
                     images={images}
+                    title={title}
+                    genres={genres}
                     size={250}
                   />
                 </div>
@@ -205,6 +208,7 @@ AddNewMovieModalContent.propTypes = {
   year: PropTypes.number.isRequired,
   overview: PropTypes.string,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
+  genres: PropTypes.arrayOf(PropTypes.string),
   isAdding: PropTypes.bool.isRequired,
   addError: PropTypes.object,
   rootFolderPath: PropTypes.object,

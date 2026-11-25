@@ -67,6 +67,8 @@ class CollectionMovie extends Component {
       year,
       tmdbId,
       images,
+      genres,
+      tags,
       monitored,
       hasFile,
       folder,
@@ -128,6 +130,9 @@ class CollectionMovie extends Component {
               className={styles.poster}
               style={elementStyle}
               images={images}
+              title={title}
+              genres={genres}
+              tags={tags}
               size={250}
               lazy={false}
               overflow={true}
@@ -173,6 +178,7 @@ class CollectionMovie extends Component {
           year={year}
           overview={overview}
           images={images}
+          genres={genres}
           folder={folder}
           onModalClose={this.onAddMovieModalClose}
           collectionId={collectionId}
@@ -202,6 +208,8 @@ CollectionMovie.propTypes = {
   isAvailable: PropTypes.bool,
   movieFile: PropTypes.object,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
+  genres: PropTypes.arrayOf(PropTypes.string),
+  tags: PropTypes.arrayOf(PropTypes.number),
   posterWidth: PropTypes.number.isRequired,
   posterHeight: PropTypes.number.isRequired,
   detailedProgressBar: PropTypes.bool.isRequired,
