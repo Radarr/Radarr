@@ -4,10 +4,12 @@ import Icon from 'Components/Icon';
 import { icons, kinds } from 'Helpers/Props';
 import { CheckInputChanged } from 'typings/inputs';
 import { SelectStateInputProps } from 'typings/props';
+import translate from 'Utilities/String/translate';
 import styles from './OrganizePreviewRow.css';
 
 interface OrganizePreviewRowProps {
   id: number;
+  isMovieFolder?: boolean;
   existingPath: string;
   newPath: string;
   isSelected?: boolean;
@@ -16,6 +18,7 @@ interface OrganizePreviewRowProps {
 
 function OrganizePreviewRow({
   id,
+  isMovieFolder,
   existingPath,
   newPath,
   isSelected,
@@ -33,7 +36,7 @@ function OrganizePreviewRow({
   }, [id, onSelectedChange]);
 
   return (
-    <div className={styles.row}>
+    <div className={isMovieFolder ? styles.movieFolderRow : styles.row}>
       <CheckInput
         containerClassName={styles.selectedContainer}
         name={id.toString()}
@@ -42,6 +45,14 @@ function OrganizePreviewRow({
       />
 
       <div>
+        {isMovieFolder ? (
+          <div className={styles.movieFolderLabel}>
+            <Icon name={icons.FOLDER} />
+
+            <span className={styles.path}>{translate('MovieFolder')}</span>
+          </div>
+        ) : null}
+
         <div>
           <Icon name={icons.SUBTRACT} kind={kinds.DANGER} />
 
