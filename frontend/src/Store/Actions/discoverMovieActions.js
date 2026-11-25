@@ -475,6 +475,12 @@ export const defaultState = {
       valueType: filterBuilderValueTypes.BOOL
     },
     {
+      name: 'dateConsideredAvailable',
+      label: translate('DateConsideredAvailable'),
+      type: filterBuilderTypes.DATE,
+      valueType: filterBuilderValueTypes.DATE
+    },
+    {
       name: 'minimumAvailability',
       label: () => translate('MinimumAvailability'),
       type: filterBuilderTypes.EXACT,
@@ -514,6 +520,12 @@ export const defaultState = {
       name: 'popularity',
       label: () => translate('Popularity'),
       type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'minimumAvailabilityDate',
+      label: translate('MinimumAvailabilityDate'),
+      type: filterBuilderTypes.DATE,
+      valueType: filterBuilderValueTypes.DATE
     },
     {
       name: 'certification',
