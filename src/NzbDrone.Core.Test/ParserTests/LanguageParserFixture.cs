@@ -87,6 +87,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Title 2022 [Remux-1080p 8-bit h264 DTS-HD MA 2.0][ES.EN]-HiFi")]
         [TestCase("Movie Title 2022 [BDRemux 1080p AVC ES DTS-HD MA 5.1 Subs][HDO].mkv")]
         [TestCase("Movie.Name.2022.BluRay.1080p.H264.DTS[EN+ES].[EN+ES+IT]")]
+        [TestCase("Movie Title (2019) [tmdb-572404] [m1080p BDrip] [x264] [AC3 2 0 Spa] [4,9 Mbps]")]
+        [TestCase("Movie.Let.there.be.Titles.2021.1080p.SPA.Blu-ray.DTS-HD-franjhos")]
+        [TestCase("Movie Title 2023 1080p WEB-DL DDP5.1 H.264 Spa-GROUP")]
+        [TestCase("Movie Title 2005 BDRip 720p x264 AC3 English Latino URBiN4HD Eng Spa Subs")]
         public void should_parse_language_spanish(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
@@ -434,6 +438,18 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             var result = LanguageParser.ParseLanguages(postTitle);
             result.First().Id.Should().Be(Language.SpanishLatino.Id);
+        }
+
+        [TestCase("Movie.Title.2019.720p_Eng-Spa(Latino)_MovieClubMx", Description = "Spa before (Latino) must not also add Spanish")]
+        [TestCase("Movie.Title.2019.720p_Eng-Spa.Latino.MovieClubMx", Description = "Spa before .Latino must not also add Spanish")]
+        [TestCase("Movie.Title.2019.Spa.(Latino)", Description = "Spa before .(Latino) must not also add Spanish")]
+        [TestCase("Movie.Title.2019.[Spa][Latino]", Description = "Spa before [Latino] must not also add Spanish")]
+        [TestCase("Movie.Title.2019.Spa_Latino", Description = "Spa before _Latino must not also add Spanish")]
+        public void should_not_parse_spanish_from_latino_tag(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+
+            result.Should().NotContain(Language.Spanish);
         }
 
         [TestCase("Movie.Title.1994.Catalan.1080p.XviD-LOL")]

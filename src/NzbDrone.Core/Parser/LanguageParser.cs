@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<polish>\b(?:PL\W?DUB|DUB\W?PL|LEK\W?PL|PL\W?LEK)\b)|
                                                                             (?<chinese>\[(?:CH[ST]|BIG5|GB)\]|简|繁|字幕)|
                                                                             (?<ukrainian>(?:(?:\dx)?UKR))|
-                                                                            (?<spanish>\b(?:español|castellano)\b)|
+                                                                            (?<spanish>\b(?:español|castellano|spa(?![\W_]*latino))\b)|
                                                                             (?<catalan>\b(?:catalan?|catalán|català)\b)|
                                                                             (?<latvian>\b(?:lat|lav|lv)\b)|
                                                                             (?<telugu>\btel\b)|
