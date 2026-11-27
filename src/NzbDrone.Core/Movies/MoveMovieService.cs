@@ -40,12 +40,14 @@ namespace NzbDrone.Core.Movies
             if (!sourcePath.IsPathValid(PathValidationType.CurrentOs))
             {
                 _logger.Warn("Folder '{0}' for '{1}' is invalid, unable to move movie. Try moving files manually", sourcePath, movie.Title);
+                UpdatePath(movie.Id, destinationPath);
                 return;
             }
 
             if (!_diskProvider.FolderExists(sourcePath))
             {
                 _logger.Debug("Folder '{0}' for '{1}' does not exist, not moving.", sourcePath, movie.Title);
+                UpdatePath(movie.Id, destinationPath);
                 return;
             }
 
@@ -71,17 +73,19 @@ namespace NzbDrone.Core.Movies
 
                 _logger.ProgressInfo("{0} moved successfully to {1}", movie.Title, destinationPath);
 
+                UpdatePath(movie.Id, destinationPath);
+
                 _eventAggregator.PublishEvent(new MovieMovedEvent(movie, sourcePath, destinationPath));
             }
             catch (IOException ex)
             {
                 _logger.Error(ex, "Unable to move movie from '{0}' to '{1}'. Try moving files manually", sourcePath, destinationPath);
 
-                RevertPath(movie.Id, sourcePath);
+                UpdatePath(movie.Id, sourcePath);
             }
         }
 
-        private void RevertPath(int movieId, string path)
+        private void UpdatePath(int movieId, string path)
         {
             var movie = _movieService.GetMovie(movieId);
 
