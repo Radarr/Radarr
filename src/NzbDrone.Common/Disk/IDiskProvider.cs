@@ -49,6 +49,7 @@ namespace NzbDrone.Common.Disk
         FileStream OpenWriteStream(string path);
         List<IMount> GetMounts();
         IMount GetMount(string path);
+        Dictionary<string, IMount> GetMountsForPaths(HashSet<string> paths);
         List<DirectoryInfo> GetDirectoryInfos(string path);
         FileInfo GetFileInfo(string path);
         List<FileInfo> GetFileInfos(string path, bool recursive = false);
