@@ -19,7 +19,7 @@ variables:
   nodeVersion: '24.X'
   innoVersion: '6.7.1'
   windowsImage: 'windows-2025'
-  linuxImage: 'ubuntu-24.04'
+  linuxImage: 'ubuntu-26.04'
   macImage: 'macOS-15'
 
 trigger:
@@ -93,7 +93,7 @@ stages:
         EnableAnalyzers: $(enableAnalysis)
       steps:
       - bash: |
-          sudo apt-get --purge autoremove microsoft-edge-stable firefox google-chrome-stable temurin-8-jdk temurin-11-jdk temurin-17-jdk temurin-21-jdk temurin-25-jdk ca-certificates-java google-cloud-cli snapd kubectl
+          sudo apt-get --purge autoremove microsoft-edge-stable firefox google-chrome-stable temurin-11-jdk temurin-17-jdk temurin-21-jdk temurin-25-jdk google-cloud-cli snapd podman kubectl mysql-server postgresql-18 ant llvm-20-dev llvm-21-dev llvm-22-dev libllvm20 libllvm21 libllvm22
           sudo apt autoremove
           sudo apt clean
           df -h
