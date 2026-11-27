@@ -22,6 +22,11 @@ namespace NzbDrone.Common.Test.InstrumentationTests
         [TestCase(@"https://b-hd.me/torrent/download/auto.343756.is1t1pl127p1sfwur8h4kgyhg1wcsn05")]
         [TestCase(@"https://b-hd.me/torrent/download/a-slug-in-the-url.343756.is1t1pl127p1sfwur8h4kgyhg1wcsn05")]
 
+        // Model state of invalid requests
+        [TestCase(@"{""password"":{""rawValue"":""mySecret"",""attemptedValue"":""mySecret"",""errors"":[],""validationState"":""valid"",""isContainerNode"":false},""username"":{""rawValue"":""mySecret"",""attemptedValue"":""mySecret"",""errors"":[],""validationState"":""valid"",""isContainerNode"":false}}")]
+        [TestCase("{\n  \"password\": {\n    \"rawValue\": \"mySecret\",\n    \"attemptedValue\": \"mySecret\",\n    \"errors\": []\n  }\n}")]
+        [TestCase(@"{""Password"":{""rawValue"":""mySecret\""x"",""attemptedValue"":""mySecret\""x""}}")]
+
         // NzbGet
         [TestCase(@"{ ""Name"" : ""ControlUsername"", ""Value"" : ""mySecret"" }, { ""Name"" : ""ControlPassword"", ""Value"" : ""mySecret"" }, ")]
         [TestCase(@"{ ""Name"" : ""Server1.Username"", ""Value"" : ""mySecret"" }, { ""Name"" : ""Server1.Password"", ""Value"" : ""mySecret"" }, ")]

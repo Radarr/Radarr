@@ -30,6 +30,9 @@ namespace NzbDrone.Common.Instrumentation
             // Email
             new(@"\b(?<secret>[a-z0-9._%+-]+)@[a-z0-9.-]+\.[a-z]{2,}\b", RegexOptions.Compiled | RegexOptions.IgnoreCase),
 
+            // Model state of invalid requests (rawValue/attemptedValue of e.g. the login form)
+            new(@"""[^""]*(username|password|api_?key|token|secret)""\s*:\s*\{(?:\s*""(rawValue|attemptedValue)""\s*:\s*(""(?<secret>(?:\\.|[^""\\])+)""|""""|null)\s*,?)+", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+
             // NzbGet
             new(@"""Name""\s*:\s*""[^""]*(username|password)""\s*,\s*""Value""\s*:\s*""(?<secret>[^""]+?)""", RegexOptions.Compiled | RegexOptions.IgnoreCase),
 
