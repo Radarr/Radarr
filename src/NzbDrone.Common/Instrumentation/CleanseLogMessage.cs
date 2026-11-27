@@ -59,7 +59,10 @@ namespace NzbDrone.Common.Instrumentation
             new(@"discord.com/api/webhooks/((?<secret>[\w-]+)/)?(?<secret>[\w-]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase),
 
             // Telegram
-            new(@"api.telegram.org/bot(?<id>[\d]+):(?<secret>[\w-]+)/", RegexOptions.Compiled | RegexOptions.IgnoreCase)
+            new(@"api.telegram.org/bot(?<id>[\d]+):(?<secret>[\w-]+)/", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+
+            // Slack
+            new(@"hooks.slack.com/services/(?<secret>[\w-]+)/(?<secret>[\w-]+)/(?<secret>[\w-]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase)
         };
 
         private static readonly Regex CleanseRemoteIPRegex = new(@"(?:Auth-\w+(?<!Failure|Unauthorized) ip|from) (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", RegexOptions.Compiled);
