@@ -13,6 +13,6 @@
         public string ArabicNumeralAsString { get; private set; }
         public string RomanNumeral { get; private set; }
 
-        public string RomanNumeralLowerCase => RomanNumeral.ToLower();
+        public string RomanNumeralLowerCase => RomanNumeral.ToLowerInvariant();
     }
 }

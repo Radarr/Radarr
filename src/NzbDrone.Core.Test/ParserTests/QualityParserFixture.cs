@@ -1,3 +1,4 @@
+using System.Globalization;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Parser;
@@ -513,6 +514,48 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = QualityParser.ParseQuality(title);
             result.Revision.Version.Should().Be(version);
             result.Revision.IsRepack.Should().Be(isRepack);
+        }
+
+        [TestCase("Movie.Title.2018.RERIP.720p.BluRay.x264-DEMAND", QualitySource.BLURAY, Resolution.R720p)]
+        [TestCase("Movie Name (2018) 720p Hindi HQ CAMrip x264 AAC 1.4GB", QualitySource.CAM, Resolution.Unknown)]
+        [TestCase("Movie Name S01E01.2160P AMZN WEBRIP DD2.0 X264-TROLLUHD", QualitySource.WEBRIP, Resolution.R2160p)]
+        public void should_parse_quality_with_turkish_culture(string title, QualitySource source, Resolution resolution)
+        {
+            var currentCulture = CultureInfo.CurrentCulture;
+
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo("tr-TR");
+
+                var result = QualityParser.ParseQuality(title);
+
+                result.Quality.Source.Should().Be(source);
+                result.Quality.Resolution.Should().Be((int)resolution);
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = currentCulture;
+            }
+        }
+
+        [Test]
+        public void should_parse_rerip_with_turkish_culture()
+        {
+            var currentCulture = CultureInfo.CurrentCulture;
+
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo("tr-TR");
+
+                var result = QualityParser.ParseQuality("Movie.Title.2018.RERIP.720p.BluRay.x264-DEMAND");
+
+                result.Revision.IsRepack.Should().BeTrue();
+                result.Revision.Version.Should().Be(2);
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = currentCulture;
+            }
         }
 
         private void ParseAndVerifyQuality(string title, QualitySource source, bool proper, Resolution resolution, Modifier modifier = Modifier.NONE)
