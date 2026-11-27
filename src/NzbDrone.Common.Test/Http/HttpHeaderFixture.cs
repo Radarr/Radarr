@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using FluentAssertions;
 using NUnit.Framework;
@@ -48,6 +49,24 @@ namespace NzbDrone.Common.Test.Http
             cookies.First().Value.Should().Be("123456");
             cookies.Last().Key.Should().Be("pass");
             cookies.Last().Value.Should().Be("123456b2f3abcde42ac3a123f3f1fc9f");
+        }
+
+        [Test]
+        public void should_keep_multiple_set_cookie_headers_separate()
+        {
+            var responseMessage = new HttpResponseMessage();
+            responseMessage.Headers.TryAddWithoutValidation("Set-Cookie", "XSRF-TOKEN=cookie1; expires=Mon, 20-Dec-2021 05:02:58 GMT; Max-Age=7200; path=/; secure; samesite=lax");
+            responseMessage.Headers.TryAddWithoutValidation("Set-Cookie", "laravel_session=cookie2; expires=Mon, 20-Dec-2021 05:02:58 GMT; Max-Age=7200; path=/; secure; httponly; samesite=lax");
+
+            var response = new HttpResponse(new HttpRequest("http://localhost"), new HttpHeader(responseMessage.Headers), Array.Empty<byte>());
+
+            response.GetCookieHeaders().Should().HaveCount(2);
+
+            var cookies = response.GetCookies();
+
+            cookies.Should().HaveCount(2);
+            cookies["XSRF-TOKEN"].Should().Be("cookie1");
+            cookies["laravel_session"].Should().Be("cookie2");
         }
     }
 }

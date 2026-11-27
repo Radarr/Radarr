@@ -17,7 +17,17 @@ namespace NzbDrone.Common.Http
             var result = new NameValueCollection();
             foreach (var header in headers)
             {
-                result.Add(header.Key, header.Value.ConcatToString(";"));
+                if (header.Key.Equals("Set-Cookie", StringComparison.OrdinalIgnoreCase))
+                {
+                    foreach (var value in header.Value)
+                    {
+                        result.Add(header.Key, value);
+                    }
+                }
+                else
+                {
+                    result.Add(header.Key, header.Value.ConcatToString(";"));
+                }
             }
 
             return result;
