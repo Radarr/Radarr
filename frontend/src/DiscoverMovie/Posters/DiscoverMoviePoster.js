@@ -183,6 +183,7 @@ class DiscoverMoviePoster extends Component {
             {...linkProps}
           >
             <MoviePoster
+              alt={title}
               className={styles.poster}
               style={elementStyle}
               images={images}
@@ -195,7 +196,7 @@ class DiscoverMoviePoster extends Component {
 
             {
               hasPosterError &&
-                <div className={styles.overlayTitle}>
+                <div className={styles.overlayTitle} aria-hidden="true">
                   {title}
                 </div>
             }

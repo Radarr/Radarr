@@ -202,6 +202,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
 
         <Link className={styles.link} style={elementStyle} to={link}>
           <MoviePoster
+            alt={title}
             style={elementStyle}
             images={images}
             size={250}
@@ -212,7 +213,9 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
           />
 
           {hasPosterError ? (
-            <div className={styles.overlayTitle}>{title}</div>
+            <div className={styles.overlayTitle} aria-hidden="true">
+              {title}
+            </div>
           ) : null}
         </Link>
       </div>

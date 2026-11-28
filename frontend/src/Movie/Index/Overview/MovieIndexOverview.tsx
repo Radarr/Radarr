@@ -152,6 +152,7 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
 
             <Link className={styles.link} style={elementStyle} to={link}>
               <MoviePoster
+                alt={title}
                 className={styles.poster}
                 style={elementStyle}
                 images={images}
