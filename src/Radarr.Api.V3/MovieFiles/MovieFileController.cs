@@ -182,11 +182,11 @@ namespace Radarr.Api.V3.MovieFiles
             }
 
             var movieFiles = _mediaFileService.GetMovies(resource.MovieFileIds);
-            var movie = _movieService.GetMovie(movieFiles.First().MovieId);
+            var movies = _movieService.GetMovies(movieFiles.Select(f => f.MovieId).Distinct()).ToDictionary(m => m.Id);
 
             foreach (var movieFile in movieFiles)
             {
-                _mediaFileDeletionService.DeleteMovieFile(movie, movieFile);
+                _mediaFileDeletionService.DeleteMovieFile(movies[movieFile.MovieId], movieFile);
             }
 
             return TypedResults.Ok<object>(new { });
