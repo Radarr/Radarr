@@ -11,9 +11,11 @@ import { saveDimensions } from 'Store/Actions/appActions';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
+import translate from 'Utilities/String/translate';
 import ErrorPage from './ErrorPage';
 import PageHeader from './Header/PageHeader';
 import LoadingPage from './LoadingPage';
+import { MAIN_CONTENT_ID } from './PageContent';
 import PageSidebar from './Sidebar/PageSidebar';
 import styles from './Page.css';
 
@@ -40,6 +42,18 @@ function Page({ children }: PageProps) {
   const handleUpdatedModalClose = useCallback(() => {
     setIsUpdatedModalOpen(false);
   }, []);
+
+  const handleSkipLinkClick = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      const mainContent = document.getElementById(MAIN_CONTENT_ID);
+
+      if (mainContent) {
+        event.preventDefault();
+        mainContent.focus();
+      }
+    },
+    []
+  );
 
   const handleResize = useCallback(() => {
     dispatch(
@@ -88,6 +102,14 @@ function Page({ children }: PageProps) {
     <ColorImpairedContext.Provider value={enableColorImpairedMode}>
       <div className={styles.page}>
         <SignalRConnector />
+
+        <a
+          className={styles.skipLink}
+          href={`#${MAIN_CONTENT_ID}`}
+          onClick={handleSkipLinkClick}
+        >
+          {translate('SkipToMainContent')}
+        </a>
 
         <PageHeader isSmallScreen={isSmallScreen} />
 
