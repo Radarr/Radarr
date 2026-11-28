@@ -24,6 +24,7 @@ namespace NzbDrone.Core.Movies
         List<Movie> AddMovies(List<Movie> newMovies);
         Movie FindByImdbId(string imdbid);
         Movie FindByTmdbId(int tmdbid);
+        List<Movie> FindByTmdbId(List<int> tmdbids);
         Movie FindByTitle(string title);
         Movie FindByTitle(string title, int year);
         Movie FindByTitle(List<string> titles, int? year, List<string> otherTitles, List<Movie> candidates);
@@ -193,6 +194,11 @@ namespace NzbDrone.Core.Movies
         public Movie FindByTmdbId(int tmdbid)
         {
             return _movieRepository.FindByTmdbId(tmdbid);
+        }
+
+        public List<Movie> FindByTmdbId(List<int> tmdbids)
+        {
+            return _movieRepository.FindByTmdbId(tmdbids);
         }
 
         public Movie FindByPath(string path)
