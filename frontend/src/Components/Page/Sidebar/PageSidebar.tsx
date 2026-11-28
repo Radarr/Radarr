@@ -13,7 +13,6 @@ import QueueStatus from 'Activity/Queue/Status/QueueStatus';
 import { IconName } from 'Components/Icon';
 import OverlayScroller from 'Components/Scroller/OverlayScroller';
 import Scroller from 'Components/Scroller/Scroller';
-import usePrevious from 'Helpers/Hooks/usePrevious';
 import { icons } from 'Helpers/Props';
 import { setIsSidebarVisible } from 'Store/Actions/appActions';
 import dimensions from 'Styles/Variables/dimensions';
@@ -223,17 +222,6 @@ function PageSidebar({ isSidebarVisible, isSmallScreen }: PageSidebarProps) {
   const dispatch = useDispatch();
   const location = useLocation();
   const sidebarRef = useRef(null);
-  const touchStartX = useRef<number | null>(null);
-  const touchStartY = useRef<number | null>();
-  const wasSidebarVisible = usePrevious(isSidebarVisible);
-
-  const [sidebarTransform, setSidebarTransform] = useState<{
-    transition: string;
-    transform: number;
-  }>({
-    transition: 'none',
-    transform: isSidebarVisible ? 0 : SIDEBAR_WIDTH * -1,
-  });
   const [sidebarStyle, setSidebarStyle] = useState({
     top: dimensions.headerHeight,
     height: `${window.innerHeight - HEADER_HEIGHT}px`,
@@ -319,130 +307,17 @@ function PageSidebar({ isSidebarVisible, isSmallScreen }: PageSidebarProps) {
     }
   }, [isSmallScreen]);
 
-  const handleTouchStart = useCallback(
-    (event: TouchEvent) => {
-      const touches = event.touches;
-      const x = touches[0].pageX;
-      const y = touches[0].pageY;
-
-      if (touches.length !== 1) {
-        return;
-      }
-
-      if (isSidebarVisible && (x > 210 || x < 180)) {
-        return;
-      } else if (!isSidebarVisible && x > 40) {
-        return;
-      }
-
-      touchStartX.current = x;
-      touchStartY.current = y;
-    },
-    [isSidebarVisible]
-  );
-
-  const handleTouchMove = useCallback((event: TouchEvent) => {
-    const touches = event.touches;
-    const currentTouchX = touches[0].pageX;
-    // const currentTouchY = touches[0].pageY;
-    // const isSidebarVisible = this.props.isSidebarVisible;
-
-    if (!touchStartX.current) {
-      return;
-    }
-
-    if (Math.abs(touchStartX.current - currentTouchX) < 40) {
-      return;
-    }
-
-    const transform = Math.min(currentTouchX - SIDEBAR_WIDTH, 0);
-
-    setSidebarTransform({
-      transition: 'none',
-      transform,
-    });
-  }, []);
-
-  const handleTouchEnd = useCallback(
-    (event: TouchEvent) => {
-      const touches = event.changedTouches;
-      const currentTouch = touches[0].pageX;
-
-      if (!touchStartX.current) {
-        return;
-      }
-
-      if (currentTouch > touchStartX.current && currentTouch > 50) {
-        setSidebarTransform({
-          transition: 'none',
-          transform: 0,
-        });
-      } else if (currentTouch < touchStartX.current && currentTouch < 80) {
-        setSidebarTransform({
-          transition: 'transform 50ms ease-in-out',
-          transform: SIDEBAR_WIDTH * -1,
-        });
-      } else {
-        setSidebarTransform({
-          transition: 'none',
-          transform: isSidebarVisible ? 0 : SIDEBAR_WIDTH * -1,
-        });
-      }
-
-      touchStartX.current = null;
-      touchStartY.current = null;
-    },
-    [isSidebarVisible]
-  );
-
-  const handleTouchCancel = useCallback(() => {
-    touchStartX.current = null;
-    touchStartY.current = null;
-  }, []);
-
   useEffect(() => {
     if (isSmallScreen) {
       window.addEventListener('click', handleWindowClick, { capture: true });
       window.addEventListener('scroll', handleWindowScroll);
-      window.addEventListener('touchstart', handleTouchStart);
-      window.addEventListener('touchmove', handleTouchMove);
-      window.addEventListener('touchend', handleTouchEnd);
-      window.addEventListener('touchcancel', handleTouchCancel);
     }
 
     return () => {
       window.removeEventListener('click', handleWindowClick, { capture: true });
       window.removeEventListener('scroll', handleWindowScroll);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
-      window.removeEventListener('touchcancel', handleTouchCancel);
     };
-  }, [
-    isSmallScreen,
-    handleWindowClick,
-    handleWindowScroll,
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
-    handleTouchCancel,
-  ]);
-
-  useEffect(() => {
-    if (wasSidebarVisible !== isSidebarVisible) {
-      setSidebarTransform({
-        transition: 'none',
-        transform: isSidebarVisible ? 0 : SIDEBAR_WIDTH * -1,
-      });
-    } else if (sidebarTransform.transform === 0 && !isSidebarVisible) {
-      dispatch(setIsSidebarVisible({ isSidebarVisible: true }));
-    } else if (
-      sidebarTransform.transform === -SIDEBAR_WIDTH &&
-      isSidebarVisible
-    ) {
-      dispatch(setIsSidebarVisible({ isSidebarVisible: false }));
-    }
-  }, [sidebarTransform, isSidebarVisible, wasSidebarVisible, dispatch]);
+  }, [isSmallScreen, handleWindowClick, handleWindowScroll]);
 
   const containerStyle = useMemo(() => {
     if (!isSmallScreen) {
@@ -450,10 +325,10 @@ function PageSidebar({ isSidebarVisible, isSmallScreen }: PageSidebarProps) {
     }
 
     return {
-      transition: sidebarTransform.transition ?? 'none',
-      transform: `translateX(${sidebarTransform.transform}px)`,
+      transition: 'none',
+      transform: `translateX(${isSidebarVisible ? 0 : -SIDEBAR_WIDTH}px)`,
     };
-  }, [isSmallScreen, sidebarTransform]);
+  }, [isSmallScreen, isSidebarVisible]);
 
   const ScrollerComponent = isSmallScreen ? Scroller : OverlayScroller;
 
