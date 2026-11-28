@@ -15,6 +15,7 @@ function getUrl(image: Image, coverType: CoverType, size: number) {
 }
 
 export interface MovieImageProps {
+  alt?: string;
   className?: string;
   style?: object;
   images: Image[];
@@ -30,6 +31,7 @@ export interface MovieImageProps {
 const pixelRatio = Math.max(Math.round(window.devicePixelRatio), 1);
 
 function MovieImage({
+  alt = '',
   className,
   style,
   images,
@@ -90,7 +92,9 @@ function MovieImage({
   }, []);
 
   if (hasError || !url) {
-    return <img className={className} style={style} src={placeholder} />;
+    return (
+      <img alt={alt} className={className} style={style} src={placeholder} />
+    );
   }
 
   if (lazy) {
@@ -100,10 +104,16 @@ function MovieImage({
         offset={100}
         overflow={overflow}
         placeholder={
-          <img className={className} style={style} src={placeholder} />
+          <img
+            alt={alt}
+            className={className}
+            style={style}
+            src={placeholder}
+          />
         }
       >
         <img
+          alt={alt}
           className={className}
           style={style}
           src={url}
@@ -117,6 +127,7 @@ function MovieImage({
 
   return (
     <img
+      alt={alt}
       className={className}
       style={style}
       src={isLoaded ? url : placeholder}

@@ -9,7 +9,7 @@ const radarrLogo =
 function LoadingPage() {
   return (
     <div className={styles.page}>
-      <img className={styles.logoFull} src={radarrLogo} />
+      <img alt="" className={styles.logoFull} src={radarrLogo} />
       <LoadingMessage />
       <LoadingIndicator />
     </div>

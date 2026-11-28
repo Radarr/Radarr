@@ -139,6 +139,7 @@ class DiscoverMovieOverview extends Component {
                 {...linkProps}
               >
                 <MoviePoster
+                  alt={title}
                   className={styles.poster}
                   style={elementStyle}
                   images={images}
